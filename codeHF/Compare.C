@@ -26,6 +26,9 @@ Bool_t Compare(){
   TH1F* hvtz_Run3 = (TH1F*)fRun3->Get("vertexerhf-task/hvtx_z");
   TH1F* hvtz_Run1 = (TH1F*)fRun1->Get("hvz");
   
+  TH1F* hitsmap_Run3 = (TH1F*)fRun3->Get("track-qa/hitsmap");
+  TH1F* hitsmap_Run1 = (TH1F*)fRun1->Get("hitsmap");
+  
   TH1F* hmass_Run3 = (TH1F*)fRun3->Get("vertexerhf-task/hmass");
   
   TLegend * legend = new TLegend(0.5,0.7,0.8,0.9);
@@ -33,7 +36,7 @@ Bool_t Compare(){
 
 
   TCanvas* cv=new TCanvas("cv","Vertex",1600,700);
-  cv->Divide(3,2);
+  cv->Divide(3,3);
   cv -> cd(1);
   gPad-> SetLogy();
   hpt_cuts_Run1->GetXaxis()->SetTitle("#it{p}_{T} (GeV)");
@@ -80,6 +83,14 @@ Bool_t Compare(){
   hvtz_Run1->SetLineWidth(2);
   hvtz_Run1->Draw();
   hvtz_Run3->Draw("same");
+  legend->Draw();
+  cv -> cd(7);
+  gPad-> SetLogy();
+  hitsmap_Run1->GetXaxis()->SetTitle("D^{0} vertex z resolution (cm)");
+  hitsmap_Run1->SetLineColor(2);
+  hitsmap_Run1->SetLineWidth(2);
+  hitsmap_Run1->Draw();
+  hitsmap_Run3->Draw("same");
   legend->Draw();
   cv->SaveAs("cv.pdf");
   return true; 

@@ -22,6 +22,7 @@ Bool_t ComputeVerticesRun1(){
   TH1F* hvx=new TH1F("hvx"," ; X vertex (#mum) ; Entries",100,-0.1, 0.1);
   TH1F* hvy=new TH1F("hvy"," ; Y vertex (#mum) ; Entries",100,-0.1, 0.1);
   TH1F* hvz=new TH1F("hvz"," ; Z vertex (#mum) ; Entries",100,-0.1, 0.1);
+  TH1F* hitsmap=new TH1F("hitsmap", "hitsmap_cuts", 100, 0., 100.);
   TObjArray *trkArray    = new TObjArray(20);
   for (Int_t iEvent = 0; iEvent < tree->GetEntries(); iEvent++) {
     tree->GetEvent(iEvent);
@@ -39,6 +40,7 @@ Bool_t ComputeVerticesRun1(){
       Int_t status=track->GetStatus();
       hpt_nocuts->Fill(track->Pt());
       htgl_nocuts->Fill(track->GetTgl()); 
+      hitsmap->Fill(track->GetITSClusterMap());
       if(status & AliESDtrack::kITSrefit && (track->HasPointOnITSLayer(0) || track->HasPointOnITSLayer(1)) && track->GetNcls(1)>70){
 	trkArray->AddAt(track,it++);
         hpt_cuts->Fill(track->Pt());
@@ -79,6 +81,7 @@ Bool_t ComputeVerticesRun1(){
   htgl_nocuts->Write();
   hpt_cuts->Write();
   htgl_cuts->Write();
+  hitsmap->Write();
   fout->Close();
   return true; 
 }
