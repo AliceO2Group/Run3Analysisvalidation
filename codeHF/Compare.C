@@ -1,4 +1,4 @@
-Bool_t Compare(){
+Bool_t Compare(TString filerun3="AnalysisResults.root", TString filerun1="Vertices2prong-ITS1.root"){
 
   gROOT->SetStyle("Plain");	
   gStyle->SetOptStat(0);
@@ -8,8 +8,8 @@ Bool_t Compare(){
   gStyle->SetFrameFillColor(0);
   gStyle->SetOptTitle(0);
 
-  TFile *fRun3 = new TFile("AnalysisResults.root");
-  TFile *fRun1 = new TFile("Vertices2prong-ITS1.root");
+  TFile *fRun3 = new TFile(filerun3.Data());
+  TFile *fRun1 = new TFile(filerun1.Data());
 
   TH1F* hpt_cuts_Run3 = (TH1F*)fRun3->Get("track-qa/hpt_cuts");
   TH1F* hpt_cuts_Run1 = (TH1F*)fRun1->Get("hpt_cuts");
@@ -86,7 +86,7 @@ Bool_t Compare(){
   legend->Draw();
   cv -> cd(7);
   gPad-> SetLogy();
-  hitsmap_Run1->GetXaxis()->SetTitle("D^{0} vertex z resolution (cm)");
+  hitsmap_Run1->GetXaxis()->SetTitle("ITS cluster map");
   hitsmap_Run1->SetLineColor(2);
   hitsmap_Run1->SetLineWidth(2);
   hitsmap_Run1->Draw();

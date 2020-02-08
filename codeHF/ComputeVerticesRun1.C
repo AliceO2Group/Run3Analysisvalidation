@@ -1,6 +1,5 @@
-Bool_t ComputeVerticesRun1(){
+Bool_t ComputeVerticesRun1(TString esdfile = "../inputESD/AliESDs_20200201_v0.root", TString output = "Vertices2prong-ITS1.root"){
 
-  TString esdfile = "../inputESD/AliESDs_20200201_v0.root";
   TFile* esdFile = TFile::Open(esdfile.Data());
   if (!esdFile || !esdFile->IsOpen()) {
     printf("Error in opening ESD file");
@@ -73,7 +72,7 @@ Bool_t ComputeVerticesRun1(){
   hvz->Draw();
   */
 
-  TFile* fout=new TFile("Vertices2prong-ITS1.root","recreate");
+  TFile* fout=new TFile(output.Data(),"recreate");
   hvx->Write();
   hvy->Write();
   hvz->Write();

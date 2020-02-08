@@ -9,7 +9,7 @@ R__ADD_INCLUDE_PATH($ALICE_PHYSICS)
 TChain* CreateChain(const char *xmlfile, const char *type="ESD");
 TChain *CreateLocalChain(const char *txtfile, const char *type, int nfiles);
 
-void convertAO2D()
+void convertAO2D(TString listoffiles)
 {
    const char *anatype = "ESD";
 
@@ -17,7 +17,7 @@ void convertAO2D()
 
    // Create the chain based on xml collection or txt file
    // The entries in the txt file can be local paths or alien paths
-   TChain *chain = CreateLocalChain("wnlocal.txt", anatype, 10);
+   TChain *chain = CreateLocalChain(listoffiles.Data(), anatype, 10);
    if (!chain) return;
    chain->SetNotify(0x0);
    ULong64_t nentries = chain->GetEntries();
