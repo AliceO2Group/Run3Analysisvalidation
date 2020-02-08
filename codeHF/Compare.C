@@ -11,10 +11,10 @@ Bool_t Compare(TString filerun3="AnalysisResults.root", TString filerun1="Vertic
   TFile *fRun3 = new TFile(filerun3.Data());
   TFile *fRun1 = new TFile(filerun1.Data());
 
-  TH1F* hpt_cuts_Run3 = (TH1F*)fRun3->Get("track-qa/hpt_cuts");
+  TH1F* hpt_cuts_Run3 = (TH1F*)fRun3->Get("vertexerhf-task/hpt_cuts");
   TH1F* hpt_cuts_Run1 = (TH1F*)fRun1->Get("hpt_cuts");
 
-  TH1F* htgl_cuts_Run3 = (TH1F*)fRun3->Get("track-qa/htgl_cuts");
+  TH1F* htgl_cuts_Run3 = (TH1F*)fRun3->Get("vertexerhf-task/htgl_cuts");
   TH1F* htgl_cuts_Run1 = (TH1F*)fRun1->Get("htgl_cuts");
  
   TH1F* hvtx_Run3 = (TH1F*)fRun3->Get("vertexerhf-task/hvtx_x");
@@ -26,7 +26,7 @@ Bool_t Compare(TString filerun3="AnalysisResults.root", TString filerun1="Vertic
   TH1F* hvtz_Run3 = (TH1F*)fRun3->Get("vertexerhf-task/hvtx_z");
   TH1F* hvtz_Run1 = (TH1F*)fRun1->Get("hvz");
   
-  TH1F* hitsmap_Run3 = (TH1F*)fRun3->Get("track-qa/hitsmap");
+  TH1F* hitsmap_Run3 = (TH1F*)fRun3->Get("vertexerhf-task/hitsmap");
   TH1F* hitsmap_Run1 = (TH1F*)fRun1->Get("hitsmap");
   
   TH1F* hmass_Run3 = (TH1F*)fRun3->Get("vertexerhf-task/hmass");
