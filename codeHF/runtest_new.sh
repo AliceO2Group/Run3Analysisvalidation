@@ -3,12 +3,12 @@
 INPUTDIR="/home/ginnocen/outputProdHFRun3"
 LISTNAME="listprodhfrun3.txt"
 
-DOCONVERT=1
-DORUN1=1
-DORUN3=1
-DOCOMPARE=1
+DOCONVERT=0
+DORUN1=0
+DORUN3=0
+DOCOMPARE=0
 
-DORUN3ONAOD=0
+DORUN3ONAOD=1
 
 if [ $DOCONVERT -eq 1 ]; then
   rm $LISTNAME
@@ -41,6 +41,7 @@ if [ $DORUN1 -eq 1 ]; then
 fi
 
 if [ $DORUN3 -eq 1 ]; then
+  rm AnalysisResults.root
   o2-analysis-vertexing-hf --aod-file AO2D.root  -b
 fi 
 
