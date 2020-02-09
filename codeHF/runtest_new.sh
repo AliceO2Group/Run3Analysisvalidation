@@ -3,17 +3,17 @@
 INPUTDIR="/home/ginnocen/outputProdHFRun3"
 LISTNAME="listprodhfrun3.txt"
 
-DOCONVERT=0
-DORUN1=0
-DORUN3=0
-DOCOMPARE=0
+DOCONVERT=1
+DORUN1=1
+DORUN3=1
+DOCOMPARE=1
 
-DORUN3ONAOD=1
+DORUN3ONAOD=0
 
 if [ $DOCONVERT -eq 1 ]; then
   rm $LISTNAME
-  #ls $INPUTDIR/*/AliESDs.root >> $LISTNAME
-  ls ../inputESD/AliESDs_20200201_v0.root >> $LISTNAME
+  ls $INPUTDIR/*/AliESDs.root >> $LISTNAME
+  #//ls /data/Run3data/output/001/AliESDs.root >> $LISTNAME
   echo $LISTNAME
   root -q -l "convertAO2D.C(\"$LISTNAME\")"  
 fi
