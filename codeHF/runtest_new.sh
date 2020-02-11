@@ -1,6 +1,6 @@
 #!/bin/bash
 
-INPUTDIR="/home/ginnocen/outputProdHFRun3"
+INPUTDIR="/data/Run3data/output"
 LISTNAME="listprodhfrun3.txt"
 
 DOCONVERT=1
@@ -13,7 +13,7 @@ DORUN3ONAOD=0
 if [ $DOCONVERT -eq 1 ]; then
   rm $LISTNAME
   ls $INPUTDIR/*/AliESDs.root >> $LISTNAME
-  #//ls /data/Run3data/output/001/AliESDs.root >> $LISTNAME
+  #ls /data/Run3data/output/001/AliESDs.root >> $LISTNAME
   echo $LISTNAME
   root -q -l "convertAO2D.C(\"$LISTNAME\")"  
 fi
