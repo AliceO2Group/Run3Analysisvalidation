@@ -9,11 +9,7 @@
 #include <TTree.h>
 #include "TStyle.h"
 
-  /*
-  * Comparing data from Run 1 and Run 3
-  */
-
-Bool_t Compare(){
+Bool_t CompareRatio(){
 
   gROOT->SetStyle("Plain");	
   gStyle->SetOptStat(0);
@@ -74,48 +70,47 @@ Bool_t Compare(){
   hpt_nocuts_Run1->GetXaxis()->SetTitle("#it{p}_{T} (GeV)");
   hpt_nocuts_Run1->SetLineColor(2);
   hpt_nocuts_Run1->SetLineWidth(2);
+  hpt_nocuts_Run1->Divide(hpt_nocuts_Run3);
   hpt_nocuts_Run1->Draw();
-  hpt_nocuts_Run3->Draw("same");
-  legend->AddEntry(hpt_nocuts_Run1,"Run1","f");
-  legend->AddEntry(hpt_nocuts_Run3,"Run3","f");
+  legend->AddEntry(hpt_nocuts_Run1,"Run1 data/Run3 data","f");
   legend->Draw();
 
   cv1->cd(2);
   hrun_number_Run1->GetXaxis()->SetTitle("run number");
   hrun_number_Run1->SetLineColor(2);
   hrun_number_Run1->SetLineWidth(2);
+  hrun_number_Run1->Divide(hrun_number_Run3);
   hrun_number_Run1->Draw();
-  hrun_number_Run3->Draw("same");
 
   cv1->cd(3);
   hfCYY_Run1->GetXaxis()->SetTitle("CYY");
   hfCYY_Run1->SetLineColor(2);
   hfCYY_Run1->SetLineWidth(2);
+  hfCYY_Run1->Divide(hfCYY_Run3);
   hfCYY_Run1->Draw();
-  hfCYY_Run3->Draw("same");
 
   cv1->cd(4);
   hfCZY_Run1->GetXaxis()->SetTitle("CZY");
   hfCZY_Run1->SetLineColor(2);
   hfCZY_Run1->SetLineWidth(2);
+  hfCZY_Run1->Divide(hfCZY_Run3);
   hfCZY_Run1->Draw();
-  hfCZY_Run3->Draw("same");
 
   cv1->cd(5);
   hfCZZ_Run1->GetXaxis()->SetTitle("CZZ");
   hfCZZ_Run1->SetLineColor(2);
   hfCZZ_Run1->SetLineWidth(2);
+  hfCZZ_Run1->Divide(hfCZZ_Run3);
   hfCZZ_Run1->Draw();
-  hfCZZ_Run3->Draw("same");
 
   cv1->cd(6);
   hfCSnpY_Run1->GetXaxis()->SetTitle("CSnpY");
   hfCSnpY_Run1->SetLineColor(2);
   hfCSnpY_Run1->SetLineWidth(2);
+  hfCSnpY_Run1->Divide(hfCSnpY_Run3);
   hfCSnpY_Run1->Draw();
-  hfCSnpY_Run3->Draw("same");
 
-  cv1->SaveAs("cv1.png");
+  cv1->SaveAs("cv1_rat.png");
 
 
   TCanvas* cv2=new TCanvas("cv2","Vertex",1600,700);
@@ -127,45 +122,45 @@ Bool_t Compare(){
   hfCSnpZ_Run1->SetLineColor(2);
   hfCSnpZ_Run1->SetLineWidth(2);
   hfCSnpZ_Run1->Draw();
-  hfCSnpZ_Run3->Draw("same");
-  legend->Draw();
+  hfCSnpZ_Run1->Divide(hfCSnpZ_Run3);
+  hfCSnpZ_Run1->Draw();
 
   cv2->cd(2);
   hfCSnpSnp_Run1->GetXaxis()->SetTitle("SnpSnp");
   hfCSnpSnp_Run1->SetLineColor(2);
   hfCSnpSnp_Run1->SetLineWidth(2);
+  hfCSnpSnp_Run1->Divide(hfCSnpSnp_Run3);
   hfCSnpSnp_Run1->Draw();
-  hfCSnpSnp_Run3->Draw("same");
 
   cv2->cd(3);
   hfCTglY_Run1->GetXaxis()->SetTitle("CTglY");
   hfCTglY_Run1->SetLineColor(2);
   hfCTglY_Run1->SetLineWidth(2);
+  hfCTglY_Run1->Divide(hfCTglY_Run3);
   hfCTglY_Run1->Draw();
-  hfCTglY_Run3->Draw("same");
 
   cv2->cd(4);
   hfCTglZ_Run1->GetXaxis()->SetTitle("CTglZ");
   hfCTglZ_Run1->SetLineColor(2);
   hfCTglZ_Run1->SetLineWidth(2);
+  hfCTglZ_Run1->Divide(hfCTglZ_Run3);
   hfCTglZ_Run1->Draw();
-  hfCTglZ_Run3->Draw("same");
 
   cv2->cd(5);
   hfCTglSnp_Run1->GetXaxis()->SetTitle("CTglSnp");
   hfCTglSnp_Run1->SetLineColor(2);
   hfCTglSnp_Run1->SetLineWidth(2);
+  hfCTglSnp_Run1->Divide(hfCTglSnp_Run3);
   hfCTglSnp_Run1->Draw();
-  hfCTglSnp_Run3->Draw("same");
 
   cv2->cd(6);
   hfCTglTgl_Run1->GetXaxis()->SetTitle("CTglTgl");
   hfCTglTgl_Run1->SetLineColor(2);
   hfCTglTgl_Run1->SetLineWidth(2);
+  hfCTglTgl_Run1->Divide(hfCTglTgl_Run3);
   hfCTglTgl_Run1->Draw();
-  hfCTglTgl_Run3->Draw("same");
 
-  cv2->SaveAs("cv2.png");
+  cv2->SaveAs("cv2_rat.png");
 
 
   TCanvas* cv3=new TCanvas("cv3","Vertex",1600,700);
@@ -176,39 +171,39 @@ Bool_t Compare(){
   hfC1PtY_Run1->GetXaxis()->SetTitle("C1PtY");
   hfC1PtY_Run1->SetLineColor(2);
   hfC1PtY_Run1->SetLineWidth(2);
+  hfC1PtY_Run1->Divide(hfC1PtY_Run3);
   hfC1PtY_Run1->Draw();
-  hfC1PtY_Run3->Draw("same");
   legend->Draw();
 
   cv3->cd(2);
   hfC1PtZ_Run1->GetXaxis()->SetTitle("C1PtZ");
   hfC1PtZ_Run1->SetLineColor(2);
   hfC1PtZ_Run1->SetLineWidth(2);
+  hfC1PtZ_Run1->Divide(hfC1PtZ_Run3);
   hfC1PtZ_Run1->Draw();
-  hfC1PtZ_Run3->Draw("same");
 
   cv3->cd(3);
   hfC1PtSnp_Run1->GetXaxis()->SetTitle("C1PtSnp");
   hfC1PtSnp_Run1->SetLineColor(2);
   hfC1PtSnp_Run1->SetLineWidth(2);
+  hfC1PtSnp_Run1->Divide(hfC1PtSnp_Run3);
   hfC1PtSnp_Run1->Draw();
-  hfC1PtSnp_Run3->Draw("same");
 
   cv3->cd(4);
   hfC1PtTgl_Run1->GetXaxis()->SetTitle("C1PtTgl");
   hfC1PtTgl_Run1->SetLineColor(2);
   hfC1PtTgl_Run1->SetLineWidth(2);
+  hfC1PtTgl_Run1->Divide(hfC1PtTgl_Run3);
   hfC1PtTgl_Run1->Draw();
-  hfC1PtTgl_Run3->Draw("same");
 
   cv3->cd(5);
   hfC1Pt21Pt2_Run1->GetXaxis()->SetTitle("C1Pt21Pt2");
   hfC1Pt21Pt2_Run1->SetLineColor(2);
   hfC1Pt21Pt2_Run1->SetLineWidth(2);
+  hfC1Pt21Pt2_Run1->Divide(hfC1Pt21Pt2_Run3);
   hfC1Pt21Pt2_Run1->Draw();
-  hfC1Pt21Pt2_Run3->Draw("same");
 
-  cv3->SaveAs("cv3.png");
+  cv3->SaveAs("cv3_rat.png");
 
   return true;
 }
