@@ -29,7 +29,6 @@ Bool_t ComputeVerticesRun1(){
 
   esd->ReadFromTree(tree);
   
-  // file 1
   TH1F* hpt_nocuts =new TH1F("hpt_nocuts"," ; pt tracks (#GeV) ; Entries",100, 0, 10.);
   TH1F* hrun_number = new TH1F("hrun_number", "run number", 1000, 0., 1000000.);
   TH1F* hfCYY = new TH1F("hfCYY", "cYY", 1000, 0., 150.);
@@ -39,8 +38,6 @@ Bool_t ComputeVerticesRun1(){
   TH1F* hfCSnpZ = new TH1F("hfCSnpZ", "cSnpZ", 1000, -2.5, 1.);
   TH1F* hfCSnpSnp = new TH1F("hfCSnpSnp", "cSnpSnp", 1000, 0., 0.1);
   TH1F* hfCTglY = new TH1F("hfCTglY", "cTglY", 1000, -0.1, 0.3);
-
-  // file 2
   TH1F* hfCTglZ = new TH1F("hfCTglZ", "cTglZ", 1000, -3., 3.);
   TH1F* hfCTglSnp = new TH1F("hfCTglSnp", "cTglSnp", 1000, -0.01, 0.01);
   TH1F* hfCTglTgl = new TH1F("hfCTglTgl", "cTglTgl", 1000, 0., 0.2);
