@@ -1,4 +1,4 @@
-Bool_t ComputeVerticesRun1(TString esdfile = "../inputESD/AliESDs_20200201_v0.root", TString output = "Vertices2prong-ITS1.root"){
+Bool_t ComputeVerticesRun1(TString esdfile = "../inputESD/AliESDs_20200201_v0.root", TString output = "Vertices2prong-ITS1.root", bool applyeventcut = 0){
 
   TFile* esdFile = TFile::Open(esdfile.Data());
   if (!esdFile || !esdFile->IsOpen()) {
@@ -22,13 +22,32 @@ Bool_t ComputeVerticesRun1(TString esdfile = "../inputESD/AliESDs_20200201_v0.ro
   TH1F* hvy=new TH1F("hvy"," ; Y vertex (#mum) ; Entries",100,-0.1, 0.1);
   TH1F* hvz=new TH1F("hvz"," ; Z vertex (#mum) ; Entries",100,-0.1, 0.1);
   TH1F* hitsmap=new TH1F("hitsmap", "hitsmap_cuts", 100, 0., 100.);
+  
+  TH1F* hvertexx=new TH1F("hvertexx", "hvertexx", 100, -10., 10.);
+  TH1F* hvertexy=new TH1F("hvertexy", "hvertexy", 100, -10., 10.);
+  TH1F* hvertexz=new TH1F("hvertexz", "hvertexz", 100, -10., 10.);
+  
+  TH1F* hdecayxyz=new TH1F("hdecayxyz", "hdecayxyz", 100, 0., 1.0);
+  TH1F* hdecayxy=new TH1F("hdecayxy", "hdecayxy", 100, 0., 1.0);
   TObjArray *trkArray    = new TObjArray(20);
+  
   for (Int_t iEvent = 0; iEvent < tree->GetEntries(); iEvent++) {
     tree->GetEvent(iEvent);
     if (!esd) {
       printf("Error: no ESD object found for event %d", iEvent);
       return kFALSE;
     }
+
+    AliESDVertex *primvtx = (AliESDVertex*)esd->GetPrimaryVertex();
+    if(applyeventcut == 1){
+      if(!primvtx) return kFALSE;
+      TString title=primvtx->GetTitle();
+      if(primvtx->IsFromVertexer3D() || primvtx->IsFromVertexerZ()) continue;
+      if(primvtx->GetNContributors()<2) continue;
+    }
+    hvertexx->Fill(primvtx->GetX());
+    hvertexy->Fill(primvtx->GetY());
+    hvertexz->Fill(primvtx->GetZ());
     cout<<"-------- Event "<<iEvent<<endl;
     printf(" Tracks # = %d\n",esd->GetNumberOfTracks());
     Double_t fBzkG = (Double_t)esd->GetMagneticField();
@@ -54,6 +73,14 @@ Bool_t ComputeVerticesRun1(TString esdfile = "../inputESD/AliESDs_20200201_v0.ro
 	hvx->Fill(trkv->GetX());
 	hvy->Fill(trkv->GetY());
 	hvz->Fill(trkv->GetZ());
+	double deltax = trkv->GetX() - primvtx->GetX();
+	double deltay = trkv->GetY() - primvtx->GetY();
+	double deltaz = trkv->GetZ() - primvtx->GetZ();
+	double decaylength = TMath::Sqrt(deltax*deltax+deltay*deltay+deltaz*deltaz);
+	double decaylengthxy = TMath::Sqrt(deltax*deltax+deltay*deltay);
+
+	hdecayxyz->Fill(decaylength);
+	hdecayxy->Fill(decaylengthxy);
       }
     }
     delete vt;
@@ -81,6 +108,13 @@ Bool_t ComputeVerticesRun1(TString esdfile = "../inputESD/AliESDs_20200201_v0.ro
   hpt_cuts->Write();
   htgl_cuts->Write();
   hitsmap->Write();
+
+  hvertexx->Write();
+  hvertexy->Write();
+  hvertexz->Write();
+  hdecayxyz->Write();
+  hdecayxy->Write();
+
   fout->Close();
   return true; 
 }
