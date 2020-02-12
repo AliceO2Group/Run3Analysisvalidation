@@ -29,13 +29,20 @@ Bool_t Compare(TString filerun3="AnalysisResults.root", TString filerun1="Vertic
   TH1F* hitsmap_Run3 = (TH1F*)fRun3->Get("vertexerhf-task/hitsmap");
   TH1F* hitsmap_Run1 = (TH1F*)fRun1->Get("hitsmap");
   
+  TH1F* hdecayxyz_Run3 = (TH1F*)fRun3->Get("vertexerhf-task/hdecayxyz");
+  TH1F* hdecayxyz_Run1 = (TH1F*)fRun1->Get("hdecayxyz");
+  
+  TH1F* hdecayxy_Run3 = (TH1F*)fRun3->Get("vertexerhf-task/hdecayxy");
+  TH1F* hdecayxy_Run1 = (TH1F*)fRun1->Get("hdecayxy");
+  
   TH1F* hmass_Run3 = (TH1F*)fRun3->Get("vertexerhf-task/hmass");
+  TH1F* hmass_Run1 = (TH1F*)fRun1->Get("hmass");
   
   TLegend * legend = new TLegend(0.5,0.7,0.8,0.9);
   //legend->SetHeader("Legend","C"); // option "C" allows to center the header
 
 
-  TCanvas* cv=new TCanvas("cv","Vertex",1600,700);
+  TCanvas* cv=new TCanvas("cv","Vertex",1600,1600);
   cv->Divide(3,3);
   cv -> cd(1);
   gPad-> SetLogy();
@@ -58,7 +65,11 @@ Bool_t Compare(TString filerun3="AnalysisResults.root", TString filerun1="Vertic
   cv -> cd(3);
   gPad-> SetLogy();
   hmass_Run3->GetXaxis()->SetTitle("Invariant mass K#pi");
-  hmass_Run3->Draw();
+  hmass_Run1->SetLineColor(2);
+  hmass_Run1->SetLineWidth(2);
+  hmass_Run1->Draw();
+  hmass_Run3->Draw("same");
+  legend->Draw();
   legend->Draw();
   cv -> cd(4);
   gPad-> SetLogy();
@@ -92,6 +103,23 @@ Bool_t Compare(TString filerun3="AnalysisResults.root", TString filerun1="Vertic
   hitsmap_Run1->Draw();
   hitsmap_Run3->Draw("same");
   legend->Draw();
+  cv -> cd(8);
+  gPad-> SetLogy();
+  hdecayxy_Run1->GetXaxis()->SetTitle("decay length xy");
+  hdecayxy_Run1->SetLineColor(2);
+  hdecayxy_Run1->SetLineWidth(2);
+  hdecayxy_Run1->Draw();
+  hdecayxy_Run3->Draw("same");
+  legend->Draw();
+  cv -> cd(9);
+  gPad-> SetLogy();
+  hdecayxyz_Run1->GetXaxis()->SetTitle("decay length xyz");
+  hdecayxyz_Run1->SetLineColor(2);
+  hdecayxyz_Run1->SetLineWidth(2);
+  hdecayxyz_Run1->Draw();
+  hdecayxyz_Run3->Draw("same");
+  legend->Draw();
+  
   cv->SaveAs("cv.pdf");
   return true; 
 }

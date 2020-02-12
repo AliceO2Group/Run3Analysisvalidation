@@ -1,6 +1,6 @@
 #!/bin/bash
 
-INPUTDIR="/home/ginnocen/outputProdHFRun3"
+INPUTDIR="/data/Run3data/output"
 LISTNAME="listprodhfrun3.txt"
 
 DOCONVERT=1
@@ -10,10 +10,12 @@ DOCOMPARE=1
 
 DORUN3ONAOD=0
 
+APPLYEVTSELRUN1=1
+
 if [ $DOCONVERT -eq 1 ]; then
   rm $LISTNAME
-  #ls $INPUTDIR/*/AliESDs.root >> $LISTNAME
-  ls ../inputESD/AliESDs_20200201_v0.root >> $LISTNAME
+  ls $INPUTDIR/*/AliESDs.root >> $LISTNAME
+  #ls /data/Run3data/output/001/AliESDs.root >> $LISTNAME
   echo $LISTNAME
   root -q -l "convertAO2D.C(\"$LISTNAME\")"  
 fi
@@ -30,7 +32,7 @@ if [ $DORUN1 -eq 1 ]; then
     echo $fileout >> "$fileouttxt"
     echo "$F"
     echo "$fileout" 
-    root -q -l "ComputeVerticesRun1.C(\"$F\",\"$fileout\")"
+    root -q -l "ComputeVerticesRun1.C(\"$F\",\"$fileout\", $APPLYEVTSELRUN1)"
     index=$((index+1))
     echo $index
   done <"$LISTNAME"
@@ -41,6 +43,7 @@ if [ $DORUN1 -eq 1 ]; then
 fi
 
 if [ $DORUN3 -eq 1 ]; then
+  rm AnalysisResults.root
   o2-analysis-vertexing-hf --aod-file AO2D.root  -b
 fi 
 

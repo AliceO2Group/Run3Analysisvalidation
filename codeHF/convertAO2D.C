@@ -26,7 +26,7 @@ void convertAO2D(TString listoffiles)
    AliAnalysisManager *mgr = new AliAnalysisManager("AOD converter");
    AliESDInputHandler *handler = AddESDHandler();
       
-   AddTaskMultSelection();
+   //AddTaskMultSelection();
    AddTaskPhysicsSelection();
    AddTaskPIDResponse();
 
