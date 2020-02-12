@@ -36,6 +36,7 @@ Bool_t Compare(TString filerun3="AnalysisResults.root", TString filerun1="Vertic
   TH1F* hdecayxy_Run1 = (TH1F*)fRun1->Get("hdecayxy");
   
   TH1F* hmass_Run3 = (TH1F*)fRun3->Get("vertexerhf-task/hmass");
+  TH1F* hmass_Run1 = (TH1F*)fRun1->Get("hmass");
   
   TLegend * legend = new TLegend(0.5,0.7,0.8,0.9);
   //legend->SetHeader("Legend","C"); // option "C" allows to center the header
@@ -62,8 +63,13 @@ Bool_t Compare(TString filerun3="AnalysisResults.root", TString filerun1="Vertic
   htgl_cuts_Run3->Draw("same");
   legend->Draw();
   cv -> cd(3);
+  gPad-> SetLogy();
   hmass_Run3->GetXaxis()->SetTitle("Invariant mass K#pi");
-  hmass_Run3->Draw();
+  hmass_Run1->SetLineColor(2);
+  hmass_Run1->SetLineWidth(2);
+  hmass_Run1->Draw();
+  hmass_Run3->Draw("same");
+  legend->Draw();
   legend->Draw();
   cv -> cd(4);
   gPad-> SetLogy();
