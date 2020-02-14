@@ -63,7 +63,6 @@ Bool_t Compare(TString filerun3="AnalysisResults.root", TString filerun1="Vertic
   htgl_cuts_Run3->Draw("same");
   legend->Draw();
   cv -> cd(3);
-  gPad-> SetLogy();
   hmass_Run3->GetXaxis()->SetTitle("Invariant mass K#pi");
   hmass_Run1->SetLineColor(2);
   hmass_Run1->SetLineWidth(2);
