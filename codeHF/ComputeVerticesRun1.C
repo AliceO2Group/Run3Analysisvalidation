@@ -59,7 +59,7 @@ Bool_t ComputeVerticesRun1(TString esdfile = "../inputESD/AliESDs_20200201_v0.ro
   TH1F* hvx=new TH1F("hvx"," ; X vertex (cm) ; Entries",100,-0.1, 0.1);
   TH1F* hvy=new TH1F("hvy"," ; Y vertex (cm) ; Entries",100,-0.1, 0.1);
   TH1F* hvz=new TH1F("hvz"," ; Z vertex (cm) ; Entries",100,-0.1, 0.1);
-  TH1F* hitsmap=new TH1F("hitsmap", "hitsmap_cuts", 100, 0., 100.);
+  TH1F* hitsmap_cuts=new TH1F("hitsmap_cuts", "hitsmap_cuts", 100, 0., 100.);
   
   TH1F* hvertexx=new TH1F("hvertexx", "hvertexx", 100, -10., 10.);
   TH1F* hvertexy=new TH1F("hvertexy", "hvertexy", 100, -10., 10.);
@@ -67,7 +67,7 @@ Bool_t ComputeVerticesRun1(TString esdfile = "../inputESD/AliESDs_20200201_v0.ro
   
   TH1F* hdecayxyz=new TH1F("hdecayxyz", "hdecayxyz", 100, 0., 1.0);
   TH1F* hdecayxy=new TH1F("hdecayxy", "hdecayxy", 100, 0., 1.0);
-  TH1F* hmass=new TH1F("hmass", "; Inv Mass (GeV/c^{2})", 500, 0, 5.0);
+  TH1F* hmass_nocuts=new TH1F("hmass_nocuts", "; Inv Mass (GeV/c^{2})", 500, 0, 5.0);
   
   AliESDtrackCuts *esdTrackCuts = new AliESDtrackCuts("AliESDtrackCuts","default");
   esdTrackCuts->SetMinNClustersTPC(70);
@@ -121,13 +121,13 @@ Bool_t ComputeVerticesRun1(TString esdfile = "../inputESD/AliESDs_20200201_v0.ro
       track_0->GetPxPyPz(mom0);
       hpt_nocuts->Fill(track_0->Pt());
       htgl_nocuts->Fill(track_0->GetTgl()); 
-      hitsmap->Fill(track_0->GetITSClusterMap());
       //FIXME if (applytrackcut==1 && !SingleTrkCuts(track_0,esdTrackCuts,primvtx,fBzkG)) continue;
       Int_t status_0=track_0->GetStatus();
       bool sel_track0 = status_0 & AliESDtrack::kITSrefit && (track_0->HasPointOnITSLayer(0) || track_0->HasPointOnITSLayer(1)) && track_0->GetNcls(1)>70;
       if (applytrackcut==1 &&!sel_track0) continue;
       hpt_cuts->Fill(track_0->Pt());
       htgl_cuts->Fill(track_0->GetTgl()); 
+      hitsmap_cuts->Fill(track_0->GetITSClusterMap());
 
       for (Int_t iTrack_1 = iTrack_0 + 1; iTrack_1 < esd->GetNumberOfTracks(); iTrack_1++) {
         AliESDtrack* track_1 = esd->GetTrack(iTrack_1);
@@ -188,9 +188,8 @@ Bool_t ComputeVerticesRun1(TString esdfile = "../inputESD/AliESDs_20200201_v0.ro
         the2Prong->SetOwnPrimaryVtx(vertexAODp);
 	Double_t m0=the2Prong->InvMassD0();
 	Double_t m0b=the2Prong->InvMassD0bar();
-        hmass->Fill(m0);
-        hmass->Fill(m0b);
-	printf(" masses = %f %f\n",TMath::Max(m0,m0b),TMath::Min(m0,m0b));
+        hmass_nocuts->Fill(m0);
+        hmass_nocuts->Fill(m0b);
 	delete twoTrackArray;
       }
     }
@@ -205,14 +204,14 @@ Bool_t ComputeVerticesRun1(TString esdfile = "../inputESD/AliESDs_20200201_v0.ro
   htgl_nocuts->Write();
   hpt_cuts->Write();
   htgl_cuts->Write();
-  hitsmap->Write();
+  hitsmap_cuts->Write();
 
   hvertexx->Write();
   hvertexy->Write();
   hvertexz->Write();
   hdecayxyz->Write();
   hdecayxy->Write();
-  hmass->Write();
+  hmass_nocuts->Write();
 
   fout->Close();
   return true; 

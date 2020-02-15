@@ -1,6 +1,7 @@
 #!/bin/bash
 
-INPUTDIR="/data/Run3data/output"
+#INPUTDIR="/data/Run3data/output"
+INPUTDIR="/data/Run3data/alice_sim_2018_LHC18a4a2_cent/282099"
 LISTNAME="listprodhfrun3.txt"
 
 DOCONVERT=1
@@ -14,10 +15,11 @@ APPLYPRIMVERTEXSELRUN1=1
 APPLYTRACKCUTRUN1=1
 APPLYSECVERTEXSELRUN1=0
 
+rm *.root
+rm *.txt
 if [ $DOCONVERT -eq 1 ]; then
   rm $LISTNAME
-  ls $INPUTDIR/*/AliESDs.root >> $LISTNAME
-  #ls /data/Run3data/output/001/AliESDs.root >> $LISTNAME
+  ls $INPUTDIR/00*/AliESDs.root >> $LISTNAME
   echo $LISTNAME
   root -q -l "convertAO2D.C(\"$LISTNAME\")"  
 fi

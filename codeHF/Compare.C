@@ -10,6 +10,15 @@ Bool_t Compare(TString filerun3="AnalysisResults.root", TString filerun1="Vertic
 
   TFile *fRun3 = new TFile(filerun3.Data());
   TFile *fRun1 = new TFile(filerun1.Data());
+  
+  TH1F* hvtxprim_Run3 = (TH1F*)fRun3->Get("vertexerhf-candidatebuilding2prong/hvertexx");
+  TH1F* hvtxprim_Run1 = (TH1F*)fRun1->Get("hvertexx");
+  
+  TH1F* hvtyprim_Run3 = (TH1F*)fRun3->Get("vertexerhf-candidatebuilding2prong/hvertexy");
+  TH1F* hvtyprim_Run1 = (TH1F*)fRun1->Get("hvertexy");
+  
+  TH1F* hvtzprim_Run3 = (TH1F*)fRun3->Get("vertexerhf-candidatebuilding2prong/hvertexz");
+  TH1F* hvtzprim_Run1 = (TH1F*)fRun1->Get("hvertexz");
 
   TH1F* hpt_cuts_Run3 = (TH1F*)fRun3->Get("vertexerhf-candidatebuilding2prong/hpt_cuts");
   TH1F* hpt_cuts_Run1 = (TH1F*)fRun1->Get("hpt_cuts");
@@ -27,7 +36,7 @@ Bool_t Compare(TString filerun3="AnalysisResults.root", TString filerun1="Vertic
   TH1F* hvtz_Run1 = (TH1F*)fRun1->Get("hvz");
   
   TH1F* hitsmap_Run3 = (TH1F*)fRun3->Get("vertexerhf-candidatebuilding2prong/hitsmap_cuts");
-  TH1F* hitsmap_Run1 = (TH1F*)fRun1->Get("hitsmap");
+  TH1F* hitsmap_Run1 = (TH1F*)fRun1->Get("hitsmap_cuts");
   
   TH1F* hdecayxyz_Run3 = (TH1F*)fRun3->Get("vertexerhf-Dzerotask/hdecayxyz");
   TH1F* hdecayxyz_Run1 = (TH1F*)fRun1->Get("hdecayxyz");
@@ -35,12 +44,41 @@ Bool_t Compare(TString filerun3="AnalysisResults.root", TString filerun1="Vertic
   TH1F* hdecayxy_Run3 = (TH1F*)fRun3->Get("vertexerhf-Dzerotask/hdecayxy");
   TH1F* hdecayxy_Run1 = (TH1F*)fRun1->Get("hdecayxy");
   
-  TH1F* hmass_Run3 = (TH1F*)fRun3->Get("vertexerhf-Dzerotask/hmass");
-  TH1F* hmass_Run1 = (TH1F*)fRun1->Get("hmass");
+  TH1F* hmass_nocuts_Run3 = (TH1F*)fRun3->Get("vertexerhf-Dzerotask/hmass_nocuts");
+  TH1F* hmass_nocuts_Run1 = (TH1F*)fRun1->Get("hmass_nocuts");
   
   TLegend * legend = new TLegend(0.5,0.7,0.8,0.9);
   //legend->SetHeader("Legend","C"); // option "C" allows to center the header
 
+
+  TCanvas* cvprim=new TCanvas("cvprim","Primary vertex",1600,1600);
+  cvprim->Divide(3,3);
+  cvprim -> cd(1);
+  cvprim -> cd(4);
+  gPad-> SetLogy();
+  hvtxprim_Run1->GetXaxis()->SetTitle("Primary vertex X (cm)");
+  hvtxprim_Run1->SetLineColor(2);
+  hvtxprim_Run1->SetLineWidth(2);
+  hvtxprim_Run1->Draw();
+  hvtxprim_Run3->Draw("same");
+  legend->Draw();
+  cvprim -> cd(5);
+  gPad-> SetLogy();
+  hvtyprim_Run1->GetXaxis()->SetTitle("Primary vertex Y (cm)");
+  hvtyprim_Run1->SetLineColor(2);
+  hvtyprim_Run1->SetLineWidth(2);
+  hvtyprim_Run1->Draw();
+  hvtyprim_Run3->Draw("same");
+  legend->Draw();
+  cvprim -> cd(6);
+  gPad-> SetLogy();
+  hvtzprim_Run1->GetXaxis()->SetTitle("Primary vertex Z (cm)");
+  hvtzprim_Run1->SetLineColor(2);
+  hvtzprim_Run1->SetLineWidth(2);
+  hvtzprim_Run1->Draw();
+  hvtzprim_Run3->Draw("same");
+  legend->Draw();
+  cvprim->SaveAs("cvprimary.pdf");
 
   TCanvas* cv=new TCanvas("cv","Vertex",1600,1600);
   cv->Divide(3,3);
@@ -63,11 +101,11 @@ Bool_t Compare(TString filerun3="AnalysisResults.root", TString filerun1="Vertic
   htgl_cuts_Run3->Draw("same");
   legend->Draw();
   cv -> cd(3);
-  hmass_Run3->GetXaxis()->SetTitle("Invariant mass K#pi");
-  hmass_Run1->SetLineColor(2);
-  hmass_Run1->SetLineWidth(2);
-  hmass_Run1->Draw();
-  hmass_Run3->Draw("same");
+  hmass_nocuts_Run3->GetXaxis()->SetTitle("Invariant mass K#pi");
+  hmass_nocuts_Run1->SetLineColor(2);
+  hmass_nocuts_Run1->SetLineWidth(2);
+  hmass_nocuts_Run1->Draw();
+  hmass_nocuts_Run3->Draw("same");
   legend->Draw();
   legend->Draw();
   cv -> cd(4);
