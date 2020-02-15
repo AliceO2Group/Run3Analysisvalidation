@@ -132,7 +132,7 @@ Bool_t ComputeVerticesRun1(TString esdfile = "../inputESD/AliESDs_20200201_v0.ro
       for (Int_t iTrack_1 = iTrack_0 + 1; iTrack_1 < esd->GetNumberOfTracks(); iTrack_1++) {
         AliESDtrack* track_1 = esd->GetTrack(iTrack_1);
         track_1->GetPxPyPz(mom1);
-	//FIXME if(track_1->Charge() * track_0->Charge() >0) continue;
+	if(track_1->Charge() * track_0->Charge() >0) continue;
 	//FIXME if (applytrackcut==1 &&!SingleTrkCuts(track_1,esdTrackCuts,primvtx,fBzkG)) continue;
         Int_t status_1=track_1->GetStatus();
         bool sel_track1 = status_1 & AliESDtrack::kITSrefit && (track_1->HasPointOnITSLayer(0) || track_1->HasPointOnITSLayer(1)) && track_1->GetNcls(1)>70;

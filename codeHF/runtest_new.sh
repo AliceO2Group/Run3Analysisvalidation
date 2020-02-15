@@ -3,7 +3,7 @@
 #INPUTDIR="/data/Run3data/output"
 INPUTDIR="/data/Run3data/alice_sim_2018_LHC18a4a2_cent/282099"
 LISTNAME="listprodhfrun3.txt"
-
+MASS=1.8
 DOCONVERT=1
 DORUN1=1
 DORUN3=1
@@ -52,7 +52,7 @@ if [ $DORUN3 -eq 1 ]; then
 fi 
 
 if [ $DOCOMPARE -eq 1 ]; then
-  root -q -l "Compare.C(\"AnalysisResults.root\",\"Vertices2prong-ITS1.root\")"
+  root -q -l "Compare.C(\"AnalysisResults.root\",\"Vertices2prong-ITS1.root\", $MASS)"
 fi 
 
 if [ $DORUN3ONAOD -eq 1 ]; then

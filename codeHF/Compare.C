@@ -1,4 +1,4 @@
-Bool_t Compare(TString filerun3="AnalysisResults.root", TString filerun1="Vertices2prong-ITS1.root"){
+Bool_t Compare(TString filerun3="AnalysisResults.root", TString filerun1="Vertices2prong-ITS1.root", double mass=1.8){
 
   gROOT->SetStyle("Plain");	
   gStyle->SetOptStat(0);
@@ -101,6 +101,7 @@ Bool_t Compare(TString filerun3="AnalysisResults.root", TString filerun1="Vertic
   htgl_cuts_Run3->Draw("same");
   legend->Draw();
   cv -> cd(3);
+  hmass_nocuts_Run1->GetXaxis()->SetRangeUser(mass-0.2, mass+0.2);
   hmass_nocuts_Run3->GetXaxis()->SetTitle("Invariant mass K#pi");
   hmass_nocuts_Run1->SetLineColor(2);
   hmass_nocuts_Run1->SetLineWidth(2);
