@@ -10,7 +10,9 @@ DOCOMPARE=1
 
 DORUN3ONAOD=0
 
-APPLYEVTSELRUN1=1
+APPLYPRIMVERTEXSELRUN1=1
+APPLYTRACKCUTRUN1=1
+APPLYSECVERTEXSELRUN1=0
 
 if [ $DOCONVERT -eq 1 ]; then
   rm $LISTNAME
@@ -32,7 +34,7 @@ if [ $DORUN1 -eq 1 ]; then
     echo $fileout >> "$fileouttxt"
     echo "$F"
     echo "$fileout" 
-    root -q -l "ComputeVerticesRun1.C(\"$F\",\"$fileout\", $APPLYEVTSELRUN1)"
+    root -q -l "ComputeVerticesRun1.C(\"$F\",\"$fileout\", $APPLYPRIMVERTEXSELRUN1, $APPLYTRACKCUTRUN1, $APPLYSECVERTEXSELRUN1)"
     index=$((index+1))
     echo $index
   done <"$LISTNAME"
