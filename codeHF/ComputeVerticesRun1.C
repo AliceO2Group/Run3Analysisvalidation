@@ -28,8 +28,16 @@ Bool_t GetTrackMomentumAtSecVert(AliESDtrack* tr, AliAODVertex* secVert, Double_
   return retCode;
 }
 
-Bool_t ComputeVerticesRun1(TString esdfile = "../inputESD/AliESDs_20200201_v0.root", TString output = "Vertices2prong-ITS1.root", bool applyeventcut = 0){
-  Bool_t GetTrackMomentumAtSecVert(AliESDtrack* tr, AliAODVertex* secVert, Double_t momentum[3], float fBzkG);
+Bool_t SingleTrkCuts(AliESDtrack *trk, AliESDtrackCuts *esdTrackCuts, AliESDVertex* fV1, Double_t fBzkG){
+  // FIXME if (!trk->PropagateToDCA(fV1,fBzkG,kVeryBig)) return kFALSE;
+  // FIXME trk->RelateToVertex(fV1,fBzkG,kVeryBig);
+  return esdTrackCuts->AcceptTrack(trk);
+}
+
+Bool_t ComputeVerticesRun1(TString esdfile = "../inputESD/AliESDs_20200201_v0.root",
+		TString output = "Vertices2prong-ITS1.root", bool applyprimaryvtxcut = 0, 
+		bool applytrackcut = 1, bool applysecvertexcut = 0){
+
   TFile* esdFile = TFile::Open(esdfile.Data());
   if (!esdFile || !esdFile->IsOpen()) {
     printf("Error in opening ESD file");
@@ -48,9 +56,9 @@ Bool_t ComputeVerticesRun1(TString esdfile = "../inputESD/AliESDs_20200201_v0.ro
   TH1F* htgl_nocuts=new TH1F("htgl_nocuts", "tgl tracks (#GeV)", 100, 0., 10.);
   TH1F* hpt_cuts=new TH1F("hpt_cuts"," ; pt tracks (#GeV) ; Entries",100, 0, 10.);
   TH1F* htgl_cuts=new TH1F("htgl_cuts", "tgl tracks (#GeV)", 100, 0., 10.);
-  TH1F* hvx=new TH1F("hvx"," ; X vertex (#mum) ; Entries",100,-0.1, 0.1);
-  TH1F* hvy=new TH1F("hvy"," ; Y vertex (#mum) ; Entries",100,-0.1, 0.1);
-  TH1F* hvz=new TH1F("hvz"," ; Z vertex (#mum) ; Entries",100,-0.1, 0.1);
+  TH1F* hvx=new TH1F("hvx"," ; X vertex (cm) ; Entries",100,-0.1, 0.1);
+  TH1F* hvy=new TH1F("hvy"," ; Y vertex (cm) ; Entries",100,-0.1, 0.1);
+  TH1F* hvz=new TH1F("hvz"," ; Z vertex (cm) ; Entries",100,-0.1, 0.1);
   TH1F* hitsmap=new TH1F("hitsmap", "hitsmap_cuts", 100, 0., 100.);
   
   TH1F* hvertexx=new TH1F("hvertexx", "hvertexx", 100, -10., 10.);
@@ -59,7 +67,17 @@ Bool_t ComputeVerticesRun1(TString esdfile = "../inputESD/AliESDs_20200201_v0.ro
   
   TH1F* hdecayxyz=new TH1F("hdecayxyz", "hdecayxyz", 100, 0., 1.0);
   TH1F* hdecayxy=new TH1F("hdecayxy", "hdecayxy", 100, 0., 1.0);
-  TH1F* hmass=new TH1F("hmass", "hmass", 500, 0, 5.0);
+  TH1F* hmass=new TH1F("hmass", "; Inv Mass (GeV/c^{2})", 500, 0, 5.0);
+  
+  AliESDtrackCuts *esdTrackCuts = new AliESDtrackCuts("AliESDtrackCuts","default");
+  esdTrackCuts->SetMinNClustersTPC(70);
+  esdTrackCuts->SetRequireITSRefit(kTRUE);
+  esdTrackCuts->SetClusterRequirementITS(AliESDtrackCuts::kSPD,
+					 AliESDtrackCuts::kAny);
+  //FIXME esdTrackCuts->SetAcceptKinkDaughters(kFALSE);
+  //FIXME esdTrackCuts->SetMaxDCAToVertexZ(3.2);
+  //FIXME esdTrackCuts->SetMaxDCAToVertexXY(2.4);
+  //FIXME esdTrackCuts->SetDCAToVertex2D(kTRUE);
 
   for (Int_t iEvent = 0; iEvent < tree->GetEntries(); iEvent++) {
     tree->GetEvent(iEvent);
@@ -67,9 +85,10 @@ Bool_t ComputeVerticesRun1(TString esdfile = "../inputESD/AliESDs_20200201_v0.ro
       printf("Error: no ESD object found for event %d", iEvent);
       return kFALSE;
     }
+    printf("\n------------ Event: %d  Tracks %d ------------------\n",iEvent,esd->GetNumberOfTracks());
 
     AliESDVertex *primvtx = (AliESDVertex*)esd->GetPrimaryVertex();
-    if(applyeventcut == 1){
+    if(applyprimaryvtxcut == 1){
       if(!primvtx) return kFALSE;
       TString title=primvtx->GetTitle();
       if(primvtx->IsFromVertexer3D() || primvtx->IsFromVertexerZ()) continue;
@@ -92,7 +111,8 @@ Bool_t ComputeVerticesRun1(TString esdfile = "../inputESD/AliESDs_20200201_v0.ro
     
     Double_t fBzkG = (Double_t)esd->GetMagneticField();
     AliVertexerTracks* vt=new AliVertexerTracks(fBzkG);
-   
+    vt->SetVtxStart(primvtx);
+    
     Double_t mom0[3], mom1[3];
     float dcap1n1;
     Double_t xdummy,ydummy;
@@ -102,24 +122,32 @@ Bool_t ComputeVerticesRun1(TString esdfile = "../inputESD/AliESDs_20200201_v0.ro
       hpt_nocuts->Fill(track_0->Pt());
       htgl_nocuts->Fill(track_0->GetTgl()); 
       hitsmap->Fill(track_0->GetITSClusterMap());
+      //FIXME if (applytrackcut==1 && !SingleTrkCuts(track_0,esdTrackCuts,primvtx,fBzkG)) continue;
       Int_t status_0=track_0->GetStatus();
       bool sel_track0 = status_0 & AliESDtrack::kITSrefit && (track_0->HasPointOnITSLayer(0) || track_0->HasPointOnITSLayer(1)) && track_0->GetNcls(1)>70;
-      if (!sel_track0) continue;
+      if (applytrackcut==1 &&!sel_track0) continue;
       hpt_cuts->Fill(track_0->Pt());
       htgl_cuts->Fill(track_0->GetTgl()); 
 
       for (Int_t iTrack_1 = iTrack_0 + 1; iTrack_1 < esd->GetNumberOfTracks(); iTrack_1++) {
         AliESDtrack* track_1 = esd->GetTrack(iTrack_1);
         track_1->GetPxPyPz(mom1);
+	//FIXME if(track_1->Charge() * track_0->Charge() >0) continue;
+	//FIXME if (applytrackcut==1 &&!SingleTrkCuts(track_1,esdTrackCuts,primvtx,fBzkG)) continue;
         Int_t status_1=track_1->GetStatus();
         bool sel_track1 = status_1 & AliESDtrack::kITSrefit && (track_1->HasPointOnITSLayer(0) || track_1->HasPointOnITSLayer(1)) && track_1->GetNcls(1)>70;
-        if (!sel_track1) continue;
+        if (applytrackcut==1 &&!sel_track1) continue;
 
         TObjArray *twoTrackArray = new TObjArray(2);
         twoTrackArray->AddAt(track_0, 0);
         twoTrackArray->AddAt(track_1, 1);
-        printf("track_0 %f, track_1 %f \n", track_0->Pt(), track_1->Pt()); 
 	AliESDVertex* trkv=(AliESDVertex*)vt->VertexForSelectedESDTracks(twoTrackArray);
+	if(trkv->GetNContributors()!=twoTrackArray->GetEntriesFast()) continue;
+	Double_t vertRadius2=trkv->GetX()*trkv->GetX()+trkv->GetY()*trkv->GetY();
+	if (applysecvertexcut){
+	   if(vertRadius2>8.) continue; //FIXME
+        }
+	printf(" px track_0 %.4f, track_1 %.4f \n", TMath::Max(track_0->Px(),track_1->Px()),TMath::Min(track_0->Px(),track_1->Px())); 
 	hvx->Fill(trkv->GetX());
 	hvy->Fill(trkv->GetY());
 	hvz->Fill(trkv->GetZ());
@@ -137,7 +165,7 @@ Bool_t ComputeVerticesRun1(TString esdfile = "../inputESD/AliESDs_20200201_v0.ro
         trkv->GetCovMatrix(cov_); //covariance matrix
         chi2perNDF_ = trkv->GetChi2toNDF();
         double dispersion_ = trkv->GetDispersion();
-	printf("pos_ %f %f %f \n", pos_[0], pos_[1], pos_[2]);
+	printf(" pos_ %f %f %f \n", pos_[0], pos_[1], pos_[2]);
         AliAODVertex *vertexAOD = 0;
 	vertexAOD = new AliAODVertex(pos_,cov_,chi2perNDF_,0x0,-1,AliAODVertex::kUndef,2);	
         float dcap1n1 = track_0->GetDCA(track_1,fBzkG,xdummy,ydummy);
@@ -158,11 +186,15 @@ Bool_t ComputeVerticesRun1(TString esdfile = "../inputESD/AliESDs_20200201_v0.ro
         AliAODRecoDecayHF2Prong *the2Prong;
         the2Prong = new AliAODRecoDecayHF2Prong(vertexAOD,px,py,pz,d0,d0err,dcap1n1);
         the2Prong->SetOwnPrimaryVtx(vertexAODp);
-        hmass->Fill(the2Prong->InvMassD0());
-        hmass->Fill(the2Prong->InvMassD0bar());
+	Double_t m0=the2Prong->InvMassD0();
+	Double_t m0b=the2Prong->InvMassD0bar();
+        hmass->Fill(m0);
+        hmass->Fill(m0b);
+	printf(" masses = %f %f\n",TMath::Max(m0,m0b),TMath::Min(m0,m0b));
 	delete twoTrackArray;
       }
     }
+    delete vt;
   }
  
   TFile* fout=new TFile(output.Data(),"recreate");
@@ -185,6 +217,3 @@ Bool_t ComputeVerticesRun1(TString esdfile = "../inputESD/AliESDs_20200201_v0.ro
   fout->Close();
   return true; 
 }
-
-
-
