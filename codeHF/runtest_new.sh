@@ -1,8 +1,9 @@
 #!/bin/bash
 
-INPUTDIR="/data/Run3data/output"
+#INPUTDIR="/data/Run3data/output"
+INPUTDIR="/data/Run3data/alice_sim_2018_LHC18a4a2_cent/282099"
 LISTNAME="listprodhfrun3.txt"
-
+MASS=1.8
 DOCONVERT=1
 DORUN1=1
 DORUN3=1
@@ -14,10 +15,11 @@ APPLYPRIMVERTEXSELRUN1=1
 APPLYTRACKCUTRUN1=1
 APPLYSECVERTEXSELRUN1=0
 
+rm *.root
+rm *.txt
 if [ $DOCONVERT -eq 1 ]; then
   rm $LISTNAME
-  ls $INPUTDIR/*/AliESDs.root >> $LISTNAME
-  #ls /data/Run3data/output/001/AliESDs.root >> $LISTNAME
+  ls $INPUTDIR/00*/AliESDs.root >> $LISTNAME
   echo $LISTNAME
   root -q -l "convertAO2D.C(\"$LISTNAME\")"  
 fi
@@ -50,7 +52,7 @@ if [ $DORUN3 -eq 1 ]; then
 fi 
 
 if [ $DOCOMPARE -eq 1 ]; then
-  root -q -l "Compare.C(\"AnalysisResults.root\",\"Vertices2prong-ITS1.root\")"
+  root -q -l "Compare.C(\"AnalysisResults.root\",\"Vertices2prong-ITS1.root\", $MASS)"
 fi 
 
 if [ $DORUN3ONAOD -eq 1 ]; then
