@@ -11,31 +11,31 @@ Bool_t Compare(TString filerun3="AnalysisResults.root", TString filerun1="Vertic
   TFile *fRun3 = new TFile(filerun3.Data());
   TFile *fRun1 = new TFile(filerun1.Data());
 
-  TH1F* hpt_cuts_Run3 = (TH1F*)fRun3->Get("vertexerhf-task/hpt_cuts");
+  TH1F* hpt_cuts_Run3 = (TH1F*)fRun3->Get("vertexerhf-candidatebuilding2prong/hpt_cuts");
   TH1F* hpt_cuts_Run1 = (TH1F*)fRun1->Get("hpt_cuts");
 
-  TH1F* htgl_cuts_Run3 = (TH1F*)fRun3->Get("vertexerhf-task/htgl_cuts");
+  TH1F* htgl_cuts_Run3 = (TH1F*)fRun3->Get("vertexerhf-candidatebuilding2prong/htgl_cuts");
   TH1F* htgl_cuts_Run1 = (TH1F*)fRun1->Get("htgl_cuts");
  
-  TH1F* hvtx_Run3 = (TH1F*)fRun3->Get("vertexerhf-task/hvtx_x");
+  TH1F* hvtx_Run3 = (TH1F*)fRun3->Get("vertexerhf-candidatebuilding2prong/hvtx_x");
   TH1F* hvtx_Run1 = (TH1F*)fRun1->Get("hvx");
   
-  TH1F* hvty_Run3 = (TH1F*)fRun3->Get("vertexerhf-task/hvtx_y");
+  TH1F* hvty_Run3 = (TH1F*)fRun3->Get("vertexerhf-candidatebuilding2prong/hvtx_y");
   TH1F* hvty_Run1 = (TH1F*)fRun1->Get("hvy");
   
-  TH1F* hvtz_Run3 = (TH1F*)fRun3->Get("vertexerhf-task/hvtx_z");
+  TH1F* hvtz_Run3 = (TH1F*)fRun3->Get("vertexerhf-candidatebuilding2prong/hvtx_z");
   TH1F* hvtz_Run1 = (TH1F*)fRun1->Get("hvz");
   
-  TH1F* hitsmap_Run3 = (TH1F*)fRun3->Get("vertexerhf-task/hitsmap_cuts");
+  TH1F* hitsmap_Run3 = (TH1F*)fRun3->Get("vertexerhf-candidatebuilding2prong/hitsmap_cuts");
   TH1F* hitsmap_Run1 = (TH1F*)fRun1->Get("hitsmap");
   
-  TH1F* hdecayxyz_Run3 = (TH1F*)fRun3->Get("histo2prong-task/hdecayxyz");
+  TH1F* hdecayxyz_Run3 = (TH1F*)fRun3->Get("vertexerhf-Dzerotask/hdecayxyz");
   TH1F* hdecayxyz_Run1 = (TH1F*)fRun1->Get("hdecayxyz");
   
-  TH1F* hdecayxy_Run3 = (TH1F*)fRun3->Get("histo2prong-task/hdecayxy");
+  TH1F* hdecayxy_Run3 = (TH1F*)fRun3->Get("vertexerhf-Dzerotask/hdecayxy");
   TH1F* hdecayxy_Run1 = (TH1F*)fRun1->Get("hdecayxy");
   
-  TH1F* hmass_Run3 = (TH1F*)fRun3->Get("histo2prong-task/hmass");
+  TH1F* hmass_Run3 = (TH1F*)fRun3->Get("vertexerhf-Dzerotask/hmass");
   TH1F* hmass_Run1 = (TH1F*)fRun1->Get("hmass");
   
   TLegend * legend = new TLegend(0.5,0.7,0.8,0.9);
