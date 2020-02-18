@@ -19,7 +19,8 @@ rm *.root
 rm *.txt
 if [ $DOCONVERT -eq 1 ]; then
   rm $LISTNAME
-  ls $INPUTDIR/00*/AliESDs.root >> $LISTNAME
+  ls ../inputESD/AliESDs_20200201_v0.root >> $LISTNAME
+  #ls $INPUTDIR/00*/AliESDs.root >> $LISTNAME
   echo $LISTNAME
   root -q -l "convertAO2D.C(\"$LISTNAME\")"  
 fi
