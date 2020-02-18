@@ -4,7 +4,6 @@
 INPUTDIR="/data/Run3data/alice_sim_2018_LHC18a4a2_cent/282099"
 LISTNAME="listprodhfrun3.txt"
 MASS=1.8
-
 DOCONVERT=1
 DORUN1=1
 DORUN3=1
