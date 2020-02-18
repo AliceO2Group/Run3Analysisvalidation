@@ -4,6 +4,7 @@
 INPUTDIR="/data/Run3data/alice_sim_2018_LHC18a4a2_cent/282099"
 LISTNAME="listprodhfrun3.txt"
 MASS=1.8
+
 DOCONVERT=1
 DORUN1=1
 DORUN3=1
@@ -19,7 +20,8 @@ rm *.root
 rm *.txt
 if [ $DOCONVERT -eq 1 ]; then
   rm $LISTNAME
-  ls $INPUTDIR/00*/AliESDs.root >> $LISTNAME
+  ls ../inputESD/AliESDs_20200201_v0.root >> $LISTNAME
+  #ls $INPUTDIR/00*/AliESDs.root >> $LISTNAME
   echo $LISTNAME
   root -q -l "convertAO2D.C(\"$LISTNAME\")"  
 fi
