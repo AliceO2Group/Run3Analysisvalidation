@@ -1,0 +1,15 @@
+diff --git a/RUN3/AliAnalysisTaskAO2Dconverter.cxx b/RUN3/AliAnalysisTaskAO2Dconverter.cxx
+index 4a474a02f2..3a1b26ac0f 100644
+--- a/RUN3/AliAnalysisTaskAO2Dconverter.cxx
++++ b/RUN3/AliAnalysisTaskAO2Dconverter.cxx
+@@ -468,6 +468,10 @@ void AliAnalysisTaskAO2Dconverter::UserExec(Option_t *)
+     ::Fatal("AliAnalysisTaskAO2Dconverter::UserExec", "Vertex not defined");
+   }
+ 
++  TString title=pvtx->GetTitle();
++  if(pvtx->IsFromVertexer3D() || pvtx->IsFromVertexerZ()) return;
++  if(pvtx->GetNContributors()<2) return;
++  
+   //---------------------------------------------------------------------------
+   // Collision data
+ 
