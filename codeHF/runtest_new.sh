@@ -1,8 +1,9 @@
 #!/bin/bash
 
-#INPUTDIR="/data/Run3data/output" #K0* MC injected 
+INPUTDIR="/data/Run3data/output" #K0* MC injected 
+ISMC=0
 #INPUTDIR="/data/Run3data/alice_sim_2018_LHC18a4a2_cent/282099" #D2H MC sample
-INPUTDIR="/data/Run3data/alice_sim_2015_LHC15k1a3_246391/246391" #HIJING MC PbPb
+#INPUTDIR="/data/Run3data/alice_sim_2015_LHC15k1a3_246391/246391" #HIJING MC PbPb
 LISTNAME="listprodhfrun3.txt"
 MASS=1.8
 DOCONVERT=1
@@ -23,7 +24,7 @@ if [ $DOCONVERT -eq 1 ]; then
   #ls ../inputESD/AliESDs_20200201_v0.root >> $LISTNAME
   ls $INPUTDIR/00*/AliESDs.root >> $LISTNAME
   echo $LISTNAME
-  root -q -l "convertAO2D.C(\"$LISTNAME\")"  
+  root -q -l "convertAO2D.C(\"$LISTNAME\", $ISMC)"  
 fi
 
 if [ $DORUN1 -eq 1 ]; then
