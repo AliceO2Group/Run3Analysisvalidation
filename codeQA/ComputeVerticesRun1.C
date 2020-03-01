@@ -28,7 +28,7 @@ Bool_t ComputeVerticesRun1(){
   }
 
   esd->ReadFromTree(tree);
-  
+
   TH1F* hpt_nocuts =new TH1F("hpt_nocuts"," ; pt tracks (#GeV) ; Entries",100, 0, 10.);
   TH1F* hrun_number = new TH1F("hrun_number", "run number", 1000, 0., 1000000.);
   TH1F* hfCYY = new TH1F("hfCYY", "cYY", 1000, 0., 150.);
@@ -68,15 +68,10 @@ Bool_t ComputeVerticesRun1(){
     for (Int_t iTrack = 0; iTrack < esd->GetNumberOfTracks(); iTrack++) {
       AliESDtrack* track = esd->GetTrack(iTrack);
       Int_t status=track->GetStatus();
-
-      float_t p[2];
-      float_t cov[3];
-      track->GetImpactParameters(p, cov);
-
       hpt_nocuts->Fill(track->Pt());
-      hfCYY->Fill(cov[0]);
-      hfCZY->Fill(cov[1]);
-      hfCZZ->Fill(cov[2]);
+      hfCYY->Fill(track->GetSigmaY2());
+      hfCZY->Fill(track->GetSigmaZY());
+      hfCZZ->Fill(track->GetSigmaZ2());
       hfCSnpY->Fill(track->GetSigmaSnpY());
       hfCSnpZ->Fill(track->GetSigmaSnpZ());
       hfCSnpSnp->Fill(track->GetSigmaSnp2());
@@ -89,7 +84,6 @@ Bool_t ComputeVerticesRun1(){
       hfC1PtSnp->Fill(track->GetSigma1PtSnp());
       hfC1PtTgl->Fill(track->GetSigma1PtTgl());
       hfC1Pt21Pt2->Fill(track->GetSigma1Pt2());
-      
 
       if (status & AliESDtrack::kITSrefit && (track->HasPointOnITSLayer(0) || track->HasPointOnITSLayer(1)) && track->GetNcls(1)>70) {
         trkArray->AddAt(track,it++);
@@ -106,7 +100,6 @@ Bool_t ComputeVerticesRun1(){
   delete trkArray;
  
   TFile* fout=new TFile("QA-ITS1.root","recreate");
-
   hpt_nocuts->Write();
   hrun_number->Write();
   hfCYY->Write();
@@ -124,10 +117,6 @@ Bool_t ComputeVerticesRun1(){
   hfC1PtSnp->Write();
   hfC1PtTgl->Write();
   hfC1Pt21Pt2->Write();
-
   fout->Close();
   return true; 
 }
-
-
-
