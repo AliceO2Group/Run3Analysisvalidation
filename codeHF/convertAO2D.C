@@ -1,6 +1,7 @@
 R__ADD_INCLUDE_PATH($ALICE_ROOT)
 R__ADD_INCLUDE_PATH($ALICE_PHYSICS)
 #include <ANALYSIS/macros/train/AddESDHandler.C>
+#include <ANALYSIS/macros/train/AddMCHandler.C>
 #include <OADB/COMMON/MULTIPLICITY/macros/AddTaskMultSelection.C>
 #include <OADB/macros/AddTaskPhysicsSelection.C>
 #include <ANALYSIS/macros/AddTaskPIDResponse.C>
@@ -9,9 +10,10 @@ R__ADD_INCLUDE_PATH($ALICE_PHYSICS)
 TChain* CreateChain(const char *xmlfile, const char *type="ESD");
 TChain *CreateLocalChain(const char *txtfile, const char *type, int nfiles);
 
-void convertAO2D(TString listoffiles)
+void convertAO2D(TString listoffiles, int ismc=1)
 {
    const char *anatype = "ESD";
+   if (ismc==1){std::cout<<"I AM DOING MC"<<std::endl;}
 
  //  TGrid::Connect("alien:");
 
@@ -25,17 +27,17 @@ void convertAO2D(TString listoffiles)
 
    AliAnalysisManager *mgr = new AliAnalysisManager("AOD converter");
    AliESDInputHandler *handler = AddESDHandler();
-      
+   
    //AddTaskMultSelection();
    AddTaskPhysicsSelection();
    AddTaskPIDResponse();
-
+   if (ismc) AliMCEventHandler *handlerMC  = AddMCHandler();
    AliAnalysisTaskAO2Dconverter* converter = AddTaskAO2Dconverter("");
    //converter->SelectCollisionCandidates(AliVEvent::kAny);
-   
+   if (ismc) converter->SetMCMode();
    if (!mgr->InitAnalysis()) return;
    //PH   mgr->SetBit(AliAnalysisManager::kTrueNotify);
-   mgr->SetRunFromPath(244918);
+   //mgr->SetRunFromPath(244918);
    mgr->PrintStatus();
 
    mgr->SetDebugLevel(1);
