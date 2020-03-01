@@ -11,31 +11,31 @@ Bool_t Compare(TString filerun3="AnalysisResults.root", TString filerun1="Vertic
   TFile *fRun3 = new TFile(filerun3.Data());
   TFile *fRun1 = new TFile(filerun1.Data());
   
-  TH1F* hvtxprim_Run3 = (TH1F*)fRun3->Get("vertexerhf-candidatebuilding2prong/hvertexx");
+  TH1F* hvtxprim_Run3 = (TH1F*)fRun3->Get("vertexerhf-decayvertexbuilder2prong/hvertexx");
   TH1F* hvtxprim_Run1 = (TH1F*)fRun1->Get("hvertexx");
   
-  TH1F* hvtyprim_Run3 = (TH1F*)fRun3->Get("vertexerhf-candidatebuilding2prong/hvertexy");
+  TH1F* hvtyprim_Run3 = (TH1F*)fRun3->Get("vertexerhf-decayvertexbuilder2prong/hvertexy");
   TH1F* hvtyprim_Run1 = (TH1F*)fRun1->Get("hvertexy");
   
-  TH1F* hvtzprim_Run3 = (TH1F*)fRun3->Get("vertexerhf-candidatebuilding2prong/hvertexz");
+  TH1F* hvtzprim_Run3 = (TH1F*)fRun3->Get("vertexerhf-decayvertexbuilder2prong/hvertexz");
   TH1F* hvtzprim_Run1 = (TH1F*)fRun1->Get("hvertexz");
 
-  TH1F* hpt_cuts_Run3 = (TH1F*)fRun3->Get("vertexerhf-candidatebuilding2prong/hpt_cuts");
+  TH1F* hpt_cuts_Run3 = (TH1F*)fRun3->Get("vertexerhf-decayvertexbuilder2prong/hpt_cuts");
   TH1F* hpt_cuts_Run1 = (TH1F*)fRun1->Get("hpt_cuts");
 
-  TH1F* htgl_cuts_Run3 = (TH1F*)fRun3->Get("vertexerhf-candidatebuilding2prong/htgl_cuts");
+  TH1F* htgl_cuts_Run3 = (TH1F*)fRun3->Get("vertexerhf-decayvertexbuilder2prong/htgl_cuts");
   TH1F* htgl_cuts_Run1 = (TH1F*)fRun1->Get("htgl_cuts");
  
-  TH1F* hvtx_Run3 = (TH1F*)fRun3->Get("vertexerhf-candidatebuilding2prong/hvtx_x");
+  TH1F* hvtx_Run3 = (TH1F*)fRun3->Get("vertexerhf-decayvertexbuilder2prong/hvtx_x");
   TH1F* hvtx_Run1 = (TH1F*)fRun1->Get("hvx");
   
-  TH1F* hvty_Run3 = (TH1F*)fRun3->Get("vertexerhf-candidatebuilding2prong/hvtx_y");
+  TH1F* hvty_Run3 = (TH1F*)fRun3->Get("vertexerhf-decayvertexbuilder2prong/hvtx_y");
   TH1F* hvty_Run1 = (TH1F*)fRun1->Get("hvy");
   
-  TH1F* hvtz_Run3 = (TH1F*)fRun3->Get("vertexerhf-candidatebuilding2prong/hvtx_z");
+  TH1F* hvtz_Run3 = (TH1F*)fRun3->Get("vertexerhf-decayvertexbuilder2prong/hvtx_z");
   TH1F* hvtz_Run1 = (TH1F*)fRun1->Get("hvz");
   
-  TH1F* hitsmap_Run3 = (TH1F*)fRun3->Get("vertexerhf-candidatebuilding2prong/hitsmap_cuts");
+  TH1F* hitsmap_Run3 = (TH1F*)fRun3->Get("vertexerhf-decayvertexbuilder2prong/hitsmap_cuts");
   TH1F* hitsmap_Run1 = (TH1F*)fRun1->Get("hitsmap_cuts");
   
   TH1F* hdecayxyz_Run3 = (TH1F*)fRun3->Get("vertexerhf-Dzerotask/hdecayxyz");
