@@ -46,13 +46,14 @@ ComputePidSpectra(TString esdfile = "../inputESD/AliESDs_20200201_v0.root",
     printf("Error in opening ESD file");
     return kFALSE;
   }
-
+  Printf("Computing Pid Spectra");
   AliESDEvent *esd = new AliESDEvent;
   TTree *tree = (TTree *)esdFile->Get("esdTree");
   if (!tree) {
     printf("Error: no ESD tree found");
     return kFALSE;
   }
+  Printf("Reading TTree with %lli events", tree->GetEntries());
   esd->ReadFromTree(tree);
 
   TList *lh = new TList();
@@ -106,7 +107,7 @@ ComputePidSpectra(TString esdfile = "../inputESD/AliESDs_20200201_v0.root",
     if (applyeventcut == 1) {
       Printf("Applying event selection");
       // if (!primvtx)
-        // return kFALSE;
+      // return kFALSE;
       // TString title = primvtx->GetTitle();
       if (primvtx->IsFromVertexer3D() || primvtx->IsFromVertexerZ())
         continue;

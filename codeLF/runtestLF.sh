@@ -29,11 +29,16 @@ if [ $DORUN1 -eq 1 ]; then
     fileouttxt="outputlist.txt"
     rm $fileouttxt
     index=0
+    echo "Reading file list from $LISTNAME"
+    cat $LISTNAME
     while read F ; do
+        if [[ $F != *".root" ]]; then
+            continue
+        fi
         fileout="PidSpectra_$index.root"
         rm "$fileout"
         echo $fileout >> "$fileouttxt"
-        echo "$F"
+        echo "Reading input file: $F"
         echo "$fileout"
         root -q -l "ComputePidSpectra.C(\"$F\",\"$fileout\", $APPLYEVTSELRUN1)"
         index=$((index+1))
