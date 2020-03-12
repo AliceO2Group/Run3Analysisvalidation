@@ -8,24 +8,28 @@ LISTNAME="listprodhfrun3.txt"
 
 DOCONVERT=0
 DORUN1=1
-DORUN3=0
+DORUN3=1
 DOCOMPARE=1
 
 DORUN3ONAOD=0
 
 APPLYEVTSELRUN1=1
 
-if [ $DOCONVERT -eq 1 ]; then
-    # rm $LISTNAME
-    # ls $INPUTDIR/*/AliESDs.root >> $LISTNAME
-    #ls /data/Run3data/output/001/AliESDs.root >> $LISTNAME
-    echo $LISTNAME
-    root -q -l "convertAO2D.C(\"$LISTNAME\")"
-    echo "Enter to continue"
-    read INP
+if [[ $DOCONVERT -eq 1 ]]; then
+    if [[ ! -f $LISTNAME ]]; then
+        echo "Preparing list of input files in $LISTNAME"
+        ls $INPUTDIR/*/AliESDs.root >> $LISTNAME
+    else
+        echo "$LISTNAME is already available"
+    fi
+    root -q -l "convertAO2D.C(\"$LISTNAME\", 0)"
+    if [[ -z $1 ]]; then
+        echo "Enter to continue"
+        read INP
+    fi
 fi
 
-if [ $DORUN1 -eq 1 ]; then
+if [[ $DORUN1 -eq 1 ]]; then
     fileouttxt="outputlist.txt"
     rm $fileouttxt
     index=0
@@ -36,11 +40,13 @@ if [ $DORUN1 -eq 1 ]; then
             continue
         fi
         fileout="PidSpectra_$index.root"
-        rm "$fileout"
+        if [[ -f $fileout ]]; then
+            rm "$fileout"
+        fi
         echo $fileout >> "$fileouttxt"
         echo "Reading input file: $F"
         echo "$fileout"
-        root -q -l "ComputePidSpectra.C(\"$F\",\"$fileout\", $APPLYEVTSELRUN1)"
+        root -q -l "ComputePidSpectra.C(\"$F\",\"$fileout\", $APPLYEVTSELRUN1)" &
         index=$((index+1))
         echo $index
         # break
@@ -52,24 +58,27 @@ if [ $DORUN1 -eq 1 ]; then
     
     # root -l PidSpectra.root open.C
     # ./plot.py PidSpectra.root filterEl-task
-    
-    # echo "Enter to continue"
-    # read INP
+    if [[ -z $1 ]]; then
+        echo "Enter to continue"
+        read INP
+    fi
 fi
 
-if [ $DORUN3 -eq 1 ]; then
+if [[ $DORUN3 -eq 1 ]]; then
     rm AnalysisResults*.root
     o2-analysis-spectraTOF --aod-file AO2D.root -b
     # ./plot.py AnalysisResults.root filterEl-task
-    # echo "Enter to continue"
-    # read INP
+    if [[ -z $1 ]]; then
+        echo "Enter to continue"
+        read INP
+    fi
 fi
 
-if [ $DOCOMPARE -eq 1 ]; then
+if [[ $DOCOMPARE -eq 1 ]]; then
     ./compare.py AnalysisResults.root PidSpectra.root
 fi
 
-if [ $DORUN3ONAOD -eq 1 ]; then
+if [[ $DORUN3ONAOD -eq 1 ]]; then
     o2-analysis-spectra --aod-file /data/Run3data/5_20200131-0902/0001/AO2D.root --readers 80 -b
     echo "Enter to continue"
     read INP
