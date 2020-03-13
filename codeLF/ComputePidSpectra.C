@@ -19,36 +19,20 @@
 #include "TRandom.h"
 #include "TTree.h"
 
-float beta(float l, float t, float t0) { return l / (t - t0) / 0.029979246; }
+#include "tofhelper.h"
 
-float betaerror(float l, float t, float t0, float sigmat = 80) {
-  return beta(l, t, t0) / (t - t0) * sigmat;
-}
-
-float expbeta(float p, float m) {
-  if (p > 0)
-    return p / TMath::Sqrt(p * p + m * m);
-  return 0;
-}
-
-float p(float eta, float signed1Pt) { return cosh(eta) / fabs(signed1Pt); }
-
-const float kElectronMass = 5.10998909999999971e-04;
-const float kPionMass = 1.39569997787475586e-01f;
-const float kKaonMass = 4.93676990270614624e-01;
-const float kProtonMass = 9.38271999359130859e-01f;
-
-Bool_t
-ComputePidSpectra(TString esdfile = "../inputESD/AliESDs_20200201_v0.root",
-                  TString output = "PidSpectra.root", bool applyeventcut = 0) {
-  TFile *esdFile = TFile::Open(esdfile.Data());
+Bool_t ComputePidSpectra(TString esdfile = "../inputESD/AliESDs_20200201_v0.root",
+                         TString output = "PidSpectra.root",
+                         bool applyeventcut = 0)
+{
+  TFile* esdFile = TFile::Open(esdfile.Data());
   if (!esdFile || !esdFile->IsOpen()) {
     printf("Error in opening ESD file");
     return kFALSE;
   }
   Printf("Computing Pid Spectra");
-  AliESDEvent *esd = new AliESDEvent;
-  TTree *tree = (TTree *)esdFile->Get("esdTree");
+  AliESDEvent* esd = new AliESDEvent;
+  TTree* tree = (TTree*)esdFile->Get("esdTree");
   if (!tree) {
     printf("Error: no ESD tree found");
     return kFALSE;
@@ -56,35 +40,28 @@ ComputePidSpectra(TString esdfile = "../inputESD/AliESDs_20200201_v0.root",
   Printf("Reading TTree with %lli events", tree->GetEntries());
   esd->ReadFromTree(tree);
 
-  TList *lh = new TList();
+  TList* lh = new TList();
   lh->SetOwner();
 
-  const TString pt = "#it{p}_{T} (GeV/#it{c})";
-  const TString mom = "#it{p} (GeV/#it{c})";
-  TH1F *hp = new TH1F("hp", "pt;" + mom + ";Tracks", 100, 0, 20);
-  lh->Add(hp);
-  TH1F *hptel = new TH1F("hptel", "pt;" + pt + ";Tracks", 100, 0, 20);
-  lh->Add(hptel);
-  TH2F *hbeta = new TH2F("hbeta", "beta;" + pt + ";TOF #beta;Tracks", 100, 0,
-                         20, 100, 0, 2);
-  lh->Add(hbeta);
-  TH2F *hbetael =
-      new TH2F("hbetael", "beta diff;" + pt + ";#beta - #beta_{el};Tracks", 100,
-               0, 20, 100, -0.01, 0.01);
-  lh->Add(hbetael);
-  TH2F *hbetaelsigma =
-      new TH2F("hbetaelsigma",
-               "beta N#sigma;" + pt + ";(#beta - #beta_{el})/#sigma;Tracks",
-               100, 0, 20, 100, -5, 5);
-  lh->Add(hbetaelsigma);
+#define DOTH1F(OBJ, ...)                   \
+  TH1F* OBJ = new TH1F(#OBJ, __VA_ARGS__); \
+  lh->Add(OBJ);
+#define DOTH2F(OBJ, ...)                   \
+  TH2F* OBJ = new TH2F(#OBJ, __VA_ARGS__); \
+  lh->Add(OBJ);
 
-  // AliAnalysisManager::GetAnalysisManager()->Print();
-  // (AliPIDResponse
-  //      *)((AliInputEventHandler *)(AliAnalysisManager::GetAnalysisManager()
-  //                                      ->GetInputEventHandler()))
-  //     ->GetPIDResponse();
-
-  AliPIDResponse *pidr = new AliPIDResponse(kFALSE);
+  // Standard pT distributions
+  DOTH1F(hp_NoCut, ";#it{p} (GeV/#it{c});Tracks", 100, 0, 20);
+  DOTH1F(hp_TrkCut, ";#it{p} (GeV/#it{c});Tracks", 100, 0, 20);
+  DOTH1F(hp_TOFCut, ";#it{p} (GeV/#it{c});Tracks", 100, 0, 20);
+  // Distributions with PID
+  DOTH1F(hp_El, ";#it{p} (GeV/#it{c});Tracks", 100, 0, 20);
+  DOTH1F(hpt_El, ";#it{p}_{T} (GeV/#it{c});Tracks", 100, 0, 20);
+  DOTH2F(hp_beta, ";#it{p} (GeV/#it{c});TOF #beta;Tracks", 100, 0, 20, 100, 0, 2);
+  DOTH2F(hp_beta_El, ";#it{p} (GeV/#it{c});#beta - #beta_{el};Tracks", 100, 0, 20, 100, -0.01, 0.01);
+  DOTH2F(hp_betasigma_El, ";#it{p} (GeV/#it{c});(#beta - #beta_{el})/#sigma;Tracks", 100, 0, 20, 100, -5, 5);
+  //
+  AliPIDResponse* pidr = new AliPIDResponse(kTRUE);
   for (Int_t iEvent = 0; iEvent < tree->GetEntries(); iEvent++) {
     tree->GetEvent(iEvent);
     if (!esd) {
@@ -98,12 +75,10 @@ ComputePidSpectra(TString esdfile = "../inputESD/AliESDs_20200201_v0.root",
                           // quindi).
     Printf("Event %i has %i tracks", iEvent, esd->GetNumberOfTracks());
     if (!esd->AreTracksConnected() && esd->GetNumberOfTracks() > 0)
-      Printf("!!!Tracks are not connected, %i tracks are affected !!!!",
-             esd->GetNumberOfTracks());
-    // pidr->SetTOFResponse(esd, AliPIDResponse::kBest_T0);
-    // AliTOFPIDResponse &TOFResponse = pidr->GetTOFResponse();
+      Printf("!!!Tracks are not connected, %i tracks are affected !!!!", esd->GetNumberOfTracks());
+    pidr->SetTOFResponse(esd, AliPIDResponse::kBest_T0);
 
-    AliESDVertex *primvtx = (AliESDVertex *)esd->GetPrimaryVertex();
+    AliESDVertex* primvtx = (AliESDVertex*)esd->GetPrimaryVertex();
     if (applyeventcut == 1) {
       Printf("Applying event selection");
       // if (!primvtx)
@@ -120,60 +95,55 @@ ComputePidSpectra(TString esdfile = "../inputESD/AliESDs_20200201_v0.root",
     Double_t eventTimeWeight[10];
 
     for (Int_t i = 0; i < pidr->GetTOFResponse().GetNmomBins(); i++) {
-      Float_t mom = (pidr->GetTOFResponse().GetMinMom(i) +
-                     pidr->GetTOFResponse().GetMaxMom(i)) /
-                    2.f;
+      Float_t mom = (pidr->GetTOFResponse().GetMinMom(i) + pidr->GetTOFResponse().GetMaxMom(i)) / 2.f;
+      Printf("Mom [%.2f, %.2f] = %.2f", pidr->GetTOFResponse().GetMinMom(i), pidr->GetTOFResponse().GetMaxMom(i), mom);
       eventTime[i] = pidr->GetTOFResponse().GetStartTime(mom);
+      Printf("T0=%f", eventTime[i]);
       eventTimeRes[i] = pidr->GetTOFResponse().GetStartTimeRes(mom);
       eventTimeWeight[i] = 1. / (eventTimeRes[i] * eventTimeRes[i]);
     }
 
     // Recalculate unique event time and its resolution
-    float fEventTime = TMath::Mean(
-        10, eventTime,
-        eventTimeWeight); // Weighted mean of times per momentum interval
-    float fEventTimeRes = TMath::Sqrt(9. / 10.) *
-                          TMath::Mean(10, eventTimeRes); // PH bad approximation
+    float fEventTime = TMath::Mean(10, eventTime, eventTimeWeight); // Weighted mean of times per momentum interval
+
+    float fEventTimeRes = TMath::Sqrt(9. / 10.) * TMath::Mean(10, eventTimeRes); // PH bad approximation
 
     for (Int_t itrk = 0; itrk < esd->GetNumberOfTracks(); itrk++) {
-      AliESDtrack *trk = esd->GetTrack(itrk);
+      AliESDtrack* trk = esd->GetTrack(itrk);
       // trk->SetESDEvent(esd);
       Int_t status = trk->GetStatus();
       float Mom = p(trk->Eta(), trk->GetSigned1Pt());
-      hp->Fill(Mom);
+      hp_NoCut->Fill(Mom);
       bool sel = status & AliESDtrack::kITSrefit &&
                  (trk->HasPointOnITSLayer(0) || trk->HasPointOnITSLayer(1)) &&
                  trk->GetNcls(1) > 70;
       if (!sel)
         continue;
-      sel = sel && (status & AliESDtrack::kTOFout) &&
-            (status & AliESDtrack::kTIME);
+      hp_TrkCut->Fill(Mom);
+      sel = sel && (status & AliESDtrack::kTOFout) && (status & AliESDtrack::kTIME);
       if (!sel)
         continue;
+      hp_TOFCut->Fill(Mom);
       if (!trk->GetESDEvent())
         Printf("For track %i I cannot get ESD event from track!!!", itrk);
       // float StartTime = pidr->GetTOFResponse().GetStartTime(Mom);
-      float StartTime = fEventTimeRes;
-      if (trk->GetTOFsignal() <= 0)
-        continue;
+      float StartTime = fEventTime;
 
-      float Beta =
-          beta(trk->GetIntegratedLength(), trk->GetTOFsignal(), StartTime);
+      float Beta = beta(trk->GetIntegratedLength(), trk->GetTOFsignal(), StartTime);
       float betadiff = Beta - expbeta(Mom, kElectronMass);
-      float betasigma =
-          betaerror(trk->GetIntegratedLength(), trk->GetTOFsignal(), StartTime);
-      if (abs(betadiff / betasigma) > 1)
-        continue;
+      float betasigma = betaerror(trk->GetIntegratedLength(), trk->GetTOFsignal(), StartTime);
+      // if (abs(betadiff / betasigma) > 1)
+      //   continue;
 
-      hptel->Fill(trk->Pt());
-      hbeta->Fill(trk->Pt(), Beta);
-      hbetael->Fill(trk->Pt(), betadiff);
-      hbetaelsigma->Fill(trk->Pt(), betadiff / betasigma);
+      hp_El->Fill(trk->P());
+      hp_beta->Fill(trk->Pt(), Beta);
+      hp_beta_El->Fill(trk->Pt(), betadiff);
+      hp_betasigma_El->Fill(trk->Pt(), betadiff / betasigma);
     }
     esd->ResetStdContent();
   }
 
-  TFile *fout = new TFile(output.Data(), "recreate");
+  TFile* fout = new TFile(output.Data(), "recreate");
   fout->mkdir("filterEl-task");
   fout->cd("filterEl-task");
   lh->Write();
