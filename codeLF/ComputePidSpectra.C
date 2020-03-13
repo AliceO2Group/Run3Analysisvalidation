@@ -54,9 +54,18 @@ Bool_t ComputePidSpectra(TString esdfile = "../inputESD/AliESDs_20200201_v0.root
   DOTH1F(hp_NoCut, ";#it{p} (GeV/#it{c});Tracks", 100, 0, 20);
   DOTH1F(hp_TrkCut, ";#it{p} (GeV/#it{c});Tracks", 100, 0, 20);
   DOTH1F(hp_TOFCut, ";#it{p} (GeV/#it{c});Tracks", 100, 0, 20);
+  // Standard TOF distributions
+  DOTH1F(hlength_NoCut, ";Track Length (cm);Tracks", 100, 0, 1000);
+  DOTH1F(htime_NoCut, ";TOF Time (ns);Tracks", 1000, 0, 600);
+  DOTH1F(hevtime_NoCut, ";Event time (ns);Tracks", 100, -2, 2);
   // Distributions with PID
   DOTH1F(hp_El, ";#it{p} (GeV/#it{c});Tracks", 100, 0, 20);
   DOTH1F(hpt_El, ";#it{p}_{T} (GeV/#it{c});Tracks", 100, 0, 20);
+  //
+  DOTH1F(hlength_El, ";Track Length (cm);Tracks", 100, 0, 1000);
+  DOTH1F(htime_El, ";TOF Time (ns);Tracks", 1000, 0, 600);
+  DOTH1F(hevtime_El, ";Event time (ns);Tracks", 100, -2, 2);
+  //
   DOTH2F(hp_beta, ";#it{p} (GeV/#it{c});TOF #beta;Tracks", 100, 0, 20, 100, 0, 2);
   DOTH2F(hp_beta_El, ";#it{p} (GeV/#it{c});#beta - #beta_{el};Tracks", 100, 0, 20, 100, -0.01, 0.01);
   DOTH2F(hp_betasigma_El, ";#it{p} (GeV/#it{c});(#beta - #beta_{el})/#sigma;Tracks", 100, 0, 20, 100, -5, 5);
@@ -108,12 +117,19 @@ Bool_t ComputePidSpectra(TString esdfile = "../inputESD/AliESDs_20200201_v0.root
 
     float fEventTimeRes = TMath::Sqrt(9. / 10.) * TMath::Mean(10, eventTimeRes); // PH bad approximation
 
+    // float StartTime = pidr->GetTOFResponse().GetStartTime(Mom);
+    const float StartTime = fEventTime;
+
     for (Int_t itrk = 0; itrk < esd->GetNumberOfTracks(); itrk++) {
       AliESDtrack* trk = esd->GetTrack(itrk);
       // trk->SetESDEvent(esd);
       Int_t status = trk->GetStatus();
       float Mom = p(trk->Eta(), trk->GetSigned1Pt());
       hp_NoCut->Fill(Mom);
+      hlength_NoCut->Fill(trk->GetIntegratedLength());
+      htime_NoCut->Fill(trk->GetTOFsignal() / 1000);
+      hevtime_NoCut->Fill(StartTime / 1000);
+
       bool sel = status & AliESDtrack::kITSrefit &&
                  (trk->HasPointOnITSLayer(0) || trk->HasPointOnITSLayer(1)) &&
                  trk->GetNcls(1) > 70;
@@ -126,9 +142,6 @@ Bool_t ComputePidSpectra(TString esdfile = "../inputESD/AliESDs_20200201_v0.root
       hp_TOFCut->Fill(Mom);
       if (!trk->GetESDEvent())
         Printf("For track %i I cannot get ESD event from track!!!", itrk);
-      // float StartTime = pidr->GetTOFResponse().GetStartTime(Mom);
-      float StartTime = fEventTime;
-
       float Beta = beta(trk->GetIntegratedLength(), trk->GetTOFsignal(), StartTime);
       float betadiff = Beta - expbeta(Mom, kElectronMass);
       float betasigma = betaerror(trk->GetIntegratedLength(), trk->GetTOFsignal(), StartTime);
@@ -137,6 +150,11 @@ Bool_t ComputePidSpectra(TString esdfile = "../inputESD/AliESDs_20200201_v0.root
 
       hp_El->Fill(trk->P());
       hpt_El->Fill(trk->Pt());
+      //
+      hlength_El->Fill(trk->GetIntegratedLength());
+      htime_El->Fill(trk->GetTOFsignal() / 1000);
+      hevtime_El->Fill(StartTime / 1000);
+      //
       hp_beta->Fill(trk->Pt(), Beta);
       hp_beta_El->Fill(trk->Pt(), betadiff);
       hp_betasigma_El->Fill(trk->Pt(), betadiff / betasigma);
