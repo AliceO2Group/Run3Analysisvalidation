@@ -75,7 +75,9 @@ if [[ $DORUN3 -eq 1 ]]; then
 fi
 
 if [[ $DOCOMPARE -eq 1 ]]; then
-    ./compare.py AnalysisResults.root PidSpectra.root
+    set -x
+    ./compare.py AnalysisResults.root PidSpectra.root -b
+    set +x
 fi
 
 if [[ $DORUN3ONAOD -eq 1 ]]; then
