@@ -132,10 +132,11 @@ Bool_t ComputePidSpectra(TString esdfile = "../inputESD/AliESDs_20200201_v0.root
       float Beta = beta(trk->GetIntegratedLength(), trk->GetTOFsignal(), StartTime);
       float betadiff = Beta - expbeta(Mom, kElectronMass);
       float betasigma = betaerror(trk->GetIntegratedLength(), trk->GetTOFsignal(), StartTime);
-      // if (abs(betadiff / betasigma) > 1)
-      //   continue;
+      if (abs(betadiff / betasigma) > 1)
+        continue;
 
       hp_El->Fill(trk->P());
+      hpt_El->Fill(trk->Pt());
       hp_beta->Fill(trk->Pt(), Beta);
       hp_beta_El->Fill(trk->Pt(), betadiff);
       hp_betasigma_El->Fill(trk->Pt(), betadiff / betasigma);
