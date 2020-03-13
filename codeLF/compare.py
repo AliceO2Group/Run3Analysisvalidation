@@ -161,7 +161,8 @@ def drawtwo(h, logx=False, logy=False, project=True, ratio=True, V=True):
     print(
         "Entries of", hrun2.GetName(), hrun2.GetEntries(), "vs", hrun3.GetEntries(),
     )
-    legends[-1].Draw()
+    if "TH1" in h[0].ClassName():
+        legends[-1].Draw()
     if ratio:
         nextpad()
         drawrange(hrun2, [0.5, 1.5], ytit="Run2/Run3")
@@ -189,12 +190,18 @@ def compare(filerun3, filerun1):
     # gStyle.SetCanvasColor(0)
     # gStyle.SetFrameFillColor(0)
 
-    hp_El = get(f, "hp_El", "filterEl-task/")
-    hpt_El = get(f, "hpt_El", "filterEl-task/")
     hp_NoCut = get(f, "hp_NoCut", "filterEl-task/", "p-task/")
     hp_TrkCut = get(f, "hp_TrkCut", "filterEl-task/", "p-task/")
     hp_TOFCut = get(f, "hp_TOFCut", "filterEl-task/", "p-task/")
-
+    #
+    hlength_NoCut = get(f, "hlength_NoCut", "filterEl-task/", "tofpidqa-task/")
+    htime_NoCut = get(f, "htime_NoCut", "filterEl-task/", "tofpidqa-task/")
+    hevtime_NoCut = get(f, "hevtime_NoCut", "filterEl-task/", "tofpidqa-task/")
+    #
+    hp_El = get(f, "hp_El", "filterEl-task/")
+    hpt_El = get(f, "hpt_El", "filterEl-task/")
+    hlength_El = get(f, "hlength_El", "filterEl-task/")
+    htime_El = get(f, "htime_El", "filterEl-task/")
     hp_beta = get(f, "hp_beta", "filterEl-task/")
     hp_beta_El = get(f, "hp_beta_El", "filterEl-task/")
     hp_betasigma_El = get(f, "hp_betasigma_El", "filterEl-task/")
@@ -206,6 +213,17 @@ def compare(filerun3, filerun1):
         drawtwo(hp_NoCut)
         drawtwo(hp_TrkCut)
         drawtwo(hp_TOFCut)
+    #
+    if True:
+        makecanvas("ctof", "TOFInfo").Divide(2, 3)
+        drawtwo(hlength_NoCut, logy=True)
+        drawtwo(htime_NoCut, logy=True)
+        drawtwo(hevtime_NoCut)
+    if True:
+        makecanvas("ctofEl", "TOFInfoEl").Divide(2, 3)
+        drawtwo(hlength_El)
+        drawtwo(htime_El)
+        # drawtwo(hevtime_El)
     #
     if True:
         makecanvas("cbetaslice", "BetaSlice").Divide(2, 3)
@@ -220,11 +238,11 @@ def compare(filerun3, filerun1):
 
     #
     if True:
-        makecanvas("hp_beta", "Beta").Divide(2, 3)
+        makecanvas("hp_beta", "Beta").Divide(3, 2)
         drawtwo(hp_beta, project=False, ratio=False)
-        drawtwo(hp_beta_El, project=False, ratio=False)
         nextpad()
         drawdiff(hp_beta, "COLZ")
+        drawtwo(hp_beta_El, project=False, ratio=False)
         nextpad()
         drawdiff(hp_beta_El, "COLZ")
     #
