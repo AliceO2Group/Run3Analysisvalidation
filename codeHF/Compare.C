@@ -159,6 +159,38 @@ Bool_t Compare(TString filerun3="AnalysisResults.root", TString filerun1="Vertic
   legend->Draw();
   
   cv->SaveAs("cv.pdf");
+
+  TCanvas* cmass=new TCanvas("cmass","Vertex",1000,800);
+  cmass->Divide(1,1);
+  cmass -> cd(1);
+  hmass_nocuts_Run1->GetXaxis()->SetRangeUser(mass-0.2, mass+0.2);
+  hmass_nocuts_Run1->GetXaxis()->SetTitle("Invariant mass K#pi (GeV)");
+  hmass_nocuts_Run1->GetYaxis()->SetTitle("Entries/GeV");
+  hmass_nocuts_Run1->GetYaxis()->SetTitleOffset(1.4);
+  hmass_nocuts_Run1->SetLineColor(2);
+  hmass_nocuts_Run1->SetLineWidth(2);
+  hmass_nocuts_Run1->Draw("PE");
+  hmass_nocuts_Run3->Draw("PEsame");
+  
+  TLegend *leg = new TLegend(0.5756615,0.7495063,0.8425218,0.8680053,NULL,"brNDC");
+  leg->SetBorderSize(1);
+  leg->SetTextFont(62);
+  leg->SetLineColor(1);
+  leg->SetLineStyle(1);
+  leg->SetLineWidth(1);
+  leg->SetFillColor(0);
+  leg->SetFillStyle(1001);
+  TLegendEntry *entry=leg->AddEntry("NULL","Run1 framework","f");
+  entry->SetFillStyle(1001);
+  entry->SetLineColor(2);
+  entry->SetLineStyle(1);
+  entry->SetLineWidth(2);
+  entry->SetMarkerColor(1);
+  entry->SetMarkerStyle(21);
+  entry->SetMarkerSize(1);
+  entry->SetTextFont(62);
+  entry=leg->AddEntry("NULL","Run3 framework","f");
+
   return true; 
 }
 
