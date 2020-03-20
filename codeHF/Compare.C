@@ -191,12 +191,6 @@ Bool_t Compare(TString filerun3="AnalysisResults.root", TString filerun1="Vertic
   entry->SetTextFont(62);
   entry=leg->AddEntry("NULL","Run3 framework","f");
 
-  
-  legendmass->AddEntry(hmass_nocuts_Run1,"Run1 framework","f");
-  legendmass->AddEntry(hmass_nocuts_Run3,"Run3 framework","f");
-  legendmass->Draw();
-  cmass->SaveAs("cmass.pdf");	
-  cmass->SaveAs("cmass.C");	
   return true; 
 }
 
