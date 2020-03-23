@@ -15,8 +15,8 @@ APPLYSECVERTEXSELRUN1=0
 if [ $CASE -eq 1 ]; then
   INPUTDIR="/mnt/temp/Run3data/data/LHC15o_246751/pass1"
   ISMC=0
-  LISTNAME="listprodhfrun3_246751.txt"
-  AOD3NAME=AO2D_PbPb_LHC15o_246751.root
+  LISTNAME="listprodhfrun3_PbPb_data_LHC15o_246751.txt"
+  AOD3NAME=AO2D_PbPb_data_LHC15o_246751.root
   MASS=1.8
   STRING="15000246751019.104/AliESDs.root"
 fi
@@ -24,8 +24,8 @@ fi
 if [ $CASE -eq 2 ]; then
   INPUTDIR="/data/Run3data/alice_sim_2015_LHC15k1a3_246391/246391"
   ISMC=0
-  LISTNAME="listprodhfrun3_LHC15k1a3.txt"
-  AOD3NAME=AO2D_ppD2H_LHC15k1a3.root
+  LISTNAME="listprodhfrun3_mc_HIJING_PbPb_LHC15k1a3.txt"
+  AOD3NAME=AO2D_mc_HIJING_PbPb_LHC15k1a3.root
   MASS=1.8
   STRING="00*/AliESDs.root"
 fi
@@ -35,15 +35,15 @@ if [ $CASE -eq 3 ]; then
   ISMC=0
   LISTNAME="listprodhfrun3_K0sMC.txt"
   AOD3NAME=AO2D_ppD2H_K0sMC.root
-  MASS=1.8
+  MASS=1.0
   STRING="00*/AliESDs.root"
 fi
 
 if [ $CASE -eq 4 ]; then
   INPUTDIR="/data/Run3data/alice_sim_2018_LHC18a4a2_cent/282099"
   ISMC=0
-  LISTNAME="listprodhfrun3_LHC18a4a2_cent.txt"
-  AOD3NAME=AO2D_ppD2H_LHC18a4a2_cent.root
+  LISTNAME="listprodhfrun3_mc_PbPb_D2H_LHC18a4a2_cent.txt"
+  AOD3NAME=AO2D_mc_PbPb_D2H_LHC18a4a2_cent.root
   MASS=1.8
   STRING="00*/AliESDs.root"
 fi
