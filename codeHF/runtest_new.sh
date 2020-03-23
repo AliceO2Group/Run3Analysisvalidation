@@ -39,6 +39,15 @@ if [ $CASE -eq 3 ]; then
   STRING="00*/AliESDs.root"
 fi
 
+if [ $CASE -eq 4 ]; then
+  INPUTDIR="/data/Run3data/alice_sim_2018_LHC18a4a2_cent/282099"
+  ISMC=0
+  LISTNAME="listprodhfrun3_LHC18a4a2_cent.txt"
+  AOD3NAME=AO2D_ppD2H_LHC18a4a2_cent.root
+  MASS=1.8
+  STRING="00*/AliESDs.root"
+fi
+
 #INPUTDIR="/data/Run3data/alice_sim_2018_LHC18a4a2_cent/282099" #D2H MC sample
 #INPUTDIR="/data/Run3data/alice_sim_2015_LHC15k1a3_246391/246391" #HIJING MC PbPb
 
