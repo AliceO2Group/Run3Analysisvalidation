@@ -47,6 +47,13 @@ Bool_t SingleTrkCuts(AliESDtrack *trk, AliESDtrackCuts *esdTrackCuts, AliESDVert
   return esdTrackCuts->AcceptTrack(trk);
 }
 
+Bool_t SingleTrkCutsSimple(AliESDtrack *trk, AliESDtrackCuts *esdTrackCuts, AliESDVertex* fV1, Double_t fBzkG){
+  Int_t status=trk->GetStatus();
+  bool sel_track = status & AliESDtrack::kITSrefit && (trk->HasPointOnITSLayer(0) || trk->HasPointOnITSLayer(1));
+  sel_track = sel_track && trk->GetNcls(1)>70;
+  return sel_track;
+}
+
 AliESDVertex* ReconstructSecondaryVertex(AliVertexerTracks* vt, TObjArray *trkArray, AliESDVertex* primvtx){
 
 
@@ -55,7 +62,7 @@ AliESDVertex* ReconstructSecondaryVertex(AliVertexerTracks* vt, TObjArray *trkAr
   AliESDVertex* trkv=(AliESDVertex*)vt->VertexForSelectedESDTracks(trkArray);
   if(trkv->GetNContributors()!=trkArray->GetEntriesFast()) return 0x0;
   Double_t vertRadius2=trkv->GetX()*trkv->GetX()+trkv->GetY()*trkv->GetY();
-  if(vertRadius2>8.) return 0x0;
+  //FIXME if(vertRadius2>8.) return 0x0;
   return trkv;
 }
 
@@ -142,7 +149,7 @@ AliAODRecoDecayHF3Prong* Make3Prong(TObjArray *threeTrackArray, AliAODVertex *se
   return the3Prong;
 }
 
-Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root", TString output = "Vertices2prong-ITS1.root", bool applyeventcut = 0){
+Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root", TString output = "Vertices2prong-ITS1.root"){
 
   TFile* esdFile = TFile::Open(esdfile.Data());
   if (!esdFile || !esdFile->IsOpen()) {
@@ -162,14 +169,14 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root", TString output 
   TH1F* htgl_nocuts=new TH1F("htgl_nocuts", "tgl tracks (#GeV)", 100, 0., 10.);
   TH1F* hpt_cuts=new TH1F("hpt_cuts"," ; pt tracks (#GeV) ; Entries",100, 0, 10.);
   TH1F* htgl_cuts=new TH1F("htgl_cuts", "tgl tracks (#GeV)", 100, 0., 10.);
-  TH1F* hvx=new TH1F("hvx"," Secondary vertex ; X vertex (cm) ; Entries",100,-0.5, 0.5);
-  TH1F* hvy=new TH1F("hvy"," Secondary vertex ; Y vertex (cm) ; Entries",100,-0.5, 0.5);
-  TH1F* hvz=new TH1F("hvz"," Secondary vertex ; Z vertex (cm) ; Entries",100,-10., 10.);
+  TH1F* hvx=new TH1F("hvx"," Secondary vertex ; X vertex (cm) ; Entries",100,-0.1, 0.1);
+  TH1F* hvy=new TH1F("hvy"," Secondary vertex ; Y vertex (cm) ; Entries",100,-0.1, 0.1);
+  TH1F* hvz=new TH1F("hvz"," Secondary vertex ; Z vertex (cm) ; Entries",100,-0.1, 0.1);
   TH1F* hitsmap=new TH1F("hitsmap", "hitsmap_cuts", 100, 0., 100.);
   
-  TH1F* hvertexx=new TH1F("hvertexx", " Primary vertex ; X vertex (cm) ; Entries", 100, -0.5, 0.5);
-  TH1F* hvertexy=new TH1F("hvertexy", " Primary vertex ; Y vertex (cm) ; Entries", 100, -0.5, 0.5);
-  TH1F* hvertexz=new TH1F("hvertexz", " Primary vertex ; Z vertex (cm) ; Entries", 100, -10., 10.);
+  TH1F* hvertexx=new TH1F("hvertexx", " Primary vertex ; X vertex (cm) ; Entries", 100, -1.0, 1.0);
+  TH1F* hvertexy=new TH1F("hvertexy", " Primary vertex ; Y vertex (cm) ; Entries", 100, -1.0, 1.0);
+  TH1F* hvertexz=new TH1F("hvertexz", " Primary vertex ; Z vertex (cm) ; Entries", 100, -1.0, 1.0);
   
   TH1F* hdecayxyz=new TH1F("hdecayxyz", "hdecayxyz", 100, 0., 1.0);
   TH1F* hdecayxy=new TH1F("hdecayxy", "hdecayxy", 100, 0., 1.0);
@@ -197,19 +204,17 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root", TString output 
     printf("\n------------ Run %d Event: %d  Tracks %d ------------------\n",esd->GetRunNumber(),iEvent,esd->GetNumberOfTracks());
     TString trClass=esd->GetFiredTriggerClasses();
     printf("      Fired Trigger Classes %s\n",trClass.Data());
-    //if(!trClass.Contains("CV0L7-B")) continue;
+    //FIXME if(!trClass.Contains("CV0L7-B")) continue;
 
     Bool_t do3Prongs=kFALSE;
     Int_t maxTracksToProcess=9999999; /// temporary to limit the time duration of tests
     Int_t totTracks=TMath::Min(maxTracksToProcess,esd->GetNumberOfTracks());
 
     AliESDVertex *primvtx = (AliESDVertex*)esd->GetPrimaryVertex();
-    if(applyeventcut == 1){
-      if(!primvtx) return kFALSE;
-      TString title=primvtx->GetTitle();
-      if(primvtx->IsFromVertexer3D() || primvtx->IsFromVertexerZ()) continue;
-      if(primvtx->GetNContributors()<2) continue;
-    }
+    if(!primvtx) return kFALSE;
+    TString title=primvtx->GetTitle();
+    if(primvtx->IsFromVertexer3D() || primvtx->IsFromVertexerZ()) continue;
+    if(primvtx->GetNContributors()<2) continue;
     hvertexx->Fill(primvtx->GetX());
     hvertexy->Fill(primvtx->GetY());
     hvertexz->Fill(primvtx->GetZ());
@@ -222,7 +227,7 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root", TString output 
     for (Int_t iTrack = 0; iTrack < totTracks; iTrack++) {
       status[iTrack]=0;
       AliESDtrack* track = esd->GetTrack(iTrack);
-      if (SingleTrkCuts(track,esdTrackCuts,primvtx,fBzkG)) status[iTrack]=1;
+      if (SingleTrkCutsSimple(track,esdTrackCuts,primvtx,fBzkG)) status[iTrack]=1; //FIXME
     }
      
     TObjArray *twoTrackArray = new TObjArray(2);
@@ -237,10 +242,10 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root", TString output 
       track_0->GetPxPyPz(mom0);
       hpt_nocuts->Fill(track_0->Pt());
       htgl_nocuts->Fill(track_0->GetTgl()); 
-      hitsmap->Fill(track_0->GetITSClusterMap());
       if (status[iTrack_0]==0) continue;
       hpt_cuts->Fill(track_0->Pt());
       htgl_cuts->Fill(track_0->GetTgl()); 
+      hitsmap->Fill(track_0->GetITSClusterMap());
 
       for (Int_t iTrack_1 = iTrack_0 + 1; iTrack_1 < totTracks; iTrack_1++) {
         AliESDtrack* track_1 = esd->GetTrack(iTrack_1);
