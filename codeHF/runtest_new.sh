@@ -8,8 +8,6 @@ DORUN1=1
 DORUN3=1
 DOCOMPARE=1
 DORUN3ONAOD=0
-APPLYPRIMVERTEXSELRUN1=1
-APPLYTRACKCUTRUN1=1
 APPLYSECVERTEXSELRUN1=0
 
 if [ $CASE -eq 1 ]; then
@@ -18,7 +16,7 @@ if [ $CASE -eq 1 ]; then
   LISTNAME="listprodhfrun3_PbPb_data_LHC15o_246751.txt"
   AOD3NAME=AO2D_PbPb_data_LHC15o_246751.root
   MASS=1.8
-  STRING="15000246751019.104/AliESDs.root"
+  STRING="15000246751019.110/AliESDs.root"
 fi
 
 if [ $CASE -eq 2 ]; then
@@ -74,7 +72,8 @@ if [ $DORUN1 -eq 1 ]; then
     echo $fileout >> "$fileouttxt"
     echo "$F"
     echo "$fileout" 
-    root -q -l "ComputeVerticesRun1.C(\"$F\",\"$fileout\", $APPLYPRIMVERTEXSELRUN1, $APPLYTRACKCUTRUN1, $APPLYSECVERTEXSELRUN1)" 
+    #root -q -l "ComputeVerticesRun1.C(\"$F\",\"$fileout\", $APPLYPRIMVERTEXSELRUN1, $APPLYTRACKCUTRUN1, $APPLYSECVERTEXSELRUN1)" 
+    root -q -l "ComputeVerticesRun1_Opt.C(\"$F\",\"$fileout\")" 
     index=$((index+1))
     echo $index
   done <"$LISTNAME"

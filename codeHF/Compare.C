@@ -36,7 +36,7 @@ Bool_t Compare(TString filerun3="AnalysisResults.root", TString filerun1="Vertic
   TH1F* hvtz_Run1 = (TH1F*)fRun1->Get("hvz");
   
   TH1F* hitsmap_Run3 = (TH1F*)fRun3->Get("vertexerhf-decayvertexbuilder2prong/hitsmap_cuts");
-  TH1F* hitsmap_Run1 = (TH1F*)fRun1->Get("hitsmap_cuts");
+  TH1F* hitsmap_Run1 = (TH1F*)fRun1->Get("hitsmap");
   
   TH1F* hdecayxyz_Run3 = (TH1F*)fRun3->Get("vertexerhf-Dzerotask/hdecayxyz");
   TH1F* hdecayxyz_Run1 = (TH1F*)fRun1->Get("hdecayxyz");
@@ -45,7 +45,7 @@ Bool_t Compare(TString filerun3="AnalysisResults.root", TString filerun1="Vertic
   TH1F* hdecayxy_Run1 = (TH1F*)fRun1->Get("hdecayxy");
   
   TH1F* hmass_nocuts_Run3 = (TH1F*)fRun3->Get("vertexerhf-Dzerotask/hmass_nocuts");
-  TH1F* hmass_nocuts_Run1 = (TH1F*)fRun1->Get("hmass_nocuts");
+  TH1F* hmass_nocuts_Run1 = (TH1F*)fRun1->Get("hmass");
   
   TLegend * legend = new TLegend(0.5,0.7,0.8,0.9);
   //legend->SetHeader("Legend","C"); // option "C" allows to center the header
