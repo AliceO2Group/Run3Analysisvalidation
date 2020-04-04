@@ -174,9 +174,9 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root", TString output 
   TH1F* hvz=new TH1F("hvz"," Secondary vertex ; Z vertex (cm) ; Entries",100,-0.1, 0.1);
   TH1F* hitsmap=new TH1F("hitsmap", "hitsmap_cuts", 100, 0., 100.);
   
-  TH1F* hvertexx=new TH1F("hvertexx", " Primary vertex ; X vertex (cm) ; Entries", 100, -1.0, 1.0);
-  TH1F* hvertexy=new TH1F("hvertexy", " Primary vertex ; Y vertex (cm) ; Entries", 100, -1.0, 1.0);
-  TH1F* hvertexz=new TH1F("hvertexz", " Primary vertex ; Z vertex (cm) ; Entries", 100, -1.0, 1.0);
+  TH1F* hvertexx=new TH1F("hvertexx", " Primary vertex ; X vertex (cm) ; Entries", 100, -10.0, 10.0);
+  TH1F* hvertexy=new TH1F("hvertexy", " Primary vertex ; Y vertex (cm) ; Entries", 100, -10.0, 10.0);
+  TH1F* hvertexz=new TH1F("hvertexz", " Primary vertex ; Z vertex (cm) ; Entries", 100, -10.0, 10.0);
   
   TH1F* hdecayxyz=new TH1F("hdecayxyz", "hdecayxyz", 100, 0., 1.0);
   TH1F* hdecayxy=new TH1F("hdecayxy", "hdecayxy", 100, 0., 1.0);

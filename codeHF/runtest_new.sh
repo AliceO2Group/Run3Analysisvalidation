@@ -34,7 +34,7 @@ if [ $CASE -eq 3 ]; then
   LISTNAME="listprodhfrun3_K0sMC.txt"
   AOD3NAME=AO2D_ppD2H_K0sMC.root
   MASS=1.0
-  STRING="00*/AliESDs.root"
+  STRING="001/AliESDs.root"
 fi
 
 if [ $CASE -eq 4 ]; then
