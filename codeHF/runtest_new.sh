@@ -2,7 +2,7 @@
 
 #INPUTDIR="/data/Run3data/output" #K0* MC injected 
 
-CASE=3
+CASE=0
 DOCONVERT=1
 DORUN1=1
 DORUN3=1
