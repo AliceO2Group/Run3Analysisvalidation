@@ -15,7 +15,7 @@ if [ $CASE -eq 0 ]; then
   ISMC=0
   LISTNAME="listprodhfrun3_ppK0starToyMC.txt"
   AOD3NAME=AO2D_ppK0starToyMC.root
-  MASS=1.8
+  MASS=1.0
   STRING="AliESDs_ppK0starToyMC.root"
 fi
 
