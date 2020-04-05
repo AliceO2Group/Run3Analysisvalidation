@@ -2,13 +2,22 @@
 
 #INPUTDIR="/data/Run3data/output" #K0* MC injected 
 
-CASE=3
+CASE=0
 DOCONVERT=1
 DORUN1=1
 DORUN3=1
 DOCOMPARE=1
 DORUN3ONAOD=0
 APPLYSECVERTEXSELRUN1=0
+
+if [ $CASE -eq 0 ]; then
+  INPUTDIR="../twikiinput"
+  ISMC=0
+  LISTNAME="listprodhfrun3_ppK0starToyMC.txt"
+  AOD3NAME=AO2D_ppK0starToyMC.root
+  MASS=1.8
+  STRING="AliESDs_ppK0starToyMC.root"
+fi
 
 if [ $CASE -eq 1 ]; then
   INPUTDIR="/mnt/temp/Run3data/data/LHC15o_246751/pass1"
