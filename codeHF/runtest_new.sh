@@ -17,6 +17,8 @@ if [ $CASE -eq 0 ]; then
   AOD3NAME=AO2D_ppK0starToyMC.root
   MASS=1.0
   STRING="AliESDs_ppK0starToyMC.root"
+  TRIGGERSTRINGRUN2=""
+  TRIGGERBITRUN3=-1
 fi
 
 if [ $CASE -eq 1 ]; then
@@ -26,6 +28,8 @@ if [ $CASE -eq 1 ]; then
   AOD3NAME=AO2D_PbPb_data_LHC15o_246751.root
   MASS=1.8
   STRING="15000246751019.110/AliESDs.root"
+  TRIGGERSTRINGRUN2="CV0L7-B-NOPF-CENT"
+  TRIGGERBITRUN3=4 #FIXME
 fi
 
 if [ $CASE -eq 2 ]; then
@@ -35,6 +39,8 @@ if [ $CASE -eq 2 ]; then
   AOD3NAME=AO2D_mc_HIJING_PbPb_LHC15k1a3.root
   MASS=1.8
   STRING="00*/AliESDs.root"
+  TRIGGERSTRINGRUN2=""
+  TRIGGERBITRUN3=-1
 fi
 
 if [ $CASE -eq 3 ]; then
@@ -44,6 +50,8 @@ if [ $CASE -eq 3 ]; then
   AOD3NAME=AO2D_ppD2H_K0sMC.root
   MASS=1.0
   STRING="00*/AliESDs.root"
+  TRIGGERSTRINGRUN2=""
+  TRIGGERBITRUN3=-1
 fi
 
 if [ $CASE -eq 4 ]; then
@@ -53,6 +61,8 @@ if [ $CASE -eq 4 ]; then
   AOD3NAME=AO2D_mc_PbPb_D2H_LHC18a4a2_cent.root
   MASS=1.8
   STRING="00*/AliESDs.root"
+  TRIGGERSTRINGRUN2=""
+  TRIGGERBITRUN3=-1
 fi
 
 #INPUTDIR="/data/Run3data/alice_sim_2018_LHC18a4a2_cent/282099" #D2H MC sample
@@ -82,7 +92,7 @@ if [ $DORUN1 -eq 1 ]; then
     echo "$F"
     echo "$fileout" 
     #root -q -l "ComputeVerticesRun1.C(\"$F\",\"$fileout\", $APPLYPRIMVERTEXSELRUN1, $APPLYTRACKCUTRUN1, $APPLYSECVERTEXSELRUN1)" 
-    root -q -l "ComputeVerticesRun1_Opt.C(\"$F\",\"$fileout\")" 
+    root -q -l "ComputeVerticesRun1_Opt.C(\"$F\",\"$fileout\",\"$TRIGGERSTRINGRUN2\")" 
     index=$((index+1))
     echo $index
   done <"$LISTNAME"
@@ -94,7 +104,7 @@ fi
 
 if [ $DORUN3 -eq 1 ]; then
   rm AnalysisResults.root
-  o2-analysis-vertexing-hf --aod-file $AOD3NAME  -b
+  o2-analysis-vertexing-hf --aod-file $AOD3NAME  -b --triggerindex=$TRIGGERBITRUN3
 fi 
 
 if [ $DOCOMPARE -eq 1 ]; then
@@ -102,6 +112,6 @@ if [ $DOCOMPARE -eq 1 ]; then
 fi 
 
 if [ $DORUN3ONAOD -eq 1 ]; then
-  o2-analysis-vertexing-hf --aod-file /data/Run3data/5_20200131-0902/0001/AO2D.root -b
+  o2-analysis-vertexing-hf --aod-file /data/Run3data/5_20200131-0902/0001/AO2D.root -b --triggerindex=$TRIGGERBITRUN3
 fi 
 
