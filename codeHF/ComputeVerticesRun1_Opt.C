@@ -201,10 +201,11 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root", TString output 
       printf("Error: no ESD object found for event %d", iEvent);
       return kFALSE;
     }
-    printf("\n------------ Run %d Event: %d  Tracks %d ------------------\n",esd->GetRunNumber(),iEvent,esd->GetNumberOfTracks());
     TString trClass=esd->GetFiredTriggerClasses();
-    printf("      Fired Trigger Classes %s\n",trClass.Data());
     if(triggerstring != "" && !trClass.Contains(triggerstring)) continue;
+    printf("\n------------ Run %d Event: %d  Tracks %d ------------------\n", 
+           esd->GetRunNumber(),iEvent,esd->GetNumberOfTracks());
+    printf("      Fired Trigger Classes %s\n",trClass.Data());
 
 
     Bool_t do3Prongs=kFALSE;
@@ -220,6 +221,7 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root", TString output 
     hvertexy->Fill(primvtx->GetY());
     hvertexz->Fill(primvtx->GetZ());
     //   AliAODVertex *vertexAODp = ConvertToAODVertex(primvtx);
+    if(triggerstring != "" && !trClass.Contains(triggerstring)) continue;
 
     Double_t fBzkG = (Double_t)esd->GetMagneticField();
 
