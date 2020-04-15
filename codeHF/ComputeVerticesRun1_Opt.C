@@ -149,7 +149,7 @@ AliAODRecoDecayHF3Prong* Make3Prong(TObjArray *threeTrackArray, AliAODVertex *se
   return the3Prong;
 }
 
-Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root", TString output = "Vertices2prong-ITS1.root"){
+Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root", TString output = "Vertices2prong-ITS1.root", TString triggerstring = ""){
 
   TFile* esdFile = TFile::Open(esdfile.Data());
   if (!esdFile || !esdFile->IsOpen()) {
@@ -201,10 +201,12 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root", TString output 
       printf("Error: no ESD object found for event %d", iEvent);
       return kFALSE;
     }
-    printf("\n------------ Run %d Event: %d  Tracks %d ------------------\n",esd->GetRunNumber(),iEvent,esd->GetNumberOfTracks());
     TString trClass=esd->GetFiredTriggerClasses();
+    if(triggerstring != "" && !trClass.Contains(triggerstring)) continue;
+    printf("\n------------ Run %d Event: %d  Tracks %d ------------------\n", 
+           esd->GetRunNumber(),iEvent,esd->GetNumberOfTracks());
     printf("      Fired Trigger Classes %s\n",trClass.Data());
-    //FIXME if(!trClass.Contains("CV0L7-B")) continue;
+
 
     Bool_t do3Prongs=kFALSE;
     Int_t maxTracksToProcess=9999999; /// temporary to limit the time duration of tests
@@ -219,6 +221,7 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root", TString output 
     hvertexy->Fill(primvtx->GetY());
     hvertexz->Fill(primvtx->GetZ());
     //   AliAODVertex *vertexAODp = ConvertToAODVertex(primvtx);
+    if(triggerstring != "" && !trClass.Contains(triggerstring)) continue;
 
     Double_t fBzkG = (Double_t)esd->GetMagneticField();
 
