@@ -149,7 +149,7 @@ AliAODRecoDecayHF3Prong* Make3Prong(TObjArray *threeTrackArray, AliAODVertex *se
   return the3Prong;
 }
 
-Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root", TString output = "Vertices2prong-ITS1.root", TString triggerstring = ""){
+Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root", TString output = "Vertices2prong-ITS1.root", double ptmintrack=2., int do3Prongs=0, TString triggerstring = ""){
 
   TFile* esdFile = TFile::Open(esdfile.Data());
   if (!esdFile || !esdFile->IsOpen()) {
@@ -207,8 +207,6 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root", TString output 
            esd->GetRunNumber(),iEvent,esd->GetNumberOfTracks());
     printf("      Fired Trigger Classes %s\n",trClass.Data());
 
-
-    Bool_t do3Prongs=kFALSE;
     Int_t maxTracksToProcess=9999999; /// temporary to limit the time duration of tests
     Int_t totTracks=TMath::Min(maxTracksToProcess,esd->GetNumberOfTracks());
 
@@ -231,6 +229,7 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root", TString output 
       status[iTrack]=0;
       AliESDtrack* track = esd->GetTrack(iTrack);
       if (SingleTrkCutsSimple(track,esdTrackCuts,primvtx,fBzkG)) status[iTrack]=1; //FIXME
+      if (track->Pt()<ptmintrack) continue;
     }
      
     TObjArray *twoTrackArray = new TObjArray(2);
