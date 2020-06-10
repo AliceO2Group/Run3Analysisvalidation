@@ -16,7 +16,7 @@ if [ $DORUN3 -eq 1 ]; then
   rm test.txt
   echo "----------------"
   echo $ptmin
-  time o2-analysis-hftrackindexskimscreator --aod-file $AOD3NAME  -b --triggerindex=$TRIGGERBITRUN3 --ptmintrack=$ptmin --do3prong=$DO3PRONG --keep dangling>> test.txt
+  time o2-analysis-hftrackindexskimscreator --aod-file $AOD3NAME  -b --triggerindex=$TRIGGERBITRUN3 --ptmintrack=$ptmin --do3prong=$DO3PRONG  --configuration json://$PWD/dpl-config_std.json --keep dangling>> test.txt
   #time o2-analysis-hftrackindexskimscreator --aod-file $AOD3NAME  -b --triggerindex=$TRIGGERBITRUN3 --ptmintrack=$ptmin --do3prong=$DO3PRONG >> test.txt
   grep "real  " test.txt
   grep "totalevents" test.txt  
