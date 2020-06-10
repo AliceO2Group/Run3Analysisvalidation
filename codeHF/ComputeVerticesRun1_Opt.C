@@ -1,6 +1,7 @@
 #if !defined(__CINT__) || defined(__MAKECINT__)
 #include <TMath.h>
 #include <TFile.h>
+#include <TSystem.h>
 #include "AliESDtrack.h"
 #include "AliESDtrackCuts.h"
 #include "AliAODVertex.h"
@@ -9,7 +10,11 @@
 #include "AliAODRecoDecayHF2Prong.h"
 #include "AliAODRecoDecayHF3Prong.h"
 #include "AliVertexerTracks.h"
+#include "ReadJson.C"
 #endif
+
+
+
 
 Bool_t GetTrackMomentumAtSecVert(AliESDtrack* tr, AliAODVertex* secVert, Double_t momentum[3], float fBzkG){
   /// fast calculation (no covariance matrix treatment) of track momentum at secondary vertex
@@ -47,10 +52,10 @@ Bool_t SingleTrkCuts(AliESDtrack *trk, AliESDtrackCuts *esdTrackCuts, AliESDVert
   return esdTrackCuts->AcceptTrack(trk);
 }
 
-Bool_t SingleTrkCutsSimple(AliESDtrack *trk, AliESDtrackCuts *esdTrackCuts, AliESDVertex* fV1, Double_t fBzkG){
+Bool_t SingleTrkCutsSimple(AliESDtrack *trk, Int_t minclutpc, AliESDVertex* fV1, Double_t fBzkG){
   Int_t status=trk->GetStatus();
   bool sel_track = status & AliESDtrack::kITSrefit && (trk->HasPointOnITSLayer(0) || trk->HasPointOnITSLayer(1));
-  sel_track = sel_track && trk->GetNcls(1)>70;
+  sel_track = sel_track && trk->GetNcls(1)>=minclutpc;
   return sel_track;
 }
 
@@ -149,7 +154,12 @@ AliAODRecoDecayHF3Prong* Make3Prong(TObjArray *threeTrackArray, AliAODVertex *se
   return the3Prong;
 }
 
-Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root", TString output = "Vertices2prong-ITS1.root", double ptmintrack=2., int do3Prongs=0, TString triggerstring = ""){
+Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root",
+			       TString output = "Vertices2prong-ITS1.root",
+			       TString jsonconfig = "dpl-config_std.json",
+			       double ptmintrack=2.,
+			       int do3Prongs=0,
+			       TString triggerstring = ""){
 
   TFile* esdFile = TFile::Open(esdfile.Data());
   if (!esdFile || !esdFile->IsOpen()) {
@@ -164,6 +174,18 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root", TString output 
     return kFALSE;
   }
   esd->ReadFromTree(tree);
+
+  int minncluTPC=50;
+  // read configuration from json file
+  if(jsonconfig!="" && gSystem->Exec(Form("ls %s > /dev/null",jsonconfig.Data()))==0){
+    printf("Read configuration from JSON file\n");
+    ptmintrack=GetJsonFloat("dpl-config_std.json","ptmintrack");
+    printf("Min pt track = %f\n",ptmintrack);
+    do3Prongs=GetJsonInteger("dpl-config_std.json","do3prong");
+    printf("do3prong     = %d\n",do3Prongs);
+    minncluTPC=GetJsonInteger("dpl-config_std.json","d_tpcnclsfound");
+    printf("minncluTPC   = %d\n",minncluTPC);
+  }
   
   TH1F* hpt_nocuts=new TH1F("hpt_nocuts"," ; pt tracks (#GeV) ; Entries",100, 0, 10.);
   TH1F* htgl_nocuts=new TH1F("htgl_nocuts", "tgl tracks (#GeV)", 100, 0., 10.);
@@ -184,9 +206,9 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root", TString output 
   TH1F* hmassP=new TH1F("hmassP", "; Inv Mass (GeV/c^{2})", 500, 0, 5.0);
   
   AliESDtrackCuts *esdTrackCuts = new AliESDtrackCuts("AliESDtrackCuts","default");
-  esdTrackCuts->SetPtRange(0.5,1.e10);
+  esdTrackCuts->SetPtRange(ptmintrack,1.e10);
   esdTrackCuts->SetEtaRange(-0.8,+0.8);
-  esdTrackCuts->SetMinNClustersTPC(50);
+  esdTrackCuts->SetMinNClustersTPC(minncluTPC);
   esdTrackCuts->SetRequireITSRefit(kTRUE);
   esdTrackCuts->SetClusterRequirementITS(AliESDtrackCuts::kSPD,
 					 AliESDtrackCuts::kAny);
@@ -228,7 +250,7 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root", TString output 
     for (Int_t iTrack = 0; iTrack < totTracks; iTrack++) {
       status[iTrack]=0;
       AliESDtrack* track = esd->GetTrack(iTrack);
-      if (SingleTrkCutsSimple(track,esdTrackCuts,primvtx,fBzkG)) status[iTrack]=1; //FIXME
+      if (SingleTrkCutsSimple(track,minncluTPC,primvtx,fBzkG)) status[iTrack]=1; //FIXME
       if (track->Pt()<ptmintrack) continue;
     }
      
