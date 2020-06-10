@@ -1,14 +1,14 @@
 {
     "internal-dpl-clock": "",
     "internal-dpl-aod-reader": {
-        "aod-file": "\/home\/ginnocen\/Run3Analysisvalidation\/AO2D_mc_pp_D2H_LHC18a4a2_cent.root",
+        "aod-file": "\/home\/ginnocen\/Run3Analysisvalidation\/AO2D_mc_HIJING_PbPb_LHC15k1a3.root",
         "start-value-enumeration": "0",
         "end-value-enumeration": "-1",
         "step-value-enumeration": "1"
     },
     "vertexerhf-hftrackindexskimscreator": {
         "triggerindex": "-1",
-        "ptmintrack": "0",
+        "ptmintrack": "7",
         "do3prong": "1",
         "d_bz": "5",
         "b_propdca": "true",
@@ -18,5 +18,7 @@
         "d_minrelchi2change": "0.90000000000000002",
         "d_tpcnclsfound": "70"
     },
-    "internal-dpl-aod-writer": ""
+    "internal-dpl-aod-writer": {
+        "keep": "dangling"
+    }
 }
