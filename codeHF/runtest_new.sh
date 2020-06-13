@@ -21,6 +21,7 @@ if [ $CASE -eq 0 ]; then
   STRING="AliESDs_ppK0starToyMC.root"
   TRIGGERSTRINGRUN2=""
   TRIGGERBITRUN3=-1
+  NMAX=-1
 fi
 
 if [ $CASE -eq 1 ]; then
@@ -32,6 +33,7 @@ if [ $CASE -eq 1 ]; then
   STRING="15000246751019.110/AliESDs.root"
   TRIGGERSTRINGRUN2="CV0L7-B-NOPF-CENT"
   TRIGGERBITRUN3=5 #FIXME
+  NMAX=5
 fi
 
 if [ $CASE -eq 2 ]; then
@@ -43,6 +45,7 @@ if [ $CASE -eq 2 ]; then
   STRING="00*/AliESDs.root"
   TRIGGERSTRINGRUN2=""
   TRIGGERBITRUN3=-1
+  NMAX=1
 fi
 
 if [ $CASE -eq 3 ]; then
@@ -54,6 +57,7 @@ if [ $CASE -eq 3 ]; then
   STRING="00*/AliESDs.root"
   TRIGGERSTRINGRUN2=""
   TRIGGERBITRUN3=-1
+  NMAX=-1
 fi
 
 if [ $CASE -eq 4 ]; then
@@ -65,6 +69,7 @@ if [ $CASE -eq 4 ]; then
   STRING="00*/AliESDs.root"
   TRIGGERSTRINGRUN2=""
   TRIGGERBITRUN3=-1
+  NMAX=-1
 fi
 
 #INPUTDIR="/data/Run3data/alice_sim_2018_LHC18a4a2_cent/282099" #D2H MC sample
@@ -77,7 +82,7 @@ if [ $DOCONVERT -eq 1 ]; then
   rm $LISTNAME
   ls $INPUTDIR/$STRING >> $LISTNAME
   echo $LISTNAME
-  root -q -l "convertAO2D.C(\"$LISTNAME\", $ISMC)"  
+  root -q -l "convertAO2D.C(\"$LISTNAME\", $ISMC, $NMAX)"  
   mv AO2D.root $AOD3NAME
 fi
 

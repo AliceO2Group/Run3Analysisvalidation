@@ -2,12 +2,24 @@
 
 #INPUTDIR="/data/Run3data/output" #K0* MC injected 
 
-CASE=0
+DOCONVERT=0
 DORUN3=1
-DO3PRONG=0
-TRIGGERBITRUN3=-1 #FIXME
-AOD3NAME=/home/ginnocen/Run3Analysisvalidation/AO2D_mc_HIJING_PbPb_LHC15k1a3.root #35 
-#AOD3NAME=/home/ginnocen/Run3Analysisvalidation/AO2D_mc_pp_D2H_LHC18a4a2_cent.root #3141 
+INPUTDIR="/data/Run3data/alice_sim_2015_LHC15k1a3_246391/246391"
+ISMC=0
+LISTNAME="listprodhfrun3_mc_HIJING_PbPb_LHC15k1a3.txt"
+AOD3NAME=test_AO2D_mc_HIJING_PbPb_LHC15k1a3.root
+STRING="00*/AliESDs.root"
+NMAX=3
+
+if [ $DOCONVERT -eq 1 ]; then
+  rm *.root
+  rm *.txt
+  rm $LISTNAME
+  ls $INPUTDIR/$STRING >> $LISTNAME
+  echo $LISTNAME
+  root -q -l "convertAO2D.C(\"$LISTNAME\", $ISMC, $NMAX)"  
+  mv AO2D.root $AOD3NAME
+fi
 
 if [ $DORUN3 -eq 1 ]; then
   rm AnalysisResults_0.root
@@ -15,9 +27,7 @@ if [ $DORUN3 -eq 1 ]; then
   do
   rm test.txt
   echo "----------------"
-  echo $ptmin
-  time o2-analysis-hftrackindexskimscreator  --configuration json://$PWD/dpl-config_std.json  --ptmintrack=$ptmin -b >> test.txt
-  #time o2-analysis-hftrackindexskimscreator --aod-file $AOD3NAME  -b --triggerindex=$TRIGGERBITRUN3 --ptmintrack=$ptmin --do3prong=$DO3PRONG >> test.txt
+  time o2-analysis-hftrackindexskimscreator --shm-segment-size 16000000000 --configuration json://$PWD/dpl-config_std.json -b >> test.txt
   grep "real  " test.txt
   grep "totalevents" test.txt  
   du -h AnalysisResults_0.root

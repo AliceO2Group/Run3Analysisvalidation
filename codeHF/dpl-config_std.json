@@ -1,22 +1,24 @@
 {
     "internal-dpl-clock": "",
     "internal-dpl-aod-reader": {
-        "aod-file": "\/home\/ginnocen\/Run3Analysisvalidation\/AO2D_mc_HIJING_PbPb_LHC15k1a3.root",
+        "aod-file": "test_AO2D_mc_HIJING_PbPb_LHC15k1a3.root",
         "start-value-enumeration": "0",
         "end-value-enumeration": "-1",
         "step-value-enumeration": "1"
     },
+    "produce-sel-track": {
+        "ptmintrack": "10",
+        "d_tpcnclsfound": "70"
+    },
     "vertexerhf-hftrackindexskimscreator": {
         "triggerindex": "-1",
-        "ptmintrack": "7",
-        "do3prong": "1",
+        "do3prong": "0",
         "d_bz": "5",
         "b_propdca": "true",
         "d_maxr": "200",
         "d_maxdzini": "4",
         "d_minparamchange": "0.001",
-        "d_minrelchi2change": "0.90000000000000002",
-        "d_tpcnclsfound": "70"
+        "d_minrelchi2change": "0.90000000000000002"
     },
     "internal-dpl-aod-writer": {
         "keep": "dangling"
