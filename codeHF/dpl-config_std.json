@@ -7,6 +7,7 @@
         "step-value-enumeration": "1"
     },
     "produce-sel-track": {
+        "dovalplots": "true",
         "ptmintrack": "0.15",
         "d_tpcnclsfound": "70",
         "dcatrackmin": 0.05
