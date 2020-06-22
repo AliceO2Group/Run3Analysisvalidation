@@ -9,7 +9,7 @@ ISMC=0
 LISTNAME="listprodhfrun3_mc_HIJING_PbPb_LHC15k1a3.txt"
 AOD3NAME=test_AO2D_mc_HIJING_PbPb_LHC15k1a3.root
 STRING="00*/AliESDs.root"
-NMAX=3
+NMAX=5
 
 if [ $DOCONVERT -eq 1 ]; then
   rm *.root
@@ -27,7 +27,9 @@ if [ $DORUN3 -eq 1 ]; then
   do
   rm test.txt
   echo "----------------"
+  #o2-analysis-hftrackindexskimscreator --shm-segment-size 16000000000 --configuration json://$PWD/dpl-config_std.json -b
   time o2-analysis-hftrackindexskimscreator --shm-segment-size 16000000000 --configuration json://$PWD/dpl-config_std.json -b >> test.txt
+  #o2-analysis-hftrackindexskimscreator --shm-segment-size 16000000000 --configuration json://$PWD/dpl-config_std.json -b
   grep "real  " test.txt
   grep "totalevents" test.txt  
   du -h AnalysisResults_0.root

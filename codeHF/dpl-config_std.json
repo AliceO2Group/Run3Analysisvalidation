@@ -8,7 +8,8 @@
     },
     "produce-sel-track": {
         "ptmintrack": "0.15",
-        "d_tpcnclsfound": "70"
+        "d_tpcnclsfound": "70",
+        "dcatrackmin": 0.05
     },
     "vertexerhf-hftrackindexskimscreator": {
         "triggerindex": "-1",
