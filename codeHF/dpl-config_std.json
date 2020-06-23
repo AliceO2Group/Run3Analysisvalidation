@@ -8,7 +8,7 @@
     },
     "produce-sel-track": {
         "dovalplots": "true",
-        "ptmintrack": "0.15",
+        "ptmintrack": "5",
         "d_tpcnclsfound": "70",
         "dcatrackmin": 0.05
     },
@@ -20,8 +20,19 @@
         "d_maxr": "200",
         "d_maxdzini": "4",
         "d_minparamchange": "0.001",
+        "d_minrelchi2change": "0.90000000000000002",
+        "d_minmassDp": 1.5,
+        "d_maxmassDp": 2.1
+    },
+    "vertexerhf-hfcandcreator2prong": {
+        "d_bz": "5",
+        "b_propdca": "true",
+        "d_maxr": "200",
+        "d_maxdzini": "4",
+        "d_minparamchange": "0.001",
         "d_minrelchi2change": "0.90000000000000002"
     },
+    "hf-taskdzero": "",
     "internal-dpl-aod-writer": {
         "keep": "dangling"
     }
