@@ -1,6 +1,8 @@
 #if !defined(__CINT__) || defined(__MAKECINT__)
 #include <TMath.h>
+#include <TDatabasePDG.h>
 #include <TFile.h>
+#include <TSystem.h>
 #include "AliESDtrack.h"
 #include "AliESDtrackCuts.h"
 #include "AliAODVertex.h"
@@ -9,7 +11,18 @@
 #include "AliAODRecoDecayHF2Prong.h"
 #include "AliAODRecoDecayHF3Prong.h"
 #include "AliVertexerTracks.h"
+#include "ReadJson.C"
 #endif
+
+
+Int_t kbitDplus=0;
+Int_t kbitDs=1;
+Int_t kbitLc=2;
+Double_t fMassDzero=TDatabasePDG::Instance()->GetParticle(421)->Mass();
+Double_t fMassDplus=TDatabasePDG::Instance()->GetParticle(411)->Mass();
+Double_t fMassDs=TDatabasePDG::Instance()->GetParticle(431)->Mass();
+Double_t fMassLambdaC=TDatabasePDG::Instance()->GetParticle(4122)->Mass();
+
 
 Bool_t GetTrackMomentumAtSecVert(AliESDtrack* tr, AliAODVertex* secVert, Double_t momentum[3], float fBzkG){
   /// fast calculation (no covariance matrix treatment) of track momentum at secondary vertex
@@ -47,10 +60,10 @@ Bool_t SingleTrkCuts(AliESDtrack *trk, AliESDtrackCuts *esdTrackCuts, AliESDVert
   return esdTrackCuts->AcceptTrack(trk);
 }
 
-Bool_t SingleTrkCutsSimple(AliESDtrack *trk, AliESDtrackCuts *esdTrackCuts, AliESDVertex* fV1, Double_t fBzkG){
+Bool_t SingleTrkCutsSimple(AliESDtrack *trk, Int_t minclutpc, AliESDVertex* fV1, Double_t fBzkG){
   Int_t status=trk->GetStatus();
   bool sel_track = status & AliESDtrack::kITSrefit && (trk->HasPointOnITSLayer(0) || trk->HasPointOnITSLayer(1));
-  sel_track = sel_track && trk->GetNcls(1)>70;
+  sel_track = sel_track && trk->GetNcls(1)>=minclutpc;
   return sel_track;
 }
 
@@ -76,6 +89,48 @@ AliAODVertex* ConvertToAODVertex(AliESDVertex* trkv){
   AliAODVertex *vertexAOD = new AliAODVertex(pos_,cov_,chi2perNDF_,0x0,-1,AliAODVertex::kUndef,2);
   return vertexAOD;
 }
+
+Int_t SelectInvMassAndPt3prong(TObjArray *trkArray, AliAODRecoDecay* rd4massCalc3){
+  
+  Int_t retval=0;
+  Double_t momentum[3];
+  Double_t px[3],py[3],pz[3];
+  for(Int_t iTrack=0; iTrack<3; iTrack++){
+    AliESDtrack *track = (AliESDtrack*)trkArray->UncheckedAt(iTrack);
+    track->GetPxPyPz(momentum);
+    px[iTrack] = momentum[0]; py[iTrack] = momentum[1]; pz[iTrack] = momentum[2];
+  }
+  UInt_t pdg3[3];
+  Int_t nprongs=3;
+  rd4massCalc3->SetPxPyPzProngs(nprongs,px,py,pz);
+  Double_t minv2,mrange;
+  Double_t lolim,hilim;
+  mrange=0.1;
+  lolim=fMassDplus-mrange;
+  hilim=fMassDplus+mrange;
+  pdg3[0]=211; pdg3[1]=321; pdg3[2]=211;
+  minv2 = rd4massCalc3->InvMass2(nprongs,pdg3);
+  if(minv2>lolim*lolim && minv2<hilim*hilim) retval+=(1<<kbitDplus);
+  lolim=fMassDs-mrange;
+  hilim=fMassDs+mrange;
+  for(Int_t ih=0; ih<2; ih++){
+    Int_t k=ih*2;
+    pdg3[k]=321; pdg3[1]=321; pdg3[2-k]=211;
+    minv2 = rd4massCalc3->InvMass2(nprongs,pdg3);
+    if(minv2>lolim*lolim && minv2<hilim*hilim && (retval&(1<<kbitDs))==0) retval+=(1<<kbitDs);
+  }
+  lolim=fMassLambdaC-mrange;
+  hilim=fMassLambdaC+mrange;
+  pdg3[0]=2212; pdg3[1]=321; pdg3[2]=211;
+  minv2 = rd4massCalc3->InvMass2(nprongs,pdg3);
+  if(minv2>lolim*lolim && minv2<hilim*hilim && (retval&(1<<kbitLc))==0) retval+=(1<<kbitLc);
+  pdg3[0]=211; pdg3[1]=321; pdg3[2]=2212;
+  minv2 = rd4massCalc3->InvMass2(nprongs,pdg3);
+  if(minv2>lolim*lolim && minv2<hilim*hilim && (retval&(1<<kbitLc))==0) retval+=(1<<kbitLc);
+
+  return retval;
+}
+
 
 AliAODRecoDecayHF2Prong* Make2Prong(TObjArray *twoTrackArray, AliAODVertex *secVert, Double_t fBzkG){
   
@@ -149,7 +204,12 @@ AliAODRecoDecayHF3Prong* Make3Prong(TObjArray *threeTrackArray, AliAODVertex *se
   return the3Prong;
 }
 
-Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root", TString output = "Vertices2prong-ITS1.root", double ptmintrack=2., int do3Prongs=0, TString triggerstring = ""){
+Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root",
+			       TString output = "Vertices23prong-ITS1.root",
+			       TString jsonconfig = "dpl-config_std.json",
+			       double ptmintrack=2.,
+			       int do3Prongs=0,
+			       TString triggerstring = ""){
 
   TFile* esdFile = TFile::Open(esdfile.Data());
   if (!esdFile || !esdFile->IsOpen()) {
@@ -164,6 +224,18 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root", TString output 
     return kFALSE;
   }
   esd->ReadFromTree(tree);
+
+  int minncluTPC=50;
+  // read configuration from json file
+  if(jsonconfig!="" && gSystem->Exec(Form("ls %s > /dev/null",jsonconfig.Data()))==0){
+    printf("Read configuration from JSON file\n");
+    ptmintrack=GetJsonFloat("dpl-config_std.json","ptmintrack");
+    printf("Min pt track = %f\n",ptmintrack);
+    do3Prongs=GetJsonInteger("dpl-config_std.json","do3prong");
+    printf("do3prong     = %d\n",do3Prongs);
+    minncluTPC=GetJsonInteger("dpl-config_std.json","d_tpcnclsfound");
+    printf("minncluTPC   = %d\n",minncluTPC);
+  }
   
   TH1F* hpt_nocuts=new TH1F("hpt_nocuts"," ; pt tracks (#GeV) ; Entries",100, 0, 10.);
   TH1F* htgl_nocuts=new TH1F("htgl_nocuts", "tgl tracks (#GeV)", 100, 0., 10.);
@@ -180,13 +252,13 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root", TString output 
   
   TH1F* hdecayxyz=new TH1F("hdecayxyz", "hdecayxyz", 100, 0., 1.0);
   TH1F* hdecayxy=new TH1F("hdecayxy", "hdecayxy", 100, 0., 1.0);
-  TH1F* hmass0=new TH1F("hmass", "; Inv Mass (GeV/c^{2})", 500, 0, 5.0);
+  TH1F* hmass0=new TH1F("hmass0", "; Inv Mass (GeV/c^{2})", 500, 0, 5.0);
   TH1F* hmassP=new TH1F("hmassP", "; Inv Mass (GeV/c^{2})", 500, 0, 5.0);
   
   AliESDtrackCuts *esdTrackCuts = new AliESDtrackCuts("AliESDtrackCuts","default");
-  esdTrackCuts->SetPtRange(0.5,1.e10);
+  esdTrackCuts->SetPtRange(ptmintrack,1.e10);
   esdTrackCuts->SetEtaRange(-0.8,+0.8);
-  esdTrackCuts->SetMinNClustersTPC(50);
+  esdTrackCuts->SetMinNClustersTPC(minncluTPC);
   esdTrackCuts->SetRequireITSRefit(kTRUE);
   esdTrackCuts->SetClusterRequirementITS(AliESDtrackCuts::kSPD,
 					 AliESDtrackCuts::kAny);
@@ -195,6 +267,10 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root", TString output 
   esdTrackCuts->SetMaxDCAToVertexXY(2.4);
   esdTrackCuts->SetDCAToVertex2D(kTRUE);
 
+  Double_t d03[3]={0.,0.,0.};
+  AliAODRecoDecay* rd4massCalc3 = new AliAODRecoDecay(0x0,3,1,d03);
+
+  
   for (Int_t iEvent = 0; iEvent < tree->GetEntries(); iEvent++) {
     tree->GetEvent(iEvent);
     if (!esd) {
@@ -228,7 +304,7 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root", TString output 
     for (Int_t iTrack = 0; iTrack < totTracks; iTrack++) {
       status[iTrack]=0;
       AliESDtrack* track = esd->GetTrack(iTrack);
-      if (SingleTrkCutsSimple(track,esdTrackCuts,primvtx,fBzkG)) status[iTrack]=1; //FIXME
+      if (SingleTrkCutsSimple(track,minncluTPC,primvtx,fBzkG)) status[iTrack]=1; //FIXME
       if (track->Pt()<ptmintrack) continue;
     }
      
@@ -302,6 +378,11 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root", TString output 
 	    threeTrackArray->AddAt(track_0, 0);
 	    threeTrackArray->AddAt(track_1, 1);
 	    threeTrackArray->AddAt(track_2, 2);
+	    Int_t massSel=SelectInvMassAndPt3prong(threeTrackArray,rd4massCalc3);
+	    if(massSel==0){
+	      threeTrackArray->Clear();
+	      continue;
+	    }
 	    AliESDVertex* trkv3=ReconstructSecondaryVertex(vt,threeTrackArray,primvtx);
 	    if(trkv3==0x0){
 	      threeTrackArray->Clear();
@@ -310,8 +391,10 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root", TString output 
 	    AliAODVertex* vertexAOD3=ConvertToAODVertex(trkv3);
 	    AliAODRecoDecayHF3Prong *the3Prong = Make3Prong(threeTrackArray,vertexAOD3,fBzkG);
 	    //	  the3Prong->SetOwnPrimaryVtx(vertexAODp);
-	    Double_t mp=the3Prong->InvMassDplus();
-	    hmassP->Fill(mp);
+	    if(massSel&(1<<kbitDplus)){
+	      Double_t mp=the3Prong->InvMassDplus();
+	      hmassP->Fill(mp);
+	    }
 	    delete trkv3;
 	    delete the3Prong;
 	    delete vertexAOD3;
@@ -328,6 +411,7 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root", TString output 
     delete threeTrackArray;
   }
   delete esdTrackCuts;
+  delete rd4massCalc3;
   
   TFile* fout=new TFile(output.Data(),"recreate");
   hvx->Write();
