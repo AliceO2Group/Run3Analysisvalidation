@@ -22,6 +22,7 @@ if [ $CASE -eq 0 ]; then
   TRIGGERSTRINGRUN2=""
   TRIGGERBITRUN3=-1
   NMAX=-1
+  JSON=dpl-config_std.json
 fi
 
 if [ $CASE -eq 1 ]; then
@@ -34,6 +35,7 @@ if [ $CASE -eq 1 ]; then
   TRIGGERSTRINGRUN2="CV0L7-B-NOPF-CENT"
   TRIGGERBITRUN3=5 #FIXME
   NMAX=5
+  JSON=dpl-config_std.json
 fi
 
 if [ $CASE -eq 2 ]; then
@@ -46,6 +48,7 @@ if [ $CASE -eq 2 ]; then
   TRIGGERSTRINGRUN2=""
   TRIGGERBITRUN3=-1
   NMAX=1
+  JSON=dpl-config_std.json
 fi
 
 if [ $CASE -eq 3 ]; then
@@ -58,6 +61,7 @@ if [ $CASE -eq 3 ]; then
   TRIGGERSTRINGRUN2=""
   TRIGGERBITRUN3=-1
   NMAX=-1
+  JSON=dpl-config_std.json
 fi
 
 if [ $CASE -eq 4 ]; then
@@ -69,6 +73,7 @@ if [ $CASE -eq 4 ]; then
   STRING="00*/AliESDs.root"
   TRIGGERSTRINGRUN2=""
   TRIGGERBITRUN3=-1
+  JSON=dpl-config_std.json
   NMAX=-1
 fi
 
@@ -99,7 +104,7 @@ if [ $DORUN1 -eq 1 ]; then
     echo "$F"
     echo "$fileout" 
     #root -q -l "ComputeVerticesRun1.C(\"$F\",\"$fileout\", $APPLYPRIMVERTEXSELRUN1, $APPLYTRACKCUTRUN1, $APPLYSECVERTEXSELRUN1)" 
-    root -q -l "ComputeVerticesRun1_Opt.C(\"$F\",\"$fileout\",$PTMINTRACK,$DO3PRONG,\"$TRIGGERSTRINGRUN2\")" 
+    root -q -l "ComputeVerticesRun1_Opt.C(\"$F\",\"$fileout\",\"$JSON\")" 
     index=$((index+1))
     echo $index
   done <"$LISTNAME"
