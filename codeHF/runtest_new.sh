@@ -2,7 +2,7 @@
 
 #INPUTDIR="/data/Run3data/output" #K0* MC injected 
 
-CASE=0
+CASE=4
 DOCONVERT=1
 DORUN1=1
 DORUN3=1
@@ -66,7 +66,7 @@ if [ $CASE -eq 4 ]; then
   LISTNAME="listprodhfrun3_mc_PbPb_D2H_LHC18a4a2_cent.txt"
   AOD3NAME=AO2D.root
   MASS=1.8
-  STRING="00*/AliESDs.root"
+  STRING="001/AliESDs.root"
   TRIGGERSTRINGRUN2=""
   TRIGGERBITRUN3=-1
   JSON=dpl-config_std.json
