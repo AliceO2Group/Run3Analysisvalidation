@@ -11,21 +11,23 @@ Bool_t CompareNew(TString filerun3="AnalysisResults.root", TString filerun1="Ver
   TFile *fRun3 = new TFile(filerun3.Data());
   TFile *fRun1 = new TFile(filerun1.Data());
 
-  const int nhisto = 6;
+  const int nhisto = 7;
   TString histonameRun1[nhisto] = {"hpt_nocuts",
   				   "hpt_cuts",
                                    "hmass0", 
-				   "hvx", "hvy", "hvz"};
+				   "hvx", "hvy", "hvz", "hmassP"};
   TString histonameRun3[nhisto] = {"produce-sel-track/hpt_nocuts",
   			           "produce-sel-track/hpt_cuts",
                                    "vertexerhf-hfcandcreator2prong/hmass2",
   				   "vertexerhf-hfcandcreator2prong/hvtx_x",
   		                   "vertexerhf-hfcandcreator2prong/hvtx_y",
-  				   "vertexerhf-hfcandcreator2prong/hvtx_z"};
+  				   "vertexerhf-hfcandcreator2prong/hvtx_z",
+  				   "vertexerhf-hftrackindexskimscreator/hmass3pre"};
   TString xaxis[nhisto] = {"p_{T} before selections",
   			   "p_{T} after selections",
   		           "2-prong presel mass", 
-  		           "secondary vtx x", "secondary vtx y", "secondary vtx z",};
+  		           "secondary vtx x", "secondary vtx y", "secondary vtx z",
+                           "3-prong  mass"};
  
   TH1F* hRun1[nhisto]; 
   TH1F* hRun3[nhisto]; 
