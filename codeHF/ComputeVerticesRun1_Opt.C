@@ -60,11 +60,16 @@ Bool_t SingleTrkCuts(AliESDtrack *trk, AliESDtrackCuts *esdTrackCuts, AliESDVert
   return esdTrackCuts->AcceptTrack(trk);
 }
 
-Bool_t SingleTrkCutsSimple(AliESDtrack *trk, Int_t minclutpc, int ptmintrack, double dcatrackmin, AliESDVertex* fV1, Double_t fBzkG){
+Bool_t SingleTrkCutsSimple(AliESDtrack *trk, Int_t minclutpc, int ptmintrack, double dcatoprimxymin, AliESDVertex* fV1, Double_t fBzkG){
   Int_t status=trk->GetStatus();
   bool sel_track = status & AliESDtrack::kITSrefit && (trk->HasPointOnITSLayer(0) || trk->HasPointOnITSLayer(1));
   sel_track = sel_track && trk->GetNcls(1)>=minclutpc;
   sel_track = sel_track && trk->Pt()>ptmintrack;
+  AliExternalTrackParam * track = (AliExternalTrackParam*)trk;
+  double b[2];
+  double bCov[3];
+  track->PropagateToDCA(fV1,fBzkG,100.,b, bCov);
+  sel_track = sel_track && abs(b[0]) > dcatoprimxymin;
   return sel_track;
 }
 
@@ -227,7 +232,7 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root",
   esd->ReadFromTree(tree);
 
   int minncluTPC=50;
-  double dcatrackmin=0.;
+  float dcatoprimxymin=0.;
   // read configuration from json file
   if(jsonconfig!="" && gSystem->Exec(Form("ls %s > /dev/null",jsonconfig.Data()))==0){
     printf("Read configuration from JSON file\n");
@@ -237,15 +242,15 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root",
     printf("do3prong     = %d\n",do3Prongs);
     minncluTPC=GetJsonInteger("dpl-config_std.json","d_tpcnclsfound");
     printf("minncluTPC   = %d\n",minncluTPC);
-    dcatrackmin=GetJsonInteger("dpl-config_std.json","dcatrackmin");
-    printf("dcatrackmin   = %f\n",dcatrackmin);
+    dcatoprimxymin=GetJsonFloat("dpl-config_std.json","dcatoprimxymin");
+    printf("dcatoprimxymin   = %f\n",dcatoprimxymin);
   }
   
   TH1F* hpt_nocuts=new TH1F("hpt_nocuts"," ; pt tracks (#GeV) ; Entries",100, 0, 10.);
   TH1F* htgl_nocuts=new TH1F("htgl_nocuts", "tgl tracks (#GeV)", 100, 0., 10.);
   TH1F* hpt_cuts=new TH1F("hpt_cuts"," ; pt tracks (#GeV) ; Entries",100, 0, 10.);
+  TH1F* hdcatoprimxy_cuts=new TH1F("hdcatoprimxy_cuts", "dca xy to prim. vtx (cm)", 100, -1.0, 1.0);
   TH1F* htgl_cuts=new TH1F("htgl_cuts", "tgl tracks (#GeV)", 100, 0., 10.);
-  TH1F* hdca_cuts=new TH1F("hdca_cuts", "dca (cm)", 100, 0., 10.);
   TH1F* hvx=new TH1F("hvx"," Secondary vertex ; X vertex (cm) ; Entries",100,-0.1, 0.1);
   TH1F* hvy=new TH1F("hvy"," Secondary vertex ; Y vertex (cm) ; Entries",100,-0.1, 0.1);
   TH1F* hvz=new TH1F("hvz"," Secondary vertex ; Z vertex (cm) ; Entries",100,-0.1, 0.1);
@@ -309,7 +314,7 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root",
     for (Int_t iTrack = 0; iTrack < totTracks; iTrack++) {
       status[iTrack]=0;
       AliESDtrack* track = esd->GetTrack(iTrack);
-      if (SingleTrkCutsSimple(track,minncluTPC,ptmintrack,dcatrackmin,primvtx,fBzkG)) status[iTrack]=1; //FIXME
+      if (SingleTrkCutsSimple(track,minncluTPC,ptmintrack,dcatoprimxymin,primvtx,fBzkG)) status[iTrack]=1; //FIXME
     }
      
     TObjArray *twoTrackArray = new TObjArray(2);
@@ -325,7 +330,12 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root",
       hpt_nocuts->Fill(track_0->Pt());
       htgl_nocuts->Fill(track_0->GetTgl()); 
       if (status[iTrack_0]==0) continue;
+      AliExternalTrackParam * trackext = (AliExternalTrackParam*)track_0;
+      double b[2];
+      double bCov[3];
+      trackext->PropagateToDCA(primvtx,fBzkG,100.,b, bCov);
       hpt_cuts->Fill(track_0->Pt());
+      hdcatoprimxy_cuts->Fill(b[0]);
       htgl_cuts->Fill(track_0->GetTgl()); 
       hitsmap->Fill(track_0->GetITSClusterMap());
 
@@ -424,6 +434,7 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root",
   hpt_nocuts->Write();
   htgl_nocuts->Write();
   hpt_cuts->Write();
+  hdcatoprimxy_cuts->Write();
   htgl_cuts->Write();
   hitsmap->Write();
 

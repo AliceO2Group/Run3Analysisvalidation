@@ -84,6 +84,8 @@ void ReadJson(){
   printf("%d\n", tin);  
   float minpt=GetJsonFloat("dpl-config_std.json","ptmintrack");
   printf("%f\n", minpt);
+  float dcatoprimxymin=GetJsonFloat("dpl-config_std.json","dcatoprimxymin");
+  printf("%f\n", dcatoprimxymin);
   bool doit=GetJsonBool("dpl-config_std.json","b_propdca");
   printf("%d\n", doit);
   float  chi2=GetJsonFloat("dpl-config_std.json","d_minrelchi2change");
