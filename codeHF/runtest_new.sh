@@ -7,10 +7,6 @@ DOCONVERT=1
 DORUN1=1
 DORUN3=1
 DOCOMPARE=1
-DORUN3ONAOD=0
-APPLYSECVERTEXSELRUN1=0
-PTMINTRACK=0.
-DO3PRONG=0
 
 if [ $CASE -eq 0 ]; then
   INPUTDIR="../twikiinput"
@@ -103,7 +99,6 @@ if [ $DORUN1 -eq 1 ]; then
     echo $fileout >> "$fileouttxt"
     echo "$F"
     echo "$fileout" 
-    #root -q -l "ComputeVerticesRun1.C(\"$F\",\"$fileout\", $APPLYPRIMVERTEXSELRUN1, $APPLYTRACKCUTRUN1, $APPLYSECVERTEXSELRUN1)" 
     root -q -l "ComputeVerticesRun1_Opt.C(\"$F\",\"$fileout\",\"$JSON\")" 
     index=$((index+1))
     echo $index
@@ -122,9 +117,5 @@ fi
 
 if [ $DOCOMPARE -eq 1 ]; then
   root -q -l "CompareNew.C(\"AnalysisResults.root\",\"Vertices2prong-ITS1.root\", $MASS)"
-fi 
-
-if [ $DORUN3ONAOD -eq 1 ]; then
-  o2-analysis-vertexing-hf --aod-file /data/Run3data/5_20200131-0902/0001/AO2D.root -b --triggerindex=$TRIGGERBITRUN3
 fi 
 
