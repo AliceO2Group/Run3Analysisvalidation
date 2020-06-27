@@ -1,3 +1,4 @@
+rm *.root
 rm AnalysisR*.root
 rm *.txt
 rm output*
