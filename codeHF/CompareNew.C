@@ -22,7 +22,7 @@ Bool_t CompareNew(TString filerun3="AnalysisResults.root", TString filerun1="Ver
   				   "vertexerhf-hfcandcreator2prong/hvtx_x",
   		                   "vertexerhf-hfcandcreator2prong/hvtx_y",
   				   "vertexerhf-hfcandcreator2prong/hvtx_z",
-  				   "vertexerhf-hftrackindexskimscreator/hmass3pre"};
+  				   "vertexerhf-hftrackindexskimscreator/hmass3"};
   TString xaxis[nhisto] = {"p_{T} before selections",
   			   "p_{T} after selections",
   		           "2-prong presel mass", 
