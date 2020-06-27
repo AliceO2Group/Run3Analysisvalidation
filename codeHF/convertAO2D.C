@@ -10,7 +10,7 @@ R__ADD_INCLUDE_PATH($ALICE_PHYSICS)
 TChain* CreateChain(const char *xmlfile, const char *type="ESD");
 TChain *CreateLocalChain(const char *txtfile, const char *type, int nfiles);
 
-void convertAO2D(TString listoffiles, int ismc=1)
+void convertAO2D(TString listoffiles, int ismc=1, int nmaxevents = -1)
 {
    const char *anatype = "ESD";
    if (ismc==1){std::cout<<"I AM DOING MC"<<std::endl;}
@@ -23,8 +23,9 @@ void convertAO2D(TString listoffiles, int ismc=1)
    if (!chain) return;
    chain->SetNotify(0x0);
    ULong64_t nentries = chain->GetEntries();
+   if (nmaxevents!=-1) nentries = nmaxevents;
    cout << nentries << " entries in the chain." << endl;
-
+   cout << nentries << " converted" << endl;
    AliAnalysisManager *mgr = new AliAnalysisManager("AOD converter");
    AliESDInputHandler *handler = AddESDHandler();
    

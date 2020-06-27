@@ -45,7 +45,7 @@ Bool_t Compare(TString filerun3="AnalysisResults.root", TString filerun1="Vertic
   TH1F* hdecayxy_Run1 = (TH1F*)fRun1->Get("hdecayxy");
   
   TH1F* hmass_nocuts_Run3 = (TH1F*)fRun3->Get("vertexerhf-Dzerotask/hmass_nocuts");
-  TH1F* hmass_nocuts_Run1 = (TH1F*)fRun1->Get("hmass");
+  TH1F* hmass_nocuts_Run1 = (TH1F*)fRun1->Get("hmass0");
   
   TLegend * legend = new TLegend(0.5,0.7,0.8,0.9);
   //legend->SetHeader("Legend","C"); // option "C" allows to center the header
