@@ -116,13 +116,12 @@ fi
 
 if [ $DORUN3 -eq 1 ]; then
   rm AnalysisResults.root
-  o2-analysis-vertexing-hf --aod-file $AOD3NAME  -b --triggerindex=$TRIGGERBITRUN3
-  # o2-analysis-hftrackindexskimscreator --aod-file $AOD3NAME  -b --triggerindex=$TRIGGERBITRUN3 --ptmintrack=$PTMINTRACK --do3prong=$DO3PRONG --keep dangling
-  #o2-analysis-hftrackindexskimscreator --aod-file $AOD3NAME  -b --triggerindex=$TRIGGERBITRUN3 --ptmintrack=$PTMINTRACK --do3prong=$DO3PRONG
+  o2-analysis-hftrackindexskimscreator --shm-segment-size 16000000000 --configuration json://$PWD/dpl-config_std.json | o2-analysis-hfcandidatecreator2prong --shm-segment-size 16000000000 --configuration json://$PWD/dpl-config_std.json | o2-analysis-taskdzero --shm-segment-size 16000000000 --configuration json://$PWD/dpl-config_std.json -b
+  #o2-analysis-vertexing-hf --aod-file $AOD3NAME  -b --triggerindex=$TRIGGERBITRUN3
 fi 
 
 if [ $DOCOMPARE -eq 1 ]; then
-  root -q -l "Compare.C(\"AnalysisResults.root\",\"Vertices2prong-ITS1.root\", $MASS)"
+  root -q -l "CompareNew.C(\"AnalysisResults.root\",\"Vertices2prong-ITS1.root\", $MASS)"
 fi 
 
 if [ $DORUN3ONAOD -eq 1 ]; then

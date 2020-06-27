@@ -1,18 +1,19 @@
 {
     "internal-dpl-clock": "",
     "internal-dpl-aod-reader": {
-        "aod-file": "test_AO2D_mc_HIJING_PbPb_LHC15k1a3.root",
+        "aod-file": "AO2D_ppK0starToyMC.root",
         "start-value-enumeration": "0",
         "end-value-enumeration": "-1",
         "step-value-enumeration": "1"
     },
     "produce-sel-track": {
         "dovalplots": "true",
-        "ptmintrack": "5",
-        "d_tpcnclsfound": "70",
-        "dcatrackmin": 0.05
+        "ptmintrack": "1.",
+        "d_tpcnclsfound": "71",
+        "dcatrackmin": 0.0
     },
     "vertexerhf-hftrackindexskimscreator": {
+        "dovalplots": "true",
         "triggerindex": "-1",
         "do3prong": "1",
         "d_bz": "5",
@@ -25,6 +26,7 @@
         "d_maxmassDp": 2.1
     },
     "vertexerhf-hfcandcreator2prong": {
+        "dovalplots": "true",
         "d_bz": "5",
         "b_propdca": "true",
         "d_maxr": "200",
@@ -34,6 +36,5 @@
     },
     "hf-taskdzero": "",
     "internal-dpl-aod-writer": {
-        "keep": "dangling"
     }
 }
