@@ -324,29 +324,30 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root",
     AliVertexerTracks* vt=new AliVertexerTracks(fBzkG);
     
     Double_t mom0[3], mom1[3], mom2[3];
-    for (Int_t iTrack_0 = 0; iTrack_0 < totTracks; iTrack_0++) {
-      AliESDtrack* track_0 = esd->GetTrack(iTrack_0);
-      track_0->GetPxPyPz(mom0);
-      hpt_nocuts->Fill(track_0->Pt());
-      htgl_nocuts->Fill(track_0->GetTgl()); 
-      if (status[iTrack_0]==0) continue;
-      AliExternalTrackParam * trackext = (AliExternalTrackParam*)track_0;
+    for (Int_t iPosTrack_0 = 0; iPosTrack_0 < totTracks; iPosTrack_0++) {
+      AliESDtrack* track_p0 = esd->GetTrack(iPosTrack_0);
+      if(track_p0->Charge() < 0) continue;
+      track_p0->GetPxPyPz(mom0);
+      hpt_nocuts->Fill(track_p0->Pt());
+      htgl_nocuts->Fill(track_p0->GetTgl()); 
+      if (status[iPosTrack_0]==0) continue;
+      AliExternalTrackParam * trackext = (AliExternalTrackParam*)track_p0;
       double b[2];
       double bCov[3];
       trackext->PropagateToDCA(primvtx,fBzkG,100.,b, bCov);
-      hpt_cuts->Fill(track_0->Pt());
+      hpt_cuts->Fill(track_p0->Pt());
       hdcatoprimxy_cuts->Fill(b[0]);
-      htgl_cuts->Fill(track_0->GetTgl()); 
-      hitsmap->Fill(track_0->GetITSClusterMap());
+      htgl_cuts->Fill(track_p0->GetTgl()); 
+      hitsmap->Fill(track_p0->GetITSClusterMap());
 
-      for (Int_t iTrack_1 = iTrack_0 + 1; iTrack_1 < totTracks; iTrack_1++) {
-        AliESDtrack* track_1 = esd->GetTrack(iTrack_1);
-        track_1->GetPxPyPz(mom1);
-	if(track_1->Charge() * track_0->Charge() >0) continue;
-	if (status[iTrack_1]==0) continue;
+      for (Int_t iNegTrack_0 = 0; iNegTrack_0 < totTracks; iNegTrack_0++) {
+        AliESDtrack* track_n0 = esd->GetTrack(iNegTrack_0);
+        track_n0->GetPxPyPz(mom1);
+	if(track_n0->Charge() > 0) continue;
+	if (status[iNegTrack_0]==0) continue;
 
-        twoTrackArray->AddAt(track_0, 0);
-        twoTrackArray->AddAt(track_1, 1);
+        twoTrackArray->AddAt(track_p0, 0);
+        twoTrackArray->AddAt(track_n0, 1);
 	AliESDVertex* trkv=ReconstructSecondaryVertex(vt,twoTrackArray,primvtx);
 	if(trkv==0x0){
 	  twoTrackArray->Clear();
@@ -378,20 +379,48 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root",
 	delete vertexAOD;
 	//	printf(" masses = %f %f\n",TMath::Max(m0,m0b),TMath::Min(m0,m0b));
 	if(do3Prongs){
-	  for (Int_t iTrack_2 = iTrack_0 + 1; iTrack_2 < totTracks; iTrack_2++) {
-	    if(iTrack_2==iTrack_0 || iTrack_2==iTrack_1) continue;
-	    AliESDtrack* track_2 = esd->GetTrack(iTrack_2);
-	    if(!track_2) continue;
-	    
-	    track_2->GetPxPyPz(mom2);
-	    // the charge sign of the triplet should be -+- or +-+
-	    // exclude cases in which the 3rd and 2nd track have the same sign
-	    if(track_2->Charge() * track_1->Charge() >0) continue; 
-	    if (status[iTrack_2]==0) continue;
-	    //	  printf("  Tracks: %d(%d) %d(%d) %d(%d)\n",iTrack_0,track_0->Charge(),iTrack_1,track_1->Charge(),iTrack_2,track_2->Charge());
-	    threeTrackArray->AddAt(track_0, 0);
-	    threeTrackArray->AddAt(track_1, 1);
-	    threeTrackArray->AddAt(track_2, 2);
+	  for (Int_t iPosTrack_1 = iPosTrack_0 + 1; iPosTrack_1 < totTracks; iPosTrack_1++) {
+	    AliESDtrack* track_p1 = esd->GetTrack(iPosTrack_1);
+	    if(!track_p1) continue;
+	    if(track_p1->Charge() < 0) continue;
+	    track_p1->GetPxPyPz(mom2);
+	    if (status[iPosTrack_1]==0) continue;
+	    // order tracks according to charge: +-+
+	    threeTrackArray->AddAt(track_p0, 0);
+	    threeTrackArray->AddAt(track_n0, 1);
+	    threeTrackArray->AddAt(track_p1, 2);
+	    Int_t massSel=SelectInvMassAndPt3prong(threeTrackArray,rd4massCalc3);
+	    if(massSel==0){
+	      threeTrackArray->Clear();
+	      continue;
+	    }
+	    AliESDVertex* trkv3=ReconstructSecondaryVertex(vt,threeTrackArray,primvtx);
+	    if(trkv3==0x0){
+	      threeTrackArray->Clear();
+	      continue;
+	    }
+	    AliAODVertex* vertexAOD3=ConvertToAODVertex(trkv3);
+	    AliAODRecoDecayHF3Prong *the3Prong = Make3Prong(threeTrackArray,vertexAOD3,fBzkG);
+	    //	  the3Prong->SetOwnPrimaryVtx(vertexAODp);
+	    if(massSel&(1<<kbitDplus)){
+	      Double_t mp=the3Prong->InvMassDplus();
+	      hmassP->Fill(mp);
+	    }
+	    delete trkv3;
+	    delete the3Prong;
+	    delete vertexAOD3;
+	    threeTrackArray->Clear();
+	  }
+	  for (Int_t iNegTrack_1 = iNegTrack_0 + 1; iNegTrack_1 < totTracks; iNegTrack_1++) {
+	    AliESDtrack* track_n1 = esd->GetTrack(iNegTrack_1);
+	    if(!track_n1) continue;
+	    if(track_n1->Charge() > 0) continue;
+	    track_n1->GetPxPyPz(mom2);
+	    if (status[iNegTrack_1]==0) continue;
+	    // order tracks according to charge: -+-
+	    threeTrackArray->AddAt(track_n0, 0);
+	    threeTrackArray->AddAt(track_p0, 1);
+	    threeTrackArray->AddAt(track_n1, 2);
 	    Int_t massSel=SelectInvMassAndPt3prong(threeTrackArray,rd4massCalc3);
 	    if(massSel==0){
 	      threeTrackArray->Clear();
