@@ -264,6 +264,9 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root",
   TH1F* hdecayxy=new TH1F("hdecayxy", "hdecayxy", 100, 0., 1.0);
   TH1F* hmass0=new TH1F("hmass0", "; Inv Mass (GeV/c^{2})", 500, 0, 5.0);
   TH1F* hmassP=new TH1F("hmassP", "; Inv Mass (GeV/c^{2})", 500, 0, 5.0);
+  TH1F* hptD0=new TH1F("hptD0"," ; pt D0 (#GeV) ; Entries", 100, 0, 10.);
+  TH1F* hptprong0=new TH1F("hptprong0"," ; pt prong0 (#GeV) ; Entries", 100, 0, 10.);
+  TH1F* hptprong1=new TH1F("hptprong1"," ; pt prong1 (#GeV) ; Entries", 100, 0, 10.);
   
   AliESDtrackCuts *esdTrackCuts = new AliESDtrackCuts("AliESDtrackCuts","default");
   esdTrackCuts->SetPtRange(ptmintrack,1.e10);
@@ -374,6 +377,9 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root",
 	Double_t m0b=the2Prong->InvMassD0bar();
         hmass0->Fill(m0);
         hmass0->Fill(m0b);
+	hptD0->Fill(the2Prong->Pt());
+	hptprong0->Fill(the2Prong->PtProng(0));
+	hptprong1->Fill(the2Prong->PtProng(1));
 	delete the2Prong;
 	delete vertexAOD;
 	//	printf(" masses = %f %f\n",TMath::Max(m0,m0b),TMath::Min(m0,m0b));
@@ -445,6 +451,9 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root",
   hdecayxy->Write();
   hmass0->Write();
   hmassP->Write();
+  hptD0->Write();
+  hptprong0->Write();
+  hptprong1->Write();
 
   fout->Close();
   return true; 

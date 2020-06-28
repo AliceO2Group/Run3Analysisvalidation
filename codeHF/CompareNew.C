@@ -11,12 +11,13 @@ Bool_t CompareNew(TString filerun3="AnalysisResults.root", TString filerun1="Ver
   TFile *fRun3 = new TFile(filerun3.Data());
   TFile *fRun1 = new TFile(filerun1.Data());
 
-  const int nhisto = 8;
+  const int nhisto = 13;
   TString histonameRun1[nhisto] = {"hpt_nocuts",
   				   "hpt_cuts",
 				   "hdcatoprimxy_cuts",
                                    "hmass0", 
-				   "hvx", "hvy", "hvz", "hmassP"};
+				   "hvx", "hvy", "hvz", "hmassP", 
+ 			           "hdecayxyz", "hdecayxy", "hptD0", "hptprong0", "hptprong1"};
   TString histonameRun3[nhisto] = {"produce-sel-track/hpt_nocuts",
   			           "produce-sel-track/hpt_cuts",
   			           "produce-sel-track/hdcatoprimxy_cuts",
@@ -24,13 +25,19 @@ Bool_t CompareNew(TString filerun3="AnalysisResults.root", TString filerun1="Ver
   				   "vertexerhf-hfcandcreator2prong/hvtx_x",
   		                   "vertexerhf-hfcandcreator2prong/hvtx_y",
   				   "vertexerhf-hfcandcreator2prong/hvtx_z",
-  				   "vertexerhf-hftrackindexskimscreator/hmass3"};
+  				   "vertexerhf-hftrackindexskimscreator/hmass3",
+  				   "hf-taskdzero/declength",
+  				   "hf-taskdzero/declengthxy",
+  				   "hf-taskdzero/hptcand",
+  				   "hf-taskdzero/hptprong0",
+  				   "hf-taskdzero/hptprong1"};
   TString xaxis[nhisto] = {"p_{T} before selections",
   			   "p_{T} after selections",
   			   "dca xy to prim vtx after selections",
   		           "2-prong mass", 
   		           "secondary vtx x", "secondary vtx y", "secondary vtx z",
-                           "3-prong  mass"};
+                           "3-prong  mass",
+  			   "decay length", "decay length XY", "p_{T} Dzero", "p_{T} prong 0", "p_{T} prong 0"};
  
   TH1F* hRun1[nhisto]; 
   TH1F* hRun3[nhisto]; 
@@ -39,8 +46,8 @@ Bool_t CompareNew(TString filerun3="AnalysisResults.root", TString filerun1="Ver
     hRun3[index] = (TH1F*)fRun3->Get(histonameRun3[index].Data());
   }
 
-  TCanvas* cv=new TCanvas("cv","Vertex",1600,1600);
-  cv->Divide(3,3);
+  TCanvas* cv=new TCanvas("cv","Vertex",3000,1600);
+  cv->Divide(5,3);
   gPad-> SetLogy();
   for (int index=0; index<nhisto; index++){
     cv->cd(index+1); 
