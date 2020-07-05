@@ -317,6 +317,8 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root",
     for (Int_t iTrack = 0; iTrack < totTracks; iTrack++) {
       status[iTrack]=0;
       AliESDtrack* track = esd->GetTrack(iTrack);
+      hpt_nocuts->Fill(track->Pt());
+      htgl_nocuts->Fill(track->GetTgl()); 
       if (SingleTrkCutsSimple(track,minncluTPC,ptmintrack,dcatoprimxymin,primvtx,fBzkG)) status[iTrack]=1; //FIXME
     }
      
@@ -329,10 +331,7 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root",
     Double_t mom0[3], mom1[3], mom2[3];
     for (Int_t iPosTrack_0 = 0; iPosTrack_0 < totTracks; iPosTrack_0++) {
       AliESDtrack* track_p0 = esd->GetTrack(iPosTrack_0);
-      if(track_p0->Charge() < 0) continue;
       track_p0->GetPxPyPz(mom0);
-      hpt_nocuts->Fill(track_p0->Pt());
-      htgl_nocuts->Fill(track_p0->GetTgl()); 
       if (status[iPosTrack_0]==0) continue;
       AliExternalTrackParam * trackext = (AliExternalTrackParam*)track_p0;
       double b[2];
@@ -342,6 +341,7 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root",
       hdcatoprimxy_cuts->Fill(b[0]);
       htgl_cuts->Fill(track_p0->GetTgl()); 
       hitsmap->Fill(track_p0->GetITSClusterMap());
+      if(track_p0->Charge() < 0) continue;
 
       for (Int_t iNegTrack_0 = 0; iNegTrack_0 < totTracks; iNegTrack_0++) {
         AliESDtrack* track_n0 = esd->GetTrack(iNegTrack_0);
