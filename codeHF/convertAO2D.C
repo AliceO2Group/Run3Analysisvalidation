@@ -29,7 +29,7 @@ void convertAO2D(TString listoffiles, int ismc=1, int nmaxevents = -1)
    AliAnalysisManager *mgr = new AliAnalysisManager("AOD converter");
    AliESDInputHandler *handler = AddESDHandler();
    
-   //AddTaskMultSelection();
+   AddTaskMultSelection();
    AddTaskPhysicsSelection();
    AddTaskPIDResponse();
    if (ismc) AliMCEventHandler *handlerMC  = AddMCHandler();
