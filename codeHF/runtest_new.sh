@@ -1,12 +1,12 @@
 #!/bin/bash
 
-#INPUTDIR="/data/Run3data/output" #K0* MC injected 
+bash clean.sh
 
 CASE=4
-DOCONVERT=1
-DORUN1=1
-DORUN3=1
-DOCOMPARE=1
+DOCONVERT=1 # Convert AliESDs.root to AO2D.root.
+DORUN1=1 # Run the tasks with AliPhysics.
+DORUN3=1 # Run the tasks with O2.
+DOCOMPARE=1 # Compare AliPhysics and O2 output.
 
 if [ $CASE -eq 0 ]; then
   INPUTDIR="../twikiinput"
@@ -73,49 +73,53 @@ if [ $CASE -eq 4 ]; then
   NMAX=-1
 fi
 
+#INPUTDIR="/data/Run3data/output" #K0* MC injected
 #INPUTDIR="/data/Run3data/alice_sim_2018_LHC18a4a2_cent/282099" #D2H MC sample
 #INPUTDIR="/data/Run3data/alice_sim_2015_LHC15k1a3_246391/246391" #HIJING MC PbPb
 
+rm -f *.root
+rm -f *.txt
 
-rm *.root
-rm *.txt
+# Convert AliESDs.root to AO2D.root.
 if [ $DOCONVERT -eq 1 ]; then
-  rm $LISTNAME
+  rm -f $LISTNAME
   ls $INPUTDIR/$STRING >> $LISTNAME
   echo $LISTNAME
-  root -q -l "convertAO2D.C(\"$LISTNAME\", $ISMC, $NMAX)"  
+  root -b -q -l "convertAO2D.C(\"$LISTNAME\", $ISMC, $NMAX)"
   mv AO2D.root $AOD3NAME
 fi
 
+# Run the tasks with AliPhysics.
 if [ $DORUN1 -eq 1 ]; then
-  rm Vertices2prong-ITS1_*.root 
+  rm -f Vertices2prong-ITS1_*.root
   fileouttxt="outputlist.txt"
-  rm $fileouttxt
-  
+  rm -f $fileouttxt
+
   index=0
   while read F  ; do
     fileout="Vertices2prong-ITS1_$index.root"
-    rm "$fileout"
+    rm -f "$fileout"
     echo $fileout >> "$fileouttxt"
     echo "$F"
-    echo "$fileout" 
-    root -q -l "ComputeVerticesRun1_Opt.C(\"$F\",\"$fileout\",\"$JSON\")" 
+    echo "$fileout"
+    root -b -q -l "ComputeVerticesRun1_Opt.C(\"$F\",\"$fileout\",\"$JSON\")"
     index=$((index+1))
     echo $index
   done <"$LISTNAME"
-  rm "Vertices2prong-ITS1.root" 
+  rm -f "Vertices2prong-ITS1.root"
   hadd Vertices2prong-ITS1.root @"$fileouttxt"
-
-  
 fi
 
+# Run the tasks with O2.
 if [ $DORUN3 -eq 1 ]; then
-  rm AnalysisResults.root
-  o2-analysis-hftrackindexskimscreator --shm-segment-size 16000000000 --configuration json://$PWD/dpl-config_std.json --aod-file $AOD3NAME | o2-analysis-hfcandidatecreator2prong --shm-segment-size 16000000000 --configuration json://$PWD/dpl-config_std.json --aod-file $AOD3NAME | o2-analysis-taskdzero --shm-segment-size 16000000000 --configuration json://$PWD/dpl-config_std.json --aod-file $AOD3NAME -b
+  rm -f AnalysisResults.root
+  O2ARGS="--shm-segment-size 16000000000 --configuration json://$PWD/dpl-config_std.json --aod-file $AOD3NAME"
+  o2-analysis-hftrackindexskimscreator $O2ARGS | o2-analysis-hfcandidatecreator2prong $O2ARGS | o2-analysis-taskdzero $O2ARGS -b
   #o2-analysis-vertexing-hf --aod-file $AOD3NAME  -b --triggerindex=$TRIGGERBITRUN3
-fi 
+fi
 
+# Compare AliPhysics and O2 output.
 if [ $DOCOMPARE -eq 1 ]; then
-  root -q -l "CompareNew.C(\"AnalysisResults.root\",\"Vertices2prong-ITS1.root\", $MASS)"
-fi 
+  root -b -q -l "CompareNew.C(\"AnalysisResults.root\",\"Vertices2prong-ITS1.root\", $MASS)"
+fi
 
