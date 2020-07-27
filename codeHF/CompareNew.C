@@ -1,4 +1,4 @@
-Bool_t CompareNew(TString filerun3="AnalysisResults.root", TString filerun1="Vertices2prong-ITS1.root", double mass=1.8){
+Int_t CompareNew(TString filerun3="AnalysisResults.root", TString filerun1="Vertices2prong-ITS1.root", double mass=1.8){
 
   gROOT->SetStyle("Plain");	
   gStyle->SetOptStat(0);
@@ -64,8 +64,5 @@ Bool_t CompareNew(TString filerun3="AnalysisResults.root", TString filerun1="Ver
     legend->Draw();
   }
   cv->SaveAs("optimisedcomp.pdf");
-  return true; 
+  return 0;
 }
-
-
-

@@ -210,7 +210,7 @@ AliAODRecoDecayHF3Prong* Make3Prong(TObjArray *threeTrackArray, AliAODVertex *se
   return the3Prong;
 }
 
-Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root",
+Int_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root",
 			       TString output = "Vertices23prong-ITS1.root",
 			       TString jsonconfig = "dpl-config_std.json",
 			       double ptmintrack=0.,
@@ -220,14 +220,14 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root",
   TFile* esdFile = TFile::Open(esdfile.Data());
   if (!esdFile || !esdFile->IsOpen()) {
     printf("Error in opening ESD file");
-    return kFALSE;
+    return 1;
   }
   
   AliESDEvent * esd = new AliESDEvent;
   TTree* tree = (TTree*) esdFile->Get("esdTree");
   if (!tree) {
     printf("Error: no ESD tree found");
-    return kFALSE;
+    return 1;
   }
   esd->ReadFromTree(tree);
 
@@ -288,7 +288,7 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root",
     tree->GetEvent(iEvent);
     if (!esd) {
       printf("Error: no ESD object found for event %d", iEvent);
-      return kFALSE;
+      return 1;
     }
     TString trClass=esd->GetFiredTriggerClasses();
     if(triggerstring != "" && !trClass.Contains(triggerstring)) continue;
@@ -300,7 +300,7 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root",
     Int_t totTracks=TMath::Min(maxTracksToProcess,esd->GetNumberOfTracks());
 
     AliESDVertex *primvtx = (AliESDVertex*)esd->GetPrimaryVertex();
-    if(!primvtx) return kFALSE;
+    if(!primvtx) return 1;
     TString title=primvtx->GetTitle();
     if(primvtx->IsFromVertexer3D() || primvtx->IsFromVertexerZ()) continue;
     if(primvtx->GetNContributors()<2) continue;
@@ -485,5 +485,5 @@ Bool_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root",
   hptprong1->Write();
 
   fout->Close();
-  return true; 
+  return 0;
 }
