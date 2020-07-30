@@ -118,7 +118,7 @@ if [ $DORUN1 -eq 1 ]; then
     echo "Index $index"
     echo "Input file: $F"
     echo "Output file: $fileout"
-    $ENVALI $CMDROOT "ComputeVerticesRun1_Opt.C(\"$F\",\"$fileout\",\"$JSON\")" >> $LOGFILE 2>&1
+    $ENVALI $CMDROOT "ComputeVerticesRun1.C(\"$F\",\"$fileout\",\"$JSON\")" >> $LOGFILE 2>&1
     if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
     index=$((index+1))
   done <"$LISTNAME"
@@ -161,7 +161,7 @@ if [ $DOCOMPARE -eq 1 ]; then
     fi
   done
   if [ ! $ok -eq 1 ]; then exit 1; fi
-  $ENVALI $CMDROOT "CompareNew.C(\"$FILEOUTO2\",\"$FILEOUTALI\", $MASS)" > $LOGFILE 2>&1
+  $ENVALI $CMDROOT "Compare.C(\"$FILEOUTO2\",\"$FILEOUTALI\", $MASS)" > $LOGFILE 2>&1
   if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
 fi
 

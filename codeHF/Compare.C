@@ -1,4 +1,4 @@
-Int_t CompareNew(TString filerun3="AnalysisResults.root", TString filerun1="Vertices2prong-ITS1.root", double mass=1.8){
+Int_t Compare(TString filerun3="AnalysisResults.root", TString filerun1="Vertices2prong-ITS1.root", double mass=1.8){
 
   gROOT->SetStyle("Plain");	
   gStyle->SetOptStat(0);

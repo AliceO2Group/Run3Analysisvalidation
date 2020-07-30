@@ -210,7 +210,7 @@ AliAODRecoDecayHF3Prong* Make3Prong(TObjArray *threeTrackArray, AliAODVertex *se
   return the3Prong;
 }
 
-Int_t ComputeVerticesRun1_Opt(TString esdfile = "AliESDs.root",
+Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
 			       TString output = "Vertices23prong-ITS1.root",
 			       TString jsonconfig = "dpl-config_std.json",
 			       double ptmintrack=0.,
