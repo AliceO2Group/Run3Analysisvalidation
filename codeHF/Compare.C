@@ -63,6 +63,6 @@ Int_t Compare(TString filerun3="AnalysisResults.root", TString filerun1="Vertice
     legend->AddEntry(hRun3[index],"Run3","f");
     legend->Draw();
   }
-  cv->SaveAs("optimisedcomp.pdf");
+  cv->SaveAs("comparison.pdf");
   return 0;
 }
