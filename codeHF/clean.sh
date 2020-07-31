@@ -9,4 +9,4 @@ rm -f *.log
 rm -f output*
 rm -f localhost*
 rm -f dpl-config.json
-
+git checkout -- comparison_ref.pdf
