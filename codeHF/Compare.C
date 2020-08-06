@@ -16,8 +16,15 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
                                    "hpt_cuts",
                                    "hdcatoprimxy_cuts",
                                    "hmass0",
-                                   "hvx", "hvy", "hvz", "hmassP",
-                                   "hdecayxyz", "hdecayxy", "hptD0", "hptprong0", "hptprong1"};
+                                   "hvx",
+                                   "hvy",
+                                   "hvz",
+                                   "hmassP",
+                                   "hdecayxyz",
+                                   "hdecayxy",
+                                   "hptD0",
+                                   "hptprong0",
+                                   "hptprong1"};
   TString histonameRun3[nhisto] = {"produce-sel-track/hpt_nocuts",
                                    "produce-sel-track/hpt_cuts",
                                    "produce-sel-track/hdcatoprimxy_cuts",
@@ -31,13 +38,19 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
                                    "hf-taskdzero/hptcand",
                                    "hf-taskdzero/hptprong0",
                                    "hf-taskdzero/hptprong1"};
-  TString xaxis[nhisto] = {"p_{T} before selections",
-                           "p_{T} after selections",
-                           "dca xy to prim vtx after selections",
-                           "2-prong mass",
-                           "secondary vtx x", "secondary vtx y", "secondary vtx z",
-                           "3-prong  mass",
-                           "decay length", "decay length XY", "p_{T} Dzero", "p_{T} prong 0", "p_{T} prong 0"};
+  TString xaxis[nhisto] = {"#it{p}_{T} before selections",
+                           "#it{p}_{T} after selections",
+                           "DCA XY to prim vtx after selections",
+                           "2-prong mass (#pi K)",
+                           "secondary vtx x",
+                           "secondary vtx y",
+                           "secondary vtx z",
+                           "3-prong mass (#pi K #pi)",
+                           "decay length",
+                           "decay length XY",
+                           "#it{p}_{T} D^{0}",
+                           "#it{p}_{T} prong 0",
+                           "#it{p}_{T} prong 1"};
 
   TH1F* hRun1[nhisto];
   TH1F* hRun3[nhisto];
