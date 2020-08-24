@@ -37,7 +37,7 @@ fi
 
 if [ $CASE -eq 2 ]; then
   INPUTDIR="/data/Run3data/alice_sim_2015_LHC15k1a3_246391/246391"
-  ISMC=0
+  ISMC=1
   LISTNAME="listprodhfrun3_mc_HIJING_PbPb_LHC15k1a3.txt"
   AOD3NAME=AO2D.root
   MASS=1.8
@@ -84,6 +84,7 @@ ls $INPUTDIR/$STRING > $LISTNAME
 # Output files
 FILEOUTALI="Vertices2prong-ITS1.root"
 FILEOUTO2="AnalysisResults.root"
+FILEOUTOMC="AnalysisResultsMCstud.root"
 
 # Steering commands
 ENVALI="alienv setenv AliPhysics/latest -c"
@@ -99,6 +100,18 @@ if [ $DOCONVERT -eq 1 ]; then
   if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
   rm -f $FILEOUTO2
   #mv AO2D.root $AOD3NAME
+fi
+
+# Perform simple mc studies on tracks
+if [ $ISMC -eq 1 ]; then
+  LOGFILE="log_mcstudies.log"
+  rm -f $FILEOUTOMC
+  if [ ! -f "$AOD3NAME" ]; then
+    echo "Error: File $AOD3NAME does not exist."
+    exit 1
+  fi
+  o2-analysistutorial-mc-histograms --aod-file $AOD3NAME -b
+  mv AnalysisResults.root $FILEOUTOMC
 fi
 
 # Run the tasks with AliPhysics.
