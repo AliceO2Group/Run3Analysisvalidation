@@ -5,7 +5,7 @@ bash clean.sh
 CASE=4
 
 DOCONVERT=1 # Convert AliESDs.root to AO2D.root.
-DOQA=1 # Run the QA task
+DOQA=0 # Run the QA task
 DORUN1=1 # Run the tasks with AliPhysics.
 DORUN3=1 # Run the tasks with O2.
 DOCOMPARE=1 # Compare AliPhysics and O2 output.
