@@ -5,6 +5,7 @@ bash clean.sh
 CASE=4
 
 DOCONVERT=1 # Convert AliESDs.root to AO2D.root.
+DOQA=1 # Run the QA task
 DORUN1=1 # Run the tasks with AliPhysics.
 DORUN3=1 # Run the tasks with O2.
 DOCOMPARE=1 # Compare AliPhysics and O2 output.
@@ -84,7 +85,7 @@ ls $INPUTDIR/$STRING > $LISTNAME
 # Output files
 FILEOUTALI="Vertices2prong-ITS1.root"
 FILEOUTO2="AnalysisResults.root"
-FILEOUTOMC="AnalysisResultsMCstud.root"
+FILEOUTQA="AnalysisResultsQA.root"
 
 # Steering commands
 ENVALI="alienv setenv AliPhysics/latest -c"
@@ -102,17 +103,25 @@ if [ $DOCONVERT -eq 1 ]; then
   #mv AO2D.root $AOD3NAME
 fi
 
-# Perform simple mc studies on tracks
-if [ $ISMC -eq 1 ]; then
-  LOGFILE="log_mcstudies.log"
+# Perform simple QA studies
+if [ $DOQA -eq 1 ]; then
+  LOGFILE="log_QA.log"
   rm -f $FILEOUTOMC
   if [ ! -f "$AOD3NAME" ]; then
     echo "Error: File $AOD3NAME does not exist."
     exit 1
   fi
-  o2-analysistutorial-mc-histograms --aod-file $AOD3NAME -b
-  mv AnalysisResults.root $FILEOUTOMC
+  O2EXEC="o2-analysis-qatask --aod-file $AOD3NAME -b"
+  TMPSCRIPT="tmpscript.sh"
+  cat << EOF > $TMPSCRIPT # Create a temporary script with the full O2 commands.
+#!/bin/bash
+$O2EXEC
+EOF
+  $ENVO2 bash $TMPSCRIPT > $LOGFILE 2>&1 # Run the script in the O2 environment.
+  if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
+  rm -f $TMPSCRIPT
 fi
+mv AnalysisResults.root $FILEOUTQA
 
 # Run the tasks with AliPhysics.
 if [ $DORUN1 -eq 1 ]; then
