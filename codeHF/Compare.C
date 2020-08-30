@@ -11,7 +11,7 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
   TFile* fRun3 = new TFile(filerun3.Data());
   TFile* fRun1 = new TFile(filerun1.Data());
 
-  const int nhisto = 13;
+  const int nhisto = 15;
   TString histonameRun1[nhisto] = {"hpt_nocuts",
                                    "hpt_cuts",
                                    "hdcatoprimxy_cuts",
@@ -24,20 +24,24 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
                                    "hdecayxy",
                                    "hptD0",
                                    "hptprong0",
-                                   "hptprong1"};
-  TString histonameRun3[nhisto] = {"produce-sel-track/hpt_nocuts",
-                                   "produce-sel-track/hpt_cuts",
-                                   "produce-sel-track/hdcatoprimxy_cuts",
-                                   "vertexerhf-hfcandcreator2prong/hmass2",
-                                   "vertexerhf-hfcandcreator2prong/hvtx_x",
-                                   "vertexerhf-hfcandcreator2prong/hvtx_y",
-                                   "vertexerhf-hfcandcreator2prong/hvtx_z",
-                                   "vertexerhf-hftrackindexskimscreator/hmass3",
-                                   "hf-taskdzero/declength",
-                                   "hf-taskdzero/declengthxy",
-                                   "hf-taskdzero/hptcand",
-                                   "hf-taskdzero/hptprong0",
-                                   "hf-taskdzero/hptprong1"};
+                                   "hptprong1",
+                                   "hd0",
+                                   "hd0d0"};
+  TString histonameRun3[nhisto] = {"hf-produce-sel-track/hpt_nocuts",
+                                   "hf-produce-sel-track/hpt_cuts",
+                                   "hf-produce-sel-track/hdcatoprimxy_cuts",
+                                   "hf-task-d0/hmass",
+                                   "hf-cand-creator-2prong/hvtx_x",
+                                   "hf-cand-creator-2prong/hvtx_y",
+                                   "hf-cand-creator-2prong/hvtx_z",
+                                   "hf-track-index-skims-creator/hmass3",
+                                   "hf-task-d0/declength",
+                                   "hf-task-d0/declengthxy",
+                                   "hf-task-d0/hptcand",
+                                   "hf-task-d0/hptprong0",
+                                   "hf-task-d0/hptprong1",
+                                   "hf-task-d0/hd0",
+                                   "hf-task-d0/hd0d0"};
   TString xaxis[nhisto] = {"#it{p}_{T} before selections",
                            "#it{p}_{T} after selections",
                            "DCA XY to prim vtx after selections",
@@ -50,13 +54,23 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
                            "decay length XY",
                            "#it{p}_{T} D^{0}",
                            "#it{p}_{T} prong 0",
-                           "#it{p}_{T} prong 1"};
+                           "#it{p}_{T} prong 1",
+                           "d0 (cm)",
+                           "d0d0 (cm^{2})"};
 
   TH1F* hRun1[nhisto];
   TH1F* hRun3[nhisto];
   for (int index = 0; index < nhisto; index++) {
     hRun1[index] = (TH1F*)fRun1->Get(histonameRun1[index].Data());
+    if (!hRun1[index]) {
+      printf("Failed to load %s from %s\n", histonameRun1[index].Data(), filerun1.Data());
+      return 1;
+    }
     hRun3[index] = (TH1F*)fRun3->Get(histonameRun3[index].Data());
+    if (!hRun3[index]) {
+      printf("Failed to load %s from %s\n", histonameRun3[index].Data(), filerun3.Data());
+      return 1;
+    }
   }
 
   TCanvas* cv = new TCanvas("cv", "Vertex", 3000, 1600);

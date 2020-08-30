@@ -159,8 +159,10 @@ if [ $DORUN3 -eq 1 ]; then
     echo "Error: File $AOD3NAME does not exist."
     exit 1
   fi
-  O2ARGS="--shm-segment-size 16000000000 --configuration json://$PWD/dpl-config_std.json --aod-file $AOD3NAME"
-  O2EXEC="o2-analysis-hftrackindexskimscreator $O2ARGS | o2-analysis-hfcandidatecreator2prong $O2ARGS | o2-analysis-taskdzero $O2ARGS -b"
+  # Option --configuration has priority over --aod-file.
+#  O2ARGS="--shm-segment-size 16000000000 --configuration json://$PWD/dpl-config_std.json --aod-file $AOD3NAME"
+  O2ARGS="--shm-segment-size 16000000000 --configuration json://$PWD/dpl-config_std.json"
+  O2EXEC="o2-analysis-hf-track-index-skims-creator $O2ARGS | o2-analysis-hf-candidate-creator-2prong $O2ARGS | o2-analysis-hf-task-d0 $O2ARGS -b"
   TMPSCRIPT="tmpscript.sh"
   cat << EOF > $TMPSCRIPT # Create a temporary script with the full O2 commands.
 #!/bin/bash
@@ -189,4 +191,3 @@ fi
 
 echo -e "\nDone"
 exit 0
-
