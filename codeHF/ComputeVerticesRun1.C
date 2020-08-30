@@ -94,7 +94,7 @@ AliAODVertex* ConvertToAODVertex(AliESDVertex* trkv)
 {
   Double_t pos_[3], cov_[6], chi2perNDF_;
   trkv->GetXYZ(pos_);       // position
-  trkv->GetCovMatrix(cov_); //covariance matrix
+  trkv->GetCovMatrix(cov_); // covariance matrix
   chi2perNDF_ = trkv->GetChi2toNDF();
   double dispersion_ = trkv->GetDispersion();
   //  printf(" pos_ %f %f %f \n", pos_[0], pos_[1], pos_[2]);
@@ -300,6 +300,8 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
   TH1F* hptD0 = new TH1F("hptD0", " ; pt D0 (#GeV) ; Entries", 100, 0, 10.);
   TH1F* hptprong0 = new TH1F("hptprong0", " ; pt prong0 (#GeV) ; Entries", 100, 0, 10.);
   TH1F* hptprong1 = new TH1F("hptprong1", " ; pt prong1 (#GeV) ; Entries", 100, 0, 10.);
+  TH1F* hd0 = new TH1F("hd0", "dca xy to prim. vertex (cm)", 100, -1.0, 1.0);
+  TH1F* hd0d0 = new TH1F("hd0d0", "product of dca xy to prim. vertex (cm^{2})", 100, -1.0, 1.0);
 
   AliESDtrackCuts* esdTrackCuts = new AliESDtrackCuts("AliESDtrackCuts", "default");
   esdTrackCuts->SetPtRange(ptmintrack, 1.e10);
@@ -398,7 +400,7 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
           continue;
         }
 
-        //	printf(" px track_0 %.4f, track_1 %.4f \n", TMath::Max(track_0->Px(),track_1->Px()),TMath::Min(track_0->Px(),track_1->Px()));
+        //  printf(" px track_0 %.4f, track_1 %.4f \n", TMath::Max(track_0->Px(),track_1->Px()),TMath::Min(track_0->Px(),track_1->Px()));
         hvx->Fill(trkv->GetX());
         hvy->Fill(trkv->GetY());
         hvz->Fill(trkv->GetZ());
@@ -414,7 +416,7 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
         AliAODVertex* vertexAOD = ConvertToAODVertex(trkv);
         delete trkv;
         AliAODRecoDecayHF2Prong* the2Prong = Make2Prong(twoTrackArray, vertexAOD, fBzkG);
-        //        the2Prong->SetOwnPrimaryVtx(vertexAODp);
+        //  the2Prong->SetOwnPrimaryVtx(vertexAODp);
         Double_t m0 = the2Prong->InvMassD0();
         Double_t m0b = the2Prong->InvMassD0bar();
         hmass0->Fill(m0);
@@ -422,9 +424,12 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
         hptD0->Fill(the2Prong->Pt());
         hptprong0->Fill(the2Prong->PtProng(0));
         hptprong1->Fill(the2Prong->PtProng(1));
+        hd0->Fill(the2Prong->Getd0Prong(0));
+        hd0->Fill(the2Prong->Getd0Prong(1));
+        hd0d0->Fill(the2Prong->Prodd0d0());
         delete the2Prong;
         delete vertexAOD;
-        //	printf(" masses = %f %f\n",TMath::Max(m0,m0b),TMath::Min(m0,m0b));
+        //  printf(" masses = %f %f\n",TMath::Max(m0,m0b),TMath::Min(m0,m0b));
         if (do3Prongs) {
           for (Int_t iPosTrack_1 = iPosTrack_0 + 1; iPosTrack_1 < totTracks; iPosTrack_1++) {
             AliESDtrack* track_p1 = esd->GetTrack(iPosTrack_1);
@@ -451,7 +456,7 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
             }
             AliAODVertex* vertexAOD3 = ConvertToAODVertex(trkv3);
             AliAODRecoDecayHF3Prong* the3Prong = Make3Prong(threeTrackArray, vertexAOD3, fBzkG);
-            //	  the3Prong->SetOwnPrimaryVtx(vertexAODp);
+            //  the3Prong->SetOwnPrimaryVtx(vertexAODp);
             if (massSel & (1 << kbitDplus)) {
               Double_t mp = the3Prong->InvMassDplus();
               hmassP->Fill(mp);
@@ -486,7 +491,7 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
             }
             AliAODVertex* vertexAOD3 = ConvertToAODVertex(trkv3);
             AliAODRecoDecayHF3Prong* the3Prong = Make3Prong(threeTrackArray, vertexAOD3, fBzkG);
-            //	  the3Prong->SetOwnPrimaryVtx(vertexAODp);
+            //  the3Prong->SetOwnPrimaryVtx(vertexAODp);
             if (massSel & (1 << kbitDplus)) {
               Double_t mp = the3Prong->InvMassDplus();
               hmassP->Fill(mp);
@@ -499,7 +504,7 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
         }
         twoTrackArray->Clear();
       }
-      //      delete vertexAODp;
+      //  delete vertexAODp;
     }
     delete[] status;
     delete vt;
@@ -530,6 +535,8 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
   hptD0->Write();
   hptprong0->Write();
   hptprong1->Write();
+  hd0->Write();
+  hd0d0->Write();
 
   fout->Close();
   return 0;
