@@ -5,9 +5,9 @@ bash clean.sh
 CASE=4
 
 DOCONVERT=1 # Convert AliESDs.root to AO2D.root.
-DOQA=0 # Run the QA task
-DORUN1=1 # Run the tasks with AliPhysics.
-DORUN3=1 # Run the tasks with O2.
+DOQA=0      # Run the QA task with O2.
+DORUN1=1    # Run the heavy-flavour tasks with AliPhysics.
+DORUN3=1    # Run the heavy-flavour tasks with O2.
 DOCOMPARE=1 # Compare AliPhysics and O2 output.
 
 if [ $CASE -eq 0 ]; then
@@ -65,7 +65,7 @@ fi
 if [ $CASE -eq 4 ]; then
   INPUTDIR="/data/Run3data/alice_sim_2018_LHC18a4a2_cent/282099"
   ISMC=0
-  LISTNAME="listprodhfrun3_mc_PbPb_D2H_LHC18a4a2_cent.txt"
+  LISTNAME="listprodhfrun3_mc_pp_D2H_LHC18a4a2_cent.txt"
   AOD3NAME=AO2D.root
   MASS=1.8
   STRING="001/AliESDs.root"
@@ -96,6 +96,10 @@ CMDROOT="root -b -q -l"
 if [ $DOCONVERT -eq 1 ]; then
   LOGFILE="log_convert.log"
   echo -e "\nConverting... (logfile: $LOGFILE)"
+  if [ $DOQA -eq 1 ]; then
+    echo "Setting MC mode on."
+    ISMC=1
+  fi
   echo "Input files taken from: $LISTNAME"
   $ENVALI $CMDROOT "convertAO2D.C(\"$LISTNAME\", $ISMC, $NMAX)" > $LOGFILE 2>&1
   if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
@@ -103,10 +107,11 @@ if [ $DOCONVERT -eq 1 ]; then
   #mv AO2D.root $AOD3NAME
 fi
 
-# Perform simple QA studies
+# Perform simple QA studies with O2.
 if [ $DOQA -eq 1 ]; then
-  LOGFILE="log_QA.log"
-  rm -f $FILEOUTOMC
+  LOGFILE="log_o2_qa.log"
+  echo -e "\nRunning the QA task with O2... (logfile: $LOGFILE)"
+  rm -f $FILEOUTO2 $FILEOUTQA
   if [ ! -f "$AOD3NAME" ]; then
     echo "Error: File $AOD3NAME does not exist."
     exit 1
@@ -120,13 +125,13 @@ EOF
   $ENVO2 bash $TMPSCRIPT > $LOGFILE 2>&1 # Run the script in the O2 environment.
   if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
   rm -f $TMPSCRIPT
+  mv $FILEOUTO2 $FILEOUTQA
 fi
-mv AnalysisResults.root $FILEOUTQA
 
-# Run the tasks with AliPhysics.
+# Run the heavy-flavour tasks with AliPhysics.
 if [ $DORUN1 -eq 1 ]; then
-  LOGFILE="log_ali.log"
-  echo -e "\nRunning the tasks with AliPhysics... (logfile: $LOGFILE)"
+  LOGFILE="log_ali_hf.log"
+  echo -e "\nRunning the HF tasks with AliPhysics... (logfile: $LOGFILE)"
   rm -f Vertices2prong-ITS1_*.root
   fileouttxt="outputlist.txt"
   rm -f $fileouttxt
@@ -150,10 +155,10 @@ if [ $DORUN1 -eq 1 ]; then
   if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
 fi
 
-# Run the tasks with O2.
+# Run the heavy-flavour tasks with O2.
 if [ $DORUN3 -eq 1 ]; then
-  LOGFILE="log_o2.log"
-  echo -e "\nRunning the tasks with O2... (logfile: $LOGFILE)"
+  LOGFILE="log_o2_hf.log"
+  echo -e "\nRunning the HF tasks with O2... (logfile: $LOGFILE)"
   rm -f $FILEOUTO2
   if [ ! -f "$AOD3NAME" ]; then
     echo "Error: File $AOD3NAME does not exist."
