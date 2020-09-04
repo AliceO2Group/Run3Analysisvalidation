@@ -22,6 +22,49 @@ Double_t fMassDplus = TDatabasePDG::Instance()->GetParticle(411)->Mass();
 Double_t fMassDs = TDatabasePDG::Instance()->GetParticle(431)->Mass();
 Double_t fMassLambdaC = TDatabasePDG::Instance()->GetParticle(4122)->Mass();
 
+
+const Int_t npTBins = 25;
+const Int_t nCutVars = 11;
+//m     dca   cost* ptk  ptpi  d0k            d0pi         d0d0     cosp cosxy normdxy
+Double_t fCuts[npTBins][nCutVars] = {{0.400, 350. * 1E-4, 0.8, 0.5, 0.5, 1000. * 1E-4, 1000. * 1E-4, -5000. * 1E-8, 0.80, 0., 0.},   /* pt<0.5*/
+                                            {0.400, 350. * 1E-4, 0.8, 0.5, 0.5, 1000. * 1E-4, 1000. * 1E-4, -5000. * 1E-8, 0.80, 0., 0.},   /* 0.5<pt<1*/
+                                            {0.400, 300. * 1E-4, 0.8, 0.4, 0.4, 1000. * 1E-4, 1000. * 1E-4, -25000. * 1E-8, 0.80, 0., 0.},  /* 1<pt<1.5 */
+                                            {0.400, 300. * 1E-4, 0.8, 0.4, 0.4, 1000. * 1E-4, 1000. * 1E-4, -25000. * 1E-8, 0.80, 0., 0.},  /* 1.5<pt<2 */
+                                            {0.400, 300. * 1E-4, 0.8, 0.7, 0.7, 1000. * 1E-4, 1000. * 1E-4, -20000. * 1E-8, 0.90, 0., 0.},  /* 2<pt<2.5 */
+                                            {0.400, 300. * 1E-4, 0.8, 0.7, 0.7, 1000. * 1E-4, 1000. * 1E-4, -20000. * 1E-8, 0.90, 0., 0.},  /* 2.5<pt<3 */
+                                            {0.400, 300. * 1E-4, 0.8, 0.7, 0.7, 1000. * 1E-4, 1000. * 1E-4, -12000. * 1E-8, 0.85, 0., 0.},  /* 3<pt<3.5 */
+                                            {0.400, 300. * 1E-4, 0.8, 0.7, 0.7, 1000. * 1E-4, 1000. * 1E-4, -12000. * 1E-8, 0.85, 0., 0.},  /* 3.5<pt<4 */
+                                            {0.400, 300. * 1E-4, 0.8, 0.7, 0.7, 1000. * 1E-4, 1000. * 1E-4, -8000. * 1E-8, 0.85, 0., 0.},   /* 4<pt<4.5 */
+                                            {0.400, 300. * 1E-4, 0.8, 0.7, 0.7, 1000. * 1E-4, 1000. * 1E-4, -8000. * 1E-8, 0.85, 0., 0.},   /* 4.5<pt<5 */
+                                            {0.400, 300. * 1E-4, 0.8, 0.7, 0.7, 1000. * 1E-4, 1000. * 1E-4, -8000. * 1E-8, 0.85, 0., 0.},   /* 5<pt<5.5 */
+                                            {0.400, 300. * 1E-4, 0.8, 0.7, 0.7, 1000. * 1E-4, 1000. * 1E-4, -8000. * 1E-8, 0.85, 0., 0.},   /* 5.5<pt<6 */
+                                            {0.400, 300. * 1E-4, 0.8, 0.7, 0.7, 1000. * 1E-4, 1000. * 1E-4, -8000. * 1E-8, 0.85, 0., 0.},   /* 6<pt<6.5 */
+                                            {0.400, 300. * 1E-4, 0.8, 0.7, 0.7, 1000. * 1E-4, 1000. * 1E-4, -8000. * 1E-8, 0.85, 0., 0.},   /* 6.5<pt<7 */
+                                            {0.400, 300. * 1E-4, 0.8, 0.7, 0.7, 1000. * 1E-4, 1000. * 1E-4, -7000. * 1E-8, 0.85, 0., 0.},   /* 7<pt<7.5 */
+                                            {0.400, 300. * 1E-4, 0.8, 0.7, 0.7, 1000. * 1E-4, 1000. * 1E-4, -7000. * 1E-8, 0.85, 0., 0.},   /* 7.5<pt<8 */
+                                            {0.400, 300. * 1E-4, 0.9, 0.7, 0.7, 1000. * 1E-4, 1000. * 1E-4, -5000. * 1E-8, 0.85, 0., 0.},   /* 8<pt<9 */
+                                            {0.400, 300. * 1E-4, 0.9, 0.7, 0.7, 1000. * 1E-4, 1000. * 1E-4, -5000. * 1E-8, 0.85, 0., 0.},   /* 9<pt<10 */
+                                            {0.400, 300. * 1E-4, 0.9, 0.7, 0.7, 1000. * 1E-4, 1000. * 1E-4, -5000. * 1E-8, 0.85, 0., 0.},   /* 10<pt<12 */
+                                            {0.400, 300. * 1E-4, 1.0, 0.7, 0.7, 1000. * 1E-4, 1000. * 1E-4, 10000. * 1E-8, 0.85, 0., 0.},   /* 12<pt<16 */
+                                            {0.400, 300. * 1E-4, 1.0, 0.7, 0.7, 1000. * 1E-4, 1000. * 1E-4, 999999. * 1E-8, 0.85, 0., 0.},  /* 16<pt<20 */
+                                            {0.400, 300. * 1E-4, 1.0, 0.7, 0.7, 1000. * 1E-4, 1000. * 1E-4, 999999. * 1E-8, 0.85, 0., 0.},  /* 20<pt<24 */
+                                            {0.400, 300. * 1E-4, 1.0, 0.7, 0.7, 1000. * 1E-4, 1000. * 1E-4, 999999. * 1E-8, 0.85, 0., 0.},  /* 24<pt<36 */
+                                            {0.400, 300. * 1E-4, 1.0, 0.7, 0.7, 1000. * 1E-4, 1000. * 1E-4, 999999. * 1E-8, 0.85, 0., 0.},  /* 36<pt<50 */
+                                            {0.400, 300. * 1E-4, 1.0, 0.6, 0.6, 1000. * 1E-4, 1000. * 1E-4, 999999. * 1E-8, 0.80, 0., 0.}}; /* pt>50 */
+
+Int_t GetpTBin(Double_t candpT)
+{
+
+  Double_t pTBins[npTBins + 1] = {0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0, 7.5, 8.0, 9.0, 10.0, 12.0, 16.0, 20.0, 24.0, 36.0, 50.0, 100.0};
+  for (Int_t i = 0; i < npTBins; i++) {
+    if (candpT >= pTBins[i] && candpT < pTBins[i + 1]) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+
 Bool_t GetTrackMomentumAtSecVert(AliESDtrack* tr, AliAODVertex* secVert, Double_t momentum[3], float fBzkG)
 {
   /// fast calculation (no covariance matrix treatment) of track momentum at secondary vertex
@@ -75,6 +118,51 @@ Bool_t SingleTrkCutsSimple(AliESDtrack* trk, Int_t minclutpc, int ptmintrack, do
   track->PropagateToDCA(fV1, fBzkG, 100., b, bCov);
   sel_track = sel_track && abs(b[0]) > dcatoprimxymin;
   return sel_track;
+}
+
+Int_t TwoProngSelectionCuts(AliAODRecoDecayHF2Prong* cand, Double_t candpTMin, Double_t candpTMax)
+{
+
+  bool isD0 = true;
+  bool isD0bar = true;
+  Double_t candpT = cand->Pt();
+  if (candpT < candpTMin || candpT >= candpTMax) return 0;
+  Int_t pTBin = GetpTBin(candpT);
+  if (pTBin==-1) return 0;
+  if (cand->Prodd0d0() > fCuts[pTBin][7]) return 0;
+  if (cand->CosPointingAngle() < fCuts[pTBin][8]) return 0;
+  if (cand->CosPointingAngleXY() < fCuts[pTBin][9]) return 0;
+  if (cand->NormalizedDecayLengthXY() < fCuts[pTBin][10]) return 0;
+  Double_t decayLengthCut = TMath::Min((cand->P() * 0.0066) + 0.01, 0.06);
+  if (TMath::Abs(cand->Normalizedd0Prong(0)) < 0.5 || TMath::Abs(cand->Normalizedd0Prong(1)) < 0.5) return 0;
+  if (cand->DecayLength() * cand->DecayLength() < decayLengthCut * decayLengthCut) return 0;
+  if (cand->NormalizedDecayLength() * cand->NormalizedDecayLength() < 1.0) return 0;
+  if (TMath::Abs(cand->InvMassD0()-fMassDzero) > fCuts[pTBin][0] ) isD0=false;
+  if (TMath::Abs(cand->InvMassD0bar()-fMassDzero) > fCuts[pTBin][0] ) isD0bar=false;
+  if (!isD0 && !isD0bar) return 0;
+
+  if (cand->Pt2Prong(0) < fCuts[pTBin][4]*fCuts[pTBin][4] || cand->Pt2Prong(1) < fCuts[pTBin][3]*fCuts[pTBin][3] ) isD0=false;
+  if (cand->Pt2Prong(0) < fCuts[pTBin][3]*fCuts[pTBin][3] || cand->Pt2Prong(1) < fCuts[pTBin][4]*fCuts[pTBin][4] ) isD0bar=false;
+  if (!isD0 && !isD0bar) return 0;
+
+  if (TMath::Abs(cand->Getd0Prong(0)) > fCuts[pTBin][6] || TMath::Abs(cand->Getd0Prong(1)) > fCuts[pTBin][5] ) isD0=false;
+  if (TMath::Abs(cand->Getd0Prong(0)) > fCuts[pTBin][5] || TMath::Abs(cand->Getd0Prong(1)) > fCuts[pTBin][6] ) isD0bar=false;
+  if (!isD0 && !isD0bar) return 0;
+
+  Double_t cosThetaStarD0,cosThetaStarD0bar;
+  cand->CosThetaStarD0(cosThetaStarD0,cosThetaStarD0bar);
+  if (TMath::Abs(cosThetaStarD0) > fCuts[pTBin][2] ) isD0=false;
+  if (TMath::Abs(cosThetaStarD0bar) > fCuts[pTBin][2] ) isD0bar=false;
+  if (!isD0 && !isD0bar) return 0;
+
+
+  Int_t returnValue=0;
+  if(isD0) returnValue+=1;
+  if(isD0bar) returnValue+=2;
+  return returnValue;
+
+
+
 }
 
 AliESDVertex* ReconstructSecondaryVertex(AliVertexerTracks* vt, TObjArray* trkArray, AliESDVertex* primvtx)
@@ -187,8 +275,8 @@ AliAODRecoDecayHF2Prong* Make2Prong(TObjArray* twoTrackArray, AliAODVertex* secV
   float dcap1n1 = track_0->GetDCA(track_1, fBzkG, xdummy, ydummy);
 
   AliAODRecoDecayHF2Prong* the2Prong = new AliAODRecoDecayHF2Prong(0x0, px, py, pz, d0, d0err, dcap1n1);
-  // AliAODVertex* ownsecv=secVert->CloneWithoutRefs();
-  // the2Prong->SetOwnSecondaryVtx(ownsecv);
+  AliAODVertex* ownsecv=secVert->CloneWithoutRefs();
+  the2Prong->SetOwnSecondaryVtx(ownsecv);
   return the2Prong;
 }
 
@@ -245,6 +333,7 @@ AliAODRecoDecayHF3Prong* Make3Prong(TObjArray* threeTrackArray, AliAODVertex* se
 Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
                           TString output = "Vertices23prong-ITS1.root",
                           TString jsonconfig = "dpl-config_std.json",
+			  int doTwoProngSelection = 1,
                           double ptmintrack = 0.,
                           int do3Prongs = 0,
                           TString triggerstring = "")
@@ -266,6 +355,7 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
 
   int minncluTPC = 50;
   float dcatoprimxymin = 0.;
+  Double_t candpTMin,candpTMax;
   // read configuration from json file
   if (jsonconfig != "" && gSystem->Exec(Form("ls %s > /dev/null", jsonconfig.Data())) == 0) {
     printf("Read configuration from JSON file\n");
@@ -277,7 +367,13 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
     printf("minncluTPC   = %d\n", minncluTPC);
     dcatoprimxymin = GetJsonFloat("dpl-config_std.json", "dcatoprimxymin");
     printf("dcatoprimxymin   = %f\n", dcatoprimxymin);
+    printf("Read configuration from JSON file\n");
+    candpTMin = GetJsonFloat("dpl-config_std.json", "d_pTCandMin");
+    printf("Min pt 2prong cand = %f\n", candpTMin);
+    candpTMax = GetJsonInteger("dpl-config_std.json", "d_pTCandMax");
+    printf("Max pt 2prong cand = %f\n", candpTMax);
   }
+
 
   TH1F* hpt_nocuts = new TH1F("hpt_nocuts", " ; pt tracks (#GeV) ; Entries", 100, 0, 10.);
   TH1F* htgl_nocuts = new TH1F("htgl_nocuts", "tgl tracks (#GeV)", 100, 0., 10.);
@@ -345,7 +441,7 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
     hvertexx->Fill(primvtx->GetX());
     hvertexy->Fill(primvtx->GetY());
     hvertexz->Fill(primvtx->GetZ());
-    //   AliAODVertex *vertexAODp = ConvertToAODVertex(primvtx);
+    AliAODVertex *vertexAODp = ConvertToAODVertex(primvtx);
     if (triggerstring != "" && !trClass.Contains(triggerstring))
       continue;
 
@@ -416,17 +512,22 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
         AliAODVertex* vertexAOD = ConvertToAODVertex(trkv);
         delete trkv;
         AliAODRecoDecayHF2Prong* the2Prong = Make2Prong(twoTrackArray, vertexAOD, fBzkG);
-        //  the2Prong->SetOwnPrimaryVtx(vertexAODp);
+	the2Prong->SetOwnPrimaryVtx(vertexAODp);
+
+	Int_t twoProngSelection=3;
+	if (doTwoProngSelection==1) twoProngSelection = TwoProngSelectionCuts(the2Prong, candpTMin, candpTMax);
         Double_t m0 = the2Prong->InvMassD0();
         Double_t m0b = the2Prong->InvMassD0bar();
-        hmass0->Fill(m0);
-        hmass0->Fill(m0b);
-        hptD0->Fill(the2Prong->Pt());
-        hptprong0->Fill(the2Prong->PtProng(0));
-        hptprong1->Fill(the2Prong->PtProng(1));
-        hd0->Fill(the2Prong->Getd0Prong(0));
-        hd0->Fill(the2Prong->Getd0Prong(1));
-        hd0d0->Fill(the2Prong->Prodd0d0());
+	if (twoProngSelection!=0){
+	  if (twoProngSelection==1 || twoProngSelection==3) hmass0->Fill(m0);
+	  if (twoProngSelection==2 || twoProngSelection==3) hmass0->Fill(m0b);
+	  hptD0->Fill(the2Prong->Pt());
+	  hptprong0->Fill(the2Prong->PtProng(0));
+	  hptprong1->Fill(the2Prong->PtProng(1));
+	  hd0->Fill(the2Prong->Getd0Prong(0));
+	  hd0->Fill(the2Prong->Getd0Prong(1));
+	  hd0d0->Fill(the2Prong->Prodd0d0());
+	}
         delete the2Prong;
         delete vertexAOD;
         //  printf(" masses = %f %f\n",TMath::Max(m0,m0b),TMath::Min(m0,m0b));

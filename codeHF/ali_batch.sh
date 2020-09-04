@@ -3,6 +3,7 @@
 LISTINPUT="$1"
 JSON="$2"
 FILEOUT="$3"
+TWOPRONGSEL="$4"
 
 LogFile="log_ali_hf.log"
 FilesToMerge="ListOutToMergeALI.txt"
@@ -23,7 +24,7 @@ while read FileIn; do
   FileOut="$DirOut/$FILEOUT"
   echo "$FileOut" >> $FilesToMerge
   #echo "Output file: $FileOut"
-  root -b -q -l "$DirBase/ComputeVerticesRun1.C(\"$FileIn\",\"$FileOut\",\"$JSON\")" > "$DirOut/$LogFile" 2>&1 &
+  root -b -q -l "$DirBase/ComputeVerticesRun1.C(\"$FileIn\",\"$FileOut\",\"$JSON\",$TWOPRONGSEL)" > "$DirOut/$LogFile" 2>&1 &
   PIDS+=($!)
   ((Index+=1))
 done < "$LISTINPUT"
