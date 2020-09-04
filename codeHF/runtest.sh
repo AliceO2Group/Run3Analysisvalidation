@@ -13,6 +13,7 @@ DOCOMPARE=1   # Compare AliPhysics and O2 output.
 RUN5=0        # Use Run 5 input.
 CONVSEP=1     # Convert ESD files separately.
 PARALLELISE=0 # Parallelise O2 tasks.
+TWOPRONGSEL=1 #Selection switch
 
 if [ $CASE -eq 0 ]; then
   INPUTDIR="../twikiinput"
@@ -24,7 +25,9 @@ if [ $CASE -eq 0 ]; then
   TRIGGERSTRINGRUN2=""
   TRIGGERBITRUN3=-1
   NMAX=-1
-  JSON=dpl-config_std.json
+  if [ $TWOPRONGSEL -eq 1 ]; then
+    JSON=dpl-config_selection.json
+  fi
 fi
 
 if [ $CASE -eq 1 ]; then
@@ -37,7 +40,9 @@ if [ $CASE -eq 1 ]; then
   TRIGGERSTRINGRUN2="CV0L7-B-NOPF-CENT"
   TRIGGERBITRUN3=5 #FIXME
   NMAX=5
-  JSON=dpl-config_std.json
+  if [ $TWOPRONGSEL -eq 1 ]; then
+    JSON=dpl-config_selection.json
+  fi
 fi
 
 if [ $CASE -eq 2 ]; then
@@ -50,7 +55,9 @@ if [ $CASE -eq 2 ]; then
   TRIGGERSTRINGRUN2=""
   TRIGGERBITRUN3=-1
   NMAX=1
-  JSON=dpl-config_std.json
+  if [ $TWOPRONGSEL -eq 1 ]; then
+    JSON=dpl-config_selection.json
+  fi
 fi
 
 if [ $CASE -eq 3 ]; then
@@ -63,7 +70,9 @@ if [ $CASE -eq 3 ]; then
   TRIGGERSTRINGRUN2=""
   TRIGGERBITRUN3=-1
   NMAX=-1
-  JSON=dpl-config_std.json
+  if [ $TWOPRONGSEL -eq 1 ]; then
+    JSON=dpl-config_selection.json
+  fi
 fi
 
 if [ $CASE -eq 4 ]; then
@@ -76,7 +85,9 @@ if [ $CASE -eq 4 ]; then
   TRIGGERSTRINGRUN2=""
   TRIGGERBITRUN3=-1
   JSON=dpl-config_std.json
-  NMAX=-1
+  if [ $TWOPRONGSEL -eq 1 ]; then
+    JSON=dpl-config_selection.json
+  fi
 fi
 
 #INPUTDIR="/data/Run3data/output" #K0* MC injected
@@ -159,7 +170,7 @@ fi
 # Run the heavy-flavour tasks with AliPhysics.
 if [ $DORUN1 -eq 1 ]; then
   echo -e "\nRunning the HF tasks with AliPhysics..."
-  $ENVALI bash ali_batch.sh $LISTNAME $JSON $FILEOUTALI # Run the script in the ALI environment.
+  $ENVALI bash ali_batch.sh $LISTNAME $JSON $FILEOUTALI $TWOPRONGSEL # Run the script in the ALI environment.
   if [ $? -ne 0 ]; then echo "Error"; exit 1; fi # Exit if error.
 fi
 
@@ -170,6 +181,9 @@ if [ $DORUN3 -eq 1 ]; then
   rm -f $FILEOUTO2
   O2INPUT=$LISTFILESO2
   O2JSON="$PWD/dpl-config_std.json"
+  if [ $TWOPRONGSEL -eq 1 ]; then
+    O2JSON="$PWD/dpl-config_selection.json"
+  fi
   if [ $RUN5 -eq 1 ]; then
     O2INPUT=$LISTFILESO2RUN5
     O2JSON="$PWD/dpl-config_run5.json"
@@ -180,6 +194,9 @@ if [ $DORUN3 -eq 1 ]; then
   O2ARGS="--shm-segment-size 16000000000 --configuration json://$O2JSON"
   O2ARGS_SKIM="$O2ARGS"
   O2ARGS_CAND="$O2ARGS"
+  O2ARGS_PIDTPC="$O2ARGS"
+  O2ARGS_PIDTOF="$O2ARGS"
+  O2ARGS_SEL="$O2ARGS"
   O2ARGS_TASK="$O2ARGS"
   if [ $PARALLELISE -eq 1 ]; then
     NPROC=3
@@ -190,8 +207,11 @@ if [ $DORUN3 -eq 1 ]; then
   fi
   O2EXEC_SKIM="o2-analysis-hf-track-index-skims-creator $O2ARGS_SKIM"
   O2EXEC_CAND="o2-analysis-hf-candidate-creator-2prong $O2ARGS_CAND"
+  O2EXEC_PIDTPC="o2-analysis-pid-tpc $O2ARGS_PIDTPC"
+  O2EXEC_PIDTOF="o2-analysis-pid-tof $O2ARGS_PIDTOF"
+  O2EXEC_SEL="o2-analysis-hf-d0-candidate-selector $O2ARGS_SEL"
   O2EXEC_TASK="o2-analysis-hf-task-d0 $O2ARGS_TASK"
-  O2EXEC="$O2EXEC_SKIM | $O2EXEC_CAND | $O2EXEC_TASK -b"
+  O2EXEC="$O2EXEC_SKIM | $O2EXEC_PIDTPC | $O2EXEC_PIDTOF | $O2EXEC_CAND | $O2EXEC_SEL | $O2EXEC_TASK -b"
   TMPSCRIPT="tmpscript.sh"
   cat << EOF > $TMPSCRIPT # Create a temporary script with the full O2 commands.
 #!/bin/bash
