@@ -1,0 +1,40 @@
+{
+    "internal-dpl-clock": "",
+    "internal-dpl-aod-reader": {
+        "aod-file": "@listfilesRun5.txt",
+        "start-value-enumeration": "0",
+        "end-value-enumeration": "-1",
+        "step-value-enumeration": "1"
+    },
+    "hf-produce-sel-track": {
+        "dovalplots": "true",
+        "ptmintrack": "0.3",
+        "d_tpcnclsfound": "-999999",
+        "dcatoprimxymin": 0.02
+    },
+    "hf-track-index-skims-creator": {
+        "dovalplots": "true",
+        "triggerindex": "-1",
+        "do3prong": "0",
+        "d_bz": "5.",
+        "b_propdca": "true",
+        "d_maxr": "200",
+        "d_maxdzini": "4",
+        "d_minparamchange": "0.001",
+        "d_minrelchi2change": "0.90000000000000002",
+        "d_minmassDp": 1.7,
+        "d_maxmassDp": 2.05
+    },
+    "hf-cand-creator-2prong": {
+        "dovalplots": "true",
+        "d_bz": "5.",
+        "b_propdca": "true",
+        "d_maxr": "200",
+        "d_maxdzini": "4",
+        "d_minparamchange": "0.001",
+        "d_minrelchi2change": "0.90000000000000002"
+    },
+    "hf-task-d0": "",
+    "internal-dpl-aod-writer": {
+    }
+}
