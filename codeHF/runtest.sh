@@ -3,6 +3,8 @@
 bash clean.sh
 
 CASE=4
+PARALLELISE=0
+RUN5=0      # Use Run 5 input
 
 DOCONVERT=1 # Convert AliESDs.root to AO2D.root.
 DOQA=0      # Run the QA task with O2.
@@ -97,7 +99,7 @@ if [ $DOCONVERT -eq 1 ]; then
   LOGFILE="log_convert.log"
   echo -e "\nConverting... (logfile: $LOGFILE)"
   if [ $DOQA -eq 1 ]; then
-    echo "Setting MC mode on."
+    echo "Setting MC mode ON."
     ISMC=1
   fi
   echo "Input files taken from: $LISTNAME"
@@ -112,11 +114,23 @@ if [ $DOQA -eq 1 ]; then
   LOGFILE="log_o2_qa.log"
   echo -e "\nRunning the QA task with O2... (logfile: $LOGFILE)"
   rm -f $FILEOUTO2 $FILEOUTQA
-  if [ ! -f "$AOD3NAME" ]; then
-    echo "Error: File $AOD3NAME does not exist."
-    exit 1
+#  if [ ! -f "$AOD3NAME" ]; then
+#    echo "Error: File $AOD3NAME does not exist."
+#    exit 1
+#  fi
+  O2INPUT="$AOD3NAME"
+  if [ $RUN5 -eq 1 ]; then
+    O2INPUT="@listrun5.txt"
+    echo "Using Run 5 input"
+    echo "Input files: $(cat listrun5.txt | wc -l)"
   fi
-  O2EXEC="o2-analysis-qatask --aod-file $AOD3NAME -b"
+  O2ARGS="--aod-file $O2INPUT"
+  if [ $PARALLELISE -eq 1 ]; then
+    NPROC=3
+    echo "Parallelisation ON ($NPROC)"
+    O2ARGS="$O2ARGS --pipeline qa-tracking-kine:$NPROC,qa-tracking-resolution:$NPROC"
+  fi
+  O2EXEC="o2-analysis-qatask $O2ARGS -b"
   TMPSCRIPT="tmpscript.sh"
   cat << EOF > $TMPSCRIPT # Create a temporary script with the full O2 commands.
 #!/bin/bash
@@ -124,6 +138,7 @@ $O2EXEC
 EOF
   $ENVO2 bash $TMPSCRIPT > $LOGFILE 2>&1 # Run the script in the O2 environment.
   if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
+  grep WARN $LOGFILE | sort -u
   rm -f $TMPSCRIPT
   mv $FILEOUTO2 $FILEOUTQA
 fi
@@ -133,25 +148,25 @@ if [ $DORUN1 -eq 1 ]; then
   LOGFILE="log_ali_hf.log"
   echo -e "\nRunning the HF tasks with AliPhysics... (logfile: $LOGFILE)"
   rm -f Vertices2prong-ITS1_*.root
-  fileouttxt="outputlist.txt"
-  rm -f $fileouttxt
+  FilesToMerge="outputlist.txt"
+  rm -f $FilesToMerge
   rm -f $LOGFILE
 
   index=0
   while read F  ; do
-    fileout="Vertices2prong-ITS1_$index.root"
-    rm -f "$fileout"
-    echo $fileout >> "$fileouttxt"
+    FileOutTmp="Vertices2prong-ITS1_$index.root"
+    rm -f "$FileOutTmp"
+    echo $FileOutTmp >> "$FilesToMerge"
     echo "Index $index"
     echo "Input file: $F"
-    echo "Output file: $fileout"
-    $ENVALI $CMDROOT "ComputeVerticesRun1.C(\"$F\",\"$fileout\",\"$JSON\")" >> $LOGFILE 2>&1
+    echo "Output file: $FileOutTmp"
+    $ENVALI $CMDROOT "ComputeVerticesRun1.C(\"$F\",\"$FileOutTmp\",\"$JSON\")" >> $LOGFILE 2>&1
     if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
     index=$((index+1))
   done <"$LISTNAME"
   rm -f $FILEOUTALI
   echo "Merging output files..."
-  $ENVALI hadd $FILEOUTALI @"$fileouttxt" >> $LOGFILE 2>&1
+  $ENVALI hadd $FILEOUTALI @"$FilesToMerge" >> $LOGFILE 2>&1
   if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
 fi
 
@@ -160,14 +175,32 @@ if [ $DORUN3 -eq 1 ]; then
   LOGFILE="log_o2_hf.log"
   echo -e "\nRunning the HF tasks with O2... (logfile: $LOGFILE)"
   rm -f $FILEOUTO2
-  if [ ! -f "$AOD3NAME" ]; then
-    echo "Error: File $AOD3NAME does not exist."
-    exit 1
+#  if [ ! -f "$AOD3NAME" ]; then
+#    echo "Error: File $AOD3NAME does not exist."
+#    exit 1
+#  fi
+  O2JSON="$PWD/dpl-config_std.json"
+  if [ $RUN5 -eq 1 ]; then
+    O2JSON="$PWD/dpl-config_run5.json"
+    echo "Using Run 5 input"
   fi
   # Option --configuration has priority over --aod-file.
 #  O2ARGS="--shm-segment-size 16000000000 --configuration json://$PWD/dpl-config_std.json --aod-file $AOD3NAME"
-  O2ARGS="--shm-segment-size 16000000000 --configuration json://$PWD/dpl-config_std.json"
-  O2EXEC="o2-analysis-hf-track-index-skims-creator $O2ARGS | o2-analysis-hf-candidate-creator-2prong $O2ARGS | o2-analysis-hf-task-d0 $O2ARGS -b"
+  O2ARGS="--shm-segment-size 16000000000 --configuration json://$O2JSON"
+  O2ARGS_SKIM="$O2ARGS"
+  O2ARGS_CAND="$O2ARGS"
+  O2ARGS_TASK="$O2ARGS"
+  if [ $PARALLELISE -eq 1 ]; then
+    NPROC=3
+    echo "Parallelisation ON ($NPROC)"
+    O2ARGS_SKIM="$O2ARGS_SKIM --pipeline hf-produce-sel-track:$NPROC,hf-track-index-skims-creator:$NPROC"
+    O2ARGS_CAND="$O2ARGS_CAND --pipeline hf-cand-creator-2prong:$NPROC,hf-cand-creator-2prong-expressions:$NPROC"
+    O2ARGS_TASK="$O2ARGS_TASK --pipeline hf-task-d0:$NPROC"
+  fi
+  O2EXEC_SKIM="o2-analysis-hf-track-index-skims-creator $O2ARGS_SKIM"
+  O2EXEC_CAND="o2-analysis-hf-candidate-creator-2prong $O2ARGS_CAND"
+  O2EXEC_TASK="o2-analysis-hf-task-d0 $O2ARGS_TASK"
+  O2EXEC="$O2EXEC_SKIM | $O2EXEC_CAND | $O2EXEC_TASK -b"
   TMPSCRIPT="tmpscript.sh"
   cat << EOF > $TMPSCRIPT # Create a temporary script with the full O2 commands.
 #!/bin/bash
@@ -175,6 +208,7 @@ $O2EXEC
 EOF
   $ENVO2 bash $TMPSCRIPT > $LOGFILE 2>&1 # Run the script in the O2 environment.
   if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
+  grep WARN $LOGFILE | sort -u
   rm -f $TMPSCRIPT
 fi
 
