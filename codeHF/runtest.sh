@@ -3,14 +3,16 @@
 bash clean.sh
 
 CASE=4
-PARALLELISE=0
-RUN5=0      # Use Run 5 input
 
-DOCONVERT=1 # Convert AliESDs.root to AO2D.root.
-DOQA=0      # Run the QA task with O2.
-DORUN1=1    # Run the heavy-flavour tasks with AliPhysics.
-DORUN3=1    # Run the heavy-flavour tasks with O2.
-DOCOMPARE=1 # Compare AliPhysics and O2 output.
+DOCONVERT=1   # Convert AliESDs.root to AO2D.root.
+DOQA=0        # Run the QA task with O2.
+DORUN1=1      # Run the heavy-flavour tasks with AliPhysics.
+DORUN3=1      # Run the heavy-flavour tasks with O2.
+DOCOMPARE=1   # Compare AliPhysics and O2 output.
+
+RUN5=0        # Use Run 5 input.
+CONVSEP=0     # Convert ESD files separately.
+PARALLELISE=0 # Parallelise O2 tasks.
 
 if [ $CASE -eq 0 ]; then
   INPUTDIR="../twikiinput"
@@ -83,6 +85,7 @@ fi
 
 # List of input files
 ls $INPUTDIR/$STRING > $LISTNAME
+LISTFILESO2="listrun3.txt"
 
 # Output files
 FILEOUTALI="Vertices2prong-ITS1.root"
@@ -102,11 +105,33 @@ if [ $DOCONVERT -eq 1 ]; then
     echo "Setting MC mode ON."
     ISMC=1
   fi
-  echo "Input files taken from: $LISTNAME"
-  $ENVALI $CMDROOT "convertAO2D.C(\"$LISTNAME\", $ISMC, $NMAX)" > $LOGFILE 2>&1
-  if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
-  rm -f $FILEOUTO2
-  #mv AO2D.root $AOD3NAME
+  echo "Input files taken from: $LISTNAME ($(cat $LISTNAME | wc -l))"
+  if [ $CONVSEP -eq 1 ]; then
+    echo "Converting files separately"
+    rm -f $LOGFILE
+    index=0
+    ListInTmp="ListInTmp.txt"
+    rm -f $LISTFILESO2
+    while read FileIn; do
+      FileOutTmp="AO2D_$index.root"
+      rm -f "$FileOutTmp"
+      echo $FileOutTmp >> $LISTFILESO2
+      echo "Input file ($index): $FileIn"
+      echo $FileIn > $ListInTmp
+      echo "Output file: $FileOutTmp"
+      $ENVALI $CMDROOT "convertAO2D.C(\"$ListInTmp\", $ISMC, $NMAX)" >> $LOGFILE 2>&1
+      if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
+      index=$((index+1))
+      mv AO2D.root $FileOutTmp
+      rm -f $FILEOUTO2
+      rm -f $ListInTmp
+    done <"$LISTNAME"
+  else
+    $ENVALI $CMDROOT "convertAO2D.C(\"$LISTNAME\", $ISMC, $NMAX)" > $LOGFILE 2>&1
+    if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
+    echo "AO2D.root" > $LISTFILESO2
+    rm -f $FILEOUTO2
+  fi
 fi
 
 # Perform simple QA studies with O2.
@@ -148,19 +173,18 @@ if [ $DORUN1 -eq 1 ]; then
   LOGFILE="log_ali_hf.log"
   echo -e "\nRunning the HF tasks with AliPhysics... (logfile: $LOGFILE)"
   rm -f Vertices2prong-ITS1_*.root
-  FilesToMerge="outputlist.txt"
+  FilesToMerge="ListOutToMergeALI.txt"
   rm -f $FilesToMerge
   rm -f $LOGFILE
 
   index=0
-  while read F  ; do
+  while read FileIn; do
     FileOutTmp="Vertices2prong-ITS1_$index.root"
     rm -f "$FileOutTmp"
     echo $FileOutTmp >> "$FilesToMerge"
-    echo "Index $index"
-    echo "Input file: $F"
+    echo "Input file ($index): $FileIn"
     echo "Output file: $FileOutTmp"
-    $ENVALI $CMDROOT "ComputeVerticesRun1.C(\"$F\",\"$FileOutTmp\",\"$JSON\")" >> $LOGFILE 2>&1
+    $ENVALI $CMDROOT "ComputeVerticesRun1.C(\"$FileIn\",\"$FileOutTmp\",\"$JSON\")" >> $LOGFILE 2>&1
     if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
     index=$((index+1))
   done <"$LISTNAME"
@@ -168,6 +192,7 @@ if [ $DORUN1 -eq 1 ]; then
   echo "Merging output files..."
   $ENVALI hadd $FILEOUTALI @"$FilesToMerge" >> $LOGFILE 2>&1
   if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
+  rm -f $FilesToMerge
 fi
 
 # Run the heavy-flavour tasks with O2.
