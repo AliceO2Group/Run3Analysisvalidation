@@ -7,8 +7,8 @@ CASE=4
 DOCONVERT=1   # Convert AliESDs.root to AO2D.root.
 DOQA=0        # Run the QA task with O2.
 DORUN1=1      # Run the heavy-flavour tasks with AliPhysics.
-DORUN3=0      # Run the heavy-flavour tasks with O2.
-DOCOMPARE=0   # Compare AliPhysics and O2 output.
+DORUN3=1      # Run the heavy-flavour tasks with O2.
+DOCOMPARE=1   # Compare AliPhysics and O2 output.
 
 RUN5=0        # Use Run 5 input.
 CONVSEP=1     # Convert ESD files separately.
@@ -72,7 +72,7 @@ if [ $CASE -eq 4 ]; then
   LISTNAME="listprodhfrun3_mc_pp_D2H_LHC18a4a2_cent.txt"
   AOD3NAME=AO2D.root
   MASS=1.8
-  STRING="00*/AliESDs.root"
+  STRING="*/AliESDs.root"
   TRIGGERSTRINGRUN2=""
   TRIGGERBITRUN3=-1
   JSON=dpl-config_std.json
@@ -115,7 +115,7 @@ if [ $DOCONVERT -eq 1 ]; then
     echo "logfile: $LOGFILE"
     $ENVALI $CMDROOT "convertAO2D.C(\"$LISTNAME\", $ISMC, $NMAX)" > $LOGFILE 2>&1
     if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
-    echo "AO2D.root" > $LISTFILESO2
+    echo "$PWD/AO2D.root" > $LISTFILESO2
     rm -f $FILEOUTO2
   fi
 fi
@@ -188,9 +188,10 @@ if [ $DORUN3 -eq 1 ]; then
 #!/bin/bash
 $O2EXEC
 EOF
-  $ENVO2 bash $TMPSCRIPT > $LOGFILE 2>&1 # Run the script in the O2 environment.
+  #$ENVO2 bash $TMPSCRIPT > $LOGFILE 2>&1 # Run the script in the O2 environment.
+  $ENVO2 bash o2_batch.sh $LISTFILESO2 $O2JSON $TMPSCRIPT # Run the script in the O2 environment.
   if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
-  grep WARN $LOGFILE | sort -u
+  #grep WARN $LOGFILE | sort -u
   rm -f $TMPSCRIPT
 fi
 
