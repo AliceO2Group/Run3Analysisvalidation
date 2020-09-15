@@ -5,7 +5,7 @@ bash clean.sh
 CASE=4
 
 DOCONVERT=1   # Convert AliESDs.root to AO2D.root.
-DOQA=0        # Run the QA task with O2.
+DOQA=1        # Run the QA task with O2.
 DORUN1=1      # Run the heavy-flavour tasks with AliPhysics.
 DORUN3=1      # Run the heavy-flavour tasks with O2.
 DOCOMPARE=1   # Compare AliPhysics and O2 output.
@@ -86,6 +86,7 @@ fi
 # List of input files
 ls $INPUTDIR/$STRING > $LISTNAME
 LISTFILESO2="listrun3.txt"
+LISTFILESO2RUN5="listrun5.txt"
 
 # Output files
 FILEOUTALI="Vertices2prong-ITS1.root"
@@ -126,12 +127,14 @@ if [ $DOQA -eq 1 ]; then
   echo -e "\nRunning the QA task with O2... (logfile: $LOGFILE)"
   rm -f $FILEOUTO2 $FILEOUTQA
   O2INPUT=$LISTFILESO2
+  O2JSON="$PWD/dpl-config_std.json"
   if [ $RUN5 -eq 1 ]; then
-    O2INPUT="listrun5.txt"
+    O2INPUT=$LISTFILESO2RUN5
+    O2JSON="$PWD/dpl-config_run5.json"
     echo "Using Run 5 input"
   fi
   echo "Input files: $(cat $O2INPUT | wc -l)"
-  O2ARGS="--aod-file @$O2INPUT"
+  O2ARGS="--shm-segment-size 16000000000 --configuration json://$O2JSON"
   if [ $PARALLELISE -eq 1 ]; then
     NPROC=3
     echo "Parallelisation ON ($NPROC)"
@@ -143,11 +146,14 @@ if [ $DOQA -eq 1 ]; then
 #!/bin/bash
 $O2EXEC
 EOF
-  $ENVO2 bash $TMPSCRIPT > $LOGFILE 2>&1 # Run the script in the O2 environment.
+  #$ENVO2 bash $TMPSCRIPT > $LOGFILE 2>&1 # Run the script in the O2 environment.
+  $ENVO2 bash o2_batch.sh $O2INPUT $O2JSON $TMPSCRIPT # Run the script in the O2 environment.
   if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
-  grep WARN $LOGFILE | sort -u
+  #grep WARN $LOGFILE | sort -u
   rm -f $TMPSCRIPT
   mv $FILEOUTO2 $FILEOUTQA
+  mv output_o2 output_o2_qa
+  mv log_o2.log log_o2_qa.log
 fi
 
 # Run the heavy-flavour tasks with AliPhysics.
@@ -161,8 +167,10 @@ if [ $DORUN3 -eq 1 ]; then
   LOGFILE="log_o2_hf.log"
   echo -e "\nRunning the HF tasks with O2... (logfile: $LOGFILE)"
   rm -f $FILEOUTO2
+  O2INPUT=$LISTFILESO2
   O2JSON="$PWD/dpl-config_std.json"
   if [ $RUN5 -eq 1 ]; then
+    O2INPUT=$LISTFILESO2RUN5
     O2JSON="$PWD/dpl-config_run5.json"
     echo "Using Run 5 input"
   fi
@@ -189,10 +197,12 @@ if [ $DORUN3 -eq 1 ]; then
 $O2EXEC
 EOF
   #$ENVO2 bash $TMPSCRIPT > $LOGFILE 2>&1 # Run the script in the O2 environment.
-  $ENVO2 bash o2_batch.sh $LISTFILESO2 $O2JSON $TMPSCRIPT # Run the script in the O2 environment.
+  $ENVO2 bash o2_batch.sh $O2INPUT $O2JSON $TMPSCRIPT # Run the script in the O2 environment.
   if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
   #grep WARN $LOGFILE | sort -u
   rm -f $TMPSCRIPT
+  mv output_o2 output_o2_hf
+  mv log_o2.log log_o2_hf.log
 fi
 
 # Compare AliPhysics and O2 output.

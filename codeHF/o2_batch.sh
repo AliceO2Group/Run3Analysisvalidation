@@ -5,7 +5,7 @@ JSON="$2"
 SCRIPT="$3"
 FILEOUT="AnalysisResults.root"
 
-LogFile="log_o2_hf.log"
+LogFile="log_o2.log"
 FilesToMerge="ListOutToMergeO2.txt"
 DirBase=$(pwd)
 Index=0
@@ -40,6 +40,7 @@ while [ $(eval $CmdNRun) -gt 0 ]; do
   echo $(eval $CmdNRun)
   sleep 1
 done
+sleep 1
 echo "Merging output files... (output file: $FILEOUT)"
 hadd $FILEOUT @"$FilesToMerge" > $LogFile 2>&1
 if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
