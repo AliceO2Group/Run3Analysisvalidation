@@ -6,7 +6,7 @@ CASE=4
 
 DOCONVERT=1   # Convert AliESDs.root to AO2D.root.
 DOQA=0        # Run the QA task with O2.
-DORUN1=0      # Run the heavy-flavour tasks with AliPhysics.
+DORUN1=1      # Run the heavy-flavour tasks with AliPhysics.
 DORUN3=0      # Run the heavy-flavour tasks with O2.
 DOCOMPARE=0   # Compare AliPhysics and O2 output.
 
@@ -99,8 +99,7 @@ CMDROOT="root -b -q -l"
 
 # Convert AliESDs.root to AO2D.root.
 if [ $DOCONVERT -eq 1 ]; then
-  LOGFILE="log_convert.log"
-  echo -e "\nConverting... (logfile: $LOGFILE)"
+  echo -e "\nConverting..."
   if [ $DOQA -eq 1 ]; then
     echo "Setting MC mode ON."
     ISMC=1
@@ -108,18 +107,12 @@ if [ $DOCONVERT -eq 1 ]; then
   echo "Input files taken from: $LISTNAME ($(cat $LISTNAME | wc -l))"
   if [ $CONVSEP -eq 1 ]; then
     echo "Converting files separately"
-    rm -f $LOGFILE
-    rm -f $LISTFILESO2
-    $ENVALI bash convert_batch.sh $LISTNAME $LISTFILESO2 $ISMC > $LOGFILE 2>&1 # Run the script in the ALI environment.
+    $ENVALI bash convert_batch.sh $LISTNAME $LISTFILESO2 $ISMC # Run the script in the ALI environment.
     if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
-    CmdNRun="top -u $USER -n 1 -c | grep root | grep convertAO2D | wc -l"
-    echo "Waiting for conversion to finish..."
-    while [ $(eval $CmdNRun) -eq 0 ]; do continue; done
-    while [ $(eval $CmdNRun) -gt 0 ]; do
-      echo $(eval $CmdNRun)
-      sleep 1
-    done
   else
+    LOGFILE="log_convert.log"
+    rm -f $LOGFILE
+    echo "logfile: $LOGFILE"
     $ENVALI $CMDROOT "convertAO2D.C(\"$LISTNAME\", $ISMC, $NMAX)" > $LOGFILE 2>&1
     if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
     echo "AO2D.root" > $LISTFILESO2
@@ -159,29 +152,8 @@ fi
 
 # Run the heavy-flavour tasks with AliPhysics.
 if [ $DORUN1 -eq 1 ]; then
-  LOGFILE="log_ali_hf.log"
-  echo -e "\nRunning the HF tasks with AliPhysics... (logfile: $LOGFILE)"
-  rm -f Vertices2prong-ITS1_*.root
-  FilesToMerge="ListOutToMergeALI.txt"
-  rm -f $FilesToMerge
-  rm -f $LOGFILE
-
-  index=0
-  while read FileIn; do
-    FileOutTmp="Vertices2prong-ITS1_$index.root"
-    rm -f "$FileOutTmp"
-    echo $FileOutTmp >> "$FilesToMerge"
-    echo "Input file ($index): $FileIn"
-    echo "Output file: $FileOutTmp"
-    $ENVALI $CMDROOT "ComputeVerticesRun1.C(\"$FileIn\",\"$FileOutTmp\",\"$JSON\")" >> $LOGFILE 2>&1
-    if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
-    index=$((index+1))
-  done <"$LISTNAME"
-  rm -f $FILEOUTALI
-  echo "Merging output files..."
-  $ENVALI hadd $FILEOUTALI @"$FilesToMerge" >> $LOGFILE 2>&1
+  $ENVALI bash ali_batch.sh $LISTNAME $JSON $FILEOUTALI # Run the script in the ALI environment.
   if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
-  rm -f $FilesToMerge
 fi
 
 # Run the heavy-flavour tasks with O2.

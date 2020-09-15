@@ -8,6 +8,8 @@ LogFile="log_convert.log"
 ListInOne="list_input.txt"
 DirBase=$(pwd)
 Index=0
+
+rm -f $LISTOUTPUT
 while read FileIn; do
   if [ ! -f "$FileIn" ]; then
     echo "Error: Fle $FileIn does not exist."
@@ -25,5 +27,12 @@ while read FileIn; do
   Index=$((Index+1))
   cd $DirBase
 done < "$LISTINPUT"
+CmdNRun="top -u $USER -n 1 -c | grep root | grep convertAO2D | wc -l"
+echo "Waiting for conversion to finish..."
+while [ $(eval $CmdNRun) -eq 0 ]; do continue; done
+while [ $(eval $CmdNRun) -gt 0 ]; do
+  echo $(eval $CmdNRun)
+  sleep 1
+done
 
 exit 0
