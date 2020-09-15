@@ -6,12 +6,12 @@ CASE=4
 
 DOCONVERT=1   # Convert AliESDs.root to AO2D.root.
 DOQA=0        # Run the QA task with O2.
-DORUN1=1      # Run the heavy-flavour tasks with AliPhysics.
-DORUN3=1      # Run the heavy-flavour tasks with O2.
-DOCOMPARE=1   # Compare AliPhysics and O2 output.
+DORUN1=0      # Run the heavy-flavour tasks with AliPhysics.
+DORUN3=0      # Run the heavy-flavour tasks with O2.
+DOCOMPARE=0   # Compare AliPhysics and O2 output.
 
 RUN5=0        # Use Run 5 input.
-CONVSEP=0     # Convert ESD files separately.
+CONVSEP=1     # Convert ESD files separately.
 PARALLELISE=0 # Parallelise O2 tasks.
 
 if [ $CASE -eq 0 ]; then
@@ -72,7 +72,7 @@ if [ $CASE -eq 4 ]; then
   LISTNAME="listprodhfrun3_mc_pp_D2H_LHC18a4a2_cent.txt"
   AOD3NAME=AO2D.root
   MASS=1.8
-  STRING="001/AliESDs.root"
+  STRING="00*/AliESDs.root"
   TRIGGERSTRINGRUN2=""
   TRIGGERBITRUN3=-1
   JSON=dpl-config_std.json
@@ -109,23 +109,16 @@ if [ $DOCONVERT -eq 1 ]; then
   if [ $CONVSEP -eq 1 ]; then
     echo "Converting files separately"
     rm -f $LOGFILE
-    index=0
-    ListInTmp="ListInTmp.txt"
     rm -f $LISTFILESO2
-    while read FileIn; do
-      FileOutTmp="AO2D_$index.root"
-      rm -f "$FileOutTmp"
-      echo $FileOutTmp >> $LISTFILESO2
-      echo "Input file ($index): $FileIn"
-      echo $FileIn > $ListInTmp
-      echo "Output file: $FileOutTmp"
-      $ENVALI $CMDROOT "convertAO2D.C(\"$ListInTmp\", $ISMC, $NMAX)" >> $LOGFILE 2>&1
-      if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
-      index=$((index+1))
-      mv AO2D.root $FileOutTmp
-      rm -f $FILEOUTO2
-      rm -f $ListInTmp
-    done <"$LISTNAME"
+    $ENVALI bash convert_batch.sh $LISTNAME $LISTFILESO2 $ISMC > $LOGFILE 2>&1 # Run the script in the ALI environment.
+    if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
+    CmdNRun="top -u $USER -n 1 -c | grep root | grep convertAO2D | wc -l"
+    echo "Waiting for conversion to finish..."
+    while [ $(eval $CmdNRun) -eq 0 ]; do continue; done
+    while [ $(eval $CmdNRun) -gt 0 ]; do
+      echo $(eval $CmdNRun)
+      sleep 1
+    done
   else
     $ENVALI $CMDROOT "convertAO2D.C(\"$LISTNAME\", $ISMC, $NMAX)" > $LOGFILE 2>&1
     if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
@@ -139,17 +132,13 @@ if [ $DOQA -eq 1 ]; then
   LOGFILE="log_o2_qa.log"
   echo -e "\nRunning the QA task with O2... (logfile: $LOGFILE)"
   rm -f $FILEOUTO2 $FILEOUTQA
-#  if [ ! -f "$AOD3NAME" ]; then
-#    echo "Error: File $AOD3NAME does not exist."
-#    exit 1
-#  fi
-  O2INPUT="$AOD3NAME"
+  O2INPUT=$LISTFILESO2
   if [ $RUN5 -eq 1 ]; then
-    O2INPUT="@listrun5.txt"
+    O2INPUT="listrun5.txt"
     echo "Using Run 5 input"
-    echo "Input files: $(cat listrun5.txt | wc -l)"
   fi
-  O2ARGS="--aod-file $O2INPUT"
+  echo "Input files: $(cat $O2INPUT | wc -l)"
+  O2ARGS="--aod-file @$O2INPUT"
   if [ $PARALLELISE -eq 1 ]; then
     NPROC=3
     echo "Parallelisation ON ($NPROC)"
@@ -200,10 +189,6 @@ if [ $DORUN3 -eq 1 ]; then
   LOGFILE="log_o2_hf.log"
   echo -e "\nRunning the HF tasks with O2... (logfile: $LOGFILE)"
   rm -f $FILEOUTO2
-#  if [ ! -f "$AOD3NAME" ]; then
-#    echo "Error: File $AOD3NAME does not exist."
-#    exit 1
-#  fi
   O2JSON="$PWD/dpl-config_std.json"
   if [ $RUN5 -eq 1 ]; then
     O2JSON="$PWD/dpl-config_run5.json"
