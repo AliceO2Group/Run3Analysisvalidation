@@ -2,33 +2,40 @@
 
 LISTINPUT="$1"
 JSON="$2"
-FILEOUT="$3"
+SCRIPT="$3"
+FILEOUT="AnalysisResults.root"
 
-LogFile="log_ali_hf.log"
-FilesToMerge="ListOutToMergeALI.txt"
+LogFile="log_o2_hf.log"
+FilesToMerge="ListOutToMergeO2.txt"
 DirBase=$(pwd)
 Index=0
+JSONLocal=$(basename $JSON)
 
-echo -e "\nRunning the HF tasks with AliPhysics... (logfile: $LogFile)"
 rm -f $FilesToMerge
 while read FileIn; do
   if [ ! -f "$FileIn" ]; then
     echo "Error: Fle $FileIn does not exist."
     exit 1
   fi
-  DirOut="output_ali/$Index"
+  DirOut="output_o2/$Index"
   mkdir -p $DirOut
+  cd $DirOut
+  cp "$JSON" $JSONLocal
+  sed -e "s!@$LISTINPUT!$FileIn!g" $JSONLocal > $JSONLocal.tmp && mv $JSONLocal.tmp $JSONLocal
+  cp "$DirBase/$SCRIPT" .
+  sed -e "s!$DirBase!$PWD!g" $SCRIPT > $SCRIPT.tmp && mv $SCRIPT.tmp $SCRIPT
   echo "Input file ($Index): $FileIn"
   FileOut="$DirOut/$FILEOUT"
-  echo "$FileOut" >> $FilesToMerge
+  echo $FileOut >> $DirBase/$FilesToMerge
   echo "Output file: $FileOut"
-  root -b -q -l "$DirBase/ComputeVerticesRun1.C(\"$FileIn\",\"$FileOut\",\"$JSON\")" > "$DirOut/$LogFile" 2>&1 &
+  bash $SCRIPT > $LogFile 2>&1 &
   Index=$((Index+1))
+  cd $DirBase
 done < "$LISTINPUT"
-CmdNRun="top -u $USER -n 1 -c | grep root | grep ComputeVerticesRun1 | wc -l"
-echo "Waiting for AliPhysics to start..."
+CmdNRun="top -u $USER -n 1 -c | grep o2 | grep configuration | wc -l"
+echo "Waiting for O2 to start..."
 while [ $(eval $CmdNRun) -eq 0 ]; do continue; done
-echo "Waiting for AliPhysics to finish..."
+echo "Waiting for O2 to finish..."
 while [ $(eval $CmdNRun) -gt 0 ]; do
   echo $(eval $CmdNRun)
   sleep 1
