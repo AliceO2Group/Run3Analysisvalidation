@@ -74,8 +74,8 @@ O<sup>2</sup> fails to propagate some tracks which results into errors like this
     [8144:produce-sel-track]: [15:28:52][ERROR] failed to propagate to alpha=-2.51783 X=-0.260277 for vertex 0.0627455 0.358414 2.63274 | Track is:
     [ERROR] Child 8144 had at least one message above severity ERROR: [15:28:52][ERROR] failed to propagate to alpha=-1.10071 X=-0.278328 for vertex 0.0787384 0.352197 0.391039 | Track is:
 
-Until these errors get fixed, make the steering script ignore them by temporarily commenting out the error check in the O<sup>2</sup> block (`if [ `**$DORUN3**` -eq 1 ]; then`):
+Until these errors get fixed, make the `o2_batch.sh` script ignore them by temporarily commenting out the error check:
 
 ```bash
-#  if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
+#ok=0
 ```
