@@ -109,13 +109,13 @@ if [ $DOCONVERT -eq 1 ]; then
   if [ $CONVSEP -eq 1 ]; then
     echo "Converting files separately"
     $ENVALI bash convert_batch.sh $LISTNAME $LISTFILESO2 $ISMC # Run the script in the ALI environment.
-    if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
+    if [ $? -ne 0 ]; then echo "Error"; exit 1; fi # Exit if error.
   else
     LOGFILE="log_convert.log"
     rm -f $LOGFILE
     echo "logfile: $LOGFILE"
     $ENVALI $CMDROOT "convertAO2D.C(\"$LISTNAME\", $ISMC, $NMAX)" > $LOGFILE 2>&1
-    if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
+    if [ $? -ne 0 ]; then echo "Error"; exit 1; fi # Exit if error.
     echo "$PWD/AO2D.root" > $LISTFILESO2
     rm -f $FILEOUTO2
   fi
@@ -148,7 +148,7 @@ $O2EXEC
 EOF
   #$ENVO2 bash $TMPSCRIPT > $LOGFILE 2>&1 # Run the script in the O2 environment.
   $ENVO2 bash o2_batch.sh $O2INPUT $O2JSON $TMPSCRIPT # Run the script in the O2 environment.
-  if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
+  if [ $? -ne 0 ]; then echo "Error"; exit 1; fi # Exit if error.
   #grep WARN $LOGFILE | sort -u
   rm -f $TMPSCRIPT
   mv $FILEOUTO2 $FILEOUTQA
@@ -159,7 +159,7 @@ fi
 # Run the heavy-flavour tasks with AliPhysics.
 if [ $DORUN1 -eq 1 ]; then
   $ENVALI bash ali_batch.sh $LISTNAME $JSON $FILEOUTALI # Run the script in the ALI environment.
-  if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
+  if [ $? -ne 0 ]; then echo "Error"; exit 1; fi # Exit if error.
 fi
 
 # Run the heavy-flavour tasks with O2.
@@ -198,7 +198,7 @@ $O2EXEC
 EOF
   #$ENVO2 bash $TMPSCRIPT > $LOGFILE 2>&1 # Run the script in the O2 environment.
   $ENVO2 bash o2_batch.sh $O2INPUT $O2JSON $TMPSCRIPT # Run the script in the O2 environment.
-  if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
+  if [ $? -ne 0 ]; then echo "Error"; exit 1; fi # Exit if error.
   #grep WARN $LOGFILE | sort -u
   rm -f $TMPSCRIPT
   mv output_o2 output_o2_hf
@@ -218,7 +218,7 @@ if [ $DOCOMPARE -eq 1 ]; then
   done
   if [ ! $ok -eq 1 ]; then exit 1; fi
   $ENVALI $CMDROOT "Compare.C(\"$FILEOUTO2\",\"$FILEOUTALI\", $MASS)" > $LOGFILE 2>&1
-  if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
+  if [ $? -ne 0 ]; then echo "Error"; exit 1; fi # Exit if error.
 fi
 
 echo -e "\nDone"

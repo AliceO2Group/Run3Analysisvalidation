@@ -35,7 +35,7 @@ while [ $(eval $CmdNRun) -gt 0 ]; do
 done
 echo "Merging output files... (output file: $FILEOUT)"
 hadd $FILEOUT @"$FilesToMerge" > $LogFile 2>&1
-if [ ! $? -eq 0 ]; then echo "Error"; exit 1; fi # Exit if error.
+if [ $? -ne 0 ]; then echo "Error"; exit 1; fi # Exit if error.
 rm -f $FilesToMerge
 
 exit 0
