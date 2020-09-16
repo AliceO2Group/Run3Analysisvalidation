@@ -21,7 +21,7 @@ void convertAO2D(TString listoffiles, int ismc = 1, int nmaxevents = -1)
 
   // Create the chain based on xml collection or txt file
   // The entries in the txt file can be local paths or alien paths
-  TChain* chain = CreateLocalChain(listoffiles.Data(), anatype, 10);
+  TChain* chain = CreateLocalChain(listoffiles.Data(), anatype, -1);
   if (!chain)
     return;
   chain->SetNotify(0x0);
