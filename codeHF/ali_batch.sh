@@ -9,31 +9,43 @@ FilesToMerge="ListOutToMergeALI.txt"
 DirBase=$(pwd)
 Index=0
 
-echo -e "\nRunning the HF tasks with AliPhysics... (logfile: $LogFile)"
 rm -f $FilesToMerge
+DirOutMain="output_ali"
+echo "Output directory: $DirOutMain (logfiles: $LogFile)"
 while read FileIn; do
   if [ ! -f "$FileIn" ]; then
-    echo "Error: Fle $FileIn does not exist."
+    echo "Error: File $FileIn does not exist."
     exit 1
   fi
-  DirOut="output_ali/$Index"
+  DirOut="$DirOutMain/$Index"
   mkdir -p $DirOut
   echo "Input file ($Index): $FileIn"
   FileOut="$DirOut/$FILEOUT"
   echo "$FileOut" >> $FilesToMerge
-  echo "Output file: $FileOut"
+  #echo "Output file: $FileOut"
   root -b -q -l "$DirBase/ComputeVerticesRun1.C(\"$FileIn\",\"$FileOut\",\"$JSON\")" > "$DirOut/$LogFile" 2>&1 &
-  Index=$((Index+1))
+  PIDS+=($!)
+  ((Index+=1))
 done < "$LISTINPUT"
-CmdNRun="top -u $USER -n 1 -c | grep root | grep ComputeVerticesRun1 | wc -l"
-echo "Waiting for AliPhysics to start..."
-while [ $(eval $CmdNRun) -eq 0 ]; do continue; done
+
 echo "Waiting for AliPhysics to finish..."
-while [ $(eval $CmdNRun) -gt 0 ]; do
-  echo $(eval $CmdNRun)
-  sleep 1
+for pid in ${PIDS[@]}; do
+  wait $pid
+  STATUS+=($?)
 done
-echo "Merging output files... (output file: $FILEOUT)"
+
+i=0
+ok=1
+for st in ${STATUS[@]}; do
+  if [ $st -ne 0 ]; then
+    echo "$i failed"
+    ok=0
+  fi
+  ((i+=1))
+done
+if [ $ok -ne 1 ]; then exit 1; fi # Exit if error.
+
+echo "Merging output files... (output file: $FILEOUT, logfile: $LogFile)"
 hadd $FILEOUT @"$FilesToMerge" > $LogFile 2>&1
 if [ $? -ne 0 ]; then echo "Error"; exit 1; fi # Exit if error.
 rm -f $FilesToMerge

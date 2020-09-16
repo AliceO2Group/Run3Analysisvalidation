@@ -5,7 +5,7 @@ bash clean.sh
 CASE=4
 
 DOCONVERT=1   # Convert AliESDs.root to AO2D.root.
-DOQA=1        # Run the QA task with O2.
+DOQA=0        # Run the QA task with O2.
 DORUN1=1      # Run the heavy-flavour tasks with AliPhysics.
 DORUN3=1      # Run the heavy-flavour tasks with O2.
 DOCOMPARE=1   # Compare AliPhysics and O2 output.
@@ -72,7 +72,7 @@ if [ $CASE -eq 4 ]; then
   LISTNAME="listprodhfrun3_mc_pp_D2H_LHC18a4a2_cent.txt"
   AOD3NAME=AO2D.root
   MASS=1.8
-  STRING="*/AliESDs.root"
+  STRING="001/AliESDs.root"
   TRIGGERSTRINGRUN2=""
   TRIGGERBITRUN3=-1
   JSON=dpl-config_std.json
@@ -123,8 +123,8 @@ fi
 
 # Perform simple QA studies with O2.
 if [ $DOQA -eq 1 ]; then
-  LOGFILE="log_o2_qa.log"
-  echo -e "\nRunning the QA task with O2... (logfile: $LOGFILE)"
+  #LOGFILE="log_o2_qa.log"
+  echo -e "\nRunning the QA task with O2..."
   rm -f $FILEOUTO2 $FILEOUTQA
   O2INPUT=$LISTFILESO2
   O2JSON="$PWD/dpl-config_std.json"
@@ -158,14 +158,15 @@ fi
 
 # Run the heavy-flavour tasks with AliPhysics.
 if [ $DORUN1 -eq 1 ]; then
+  echo -e "\nRunning the HF tasks with AliPhysics..."
   $ENVALI bash ali_batch.sh $LISTNAME $JSON $FILEOUTALI # Run the script in the ALI environment.
   if [ $? -ne 0 ]; then echo "Error"; exit 1; fi # Exit if error.
 fi
 
 # Run the heavy-flavour tasks with O2.
 if [ $DORUN3 -eq 1 ]; then
-  LOGFILE="log_o2_hf.log"
-  echo -e "\nRunning the HF tasks with O2... (logfile: $LOGFILE)"
+  #LOGFILE="log_o2_hf.log"
+  echo -e "\nRunning the HF tasks with O2..."
   rm -f $FILEOUTO2
   O2INPUT=$LISTFILESO2
   O2JSON="$PWD/dpl-config_std.json"
@@ -216,7 +217,7 @@ if [ $DOCOMPARE -eq 1 ]; then
       ok=0
     fi
   done
-  if [ ! $ok -eq 1 ]; then exit 1; fi
+  if [ $ok -ne 1 ]; then exit 1; fi
   $ENVALI $CMDROOT "Compare.C(\"$FILEOUTO2\",\"$FILEOUTALI\", $MASS)" > $LOGFILE 2>&1
   if [ $? -ne 0 ]; then echo "Error"; exit 1; fi # Exit if error.
 fi
