@@ -177,7 +177,8 @@ fi
 # Run the heavy-flavour tasks with AliPhysics.
 if [ $DORUN1 -eq 1 ]; then
   echo -e "\nRunning the HF tasks with AliPhysics..."
-  $ENVALI bash ali_batch.sh $LISTNAME $JSON $FILEOUTALI $TWOPRONGSEL # Run the batch script in the ALI environment.
+  #$ENVALI bash ali_batch.sh $LISTNAME $JSON $FILEOUTALI $TWOPRONGSEL # Run the batch script in the ALI environment.
+  $ENVALIO2 bash ali_batch.sh $LISTNAME $JSON $FILEOUTALI $TWOPRONGSEL # Run the batch script in the ALI+O2 environment.
   if [ $? -ne 0 ]; then exit 1; fi # Exit if error.
 fi
 
@@ -227,8 +228,7 @@ EOF
   #$ENVO2 bash $TMPSCRIPT > $LOGFILE 2>&1 # Run the script in the O2 environment.
   #if [ $? -ne 0 ]; then echo "Error"; exit 1; fi # Exit if error.
   #grep WARN $LOGFILE | sort -u
-  #$ENVO2 bash o2_batch.sh $O2INPUT $O2JSON $TMPSCRIPT # Run the batch script in the O2 environment.
-  $ENVALIO2 bash o2_batch.sh $O2INPUT $O2JSON $TMPSCRIPT # Run the batch script in the ALI+O2 environment.
+  $ENVO2 bash o2_batch.sh $O2INPUT $O2JSON $TMPSCRIPT # Run the batch script in the O2 environment.
   if [ $? -ne 0 ]; then exit 1; fi # Exit if error.
   rm -f $TMPSCRIPT
   mv output_o2 output_o2_hf
