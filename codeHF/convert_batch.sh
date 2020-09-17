@@ -8,7 +8,9 @@ LogFile="log_convert.log"
 ListInOne="list_input.txt"
 DirBase=$(pwd)
 Index=0
+ListRunScripts="$DirBase/ListRunScripts.txt"
 
+rm -f $ListRunScripts
 rm -f $LISTOUTPUT
 DirOutMain="output_conversion"
 echo "Output directory: $DirOutMain (logfiles: $LogFile)"
@@ -24,28 +26,21 @@ while read FileIn; do
   echo "Input file ($Index): $FileIn"
   FileOut="$DirOut/AO2D.root"
   echo "$DirBase/$FileOut" >> $DirBase/$LISTOUTPUT
-  #echo "Output file: $FileOut"
-  root -b -q -l "$DirBase/convertAO2D.C(\"$ListInOne\", $ISMC, -1)" > $LogFile 2>&1 &
-  PIDS+=($!)
+  #root -b -q -l "$DirBase/convertAO2D.C(\"$ListInOne\", $ISMC)" > $LogFile 2>&1
+  RUNSCRIPT="run.sh"
+  cat << EOF > $RUNSCRIPT # Create a temporary script.
+#!/bin/bash
+cd "$DirBase/$DirOut"
+root -b -q -l "$DirBase/convertAO2D.C(\"$ListInOne\", $ISMC)" > $LogFile 2>&1
+EOF
+  echo "bash $(realpath $RUNSCRIPT)" >> "$ListRunScripts"
   ((Index+=1))
   cd $DirBase
 done < "$LISTINPUT"
 
-echo "Waiting for conversion to finish..."
-for pid in ${PIDS[@]}; do
-  wait $pid
-  STATUS+=($?)
-done
-
-i=0
-ok=1
-for st in ${STATUS[@]}; do
-  if [ $st -ne 0 ]; then
-    echo "$i failed"
-    ok=0
-  fi
-  ((i+=1))
-done
-if [ $ok -ne 1 ]; then exit 1; fi # Exit if error.
+echo "Running conversion jobs..."
+parallel -j0 --halt now,fail=1 < $ListRunScripts > $LogFile 2>&1
+if [ $? -ne 0 ]; then echo -e "Error\nCheck $(realpath $LogFile)"; exit 1; fi # Exit if error.
+rm -f $ListRunScripts
 
 exit 0
