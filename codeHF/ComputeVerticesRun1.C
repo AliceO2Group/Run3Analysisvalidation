@@ -333,7 +333,7 @@ AliAODRecoDecayHF3Prong* Make3Prong(TObjArray* threeTrackArray, AliAODVertex* se
 Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
                           TString output = "Vertices23prong-ITS1.root",
                           TString jsonconfig = "dpl-config_std.json",
-			  int doTwoProngSelection = 1,
+                          int doTwoProngSelection = 0,
                           double ptmintrack = 0.,
                           int do3Prongs = 0,
                           TString triggerstring = "")
@@ -506,28 +506,27 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
         double decaylength = TMath::Sqrt(deltax * deltax + deltay * deltay + deltaz * deltaz);
         double decaylengthxy = TMath::Sqrt(deltax * deltax + deltay * deltay);
 
-        hdecayxyz->Fill(decaylength);
-        hdecayxy->Fill(decaylengthxy);
-
         AliAODVertex* vertexAOD = ConvertToAODVertex(trkv);
         delete trkv;
         AliAODRecoDecayHF2Prong* the2Prong = Make2Prong(twoTrackArray, vertexAOD, fBzkG);
-	the2Prong->SetOwnPrimaryVtx(vertexAODp);
+        the2Prong->SetOwnPrimaryVtx(vertexAODp);
 
-	Int_t twoProngSelection=3;
-	if (doTwoProngSelection==1) twoProngSelection = TwoProngSelectionCuts(the2Prong, candpTMin, candpTMax);
+        Int_t twoProngSelection=3;
+        if (doTwoProngSelection==1) twoProngSelection = TwoProngSelectionCuts(the2Prong, candpTMin, candpTMax);
         Double_t m0 = the2Prong->InvMassD0();
         Double_t m0b = the2Prong->InvMassD0bar();
-	if (twoProngSelection!=0){
-	  if (twoProngSelection==1 || twoProngSelection==3) hmass0->Fill(m0);
-	  if (twoProngSelection==2 || twoProngSelection==3) hmass0->Fill(m0b);
-	  hptD0->Fill(the2Prong->Pt());
-	  hptprong0->Fill(the2Prong->PtProng(0));
-	  hptprong1->Fill(the2Prong->PtProng(1));
-	  hd0->Fill(the2Prong->Getd0Prong(0));
-	  hd0->Fill(the2Prong->Getd0Prong(1));
-	  hd0d0->Fill(the2Prong->Prodd0d0());
-	}
+        if (twoProngSelection!=0){
+          if (twoProngSelection==1 || twoProngSelection==3) hmass0->Fill(m0);
+          if (twoProngSelection==2 || twoProngSelection==3) hmass0->Fill(m0b);
+          hdecayxyz->Fill(decaylength);
+          hdecayxy->Fill(decaylengthxy);
+          hptD0->Fill(the2Prong->Pt());
+          hptprong0->Fill(the2Prong->PtProng(0));
+          hptprong1->Fill(the2Prong->PtProng(1));
+          hd0->Fill(the2Prong->Getd0Prong(0));
+          hd0->Fill(the2Prong->Getd0Prong(1));
+          hd0d0->Fill(the2Prong->Prodd0d0());
+        }
         delete the2Prong;
         delete vertexAOD;
         //  printf(" masses = %f %f\n",TMath::Max(m0,m0b),TMath::Min(m0,m0b));
