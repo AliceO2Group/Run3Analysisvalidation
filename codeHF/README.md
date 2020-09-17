@@ -60,12 +60,14 @@ These steps are performed by default:
    *  Parameters of individual tasks are picked up from the JSON configuration file `dpl-config_std.json`.
    *  List of input files is defined by the variable `O2INPUT` in `runtest.sh`. By default, it is the list of files produced by the conversion stage.
 1. Compare AliPhysics and O<sup>2</sup> output.
-   *  Produces comparison plots `comparison.pdf`.
+   *  Produces comparison plots `comparison_histos.pdf`, `comparison_ratios.pdf`.
    *  Enabled by `DOCOMPARE=1`.
 
 Individual steps can be disabled by setting the respective variables to `0`.
-Running all the steps with `CASE=4` takes about 20 seconds in total.
-If everything went fine, the script will exit with the message `Done`. You should have got all the output files in the `codeHF` directory. To confirm that the output of the default settings looks as expected, compare the produced plot with the reference `comparison_ref.pdf`.
+Running all the steps with `CASE=4` takes about 23 seconds in total.
+If everything went fine, the script will exit with the message `Done`.
+You should have got all the output files in the `codeHF` directory.
+To confirm that the output of the default settings looks as expected, compare the produced plots with the reference `comparison_histos_ref.pdf`, `comparison_ratios_ref.pdf`.
 If any step fails, the script will exit with the message `Error` and you should look into the respective log file to investigate the problem.
 
 **Temporary fix**
