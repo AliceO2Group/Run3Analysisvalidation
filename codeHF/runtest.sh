@@ -112,6 +112,7 @@ FILEOUTQA="AnalysisResultsQA.root"
 # Steering commands
 ENVALI="alienv setenv AliPhysics/latest -c"
 ENVO2="alienv setenv O2/latest -c"
+ENVALIO2="alienv setenv AliPhysics/latest,O2/latest -c"
 CMDROOT="root -b -q -l"
 
 # Convert AliESDs.root to AO2D.root.
@@ -226,7 +227,8 @@ EOF
   #$ENVO2 bash $TMPSCRIPT > $LOGFILE 2>&1 # Run the script in the O2 environment.
   #if [ $? -ne 0 ]; then echo "Error"; exit 1; fi # Exit if error.
   #grep WARN $LOGFILE | sort -u
-  $ENVO2 bash o2_batch.sh $O2INPUT $O2JSON $TMPSCRIPT # Run the batch script in the O2 environment.
+  #$ENVO2 bash o2_batch.sh $O2INPUT $O2JSON $TMPSCRIPT # Run the batch script in the O2 environment.
+  $ENVALIO2 bash o2_batch.sh $O2INPUT $O2JSON $TMPSCRIPT # Run the batch script in the ALI+O2 environment.
   if [ $? -ne 0 ]; then exit 1; fi # Exit if error.
   rm -f $TMPSCRIPT
   mv output_o2 output_o2_hf
