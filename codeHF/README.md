@@ -49,7 +49,7 @@ bash runtest.sh
 These steps are performed by default:
 
 1. Convert input data from the Run 1+2 format into the Run 3 format.
-   *  Specified input `AliESDs.root` files are converted into an `AO2D.root` file.
+   *  Specified input `AliESDs.root` files are converted into `AO2D.root` files.
    *  Enabled by `DOCONVERT=1`.
 1. Run the analysis tasks with AliPhysics.
    *  Produces a `Vertices2prong-ITS1.root` file.
@@ -57,7 +57,8 @@ These steps are performed by default:
 1. Run the analysis tasks with O<sup>2</sup>.
    *  Produces an `AnalysisResults.root` file.
    *  Enabled by `DORUN3=1`.
-   * Parameters of individual tasks are picked up from the JSON configuration file `dpl-config_std.json`. (Adjust the path in `"aod-file": "AO2D.root",` accordingly in case you want to provide a different input file.)
+   *  Parameters of individual tasks are picked up from the JSON configuration file `dpl-config_std.json`.
+   *  List of input files is defined by the variable `O2INPUT` in `runtest.sh`. By default, it is the list of files produced by the conversion stage.
 1. Compare AliPhysics and O<sup>2</sup> output.
    *  Produces comparison plots `comparison.pdf`.
    *  Enabled by `DOCOMPARE=1`.
@@ -77,5 +78,6 @@ O<sup>2</sup> fails to propagate some tracks which results into errors like this
 Until these errors get fixed, make the `o2_batch.sh` script ignore them by temporarily commenting out the error check:
 
 ```bash
-#ok=0
+parallel -j0 --halt soon,fail=1 < $ListRunScripts > $LogFile 2>&1
+#if [ $? -ne 0 ]; then echo -e "Error\nCheck $(realpath $LogFile)"; exit 1; fi # Exit if error.
 ```
