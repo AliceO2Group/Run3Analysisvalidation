@@ -13,7 +13,7 @@ DOCOMPARE=1   # Compare AliPhysics and O2 output.
 RUN5=0        # Use Run 5 input.
 CONVSEP=1     # Convert ESD files separately.
 PARALLELISE=0 # Parallelise O2 tasks.
-TWOPRONGSEL=0 #Selection switch
+TWOPRONGSEL=0 # Apply D0 selection cuts.
 
 if [ $CASE -eq 0 ]; then
   INPUTDIR="../twikiinput"
