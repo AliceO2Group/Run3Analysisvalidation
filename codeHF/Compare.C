@@ -1,12 +1,9 @@
 Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Vertices2prong-ITS1.root", double mass = 1.8)
 {
-  gROOT->SetStyle("Plain");
   gStyle->SetOptStat(0);
-  gStyle->SetOptStat(0000);
   gStyle->SetPalette(0);
   gStyle->SetCanvasColor(0);
   gStyle->SetFrameFillColor(0);
-  gStyle->SetOptTitle(0);
 
   TFile* fRun3 = new TFile(filerun3.Data());
   TFile* fRun1 = new TFile(filerun1.Data());
@@ -60,6 +57,7 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
 
   TH1F* hRun1[nhisto];
   TH1F* hRun3[nhisto];
+  TH1F* hRatio[nhisto];
   for (int index = 0; index < nhisto; index++) {
     hRun1[index] = (TH1F*)fRun1->Get(histonameRun1[index].Data());
     if (!hRun1[index]) {
@@ -73,23 +71,34 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
     }
   }
 
-  TCanvas* cv = new TCanvas("cv", "Vertex", 3000, 1600);
+  TCanvas* cv = new TCanvas("cv", "Histos", 3000, 1600);
   cv->Divide(5, 3);
-  gPad->SetLogy();
+  TCanvas* cr = new TCanvas("cr", "Ratios", 3000, 1600);
+  cr->Divide(5, 3);
+  Int_t nRun1, nRun3;
   for (int index = 0; index < nhisto; index++) {
+    nRun1 = hRun1[index]->Integral(0, -1);
+    nRun3 = hRun3[index]->Integral(0, -1);
     cv->cd(index + 1);
     hRun1[index]->SetLineColor(1);
     hRun1[index]->SetLineWidth(3);
     hRun3[index]->SetLineColor(2);
     hRun3[index]->SetLineWidth(1);
-    hRun1[index]->GetXaxis()->SetTitle(xaxis[index].Data());
+    hRun1[index]->SetTitle(Form("Entries: Run1: %d, Run3: %d;%s;Entries", nRun1, nRun3, xaxis[index].Data()));
+    hRun1[index]->GetYaxis()->SetMaxDigits(3);
     hRun1[index]->Draw();
     hRun3[index]->Draw("same");
-    TLegend* legend = new TLegend(0.5, 0.7, 0.8, 0.9);
-    legend->AddEntry(hRun1[index], "Run1", "f");
-    legend->AddEntry(hRun3[index], "Run3", "f");
+    TLegend* legend = new TLegend(0.7, 0.7, 0.9, 0.9);
+    legend->AddEntry(hRun1[index], "Run1", "L");
+    legend->AddEntry(hRun3[index], "Run3", "L");
     legend->Draw();
+    cr->cd(index + 1);
+    hRatio[index] = (TH1F*)hRun3[index]->Clone(Form("hRatio%d", index));
+    hRatio[index]->Divide(hRun1[index]);
+    hRatio[index]->SetTitle(Form("Entries ratio: %g;%s;Run3/Run1", (double)nRun3/(double)nRun1, xaxis[index].Data()));
+    hRatio[index]->Draw();
   }
-  cv->SaveAs("comparison.pdf");
+  cv->SaveAs("comparison_histos.pdf");
+  cr->SaveAs("comparison_ratios.pdf");
   return 0;
 }
