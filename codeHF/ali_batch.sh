@@ -9,7 +9,9 @@ LogFile="log_ali_hf.log"
 FilesToMerge="ListOutToMergeALI.txt"
 DirBase=$(pwd)
 Index=0
+ListRunCommands="$DirBase/ListRunCommands.txt"
 
+rm -f $ListRunCommands
 rm -f $FilesToMerge
 DirOutMain="output_ali"
 echo "Output directory: $DirOutMain (logfiles: $LogFile)"
@@ -23,32 +25,19 @@ while read FileIn; do
   echo "Input file ($Index): $FileIn"
   FileOut="$DirOut/$FILEOUT"
   echo "$FileOut" >> $FilesToMerge
-  #echo "Output file: $FileOut"
-  root -b -q -l "$DirBase/ComputeVerticesRun1.C(\"$FileIn\",\"$FileOut\",\"$JSON\",$TWOPRONGSEL)" > "$DirOut/$LogFile" 2>&1 &
-  PIDS+=($!)
+  #root -b -q -l "$DirBase/ComputeVerticesRun1.C(\"$FileIn\",\"$FileOut\",\"$JSON\",$TWOPRONGSEL)" > "$DirOut/$LogFile" 2>&1
+  echo "root -b -q -l $DirBase/ComputeVerticesRun1.C\(\\\"$FileIn\\\",\\\"$FileOut\\\",\\\"$JSON\\\",$TWOPRONGSEL\) > $DirOut/$LogFile 2>&1" >> "$ListRunCommands"
   ((Index+=1))
 done < "$LISTINPUT"
 
-echo "Waiting for AliPhysics to finish..."
-for pid in ${PIDS[@]}; do
-  wait $pid
-  STATUS+=($?)
-done
-
-i=0
-ok=1
-for st in ${STATUS[@]}; do
-  if [ $st -ne 0 ]; then
-    echo "$i failed"
-    ok=0
-  fi
-  ((i+=1))
-done
-if [ $ok -ne 1 ]; then exit 1; fi # Exit if error.
+echo "Running AliPhysics jobs..."
+parallel -j0 --halt now,fail=1 < $ListRunCommands > $LogFile 2>&1
+if [ $? -ne 0 ]; then echo -e "Error\nCheck $(realpath $LogFile)"; exit 1; fi # Exit if error.
+rm -f $ListRunCommands
 
 echo "Merging output files... (output file: $FILEOUT, logfile: $LogFile)"
-hadd $FILEOUT @"$FilesToMerge" > $LogFile 2>&1
-if [ $? -ne 0 ]; then echo "Error"; exit 1; fi # Exit if error.
+hadd $FILEOUT @"$FilesToMerge" >> $LogFile 2>&1
+if [ $? -ne 0 ]; then echo -e "Error\nCheck $(realpath $LogFile)"; exit 1; fi # Exit if error.
 rm -f $FilesToMerge
 
 exit 0

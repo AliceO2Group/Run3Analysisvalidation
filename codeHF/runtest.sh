@@ -13,7 +13,7 @@ DOCOMPARE=1   # Compare AliPhysics and O2 output.
 RUN5=0        # Use Run 5 input.
 CONVSEP=1     # Convert ESD files separately.
 PARALLELISE=0 # Parallelise O2 tasks.
-TWOPRONGSEL=1 #Selection switch
+TWOPRONGSEL=0 #Selection switch
 
 if [ $CASE -eq 0 ]; then
   INPUTDIR="../twikiinput"
@@ -25,6 +25,7 @@ if [ $CASE -eq 0 ]; then
   TRIGGERSTRINGRUN2=""
   TRIGGERBITRUN3=-1
   NMAX=-1
+  JSON=dpl-config_std.json
   if [ $TWOPRONGSEL -eq 1 ]; then
     JSON=dpl-config_selection.json
   fi
@@ -40,6 +41,7 @@ if [ $CASE -eq 1 ]; then
   TRIGGERSTRINGRUN2="CV0L7-B-NOPF-CENT"
   TRIGGERBITRUN3=5 #FIXME
   NMAX=5
+  JSON=dpl-config_std.json
   if [ $TWOPRONGSEL -eq 1 ]; then
     JSON=dpl-config_selection.json
   fi
@@ -55,6 +57,7 @@ if [ $CASE -eq 2 ]; then
   TRIGGERSTRINGRUN2=""
   TRIGGERBITRUN3=-1
   NMAX=1
+  JSON=dpl-config_std.json
   if [ $TWOPRONGSEL -eq 1 ]; then
     JSON=dpl-config_selection.json
   fi
@@ -70,6 +73,7 @@ if [ $CASE -eq 3 ]; then
   TRIGGERSTRINGRUN2=""
   TRIGGERBITRUN3=-1
   NMAX=-1
+  JSON=dpl-config_std.json
   if [ $TWOPRONGSEL -eq 1 ]; then
     JSON=dpl-config_selection.json
   fi
@@ -84,6 +88,7 @@ if [ $CASE -eq 4 ]; then
   STRING="001/AliESDs.root"
   TRIGGERSTRINGRUN2=""
   TRIGGERBITRUN3=-1
+  NMAX=-1
   JSON=dpl-config_std.json
   if [ $TWOPRONGSEL -eq 1 ]; then
     JSON=dpl-config_selection.json
@@ -119,8 +124,8 @@ if [ $DOCONVERT -eq 1 ]; then
   echo "Input files taken from: $LISTNAME ($(cat $LISTNAME | wc -l))"
   if [ $CONVSEP -eq 1 ]; then
     echo "Converting files separately"
-    $ENVALI bash convert_batch.sh $LISTNAME $LISTFILESO2 $ISMC # Run the script in the ALI environment.
-    if [ $? -ne 0 ]; then echo "Error"; exit 1; fi # Exit if error.
+    $ENVALI bash convert_batch.sh $LISTNAME $LISTFILESO2 $ISMC # Run the batch script in the ALI environment.
+    if [ $? -ne 0 ]; then exit 1; fi # Exit if error.
   else
     LOGFILE="log_convert.log"
     rm -f $LOGFILE
@@ -158,9 +163,10 @@ if [ $DOQA -eq 1 ]; then
 $O2EXEC
 EOF
   #$ENVO2 bash $TMPSCRIPT > $LOGFILE 2>&1 # Run the script in the O2 environment.
-  $ENVO2 bash o2_batch.sh $O2INPUT $O2JSON $TMPSCRIPT # Run the script in the O2 environment.
-  if [ $? -ne 0 ]; then echo "Error"; exit 1; fi # Exit if error.
+  #if [ $? -ne 0 ]; then echo "Error"; exit 1; fi # Exit if error.
   #grep WARN $LOGFILE | sort -u
+  $ENVO2 bash o2_batch.sh $O2INPUT $O2JSON $TMPSCRIPT # Run the batch script in the O2 environment.
+  if [ $? -ne 0 ]; then exit 1; fi # Exit if error.
   rm -f $TMPSCRIPT
   mv $FILEOUTO2 $FILEOUTQA
   mv output_o2 output_o2_qa
@@ -170,8 +176,8 @@ fi
 # Run the heavy-flavour tasks with AliPhysics.
 if [ $DORUN1 -eq 1 ]; then
   echo -e "\nRunning the HF tasks with AliPhysics..."
-  $ENVALI bash ali_batch.sh $LISTNAME $JSON $FILEOUTALI $TWOPRONGSEL # Run the script in the ALI environment.
-  if [ $? -ne 0 ]; then echo "Error"; exit 1; fi # Exit if error.
+  $ENVALI bash ali_batch.sh $LISTNAME $JSON $FILEOUTALI $TWOPRONGSEL # Run the batch script in the ALI environment.
+  if [ $? -ne 0 ]; then exit 1; fi # Exit if error.
 fi
 
 # Run the heavy-flavour tasks with O2.
@@ -218,9 +224,10 @@ if [ $DORUN3 -eq 1 ]; then
 $O2EXEC
 EOF
   #$ENVO2 bash $TMPSCRIPT > $LOGFILE 2>&1 # Run the script in the O2 environment.
-  $ENVO2 bash o2_batch.sh $O2INPUT $O2JSON $TMPSCRIPT # Run the script in the O2 environment.
-  if [ $? -ne 0 ]; then echo "Error"; exit 1; fi # Exit if error.
+  #if [ $? -ne 0 ]; then echo "Error"; exit 1; fi # Exit if error.
   #grep WARN $LOGFILE | sort -u
+  $ENVO2 bash o2_batch.sh $O2INPUT $O2JSON $TMPSCRIPT # Run the batch script in the O2 environment.
+  if [ $? -ne 0 ]; then exit 1; fi # Exit if error.
   rm -f $TMPSCRIPT
   mv output_o2 output_o2_hf
   mv log_o2.log log_o2_hf.log
