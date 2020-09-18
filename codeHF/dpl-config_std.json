@@ -35,7 +35,7 @@
         "d_minrelchi2change": "0.90000000000000002"
     },
     "hf-d0-candidate-selector": {
-	"d_pTCandMin": "0.0 ",
+        "d_pTCandMin": "0.0 ",
         "d_pTCandMax": "50.0 ",
         "d_pidTPCMinpT": "0.15",
         "d_pidTPCMaxpT": "5.0",
@@ -48,8 +48,8 @@
         "d_nSigmaTOFCombined": "5.0"
     },
     "hf-task-d0": {
-	"d_selectionFlagD0": "0",
-	"d_selectionFlagD0bar": "0"
+        "d_selectionFlagD0": "0",
+        "d_selectionFlagD0bar": "0"
     },
     "internal-dpl-aod-writer": {
     }
