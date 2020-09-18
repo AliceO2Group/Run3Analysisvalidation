@@ -68,12 +68,13 @@ fi
 #INPUTDIR="/data/Run3data/alice_sim_2018_LHC18a4a2_cent/282099" #D2H MC sample
 #INPUTDIR="/data/Run3data/alice_sim_2015_LHC15k1a3_246391/246391" #HIJING MC PbPb
 
-# List of input files
-ls $INPUTDIR/$STRING > $LISTNAME
+# Lists of input files
+LISTFILESALI="list_ali.txt"
+ls $INPUTDIR/$STRING > $LISTFILESALI
 LISTFILESO2="listrun3.txt"
 LISTFILESO2RUN5="listrun5.txt"
 
-# Output files
+# Output files names
 FILEOUTALI="Vertices2prong-ITS1.root"
 FILEOUTO2="AnalysisResults.root"
 FILEOUTQA="AnalysisResultsQA.root"
@@ -91,16 +92,16 @@ if [ $DOCONVERT -eq 1 ]; then
     echo "Setting MC mode ON."
     ISMC=1
   fi
-  echo "Input files taken from: $LISTNAME ($(cat $LISTNAME | wc -l))"
+  echo "Input files taken from: $LISTFILESALI ($(cat $LISTFILESALI | wc -l))"
   if [ $CONVSEP -eq 1 ]; then
     echo "Converting files separately"
-    $ENVALI bash convert_batch.sh $LISTNAME $LISTFILESO2 $ISMC # Run the batch script in the ALI environment.
+    $ENVALI bash convert_batch.sh $LISTFILESALI $LISTFILESO2 $ISMC # Run the batch script in the ALI environment.
     if [ $? -ne 0 ]; then exit 1; fi # Exit if error.
   else
     LOGFILE="log_convert.log"
     rm -f $LOGFILE
     echo "logfile: $LOGFILE"
-    $ENVALI $CMDROOT "convertAO2D.C(\"$LISTNAME\", $ISMC, $NMAX)" > $LOGFILE 2>&1
+    $ENVALI $CMDROOT "convertAO2D.C(\"$LISTFILESALI\", $ISMC, $NMAX)" > $LOGFILE 2>&1
     if [ $? -ne 0 ]; then echo "Error"; exit 1; fi # Exit if error.
     echo "$PWD/AO2D.root" > $LISTFILESO2
     rm -f $FILEOUTO2
@@ -127,17 +128,17 @@ if [ $DOQA -eq 1 ]; then
     O2ARGS="$O2ARGS --pipeline qa-tracking-kine:$NPROC,qa-tracking-resolution:$NPROC"
   fi
   O2EXEC="o2-analysis-qatask $O2ARGS -b"
-  TMPSCRIPT="tmpscript.sh"
-  cat << EOF > $TMPSCRIPT # Create a temporary script with the full O2 commands.
+  O2SCRIPT="script_o2_qa.sh"
+  cat << EOF > $O2SCRIPT # Create a temporary script with the full O2 commands.
 #!/bin/bash
 $O2EXEC
 EOF
-  #$ENVO2 bash $TMPSCRIPT > $LOGFILE 2>&1 # Run the script in the O2 environment.
+  #$ENVO2 bash $O2SCRIPT > $LOGFILE 2>&1 # Run the script in the O2 environment.
   #if [ $? -ne 0 ]; then echo "Error"; exit 1; fi # Exit if error.
   #grep WARN $LOGFILE | sort -u
-  $ENVO2 bash o2_batch.sh $O2INPUT $O2JSON $TMPSCRIPT # Run the batch script in the O2 environment.
+  $ENVO2 bash o2_batch.sh $O2INPUT $O2JSON $O2SCRIPT # Run the batch script in the O2 environment.
   if [ $? -ne 0 ]; then exit 1; fi # Exit if error.
-  rm -f $TMPSCRIPT
+  rm -f $O2SCRIPT
   mv $FILEOUTO2 $FILEOUTQA
   mv output_o2 output_o2_qa
   mv log_o2.log log_o2_qa.log
@@ -146,8 +147,8 @@ fi
 # Run the heavy-flavour tasks with AliPhysics.
 if [ $DORUN1 -eq 1 ]; then
   echo -e "\nRunning the HF tasks with AliPhysics..."
-  #$ENVALI bash ali_batch.sh $LISTNAME $JSON $FILEOUTALI $TWOPRONGSEL # Run the batch script in the ALI environment.
-  $ENVALIO2 bash ali_batch.sh $LISTNAME $JSON $FILEOUTALI $TWOPRONGSEL # Run the batch script in the ALI+O2 environment.
+  #$ENVALI bash ali_batch.sh $LISTFILESALI $JSON $FILEOUTALI $TWOPRONGSEL # Run the batch script in the ALI environment.
+  $ENVALIO2 bash ali_batch.sh $LISTFILESALI $JSON $FILEOUTALI $TWOPRONGSEL # Run the batch script in the ALI+O2 environment.
   if [ $? -ne 0 ]; then exit 1; fi # Exit if error.
 fi
 
@@ -189,17 +190,17 @@ if [ $DORUN3 -eq 1 ]; then
   O2EXEC_SEL="o2-analysis-hf-d0-candidate-selector $O2ARGS_SEL"
   O2EXEC_TASK="o2-analysis-hf-task-d0 $O2ARGS_TASK"
   O2EXEC="$O2EXEC_SKIM | $O2EXEC_PIDTPC | $O2EXEC_PIDTOF | $O2EXEC_CAND | $O2EXEC_SEL | $O2EXEC_TASK -b"
-  TMPSCRIPT="tmpscript.sh"
-  cat << EOF > $TMPSCRIPT # Create a temporary script with the full O2 commands.
+  O2SCRIPT="script_o2_hf.sh"
+  cat << EOF > $O2SCRIPT # Create a temporary script with the full O2 commands.
 #!/bin/bash
 $O2EXEC
 EOF
-  #$ENVO2 bash $TMPSCRIPT > $LOGFILE 2>&1 # Run the script in the O2 environment.
+  #$ENVO2 bash $O2SCRIPT > $LOGFILE 2>&1 # Run the script in the O2 environment.
   #if [ $? -ne 0 ]; then echo "Error"; exit 1; fi # Exit if error.
   #grep WARN $LOGFILE | sort -u
-  $ENVO2 bash o2_batch.sh $O2INPUT $O2JSON $TMPSCRIPT # Run the batch script in the O2 environment.
+  $ENVO2 bash o2_batch.sh $O2INPUT $O2JSON $O2SCRIPT # Run the batch script in the O2 environment.
   if [ $? -ne 0 ]; then exit 1; fi # Exit if error.
-  rm -f $TMPSCRIPT
+  rm -f $O2SCRIPT
   mv output_o2 output_o2_hf
   mv log_o2.log log_o2_hf.log
 fi
@@ -221,4 +222,7 @@ if [ $DOCOMPARE -eq 1 ]; then
 fi
 
 echo -e "\nDone"
+
+rm $LISTFILESALI
+
 exit 0
