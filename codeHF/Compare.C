@@ -71,6 +71,11 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
     }
   }
 
+  Float_t marginHigh = 0.05;
+  Float_t marginLow = 0.05;
+  Float_t k = 1. - marginHigh - marginLow;
+  Float_t yMin, yMax, yRange;
+
   TCanvas* cv = new TCanvas("cv", "Histos", 3000, 1600);
   cv->Divide(5, 3);
   TCanvas* cr = new TCanvas("cr", "Ratios", 3000, 1600);
@@ -96,6 +101,10 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
     hRatio[index] = (TH1F*)hRun3[index]->Clone(Form("hRatio%d", index));
     hRatio[index]->Divide(hRun1[index]);
     hRatio[index]->SetTitle(Form("Entries ratio: %g;%s;Run3/Run1", (double)nRun3/(double)nRun1, xaxis[index].Data()));
+    yMin = hRatio[index]->GetMinimum(0);
+    yMax = hRatio[index]->GetMaximum();
+    yRange = yMax - yMin;
+    hRatio[index]->GetYaxis()->SetRangeUser(yMin - marginLow/k * yRange, yMax + marginHigh/k * yRange);
     hRatio[index]->Draw();
   }
   cv->SaveAs("comparison_histos.pdf");
