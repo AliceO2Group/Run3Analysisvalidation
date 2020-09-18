@@ -17,15 +17,12 @@ TWOPRONGSEL=0 # Apply D0 selection cuts.
 
 # Default settings
 JSON="$PWD/dpl-config_std.json"
+JSONRUN5="$PWD/dpl-config_run5.json"
 ISMC=0
 MASS=1.8
 TRIGGERSTRINGRUN2=""
 TRIGGERBITRUN3=-1
 NMAX=-1
-
-if [ $TWOPRONGSEL -eq 1 ]; then
-  JSON="$PWD/dpl-config_selection.json"
-fi
 
 if [ $CASE -eq 0 ]; then
   INPUTDIR="../twikiinput"
@@ -85,14 +82,31 @@ ENVO2="alienv setenv O2/latest -c"
 ENVALIO2="alienv setenv AliPhysics/latest,O2/latest -c"
 CMDROOT="root -b -q -l"
 
+# Adjust settings for Run5.
+O2INPUT=$LISTFILESO2
+if [ $RUN5 -eq 1 ]; then
+  echo -e "\nUsing Run 5 settings and O2 input"
+  O2INPUT=$LISTFILESO2RUN5
+  JSON="$JSONRUN5"
+fi
+
+# Enable D0 selection.
+if [ $TWOPRONGSEL -eq 1 ]; then
+  echo -e "\nUsing D0 selection cuts"
+  JSONSEL="${JSON/.json/_sel.json}"
+  cp "$JSON" "$JSONSEL"
+  sed -e "s!\"d_selectionFlagD0\": \"0\"!\"d_selectionFlagD0\": \"1\"!g" "$JSONSEL" > "$JSONSEL.tmp" && mv "$JSONSEL.tmp" "$JSONSEL"
+  sed -e "s!\"d_selectionFlagD0bar\": \"0\"!\"d_selectionFlagD0bar\": \"1\"!g" "$JSONSEL" > "$JSONSEL.tmp" && mv "$JSONSEL.tmp" "$JSONSEL"
+  JSON="$JSONSEL"
+fi
+
 # Convert AliESDs.root to AO2D.root.
 if [ $DOCONVERT -eq 1 ]; then
-  echo -e "\nConverting..."
+  echo -e "\nConverting... ($(cat $LISTFILESALI | wc -l) files)"
   if [ $DOQA -eq 1 ]; then
     echo "Setting MC mode ON."
     ISMC=1
   fi
-  echo "Input files taken from: $LISTFILESALI ($(cat $LISTFILESALI | wc -l))"
   if [ $CONVSEP -eq 1 ]; then
     echo "Converting files separately"
     $ENVALI bash convert_batch.sh $LISTFILESALI $LISTFILESO2 $ISMC # Run the batch script in the ALI environment.
@@ -111,17 +125,9 @@ fi
 # Perform simple QA studies with O2.
 if [ $DOQA -eq 1 ]; then
   #LOGFILE="log_o2_qa.log"
-  echo -e "\nRunning the QA task with O2..."
+  echo -e "\nRunning the QA task with O2... ($(cat $O2INPUT | wc -l) files)"
   rm -f $FILEOUTO2 $FILEOUTQA
-  O2INPUT=$LISTFILESO2
-  O2JSON="$PWD/dpl-config_std.json"
-  if [ $RUN5 -eq 1 ]; then
-    O2INPUT=$LISTFILESO2RUN5
-    O2JSON="$PWD/dpl-config_run5.json"
-    echo "Using Run 5 input"
-  fi
-  echo "Input files: $(cat $O2INPUT | wc -l)"
-  O2ARGS="--shm-segment-size 16000000000 --configuration json://$O2JSON"
+  O2ARGS="--shm-segment-size 16000000000 --configuration json://$JSON"
   if [ $PARALLELISE -eq 1 ]; then
     NPROC=3
     echo "Parallelisation ON ($NPROC)"
@@ -136,7 +142,7 @@ EOF
   #$ENVO2 bash $O2SCRIPT > $LOGFILE 2>&1 # Run the script in the O2 environment.
   #if [ $? -ne 0 ]; then echo "Error"; exit 1; fi # Exit if error.
   #grep WARN $LOGFILE | sort -u
-  $ENVO2 bash o2_batch.sh $O2INPUT $O2JSON $O2SCRIPT # Run the batch script in the O2 environment.
+  $ENVO2 bash o2_batch.sh $O2INPUT $JSON $O2SCRIPT # Run the batch script in the O2 environment.
   if [ $? -ne 0 ]; then exit 1; fi # Exit if error.
   rm -f $O2SCRIPT
   mv $FILEOUTO2 $FILEOUTQA
@@ -146,30 +152,20 @@ fi
 
 # Run the heavy-flavour tasks with AliPhysics.
 if [ $DORUN1 -eq 1 ]; then
-  echo -e "\nRunning the HF tasks with AliPhysics..."
-  #$ENVALI bash ali_batch.sh $LISTFILESALI $JSON $FILEOUTALI $TWOPRONGSEL # Run the batch script in the ALI environment.
-  $ENVALIO2 bash ali_batch.sh $LISTFILESALI $JSON $FILEOUTALI $TWOPRONGSEL # Run the batch script in the ALI+O2 environment.
+  echo -e "\nRunning the HF tasks with AliPhysics... ($(cat $LISTFILESALI | wc -l) files)"
+  #$ENVALI bash ali_batch.sh $LISTFILESALI $JSON $FILEOUTALI # Run the batch script in the ALI environment.
+  $ENVALIO2 bash ali_batch.sh $LISTFILESALI $JSON $FILEOUTALI # Run the batch script in the ALI+O2 environment.
   if [ $? -ne 0 ]; then exit 1; fi # Exit if error.
 fi
 
 # Run the heavy-flavour tasks with O2.
 if [ $DORUN3 -eq 1 ]; then
   #LOGFILE="log_o2_hf.log"
-  echo -e "\nRunning the HF tasks with O2..."
+  echo -e "\nRunning the HF tasks with O2... ($(cat $O2INPUT | wc -l) files)"
   rm -f $FILEOUTO2
-  O2INPUT=$LISTFILESO2
-  O2JSON="$PWD/dpl-config_std.json"
-  if [ $TWOPRONGSEL -eq 1 ]; then
-    O2JSON="$PWD/dpl-config_selection.json"
-  fi
-  if [ $RUN5 -eq 1 ]; then
-    O2INPUT=$LISTFILESO2RUN5
-    O2JSON="$PWD/dpl-config_run5.json"
-    echo "Using Run 5 input"
-  fi
   # Option --configuration has priority over --aod-file.
 #  O2ARGS="--shm-segment-size 16000000000 --configuration json://$PWD/dpl-config_std.json --aod-file $AOD3NAME"
-  O2ARGS="--shm-segment-size 16000000000 --configuration json://$O2JSON"
+  O2ARGS="--shm-segment-size 16000000000 --configuration json://$JSON"
   O2ARGS_SKIM="$O2ARGS"
   O2ARGS_CAND="$O2ARGS"
   O2ARGS_PIDTPC="$O2ARGS"
@@ -198,11 +194,15 @@ EOF
   #$ENVO2 bash $O2SCRIPT > $LOGFILE 2>&1 # Run the script in the O2 environment.
   #if [ $? -ne 0 ]; then echo "Error"; exit 1; fi # Exit if error.
   #grep WARN $LOGFILE | sort -u
-  $ENVO2 bash o2_batch.sh $O2INPUT $O2JSON $O2SCRIPT # Run the batch script in the O2 environment.
+  $ENVO2 bash o2_batch.sh $O2INPUT $JSON $O2SCRIPT # Run the batch script in the O2 environment.
   if [ $? -ne 0 ]; then exit 1; fi # Exit if error.
   rm -f $O2SCRIPT
   mv output_o2 output_o2_hf
   mv log_o2.log log_o2_hf.log
+fi
+
+if [ $TWOPRONGSEL -eq 1 ]; then
+  rm "$JSONSEL"
 fi
 
 # Compare AliPhysics and O2 output.

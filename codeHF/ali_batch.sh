@@ -3,7 +3,6 @@
 LISTINPUT="$1"
 JSON="$2"
 FILEOUT="$3"
-TWOPRONGSEL="$4"
 
 LogFile="log_ali_hf.log"
 FilesToMerge="ListOutToMergeALI.txt"
@@ -25,13 +24,13 @@ while read FileIn; do
   echo "Input file ($Index): $FileIn"
   FileOut="$DirOut/$FILEOUT"
   echo "$FileOut" >> $FilesToMerge
-  #root -b -q -l "$DirBase/ComputeVerticesRun1.C(\"$FileIn\",\"$FileOut\",\"$JSON\",$TWOPRONGSEL)" > "$DirOut/$LogFile" 2>&1
-  echo "root -b -q -l $DirBase/ComputeVerticesRun1.C\(\\\"$FileIn\\\",\\\"$FileOut\\\",\\\"$JSON\\\",$TWOPRONGSEL\) > $DirOut/$LogFile 2>&1" >> "$ListRunCommands"
+  #root -b -q -l "$DirBase/ComputeVerticesRun1.C(\"$FileIn\",\"$FileOut\",\"$JSON\")" > "$DirOut/$LogFile" 2>&1
+  echo "root -b -q -l $DirBase/ComputeVerticesRun1.C\(\\\"$FileIn\\\",\\\"$FileOut\\\",\\\"$JSON\\\"\) > $DirOut/$LogFile 2>&1" >> "$ListRunCommands"
   ((Index+=1))
 done < "$LISTINPUT"
 
 echo "Running AliPhysics jobs..."
-parallel -j0 --halt now,fail=1 < $ListRunCommands > $LogFile 2>&1
+parallel -j0 --halt soon,fail=1 < $ListRunCommands > $LogFile 2>&1
 if [ $? -ne 0 ]; then echo -e "Error\nCheck $(realpath $LogFile)"; exit 1; fi # Exit if error.
 rm -f $ListRunCommands
 

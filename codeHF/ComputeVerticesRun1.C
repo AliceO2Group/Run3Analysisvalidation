@@ -333,7 +333,6 @@ AliAODRecoDecayHF3Prong* Make3Prong(TObjArray* threeTrackArray, AliAODVertex* se
 Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
                           TString output = "Vertices23prong-ITS1.root",
                           TString jsonconfig = "dpl-config_std.json",
-                          int doTwoProngSelection = 0,
                           double ptmintrack = 0.,
                           int do3Prongs = 0,
                           TString triggerstring = "")
@@ -356,21 +355,25 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
   int minncluTPC = 50;
   float dcatoprimxymin = 0.;
   Double_t candpTMin,candpTMax;
+  Int_t selectD0, selectD0bar;
   // read configuration from json file
   if (jsonconfig != "" && gSystem->Exec(Form("ls %s > /dev/null", jsonconfig.Data())) == 0) {
     printf("Read configuration from JSON file\n");
-    ptmintrack = GetJsonFloat("dpl-config_std.json", "ptmintrack");
+    selectD0 = GetJsonInteger(jsonconfig.Data(), "d_selectionFlagD0");
+    selectD0bar = GetJsonInteger(jsonconfig.Data(), "d_selectionFlagD0bar");
+    printf("D0 cuts: %d, D0bar cuts: %d\n", selectD0, selectD0bar);
+    ptmintrack = GetJsonFloat(jsonconfig.Data(), "ptmintrack");
     printf("Min pt track = %f\n", ptmintrack);
-    do3Prongs = GetJsonInteger("dpl-config_std.json", "do3prong");
+    do3Prongs = GetJsonInteger(jsonconfig.Data(), "do3prong");
     printf("do3prong     = %d\n", do3Prongs);
-    minncluTPC = GetJsonInteger("dpl-config_std.json", "d_tpcnclsfound");
+    minncluTPC = GetJsonInteger(jsonconfig.Data(), "d_tpcnclsfound");
     printf("minncluTPC   = %d\n", minncluTPC);
-    dcatoprimxymin = GetJsonFloat("dpl-config_std.json", "dcatoprimxymin");
+    dcatoprimxymin = GetJsonFloat(jsonconfig.Data(), "dcatoprimxymin");
     printf("dcatoprimxymin   = %f\n", dcatoprimxymin);
     printf("Read configuration from JSON file\n");
-    candpTMin = GetJsonFloat("dpl-config_std.json", "d_pTCandMin");
+    candpTMin = GetJsonFloat(jsonconfig.Data(), "d_pTCandMin");
     printf("Min pt 2prong cand = %f\n", candpTMin);
-    candpTMax = GetJsonInteger("dpl-config_std.json", "d_pTCandMax");
+    candpTMax = GetJsonInteger(jsonconfig.Data(), "d_pTCandMax");
     printf("Max pt 2prong cand = %f\n", candpTMax);
   }
 
@@ -511,13 +514,14 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
         AliAODRecoDecayHF2Prong* the2Prong = Make2Prong(twoTrackArray, vertexAOD, fBzkG);
         the2Prong->SetOwnPrimaryVtx(vertexAODp);
 
-        Int_t twoProngSelection=3;
-        if (doTwoProngSelection==1) twoProngSelection = TwoProngSelectionCuts(the2Prong, candpTMin, candpTMax);
+        Int_t twoProngSelection = 3;
+        if (selectD0 + selectD0bar > 0)
+          twoProngSelection = TwoProngSelectionCuts(the2Prong, candpTMin, candpTMax);
         Double_t m0 = the2Prong->InvMassD0();
         Double_t m0b = the2Prong->InvMassD0bar();
-        if (twoProngSelection!=0){
-          if (twoProngSelection==1 || twoProngSelection==3) hmass0->Fill(m0);
-          if (twoProngSelection==2 || twoProngSelection==3) hmass0->Fill(m0b);
+        if (twoProngSelection > 0) {
+          if (selectD0 == 0 || twoProngSelection == 1 || twoProngSelection == 3) hmass0->Fill(m0);
+          if (selectD0bar == 0 || twoProngSelection == 2 || twoProngSelection == 3) hmass0->Fill(m0b);
           hdecayxyz->Fill(decaylength);
           hdecayxy->Fill(decaylengthxy);
           hptD0->Fill(the2Prong->Pt());

@@ -7,5 +7,6 @@ rm -f comparison_histos.pdf comparison_ratios.pdf
 rm -f *.log
 rm -rf output_*
 rm -f output*
+rm -f *_sel.json
 rm -f localhost*
 rm -f dpl-config.json
