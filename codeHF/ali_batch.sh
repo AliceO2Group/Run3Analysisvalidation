@@ -30,13 +30,13 @@ while read FileIn; do
 done < "$LISTINPUT"
 
 echo "Running AliPhysics jobs..."
-parallel -j0 --halt soon,fail=1 < $ListRunCommands > $LogFile 2>&1
+parallel --halt soon,fail=100% < $ListRunCommands > $LogFile 2>&1
 if [ $? -ne 0 ]; then echo -e "Error\nCheck $(realpath $LogFile)"; exit 1; fi # Exit if error.
 rm -f $ListRunCommands
 
 echo "Merging output files... (output file: $FILEOUT, logfile: $LogFile)"
 hadd $FILEOUT @"$FilesToMerge" >> $LogFile 2>&1
-if [ $? -ne 0 ]; then echo -e "Error\nCheck $(realpath $LogFile)"; exit 1; fi # Exit if error.
+if [ $? -ne 0 ]; then echo -e "Error\nCheck $(realpath $LogFile)"; tail -n 2 "$LogFile"; exit 1; fi # Exit if error.
 rm -f $FilesToMerge
 
 exit 0
