@@ -383,9 +383,9 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
   TH1F* hpt_cuts = new TH1F("hpt_cuts", " ; pt tracks (#GeV) ; Entries", 100, 0, 10.);
   TH1F* hdcatoprimxy_cuts = new TH1F("hdcatoprimxy_cuts", "dca xy to prim. vtx (cm)", 100, -1.0, 1.0);
   TH1F* htgl_cuts = new TH1F("htgl_cuts", "tgl tracks (#GeV)", 100, 0., 10.);
-  TH1F* hvx = new TH1F("hvx", " Secondary vertex ; X vertex (cm) ; Entries", 100, -0.1, 0.1);
-  TH1F* hvy = new TH1F("hvy", " Secondary vertex ; Y vertex (cm) ; Entries", 100, -0.1, 0.1);
-  TH1F* hvz = new TH1F("hvz", " Secondary vertex ; Z vertex (cm) ; Entries", 100, -0.1, 0.1);
+  TH1F* hvx = new TH1F("hvx", " Secondary vertex ; X vertex (cm) ; Entries", 1000, -2.0, 2.0);
+  TH1F* hvy = new TH1F("hvy", " Secondary vertex ; Y vertex (cm) ; Entries", 1000, -2.0, 2.0);
+  TH1F* hvz = new TH1F("hvz", " Secondary vertex ; Z vertex (cm) ; Entries", 1000, -10.0, 10.0);
   TH1F* hitsmap = new TH1F("hitsmap", "hitsmap_cuts", 100, 0., 100.);
 
   TH1F* hvertexx = new TH1F("hvertexx", " Primary vertex ; X vertex (cm) ; Entries", 100, -10.0, 10.0);

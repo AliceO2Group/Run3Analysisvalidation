@@ -18,7 +18,7 @@
         "do3prong": "1",
         "d_bz": "5",
         "b_propdca": "true",
-        "d_maxr": "200",
+        "d_maxr": "5",
         "d_maxdzini": "4",
         "d_minparamchange": "0.001",
         "d_minrelchi2change": "0.90000000000000002",
@@ -29,7 +29,7 @@
         "dovalplots": "true",
         "d_bz": "5",
         "b_propdca": "true",
-        "d_maxr": "200",
+        "d_maxr": "5",
         "d_maxdzini": "4",
         "d_minparamchange": "0.001",
         "d_minrelchi2change": "0.90000000000000002"
@@ -48,8 +48,8 @@
         "d_nSigmaTOFCombined": "5.0"
     },
     "hf-task-d0": {
-        "d_selectionFlagD0": "0",
-        "d_selectionFlagD0bar": "0"
+        "d_selectionFlagD0": "1",
+        "d_selectionFlagD0bar": "1"
     },
     "internal-dpl-aod-writer": {
     }
