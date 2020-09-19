@@ -19,7 +19,7 @@
         "d_bz": "5",
         "b_propdca": "true",
         "d_maxr": "5",
-        "d_maxdzini": "4",
+        "d_maxdzini": "999",
         "d_minparamchange": "0.001",
         "d_minrelchi2change": "0.90000000000000002",
         "d_minmassDp": 1.769,
@@ -30,7 +30,7 @@
         "d_bz": "5",
         "b_propdca": "true",
         "d_maxr": "5",
-        "d_maxdzini": "4",
+        "d_maxdzini": "999",
         "d_minparamchange": "0.001",
         "d_minrelchi2change": "0.90000000000000002"
     },
