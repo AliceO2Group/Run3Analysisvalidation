@@ -3,7 +3,7 @@
 bash clean.sh
 #rm -r output_o2
 
-CASE=4
+CASE=5
 
 DOCONVERT=1   # Convert AliESDs.root to AO2D.root.
 DOQA=0        # Run the QA task with O2.
@@ -54,12 +54,12 @@ fi
 
 if [ $CASE -eq 4 ]; then
   INPUTDIR="/data/Run3data/alice_sim_2018_LHC18a4a2_cent/282099"
-  STRING="001/AliESDs.root"
+  STRING="00*/AliESDs.root"
 fi
 
 if [ $CASE -eq 5 ]; then
   INPUTDIR="/mnt/temp/Run3data_Vit/LHC18a4a2_cent/282341"
-  STRING="1*/AliESDs.root"
+  STRING="0*/AliESDs.root"
 fi
 
 #INPUTDIR="/data/Run3data/output" #K0* MC injected

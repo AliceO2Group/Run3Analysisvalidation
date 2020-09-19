@@ -22,8 +22,8 @@
         "d_maxdzini": "4",
         "d_minparamchange": "0.001",
         "d_minrelchi2change": "0.90000000000000002",
-        "d_minmassDp": 1.5,
-        "d_maxmassDp": 2.1
+        "d_minmassDp": 1.769,
+        "d_maxmassDp": 1.969
     },
     "hf-cand-creator-2prong": {
         "dovalplots": "true",
@@ -48,8 +48,8 @@
         "d_nSigmaTOFCombined": "5.0"
     },
     "hf-task-d0": {
-        "d_selectionFlagD0": "1",
-        "d_selectionFlagD0bar": "1"
+        "d_selectionFlagD0": "0",
+        "d_selectionFlagD0bar": "0"
     },
     "internal-dpl-aod-writer": {
     }

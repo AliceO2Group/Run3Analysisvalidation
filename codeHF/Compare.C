@@ -1,4 +1,4 @@
-Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Vertices2prong-ITS1.root", double mass = 1.8)
+Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Vertices2prong-ITS1.root", double mass = 1.8, bool donorm = false)
 {
   gStyle->SetOptStat(0);
   gStyle->SetPalette(0);
@@ -8,7 +8,7 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
   TFile* fRun3 = new TFile(filerun3.Data());
   TFile* fRun1 = new TFile(filerun1.Data());
 
-  const int nhisto = 14;
+  const int nhisto = 15;
   TString histonameRun1[nhisto] = {"hpt_nocuts",
                                    "hpt_cuts",
                                    "hdcatoprimxy_cuts",
@@ -22,7 +22,8 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
                                    "hptprong1",
                                    "hd0",
                                    "hd0d0",
-                                   "hmass0"};
+                                   "hmass0",
+                                   "hmassP"};
   TString histonameRun3[nhisto] = {"hf-produce-sel-track/hpt_nocuts",
                                    "hf-produce-sel-track/hpt_cuts",
                                    "hf-produce-sel-track/hdcatoprimxy_cuts",
@@ -36,7 +37,8 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
                                    "hf-task-d0/hptprong1",
                                    "hf-task-d0/hd0",
                                    "hf-task-d0/hd0d0",
-                                   "hf-task-d0/hmass"};
+                                   "hf-task-d0/hmass",
+                                   "hf-track-index-skims-creator/hmass3"};
   TString xaxis[nhisto] = {"#it{p}_{T} before selections",
                            "#it{p}_{T} after selections",
                            "DCA XY to prim vtx after selections",
@@ -50,8 +52,9 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
                            "#it{p}_{T} prong 1",
                            "d0 (cm)",
                            "d0d0 (cm^{2})",
-                           "2-prong mass (#pi K)"};
-  int rebin[nhisto] = {2, 2, 2, 5, 5, 5, 2, 2, 2, 2, 2, 2, 2, 2};
+                           "2-prong mass (#pi K)",
+                           "3-prong mass (#pi K #pi)"};
+  int rebin[nhisto] = {2, 2, 2, 5, 5, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2};
   TH1F* hRun1[nhisto];
   TH1F* hRun3[nhisto];
   TH1F* hRatio[nhisto];
@@ -82,14 +85,21 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
     nRun1 = hRun1[index]->Integral(0, -1);
     nRun3 = hRun3[index]->Integral(0, -1);
     cv->cd(index + 1);
+    if (donorm){
+      hRun1[index]->Scale(1./hRun1[index]->GetEntries());
+      hRun3[index]->Scale(1./hRun3[index]->GetEntries());
+    }
     hRun1[index]->Rebin(rebin[index]);
     hRun3[index]->Rebin(rebin[index]);
     hRun1[index]->SetLineColor(1);
-    hRun1[index]->SetLineWidth(3);
+    hRun1[index]->SetLineWidth(2);
     hRun3[index]->SetLineColor(2);
     hRun3[index]->SetLineWidth(1);
     hRun1[index]->SetTitle(Form("Entries: Run1: %d, Run3: %d;%s;Entries", nRun1, nRun3, xaxis[index].Data()));
     hRun1[index]->GetYaxis()->SetMaxDigits(3);
+    double minyval = TMath::Min(hRun3[index]->GetMinimum(), hRun1[index]->GetMinimum());
+    double maxyval = TMath::Max(hRun3[index]->GetMaximum(), hRun1[index]->GetMaximum());
+    hRun1[index]->GetYaxis()->SetRangeUser(minyval, maxyval*1.1);
     hRun1[index]->Draw();
     hRun3[index]->Draw("same");
     TLegend* legend = new TLegend(0.7, 0.7, 0.9, 0.9);
