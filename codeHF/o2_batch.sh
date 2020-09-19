@@ -35,6 +35,7 @@ while read FileIn; do
   cat << EOF > $RUNSCRIPT # Create a temporary script.
 #!/bin/bash
 cd "$DirBase/$DirOut"
+#if [ -f "$FILEOUT" ]; then exit 0; fi
 bash $SCRIPT > $LogFile 2>&1
 #if [ $? -ne 0 ]; then exit 1; fi
 #grep WARN $LogFile | sort -u
@@ -45,13 +46,14 @@ EOF
 done < "$LISTINPUT"
 
 echo "Running O2 jobs..."
-parallel -j0 --halt soon,fail=1 < $ListRunScripts > $LogFile 2>&1
+parallel --timeout 60 --halt soon,fail=100% < $ListRunScripts > $LogFile 2>&1
+#parallel --timeout 60 --retry-failed --joblog "$DirOutMain/joblog.log" < $ListRunScripts > $LogFile 2>&1
 if [ $? -ne 0 ]; then echo -e "Error\nCheck $(realpath $LogFile)"; exit 1; fi # Exit if error.
 rm -f $ListRunScripts
 
 echo "Merging output files... (output file: $FILEOUT, logfile: $LogFile)"
 hadd $FILEOUT @"$FilesToMerge" >> $LogFile 2>&1
-if [ $? -ne 0 ]; then echo -e "Error\nCheck $(realpath $LogFile)"; exit 1; fi # Exit if error.
+if [ $? -ne 0 ]; then echo -e "Error\nCheck $(realpath $LogFile)"; tail -n 2 "$LogFile"; exit 1; fi # Exit if error.
 rm -f $FilesToMerge
 
 exit 0

@@ -39,7 +39,7 @@ EOF
 done < "$LISTINPUT"
 
 echo "Running conversion jobs..."
-parallel -j0 --halt now,fail=1 < $ListRunScripts > $LogFile 2>&1
+parallel --halt soon,fail=100% < $ListRunScripts > $LogFile 2>&1
 if [ $? -ne 0 ]; then echo -e "Error\nCheck $(realpath $LogFile)"; exit 1; fi # Exit if error.
 rm -f $ListRunScripts
 
