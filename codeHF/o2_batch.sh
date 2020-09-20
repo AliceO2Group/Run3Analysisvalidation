@@ -3,6 +3,7 @@
 LISTINPUT="$1"
 JSON="$2"
 SCRIPT="$3"
+DEBUG=$4
 FILEOUT="AnalysisResults.root"
 
 LogFile="log_o2.log"
@@ -28,7 +29,9 @@ while read FileIn; do
   sed -e "s!@$LISTINPUT!$FileIn!g" $JSONLocal > $JSONLocal.tmp && mv $JSONLocal.tmp $JSONLocal
   cp "$DirBase/$SCRIPT" .
   sed -e "s!$DirBase!$PWD!g" $SCRIPT > $SCRIPT.tmp && mv $SCRIPT.tmp $SCRIPT
-  echo "Input file ($Index): $FileIn"
+  if [ $DEBUG -eq 1 ]; then
+    echo "Input file ($Index): $FileIn"
+  fi
   FileOut="$DirOut/$FILEOUT"
   echo $FileOut >> "$DirBase/$FilesToMerge"
   RUNSCRIPT="run.sh"

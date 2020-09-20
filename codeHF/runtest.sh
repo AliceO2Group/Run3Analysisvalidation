@@ -14,6 +14,7 @@ RUN5=0        # Use Run 5 input.
 CONVSEP=1     # Convert ESD files separately.
 PARALLELISE=0 # Parallelise O2 tasks.
 TWOPRONGSEL=0 # Apply D0 selection cuts.
+DEBUG=0       # Print out more information.
 
 # Default settings
 JSON="$PWD/dpl-config_std.json"
@@ -109,7 +110,7 @@ if [ $DOCONVERT -eq 1 ]; then
   fi
   if [ $CONVSEP -eq 1 ]; then
     echo "Converting files separately"
-    $ENVALI bash convert_batch.sh $LISTFILESALI $LISTFILESO2 $ISMC # Run the batch script in the ALI environment.
+    $ENVALI bash convert_batch.sh $LISTFILESALI $LISTFILESO2 $ISMC $DEBUG # Run the batch script in the ALI environment.
     if [ $? -ne 0 ]; then exit 1; fi # Exit if error.
   else
     LOGFILE="log_convert.log"
@@ -142,7 +143,7 @@ EOF
   #$ENVO2 bash $O2SCRIPT > $LOGFILE 2>&1 # Run the script in the O2 environment.
   #if [ $? -ne 0 ]; then echo "Error"; exit 1; fi # Exit if error.
   #grep WARN $LOGFILE | sort -u
-  $ENVO2 bash o2_batch.sh $O2INPUT $JSON $O2SCRIPT # Run the batch script in the O2 environment.
+  $ENVO2 bash o2_batch.sh $O2INPUT $JSON $O2SCRIPT $DEBUG # Run the batch script in the O2 environment.
   if [ $? -ne 0 ]; then exit 1; fi # Exit if error.
   rm -f $O2SCRIPT
   mv $FILEOUTO2 $FILEOUTQA
@@ -154,7 +155,7 @@ fi
 if [ $DORUN1 -eq 1 ]; then
   echo -e "\nRunning the HF tasks with AliPhysics... ($(cat $LISTFILESALI | wc -l) files)"
   #$ENVALI bash ali_batch.sh $LISTFILESALI $JSON $FILEOUTALI # Run the batch script in the ALI environment.
-  $ENVALIO2 bash ali_batch.sh $LISTFILESALI $JSON $FILEOUTALI # Run the batch script in the ALI+O2 environment.
+  $ENVALIO2 bash ali_batch.sh $LISTFILESALI $JSON $FILEOUTALI $DEBUG # Run the batch script in the ALI+O2 environment.
   if [ $? -ne 0 ]; then exit 1; fi # Exit if error.
 fi
 
@@ -194,7 +195,7 @@ EOF
   #$ENVO2 bash $O2SCRIPT > $LOGFILE 2>&1 # Run the script in the O2 environment.
   #if [ $? -ne 0 ]; then echo "Error"; exit 1; fi # Exit if error.
   #grep WARN $LOGFILE | sort -u
-  $ENVO2 bash o2_batch.sh $O2INPUT $JSON $O2SCRIPT # Run the batch script in the O2 environment.
+  $ENVO2 bash o2_batch.sh $O2INPUT $JSON $O2SCRIPT $DEBUG # Run the batch script in the O2 environment.
   if [ $? -ne 0 ]; then exit 1; fi # Exit if error.
   rm -f $O2SCRIPT
   mv output_o2 output_o2_hf

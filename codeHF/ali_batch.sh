@@ -3,6 +3,7 @@
 LISTINPUT="$1"
 JSON="$2"
 FILEOUT="$3"
+DEBUG=$4
 
 LogFile="log_ali_hf.log"
 FilesToMerge="ListOutToMergeALI.txt"
@@ -21,7 +22,9 @@ while read FileIn; do
   fi
   DirOut="$DirOutMain/$Index"
   mkdir -p $DirOut
-  echo "Input file ($Index): $FileIn"
+  if [ $DEBUG -eq 1 ]; then
+    echo "Input file ($Index): $FileIn"
+  fi
   FileOut="$DirOut/$FILEOUT"
   echo "$FileOut" >> $FilesToMerge
   #root -b -q -l "$DirBase/ComputeVerticesRun1.C(\"$FileIn\",\"$FileOut\",\"$JSON\")" > "$DirOut/$LogFile" 2>&1
