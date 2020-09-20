@@ -11,7 +11,6 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
   const int nhisto = 18;
   const int nhisto_2prong = 14;
  
- 
   TString histonameRun1[nhisto] = {"hpt_nocuts",
                                    "hpt_cuts",
                                    "hdcatoprimxy_cuts",
@@ -172,8 +171,6 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
     hRatio[index]->Draw();
     i=i+1;
   }
-
-
 
   cv->SaveAs("comparison_histos_2prong.pdf");
   cr->SaveAs("comparison_ratios_2prong.pdf");
