@@ -165,7 +165,7 @@ Int_t TwoProngSelectionCuts(AliAODRecoDecayHF2Prong* cand, Double_t candpTMin, D
 
 }
 
-AliESDVertex* ReconstructSecondaryVertex(AliVertexerTracks* vt, TObjArray* trkArray, AliESDVertex* primvtx)
+AliESDVertex* ReconstructSecondaryVertex(AliVertexerTracks* vt, TObjArray* trkArray, AliESDVertex* primvtx, double rmax)
 {
 
   vt->SetVtxStart(primvtx);
@@ -174,7 +174,7 @@ AliESDVertex* ReconstructSecondaryVertex(AliVertexerTracks* vt, TObjArray* trkAr
   if (trkv->GetNContributors() != trkArray->GetEntriesFast())
     return 0x0;
   Double_t vertRadius2 = trkv->GetX() * trkv->GetX() + trkv->GetY() * trkv->GetY();
-  //FIXME if(vertRadius2>8.) return 0x0;
+  if(vertRadius2>rmax*rmax) return 0x0;
   return trkv;
 }
 
@@ -354,7 +354,7 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
 
   int minncluTPC = 50;
   float dcatoprimxymin = 0.;
-  Double_t candpTMin,candpTMax;
+  Double_t candpTMin,candpTMax, d_maxr;
   Int_t selectD0, selectD0bar;
   // read configuration from json file
   if (jsonconfig != "" && gSystem->Exec(Form("ls %s > /dev/null", jsonconfig.Data())) == 0) {
@@ -375,6 +375,8 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
     printf("Min pt 2prong cand = %f\n", candpTMin);
     candpTMax = GetJsonInteger(jsonconfig.Data(), "d_pTCandMax");
     printf("Max pt 2prong cand = %f\n", candpTMax);
+    d_maxr = GetJsonInteger(jsonconfig.Data(), ", d_maxr");
+    printf("Max DCA radius = %f\n", d_maxr);
   }
 
 
@@ -383,9 +385,9 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
   TH1F* hpt_cuts = new TH1F("hpt_cuts", " ; pt tracks (#GeV) ; Entries", 100, 0, 10.);
   TH1F* hdcatoprimxy_cuts = new TH1F("hdcatoprimxy_cuts", "dca xy to prim. vtx (cm)", 100, -1.0, 1.0);
   TH1F* htgl_cuts = new TH1F("htgl_cuts", "tgl tracks (#GeV)", 100, 0., 10.);
-  TH1F* hvx = new TH1F("hvx", " Secondary vertex ; X vertex (cm) ; Entries", 100, -0.1, 0.1);
-  TH1F* hvy = new TH1F("hvy", " Secondary vertex ; Y vertex (cm) ; Entries", 100, -0.1, 0.1);
-  TH1F* hvz = new TH1F("hvz", " Secondary vertex ; Z vertex (cm) ; Entries", 100, -0.1, 0.1);
+  TH1F* hvx = new TH1F("hvx", " Secondary vertex ; X vertex (cm) ; Entries", 1000, -2.0, 2.0);
+  TH1F* hvy = new TH1F("hvy", " Secondary vertex ; Y vertex (cm) ; Entries", 1000, -2.0, 2.0);
+  TH1F* hvz = new TH1F("hvz", " Secondary vertex ; Z vertex (cm) ; Entries", 1000, -10.0, 10.0);
   TH1F* hitsmap = new TH1F("hitsmap", "hitsmap_cuts", 100, 0., 100.);
 
   TH1F* hvertexx = new TH1F("hvertexx", " Primary vertex ; X vertex (cm) ; Entries", 100, -10.0, 10.0);
@@ -395,7 +397,7 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
   TH1F* hdecayxyz = new TH1F("hdecayxyz", "hdecayxyz", 100, 0., 1.0);
   TH1F* hdecayxy = new TH1F("hdecayxy", "hdecayxy", 100, 0., 1.0);
   TH1F* hmass0 = new TH1F("hmass0", "; Inv Mass (GeV/c^{2})", 500, 0, 5.0);
-  TH1F* hmassP = new TH1F("hmassP", "; Inv Mass (GeV/c^{2})", 500, 0, 5.0);
+  TH1F* hmassP = new TH1F("hmassP", "; Inv Mass (GeV/c^{2})", 500, 1.6, 2.1);
   TH1F* hptD0 = new TH1F("hptD0", " ; pt D0 (#GeV) ; Entries", 100, 0, 10.);
   TH1F* hptprong0 = new TH1F("hptprong0", " ; pt prong0 (#GeV) ; Entries", 100, 0, 10.);
   TH1F* hptprong1 = new TH1F("hptprong1", " ; pt prong1 (#GeV) ; Entries", 100, 0, 10.);
@@ -493,7 +495,7 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
 
         twoTrackArray->AddAt(track_p0, 0);
         twoTrackArray->AddAt(track_n0, 1);
-        AliESDVertex* trkv = ReconstructSecondaryVertex(vt, twoTrackArray, primvtx);
+        AliESDVertex* trkv = ReconstructSecondaryVertex(vt, twoTrackArray, primvtx, d_maxr);
         if (trkv == 0x0) {
           twoTrackArray->Clear();
           continue;
@@ -553,7 +555,7 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
               threeTrackArray->Clear();
               continue;
             }
-            AliESDVertex* trkv3 = ReconstructSecondaryVertex(vt, threeTrackArray, primvtx);
+            AliESDVertex* trkv3 = ReconstructSecondaryVertex(vt, threeTrackArray, primvtx, d_maxr);
             if (trkv3 == 0x0) {
               threeTrackArray->Clear();
               continue;
@@ -588,7 +590,7 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
               threeTrackArray->Clear();
               continue;
             }
-            AliESDVertex* trkv3 = ReconstructSecondaryVertex(vt, threeTrackArray, primvtx);
+            AliESDVertex* trkv3 = ReconstructSecondaryVertex(vt, threeTrackArray, primvtx, d_maxr);
             if (trkv3 == 0x0) {
               threeTrackArray->Clear();
               continue;

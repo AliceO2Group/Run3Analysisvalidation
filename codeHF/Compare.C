@@ -1,4 +1,4 @@
-Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Vertices2prong-ITS1.root", double mass = 1.8)
+Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Vertices2prong-ITS1.root", double mass = 1.8, bool donorm = false)
 {
   gStyle->SetOptStat(0);
   gStyle->SetPalette(0);
@@ -12,49 +12,49 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
   TString histonameRun1[nhisto] = {"hpt_nocuts",
                                    "hpt_cuts",
                                    "hdcatoprimxy_cuts",
-                                   "hmass0",
                                    "hvx",
                                    "hvy",
                                    "hvz",
-                                   "hmassP",
                                    "hdecayxyz",
                                    "hdecayxy",
                                    "hptD0",
                                    "hptprong0",
                                    "hptprong1",
                                    "hd0",
-                                   "hd0d0"};
+                                   "hd0d0",
+                                   "hmass0",
+                                   "hmassP"};
   TString histonameRun3[nhisto] = {"hf-produce-sel-track/hpt_nocuts",
                                    "hf-produce-sel-track/hpt_cuts",
                                    "hf-produce-sel-track/hdcatoprimxy_cuts",
-                                   "hf-task-d0/hmass",
-                                   "hf-cand-creator-2prong/hvtx_x",
-                                   "hf-cand-creator-2prong/hvtx_y",
-                                   "hf-cand-creator-2prong/hvtx_z",
-                                   "hf-track-index-skims-creator/hmass3",
+                                   "hf-track-index-skims-creator/hvtx_x",
+                                   "hf-track-index-skims-creator/hvtx_y",
+                                   "hf-track-index-skims-creator/hvtx_z",
                                    "hf-task-d0/declength",
                                    "hf-task-d0/declengthxy",
                                    "hf-task-d0/hptcand",
                                    "hf-task-d0/hptprong0",
                                    "hf-task-d0/hptprong1",
                                    "hf-task-d0/hd0",
-                                   "hf-task-d0/hd0d0"};
+                                   "hf-task-d0/hd0d0",
+                                   "hf-task-d0/hmass",
+                                   "hf-track-index-skims-creator/hmass3"};
   TString xaxis[nhisto] = {"#it{p}_{T} before selections",
                            "#it{p}_{T} after selections",
                            "DCA XY to prim vtx after selections",
-                           "2-prong mass (#pi K)",
                            "secondary vtx x",
                            "secondary vtx y",
                            "secondary vtx z",
-                           "3-prong mass (#pi K #pi)",
                            "decay length",
                            "decay length XY",
                            "#it{p}_{T} D^{0}",
                            "#it{p}_{T} prong 0",
                            "#it{p}_{T} prong 1",
                            "d0 (cm)",
-                           "d0d0 (cm^{2})"};
-
+                           "d0d0 (cm^{2})",
+                           "2-prong mass (#pi K)",
+                           "3-prong mass (#pi K #pi)"};
+  int rebin[nhisto] = {2, 2, 2, 5, 5, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2};
   TH1F* hRun1[nhisto];
   TH1F* hRun3[nhisto];
   TH1F* hRatio[nhisto];
@@ -76,21 +76,30 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
   Float_t k = 1. - marginHigh - marginLow;
   Float_t yMin, yMax, yRange;
 
-  TCanvas* cv = new TCanvas("cv", "Histos", 3000, 1600);
-  cv->Divide(5, 3);
-  TCanvas* cr = new TCanvas("cr", "Ratios", 3000, 1600);
-  cr->Divide(5, 3);
+  TCanvas* cv = new TCanvas("cv", "Histos", 3000, 3000);
+  cv->Divide(3, 5);
+  TCanvas* cr = new TCanvas("cr", "Ratios", 3000, 3000);
+  cr->Divide(3, 5);
   Int_t nRun1, nRun3;
   for (int index = 0; index < nhisto; index++) {
     nRun1 = hRun1[index]->Integral(0, -1);
     nRun3 = hRun3[index]->Integral(0, -1);
     cv->cd(index + 1);
+    if (donorm){
+      hRun1[index]->Scale(1./hRun1[index]->GetEntries());
+      hRun3[index]->Scale(1./hRun3[index]->GetEntries());
+    }
+    hRun1[index]->Rebin(rebin[index]);
+    hRun3[index]->Rebin(rebin[index]);
     hRun1[index]->SetLineColor(1);
-    hRun1[index]->SetLineWidth(3);
+    hRun1[index]->SetLineWidth(2);
     hRun3[index]->SetLineColor(2);
     hRun3[index]->SetLineWidth(1);
     hRun1[index]->SetTitle(Form("Entries: Run1: %d, Run3: %d;%s;Entries", nRun1, nRun3, xaxis[index].Data()));
     hRun1[index]->GetYaxis()->SetMaxDigits(3);
+    double minyval = TMath::Min(hRun3[index]->GetMinimum(), hRun1[index]->GetMinimum());
+    double maxyval = TMath::Max(hRun3[index]->GetMaximum(), hRun1[index]->GetMaximum());
+    hRun1[index]->GetYaxis()->SetRangeUser(minyval, maxyval*1.1);
     hRun1[index]->Draw();
     hRun3[index]->Draw("same");
     TLegend* legend = new TLegend(0.7, 0.7, 0.9, 0.9);
