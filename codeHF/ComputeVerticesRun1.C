@@ -388,6 +388,10 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
   TH1F* hvx = new TH1F("hvx", " Secondary vertex ; X vertex (cm) ; Entries", 1000, -2.0, 2.0);
   TH1F* hvy = new TH1F("hvy", " Secondary vertex ; Y vertex (cm) ; Entries", 1000, -2.0, 2.0);
   TH1F* hvz = new TH1F("hvz", " Secondary vertex ; Z vertex (cm) ; Entries", 1000, -10.0, 10.0);
+  TH1F* hvx3 = new TH1F("hvx3", " Secondary vertex 3prong ; X vertex (cm) ; Entries", 1000, -2.0, 2.0);
+  TH1F* hvy3 = new TH1F("hvy3", " Secondary vertex 3prong ; Y vertex (cm) ; Entries", 1000, -2.0, 2.0);
+  TH1F* hvz3 = new TH1F("hvz3", " Secondary vertex 3prong ; Z vertex (cm) ; Entries", 1000, -10.0, 10.0);
+
   TH1F* hitsmap = new TH1F("hitsmap", "hitsmap_cuts", 100, 0., 100.);
 
   TH1F* hvertexx = new TH1F("hvertexx", " Primary vertex ; X vertex (cm) ; Entries", 100, -10.0, 10.0);
@@ -560,12 +564,16 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
               threeTrackArray->Clear();
               continue;
             }
+
             AliAODVertex* vertexAOD3 = ConvertToAODVertex(trkv3);
             AliAODRecoDecayHF3Prong* the3Prong = Make3Prong(threeTrackArray, vertexAOD3, fBzkG);
             //  the3Prong->SetOwnPrimaryVtx(vertexAODp);
             if (massSel & (1 << kbitDplus)) {
               Double_t mp = the3Prong->InvMassDplus();
               hmassP->Fill(mp);
+	      hvx3->Fill(trkv3->GetX());
+	      hvy3->Fill(trkv3->GetY());
+	      hvz3->Fill(trkv3->GetZ());
             }
             delete trkv3;
             delete the3Prong;
@@ -624,6 +632,9 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
   hvx->Write();
   hvy->Write();
   hvz->Write();
+  hvx3->Write();
+  hvy3->Write();
+  hvz3->Write();
   hpt_nocuts->Write();
   htgl_nocuts->Write();
   hpt_cuts->Write();

@@ -8,7 +8,10 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
   TFile* fRun3 = new TFile(filerun3.Data());
   TFile* fRun1 = new TFile(filerun1.Data());
 
-  const int nhisto = 15;
+  const int nhisto = 18;
+  const int nhisto_2prong = 14;
+ 
+ 
   TString histonameRun1[nhisto] = {"hpt_nocuts",
                                    "hpt_cuts",
                                    "hdcatoprimxy_cuts",
@@ -23,7 +26,10 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
                                    "hd0",
                                    "hd0d0",
                                    "hmass0",
-                                   "hmassP"};
+                                   "hmassP",
+                                   "hvx3",
+                                   "hvy3",
+                                   "hvz3"};
   TString histonameRun3[nhisto] = {"hf-produce-sel-track/hpt_nocuts",
                                    "hf-produce-sel-track/hpt_cuts",
                                    "hf-produce-sel-track/hdcatoprimxy_cuts",
@@ -38,7 +44,10 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
                                    "hf-task-d0/hd0",
                                    "hf-task-d0/hd0d0",
                                    "hf-task-d0/hmass",
-                                   "hf-track-index-skims-creator/hmass3"};
+                                   "hf-track-index-skims-creator/hmass3",
+				   "hf-track-index-skims-creator/hvtx3_x",
+				   "hf-track-index-skims-creator/hvtx3_y",
+				   "hf-track-index-skims-creator/hvtx3_z"};
   TString xaxis[nhisto] = {"#it{p}_{T} before selections",
                            "#it{p}_{T} after selections",
                            "DCA XY to prim vtx after selections",
@@ -53,8 +62,11 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
                            "d0 (cm)",
                            "d0d0 (cm^{2})",
                            "2-prong mass (#pi K)",
-                           "3-prong mass (#pi K #pi)"};
-  int rebin[nhisto] = {2, 2, 2, 5, 5, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2};
+                           "3-prong mass (#pi K #pi)",
+			   "secondary vtx x - 3prong",
+                           "secondary vtx y - 3prong",
+                           "secondary vtx z - 3prong"};
+  int rebin[nhisto] = {2, 2, 2, 5, 5, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2, 5, 5, 5};
   TH1F* hRun1[nhisto];
   TH1F* hRun3[nhisto];
   TH1F* hRatio[nhisto];
@@ -76,12 +88,13 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
   Float_t k = 1. - marginHigh - marginLow;
   Float_t yMin, yMax, yRange;
 
+  Int_t nRun1, nRun3;
+
   TCanvas* cv = new TCanvas("cv", "Histos", 3000, 3000);
   cv->Divide(3, 5);
   TCanvas* cr = new TCanvas("cr", "Ratios", 3000, 3000);
   cr->Divide(3, 5);
-  Int_t nRun1, nRun3;
-  for (int index = 0; index < nhisto; index++) {
+  for (int index = 0; index < nhisto_2prong; index++) {
     nRun1 = hRun1[index]->Integral(0, -1);
     nRun3 = hRun3[index]->Integral(0, -1);
     cv->cd(index + 1);
@@ -116,7 +129,55 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
     hRatio[index]->GetYaxis()->SetRangeUser(yMin - marginLow/k * yRange, yMax + marginHigh/k * yRange);
     hRatio[index]->Draw();
   }
-  cv->SaveAs("comparison_histos.pdf");
-  cr->SaveAs("comparison_ratios.pdf");
+
+  Int_t i=0;
+
+  TCanvas* cv3 = new TCanvas("cv3", "Histos", 3000, 3000);
+  cv3->Divide(3, 5);
+  TCanvas* cr3 = new TCanvas("cr3", "Ratios", 3000, 3000);
+  cr3->Divide(3, 5);
+  for (int index = nhisto_2prong; index < nhisto; index++) {
+    nRun1 = hRun1[index]->Integral(0, -1);
+    nRun3 = hRun3[index]->Integral(0, -1);
+    cv3->cd(i + 1);
+    if (donorm){
+      hRun1[index]->Scale(1./hRun1[index]->GetEntries());
+      hRun3[index]->Scale(1./hRun3[index]->GetEntries());
+    }
+    hRun1[index]->Rebin(rebin[index]);
+    hRun3[index]->Rebin(rebin[index]);
+    hRun1[index]->SetLineColor(1);
+    hRun1[index]->SetLineWidth(2);
+    hRun3[index]->SetLineColor(2);
+    hRun3[index]->SetLineWidth(1);
+    hRun1[index]->SetTitle(Form("Entries: Run1: %d, Run3: %d;%s;Entries", nRun1, nRun3, xaxis[index].Data()));
+    hRun1[index]->GetYaxis()->SetMaxDigits(3);
+    double minyval = TMath::Min(hRun3[index]->GetMinimum(), hRun1[index]->GetMinimum());
+    double maxyval = TMath::Max(hRun3[index]->GetMaximum(), hRun1[index]->GetMaximum());
+    hRun1[index]->GetYaxis()->SetRangeUser(minyval, maxyval*1.1);
+    hRun1[index]->Draw();
+    hRun3[index]->Draw("same");
+    TLegend* legend = new TLegend(0.7, 0.7, 0.9, 0.9);
+    legend->AddEntry(hRun1[index], "Run1", "L");
+    legend->AddEntry(hRun3[index], "Run3", "L");
+    legend->Draw();
+    cr3->cd(i + 1);
+    hRatio[index] = (TH1F*)hRun3[index]->Clone(Form("hRatio%d", index));
+    hRatio[index]->Divide(hRun1[index]);
+    hRatio[index]->SetTitle(Form("Entries ratio: %g;%s;Run3/Run1", (double)nRun3/(double)nRun1, xaxis[index].Data()));
+    yMin = hRatio[index]->GetMinimum(0);
+    yMax = hRatio[index]->GetMaximum();
+    yRange = yMax - yMin;
+    hRatio[index]->GetYaxis()->SetRangeUser(yMin - marginLow/k * yRange, yMax + marginHigh/k * yRange);
+    hRatio[index]->Draw();
+    i=i+1;
+  }
+
+
+
+  cv->SaveAs("comparison_histos_2prong.pdf");
+  cr->SaveAs("comparison_ratios_2prong.pdf");
+  cv3->SaveAs("comparison_histos_3prong.pdf");
+  cr3->SaveAs("comparison_ratios_3prong.pdf");
   return 0;
 }
