@@ -3,6 +3,7 @@
 LISTINPUT="$1"
 LISTOUTPUT="$2"
 ISMC=$3
+DEBUG=$4
 
 LogFile="log_convert.log"
 ListInOne="list_input.txt"
@@ -23,7 +24,9 @@ while read FileIn; do
   mkdir -p $DirOut
   cd $DirOut
   echo $FileIn > $ListInOne
-  echo "Input file ($Index): $FileIn"
+  if [ $DEBUG -eq 1 ]; then
+    echo "Input file ($Index): $FileIn"
+  fi
   FileOut="$DirOut/AO2D.root"
   echo "$DirBase/$FileOut" >> $DirBase/$LISTOUTPUT
   #root -b -q -l "$DirBase/convertAO2D.C(\"$ListInOne\", $ISMC)" > $LogFile 2>&1
