@@ -1,7 +1,6 @@
 #!/bin/bash
 
 bash clean.sh
-#rm -r output_o2
 
 CASE=4
 
@@ -59,7 +58,7 @@ fi
 
 if [ $CASE -eq 5 ]; then
   INPUTDIR="/mnt/temp/Run3data_Vit/LHC18a4a2_cent/282341"
-  STRING="1*/AliESDs.root"
+  STRING="001/AliESDs.root"
 fi
 
 #INPUTDIR="/data/Run3data/output" #K0* MC injected
