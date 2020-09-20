@@ -80,6 +80,5 @@ O<sup>2</sup> fails to propagate some tracks which results into errors like this
 Until these errors get fixed, make the `o2_batch.sh` script ignore them by temporarily commenting out the error check:
 
 ```bash
-parallel -j0 --halt soon,fail=1 < $ListRunScripts > $LogFile 2>&1
-#if [ $? -ne 0 ]; then echo -e "Error\nCheck $(realpath $LogFile)"; exit 1; fi # Exit if error.
+#if [ $ExitCode -ne 0 ]; then echo -e "Error\nCheck $(realpath $LogFile)"; exit 1; fi # Exit if error.
 ```
