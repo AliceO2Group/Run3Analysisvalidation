@@ -71,9 +71,14 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
     }
   }
 
+  // Histogram plot vertical margins
   Float_t marginHigh = 0.05;
   Float_t marginLow = 0.05;
   Float_t k = 1. - marginHigh - marginLow;
+  // Ratio plot vertical margins
+  Float_t marginRHigh = 0.05;
+  Float_t marginRLow = 0.05;
+  Float_t kR = 1. - marginRHigh - marginRLow;
   Float_t yMin, yMax, yRange;
 
   TCanvas* cv = new TCanvas("cv", "Histos", 3000, 3000);
@@ -82,12 +87,12 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
   cr->Divide(3, 5);
   Int_t nRun1, nRun3;
   for (int index = 0; index < nhisto; index++) {
-    nRun1 = hRun1[index]->Integral(0, -1);
-    nRun3 = hRun3[index]->Integral(0, -1);
+    nRun1 = hRun1[index]->GetEntries();
+    nRun3 = hRun3[index]->GetEntries();
     cv->cd(index + 1);
-    if (donorm){
-      hRun1[index]->Scale(1./hRun1[index]->GetEntries());
-      hRun3[index]->Scale(1./hRun3[index]->GetEntries());
+    if (donorm) {
+      hRun1[index]->Scale(1./nRun1);
+      hRun3[index]->Scale(1./nRun3);
     }
     hRun1[index]->Rebin(rebin[index]);
     hRun3[index]->Rebin(rebin[index]);
@@ -97,9 +102,10 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
     hRun3[index]->SetLineWidth(1);
     hRun1[index]->SetTitle(Form("Entries: Run1: %d, Run3: %d;%s;Entries", nRun1, nRun3, xaxis[index].Data()));
     hRun1[index]->GetYaxis()->SetMaxDigits(3);
-    double minyval = TMath::Min(hRun3[index]->GetMinimum(), hRun1[index]->GetMinimum());
-    double maxyval = TMath::Max(hRun3[index]->GetMaximum(), hRun1[index]->GetMaximum());
-    hRun1[index]->GetYaxis()->SetRangeUser(minyval, maxyval*1.1);
+    yMin = TMath::Min(hRun3[index]->GetMinimum(0), hRun1[index]->GetMinimum(0));
+    yMax = TMath::Max(hRun3[index]->GetMaximum(), hRun1[index]->GetMaximum());
+    yRange = yMax - yMin;
+    hRun1[index]->GetYaxis()->SetRangeUser(yMin - marginLow/k * yRange, yMax + marginHigh/k * yRange);
     hRun1[index]->Draw();
     hRun3[index]->Draw("same");
     TLegend* legend = new TLegend(0.7, 0.7, 0.9, 0.9);
@@ -113,7 +119,7 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
     yMin = hRatio[index]->GetMinimum(0);
     yMax = hRatio[index]->GetMaximum();
     yRange = yMax - yMin;
-    hRatio[index]->GetYaxis()->SetRangeUser(yMin - marginLow/k * yRange, yMax + marginHigh/k * yRange);
+    hRatio[index]->GetYaxis()->SetRangeUser(yMin - marginRLow/kR * yRange, yMax + marginRHigh/kR * yRange);
     hRatio[index]->Draw();
   }
   cv->SaveAs("comparison_histos.pdf");
