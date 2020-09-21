@@ -2,7 +2,7 @@
 
 bash clean.sh
 
-CASE=5
+CASE=4
 
 DOCONVERT=1   # Convert AliESDs.root to AO2D.root.
 DOQA=0        # Run the QA task with O2.
@@ -53,7 +53,7 @@ fi
 
 if [ $CASE -eq 4 ]; then
   INPUTDIR="/data/Run3data/alice_sim_2018_LHC18a4a2_cent/282099"
-  STRING="00*/AliESDs.root"
+  STRING="001/AliESDs.root"
 fi
 
 if [ $CASE -eq 5 ]; then
