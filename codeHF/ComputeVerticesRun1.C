@@ -375,7 +375,7 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
     printf("Min pt 2prong cand = %f\n", candpTMin);
     candpTMax = GetJsonInteger(jsonconfig.Data(), "d_pTCandMax");
     printf("Max pt 2prong cand = %f\n", candpTMax);
-    d_maxr = GetJsonInteger(jsonconfig.Data(), ", d_maxr");
+    d_maxr = GetJsonFloat(jsonconfig.Data(), ", d_maxr");
     printf("Max DCA radius = %f\n", d_maxr);
   }
 
