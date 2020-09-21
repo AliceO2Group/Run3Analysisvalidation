@@ -375,34 +375,38 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
     printf("Min pt 2prong cand = %f\n", candpTMin);
     candpTMax = GetJsonInteger(jsonconfig.Data(), "d_pTCandMax");
     printf("Max pt 2prong cand = %f\n", candpTMax);
-    d_maxr = GetJsonInteger(jsonconfig.Data(), ", d_maxr");
+    d_maxr = GetJsonFloat(jsonconfig.Data(), ", d_maxr");
     printf("Max DCA radius = %f\n", d_maxr);
   }
 
 
   TH1F* hpt_nocuts = new TH1F("hpt_nocuts", " ; pt tracks (#GeV) ; Entries", 100, 0, 10.);
-  TH1F* htgl_nocuts = new TH1F("htgl_nocuts", "tgl tracks (#GeV)", 100, 0., 10.);
+  TH1F* htgl_nocuts = new TH1F("htgl_nocuts", "tgl tracks (#GeV)", 100, -5., 5.);
   TH1F* hpt_cuts = new TH1F("hpt_cuts", " ; pt tracks (#GeV) ; Entries", 100, 0, 10.);
   TH1F* hdcatoprimxy_cuts = new TH1F("hdcatoprimxy_cuts", "dca xy to prim. vtx (cm)", 100, -1.0, 1.0);
-  TH1F* htgl_cuts = new TH1F("htgl_cuts", "tgl tracks (#GeV)", 100, 0., 10.);
+  TH1F* htgl_cuts = new TH1F("htgl_cuts", "tgl tracks (#GeV)", 100, -5., 5.);
   TH1F* hvx = new TH1F("hvx", " Secondary vertex ; X vertex (cm) ; Entries", 1000, -2.0, 2.0);
   TH1F* hvy = new TH1F("hvy", " Secondary vertex ; Y vertex (cm) ; Entries", 1000, -2.0, 2.0);
-  TH1F* hvz = new TH1F("hvz", " Secondary vertex ; Z vertex (cm) ; Entries", 1000, -10.0, 10.0);
-  TH1F* hitsmap = new TH1F("hitsmap", "hitsmap_cuts", 100, 0., 100.);
+  TH1F* hvz = new TH1F("hvz", " Secondary vertex ; Z vertex (cm) ; Entries", 1000, -20.0, 20.0);
+  TH1F* hvx3 = new TH1F("hvx3", " Secondary vertex 3prong ; X vertex (cm) ; Entries", 1000, -2.0, 2.0);
+  TH1F* hvy3 = new TH1F("hvy3", " Secondary vertex 3prong ; Y vertex (cm) ; Entries", 1000, -2.0, 2.0);
+  TH1F* hvz3 = new TH1F("hvz3", " Secondary vertex 3prong ; Z vertex (cm) ; Entries", 1000, -20.0, 20.0);
 
-  TH1F* hvertexx = new TH1F("hvertexx", " Primary vertex ; X vertex (cm) ; Entries", 100, -10.0, 10.0);
-  TH1F* hvertexy = new TH1F("hvertexy", " Primary vertex ; Y vertex (cm) ; Entries", 100, -10.0, 10.0);
-  TH1F* hvertexz = new TH1F("hvertexz", " Primary vertex ; Z vertex (cm) ; Entries", 100, -10.0, 10.0);
+  TH1F* hitsmap = new TH1F("hitsmap", "hitsmap_cuts", 64, -0.5, 63.5);
 
-  TH1F* hdecayxyz = new TH1F("hdecayxyz", "hdecayxyz", 100, 0., 1.0);
-  TH1F* hdecayxy = new TH1F("hdecayxy", "hdecayxy", 100, 0., 1.0);
+  TH1F* hvertexx = new TH1F("hvertexx", " Primary vertex ; X vertex (cm) ; Entries", 100, -0.5, 0.5);
+  TH1F* hvertexy = new TH1F("hvertexy", " Primary vertex ; Y vertex (cm) ; Entries", 100, -0.5, 0.5);
+  TH1F* hvertexz = new TH1F("hvertexz", " Primary vertex ; Z vertex (cm) ; Entries", 100, -20.0, 20.0);
+
+  TH1F* hdecayxyz = new TH1F("hdecayxyz", "hdecayxyz", 200, 0., 2.0);
+  TH1F* hdecayxy = new TH1F("hdecayxy", "hdecayxy", 200, 0., 2.0);
   TH1F* hmass0 = new TH1F("hmass0", "; Inv Mass (GeV/c^{2})", 500, 0, 5.0);
   TH1F* hmassP = new TH1F("hmassP", "; Inv Mass (GeV/c^{2})", 500, 1.6, 2.1);
   TH1F* hptD0 = new TH1F("hptD0", " ; pt D0 (#GeV) ; Entries", 100, 0, 10.);
   TH1F* hptprong0 = new TH1F("hptprong0", " ; pt prong0 (#GeV) ; Entries", 100, 0, 10.);
   TH1F* hptprong1 = new TH1F("hptprong1", " ; pt prong1 (#GeV) ; Entries", 100, 0, 10.);
   TH1F* hd0 = new TH1F("hd0", "dca xy to prim. vertex (cm)", 100, -1.0, 1.0);
-  TH1F* hd0d0 = new TH1F("hd0d0", "product of dca xy to prim. vertex (cm^{2})", 100, -1.0, 1.0);
+  TH1F* hd0d0 = new TH1F("hd0d0", "product of dca xy to prim. vertex (cm^{2})", 500, -1.0, 1.0);
 
   AliESDtrackCuts* esdTrackCuts = new AliESDtrackCuts("AliESDtrackCuts", "default");
   esdTrackCuts->SetPtRange(ptmintrack, 1.e10);
@@ -560,12 +564,16 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
               threeTrackArray->Clear();
               continue;
             }
+
             AliAODVertex* vertexAOD3 = ConvertToAODVertex(trkv3);
             AliAODRecoDecayHF3Prong* the3Prong = Make3Prong(threeTrackArray, vertexAOD3, fBzkG);
             //  the3Prong->SetOwnPrimaryVtx(vertexAODp);
             if (massSel & (1 << kbitDplus)) {
               Double_t mp = the3Prong->InvMassDplus();
               hmassP->Fill(mp);
+	      hvx3->Fill(trkv3->GetX());
+	      hvy3->Fill(trkv3->GetY());
+	      hvz3->Fill(trkv3->GetZ());
             }
             delete trkv3;
             delete the3Prong;
@@ -624,6 +632,9 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
   hvx->Write();
   hvy->Write();
   hvz->Write();
+  hvx3->Write();
+  hvy3->Write();
+  hvz3->Write();
   hpt_nocuts->Write();
   htgl_nocuts->Write();
   hpt_cuts->Write();
