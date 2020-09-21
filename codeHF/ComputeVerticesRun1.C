@@ -392,7 +392,7 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
   TH1F* hvy3 = new TH1F("hvy3", " Secondary vertex 3prong ; Y vertex (cm) ; Entries", 100, -1.0, 1.0);
   TH1F* hvz3 = new TH1F("hvz3", " Secondary vertex 3prong ; Z vertex (cm) ; Entries", 100, -20.0, 20.0);
 
-  TH1F* hitsmap = new TH1F("hitsmap", "hitsmap_cuts", 100, 0., 100.);
+  TH1F* hitsmap = new TH1F("hitsmap", "hitsmap_cuts", 64, -0.5, 63.5);
 
   TH1F* hvertexx = new TH1F("hvertexx", " Primary vertex ; X vertex (cm) ; Entries", 100, -0.5, 0.5);
   TH1F* hvertexy = new TH1F("hvertexy", " Primary vertex ; Y vertex (cm) ; Entries", 100, -0.5, 0.5);
@@ -406,7 +406,7 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
   TH1F* hptprong0 = new TH1F("hptprong0", " ; pt prong0 (#GeV) ; Entries", 100, 0, 10.);
   TH1F* hptprong1 = new TH1F("hptprong1", " ; pt prong1 (#GeV) ; Entries", 100, 0, 10.);
   TH1F* hd0 = new TH1F("hd0", "dca xy to prim. vertex (cm)", 100, -1.0, 1.0);
-  TH1F* hd0d0 = new TH1F("hd0d0", "product of dca xy to prim. vertex (cm^{2})", 100, -1.0, 1.0);
+  TH1F* hd0d0 = new TH1F("hd0d0", "product of dca xy to prim. vertex (cm^{2})", 500, -1.0, 1.0);
 
   AliESDtrackCuts* esdTrackCuts = new AliESDtrackCuts("AliESDtrackCuts", "default");
   esdTrackCuts->SetPtRange(ptmintrack, 1.e10);
