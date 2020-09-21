@@ -69,16 +69,3 @@ If everything went fine, the script will exit with the message `Done`.
 You should have got all the output files in the `codeHF` directory.
 To confirm that the output of the default settings looks as expected, compare the produced plots with the reference `comparison_histos_ref.pdf`, `comparison_ratios_ref.pdf`.
 If any step fails, the script will exit with the message `Error` and you should look into the respective log file to investigate the problem.
-
-**Temporary fix**
-
-O<sup>2</sup> fails to propagate some tracks which results into errors like this:
-
-    [8144:produce-sel-track]: [15:28:52][ERROR] failed to propagate to alpha=-2.51783 X=-0.260277 for vertex 0.0627455 0.358414 2.63274 | Track is:
-    [ERROR] Child 8144 had at least one message above severity ERROR: [15:28:52][ERROR] failed to propagate to alpha=-1.10071 X=-0.278328 for vertex 0.0787384 0.352197 0.391039 | Track is:
-
-Until these errors get fixed, make the `o2_batch.sh` script ignore them by temporarily commenting out the error check:
-
-```bash
-#if [ $ExitCode -ne 0 ]; then echo -e "Error\nCheck $(realpath $LogFile)"; exit 1; fi # Exit if error.
-```
