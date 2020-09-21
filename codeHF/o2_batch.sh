@@ -55,6 +55,7 @@ parallel --halt soon,fail=100% < $ListRunScripts > $LogFile 2>&1
 ExitCode=$?
 find /tmp -group $USER -name "localhost*_*" -delete 2> /dev/null # Delete all user's sockets.
 if [ $ExitCode -ne 0 ]; then echo -e "Error\nCheck $(realpath $LogFile)"; exit 1; fi # Exit if error.
+if [ "$(grep WARN "$LogFile")" ]; then echo -e "There were warnings!\nCheck $(realpath $LogFile)"; fi
 rm -f $ListRunScripts
 
 echo "Merging output files... (output file: $FILEOUT, logfile: $LogFile)"
