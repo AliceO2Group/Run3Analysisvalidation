@@ -7,13 +7,15 @@ DEBUG=$4
 
 LogFile="log_convert.log"
 ListInOne="list_input.txt"
-DirBase=$(pwd)
+DirBase="$PWD"
 Index=0
 ListRunScripts="$DirBase/ListRunScripts.txt"
+DirOutMain="output_conversion"
 
 rm -f $ListRunScripts
 rm -f $LISTOUTPUT
-DirOutMain="output_conversion"
+rm -rf $DirOutMain
+
 echo "Output directory: $DirOutMain (logfiles: $LogFile)"
 while read FileIn; do
   if [ ! -f "$FileIn" ]; then

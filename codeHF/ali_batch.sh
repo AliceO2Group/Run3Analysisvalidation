@@ -7,13 +7,16 @@ DEBUG=$4
 
 LogFile="log_ali_hf.log"
 FilesToMerge="ListOutToMergeALI.txt"
-DirBase=$(pwd)
+DirBase="$PWD"
 Index=0
 ListRunCommands="$DirBase/ListRunCommands.txt"
+DirOutMain="output_ali"
 
 rm -f $ListRunCommands
 rm -f $FilesToMerge
-DirOutMain="output_ali"
+rm -f $FILEOUT
+rm -rf $DirOutMain
+
 echo "Output directory: $DirOutMain (logfiles: $LogFile)"
 while read FileIn; do
   if [ ! -f "$FileIn" ]; then
