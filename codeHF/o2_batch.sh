@@ -8,14 +8,17 @@ FILEOUT="AnalysisResults.root"
 
 LogFile="log_o2.log"
 FilesToMerge="ListOutToMergeO2.txt"
-DirBase=$(pwd)
+DirBase="$PWD"
 Index=0
 JSONLocal=$(basename $JSON)
 ListRunScripts="$DirBase/ListRunScripts.txt"
+DirOutMain="output_o2"
 
 rm -f $ListRunScripts
 rm -f $FilesToMerge
-DirOutMain="output_o2"
+rm -f $FILEOUT
+rm -rf $DirOutMain
+
 echo "Output directory: $DirOutMain (logfiles: $LogFile)"
 while read FileIn; do
   if [ ! -f "$FileIn" ]; then

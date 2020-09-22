@@ -147,6 +147,7 @@ EOF
   if [ $? -ne 0 ]; then exit 1; fi # Exit if error.
   rm -f $O2SCRIPT
   mv $FILEOUTO2 $FILEOUTQA
+  rm -rf output_o2_qa
   mv output_o2 output_o2_qa
   mv log_o2.log log_o2_qa.log
 fi
@@ -198,6 +199,7 @@ EOF
   $ENVO2 bash o2_batch.sh $O2INPUT $JSON $O2SCRIPT $DEBUG # Run the batch script in the O2 environment.
   if [ $? -ne 0 ]; then exit 1; fi # Exit if error.
   rm -f $O2SCRIPT
+  rm -rf output_o2_hf
   mv output_o2 output_o2_hf
   mv log_o2.log log_o2_hf.log
 fi
