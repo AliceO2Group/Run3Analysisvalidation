@@ -24,6 +24,11 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
                                    "hd0d0",
                                    "hmass0",
                                    "hmassP"
+                                   //"hImpParErr",
+                                   //"hDecLenErr",
+                                   //"hDecLenXYErr",
+                                   //"hCovPVXX",
+                                   //"hCovSVXX"
                                    };
   TString histonameRun3[nhisto] = {"hf-produce-sel-track/hpt_nocuts",
                                    "hf-produce-sel-track/hpt_cuts",
@@ -40,6 +45,11 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
                                    "hf-task-d0/hd0d0",
                                    "hf-task-d0/hmass",
                                    "hf-track-index-skims-creator/hmass3"
+                                   //"hf-task-d0/hImpParErr",
+                                   //"hf-task-d0/hDecLenErr",
+                                   //"hf-task-d0/hDecLenXYErr",
+                                   //"hf-cand-creator-2prong/hCovPVXX",
+                                   //"hf-cand-creator-2prong/hCovSVXX"
                                    };
   TString xaxis[nhisto] = {"#it{p}_{T} before selections",
                            "#it{p}_{T} after selections",
@@ -56,6 +66,11 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
                            "d0d0 (cm^{2})",
                            "2-prong mass (#pi K)",
                            "3-prong mass (#pi K #pi)"
+                           //"impact parameter error",
+                           //"decay length error",
+                           //"decay length XY error",
+                           //"XX element of PV cov. matrix",
+                           //"XX element of SV cov. matrix"
                            };
   int rebin[nhisto] = {2, 2, 2, 5, 5, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2};
   TH1F* hRun1[nhisto];
