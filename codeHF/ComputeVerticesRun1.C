@@ -136,7 +136,7 @@ Int_t TwoProngSelectionCuts(AliAODRecoDecayHF2Prong* cand, Double_t candpTMin, D
   Double_t decayLengthCut = TMath::Min((cand->P() * 0.0066) + 0.01, 0.06);
   if (TMath::Abs(cand->Normalizedd0Prong(0)) < 0.5 || TMath::Abs(cand->Normalizedd0Prong(1)) < 0.5) return 0;
   if (cand->DecayLength() * cand->DecayLength() < decayLengthCut * decayLengthCut) return 0;
-  if (cand->NormalizedDecayLength() * cand->NormalizedDecayLength() < 1.0) return 0;
+  // if (cand->NormalizedDecayLength() * cand->NormalizedDecayLength() < 1.0) return 0;
   if (TMath::Abs(cand->InvMassD0()-fMassDzero) > fCuts[pTBin][0] ) isD0=false;
   if (TMath::Abs(cand->InvMassD0bar()-fMassDzero) > fCuts[pTBin][0] ) isD0bar=false;
   if (!isD0 && !isD0bar) return 0;
