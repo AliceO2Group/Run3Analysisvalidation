@@ -23,7 +23,8 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
                                    "hd0",
                                    "hd0d0",
                                    "hmass0",
-                                   "hmassP"};
+                                   "hmassP"
+                                   };
   TString histonameRun3[nhisto] = {"hf-produce-sel-track/hpt_nocuts",
                                    "hf-produce-sel-track/hpt_cuts",
                                    "hf-produce-sel-track/hdcatoprimxy_cuts",
@@ -38,7 +39,8 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
                                    "hf-task-d0/hd0",
                                    "hf-task-d0/hd0d0",
                                    "hf-task-d0/hmass",
-                                   "hf-track-index-skims-creator/hmass3"};
+                                   "hf-track-index-skims-creator/hmass3"
+                                   };
   TString xaxis[nhisto] = {"#it{p}_{T} before selections",
                            "#it{p}_{T} after selections",
                            "DCA XY to prim vtx after selections",
@@ -53,7 +55,8 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
                            "d0 (cm)",
                            "d0d0 (cm^{2})",
                            "2-prong mass (#pi K)",
-                           "3-prong mass (#pi K #pi)"};
+                           "3-prong mass (#pi K #pi)"
+                           };
   int rebin[nhisto] = {2, 2, 2, 5, 5, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2};
   TH1F* hRun1[nhisto];
   TH1F* hRun3[nhisto];
@@ -75,10 +78,12 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
   Float_t marginHigh = 0.05;
   Float_t marginLow = 0.05;
   Float_t k = 1. - marginHigh - marginLow;
+  bool LogScale = false;
   // Ratio plot vertical margins
   Float_t marginRHigh = 0.05;
   Float_t marginRLow = 0.05;
   Float_t kR = 1. - marginRHigh - marginRLow;
+  bool LogScaleR = false;
   Float_t yMin, yMax, yRange;
 
   TCanvas* cv = new TCanvas("cv", "Histos", 3000, 3000);
@@ -89,7 +94,7 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
   for (int index = 0; index < nhisto; index++) {
     nRun1 = hRun1[index]->GetEntries();
     nRun3 = hRun3[index]->GetEntries();
-    cv->cd(index + 1);
+    auto pad = cv->cd(index + 1);
     if (donorm) {
       hRun1[index]->Scale(1./nRun1);
       hRun3[index]->Scale(1./nRun3);
@@ -104,22 +109,34 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
     hRun1[index]->GetYaxis()->SetMaxDigits(3);
     yMin = TMath::Min(hRun3[index]->GetMinimum(0), hRun1[index]->GetMinimum(0));
     yMax = TMath::Max(hRun3[index]->GetMaximum(), hRun1[index]->GetMaximum());
-    yRange = yMax - yMin;
-    hRun1[index]->GetYaxis()->SetRangeUser(yMin - marginLow/k * yRange, yMax + marginHigh/k * yRange);
+    if (LogScale && yMin > 0 && yMax > 0) {
+      yRange = yMax/yMin;
+      hRun1[index]->GetYaxis()->SetRangeUser(yMin/std::pow(yRange, marginLow/k), yMax * std::pow(yRange, marginHigh/k));
+      pad->SetLogy();
+    } else {
+      yRange = yMax - yMin;
+      hRun1[index]->GetYaxis()->SetRangeUser(yMin - marginLow/k * yRange, yMax + marginHigh/k * yRange);
+    }
     hRun1[index]->Draw();
     hRun3[index]->Draw("same");
     TLegend* legend = new TLegend(0.7, 0.7, 0.9, 0.9);
     legend->AddEntry(hRun1[index], "Run1", "L");
     legend->AddEntry(hRun3[index], "Run3", "L");
     legend->Draw();
-    cr->cd(index + 1);
+    auto padR = cr->cd(index + 1);
     hRatio[index] = (TH1F*)hRun3[index]->Clone(Form("hRatio%d", index));
     hRatio[index]->Divide(hRun1[index]);
     hRatio[index]->SetTitle(Form("Entries ratio: %g;%s;Run3/Run1", (double)nRun3/(double)nRun1, xaxis[index].Data()));
     yMin = hRatio[index]->GetMinimum(0);
     yMax = hRatio[index]->GetMaximum();
-    yRange = yMax - yMin;
-    hRatio[index]->GetYaxis()->SetRangeUser(yMin - marginRLow/kR * yRange, yMax + marginRHigh/kR * yRange);
+    if (LogScaleR && yMin > 0 && yMax > 0) {
+      yRange = yMax/yMin;
+      hRatio[index]->GetYaxis()->SetRangeUser(yMin/std::pow(yRange, marginLow/k), yMax * std::pow(yRange, marginHigh/k));
+      padR->SetLogy();
+    } else {
+      yRange = yMax - yMin;
+      hRatio[index]->GetYaxis()->SetRangeUser(yMin - marginRLow/kR * yRange, yMax + marginRHigh/kR * yRange);
+    }
     hRatio[index]->Draw();
   }
   cv->SaveAs("comparison_histos.pdf");
