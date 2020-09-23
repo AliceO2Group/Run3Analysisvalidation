@@ -16,19 +16,15 @@ rm -f $ListRunScripts
 rm -f $LISTOUTPUT
 rm -rf $DirOutMain
 
+[ -f "$LISTINPUT" ] || { echo "Error: File $LISTINPUT does not exist."; exit 1; }
 echo "Output directory: $DirOutMain (logfiles: $LogFile)"
 while read FileIn; do
-  if [ ! -f "$FileIn" ]; then
-    echo "Error: File $FileIn does not exist."
-    exit 1
-  fi
+  [ -f "$FileIn" ] || { echo "Error: File $FileIn does not exist."; exit 1; }
   DirOut="$DirOutMain/$Index"
   mkdir -p $DirOut
   cd $DirOut
   echo $FileIn > $ListInOne
-  if [ $DEBUG -eq 1 ]; then
-    echo "Input file ($Index): $FileIn"
-  fi
+  [ $DEBUG -eq 1 ] && echo "Input file ($Index): $FileIn"
   FileOut="$DirOut/AO2D.root"
   echo "$DirBase/$FileOut" >> $DirBase/$LISTOUTPUT
   #root -b -q -l "$DirBase/convertAO2D.C(\"$ListInOne\", $ISMC)" > $LogFile 2>&1
@@ -44,8 +40,8 @@ EOF
 done < "$LISTINPUT"
 
 echo "Running conversion jobs..."
-parallel --halt soon,fail=100% < $ListRunScripts > $LogFile 2>&1
-if [ $? -ne 0 ]; then echo -e "Error\nCheck $(realpath $LogFile)"; exit 1; fi # Exit if error.
+parallel --halt soon,fail=100% < $ListRunScripts > $LogFile 2>&1 || \
+{ echo -e "Error\nCheck $(realpath $LogFile)"; exit 1; }
 rm -f $ListRunScripts
 
 exit 0
