@@ -12,25 +12,28 @@
 # User's settings:
 # paths, names of remotes (check git remote -v), build options.
 
-ALICEDIR="$HOME/alice"
+ALICE_DIR="$HOME/alice"
 
-ALIDIST_DIR="$ALICEDIR/alidist"
+ALIDIST_DIR="$ALICE_DIR/alidist"
 ALIDIST_REMOTE_MAIN="upstream"
 ALIDIST_REMOTE_FORK=""
 ALIDIST_BRANCH_MAIN="master"
 
-ALIPHYSICS_DIR="$ALICEDIR/AliPhysics"
+ALIPHYSICS_DIR="$ALICE_DIR/AliPhysics"
 ALIPHYSICS_REMOTE_MAIN="upstream"
 ALIPHYSICS_REMOTE_FORK="origin"
 ALIPHYSICS_BRANCH_MAIN="master"
 ALIPHYSICS_BUILDOPT="--defaults user-next-root6"
 
-O2_DIR="$ALICEDIR/O2"
+O2_DIR="$ALICE_DIR/O2"
 O2_REMOTE_MAIN="upstream"
 O2_REMOTE_FORK="origin"
 O2_BRANCH_MAIN="dev"
 O2_BUILDOPT="--defaults o2"
 ##################
+
+# Error report
+ERREXIT="eval echo \"Error\"; exit 1"
 
 # Update the main and the current branch and push to the fork repository (if specified).
 function UpdateGit {
@@ -41,19 +44,16 @@ function UpdateGit {
   if [ "$4" ]; then REMOTE_FORK="$4"; fi
 
   cd "$DIR" && \
-  BRANCH=$(git rev-parse --abbrev-ref HEAD)
-  if [ $? -ne 0 ]; then echo "Error"; exit 1; fi
+  BRANCH=$(git rev-parse --abbrev-ref HEAD) || $ERREXIT
   echo "Current branch: $BRANCH"
 
   # Update the main branch.
   echo "Updating branch $BRANCH_MAIN from $REMOTE_MAIN"
   git checkout $BRANCH_MAIN && \
-  git pull --rebase $REMOTE_MAIN $BRANCH_MAIN
-  if [ $? -ne 0 ]; then echo "Error"; exit 1; fi
+  git pull --rebase $REMOTE_MAIN $BRANCH_MAIN || $ERREXIT
   if [ "$REMOTE_FORK" ]; then
     echo "Pushing branch $BRANCH_MAIN to $REMOTE_FORK"
-    git push -f $REMOTE_FORK $BRANCH_MAIN
-    if [ $? -ne 0 ]; then echo "Error"; exit 1; fi
+    git push -f $REMOTE_FORK $BRANCH_MAIN || $ERREXIT
   fi
 
   # Update the current branch.
@@ -61,12 +61,10 @@ function UpdateGit {
     echo "Updating branch $BRANCH from $REMOTE_MAIN"
     git checkout $BRANCH && \
     git fetch $REMOTE_MAIN && \
-    git rebase $REMOTE_MAIN/$BRANCH_MAIN
-    if [ $? -ne 0 ]; then echo "Error"; exit 1; fi
+    git rebase $REMOTE_MAIN/$BRANCH_MAIN || $ERREXIT
     if [ "$REMOTE_FORK" ]; then
       echo "Pushing branch $BRANCH to $REMOTE_FORK"
-      git push -f $REMOTE_FORK $BRANCH
-      if [ $? -ne 0 ]; then echo "Error"; exit 1; fi
+      git push -f $REMOTE_FORK $BRANCH || $ERREXIT
     fi
   fi
 }
@@ -78,16 +76,14 @@ UpdateGit "$ALIDIST_DIR" $ALIDIST_REMOTE_MAIN $ALIDIST_BRANCH_MAIN $ALIDIST_REMO
 # AliPhysics
 echo -e "\nUpdating AliPhysics"
 UpdateGit "$ALIPHYSICS_DIR" $ALIPHYSICS_REMOTE_MAIN $ALIPHYSICS_BRANCH_MAIN $ALIPHYSICS_REMOTE_FORK
-cd "$ALICEDIR" && \
-aliBuild build AliPhysics $ALIPHYSICS_BUILDOPT
-if [ $? -ne 0 ]; then echo "Error"; exit 1; fi
+cd "$ALICE_DIR" && \
+aliBuild build AliPhysics $ALIPHYSICS_BUILDOPT || $ERREXIT
 
 # O2
 echo -e "\nUpdating O2"
 UpdateGit "$O2_DIR" $O2_REMOTE_MAIN $O2_BRANCH_MAIN $O2_REMOTE_FORK
-cd "$ALICEDIR" && \
-aliBuild build O2 $O2_BUILDOPT
-if [ $? -ne 0 ]; then echo "Error"; exit 1; fi
+cd "$ALICE_DIR" && \
+aliBuild build O2 $O2_BUILDOPT || $ERREXIT
 
 # Cleanup
 echo -e "\nCleaning builds"

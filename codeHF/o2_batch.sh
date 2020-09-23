@@ -19,12 +19,10 @@ rm -f $FilesToMerge
 rm -f $FILEOUT
 rm -rf $DirOutMain
 
+[ -f "$LISTINPUT" ] || { echo "Error: File $LISTINPUT does not exist."; exit 1; }
 echo "Output directory: $DirOutMain (logfiles: $LogFile)"
 while read FileIn; do
-  if [ ! -f "$FileIn" ]; then
-    echo "Error: File $FileIn does not exist."
-    exit 1
-  fi
+  [ -f "$FileIn" ] || { echo "Error: File $FileIn does not exist."; exit 1; }
   DirOut="$DirOutMain/$Index"
   mkdir -p $DirOut
   cd $DirOut
@@ -32,9 +30,7 @@ while read FileIn; do
   sed -e "s!@$LISTINPUT!$FileIn!g" $JSONLocal > $JSONLocal.tmp && mv $JSONLocal.tmp $JSONLocal
   cp "$DirBase/$SCRIPT" .
   sed -e "s!$DirBase!$PWD!g" $SCRIPT > $SCRIPT.tmp && mv $SCRIPT.tmp $SCRIPT
-  if [ $DEBUG -eq 1 ]; then
-    echo "Input file ($Index): $FileIn"
-  fi
+  [ $DEBUG -eq 1 ] && echo "Input file ($Index): $FileIn"
   FileOut="$DirOut/$FILEOUT"
   echo $FileOut >> "$DirBase/$FilesToMerge"
   RUNSCRIPT="run.sh"
@@ -57,13 +53,13 @@ echo "Running O2 jobs..."
 parallel --halt soon,fail=100% < $ListRunScripts > $LogFile 2>&1
 ExitCode=$?
 find /tmp -group $USER -name "localhost*_*" -delete 2> /dev/null # Delete all user's sockets.
-if [ $ExitCode -ne 0 ]; then echo -e "Error\nCheck $(realpath $LogFile)"; exit 1; fi # Exit if error.
-if [ "$(grep WARN "$LogFile")" ]; then echo -e "There were warnings!\nCheck $(realpath $LogFile)"; fi
+[ $ExitCode -ne 0 ] && { echo -e "Error\nCheck $(realpath $LogFile)"; exit 1; }
+[ "$(grep WARN "$LogFile")" ] && echo -e "There were warnings!\nCheck $(realpath $LogFile)"
 rm -f $ListRunScripts
 
 echo "Merging output files... (output file: $FILEOUT, logfile: $LogFile)"
-hadd $FILEOUT @"$FilesToMerge" >> $LogFile 2>&1
-if [ $? -ne 0 ]; then echo -e "Error\nCheck $(realpath $LogFile)"; tail -n 2 "$LogFile"; exit 1; fi # Exit if error.
+hadd $FILEOUT @"$FilesToMerge" >> $LogFile 2>&1 || \
+{ echo -e "Error\nCheck $(realpath $LogFile)"; tail -n 2 "$LogFile"; exit 1; }
 rm -f $FilesToMerge
 
 exit 0
