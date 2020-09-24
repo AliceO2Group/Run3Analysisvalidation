@@ -12,24 +12,34 @@
 # User's settings:
 # paths, names of remotes (check git remote -v), build options.
 
+# Main ALICE software directory
 ALICE_DIR="$HOME/alice"
 
+# alidist
 ALIDIST_DIR="$ALICE_DIR/alidist"
 ALIDIST_REMOTE_MAIN="upstream"
 ALIDIST_REMOTE_FORK=""
 ALIDIST_BRANCH_MAIN="master"
 
+# AliPhysics
 ALIPHYSICS_DIR="$ALICE_DIR/AliPhysics"
 ALIPHYSICS_REMOTE_MAIN="upstream"
 ALIPHYSICS_REMOTE_FORK="origin"
 ALIPHYSICS_BRANCH_MAIN="master"
 ALIPHYSICS_BUILDOPT="--defaults user-next-root6"
 
+# O2
 O2_DIR="$ALICE_DIR/O2"
 O2_REMOTE_MAIN="upstream"
 O2_REMOTE_FORK="origin"
 O2_BRANCH_MAIN="dev"
 O2_BUILDOPT="--defaults o2"
+
+# Run 3 validation
+RUN3VALIDATE_DIR="$(dirname $0)"
+RUN3VALIDATE_REMOTE_MAIN="upstream"
+RUN3VALIDATE_REMOTE_FORK="origin"
+RUN3VALIDATE_BRANCH_MAIN="master"
 ##################
 
 # Error report
@@ -110,6 +120,10 @@ cd "$ALICE_DIR" && aliBuild build O2 $O2_BUILDOPT || $ERREXIT
 # Cleanup
 echo -e "\nCleaning builds"
 aliBuild clean
+
+# Run 3 validation
+echo -e "\nUpdating Run3Analysisvalidation"
+UpdateGit "$RUN3VALIDATE_DIR" $RUN3VALIDATE_REMOTE_MAIN $RUN3VALIDATE_BRANCH_MAIN $RUN3VALIDATE_REMOTE_FORK
 
 echo -e "\nDone"
 
