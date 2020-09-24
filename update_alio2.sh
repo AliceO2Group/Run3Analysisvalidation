@@ -2,10 +2,10 @@
 
 # This script performs a complete update of an AliPhysics + O2 installation.
 
-# The Git repositories are updated in the following way:
-# - Pull & rebase the main branch from the main remote repository.
-# - Rebase the current branch (if different from the main one) from the main branch in the main remote repository.
-# - Force push both branches to the remote fork repository if specified.
+# The main Git branch (and the current one if different from the main one) is updated in the following way:
+# - Pull & rebase the branch from the same branch in the remote fork repository if specified.
+# - Pull & rebase the branch from the main branch in the main remote repository.
+# - Force-push the branch into the remote fork repository if specified.
 # AliPhysics and O2 are built using the respective current branches and the specified build options.
 
 ##################
@@ -35,38 +35,60 @@ O2_BUILDOPT="--defaults o2"
 # Error report
 ERREXIT="eval echo \"Error\"; exit 1"
 
+# Update a given branch and push to the fork repository (if specified).
+function UpdateBranch {
+  REMOTE_MAIN_="$1" # Main remote (upstream)
+  BRANCH_MAIN_="$2" # Main branch
+  BRANCH_="$3"      # Current branch to be updated
+  REMOTE_FORK_=""   # Fork remote
+  [ "$4" ] && REMOTE_FORK_="$4"
+
+  echo -e "\n- Updating branch $BRANCH_"
+  git checkout $BRANCH_ || $ERREXIT
+
+  # Synchronise with the fork first, just in case there are some commits pushed from another local repository.
+  if [ "$REMOTE_FORK_" ]; then
+    echo "-- Updating branch $BRANCH_ from $REMOTE_FORK_/$BRANCH_"
+    git pull --rebase $REMOTE_FORK_ $BRANCH_ || $ERREXIT
+  fi
+
+  # Synchronise with upstream/main.
+  echo "-- Updating branch $BRANCH_ from $REMOTE_MAIN_/$BRANCH_MAIN_"
+  git pull --rebase $REMOTE_MAIN_ $BRANCH_MAIN_ || $ERREXIT
+
+  # Push to the fork.
+  if [ "$REMOTE_FORK_" ]; then
+    echo "-- Pushing branch $BRANCH_ to $REMOTE_FORK_"
+    git push -f $REMOTE_FORK_ $BRANCH_ || $ERREXIT
+  fi
+}
+
 # Update the main and the current branch and push to the fork repository (if specified).
 function UpdateGit {
-  DIR="$1"
-  REMOTE_MAIN="$2"
-  BRANCH_MAIN="$3"
-  REMOTE_FORK=""
-  if [ "$4" ]; then REMOTE_FORK="$4"; fi
+  DIR="$1"         # Git repository directory
+  REMOTE_MAIN="$2" # Main remote (upstream)
+  BRANCH_MAIN="$3" # Main branch
+  REMOTE_FORK=""   # Fork remote
+  [ "$4" ] && REMOTE_FORK="$4"
 
-  cd "$DIR" && \
-  BRANCH=$(git rev-parse --abbrev-ref HEAD) || $ERREXIT
+  # Move to the Git repository and get the name of the current branch.
+  cd "$DIR" && BRANCH=$(git rev-parse --abbrev-ref HEAD) || $ERREXIT
   echo "Current branch: $BRANCH"
 
+  # Stash uncommitted local changes.
+  echo -e "\n- Stashing potential uncommitted local changes"
+  NSTASH_OLD=$(git stash list | wc -l) && \
+  git stash && \
+  NSTASH_NEW=$(git stash list | wc -l) || $ERREXIT
+
   # Update the main branch.
-  echo "Updating branch $BRANCH_MAIN from $REMOTE_MAIN"
-  git checkout $BRANCH_MAIN && \
-  git pull --rebase $REMOTE_MAIN $BRANCH_MAIN || $ERREXIT
-  if [ "$REMOTE_FORK" ]; then
-    echo "Pushing branch $BRANCH_MAIN to $REMOTE_FORK"
-    git push -f $REMOTE_FORK $BRANCH_MAIN || $ERREXIT
-  fi
+  UpdateBranch $REMOTE_MAIN $BRANCH_MAIN $BRANCH_MAIN $REMOTE_FORK || $ERREXIT
 
   # Update the current branch.
-  if [ "$BRANCH" != "$BRANCH_MAIN" ]; then
-    echo "Updating branch $BRANCH from $REMOTE_MAIN"
-    git checkout $BRANCH && \
-    git fetch $REMOTE_MAIN && \
-    git rebase $REMOTE_MAIN/$BRANCH_MAIN || $ERREXIT
-    if [ "$REMOTE_FORK" ]; then
-      echo "Pushing branch $BRANCH to $REMOTE_FORK"
-      git push -f $REMOTE_FORK $BRANCH || $ERREXIT
-    fi
-  fi
+  [ "$BRANCH" != "$BRANCH_MAIN" ] && { UpdateBranch $REMOTE_MAIN $BRANCH_MAIN $BRANCH $REMOTE_FORK || $ERREXIT; }
+
+  # Unstash stashed changes if any.
+  [ $NSTASH_NEW -ne $NSTASH_OLD ] && { echo -e "\n- Unstashing uncommitted local changes"; git stash pop || $ERREXIT; }
 }
 
 # alidist
@@ -76,14 +98,14 @@ UpdateGit "$ALIDIST_DIR" $ALIDIST_REMOTE_MAIN $ALIDIST_BRANCH_MAIN $ALIDIST_REMO
 # AliPhysics
 echo -e "\nUpdating AliPhysics"
 UpdateGit "$ALIPHYSICS_DIR" $ALIPHYSICS_REMOTE_MAIN $ALIPHYSICS_BRANCH_MAIN $ALIPHYSICS_REMOTE_FORK
-cd "$ALICE_DIR" && \
-aliBuild build AliPhysics $ALIPHYSICS_BUILDOPT || $ERREXIT
+echo -e "\n- Building AliPhysics"
+cd "$ALICE_DIR" && aliBuild build AliPhysics $ALIPHYSICS_BUILDOPT || $ERREXIT
 
 # O2
 echo -e "\nUpdating O2"
 UpdateGit "$O2_DIR" $O2_REMOTE_MAIN $O2_BRANCH_MAIN $O2_REMOTE_FORK
-cd "$ALICE_DIR" && \
-aliBuild build O2 $O2_BUILDOPT || $ERREXIT
+echo -e "\n- Building O2"
+cd "$ALICE_DIR" && aliBuild build O2 $O2_BUILDOPT || $ERREXIT
 
 # Cleanup
 echo -e "\nCleaning builds"
