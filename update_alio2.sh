@@ -26,14 +26,16 @@ ALIPHYSICS_DIR="$ALICE_DIR/AliPhysics"
 ALIPHYSICS_REMOTE_MAIN="upstream"
 ALIPHYSICS_REMOTE_FORK="origin"
 ALIPHYSICS_BRANCH_MAIN="master"
-ALIPHYSICS_BUILDOPT="--defaults user-next-root6"
+ALIPHYSICS_BUILD_OPT="--defaults user-next-root6"
+ALIPHYSICS_BUILD=1
 
 # O2
 O2_DIR="$ALICE_DIR/O2"
 O2_REMOTE_MAIN="upstream"
 O2_REMOTE_FORK="origin"
 O2_BRANCH_MAIN="dev"
-O2_BUILDOPT="--defaults o2"
+O2_BUILD_OPT="--defaults o2"
+O2_BUILD=1
 
 # Run 3 validation
 RUN3VALIDATE_DIR="$(dirname $0)"
@@ -108,14 +110,12 @@ UpdateGit "$ALIDIST_DIR" $ALIDIST_REMOTE_MAIN $ALIDIST_BRANCH_MAIN $ALIDIST_REMO
 # AliPhysics
 echo -e "\nUpdating AliPhysics"
 UpdateGit "$ALIPHYSICS_DIR" $ALIPHYSICS_REMOTE_MAIN $ALIPHYSICS_BRANCH_MAIN $ALIPHYSICS_REMOTE_FORK
-echo -e "\n- Building AliPhysics"
-cd "$ALICE_DIR" && aliBuild build AliPhysics $ALIPHYSICS_BUILDOPT || $ERREXIT
+[ $ALIPHYSICS_BUILD -eq 1 ] && { echo -e "\n- Building AliPhysics"; cd "$ALICE_DIR" && aliBuild build AliPhysics $ALIPHYSICS_BUILD_OPT || $ERREXIT; }
 
 # O2
 echo -e "\nUpdating O2"
 UpdateGit "$O2_DIR" $O2_REMOTE_MAIN $O2_BRANCH_MAIN $O2_REMOTE_FORK
-echo -e "\n- Building O2"
-cd "$ALICE_DIR" && aliBuild build O2 $O2_BUILDOPT || $ERREXIT
+[ $O2_BUILD -eq 1 ] && { echo -e "\n- Building O2"; cd "$ALICE_DIR" && aliBuild build O2 $O2_BUILD_OPT || $ERREXIT; }
 
 # Cleanup
 echo -e "\nCleaning builds"
