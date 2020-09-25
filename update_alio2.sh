@@ -45,7 +45,7 @@ O2_BUILD=1
 
 # Run 3 validation
 RUN3VALIDATE_UPDATE=1
-RUN3VALIDATE_DIR="$(dirname $0)"
+RUN3VALIDATE_DIR="$(dirname $(realpath $0))"
 RUN3VALIDATE_REMOTE_MAIN="upstream"
 RUN3VALIDATE_REMOTE_FORK="origin"
 RUN3VALIDATE_BRANCH_MAIN="master"
@@ -92,6 +92,7 @@ function UpdateGit {
 
   # Move to the Git repository and get the name of the current branch.
   cd "$DIR" && BRANCH=$(git rev-parse --abbrev-ref HEAD) || $ERREXIT
+  #echo "Directory: $DIR"
   echo "Current branch: $BRANCH"
 
   # Stash uncommitted local changes.
