@@ -15,6 +15,9 @@
 # Main ALICE software directory
 ALICE_DIR="$HOME/alice"
 
+# System architecture (if not detected properly by aliBuild)
+ALIBUILD_ARCH=""
+
 # alidist
 ALIDIST_DIR="$ALICE_DIR/alidist"
 ALIDIST_REMOTE_MAIN="upstream"
@@ -103,6 +106,8 @@ function UpdateGit {
   [ $NSTASH_NEW -ne $NSTASH_OLD ] && { echo -e "\n- Unstashing uncommitted local changes"; git stash pop || $ERREXIT; }
 }
 
+[ "$ALIBUILD_ARCH" ] && ALIBUILD_OPT="-a $ALIBUILD_ARCH" || ALIBUILD_OPT=""
+
 # alidist
 echo -e "\nUpdating alidist"
 UpdateGit "$ALIDIST_DIR" $ALIDIST_REMOTE_MAIN $ALIDIST_BRANCH_MAIN $ALIDIST_REMOTE_FORK
@@ -110,16 +115,16 @@ UpdateGit "$ALIDIST_DIR" $ALIDIST_REMOTE_MAIN $ALIDIST_BRANCH_MAIN $ALIDIST_REMO
 # AliPhysics
 echo -e "\nUpdating AliPhysics"
 UpdateGit "$ALIPHYSICS_DIR" $ALIPHYSICS_REMOTE_MAIN $ALIPHYSICS_BRANCH_MAIN $ALIPHYSICS_REMOTE_FORK
-[ $ALIPHYSICS_BUILD -eq 1 ] && { echo -e "\n- Building AliPhysics"; cd "$ALICE_DIR" && aliBuild build AliPhysics $ALIPHYSICS_BUILD_OPT || $ERREXIT; }
+[ $ALIPHYSICS_BUILD -eq 1 ] && { echo -e "\n- Building AliPhysics"; cd "$ALICE_DIR" && aliBuild build AliPhysics $ALIPHYSICS_BUILD_OPT $ALIBUILD_OPT || $ERREXIT; }
 
 # O2
 echo -e "\nUpdating O2"
 UpdateGit "$O2_DIR" $O2_REMOTE_MAIN $O2_BRANCH_MAIN $O2_REMOTE_FORK
-[ $O2_BUILD -eq 1 ] && { echo -e "\n- Building O2"; cd "$ALICE_DIR" && aliBuild build O2 $O2_BUILD_OPT || $ERREXIT; }
+[ $O2_BUILD -eq 1 ] && { echo -e "\n- Building O2"; cd "$ALICE_DIR" && aliBuild build O2 $O2_BUILD_OPT $ALIBUILD_OPT || $ERREXIT; }
 
 # Cleanup
 echo -e "\nCleaning builds"
-aliBuild clean
+aliBuild clean $ALIBUILD_OPT
 
 # Run 3 validation
 echo -e "\nUpdating Run3Analysisvalidation"
