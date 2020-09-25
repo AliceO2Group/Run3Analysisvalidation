@@ -52,7 +52,12 @@ RUN3VALIDATE_BRANCH_MAIN="master"
 ##################
 
 # Error report
-ERREXIT="eval echo \"Error\"; exit 1"
+ERREXIT="eval echo -e \"\\e[1;31mError\\e[0m\"; exit 1"
+
+# Message formatting
+function MsgStep { echo -e "\n\e[1;32m$@\e[0m"; }
+function MsgSubStep { echo -e "\n\e[1m$@\e[0m"; }
+function MsgSubSubStep { echo -e "\e[4m$@\e[0m"; }
 
 # Update a given branch and push to the fork repository (if specified).
 function UpdateBranch {
@@ -62,22 +67,22 @@ function UpdateBranch {
   REMOTE_FORK_=""   # Fork remote
   [ "$4" ] && REMOTE_FORK_="$4"
 
-  echo -e "\n- Updating branch $BRANCH_"
+  MsgSubStep "- Updating branch $BRANCH_"
   git checkout $BRANCH_ || $ERREXIT
 
   # Synchronise with the fork first, just in case there are some commits pushed from another local repository.
   if [ "$REMOTE_FORK_" ]; then
-    echo "-- Updating branch $BRANCH_ from $REMOTE_FORK_/$BRANCH_"
+    MsgSubSubStep "-- Updating branch $BRANCH_ from $REMOTE_FORK_/$BRANCH_"
     git pull --rebase $REMOTE_FORK_ $BRANCH_ || $ERREXIT
   fi
 
   # Synchronise with upstream/main.
-  echo "-- Updating branch $BRANCH_ from $REMOTE_MAIN_/$BRANCH_MAIN_"
+  MsgSubSubStep "-- Updating branch $BRANCH_ from $REMOTE_MAIN_/$BRANCH_MAIN_"
   git pull --rebase $REMOTE_MAIN_ $BRANCH_MAIN_ || $ERREXIT
 
   # Push to the fork.
   if [ "$REMOTE_FORK_" ]; then
-    echo "-- Pushing branch $BRANCH_ to $REMOTE_FORK_"
+    MsgSubSubStep "-- Pushing branch $BRANCH_ to $REMOTE_FORK_"
     git push -f $REMOTE_FORK_ $BRANCH_ || $ERREXIT
   fi
 }
@@ -96,7 +101,7 @@ function UpdateGit {
   echo "Current branch: $BRANCH"
 
   # Stash uncommitted local changes.
-  echo -e "\n- Stashing potential uncommitted local changes"
+  MsgSubStep "- Stashing potential uncommitted local changes"
   NSTASH_OLD=$(git stash list | wc -l) && \
   git stash && \
   NSTASH_NEW=$(git stash list | wc -l) || $ERREXIT
@@ -108,41 +113,41 @@ function UpdateGit {
   [ "$BRANCH" != "$BRANCH_MAIN" ] && { UpdateBranch $REMOTE_MAIN $BRANCH_MAIN $BRANCH $REMOTE_FORK || $ERREXIT; }
 
   # Unstash stashed changes if any.
-  [ $NSTASH_NEW -ne $NSTASH_OLD ] && { echo -e "\n- Unstashing uncommitted local changes"; git stash pop || $ERREXIT; }
+  [ $NSTASH_NEW -ne $NSTASH_OLD ] && { MsgSubStep "- Unstashing uncommitted local changes"; git stash pop || $ERREXIT; }
 }
 
 [ "$ALIBUILD_ARCH" ] && ALIBUILD_OPT="-a $ALIBUILD_ARCH" || ALIBUILD_OPT=""
 
 # alidist
 if [ $ALIDIST_UPDATE -eq 1 ]; then
-  echo -e "\nUpdating alidist"
+  MsgStep "Updating alidist"
   UpdateGit "$ALIDIST_DIR" $ALIDIST_REMOTE_MAIN $ALIDIST_BRANCH_MAIN $ALIDIST_REMOTE_FORK
 fi
 
 # AliPhysics
 if [ $ALIPHYSICS_UPDATE -eq 1 ]; then
-  echo -e "\nUpdating AliPhysics"
+  MsgStep "Updating AliPhysics"
   UpdateGit "$ALIPHYSICS_DIR" $ALIPHYSICS_REMOTE_MAIN $ALIPHYSICS_BRANCH_MAIN $ALIPHYSICS_REMOTE_FORK
-  [ $ALIPHYSICS_BUILD -eq 1 ] && { echo -e "\n- Building AliPhysics"; cd "$ALICE_DIR" && aliBuild build AliPhysics $ALIPHYSICS_BUILD_OPT $ALIBUILD_OPT || $ERREXIT; }
+  [ $ALIPHYSICS_BUILD -eq 1 ] && { MsgSubStep "- Building AliPhysics"; cd "$ALICE_DIR" && aliBuild build AliPhysics $ALIPHYSICS_BUILD_OPT $ALIBUILD_OPT || $ERREXIT; }
 fi
 
 # O2
 if [ $O2_UPDATE -eq 1 ]; then
-  echo -e "\nUpdating O2"
+  MsgStep "Updating O2"
   UpdateGit "$O2_DIR" $O2_REMOTE_MAIN $O2_BRANCH_MAIN $O2_REMOTE_FORK
-  [ $O2_BUILD -eq 1 ] && { echo -e "\n- Building O2"; cd "$ALICE_DIR" && aliBuild build O2 $O2_BUILD_OPT $ALIBUILD_OPT || $ERREXIT; }
+  [ $O2_BUILD -eq 1 ] && { MsgSubStep "- Building O2"; cd "$ALICE_DIR" && aliBuild build O2 $O2_BUILD_OPT $ALIBUILD_OPT || $ERREXIT; }
 fi
 
 # Cleanup
-echo -e "\nCleaning builds"
+MsgStep "Cleaning builds"
 aliBuild clean $ALIBUILD_OPT
 
 # Run 3 validation
 if [ $RUN3VALIDATE_UPDATE -eq 1 ]; then
-  echo -e "\nUpdating Run3Analysisvalidation"
+  MsgStep "Updating Run3Analysisvalidation"
   UpdateGit "$RUN3VALIDATE_DIR" $RUN3VALIDATE_REMOTE_MAIN $RUN3VALIDATE_BRANCH_MAIN $RUN3VALIDATE_REMOTE_FORK
 fi
 
-echo -e "\nDone"
+MsgStep "Done"
 
 exit 0
