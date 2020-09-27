@@ -12,6 +12,9 @@
 # User's settings:
 # paths, names of remotes (check git remote -v), build options.
 
+# Print out an overview of the latest commits of repositories.
+PRINT_COMMITS=1
+
 # Main ALICE software directory
 ALICE_DIR="$HOME/alice"
 
@@ -58,6 +61,12 @@ ERREXIT="eval echo -e \"\\e[1;31mError\\e[0m\"; exit 1"
 function MsgStep { echo -e "\n\e[1;32m$@\e[0m"; }
 function MsgSubStep { echo -e "\n\e[1m$@\e[0m"; }
 function MsgSubSubStep { echo -e "\e[4m$@\e[0m"; }
+
+function PrintLastCommit {
+  BRANCH=$(git rev-parse --abbrev-ref HEAD)
+  COMMIT=$(git log -n 1 --pretty='format:%ci %h %s')
+  echo "$BRANCH $COMMIT"
+}
 
 # Update a given branch and push to the fork repository (if specified).
 function UpdateBranch {
@@ -146,6 +155,15 @@ aliBuild clean $ALIBUILD_OPT
 if [ $RUN3VALIDATE_UPDATE -eq 1 ]; then
   MsgStep "Updating Run3Analysisvalidation"
   UpdateGit "$RUN3VALIDATE_DIR" $RUN3VALIDATE_REMOTE_MAIN $RUN3VALIDATE_BRANCH_MAIN $RUN3VALIDATE_REMOTE_FORK
+fi
+
+# Print out latest commits.
+if [ $PRINT_COMMITS -eq 1 ]; then
+  MsgStep "Latest commits"
+  echo "alidist: $( cd "$ALIDIST_DIR" && PrintLastCommit )"
+  echo "AliPhysics: $( cd "$ALIPHYSICS_DIR" && PrintLastCommit )"
+  echo "O2: $( cd "$O2_DIR" && PrintLastCommit )"
+  echo "Run 3 validation: $( cd "$RUN3VALIDATE_DIR" && PrintLastCommit )"
 fi
 
 MsgStep "Done"
