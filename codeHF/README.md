@@ -22,9 +22,18 @@ It runs the same analysis using AliPhysics and O<sup>2</sup> and produces compar
 ### Download the comparison software
 
 You can download the validation code:
-``` bash
+```bash
 git clone https://github.com/AliceO2Group/Run3Analysisvalidation.git
 cd Run3Analysisvalidation/codeHF
+```
+
+### Install parallelisation software
+
+The execution of validation steps is parallelised using the [GNU Parallel](https://www.gnu.org/software/parallel/) tool.
+You need to have it installed on your machine to run the comparison code.
+You can install GNU Parallel on Ubuntu-based systems with:
+```bash
+sudo apt install parallel
 ```
 
 ### Select your data
@@ -42,7 +51,7 @@ It performs the D<sup>0</sup> reconstruction analysis using AliPhysics (Run 1+2)
 
 Execute the steering script from the `codeHF` directory:
 
-``` bash
+```bash
 bash runtest.sh
 ```
 
