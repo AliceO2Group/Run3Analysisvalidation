@@ -219,6 +219,7 @@ fi
 
 echo -e "\nDone"
 
-rm $LISTFILESALI
+rm -f $LISTFILESALI
+rm -f $LISTFILESO2
 
 exit 0
