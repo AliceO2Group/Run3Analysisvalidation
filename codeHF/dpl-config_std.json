@@ -9,12 +9,12 @@
     "hf-produce-sel-track": {
         "dovalplots": "true",
         "ptmintrack_2prong": "0.",
-	"ptmintrack_3prong": "0.",
+        "ptmintrack_3prong": "0.",
         "d_tpcnclsfound": "71",
         "dcatoprimxymin_2prong": 0.03,
-	"dcatoprimxymin_3prong": 0.03,
-	"etamax_2prong": "999.",
-	"etamax_3prong": "999."
+        "dcatoprimxymin_3prong": 0.03,
+        "etamax_2prong": "999.",
+        "etamax_3prong": "999."
     },
     "hf-track-index-skims-creator": {
         "dovalplots": "true",
