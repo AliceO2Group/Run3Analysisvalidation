@@ -106,12 +106,12 @@ Bool_t SingleTrkCuts(AliESDtrack* trk, AliESDtrackCuts* esdTrackCuts, AliESDVert
   return esdTrackCuts->AcceptTrack(trk);
 }
 
-Bool_t SingleTrkCutsSimple(AliESDtrack* trk, Int_t minclutpc, int ptmintrack, double dcatoprimxymin, AliESDVertex* fV1, Double_t fBzkG)
+Bool_t SingleTrkCutsSimple(AliESDtrack* trk, Int_t minclutpc, double ptmintrack, float etamax, double dcatoprimxymin, AliESDVertex* fV1, Double_t fBzkG)
 {
   Int_t status = trk->GetStatus();
   bool sel_track = status & AliESDtrack::kITSrefit && (trk->HasPointOnITSLayer(0) || trk->HasPointOnITSLayer(1));
   sel_track = sel_track && trk->GetNcls(1) >= minclutpc;
-  sel_track = sel_track && trk->Pt() > ptmintrack;
+  sel_track = sel_track && trk->Pt() > ptmintrack && abs(trk->Eta()) < etamax;
   AliExternalTrackParam* track = (AliExternalTrackParam*)trk;
   double b[2];
   double bCov[3];
@@ -333,7 +333,7 @@ AliAODRecoDecayHF3Prong* Make3Prong(TObjArray* threeTrackArray, AliAODVertex* se
 Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
                           TString output = "Vertices23prong-ITS1.root",
                           TString jsonconfig = "dpl-config_std.json",
-                          double ptmintrack = 0.,
+                          double ptmintrack_2prong = 0.,
                           int do3Prongs = 0,
                           TString triggerstring = "")
 {
@@ -353,8 +353,11 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
   esd->ReadFromTree(tree);
 
   int minncluTPC = 50;
-  float dcatoprimxymin = 0.;
+  float dcatoprimxymin_2prong = 0.;
+  float dcatoprimxymin_3prong = 0.;
   Double_t candpTMin,candpTMax, d_maxr;
+  double ptmintrack_3prong = 0. ;
+  float etamax_2prong = 999., etamax_3prong = 999.;
   Int_t selectD0, selectD0bar;
   // read configuration from json file
   if (jsonconfig != "" && gSystem->Exec(Form("ls %s > /dev/null", jsonconfig.Data())) == 0) {
@@ -362,21 +365,29 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
     selectD0 = GetJsonInteger(jsonconfig.Data(), "d_selectionFlagD0");
     selectD0bar = GetJsonInteger(jsonconfig.Data(), "d_selectionFlagD0bar");
     printf("D0 cuts: %d, D0bar cuts: %d\n", selectD0, selectD0bar);
-    ptmintrack = GetJsonFloat(jsonconfig.Data(), "ptmintrack");
-    printf("Min pt track = %f\n", ptmintrack);
+    ptmintrack_2prong = GetJsonFloat(jsonconfig.Data(), "ptmintrack_2prong");
+    printf("Min pt track 2prong = %f\n", ptmintrack_2prong);
+    ptmintrack_3prong = GetJsonFloat(jsonconfig.Data(), "ptmintrack_3prong");
+    printf("Min pt track 3prong = %f\n", ptmintrack_3prong);
     do3Prongs = GetJsonInteger(jsonconfig.Data(), "do3prong");
     printf("do3prong     = %d\n", do3Prongs);
     minncluTPC = GetJsonInteger(jsonconfig.Data(), "d_tpcnclsfound");
     printf("minncluTPC   = %d\n", minncluTPC);
-    dcatoprimxymin = GetJsonFloat(jsonconfig.Data(), "dcatoprimxymin");
-    printf("dcatoprimxymin   = %f\n", dcatoprimxymin);
+    dcatoprimxymin_2prong = GetJsonFloat(jsonconfig.Data(), "dcatoprimxymin_2prong");
+    printf("dcatoprimxymin  2prong = %f\n", dcatoprimxymin_2prong);
+    dcatoprimxymin_3prong = GetJsonFloat(jsonconfig.Data(), "dcatoprimxymin_3prong");
+    printf("dcatoprimxymin  3prong = %f\n", dcatoprimxymin_3prong);
     printf("Read configuration from JSON file\n");
     candpTMin = GetJsonFloat(jsonconfig.Data(), "d_pTCandMin");
     printf("Min pt 2prong cand = %f\n", candpTMin);
     candpTMax = GetJsonInteger(jsonconfig.Data(), "d_pTCandMax");
     printf("Max pt 2prong cand = %f\n", candpTMax);
-    d_maxr = GetJsonFloat(jsonconfig.Data(), ", d_maxr");
+    d_maxr = GetJsonFloat(jsonconfig.Data(), "d_maxr");
     printf("Max DCA radius = %f\n", d_maxr);
+    etamax_2prong = GetJsonFloat(jsonconfig.Data(), "etamax_2prong");
+    printf("Max Eta 2prong = %f\n", etamax_2prong);
+    etamax_3prong = GetJsonFloat(jsonconfig.Data(), "etamax_3prong");
+    printf("Max Eta 3prong = %f\n", etamax_3prong);
   }
 
   TH1F* hpt_nocuts = new TH1F("hpt_nocuts", " ; pt tracks (#GeV) ; Entries", 100, 0, 10.);
@@ -412,7 +423,7 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
   TH1F* hCovSVXX = new TH1F("hCovSVXX", "XX element of SV cov. matrix", 100, 0., 0.2);
 
   AliESDtrackCuts* esdTrackCuts = new AliESDtrackCuts("AliESDtrackCuts", "default");
-  esdTrackCuts->SetPtRange(ptmintrack, 1.e10);
+  esdTrackCuts->SetPtRange(ptmintrack_2prong, 1.e10);
   esdTrackCuts->SetEtaRange(-0.8, +0.8);
   esdTrackCuts->SetMinNClustersTPC(minncluTPC);
   esdTrackCuts->SetRequireITSRefit(kTRUE);
@@ -461,14 +472,18 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
     Double_t fBzkG = (Double_t)esd->GetMagneticField();
 
     // Apply single track cuts and flag them
-    UChar_t* status = new UChar_t[totTracks];
+    UChar_t* status_2prong = new UChar_t[totTracks];
+    UChar_t* status_3prong = new UChar_t[totTracks];
     for (Int_t iTrack = 0; iTrack < totTracks; iTrack++) {
-      status[iTrack] = 0;
+      status_2prong[iTrack] = 0;
+      status_3prong[iTrack] = 0;
       AliESDtrack* track = esd->GetTrack(iTrack);
       hpt_nocuts->Fill(track->Pt());
       htgl_nocuts->Fill(track->GetTgl());
-      if (SingleTrkCutsSimple(track, minncluTPC, ptmintrack, dcatoprimxymin, primvtx, fBzkG))
-        status[iTrack] = 1; //FIXME
+      if (SingleTrkCutsSimple(track, minncluTPC, ptmintrack_2prong, etamax_2prong, dcatoprimxymin_2prong, primvtx, fBzkG))
+        status_2prong[iTrack] = 1; //FIXME
+      if (SingleTrkCutsSimple(track, minncluTPC, ptmintrack_3prong, etamax_3prong, dcatoprimxymin_3prong, primvtx, fBzkG))
+        status_3prong[iTrack] = 1; //FIXME
     }
 
     TObjArray* twoTrackArray = new TObjArray(2);
@@ -480,7 +495,7 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
     for (Int_t iPosTrack_0 = 0; iPosTrack_0 < totTracks; iPosTrack_0++) {
       AliESDtrack* track_p0 = esd->GetTrack(iPosTrack_0);
       track_p0->GetPxPyPz(mom0);
-      if (status[iPosTrack_0] == 0)
+      if (status_2prong[iPosTrack_0] == 0)
         continue;
       AliExternalTrackParam* trackext = (AliExternalTrackParam*)track_p0;
       double b[2];
@@ -498,7 +513,7 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
         track_n0->GetPxPyPz(mom1);
         if (track_n0->Charge() > 0)
           continue;
-        if (status[iNegTrack_0] == 0)
+        if (status_2prong[iNegTrack_0] == 0)
           continue;
 
         twoTrackArray->AddAt(track_p0, 0);
@@ -560,7 +575,7 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
             if (track_p1->Charge() < 0)
               continue;
             track_p1->GetPxPyPz(mom2);
-            if (status[iPosTrack_1] == 0)
+            if (status_3prong[iPosTrack_1] == 0)
               continue;
             // order tracks according to charge: +-+
             threeTrackArray->AddAt(track_p0, 0);
@@ -598,7 +613,7 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
             if (track_n1->Charge() > 0)
               continue;
             track_n1->GetPxPyPz(mom2);
-            if (status[iNegTrack_1] == 0)
+            if (status_3prong[iNegTrack_1] == 0)
               continue;
             // order tracks according to charge: -+-
             threeTrackArray->AddAt(track_n0, 0);
@@ -631,7 +646,8 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
       }
       //  delete vertexAODp;
     }
-    delete[] status;
+    delete[] status_2prong;
+    delete[] status_3prong;
     delete vt;
     delete twoTrackArray;
     delete threeTrackArray;
