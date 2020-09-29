@@ -29,10 +29,11 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
                                    //"hDecLenErr",
                                    //"hDecLenXYErr",
                                    //"hCovPVXX",
-                                   //"hCovSVXX"
+                                   //"hCovSVXX",
                                    "hvx3",
                                    "hvy3",
-                                   "hvz3"};
+                                   "hvz3"
+                                   };
   TString histonameRun3[nhisto] = {"hf-produce-sel-track/hpt_nocuts",
                                    "hf-produce-sel-track/hpt_cuts",
                                    "hf-produce-sel-track/hdcatoprimxy_cuts",
@@ -52,10 +53,11 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
                                    //"hf-task-d0/hDecLenErr",
                                    //"hf-task-d0/hDecLenXYErr",
                                    //"hf-cand-creator-2prong/hCovPVXX",
-                                   //"hf-cand-creator-2prong/hCovSVXX"
+                                   //"hf-cand-creator-2prong/hCovSVXX",
                                    "hf-track-index-skims-creator/hvtx3_x",
                                    "hf-track-index-skims-creator/hvtx3_y",
-                                   "hf-track-index-skims-creator/hvtx3_z"};
+                                   "hf-track-index-skims-creator/hvtx3_z"
+                                   };
   TString xaxis[nhisto] = {"#it{p}_{T} before selections",
                            "#it{p}_{T} after selections",
                            "DCA XY to prim vtx after selections",
@@ -75,11 +77,12 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
                            //"decay length error",
                            //"decay length XY error",
                            //"XX element of PV cov. matrix",
-                           //"XX element of SV cov. matrix"
+                           //"XX element of SV cov. matrix",
                            "secondary vtx x - 3prong",
                            "secondary vtx y - 3prong",
-                           "secondary vtx z - 3prong"};
-  int rebin[nhisto] = {2, 2, 2, 5, 5, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2, 5, 5, 5};
+                           "secondary vtx z - 3prong"
+                           };
+  int rebin[nhisto] = {2, 2, 2, 5, 5, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2/*, 1, 1, 1, 1, 1*/, 5, 5, 5};
   TH1F* hRun1[nhisto];
   TH1F* hRun3[nhisto];
   TH1F* hRatio[nhisto];
@@ -109,11 +112,11 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
   Float_t yMin, yMax, yRange;
   Int_t nRun1, nRun3;
 
-  TCanvas* cv = new TCanvas("cv", "Histos", 3000, 3000);
-  cv->Divide(3, 5);
-  TCanvas* cr = new TCanvas("cr", "Ratios", 3000, 3000);
-  cr->Divide(3, 5);
-  
+  TCanvas* cv = new TCanvas("cv", "Histos", 3000, 1600);
+  cv->Divide(5, 3);
+  TCanvas* cr = new TCanvas("cr", "Ratios", 3000, 1600);
+  cr->Divide(5, 3);
+
   for (int index = 0; index < nhisto_2prong; index++) {
     nRun1 = hRun1[index]->GetEntries();
     nRun3 = hRun3[index]->GetEntries();
@@ -163,12 +166,12 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
     hRatio[index]->Draw();
   }
 
-  TCanvas* cv3 = new TCanvas("cv3", "Histos", 3000, 3000);
-  cv3->Divide(3, 5);
-  TCanvas* cr3 = new TCanvas("cr3", "Ratios", 3000, 3000);
-  cr3->Divide(3, 5);
+  TCanvas* cv3 = new TCanvas("cv3", "Histos", 3000, 1600);
+  cv3->Divide(5, 3);
+  TCanvas* cr3 = new TCanvas("cr3", "Ratios", 3000, 1600);
+  cr3->Divide(5, 3);
 
-  Int_t i=0;
+  Int_t i = 0;
   for (int index = nhisto_2prong; index < nhisto; index++) {
     nRun1 = hRun1[index]->GetEntries();
     nRun3 = hRun3[index]->GetEntries();
@@ -219,7 +222,6 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
     i=i+1;
   }
 
-  
   cv->SaveAs("comparison_histos_2prong.pdf");
   cr->SaveAs("comparison_ratios_2prong.pdf");
   cv3->SaveAs("comparison_histos_3prong.pdf");
