@@ -39,10 +39,11 @@ sudo apt install parallel
 ### Select your data
 
 In order to run the analysis with AliPhysics, you need `AliESDs.root` files and specify their location by setting the variables `INPUTDIR` and `STRING` in the `runtest.sh` steering script in the `codeHF` directory.
+To process Monte Carlo data, you also need the corresponding `galice.root` and `Kinematics.root` files.
 
 The steering script contains some hard-coded paths for different cases.
 By default `CASE=4` is enabled.
-To run the code with the same input file locally on your machine, download it from `/alice/sim/2018/LHC18a4a2_cent/282099/001/AliESDs.root` on the Grid.
+To run the code with the same input files locally on your machine, download them from `/alice/sim/2018/LHC18a4a2_cent/282099/001/` on the Grid.
 
 ### Run the example
 

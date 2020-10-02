@@ -27,8 +27,8 @@ NMAX=-1
 
 if [ $CASE -eq 0 ]; then
   INPUTDIR="../twikiinput"
-  MASS=1.0
   STRING="AliESDs_ppK0starToyMC.root"
+  MASS=1.0
 fi
 
 if [ $CASE -eq 1 ]; then
@@ -41,25 +41,27 @@ fi
 
 if [ $CASE -eq 2 ]; then
   INPUTDIR="/data/Run3data/alice_sim_2015_LHC15k1a3_246391/246391"
-  ISMC=1
   STRING="00*/AliESDs.root"
+  ISMC=1
   NMAX=1
 fi
 
 if [ $CASE -eq 3 ]; then
   INPUTDIR="/data/Run3data/output"
-  MASS=1.0
   STRING="00*/AliESDs.root"
+  MASS=1.0
 fi
 
 if [ $CASE -eq 4 ]; then
   INPUTDIR="/data/Run3data/alice_sim_2018_LHC18a4a2_cent/282099"
   STRING="001/AliESDs.root"
+  ISMC=1
 fi
 
 if [ $CASE -eq 5 ]; then
   INPUTDIR="/mnt/temp/Run3data_Vit/LHC18a4a2_cent/282341"
   STRING="001/AliESDs.root"
+  ISMC=1
 fi
 
 #INPUTDIR="/data/Run3data/output" #K0* MC injected
@@ -68,7 +70,7 @@ fi
 
 # Lists of input files
 LISTFILESALI="list_ali.txt"
-ls $INPUTDIR/$STRING > $LISTFILESALI
+ls $INPUTDIR/$STRING > $LISTFILESALI || { echo "Error: Failed to make a list of input files."; exit 1; }
 LISTFILESO2="listrun3.txt"
 LISTFILESO2RUN5="listrun5.txt"
 
@@ -103,12 +105,9 @@ fi
 
 # Convert AliESDs.root to AO2D.root.
 if [ $DOCONVERT -eq 1 ]; then
-  [ -f "$LISTFILESALI" ] || { echo "Converting: Error: File $LISTFILESALI does not exist."; exit 1; }
+  [ -f "$LISTFILESALI" ] || { echo -e "\nConverting: Error: File $LISTFILESALI does not exist."; exit 1; }
   echo -e "\nConverting... ($(cat $LISTFILESALI | wc -l) files)"
-  if [ $DOQA -eq 1 ]; then
-    echo "Setting MC mode ON."
-    ISMC=1
-  fi
+  [ $ISMC -eq 1 ] && echo "Using MC mode"
   if [ $CONVSEP -eq 1 ]; then
     echo "Converting files separately"
     $ENVALI bash convert_batch.sh $LISTFILESALI $LISTFILESO2 $ISMC $DEBUG || exit 1 # Run the batch script in the ALI environment.
@@ -123,15 +122,16 @@ if [ $DOCONVERT -eq 1 ]; then
 fi
 
 # Perform simple QA studies with O2.
+[[ $DOQA -eq 1 && ISMC -eq 0 ]] && { echo -e "\nSkipping the QA task for non-MC input"; DOQA=0; } # Disable running the QA task for non-MC input.
 if [ $DOQA -eq 1 ]; then
   #LOGFILE="log_o2_qa.log"
-  [ -f "$O2INPUT" ] || { echo "QA task: Error: File $O2INPUT does not exist."; exit 1; }
+  [ -f "$O2INPUT" ] || { echo -e "\nQA task: Error: File $O2INPUT does not exist."; exit 1; }
   echo -e "\nRunning the QA task with O2... ($(cat $O2INPUT | wc -l) files)"
   rm -f $FILEOUTO2 $FILEOUTQA
   O2ARGS="--shm-segment-size 16000000000 --configuration json://$JSON"
   if [ $PARALLELISE -eq 1 ]; then
     NPROC=3
-    echo "Parallelisation ON ($NPROC)"
+    echo "O2 parallelisation ON ($NPROC)"
     O2ARGS="$O2ARGS --pipeline qa-tracking-kine:$NPROC,qa-tracking-resolution:$NPROC"
   fi
   O2EXEC="o2-analysis-qatask $O2ARGS -b"
@@ -152,7 +152,7 @@ fi
 
 # Run the heavy-flavour tasks with AliPhysics.
 if [ $DORUN1 -eq 1 ]; then
-  [ -f "$LISTFILESALI" ] || { echo "HF tasks ALI: Error: File $LISTFILESALI does not exist."; exit 1; }
+  [ -f "$LISTFILESALI" ] || { echo -e "\nHF tasks ALI: Error: File $LISTFILESALI does not exist."; exit 1; }
   echo -e "\nRunning the HF tasks with AliPhysics... ($(cat $LISTFILESALI | wc -l) files)"
   #$ENVALI bash ali_batch.sh $LISTFILESALI $JSON $FILEOUTALI # Run the batch script in the ALI environment.
   $ENVALIO2 bash ali_batch.sh $LISTFILESALI $JSON $FILEOUTALI $DEBUG || exit 1 # Run the batch script in the ALI+O2 environment.
@@ -161,7 +161,7 @@ fi
 # Run the heavy-flavour tasks with O2.
 if [ $DORUN3 -eq 1 ]; then
   #LOGFILE="log_o2_hf.log"
-  [ -f "$O2INPUT" ] || { echo "HF tasks O2: Error: File $O2INPUT does not exist."; exit 1; }
+  [ -f "$O2INPUT" ] || { echo -e "\nHF tasks O2: Error: File $O2INPUT does not exist."; exit 1; }
   echo -e "\nRunning the HF tasks with O2... ($(cat $O2INPUT | wc -l) files)"
   rm -f $FILEOUTO2
   # Option --configuration has priority over --aod-file.
@@ -175,7 +175,7 @@ if [ $DORUN3 -eq 1 ]; then
   O2ARGS_TASK="$O2ARGS"
   if [ $PARALLELISE -eq 1 ]; then
     NPROC=3
-    echo "Parallelisation ON ($NPROC)"
+    echo "O2 parallelisation ON ($NPROC)"
     O2ARGS_SKIM="$O2ARGS_SKIM --pipeline hf-produce-sel-track:$NPROC,hf-track-index-skims-creator:$NPROC"
     O2ARGS_CAND="$O2ARGS_CAND --pipeline hf-cand-creator-2prong:$NPROC,hf-cand-creator-2prong-expressions:$NPROC"
     O2ARGS_TASK="$O2ARGS_TASK --pipeline hf-task-d0:$NPROC"
