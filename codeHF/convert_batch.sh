@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Message formatting
+function MsgStep { echo -e "\n\e[1;32m$@\e[0m"; }
+function MsgWarn { echo -e "\e[1;36m$@\e[0m"; }
+function MsgErr { echo -e "\e[1;31m$@\e[0m"; }
+
 LISTINPUT="$1"
 LISTOUTPUT="$2"
 ISMC=$3
@@ -16,10 +21,10 @@ rm -f $ListRunScripts
 rm -f $LISTOUTPUT
 rm -rf $DirOutMain
 
-[ -f "$LISTINPUT" ] || { echo "Error: File $LISTINPUT does not exist."; exit 1; }
+[ -f "$LISTINPUT" ] || { MsgErr "Error: File $LISTINPUT does not exist."; exit 1; }
 echo "Output directory: $DirOutMain (logfiles: $LogFile)"
 while read FileIn; do
-  [ -f "$FileIn" ] || { echo "Error: File $FileIn does not exist."; exit 1; }
+  [ -f "$FileIn" ] || { MsgErr "Error: File $FileIn does not exist."; exit 1; }
   DirOut="$DirOutMain/$Index"
   mkdir -p $DirOut
   cd $DirOut
@@ -41,7 +46,7 @@ done < "$LISTINPUT"
 
 echo "Running conversion jobs..."
 parallel --halt soon,fail=100% < $ListRunScripts > $LogFile 2>&1 || \
-{ echo -e "Error\nCheck $(realpath $LogFile)"; exit 1; }
+{ MsgErr "Error\nCheck $(realpath $LogFile)"; exit 1; }
 rm -f $ListRunScripts
 
 exit 0
