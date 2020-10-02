@@ -64,6 +64,12 @@ if [ $CASE -eq 5 ]; then
   ISMC=1
 fi
 
+if [ $CASE -eq 6 ]; then
+  INPUTDIR="/mnt/temp/Run3data_Vit/LHC17p_pass1_CENT_woSDD/282341"
+  STRING="17000282099019.1001/AliESDs.root"
+  ISMC=0
+fi
+
 #INPUTDIR="/data/Run3data/output" #K0* MC injected
 #INPUTDIR="/data/Run3data/alice_sim_2018_LHC18a4a2_cent/282099" #D2H MC sample
 #INPUTDIR="/data/Run3data/alice_sim_2015_LHC15k1a3_246391/246391" #HIJING MC PbPb
