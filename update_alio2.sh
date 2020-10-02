@@ -109,6 +109,9 @@ function UpdateGit {
   #echo "Directory: $DIR"
   echo "Current branch: $BRANCH"
 
+  # Skip update when on detached HEAD.
+  [ "$BRANCH" == "HEAD" ] && { MsgSubStep "- Skipping update because of detached HEAD"; return; }
+
   # Stash uncommitted local changes.
   MsgSubStep "- Stashing potential uncommitted local changes"
   NSTASH_OLD=$(git stash list | wc -l) && \
