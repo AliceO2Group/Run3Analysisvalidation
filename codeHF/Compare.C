@@ -35,8 +35,8 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
                                    "hvz3"
                                    };
   TString histonameRun3[nhisto] = {"hf-produce-sel-track/hpt_nocuts",
-                                   "hf-produce-sel-track/hpt_cuts",
-                                   "hf-produce-sel-track/hdcatoprimxy_cuts",
+                                   "hf-produce-sel-track/hpt_cuts_2prong",
+                                   "hf-produce-sel-track/hdcatoprimxy_cuts_2prong",
                                    "hf-track-index-skims-creator/hvtx_x",
                                    "hf-track-index-skims-creator/hvtx_y",
                                    "hf-track-index-skims-creator/hvtx_z",
