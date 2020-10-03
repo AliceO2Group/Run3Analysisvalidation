@@ -67,7 +67,6 @@ fi
 if [ $CASE -eq 6 ]; then
   INPUTDIR="/mnt/temp/Run3data_Vit/LHC17p_pass1_CENT_woSDD/282341"
   STRING="17000282099019.1001/AliESDs.root"
-  ISMC=0
 fi
 
 #INPUTDIR="/data/Run3data/output" #K0* MC injected
