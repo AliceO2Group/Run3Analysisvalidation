@@ -38,6 +38,15 @@
         "d_minparamchange": "0.001",
         "d_minrelchi2change": "0.90000000000000002"
     },
+    "hf-cand-creator-3prong": {
+        "dovalplots": "true",
+        "d_bz": "5",
+        "b_propdca": "true",
+        "d_maxr": "5",
+        "d_maxdzini": "999",
+        "d_minparamchange": "0.001",
+        "d_minrelchi2change": "0.90000000000000002"
+    },
     "hf-d0-candidate-selector": {
         "d_pTCandMin": "0.0 ",
         "d_pTCandMax": "50.0 ",
@@ -54,6 +63,9 @@
     "hf-task-d0": {
         "d_selectionFlagD0": "0",
         "d_selectionFlagD0bar": "0"
+    },
+    "hf-task-dplus": {
+        "d_selectionFlagDPlus": "0"
     },
     "internal-dpl-aod-writer": {
     }
