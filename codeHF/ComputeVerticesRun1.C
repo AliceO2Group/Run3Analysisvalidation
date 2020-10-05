@@ -356,6 +356,7 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
   float dcatoprimxymin_2prong = 0.;
   float dcatoprimxymin_3prong = 0.;
   Double_t candpTMin,candpTMax, d_maxr;
+  Double_t ptmincand_2prong, ptmincand_3prong;
   double ptmintrack_3prong = 0. ;
   float etamax_2prong = 999., etamax_3prong = 999.;
   Int_t selectD0, selectD0bar;
@@ -388,6 +389,10 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
     printf("Max Eta 2prong = %f\n", etamax_2prong);
     etamax_3prong = GetJsonFloat(jsonconfig.Data(), "etamax_3prong");
     printf("Max Eta 3prong = %f\n", etamax_3prong);
+    ptmincand_2prong = GetJsonFloat(jsonconfig.Data(), "ptmincand_2prong");
+    printf("Min pt candidate 3prong = %f\n", ptmincand_2prong);
+    ptmincand_3prong = GetJsonFloat(jsonconfig.Data(), "ptmincand_3prong");
+    printf("Min pt candidate 3prong = %f\n", ptmincand_3prong);
   }
 
   TH1F* hpt_nocuts = new TH1F("hpt_nocuts", " ; pt tracks (#GeV) ; Entries", 100, 0, 10.);
@@ -525,6 +530,12 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
           continue;
         }
 
+        AliAODVertex* vertexAOD = ConvertToAODVertex(trkv);
+        AliAODRecoDecayHF2Prong* the2Prong = Make2Prong(twoTrackArray, vertexAOD, fBzkG);
+        the2Prong->SetOwnPrimaryVtx(vertexAODp);
+        Double_t ptcand_2prong = the2Prong->Pt();
+        if (ptcand_2prong < ptmincand_2prong)
+            continue;
         //  printf(" px track_0 %.4f, track_1 %.4f \n", TMath::Max(track_0->Px(),track_1->Px()),TMath::Min(track_0->Px(),track_1->Px()));
         hvx->Fill(trkv->GetX());
         hvy->Fill(trkv->GetY());
@@ -535,10 +546,7 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
         double decaylength = TMath::Sqrt(deltax * deltax + deltay * deltay + deltaz * deltaz);
         double decaylengthxy = TMath::Sqrt(deltax * deltax + deltay * deltay);
 
-        AliAODVertex* vertexAOD = ConvertToAODVertex(trkv);
         delete trkv;
-        AliAODRecoDecayHF2Prong* the2Prong = Make2Prong(twoTrackArray, vertexAOD, fBzkG);
-        the2Prong->SetOwnPrimaryVtx(vertexAODp);
 
         Int_t twoProngSelection = 3;
         if (selectD0 + selectD0bar > 0)
@@ -601,6 +609,9 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
             //  the3Prong->SetOwnPrimaryVtx(vertexAODp);
             if (massSel & (1 << kbitDplus)) {
               Double_t mp = the3Prong->InvMassDplus();
+              Double_t ptcand_3prong = the3Prong->Pt();
+              if (ptcand_3prong < ptmincand_3prong)
+                continue;
               hmassP->Fill(mp);
               hvx3->Fill(trkv3->GetX());
               hvy3->Fill(trkv3->GetY());
@@ -639,6 +650,9 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
             //  the3Prong->SetOwnPrimaryVtx(vertexAODp);
             if (massSel & (1 << kbitDplus)) {
               Double_t mp = the3Prong->InvMassDplus();
+              Double_t ptcand_3prong = the3Prong->Pt();
+              if (ptcand_3prong < ptmincand_3prong)
+                continue;
               hmassP->Fill(mp);
             }
             delete trkv3;
