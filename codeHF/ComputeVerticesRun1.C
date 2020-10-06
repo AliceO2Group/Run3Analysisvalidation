@@ -381,7 +381,7 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
     printf("Read configuration from JSON file\n");
     candpTMin = GetJsonFloat(jsonconfig.Data(), "d_pTCandMin");
     printf("Min pt 2prong cand = %f\n", candpTMin);
-    candpTMax = GetJsonInteger(jsonconfig.Data(), "d_pTCandMax");
+    candpTMax = GetJsonFloat(jsonconfig.Data(), "d_pTCandMax");
     printf("Max pt 2prong cand = %f\n", candpTMax);
     d_maxr = GetJsonFloat(jsonconfig.Data(), "d_maxr");
     printf("Max DCA radius = %f\n", d_maxr);
@@ -663,13 +663,13 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
         }
         twoTrackArray->Clear();
       }
-      //  delete vertexAODp;
     }
     delete[] status_2prong;
     delete[] status_3prong;
     delete vt;
     delete twoTrackArray;
     delete threeTrackArray;
+    delete vertexAODp;
   }
   delete esdTrackCuts;
   delete rd4massCalc3;
