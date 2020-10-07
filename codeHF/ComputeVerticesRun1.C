@@ -534,44 +534,44 @@ Int_t ComputeVerticesRun1(TString esdfile = "AliESDs.root",
         AliAODRecoDecayHF2Prong* the2Prong = Make2Prong(twoTrackArray, vertexAOD, fBzkG);
         the2Prong->SetOwnPrimaryVtx(vertexAODp);
         Double_t ptcand_2prong = the2Prong->Pt();
-        if (ptcand_2prong < ptmincand_2prong)
-            continue;
-        //  printf(" px track_0 %.4f, track_1 %.4f \n", TMath::Max(track_0->Px(),track_1->Px()),TMath::Min(track_0->Px(),track_1->Px()));
-        hvx->Fill(trkv->GetX());
-        hvy->Fill(trkv->GetY());
-        hvz->Fill(trkv->GetZ());
-        double deltax = trkv->GetX() - primvtx->GetX();
-        double deltay = trkv->GetY() - primvtx->GetY();
-        double deltaz = trkv->GetZ() - primvtx->GetZ();
-        double decaylength = TMath::Sqrt(deltax * deltax + deltay * deltay + deltaz * deltaz);
-        double decaylengthxy = TMath::Sqrt(deltax * deltax + deltay * deltay);
+        if (ptcand_2prong >= ptmincand_2prong){
+          //  printf(" px track_0 %.4f, track_1 %.4f \n", TMath::Max(track_0->Px(),track_1->Px()),TMath::Min(track_0->Px(),track_1->Px()));
+          hvx->Fill(trkv->GetX());
+          hvy->Fill(trkv->GetY());
+          hvz->Fill(trkv->GetZ());
+          double deltax = trkv->GetX() - primvtx->GetX();
+          double deltay = trkv->GetY() - primvtx->GetY();
+          double deltaz = trkv->GetZ() - primvtx->GetZ();
+          double decaylength = TMath::Sqrt(deltax * deltax + deltay * deltay + deltaz * deltaz);
+          double decaylengthxy = TMath::Sqrt(deltax * deltax + deltay * deltay);
 
-        delete trkv;
+          delete trkv;
 
-        Int_t twoProngSelection = 3;
-        if (selectD0 + selectD0bar > 0)
-          twoProngSelection = TwoProngSelectionCuts(the2Prong, candpTMin, candpTMax);
-        Double_t m0 = the2Prong->InvMassD0();
-        Double_t m0b = the2Prong->InvMassD0bar();
-        if (twoProngSelection > 0) {
-          if (selectD0 == 0 || twoProngSelection == 1 || twoProngSelection == 3) hmass0->Fill(m0);
-          if (selectD0bar == 0 || twoProngSelection == 2 || twoProngSelection == 3) hmass0->Fill(m0b);
-          hdecayxyz->Fill(decaylength);
-          hdecayxy->Fill(decaylengthxy);
-          hptD0->Fill(the2Prong->Pt());
-          hptprong0->Fill(the2Prong->PtProng(0));
-          hptprong1->Fill(the2Prong->PtProng(1));
-          hd0->Fill(the2Prong->Getd0Prong(0));
-          hd0->Fill(the2Prong->Getd0Prong(1));
-          hd0d0->Fill(the2Prong->Prodd0d0());
-          hImpParErr->Fill(the2Prong->Getd0errProng(0));
-          hImpParErr->Fill(the2Prong->Getd0errProng(1));
-          hDecLenErr->Fill(the2Prong->DecayLengthError());
-          hDecLenXYErr->Fill(the2Prong->DecayLengthXYError());
-          the2Prong->GetPrimaryVtx()->GetCovMatrix(covMatrix);
-          hCovPVXX->Fill(covMatrix[0]);
-          the2Prong->GetSecondaryVtx()->GetCovMatrix(covMatrix);
-          hCovSVXX->Fill(covMatrix[0]);
+          Int_t twoProngSelection = 3;
+          if (selectD0 + selectD0bar > 0)
+            twoProngSelection = TwoProngSelectionCuts(the2Prong, candpTMin, candpTMax);
+          Double_t m0 = the2Prong->InvMassD0();
+          Double_t m0b = the2Prong->InvMassD0bar();
+          if (twoProngSelection > 0) {
+            if (selectD0 == 0 || twoProngSelection == 1 || twoProngSelection == 3) hmass0->Fill(m0);
+            if (selectD0bar == 0 || twoProngSelection == 2 || twoProngSelection == 3) hmass0->Fill(m0b);
+            hdecayxyz->Fill(decaylength);
+            hdecayxy->Fill(decaylengthxy);
+            hptD0->Fill(the2Prong->Pt());
+            hptprong0->Fill(the2Prong->PtProng(0));
+            hptprong1->Fill(the2Prong->PtProng(1));
+            hd0->Fill(the2Prong->Getd0Prong(0));
+            hd0->Fill(the2Prong->Getd0Prong(1));
+            hd0d0->Fill(the2Prong->Prodd0d0());
+            hImpParErr->Fill(the2Prong->Getd0errProng(0));
+            hImpParErr->Fill(the2Prong->Getd0errProng(1));
+            hDecLenErr->Fill(the2Prong->DecayLengthError());
+            hDecLenXYErr->Fill(the2Prong->DecayLengthXYError());
+            the2Prong->GetPrimaryVtx()->GetCovMatrix(covMatrix);
+            hCovPVXX->Fill(covMatrix[0]);
+            the2Prong->GetSecondaryVtx()->GetCovMatrix(covMatrix);
+            hCovSVXX->Fill(covMatrix[0]);
+          }
         }
         delete the2Prong;
         delete vertexAOD;
