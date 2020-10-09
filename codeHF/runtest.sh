@@ -11,7 +11,6 @@ DORUN3=1      # Run the heavy-flavour tasks with O2.
 DOCOMPARE=1   # Compare AliPhysics and O2 output.
 
 RUN5=0        # Use Run 5 input.
-CONVSEP=1     # Convert ESD files separately.
 PARALLELISE=0 # Parallelise O2 tasks.
 TWOPRONGSEL=0 # Apply D0 selection cuts.
 DEBUG=0       # Print out more information.
@@ -115,17 +114,7 @@ if [ $DOCONVERT -eq 1 ]; then
   [ -f "$LISTFILES_ALI" ] || { MsgErr "\nConverting: Error: File $LISTFILES_ALI does not exist."; exit 1; }
   MsgStep "Converting... ($(cat $LISTFILES_ALI | wc -l) files)"
   [ $ISMC -eq 1 ] && MsgWarn "Using MC mode"
-  if [ $CONVSEP -eq 1 ]; then
-    MsgWarn "Converting files separately"
-    $ENVALI bash convert_batch.sh $LISTFILES_ALI $LISTFILES_O2 $ISMC $DEBUG || exit 1 # Run the batch script in the ALI environment.
-  else
-    LOGFILE="log_convert.log"
-    rm -f $LOGFILE
-    echo "logfile: $LOGFILE"
-    $ENVALI $CMDROOT "convertAO2D.C(\"$LISTFILES_ALI\", $ISMC, $NMAX)" > $LOGFILE 2>&1 || { MsgErr "Error"; exit 1; }
-    echo "$PWD/AO2D.root" > $LISTFILES_O2
-    rm -f $FILEOUT
-  fi
+  $ENVALI bash convert_batch.sh $LISTFILES_ALI $LISTFILES_O2 $ISMC $DEBUG || exit 1 # Run the batch script in the ALI environment.
 fi
 
 # Perform simple QA studies with O2.
