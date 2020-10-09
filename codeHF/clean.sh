@@ -7,7 +7,7 @@ function MsgErr { echo -e "\e[1;31m$@\e[0m"; }
 
 MsgStep "Cleaning"
 
-rm -f AO2D.root AnalysisResults.root AnalysisResultsQA.root Vertices2prong-ITS1.root
+rm -f AO2D.root AnalysisResults_ALI_HF.root AnalysisResults_O2_HF.root AnalysisResults_O2_QA.root
 rm -f comparison_histos_2prong.pdf comparison_ratios_2prong.pdf comparison_histos_3prong.pdf comparison_ratios_3prong.pdf
 rm -f *.log
 rm -rf output_*

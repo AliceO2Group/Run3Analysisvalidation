@@ -32,7 +32,6 @@ while read FileIn; do
   [ $DEBUG -eq 1 ] && echo "Input file ($Index): $FileIn"
   FileOut="$DirOut/AO2D.root"
   echo "$DirBase/$FileOut" >> $DirBase/$LISTOUTPUT
-  #root -b -q -l "$DirBase/convertAO2D.C(\"$ListInOne\", $ISMC)" > $LogFile 2>&1
   RUNSCRIPT="run.sh"
   cat << EOF > $RUNSCRIPT # Create a temporary script.
 #!/bin/bash

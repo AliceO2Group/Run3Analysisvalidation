@@ -6,33 +6,50 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
   gStyle->SetFrameFillColor(0);
 
   TFile* fRun3 = new TFile(filerun3.Data());
+  if (fRun3->IsZombie()) {
+    printf("Failed to open file %s\n", filerun3.Data());
+    return 1;
+  }
   TFile* fRun1 = new TFile(filerun1.Data());
+  if (fRun1->IsZombie()) {
+    printf("Failed to open file %s\n", filerun1.Data());
+    return 1;
+  }
 
-  const int nhisto = 18;
-  const int nhisto_2prong = 14;
-  TString histonameRun1[nhisto] = {"hpt_nocuts",
-                                   "hpt_cuts",
-                                   "hdcatoprimxy_cuts",
-                                   "hvx",
-                                   "hvy",
-                                   "hvz",
-                                   "hdecayxyz",
-                                   "hdecayxy",
-                                   "hptD0",
-                                   "hptprong0",
-                                   "hptprong1",
-                                   "hd0",
-                                   "hd0d0",
-                                   "hmass0",
-                                   "hmassP",
+  TString pathListRun1 = "HFVertices/clistHFVertices";
+  TList* lRun1 = nullptr;
+  fRun1->GetObject(pathListRun1.Data(), lRun1);
+  if (!lRun1) {
+    printf("Failed to load list %s from %s\n", pathListRun1.Data(), filerun1.Data());
+    return 1;
+  }
+
+  const int nhisto = 19;
+  const int nhisto_2prong = 15;
+  TString histonameRun1[nhisto] = {"hPtAllTracks",
+                                   "hPtSelTracks",
+                                   "hImpParSelTracks",
+                                   "h2ProngVertX",
+                                   "h2ProngVertY",
+                                   "h2ProngVertZ",
+                                   "hDecLenD0",
+                                   "hDecLenXYD0",
+                                   "hPtD0",
+                                   "hPtD0Dau0",
+                                   "hPtD0Dau1",
+                                   "hImpParD0Dau0",
+                                   "hImpParD0Dau1",
+                                   "hd0Timesd0",
+                                   "hInvMassD0",
+                                   "hInvMassDplus",
                                    //"hImpParErr",
                                    //"hDecLenErr",
                                    //"hDecLenXYErr",
                                    //"hCovPVXX",
                                    //"hCovSVXX",
-                                   "hvx3",
-                                   "hvy3",
-                                   "hvz3"
+                                   "hDplusVertX",
+                                   "hDplusVertY",
+                                   "hDplusVertZ"
                                    };
   TString histonameRun3[nhisto] = {"hf-produce-sel-track/hpt_nocuts",
                                    "hf-produce-sel-track/hpt_cuts_2prong",
@@ -45,7 +62,8 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
                                    "hf-task-d0/hptcand",
                                    "hf-task-d0/hptprong0",
                                    "hf-task-d0/hptprong1",
-                                   "hf-task-d0/hd0",
+                                   "hf-task-d0/hd0Prong0",
+                                   "hf-task-d0/hd0Prong1",
                                    "hf-task-d0/hd0d0",
                                    "hf-task-d0/hmass",
                                    "hf-task-dplus/hmass",
@@ -69,7 +87,8 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
                            "#it{p}_{T} D^{0}",
                            "#it{p}_{T} prong 0",
                            "#it{p}_{T} prong 1",
-                           "d0 (cm)",
+                           "d0 prong 0 (cm)",
+                           "d0 prong 1 (cm)",
                            "d0d0 (cm^{2})",
                            "2-prong mass (#pi K)",
                            "3-prong mass (#pi K #pi)",
@@ -82,12 +101,12 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
                            "secondary vtx y - 3prong",
                            "secondary vtx z - 3prong"
                            };
-  int rebin[nhisto] = {2, 2, 2, 5, 5, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2/*, 1, 1, 1, 1, 1*/, 5, 5, 5};
+  int rebin[nhisto] = {2, 2, 2, 5, 5, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2/*, 1, 1, 1, 1, 1*/, 5, 5, 5};
   TH1F* hRun1[nhisto];
   TH1F* hRun3[nhisto];
   TH1F* hRatio[nhisto];
   for (int index = 0; index < nhisto; index++) {
-    hRun1[index] = (TH1F*)fRun1->Get(histonameRun1[index].Data());
+    hRun1[index] = (TH1F*)lRun1->FindObject(histonameRun1[index].Data());
     if (!hRun1[index]) {
       printf("Failed to load %s from %s\n", histonameRun1[index].Data(), filerun1.Data());
       return 1;
