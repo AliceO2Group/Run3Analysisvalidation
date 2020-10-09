@@ -7,17 +7,18 @@ function MsgErr { echo -e "\e[1;31m$@\e[0m"; }
 
 LISTINPUT="$1"
 JSON="$2"
-FILEOUT="$3"
+ISMC=$3
 DEBUG=$4
+FILEOUT="AnalysisResults.root"
 
 LogFile="log_ali_hf.log"
 FilesToMerge="ListOutToMergeALI.txt"
 DirBase="$PWD"
 Index=0
-ListRunCommands="$DirBase/ListRunCommands.txt"
+ListRunScripts="$DirBase/ListRunScripts.txt"
 DirOutMain="output_ali"
 
-rm -f $ListRunCommands
+rm -f $ListRunScripts
 rm -f $FilesToMerge
 rm -f $FILEOUT
 rm -rf $DirOutMain
@@ -28,18 +29,25 @@ while read FileIn; do
   [ -f "$FileIn" ] || { MsgErr "Error: File $FileIn does not exist."; exit 1; }
   DirOut="$DirOutMain/$Index"
   mkdir -p $DirOut
+  cd $DirOut
   [ $DEBUG -eq 1 ] && echo "Input file ($Index): $FileIn"
   FileOut="$DirOut/$FILEOUT"
-  echo "$FileOut" >> $FilesToMerge
-  #root -b -q -l "$DirBase/ComputeVerticesRun1.C(\"$FileIn\",\"$FileOut\",\"$JSON\")" > "$DirOut/$LogFile" 2>&1
-  echo "root -b -q -l $DirBase/ComputeVerticesRun1.C\(\\\"$FileIn\\\",\\\"$FileOut\\\",\\\"$JSON\\\"\) > $DirOut/$LogFile 2>&1" >> "$ListRunCommands"
+  echo "$FileOut" >> "$DirBase/$FilesToMerge"
+  RUNSCRIPT="run.sh"
+  cat << EOF > $RUNSCRIPT # Create a temporary script.
+#!/bin/bash
+cd "$DirBase/$DirOut"
+root -b -q -l "$DirBase/RunHFTaskLocal.C(\"$FileIn\", \"$JSON\", $ISMC)" > $LogFile 2>&1
+EOF
+  echo "bash $(realpath $RUNSCRIPT)" >> "$ListRunScripts"
   ((Index+=1))
+  cd $DirBase
 done < "$LISTINPUT"
 
 echo "Running AliPhysics jobs..."
-parallel --halt soon,fail=100% < $ListRunCommands > $LogFile 2>&1 || \
+parallel --halt soon,fail=100% < $ListRunScripts > $LogFile 2>&1 || \
 { MsgErr "Error\nCheck $(realpath $LogFile)"; exit 1; }
-rm -f $ListRunCommands
+rm -f $ListRunScripts
 
 echo "Merging output files... (output file: $FILEOUT, logfile: $LogFile)"
 hadd $FILEOUT @"$FilesToMerge" >> $LogFile 2>&1 || \
