@@ -14,7 +14,7 @@
         "dcatoprimxymin_2prong": 0.03,
         "dcatoprimxymin_3prong": 0.03,
         "etamax_2prong": "1.44",
-        "etamax_3prong": "1.44."
+        "etamax_3prong": "1.44"
     },
     "hf-track-index-skims-creator": {
         "dovalplots": "true",
