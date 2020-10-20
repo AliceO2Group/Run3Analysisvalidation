@@ -8,39 +8,54 @@
     },
     "hf-produce-sel-track": {
         "dovalplots": "true",
-        "ptmintrack": "0.3",
+        "ptmintrack_2prong": "4.",
+        "ptmintrack_3prong": "4.",
         "d_tpcnclsfound": "-999999",
-        "dcatoprimxymin": 0.02
+        "dcatoprimxymin_2prong": 0.03,
+        "dcatoprimxymin_3prong": 0.03,
+        "etamax_2prong": "1.44",
+        "etamax_3prong": "1.44."
     },
     "hf-track-index-skims-creator": {
         "dovalplots": "true",
         "triggerindex": "-1",
-        "do3prong": "0",
-        "d_bz": "5.",
+        "do3prong": "1",
+        "d_bz": "5",
         "b_propdca": "true",
-        "d_maxr": "200",
-        "d_maxdzini": "4",
+        "d_maxr": "5",
+        "d_maxdzini": "999",
         "d_minparamchange": "0.001",
         "d_minrelchi2change": "0.90000000000000002",
-        "d_minmassDp": 1.7,
-        "d_maxmassDp": 2.05
+        "d_minmassDp": 1.769,
+        "d_maxmassDp": 1.969,
+        "ptmincand_2prong": "0.",
+        "ptmincand_3prong": "0."
     },
     "hf-cand-creator-2prong": {
         "dovalplots": "true",
-        "d_bz": "5.",
+        "d_bz": "5",
         "b_propdca": "true",
-        "d_maxr": "200",
-        "d_maxdzini": "4",
+        "d_maxr": "5",
+        "d_maxdzini": "999",
+        "d_minparamchange": "0.001",
+        "d_minrelchi2change": "0.90000000000000002"
+    },
+    "hf-cand-creator-3prong": {
+        "dovalplots": "true",
+        "d_bz": "5",
+        "b_propdca": "true",
+        "d_maxr": "5",
+        "d_maxdzini": "999",
         "d_minparamchange": "0.001",
         "d_minrelchi2change": "0.90000000000000002"
     },
     "hf-d0-candidate-selector": {
-        "d_pTCandMin": "0.0 ",
-        "d_pTCandMax": "50.0 ",
+        "d_pTCandMin": "0.",
+        "d_pTCandMax": "50.0",
         "d_pidTPCMinpT": "0.15",
-        "d_pidTPCMaxpT": "5.0",
+        "d_pidTPCMaxpT": "-1.0",
         "d_pidTOFMinpT": "0.15",
-        "d_pidTOFMaxpT": "5.0",
+        "d_pidTOFMaxpT": "-1.0",
         "d_TPCNClsFindablePIDCut": "50.0",
         "d_nSsigmaTPC": "3.0",
         "d_nSigmaTPCCombined": "5.0",
@@ -50,6 +65,9 @@
     "hf-task-d0": {
         "d_selectionFlagD0": "0",
         "d_selectionFlagD0bar": "0"
+    },
+    "hf-task-dplus": {
+        "d_selectionFlagDPlus": "0"
     },
     "internal-dpl-aod-writer": {
     }
