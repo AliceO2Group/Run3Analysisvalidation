@@ -1,19 +1,23 @@
 #!/bin/bash
 
+# Delete created files.
 bash clean.sh
 
+###############
+# User settings
 CASE=4
 
 DOCONVERT=1   # Convert AliESDs.root to AO2D.root.
-DOQA=0        # Run the QA task with O2.
-DORUN1=1      # Run the heavy-flavour tasks with AliPhysics.
-DORUN3=1      # Run the heavy-flavour tasks with O2.
+DOQAO2=0      # Run the QA task with O2.
+DOHFALI=1     # Run the heavy-flavour tasks with AliPhysics.
+DOHFO2=1      # Run the heavy-flavour tasks with O2.
 DOCOMPARE=1   # Compare AliPhysics and O2 output.
 
-RUN5=0        # Use Run 5 input.
-PARALLELISE=0 # Parallelise O2 tasks.
+RUN5=0        # Use Run 5 settings and input.
+PARALLELISE=0 # Parallelise O2 tasks. (not working!)
 TWOPRONGSEL=0 # Apply D0 selection cuts.
 DEBUG=0       # Print out more information.
+###############
 
 # Default settings
 JSON="$PWD/dpl-config_std.json"
@@ -94,7 +98,7 @@ CMDROOT="root -b -q -l"
 # Adjust settings for Run5.
 O2INPUT=$LISTFILES_O2
 if [ $RUN5 -eq 1 ]; then
-  MsgWarn "\nUsing Run 5 settings and O2 input"
+  MsgWarn "\nUsing Run 5 settings and input"
   O2INPUT=$LISTFILES_O2_RUN5
   JSON="$JSONRUN5"
 fi
@@ -110,6 +114,7 @@ if [ $TWOPRONGSEL -eq 1 ]; then
 fi
 
 # Convert AliESDs.root to AO2D.root.
+[[ $RUN5 -eq 1 && $DOCONVERT -eq 1 ]] && { MsgWarn "\nSkipping conversion for Run 5"; DOCONVERT=0; }
 if [ $DOCONVERT -eq 1 ]; then
   [ -f "$LISTFILES_ALI" ] || { MsgErr "\nConverting: Error: File $LISTFILES_ALI does not exist."; exit 1; }
   MsgStep "Converting... ($(cat $LISTFILES_ALI | wc -l) files)"
@@ -118,8 +123,8 @@ if [ $DOCONVERT -eq 1 ]; then
 fi
 
 # Perform simple QA studies with O2.
-[[ $DOQA -eq 1 && ISMC -eq 0 ]] && { MsgWarn "\nSkipping the QA task for non-MC input"; DOQA=0; } # Disable running the QA task for non-MC input.
-if [ $DOQA -eq 1 ]; then
+[[ $DOQAO2 -eq 1 && $ISMC -eq 0 ]] && { MsgWarn "\nSkipping the QA task for non-MC input"; DOQAO2=0; } # Disable running the QA task for non-MC input.
+if [ $DOQAO2 -eq 1 ]; then
   [ -f "$O2INPUT" ] || { MsgErr "\nQA task: Error: File $O2INPUT does not exist."; exit 1; }
   MsgStep "Running the QA task with O2... ($(cat $O2INPUT | wc -l) files)"
   rm -f $FILEOUT $FILEOUT_O2_QA
@@ -144,7 +149,8 @@ EOF
 fi
 
 # Run the heavy-flavour tasks with AliPhysics.
-if [ $DORUN1 -eq 1 ]; then
+[[ $RUN5 -eq 1 && $DOHFALI -eq 1 ]] && { MsgWarn "\nSkipping HF tasks with AliPhysics for Run 5"; DOHFALI=0; }
+if [ $DOHFALI -eq 1 ]; then
   [ -f "$LISTFILES_ALI" ] || { MsgErr "\nHF tasks ALI: Error: File $LISTFILES_ALI does not exist."; exit 1; }
   MsgStep "Running the HF tasks with AliPhysics... ($(cat $LISTFILES_ALI | wc -l) files)"
   rm -f $FILEOUT $FILEOUT_ALI_HF
@@ -154,7 +160,7 @@ if [ $DORUN1 -eq 1 ]; then
 fi
 
 # Run the heavy-flavour tasks with O2.
-if [ $DORUN3 -eq 1 ]; then
+if [ $DOHFO2 -eq 1 ]; then
   [ -f "$O2INPUT" ] || { MsgErr "\nHF tasks O2: Error: File $O2INPUT does not exist."; exit 1; }
   MsgStep "Running the HF tasks with O2... ($(cat $O2INPUT | wc -l) files)"
   rm -f $FILEOUT $FILEOUT_O2_HF
@@ -203,6 +209,7 @@ if [ $TWOPRONGSEL -eq 1 ]; then
 fi
 
 # Compare AliPhysics and O2 output.
+[[ $RUN5 -eq 1 && $DOCOMPARE -eq 1 ]] && { MsgWarn "\nSkipping comparison for Run 5"; DOCOMPARE=0; }
 if [ $DOCOMPARE -eq 1 ]; then
   LOGFILE="log_compare.log"
   MsgStep "Comparing... (logfile: $LOGFILE)"
