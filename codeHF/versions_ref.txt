@@ -1,4 +1,4 @@
-alidist: master 2020-10-02 07:42:05 +0200 aba716d bump readout (#2511)
-AliPhysics: master 2020-10-05 11:52:41 +0200 b714f7ca04 Merge pull request #15669 from jzielins97/master
-O2: dev 2020-10-05 11:34:49 +0200 130719f24f PWGHF: Fix track selection.
-Run 3 validation: master 2020-10-05 11:56:46 +0200 e5d118d Fix settings.
+alidist: master 2020-10-20 19:15:44 +0200 43401b1 add dependency to OpenSSL (#2329)
+AliPhysics: master 2020-10-21 12:32:54 +0200 446f68ebfc Merge pull request #15897 from mcolocci/master
+O2: dev 2020-10-21 11:39:06 +0200 9768573970 PWGHF: Extend and improve track index skimming. (#4647)
+Run 3 validation: master 2020-10-21 12:45:32 +0200 d886911 Update configuration.
