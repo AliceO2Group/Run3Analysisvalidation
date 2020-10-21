@@ -10,6 +10,7 @@
         "dovalplots": "true",
         "ptmintrack_2prong": "4.",
         "ptmintrack_3prong": "4.",
+        "doCutQuality": "false",
         "d_tpcnclsfound": "-999999",
         "dcatoprimxymin_2prong": "0.03",
         "dcatoprimxymin_3prong": "0.03",
@@ -29,7 +30,11 @@
         "d_minmassDp": "1.769",
         "d_maxmassDp": "1.969",
         "ptmincand_2prong": "0.",
-        "ptmincand_3prong": "0."
+        "ptmincand_3prong": "0.",
+        "cutCPAMin": "-2.",
+        "cutInvMassD0Min": "-1.",
+        "cutInvMassD0Max": "-1.",
+        "cutImpParProductMax": "100."
     },
     "hf-cand-creator-2prong": {
         "dovalplots": "true",
