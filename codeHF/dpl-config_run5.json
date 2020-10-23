@@ -1,58 +1,61 @@
 {
     "internal-dpl-clock": "",
     "internal-dpl-aod-reader": {
-        "aod-file": "@listrun5.txt",
         "start-value-enumeration": "0",
         "end-value-enumeration": "-1",
-        "step-value-enumeration": "1"
+        "step-value-enumeration": "1",
+        "aod-file": "@listrun5.txt"
     },
     "hf-produce-sel-track": {
-        "dovalplots": "true",
-        "ptmintrack_2prong": ".3",
-        "ptmintrack_3prong": ".3",
+        "b_dovalplots": "true",
+        "d_bz": "5.",
         "doCutQuality": "false",
         "d_tpcnclsfound": "-999999",
+        "ptmintrack_2prong": ".3",
         "dcatoprimxymin_2prong": "0.0",
-        "dcatoprimxymin_3prong": "0.0",
         "etamax_2prong": "1.44",
+        "ptmintrack_3prong": ".3",
+        "dcatoprimxymin_3prong": "0.0",
         "etamax_3prong": "1.44"
     },
     "hf-track-index-skims-creator": {
-        "dovalplots": "true",
-        "triggerindex": "-1",
+        "b_dovalplots": "true",
         "do3prong": "0",
+        "triggerindex": "-1",
         "d_bz": "5.",
         "b_propdca": "true",
         "d_maxr": "5.",
         "d_maxdzini": "999.",
         "d_minparamchange": "0.001",
         "d_minrelchi2change": "0.9",
-        "d_minmassDp": "1.769",
-        "d_maxmassDp": "1.969",
-        "ptmincand_2prong": "0.",
-        "ptmincand_3prong": "0.",
-        "cutCPAMin": "-2.",
-        "cutInvMassD0Min": "-1.",
-        "cutInvMassD0Max": "-1.",
-        "cutImpParProductMax": "100."
+        "cut2ProngPtCandMin": "0.",
+        "cut2ProngInvMassD0Min": "-1.",
+        "cut2ProngInvMassD0Max": "-1.",
+        "cut2ProngCPAMin": "-2.",
+        "cut2ProngImpParProductMax": "100.",
+        "cut3ProngPtCandMin": "0.",
+        "cut3ProngInvMassDPlusMin": "1.769",
+        "cut3ProngInvMassDPlusMax": "1.969",
+        "cut3ProngCPAMin": "-2.",
+        "cut3ProngDecLenMin": "0."
     },
     "hf-cand-creator-2prong": {
-        "dovalplots": "true",
         "d_bz": "5.",
         "b_propdca": "true",
         "d_maxr": "5.",
         "d_maxdzini": "999.",
         "d_minparamchange": "0.001",
-        "d_minrelchi2change": "0.9"
+        "d_minrelchi2change": "0.9",
+        "b_dovalplots": "true"
     },
     "hf-cand-creator-3prong": {
-        "dovalplots": "true",
         "d_bz": "5.",
         "b_propdca": "true",
         "d_maxr": "5.",
         "d_maxdzini": "999.",
         "d_minparamchange": "0.001",
-        "d_minrelchi2change": "0.9"
+        "d_minrelchi2change": "0.9",
+        "b_dovalplots": "true"
     },
     "hf-d0-candidate-selector": {
         "d_pTCandMin": "0.",
@@ -62,7 +65,7 @@
         "d_pidTOFMinpT": "0.15",
         "d_pidTOFMaxpT": "-1.",
         "d_TPCNClsFindablePIDCut": "50.",
-        "d_nSsigmaTPC": "3.",
+        "d_nSigmaTPC": "3.",
         "d_nSigmaTPCCombined": "5.",
         "d_nSigmaTOF": "3.",
         "d_nSigmaTOFCombined": "5."
