@@ -14,6 +14,7 @@ DOHFO2=1      # Run the heavy-flavour tasks with O2.
 DOCOMPARE=1   # Compare AliPhysics and O2 output.
 
 RUN5=0        # Use Run 5 settings and input.
+SAVETREES=0   # Save O2 tables to trees.
 PARALLELISE=0 # Parallelise O2 tasks. (not working!)
 TWOPRONGSEL=0 # Apply D0 selection cuts.
 DEBUG=0       # Print out more information.
@@ -164,7 +165,18 @@ if [ $DOHFO2 -eq 1 ]; then
   [ -f "$O2INPUT" ] || { MsgErr "\nHF tasks O2: Error: File $O2INPUT does not exist."; exit 1; }
   MsgStep "Running the HF tasks with O2... ($(cat $O2INPUT | wc -l) files)"
   rm -f $FILEOUT $FILEOUT_O2_HF
-  O2ARGS="--shm-segment-size 16000000000 --configuration json://$JSON"
+  O2ARGS="--shm-segment-size 16000000000 --configuration json://$JSON -b"
+  [ $SAVETREES -eq 1 ] && {
+    MsgWarn "Tables will be saved in trees."
+    O2ARGS+=" --aod-writer-keep "
+    O2ARGS+="AOD/HFSELTRACK/0"
+    O2ARGS+=",AOD/HFTRACKIDXP2/0"
+    O2ARGS+=",AOD/HFTRACKIDXP3/0"
+    O2ARGS+=",AOD/HFCANDP2BASE/0"
+    O2ARGS+=",AOD/HFCANDP2EXT/0"
+    O2ARGS+=",AOD/HFCANDP3BASE/0"
+    O2ARGS+=",AOD/HFCANDP3EXT/0"
+  }
   O2ARGS_SKIM="$O2ARGS"
   O2ARGS_CAND_2PRONG="$O2ARGS"
   O2ARGS_CAND_3PRONG="$O2ARGS"
@@ -176,11 +188,11 @@ if [ $DOHFO2 -eq 1 ]; then
   if [ $PARALLELISE -eq 1 ]; then
     NPROC=3
     MsgWarn "O2 parallelisation ON ($NPROC)"
-    O2ARGS_SKIM="$O2ARGS_SKIM --pipeline hf-produce-sel-track:$NPROC,hf-track-index-skims-creator:$NPROC"
-    O2ARGS_CAND_2PRONG="$O2ARGS_CAND_2PRONG --pipeline hf-cand-creator-2prong:$NPROC,hf-cand-creator-2prong-expressions:$NPROC"
-    O2ARGS_CAND_3PRONG="$O2ARGS_CAND_3PRONG --pipeline hf-cand-creator-3prong:$NPROC,hf-cand-creator-3prong-expressions:$NPROC"
-    O2ARGS_TASK_D0="$O2ARGS_TASK_D0 --pipeline hf-task-d0:$NPROC"
-    O2ARGS_TASK_DPLUS="$O2ARGS_TASK_DPLUS --pipeline hf-task-dplus:$NPROC"
+    O2ARGS_SKIM+=" --pipeline hf-produce-sel-track:$NPROC,hf-track-index-skims-creator:$NPROC"
+    O2ARGS_CAND_2PRONG+=" --pipeline hf-cand-creator-2prong:$NPROC,hf-cand-creator-2prong-expressions:$NPROC"
+    O2ARGS_CAND_3PRONG+=" --pipeline hf-cand-creator-3prong:$NPROC,hf-cand-creator-3prong-expressions:$NPROC"
+    O2ARGS_TASK_D0+=" --pipeline hf-task-d0:$NPROC"
+    O2ARGS_TASK_DPLUS+=" --pipeline hf-task-dplus:$NPROC"
   fi
   O2EXEC_SKIM="o2-analysis-hf-track-index-skims-creator $O2ARGS_SKIM"
   O2EXEC_CAND_2PRONG="o2-analysis-hf-candidate-creator-2prong $O2ARGS_CAND_2PRONG"
@@ -190,7 +202,7 @@ if [ $DOHFO2 -eq 1 ]; then
   O2EXEC_SEL_D0="o2-analysis-hf-d0-candidate-selector $O2ARGS_SEL_D0"
   O2EXEC_TASK_D0="o2-analysis-hf-task-d0 $O2ARGS_TASK_D0"
   O2EXEC_TASK_DPLUS="o2-analysis-hf-task-dplus $O2ARGS_TASK_DPLUS"
-  O2EXEC="$O2EXEC_SKIM | $O2EXEC_PID_TPC | $O2EXEC_PID_TOF | $O2EXEC_CAND_2PRONG | $O2EXEC_CAND_3PRONG | $O2EXEC_SEL_D0 | $O2EXEC_TASK_D0 | $O2EXEC_TASK_DPLUS -b"
+  O2EXEC="$O2EXEC_SKIM | $O2EXEC_PID_TPC | $O2EXEC_PID_TOF | $O2EXEC_CAND_2PRONG | $O2EXEC_CAND_3PRONG | $O2EXEC_SEL_D0 | $O2EXEC_TASK_D0 | $O2EXEC_TASK_DPLUS"
   O2SCRIPT="script_o2_hf.sh"
   cat << EOF > $O2SCRIPT # Create a temporary script with the full O2 commands.
 #!/bin/bash
