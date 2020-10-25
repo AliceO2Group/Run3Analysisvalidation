@@ -21,14 +21,14 @@ DEBUG=0       # Print out more information.
 ###############
 
 # Default settings
-JSON="$PWD/dpl-config_std.json"
-JSONRUN5="$PWD/dpl-config_run5.json"
-ISMC=0
-MASS=1.8
-TRIGGERSTRINGRUN2=""
-TRIGGERBITRUN3=-1
-NMAX=-1
+JSON="$PWD/dpl-config_std.json"      # Run 3 configuration
+JSONRUN5="$PWD/dpl-config_run5.json" # Run 5 configuration
+ISMC=0                               # Switch for MC input
+MASS=1.8                             # Hadron mass (only for comparison plots, not used)
+TRIGGERSTRINGRUN2=""                 # Run 2 trigger (not used)
+TRIGGERBITRUN3=-1                    # Run 3 trigger (not used)
 
+# Input specification
 if [ $CASE -eq 0 ]; then
   INPUTDIR="../twikiinput"
   STRING="AliESDs_ppK0starToyMC.root"
@@ -40,14 +40,12 @@ if [ $CASE -eq 1 ]; then
   STRING="15000246751019.110/AliESDs.root"
   TRIGGERSTRINGRUN2="CV0L7-B-NOPF-CENT"
   TRIGGERBITRUN3=5 #FIXME
-  NMAX=5
 fi
 
 if [ $CASE -eq 2 ]; then
   INPUTDIR="/data/Run3data/alice_sim_2015_LHC15k1a3_246391/246391"
   STRING="00*/AliESDs.root"
   ISMC=1
-  NMAX=1
 fi
 
 if [ $CASE -eq 3 ]; then
@@ -96,8 +94,9 @@ ENVO2="alienv setenv O2/latest -c"
 ENVALIO2="alienv setenv AliPhysics/latest,O2/latest -c"
 CMDROOT="root -b -q -l"
 
-# Adjust settings for Run5.
+# Default O2 input (Run 3)
 O2INPUT=$LISTFILES_O2
+# Adjust settings for Run5.
 if [ $RUN5 -eq 1 ]; then
   MsgWarn "\nUsing Run 5 settings and input"
   O2INPUT=$LISTFILES_O2_RUN5
@@ -129,15 +128,18 @@ if [ $DOQAO2 -eq 1 ]; then
   [ -f "$O2INPUT" ] || { MsgErr "\nQA task: Error: File $O2INPUT does not exist."; exit 1; }
   MsgStep "Running the QA task with O2... ($(cat $O2INPUT | wc -l) files)"
   rm -f $FILEOUT $FILEOUT_O2_QA
-  O2ARGS="--shm-segment-size 16000000000 --configuration json://$JSON"
+  # Basic common options
+  O2ARGS="--shm-segment-size 16000000000 --configuration json://$JSON -b"
+  # Options to parallelise
   if [ $PARALLELISE -eq 1 ]; then
     NPROC=3
     MsgWarn "O2 parallelisation ON ($NPROC)"
-    O2ARGS="$O2ARGS --pipeline qa-tracking-kine:$NPROC,qa-tracking-resolution:$NPROC"
+    O2ARGS+=" --pipeline qa-tracking-kine:$NPROC,qa-tracking-resolution:$NPROC"
   fi
-  O2EXEC="o2-analysis-qatask $O2ARGS -b"
+  # Form the full O2 command.
+  O2EXEC="o2-analysis-qatask $O2ARGS"
   O2SCRIPT="script_o2_qa.sh"
-  cat << EOF > $O2SCRIPT # Create a temporary script with the full O2 commands.
+  cat << EOF > $O2SCRIPT # Create a temporary script with the full O2 command.
 #!/bin/bash
 $O2EXEC
 EOF
@@ -165,7 +167,9 @@ if [ $DOHFO2 -eq 1 ]; then
   [ -f "$O2INPUT" ] || { MsgErr "\nHF tasks O2: Error: File $O2INPUT does not exist."; exit 1; }
   MsgStep "Running the HF tasks with O2... ($(cat $O2INPUT | wc -l) files)"
   rm -f $FILEOUT $FILEOUT_O2_HF
+  # Basic common options
   O2ARGS="--shm-segment-size 16000000000 --configuration json://$JSON -b"
+  # Options to save tables in trees
   [ $SAVETREES -eq 1 ] && {
     MsgWarn "Tables will be saved in trees."
     O2ARGS+=" --aod-writer-keep "
@@ -185,6 +189,7 @@ if [ $DOHFO2 -eq 1 ]; then
   O2ARGS_SEL_D0="$O2ARGS"
   O2ARGS_TASK_D0="$O2ARGS"
   O2ARGS_TASK_DPLUS="$O2ARGS"
+  # Options to parallelise
   if [ $PARALLELISE -eq 1 ]; then
     NPROC=3
     MsgWarn "O2 parallelisation ON ($NPROC)"
@@ -194,6 +199,7 @@ if [ $DOHFO2 -eq 1 ]; then
     O2ARGS_TASK_D0+=" --pipeline hf-task-d0:$NPROC"
     O2ARGS_TASK_DPLUS+=" --pipeline hf-task-dplus:$NPROC"
   fi
+  # Pair O2 executables with their respective options.
   O2EXEC_SKIM="o2-analysis-hf-track-index-skims-creator $O2ARGS_SKIM"
   O2EXEC_CAND_2PRONG="o2-analysis-hf-candidate-creator-2prong $O2ARGS_CAND_2PRONG"
   O2EXEC_CAND_3PRONG="o2-analysis-hf-candidate-creator-3prong $O2ARGS_CAND_3PRONG"
@@ -202,9 +208,10 @@ if [ $DOHFO2 -eq 1 ]; then
   O2EXEC_SEL_D0="o2-analysis-hf-d0-candidate-selector $O2ARGS_SEL_D0"
   O2EXEC_TASK_D0="o2-analysis-hf-task-d0 $O2ARGS_TASK_D0"
   O2EXEC_TASK_DPLUS="o2-analysis-hf-task-dplus $O2ARGS_TASK_DPLUS"
+  # Form the full O2 command.
   O2EXEC="$O2EXEC_SKIM | $O2EXEC_PID_TPC | $O2EXEC_PID_TOF | $O2EXEC_CAND_2PRONG | $O2EXEC_CAND_3PRONG | $O2EXEC_SEL_D0 | $O2EXEC_TASK_D0 | $O2EXEC_TASK_DPLUS"
   O2SCRIPT="script_o2_hf.sh"
-  cat << EOF > $O2SCRIPT # Create a temporary script with the full O2 commands.
+  cat << EOF > $O2SCRIPT # Create a temporary script with the full O2 command.
 #!/bin/bash
 $O2EXEC
 EOF
