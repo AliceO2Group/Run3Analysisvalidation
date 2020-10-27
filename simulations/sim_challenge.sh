@@ -17,7 +17,7 @@
 # default sim engine
 # engine="TGeant3"
 
-taskwrapper sim.log o2-sim -n 100 --configKeyValue "Diamond.width[2]=6." -g pythia8 -e TGeant3 -j 6 -m PIPE ITS FT0 TPC TOF MFT
+taskwrapper sim.log o2-sim -n 10 --configKeyValue "Diamond.width[2]=6." -g pythia8 -e TGeant3 -j 6 -m PIPE ITS FT0 TPC TOF MFT
 
 taskwrapper digi.log o2-sim-digitizer-workflow -b --run --shm-segment-size 10000000000 --interactionRate 400000 --tpc-lanes 1
 
