@@ -11,7 +11,7 @@ All these maintenance steps can be fully automated using the `update_alio2.sh` b
 and installations up to date with the latest development in the respective main branches.
 This includes updating alidist, AliPhysics, O<sup>2</sup>, and this Run 3 validation code repository, as well as re-building your AliPhysics and O<sup>2</sup> installations via aliBuild.
 
-All you need to do is to make sure that the strings in the `User's settings` block of the script correspond to your local setup and
+All you need to do is to make sure that the strings in the `User settings` block of the script correspond to your local setup and
 adjust the activation switches, if needed, to change the list of steps to be executed.
 
 You can then start the full update of your code and installations by running the script from any directory on your system:

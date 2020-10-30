@@ -8,8 +8,8 @@
 # - Force-push the branch into the remote fork repository if specified.
 # AliPhysics and O2 are built using the respective current branches and the specified build options.
 
-##################
-# User's settings:
+#################################################################
+# User settings:
 # paths, names of remotes (check git remote -v), build options.
 
 # Print out an overview of the latest commits of repositories.
@@ -52,7 +52,7 @@ RUN3VALIDATE_DIR="$(dirname $(realpath $0))"
 RUN3VALIDATE_REMOTE_MAIN="upstream"
 RUN3VALIDATE_REMOTE_FORK="origin"
 RUN3VALIDATE_BRANCH_MAIN="master"
-##################
+#################################################################
 
 # Error report
 ERREXIT="eval echo -e \"\\e[1;31mError\\e[0m\"; exit 1"
