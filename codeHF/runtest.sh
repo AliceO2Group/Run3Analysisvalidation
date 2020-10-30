@@ -134,9 +134,9 @@ fi
 if [ $TWOPRONGSEL -eq 1 ]; then
   MsgWarn "\nUsing D0 selection cuts"
   JSONSEL="${JSON/.json/_sel.json}"
-  cp "$JSON" "$JSONSEL"
-  sed -e "s!\"d_selectionFlagD0\": \"0\"!\"d_selectionFlagD0\": \"1\"!g" "$JSONSEL" > "$JSONSEL.tmp" && mv "$JSONSEL.tmp" "$JSONSEL"
-  sed -e "s!\"d_selectionFlagD0bar\": \"0\"!\"d_selectionFlagD0bar\": \"1\"!g" "$JSONSEL" > "$JSONSEL.tmp" && mv "$JSONSEL.tmp" "$JSONSEL"
+  cp "$JSON" "$JSONSEL" && \
+  sed -e "s!\"d_selectionFlagD0\": \"0\"!\"d_selectionFlagD0\": \"1\"!g" "$JSONSEL" > "$JSONSEL.tmp" && mv "$JSONSEL.tmp" "$JSONSEL" && \
+  sed -e "s!\"d_selectionFlagD0bar\": \"0\"!\"d_selectionFlagD0bar\": \"1\"!g" "$JSONSEL" > "$JSONSEL.tmp" && mv "$JSONSEL.tmp" "$JSONSEL" || { MsgErr "Error"; exit 1; }
   JSON="$JSONSEL"
 fi
 
@@ -154,17 +154,17 @@ fi
 if [ $DOALI -eq 1 ]; then
   [ -f "$LISTFILES_ALI" ] || { MsgErr "\nALI tasks: Error: File $LISTFILES_ALI does not exist."; exit 1; }
   MsgStep "Running tasks with AliPhysics... ($(cat $LISTFILES_ALI | wc -l) files)"
-  rm -f $FILEOUT $FILEOUT_ALI
+  rm -f $FILEOUT $FILEOUT_ALI || { MsgErr "Error"; exit 1; }
   $ENVALI bash ali_batch.sh $LISTFILES_ALI $JSON $ISMC $DEBUG || exit 1 # Run the batch script in the ALI environment.
   #$ENVALIO2 bash ali_batch.sh $LISTFILES_ALI $JSON $ISMC $DEBUG || exit 1 # Run the batch script in the ALI+O2 environment.
-  mv $FILEOUT $FILEOUT_ALI
+  mv $FILEOUT $FILEOUT_ALI || { MsgErr "Error"; exit 1; }
 fi
 
 # Run O2 tasks.
 if [ $DOO2 -eq 1 ]; then
   [ -f "$O2INPUT" ] || { MsgErr "\nO2 tasks: Error: File $O2INPUT does not exist."; exit 1; }
   MsgStep "Running tasks with O2... ($(cat $O2INPUT | wc -l) files)"
-  rm -f $FILEOUT $FILEOUT_O2
+  rm -f $FILEOUT $FILEOUT_O2 || { MsgErr "Error"; exit 1; }
   # Basic common options
   O2ARGS="--shm-segment-size 16000000000 --configuration json://$JSON -b"
   # Options to save tables in trees
@@ -228,8 +228,8 @@ $O2EXEC
 EOF
   [ $SAVETREES -eq 1 ] || FILEOUT_TREES=""
   $ENVO2 bash o2_batch.sh $O2INPUT $JSON $O2SCRIPT $DEBUG $FILEOUT_TREES || exit 1 # Run the batch script in the O2 environment.
-  rm -f $O2SCRIPT
-  mv $FILEOUT $FILEOUT_O2
+  rm -f $O2SCRIPT && \
+  mv $FILEOUT $FILEOUT_O2 || { MsgErr "Error"; exit 1; }
   [[ $SAVETREES -eq 1 && "$FILEOUT_TREES" ]] && { mv $FILEOUT_TREES $FILEOUT_TREES_O2 || { MsgErr "Error"; exit 1; } }
 fi
 
@@ -250,9 +250,9 @@ MsgStep "Done"
 
 # Delete created files.
 [ $DOCLEAN -eq 1 ] && {
-  rm -f $LISTFILES_ALI
-  rm -f $LISTFILES_O2
-  [ $TWOPRONGSEL -eq 1 ] && rm "$JSONSEL"
+  rm -f $LISTFILES_ALI && \
+  rm -f $LISTFILES_O2 || { MsgErr "Error"; exit 1; }
+  [ $TWOPRONGSEL -eq 1 ] && { rm "$JSONSEL" || { MsgErr "Error"; exit 1; } }
 }
 
 exit 0
