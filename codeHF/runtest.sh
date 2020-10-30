@@ -2,8 +2,6 @@
 
 ###############
 # User settings
-CASE=4
-
 DOCLEAN=1     # Delete created files before and after running tasks.
 DOCONVERT=1   # Convert AliESDs.root to AO2D.root.
 DOQAO2=0      # Run the QA task with O2.
@@ -11,6 +9,7 @@ DOHFALI=1     # Run the heavy-flavour tasks with AliPhysics.
 DOHFO2=1      # Run the heavy-flavour tasks with O2.
 DOCOMPARE=1   # Compare AliPhysics and O2 output.
 
+INPUT_TYPE=4  # Input type (Run 3) (See the choices below.)
 RUN5=0        # Use Run 5 settings and input.
 SAVETREES=0   # Save O2 tables to trees.
 PARALLELISE=0 # Parallelise O2 tasks. (not working!)
@@ -27,44 +26,44 @@ TRIGGERSTRINGRUN2=""                 # Run 2 trigger (not used)
 TRIGGERBITRUN3=-1                    # Run 3 trigger (not used)
 
 # Input specification
-if [ $CASE -eq 0 ]; then
+if [ $INPUT_TYPE -eq 0 ]; then
   INPUTDIR="../twikiinput"
   STRING="AliESDs_ppK0starToyMC.root"
   MASS=1.0
 fi
 
-if [ $CASE -eq 1 ]; then
+if [ $INPUT_TYPE -eq 1 ]; then # Pb-Pb real LHC15o
   INPUTDIR="/mnt/temp/Run3data/data/LHC15o_246751/pass1"
   STRING="15000246751019.110/AliESDs.root"
   TRIGGERSTRINGRUN2="CV0L7-B-NOPF-CENT"
   TRIGGERBITRUN3=5 #FIXME
 fi
 
-if [ $CASE -eq 2 ]; then
+if [ $INPUT_TYPE -eq 2 ]; then # Pb-Pb MC LHC15o
   INPUTDIR="/data/Run3data/alice_sim_2015_LHC15k1a3_246391/246391"
   STRING="00*/AliESDs.root"
   ISMC=1
 fi
 
-if [ $CASE -eq 3 ]; then
+if [ $INPUT_TYPE -eq 3 ]; then
   INPUTDIR="/data/Run3data/output"
   STRING="00*/AliESDs.root"
   MASS=1.0
 fi
 
-if [ $CASE -eq 4 ]; then
+if [ $INPUT_TYPE -eq 4 ]; then # p-p MC LHC17p
   INPUTDIR="/data/Run3data/alice_sim_2018_LHC18a4a2_cent/282099"
   STRING="001/AliESDs.root"
   ISMC=1
 fi
 
-if [ $CASE -eq 5 ]; then
+if [ $INPUT_TYPE -eq 5 ]; then # p-p MC LHC17p
   INPUTDIR="/mnt/temp/Run3data_Vit/LHC18a4a2_cent/282341"
   STRING="001/AliESDs.root"
   ISMC=1
 fi
 
-if [ $CASE -eq 6 ]; then
+if [ $INPUT_TYPE -eq 6 ]; then # p-p real LHC17p
   INPUTDIR="/mnt/temp/Run3data_Vit/LHC17p_pass1_CENT_woSDD/282341"
   STRING="17000282099019.1001/AliESDs.root"
 fi
