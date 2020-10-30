@@ -9,10 +9,12 @@ LISTINPUT="$1"
 JSON="$2"
 SCRIPT="$3"
 DEBUG=$4
+FILEOUT_TREE="$5"
 FILEOUT="AnalysisResults.root"
 
 LogFile="log_o2.log"
 FilesToMerge="ListOutToMergeO2.txt"
+FilesToMergeTree="ListOutToMergeO2Tree.txt"
 DirBase="$PWD"
 Index=0
 JSONLocal=$(basename $JSON)
@@ -21,7 +23,9 @@ DirOutMain="output_o2"
 
 rm -f $ListRunScripts
 rm -f $FilesToMerge
+rm -f $FilesToMergeTree
 rm -f $FILEOUT
+rm -f $FILEOUT_TREE
 rm -rf $DirOutMain
 
 [ -f "$LISTINPUT" ] || { MsgErr "Error: File $LISTINPUT does not exist."; exit 1; }
@@ -38,6 +42,10 @@ while read FileIn; do
   [ $DEBUG -eq 1 ] && echo "Input file ($Index): $FileIn"
   FileOut="$DirOut/$FILEOUT"
   echo $FileOut >> "$DirBase/$FilesToMerge"
+  [ "$FILEOUT_TREE" ] && {
+    FileOutTree="$DirOut/$FILEOUT_TREE"
+    echo $FileOutTree >> "$DirBase/$FilesToMergeTree"
+  }
   RUNSCRIPT="run.sh"
   cat << EOF > $RUNSCRIPT # Create a temporary script.
 #!/bin/bash
@@ -66,5 +74,12 @@ echo "Merging output files... (output file: $FILEOUT, logfile: $LogFile)"
 hadd $FILEOUT @"$FilesToMerge" >> $LogFile 2>&1 || \
 { MsgErr "Error\nCheck $(realpath $LogFile)"; tail -n 2 "$LogFile"; exit 1; }
 rm -f $FilesToMerge
+
+[ "$FILEOUT_TREE" ] && {
+  echo "Merging output trees... (output file: $FILEOUT_TREE, logfile: $LogFile)"
+  hadd $FILEOUT_TREE @"$FilesToMergeTree" >> $LogFile 2>&1 || \
+  { MsgErr "Error\nCheck $(realpath $LogFile)"; tail -n 2 "$LogFile"; exit 1; }
+  rm -f $FilesToMergeTree
+}
 
 exit 0

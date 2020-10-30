@@ -112,6 +112,8 @@ LISTFILES_O2_RUN5="listrun5.txt"
 FILEOUT="AnalysisResults.root"
 FILEOUT_ALI="AnalysisResults_ALI.root"
 FILEOUT_O2="AnalysisResults_O2.root"
+FILEOUT_TREES="AnalysisResults_trees.root"
+FILEOUT_TREES_O2="AnalysisResults_trees_O2.root"
 
 # Steering commands
 ENVALI="alienv setenv AliPhysics/latest -c"
@@ -219,14 +221,16 @@ if [ $DOO2 -eq 1 ]; then
   [ $DOO2_TASK_D0 -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_D0"; MsgSubStep "  hf-task-d0"; }
   [ $DOO2_TASK_DPLUS -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_DPLUS"; MsgSubStep "  hf-task-dplus"; }
   O2EXEC=${O2EXEC:3} # Remove the starting " | ".
-  O2SCRIPT="script_o2_hf.sh"
+  O2SCRIPT="script_o2.sh"
   cat << EOF > $O2SCRIPT # Create a temporary script with the full O2 command.
 #!/bin/bash
 $O2EXEC
 EOF
-  $ENVO2 bash o2_batch.sh $O2INPUT $JSON $O2SCRIPT $DEBUG || exit 1 # Run the batch script in the O2 environment.
+  [ $SAVETREES -eq 1 ] || FILEOUT_TREES=""
+  $ENVO2 bash o2_batch.sh $O2INPUT $JSON $O2SCRIPT $DEBUG $FILEOUT_TREES || exit 1 # Run the batch script in the O2 environment.
   rm -f $O2SCRIPT
   mv $FILEOUT $FILEOUT_O2
+  [[ $SAVETREES -eq 1 && "$FILEOUT_TREES" ]] && { mv $FILEOUT_TREES $FILEOUT_TREES_O2 || { MsgErr "Error"; exit 1; } }
 fi
 
 # Compare AliPhysics and O2 output.
