@@ -11,7 +11,7 @@ ISMC=$3
 DEBUG=$4
 FILEOUT="AnalysisResults.root"
 
-LogFile="log_ali_hf.log"
+LogFile="log_ali.log"
 FilesToMerge="ListOutToMergeALI.txt"
 DirBase="$PWD"
 Index=0

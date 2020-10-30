@@ -1,18 +1,18 @@
 #!/bin/bash
 
-###########################################################################
+##############################################################################
 # User settings
 
 # Steps
-DOCLEAN=1          # Delete created files before and after running tasks.
-DOCONVERT=1        # Convert AliESDs.root to AO2D.root.
-DOQAO2=0           # Run the QA task with O2.
-DOHFALI=1          # Run the heavy-flavour tasks with AliPhysics.
-DOHFO2=1           # Run the heavy-flavour tasks with O2.
-DOCOMPARE=1        # Compare AliPhysics and O2 output.
+DOCLEAN=1           # Delete created files (before and after running tasks).
+DOCONVERT=1         # Convert AliESDs.root to AO2D.root.
+DOALI=1             # Run AliPhysics tasks.
+DOO2=1              # Run O2 tasks.
+DOCOMPARE=1         # Compare AliPhysics and O2 output.
 
 # O2 tasks
-# Dependencies are handled automatically.
+# (Dependencies are handled automatically.)
+DOO2_QA=0           # qatask
 DOO2_SKIM=0         # hf-track-index-skims-creator
 DOO2_CAND_2PRONG=0  # hf-candidate-creator-2prong
 DOO2_CAND_3PRONG=0  # hf-candidate-creator-3prong
@@ -28,7 +28,7 @@ SAVETREES=0         # Save O2 tables to trees.
 PARALLELISE=0       # Parallelise O2 tasks. (not working!)
 TWOPRONGSEL=0       # Apply D0 selection cuts.
 DEBUG=0             # Print out more information.
-###########################################################################
+##############################################################################
 
 # Default settings
 JSON="$PWD/dpl-config_std.json"       # Run 3 configuration
@@ -83,7 +83,7 @@ fi
 
 if [ $INPUT_TYPE -eq 7 ]; then # Pb-Pb real LHC15o (AliHyperloop LHC15o_test sample)
   find /mnt/temp/Run3data_Vit/LHC15o_converted -name AO2D.root > listrun3.txt || exit 1
-  DOCONVERT=0; DOHFALI=0; DOCOMPARE=0
+  DOCONVERT=0; DOALI=0; DOCOMPARE=0
 fi
 
 # Message formatting
@@ -110,9 +110,8 @@ LISTFILES_O2_RUN5="listrun5.txt"
 
 # Output files names
 FILEOUT="AnalysisResults.root"
-FILEOUT_ALI_HF="AnalysisResults_ALI_HF.root"
-FILEOUT_O2_HF="AnalysisResults_O2_HF.root"
-FILEOUT_O2_QA="AnalysisResults_O2_QA.root"
+FILEOUT_ALI="AnalysisResults_ALI.root"
+FILEOUT_O2="AnalysisResults_O2.root"
 
 # Steering commands
 ENVALI="alienv setenv AliPhysics/latest -c"
@@ -148,51 +147,22 @@ if [ $DOCONVERT -eq 1 ]; then
   $ENVALI bash convert_batch.sh $LISTFILES_ALI $LISTFILES_O2 $ISMC $DEBUG || exit 1 # Run the batch script in the ALI environment.
 fi
 
-# Perform simple QA studies with O2.
-[[ $DOQAO2 -eq 1 && $ISMC -eq 0 ]] && { MsgWarn "\nSkipping the QA task for non-MC input"; DOQAO2=0; } # Disable running the QA task for non-MC input.
-if [ $DOQAO2 -eq 1 ]; then
-  [ -f "$O2INPUT" ] || { MsgErr "\nQA task: Error: File $O2INPUT does not exist."; exit 1; }
-  MsgStep "Running the QA task with O2... ($(cat $O2INPUT | wc -l) files)"
-  rm -f $FILEOUT $FILEOUT_O2_QA
-  # Basic common options
-  O2ARGS="--shm-segment-size 16000000000 --configuration json://$JSON -b"
-  # Options to parallelise
-  if [ $PARALLELISE -eq 1 ]; then
-    NPROC=3
-    MsgWarn "O2 parallelisation ON ($NPROC)"
-    O2ARGS+=" --pipeline qa-tracking-kine:$NPROC,qa-tracking-resolution:$NPROC"
-  fi
-  # Form the full O2 command.
-  O2EXEC="o2-analysis-qatask $O2ARGS"
-  O2SCRIPT="script_o2_qa.sh"
-  cat << EOF > $O2SCRIPT # Create a temporary script with the full O2 command.
-#!/bin/bash
-$O2EXEC
-EOF
-  $ENVO2 bash o2_batch.sh $O2INPUT $JSON $O2SCRIPT $DEBUG || exit 1 # Run the batch script in the O2 environment.
-  rm -f $O2SCRIPT
-  rm -rf output_o2_qa
-  mv $FILEOUT $FILEOUT_O2_QA
-  mv output_o2 output_o2_qa
-  mv log_o2.log log_o2_qa.log
-fi
-
-# Run the heavy-flavour tasks with AliPhysics.
-[[ $RUN5 -eq 1 && $DOHFALI -eq 1 ]] && { MsgWarn "\nSkipping HF tasks with AliPhysics for Run 5"; DOHFALI=0; }
-if [ $DOHFALI -eq 1 ]; then
-  [ -f "$LISTFILES_ALI" ] || { MsgErr "\nHF tasks ALI: Error: File $LISTFILES_ALI does not exist."; exit 1; }
-  MsgStep "Running the HF tasks with AliPhysics... ($(cat $LISTFILES_ALI | wc -l) files)"
-  rm -f $FILEOUT $FILEOUT_ALI_HF
+# Run AliPhysics tasks.
+[[ $RUN5 -eq 1 && $DOALI -eq 1 ]] && { MsgWarn "\nSkipping HF tasks with AliPhysics for Run 5"; DOALI=0; }
+if [ $DOALI -eq 1 ]; then
+  [ -f "$LISTFILES_ALI" ] || { MsgErr "\nALI tasks: Error: File $LISTFILES_ALI does not exist."; exit 1; }
+  MsgStep "Running tasks with AliPhysics... ($(cat $LISTFILES_ALI | wc -l) files)"
+  rm -f $FILEOUT $FILEOUT_ALI
   $ENVALI bash ali_batch.sh $LISTFILES_ALI $JSON $ISMC $DEBUG || exit 1 # Run the batch script in the ALI environment.
   #$ENVALIO2 bash ali_batch.sh $LISTFILES_ALI $JSON $ISMC $DEBUG || exit 1 # Run the batch script in the ALI+O2 environment.
-  mv $FILEOUT $FILEOUT_ALI_HF
+  mv $FILEOUT $FILEOUT_ALI
 fi
 
-# Run the heavy-flavour tasks with O2.
-if [ $DOHFO2 -eq 1 ]; then
-  [ -f "$O2INPUT" ] || { MsgErr "\nHF tasks O2: Error: File $O2INPUT does not exist."; exit 1; }
-  MsgStep "Running the HF tasks with O2... ($(cat $O2INPUT | wc -l) files)"
-  rm -f $FILEOUT $FILEOUT_O2_HF
+# Run O2 tasks.
+if [ $DOO2 -eq 1 ]; then
+  [ -f "$O2INPUT" ] || { MsgErr "\nO2 tasks: Error: File $O2INPUT does not exist."; exit 1; }
+  MsgStep "Running tasks with O2... ($(cat $O2INPUT | wc -l) files)"
+  rm -f $FILEOUT $FILEOUT_O2
   # Basic common options
   O2ARGS="--shm-segment-size 16000000000 --configuration json://$JSON -b"
   # Options to save tables in trees
@@ -202,8 +172,10 @@ if [ $DOHFO2 -eq 1 ]; then
     [ $DOO2_SKIM -eq 1 ] && { O2TABLES+="AOD/HFSELTRACK/0,AOD/HFTRACKIDXP2/0,AOD/HFTRACKIDXP3/0"; }
     [ $DOO2_CAND_2PRONG -eq 1 ] && { O2TABLES+=",AOD/HFCANDP2BASE/0,AOD/HFCANDP2EXT/0"; [ $ISMC -eq 1 ] && O2TABLES+=",AOD/HFCANDP2MCREC/0,AOD/HFCANDP2MCGEN/0"; }
     [ $DOO2_CAND_3PRONG -eq 1 ] && { O2TABLES+=",AOD/HFCANDP3BASE/0,AOD/HFCANDP3EXT/0"; }
-    [ "$O2TABLES" ] && { O2ARGS+=" --aod-writer-keep $O2TABLES"; } || { MsgWarn "Empty list of tables"; }
+    [ "$O2TABLES" ] && { O2ARGS+=" --aod-writer-keep $O2TABLES"; } || { MsgWarn "Empty list of tables!"; }
   }
+  # Task-specific options
+  O2ARGS_QA="$O2ARGS"
   O2ARGS_SKIM="$O2ARGS"
   O2ARGS_CAND_2PRONG="$O2ARGS"; [ $ISMC -eq 1 ] && O2ARGS_CAND_2PRONG+=" --doMC"
   O2ARGS_CAND_3PRONG="$O2ARGS"
@@ -216,6 +188,7 @@ if [ $DOHFO2 -eq 1 ]; then
   if [ $PARALLELISE -eq 1 ]; then
     NPROC=3
     MsgWarn "O2 parallelisation ON ($NPROC)"
+    O2ARGS_QA+=" --pipeline qa-tracking-kine:$NPROC,qa-tracking-resolution:$NPROC"
     O2ARGS_SKIM+=" --pipeline hf-produce-sel-track:$NPROC,hf-track-index-skims-creator:$NPROC"
     O2ARGS_CAND_2PRONG+=" --pipeline hf-cand-creator-2prong:$NPROC,hf-cand-creator-2prong-expressions:$NPROC"
     O2ARGS_CAND_3PRONG+=" --pipeline hf-cand-creator-3prong:$NPROC,hf-cand-creator-3prong-expressions:$NPROC"
@@ -223,6 +196,7 @@ if [ $DOHFO2 -eq 1 ]; then
     O2ARGS_TASK_DPLUS+=" --pipeline hf-task-dplus:$NPROC"
   fi
   # Pair O2 executables with their respective options.
+  O2EXEC_QA="o2-analysis-qatask $O2ARGS_QA"
   O2EXEC_SKIM="o2-analysis-hf-track-index-skims-creator $O2ARGS_SKIM"
   O2EXEC_CAND_2PRONG="o2-analysis-hf-candidate-creator-2prong $O2ARGS_CAND_2PRONG"
   O2EXEC_CAND_3PRONG="o2-analysis-hf-candidate-creator-3prong $O2ARGS_CAND_3PRONG"
@@ -232,8 +206,10 @@ if [ $DOHFO2 -eq 1 ]; then
   O2EXEC_TASK_D0="o2-analysis-hf-task-d0 $O2ARGS_TASK_D0"
   O2EXEC_TASK_DPLUS="o2-analysis-hf-task-dplus $O2ARGS_TASK_DPLUS"
   # Form the full O2 command.
+  [[ $DOO2_QA -eq 1 && $ISMC -eq 0 ]] && { MsgWarn "Skipping the QA task for non-MC input"; DOO2_QA=0; } # Disable running the QA task for non-MC input.
   echo "Tasks to be executed:"
   O2EXEC=""
+  [ $DOO2_QA -eq 1 ] && { O2EXEC+=" | $O2EXEC_QA"; MsgSubStep "  qatask"; }
   [ $DOO2_SKIM -eq 1 ] && { O2EXEC+=" | $O2EXEC_SKIM"; MsgSubStep "  hf-track-index-skims-creator"; }
   [ $DOO2_CAND_2PRONG -eq 1 ] && { O2EXEC+=" | $O2EXEC_CAND_2PRONG"; MsgSubStep "  hf-candidate-creator-2prong"; }
   [ $DOO2_CAND_3PRONG -eq 1 ] && { O2EXEC+=" | $O2EXEC_CAND_3PRONG"; MsgSubStep "  hf-candidate-creator-3prong"; }
@@ -250,10 +226,7 @@ $O2EXEC
 EOF
   $ENVO2 bash o2_batch.sh $O2INPUT $JSON $O2SCRIPT $DEBUG || exit 1 # Run the batch script in the O2 environment.
   rm -f $O2SCRIPT
-  rm -rf output_o2_hf
-  mv $FILEOUT $FILEOUT_O2_HF
-  mv output_o2 output_o2_hf
-  mv log_o2.log log_o2_hf.log
+  mv $FILEOUT $FILEOUT_O2
 fi
 
 # Compare AliPhysics and O2 output.
@@ -262,11 +235,11 @@ if [ $DOCOMPARE -eq 1 ]; then
   LOGFILE="log_compare.log"
   MsgStep "Comparing... (logfile: $LOGFILE)"
   ok=1
-  for file in "$FILEOUT_ALI_HF" "$FILEOUT_O2_HF"; do
+  for file in "$FILEOUT_ALI" "$FILEOUT_O2"; do
     [ -f "$file" ] || { MsgErr "Error: File $file does not exist."; ok=0; }
   done
   [ $ok -ne 1 ] && exit 1
-  $ENVALI $CMDROOT "Compare.C(\"$FILEOUT_O2_HF\", \"$FILEOUT_ALI_HF\", $MASS)" > $LOGFILE 2>&1 || { MsgErr "Error"; exit 1; }
+  $ENVALI $CMDROOT "Compare.C(\"$FILEOUT_O2\", \"$FILEOUT_ALI\", $MASS)" > $LOGFILE 2>&1 || { MsgErr "Error"; exit 1; }
 fi
 
 MsgStep "Done"
