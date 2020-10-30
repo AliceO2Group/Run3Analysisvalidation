@@ -1,29 +1,42 @@
 #!/bin/bash
 
-###############
+###########################################################################
 # User settings
-DOCLEAN=1     # Delete created files before and after running tasks.
-DOCONVERT=1   # Convert AliESDs.root to AO2D.root.
-DOQAO2=0      # Run the QA task with O2.
-DOHFALI=1     # Run the heavy-flavour tasks with AliPhysics.
-DOHFO2=1      # Run the heavy-flavour tasks with O2.
-DOCOMPARE=1   # Compare AliPhysics and O2 output.
 
-INPUT_TYPE=4  # Input type (Run 3) (See the choices below.)
-RUN5=0        # Use Run 5 settings and input.
-SAVETREES=0   # Save O2 tables to trees.
-PARALLELISE=0 # Parallelise O2 tasks. (not working!)
-TWOPRONGSEL=0 # Apply D0 selection cuts.
-DEBUG=0       # Print out more information.
-###############
+# Steps
+DOCLEAN=1          # Delete created files before and after running tasks.
+DOCONVERT=1        # Convert AliESDs.root to AO2D.root.
+DOQAO2=0           # Run the QA task with O2.
+DOHFALI=1          # Run the heavy-flavour tasks with AliPhysics.
+DOHFO2=1           # Run the heavy-flavour tasks with O2.
+DOCOMPARE=1        # Compare AliPhysics and O2 output.
+
+# O2 tasks
+# Dependencies are handled automatically.
+DOO2_SKIM=0         # hf-track-index-skims-creator
+DOO2_CAND_2PRONG=0  # hf-candidate-creator-2prong
+DOO2_CAND_3PRONG=0  # hf-candidate-creator-3prong
+DOO2_PID_TPC=0      # pid-tpc
+DOO2_PID_TOF=0      # pid-tof
+DOO2_SEL_D0=0       # hf-d0-candidate-selector
+DOO2_TASK_D0=1      # hf-task-d0
+DOO2_TASK_DPLUS=1   # hf-task-dplus
+
+INPUT_TYPE=4        # Input type (Run 3) (See the choices below.)
+RUN5=0              # Use Run 5 settings and input.
+SAVETREES=0         # Save O2 tables to trees.
+PARALLELISE=0       # Parallelise O2 tasks. (not working!)
+TWOPRONGSEL=0       # Apply D0 selection cuts.
+DEBUG=0             # Print out more information.
+###########################################################################
 
 # Default settings
-JSON="$PWD/dpl-config_std.json"      # Run 3 configuration
-JSONRUN5="$PWD/dpl-config_run5.json" # Run 5 configuration
-ISMC=0                               # Switch for MC input
-MASS=1.8                             # Hadron mass (only for comparison plots, not used)
-TRIGGERSTRINGRUN2=""                 # Run 2 trigger (not used)
-TRIGGERBITRUN3=-1                    # Run 3 trigger (not used)
+JSON="$PWD/dpl-config_std.json"       # Run 3 configuration
+JSONRUN5="$PWD/dpl-config_run5.json"  # Run 5 configuration
+ISMC=0                                # Switch for MC input
+MASS=1.8                              # Hadron mass (only for comparison plots, not used)
+TRIGGERSTRINGRUN2=""                  # Run 2 trigger (not used)
+TRIGGERBITRUN3=-1                     # Run 3 trigger (not used)
 
 # Input specification
 if [ $INPUT_TYPE -eq 0 ]; then
@@ -75,8 +88,16 @@ fi
 
 # Message formatting
 function MsgStep { echo -e "\n\e[1;32m$@\e[0m"; }
+function MsgSubStep { echo -e "\e[1m$@\e[0m"; }
 function MsgWarn { echo -e "\e[1;36m$@\e[0m"; }
 function MsgErr { echo -e "\e[1;31m$@\e[0m"; }
+
+# Handle dependencies. (latest first)
+[ $DOO2_TASK_D0 -eq 1 ] && { DOO2_SEL_D0=1; }
+[ $DOO2_SEL_D0 -eq 1 ] && { DOO2_CAND_2PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
+[ $DOO2_CAND_2PRONG -eq 1 ] && { DOO2_SKIM=1; }
+[ $DOO2_TASK_DPLUS -eq 1 ] && { DOO2_CAND_3PRONG=1; }
+[ $DOO2_CAND_3PRONG -eq 1 ] && { DOO2_SKIM=1; }
 
 # Delete created files.
 [ $DOCLEAN -eq 1 ] && bash clean.sh
@@ -177,15 +198,11 @@ if [ $DOHFO2 -eq 1 ]; then
   # Options to save tables in trees
   [ $SAVETREES -eq 1 ] && {
     MsgWarn "Tables will be saved in trees."
-    O2ARGS+=" --aod-writer-keep "
-    O2ARGS+="AOD/HFSELTRACK/0"
-    O2ARGS+=",AOD/HFTRACKIDXP2/0"
-    O2ARGS+=",AOD/HFTRACKIDXP3/0"
-    O2ARGS+=",AOD/HFCANDP2BASE/0"
-    O2ARGS+=",AOD/HFCANDP2EXT/0"
-    O2ARGS+=",AOD/HFCANDP3BASE/0"
-    O2ARGS+=",AOD/HFCANDP3EXT/0"
-    [ $ISMC -eq 1 ] && O2ARGS+=",AOD/HFCANDP2MCREC/0,AOD/HFCANDP2MCGEN/0"
+    O2TABLES=""
+    [ $DOO2_SKIM -eq 1 ] && { O2TABLES+="AOD/HFSELTRACK/0,AOD/HFTRACKIDXP2/0,AOD/HFTRACKIDXP3/0"; }
+    [ $DOO2_CAND_2PRONG -eq 1 ] && { O2TABLES+=",AOD/HFCANDP2BASE/0,AOD/HFCANDP2EXT/0"; [ $ISMC -eq 1 ] && O2TABLES+=",AOD/HFCANDP2MCREC/0,AOD/HFCANDP2MCGEN/0"; }
+    [ $DOO2_CAND_3PRONG -eq 1 ] && { O2TABLES+=",AOD/HFCANDP3BASE/0,AOD/HFCANDP3EXT/0"; }
+    [ "$O2TABLES" ] && { O2ARGS+=" --aod-writer-keep $O2TABLES"; } || { MsgWarn "Empty list of tables"; }
   }
   O2ARGS_SKIM="$O2ARGS"
   O2ARGS_CAND_2PRONG="$O2ARGS"; [ $ISMC -eq 1 ] && O2ARGS_CAND_2PRONG+=" --doMC"
@@ -215,7 +232,17 @@ if [ $DOHFO2 -eq 1 ]; then
   O2EXEC_TASK_D0="o2-analysis-hf-task-d0 $O2ARGS_TASK_D0"
   O2EXEC_TASK_DPLUS="o2-analysis-hf-task-dplus $O2ARGS_TASK_DPLUS"
   # Form the full O2 command.
-  O2EXEC="$O2EXEC_SKIM | $O2EXEC_PID_TPC | $O2EXEC_PID_TOF | $O2EXEC_CAND_2PRONG | $O2EXEC_CAND_3PRONG | $O2EXEC_SEL_D0 | $O2EXEC_TASK_D0 | $O2EXEC_TASK_DPLUS"
+  echo "Tasks to be executed:"
+  O2EXEC=""
+  [ $DOO2_SKIM -eq 1 ] && { O2EXEC+=" | $O2EXEC_SKIM"; MsgSubStep "  hf-track-index-skims-creator"; }
+  [ $DOO2_CAND_2PRONG -eq 1 ] && { O2EXEC+=" | $O2EXEC_CAND_2PRONG"; MsgSubStep "  hf-candidate-creator-2prong"; }
+  [ $DOO2_CAND_3PRONG -eq 1 ] && { O2EXEC+=" | $O2EXEC_CAND_3PRONG"; MsgSubStep "  hf-candidate-creator-3prong"; }
+  [ $DOO2_PID_TPC -eq 1 ] && { O2EXEC+=" | $O2EXEC_PID_TPC"; MsgSubStep "  pid-tpc"; }
+  [ $DOO2_PID_TOF -eq 1 ] && { O2EXEC+=" | $O2EXEC_PID_TOF"; MsgSubStep "  pid-tof"; }
+  [ $DOO2_SEL_D0 -eq 1 ] && { O2EXEC+=" | $O2EXEC_SEL_D0"; MsgSubStep "  hf-d0-candidate-selector"; }
+  [ $DOO2_TASK_D0 -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_D0"; MsgSubStep "  hf-task-d0"; }
+  [ $DOO2_TASK_DPLUS -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_DPLUS"; MsgSubStep "  hf-task-dplus"; }
+  O2EXEC=${O2EXEC:3} # Remove the starting " | ".
   O2SCRIPT="script_o2_hf.sh"
   cat << EOF > $O2SCRIPT # Create a temporary script with the full O2 command.
 #!/bin/bash
