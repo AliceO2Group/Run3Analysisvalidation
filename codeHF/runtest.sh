@@ -19,8 +19,10 @@ DOO2_CAND_3PRONG=0  # hf-candidate-creator-3prong
 DOO2_PID_TPC=0      # pid-tpc
 DOO2_PID_TOF=0      # pid-tof
 DOO2_SEL_D0=0       # hf-d0-candidate-selector
+DOO2_SEL_LC=0       # hf-lc-candidate-selector
 DOO2_TASK_D0=1      # hf-task-d0
 DOO2_TASK_DPLUS=1   # hf-task-dplus
+DOO2_TASK_LC=0      # hf-task-lc
 
 INPUT_CASE=4        # Input type (Run 3) (See the choices below.)
 RUN5=0              # Use Run 5 settings and input.
@@ -97,6 +99,8 @@ function MsgErr { echo -e "\e[1;31m$@\e[0m"; }
 [ $DOO2_SEL_D0 -eq 1 ] && { DOO2_CAND_2PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
 [ $DOO2_CAND_2PRONG -eq 1 ] && { DOO2_SKIM=1; }
 [ $DOO2_TASK_DPLUS -eq 1 ] && { DOO2_CAND_3PRONG=1; }
+[ $DOO2_TASK_LC -eq 1 ] && { DOO2_SEL_LC=1; }
+[ $DOO2_SEL_LC -eq 1 ] && { DOO2_CAND_3PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
 [ $DOO2_CAND_3PRONG -eq 1 ] && { DOO2_SKIM=1; }
 
 # Delete created files.
@@ -184,8 +188,10 @@ if [ $DOO2 -eq 1 ]; then
   O2ARGS_PID_TPC="$O2ARGS"
   O2ARGS_PID_TOF="$O2ARGS"
   O2ARGS_SEL_D0="$O2ARGS"
+  O2ARGS_SEL_LC="$O2ARGS"
   O2ARGS_TASK_D0="$O2ARGS"
   O2ARGS_TASK_DPLUS="$O2ARGS"
+  O2ARGS_TASK_LC="$O2ARGS"
   # Options to parallelise
   if [ $PARALLELISE -eq 1 ]; then
     NPROC=3
@@ -196,6 +202,7 @@ if [ $DOO2 -eq 1 ]; then
     O2ARGS_CAND_3PRONG+=" --pipeline hf-cand-creator-3prong:$NPROC,hf-cand-creator-3prong-expressions:$NPROC"
     O2ARGS_TASK_D0+=" --pipeline hf-task-d0:$NPROC"
     O2ARGS_TASK_DPLUS+=" --pipeline hf-task-dplus:$NPROC"
+    O2ARGS_TASK_LC+=" --pipeline hf-task-lc:$NPROC"
   fi
   # Pair O2 executables with their respective options.
   O2EXEC_QA="o2-analysis-qatask $O2ARGS_QA"
@@ -205,8 +212,10 @@ if [ $DOO2 -eq 1 ]; then
   O2EXEC_PID_TPC="o2-analysis-pid-tpc $O2ARGS_PID_TPC"
   O2EXEC_PID_TOF="o2-analysis-pid-tof $O2ARGS_PID_TOF"
   O2EXEC_SEL_D0="o2-analysis-hf-d0-candidate-selector $O2ARGS_SEL_D0"
+  O2EXEC_SEL_LC="o2-analysis-hf-lc-candidate-selector $O2ARGS_SEL_LC"
   O2EXEC_TASK_D0="o2-analysis-hf-task-d0 $O2ARGS_TASK_D0"
   O2EXEC_TASK_DPLUS="o2-analysis-hf-task-dplus $O2ARGS_TASK_DPLUS"
+  O2EXEC_TASK_LC="o2-analysis-hf-task-lc $O2ARGS_TASK_LC"
   # Form the full O2 command.
   [[ $DOO2_QA -eq 1 && $ISMC -eq 0 ]] && { MsgWarn "Skipping the QA task for non-MC input"; DOO2_QA=0; } # Disable running the QA task for non-MC input.
   echo "Tasks to be executed:"
@@ -218,8 +227,10 @@ if [ $DOO2 -eq 1 ]; then
   [ $DOO2_PID_TPC -eq 1 ] && { O2EXEC+=" | $O2EXEC_PID_TPC"; MsgSubStep "  pid-tpc"; }
   [ $DOO2_PID_TOF -eq 1 ] && { O2EXEC+=" | $O2EXEC_PID_TOF"; MsgSubStep "  pid-tof"; }
   [ $DOO2_SEL_D0 -eq 1 ] && { O2EXEC+=" | $O2EXEC_SEL_D0"; MsgSubStep "  hf-d0-candidate-selector"; }
+  [ $DOO2_SEL_LC -eq 1 ] && { O2EXEC+=" | $O2EXEC_SEL_LC"; MsgSubStep "  hf-lc-candidate-selector"; }
   [ $DOO2_TASK_D0 -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_D0"; MsgSubStep "  hf-task-d0"; }
   [ $DOO2_TASK_DPLUS -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_DPLUS"; MsgSubStep "  hf-task-dplus"; }
+  [ $DOO2_TASK_LC -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_LC"; MsgSubStep "  hf-task-lc"; }
   O2EXEC=${O2EXEC:3} # Remove the starting " | ".
   O2SCRIPT="script_o2.sh"
   cat << EOF > $O2SCRIPT # Create a temporary script with the full O2 command.
