@@ -22,7 +22,7 @@ DOO2_SEL_D0=0       # hf-d0-candidate-selector
 DOO2_TASK_D0=1      # hf-task-d0
 DOO2_TASK_DPLUS=1   # hf-task-dplus
 
-INPUT_TYPE=4        # Input type (Run 3) (See the choices below.)
+INPUT_CASE=4        # Input type (Run 3) (See the choices below.)
 RUN5=0              # Use Run 5 settings and input.
 SAVETREES=0         # Save O2 tables to trees.
 PARALLELISE=0       # Parallelise O2 tasks. (not working!)
@@ -39,49 +39,49 @@ TRIGGERSTRINGRUN2=""                  # Run 2 trigger (not used)
 TRIGGERBITRUN3=-1                     # Run 3 trigger (not used)
 
 # Input specification
-if [ $INPUT_TYPE -eq 0 ]; then
+if [ $INPUT_CASE -eq 0 ]; then
   INPUTDIR="../twikiinput"
   STRING="AliESDs_ppK0starToyMC.root"
   MASS=1.0
 fi
 
-if [ $INPUT_TYPE -eq 1 ]; then # Pb-Pb real LHC15o
+if [ $INPUT_CASE -eq 1 ]; then # Pb-Pb real LHC15o
   INPUTDIR="/mnt/temp/Run3data/data/LHC15o_246751/pass1"
   STRING="15000246751019.110/AliESDs.root"
   TRIGGERSTRINGRUN2="CV0L7-B-NOPF-CENT"
   TRIGGERBITRUN3=5 #FIXME
 fi
 
-if [ $INPUT_TYPE -eq 2 ]; then # Pb-Pb MC LHC15o
+if [ $INPUT_CASE -eq 2 ]; then # Pb-Pb MC LHC15o
   INPUTDIR="/data/Run3data/alice_sim_2015_LHC15k1a3_246391/246391"
   STRING="00*/AliESDs.root"
   ISMC=1
 fi
 
-if [ $INPUT_TYPE -eq 3 ]; then
+if [ $INPUT_CASE -eq 3 ]; then
   INPUTDIR="/data/Run3data/output"
   STRING="00*/AliESDs.root"
   MASS=1.0
 fi
 
-if [ $INPUT_TYPE -eq 4 ]; then # p-p MC LHC17p
+if [ $INPUT_CASE -eq 4 ]; then # p-p MC LHC17p
   INPUTDIR="/data/Run3data/alice_sim_2018_LHC18a4a2_cent/282099"
   STRING="001/AliESDs.root"
   ISMC=1
 fi
 
-if [ $INPUT_TYPE -eq 5 ]; then # p-p MC LHC17p
+if [ $INPUT_CASE -eq 5 ]; then # p-p MC LHC17p
   INPUTDIR="/mnt/temp/Run3data_Vit/LHC18a4a2_cent/282341"
   STRING="001/AliESDs.root"
   ISMC=1
 fi
 
-if [ $INPUT_TYPE -eq 6 ]; then # p-p real LHC17p
+if [ $INPUT_CASE -eq 6 ]; then # p-p real LHC17p
   INPUTDIR="/mnt/temp/Run3data_Vit/LHC17p_pass1_CENT_woSDD/282341"
   STRING="17000282099019.1001/AliESDs.root"
 fi
 
-if [ $INPUT_TYPE -eq 7 ]; then # Pb-Pb real LHC15o (AliHyperloop LHC15o_test sample)
+if [ $INPUT_CASE -eq 7 ]; then # Pb-Pb real LHC15o (AliHyperloop LHC15o_test sample)
   find /mnt/temp/Run3data_Vit/LHC15o_converted -name AO2D.root > listrun3.txt || exit 1
   DOCONVERT=0; DOALI=0; DOCOMPARE=0
 fi
