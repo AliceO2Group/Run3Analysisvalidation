@@ -68,6 +68,11 @@ if [ $INPUT_TYPE -eq 6 ]; then # p-p real LHC17p
   STRING="17000282099019.1001/AliESDs.root"
 fi
 
+if [ $INPUT_TYPE -eq 7 ]; then # Pb-Pb real LHC15o (AliHyperloop LHC15o_test sample)
+  find /mnt/temp/Run3data_Vit/LHC15o_converted -name AO2D.root > listrun3.txt || exit 1
+  DOCONVERT=0; DOHFALI=0; DOCOMPARE=0
+fi
+
 # Message formatting
 function MsgStep { echo -e "\n\e[1;32m$@\e[0m"; }
 function MsgWarn { echo -e "\e[1;36m$@\e[0m"; }
