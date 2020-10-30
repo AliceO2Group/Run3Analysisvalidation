@@ -1,12 +1,10 @@
 #!/bin/bash
 
-# Delete created files.
-bash clean.sh
-
 ###############
 # User settings
 CASE=4
 
+DOCLEAN=1     # Delete created files before and after running tasks.
 DOCONVERT=1   # Convert AliESDs.root to AO2D.root.
 DOQAO2=0      # Run the QA task with O2.
 DOHFALI=1     # Run the heavy-flavour tasks with AliPhysics.
@@ -75,6 +73,9 @@ fi
 function MsgStep { echo -e "\n\e[1;32m$@\e[0m"; }
 function MsgWarn { echo -e "\e[1;36m$@\e[0m"; }
 function MsgErr { echo -e "\e[1;31m$@\e[0m"; }
+
+# Delete created files.
+[ $DOCLEAN -eq 1 ] && bash clean.sh
 
 # Lists of input files
 LISTFILES_ALI="list_ali.txt"
@@ -223,10 +224,6 @@ EOF
   mv log_o2.log log_o2_hf.log
 fi
 
-if [ $TWOPRONGSEL -eq 1 ]; then
-  rm "$JSONSEL"
-fi
-
 # Compare AliPhysics and O2 output.
 [[ $RUN5 -eq 1 && $DOCOMPARE -eq 1 ]] && { MsgWarn "\nSkipping comparison for Run 5"; DOCOMPARE=0; }
 if [ $DOCOMPARE -eq 1 ]; then
@@ -242,7 +239,11 @@ fi
 
 MsgStep "Done"
 
-rm -f $LISTFILES_ALI
-rm -f $LISTFILES_O2
+# Delete created files.
+[ $DOCLEAN -eq 1 ] && {
+  rm -f $LISTFILES_ALI
+  rm -f $LISTFILES_O2
+  [ $TWOPRONGSEL -eq 1 ] && rm "$JSONSEL"
+}
 
 exit 0
