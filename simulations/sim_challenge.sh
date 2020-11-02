@@ -4,22 +4,12 @@
 
 # chain of algorithms from MC and reco
 
-# default interaction rates in kHz
-# intRatePP=400
-# intRatePbPb=50
-
-# default collision system
-# collSyst="pp"
-
-# generPP="pythia8"
-# generPbPb="pythia8hi"
-
-# default sim engine
-# engine="TGeant3"
+# options to pass to every workflow
+gloOpt=" -b --run --shm-segment-size 10000000000"
 
 taskwrapper sim.log o2-sim -n 10 --configKeyValue "Diamond.width[2]=6." -g pythia8 -e TGeant3 -j 6 -m PIPE ITS FT0 TPC TOF MFT
 
-taskwrapper digi.log o2-sim-digitizer-workflow -b --run --shm-segment-size 10000000000 --interactionRate 400000 --tpc-lanes 1
+taskwrapper digi.log o2-sim-digitizer-workflow $gloOpt --interactionRate 400000 --tpc-lanes 1
 
 taskwrapper tpcreco.log o2-tpc-reco-workflow $gloOpt --tpc-digit-reader \"--infile tpcdigits.root\" --input-type digits --output-type clusters,tracks  --tpc-track-writer \"--treename events --track-branch-name Tracks --trackmc-branch-name TracksMCTruth\"
 
@@ -49,8 +39,5 @@ taskwrapper pvfinder.log o2-primary-vertexing-workflow $gloOpt
 echo "Return status of primary vertexing: $?"
 
 echo "Producing AOD"
-#aod producer
-#currently writes bc table, collisions, tracks, ft0 information
-#note: task also writes tracks that do not have attached vertices, in that case a track has collisionId = -1
 taskwrapper aod.log o2-aod-producer-workflow --aod-writer-keep dangling
 echo "Return status of AOD production: $?"
