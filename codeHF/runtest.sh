@@ -28,7 +28,8 @@ INPUT_CASE=4        # Input type (Run 3) (See the choices below.)
 RUN5=0              # Use Run 5 settings and input.
 SAVETREES=0         # Save O2 tables to trees.
 PARALLELISE=0       # Parallelise O2 tasks. (not working!)
-TWOPRONGSEL=0       # Apply D0 selection cuts.
+APPLYCUTS_D0=0      # Apply D0 selection cuts.
+APPLYCUTS_LC=0      # Apply Λc selection cuts.
 DEBUG=0             # Print out more information.
 ##############################################################################
 
@@ -104,7 +105,7 @@ function MsgErr { echo -e "\e[1;31m$@\e[0m"; }
 [ $DOO2_CAND_3PRONG -eq 1 ] && { DOO2_SKIM=1; }
 
 # Delete created files.
-[ $DOCLEAN -eq 1 ] && bash clean.sh
+[ $DOCLEAN -eq 1 ] && { bash clean.sh || exit 1; }
 
 # Lists of input files
 LISTFILES_ALI="list_ali.txt"
@@ -134,14 +135,24 @@ if [ $RUN5 -eq 1 ]; then
   JSON="$JSONRUN5"
 fi
 
-# Enable D0 selection.
-if [ $TWOPRONGSEL -eq 1 ]; then
-  MsgWarn "\nUsing D0 selection cuts"
+# Make a copy of the default JSON file to modify it.
+if [[ $APPLYCUTS_D0 -eq 1 || $APPLYCUTS_LC -eq 1 ]]; then
   JSONSEL="${JSON/.json/_sel.json}"
-  cp "$JSON" "$JSONSEL" && \
-  sed -e "s!\"d_selectionFlagD0\": \"0\"!\"d_selectionFlagD0\": \"1\"!g" "$JSONSEL" > "$JSONSEL.tmp" && mv "$JSONSEL.tmp" "$JSONSEL" && \
-  sed -e "s!\"d_selectionFlagD0bar\": \"0\"!\"d_selectionFlagD0bar\": \"1\"!g" "$JSONSEL" > "$JSONSEL.tmp" && mv "$JSONSEL.tmp" "$JSONSEL" || { MsgErr "Error"; exit 1; }
+  cp "$JSON" "$JSONSEL" || { MsgErr "Error"; exit 1; }
   JSON="$JSONSEL"
+fi
+
+# Enable D0 selection.
+if [ $APPLYCUTS_D0 -eq 1 ]; then
+  MsgWarn "\nUsing D0 selection cuts"
+  sed -e "s!\"d_selectionFlagD0\": \"0\"!\"d_selectionFlagD0\": \"1\"!g" "$JSON" > "$JSON.tmp" && mv "$JSON.tmp" "$JSON" && \
+  sed -e "s!\"d_selectionFlagD0bar\": \"0\"!\"d_selectionFlagD0bar\": \"1\"!g" "$JSON" > "$JSON.tmp" && mv "$JSON.tmp" "$JSON" || { MsgErr "Error"; exit 1; }
+fi
+
+# Enable Λc selection.
+if [ $APPLYCUTS_LC -eq 1 ]; then
+  MsgWarn "\nUsing Λc selection cuts"
+  sed -e "s!\"d_selectionFlagLc\": \"0\"!\"d_selectionFlagLc\": \"1\"!g" "$JSON" > "$JSON.tmp" && mv "$JSON.tmp" "$JSON" || { MsgErr "Error"; exit 1; }
 fi
 
 # Convert AliESDs.root to AO2D.root.
@@ -154,7 +165,7 @@ if [ $DOCONVERT -eq 1 ]; then
 fi
 
 # Run AliPhysics tasks.
-[[ $RUN5 -eq 1 && $DOALI -eq 1 ]] && { MsgWarn "\nSkipping HF tasks with AliPhysics for Run 5"; DOALI=0; }
+[[ $RUN5 -eq 1 && $DOALI -eq 1 ]] && { MsgWarn "\nSkipping AliPhysics tasks for Run 5"; DOALI=0; }
 if [ $DOALI -eq 1 ]; then
   [ -f "$LISTFILES_ALI" ] || { MsgErr "\nALI tasks: Error: File $LISTFILES_ALI does not exist."; exit 1; }
   MsgStep "Running tasks with AliPhysics... ($(cat $LISTFILES_ALI | wc -l) files)"
@@ -257,13 +268,13 @@ if [ $DOCOMPARE -eq 1 ]; then
   $ENVALI $CMDROOT "Compare.C(\"$FILEOUT_O2\", \"$FILEOUT_ALI\", $MASS)" > $LOGFILE 2>&1 || { MsgErr "Error"; exit 1; }
 fi
 
-MsgStep "Done"
-
 # Delete created files.
 [ $DOCLEAN -eq 1 ] && {
   rm -f $LISTFILES_ALI && \
   rm -f $LISTFILES_O2 || { MsgErr "Error"; exit 1; }
-  [ $TWOPRONGSEL -eq 1 ] && { rm "$JSONSEL" || { MsgErr "Error"; exit 1; } }
+  [[ $APPLYCUTS_D0 -eq 1 || $APPLYCUTS_LC -eq 1 ]] && { rm "$JSONSEL" || { MsgErr "Error"; exit 1; } }
 }
+
+MsgStep "Done"
 
 exit 0

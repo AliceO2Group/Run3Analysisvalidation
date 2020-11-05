@@ -20,7 +20,7 @@
     },
     "hf-track-index-skims-creator": {
         "b_dovalplots": "true",
-        "do3prong": "0",
+        "do3prong": "1",
         "triggerindex": "-1",
         "d_bz": "5.",
         "b_propdca": "true",
@@ -76,6 +76,9 @@
     },
     "hf-task-dplus": {
         "d_selectionFlagDPlus": "0"
+    },
+     "hf-task-lc": {
+        "d_selectionFlagLc": "0"
     },
     "internal-dpl-aod-writer": {
     }
