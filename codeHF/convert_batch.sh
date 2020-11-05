@@ -9,6 +9,7 @@ LISTINPUT="$1"
 LISTOUTPUT="$2"
 ISMC=$3
 DEBUG=$4
+FILEOUT="AO2D.root"
 
 LogFile="log_convert.log"
 ListInOne="list_input.txt"
@@ -25,12 +26,13 @@ rm -rf $DirOutMain || { MsgErr "Error"; exit 1; }
 echo "Output directory: $DirOutMain (logfiles: $LogFile)"
 while read FileIn; do
   [ -f "$FileIn" ] || { MsgErr "Error: File $FileIn does not exist."; exit 1; }
+  FileIn="$(realpath $FileIn)"
   DirOut="$DirOutMain/$Index"
   mkdir -p $DirOut && \
   cd $DirOut && \
   echo $FileIn > $ListInOne || { MsgErr "Error"; exit 1; }
   [ $DEBUG -eq 1 ] && echo "Input file ($Index): $FileIn"
-  FileOut="$DirOut/AO2D.root"
+  FileOut="$DirOut/$FILEOUT"
   echo "$DirBase/$FileOut" >> $DirBase/$LISTOUTPUT || { MsgErr "Error"; exit 1; }
   RUNSCRIPT="run.sh"
   cat << EOF > $RUNSCRIPT # Create a temporary script.

@@ -32,6 +32,7 @@ rm -rf $DirOutMain || { MsgErr "Error"; exit 1; }
 echo "Output directory: $DirOutMain (logfiles: $LogFile)"
 while read FileIn; do
   [ -f "$FileIn" ] || { MsgErr "Error: File $FileIn does not exist."; exit 1; }
+  FileIn="$(realpath $FileIn)"
   DirOut="$DirOutMain/$Index"
   mkdir -p $DirOut && \
   cd $DirOut && \
