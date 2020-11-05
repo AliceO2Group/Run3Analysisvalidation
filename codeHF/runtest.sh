@@ -26,6 +26,7 @@ DOO2_TASK_LC=0      # hf-task-lc
 
 INPUT_CASE=4        # Input type (Run 3) (See the choices below.)
 RUN5=0              # Use Run 5 settings and input.
+NFILESMAX=1         # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
 SAVETREES=0         # Save O2 tables to trees.
 PARALLELISE=0       # Parallelise O2 tasks. (not working!)
 APPLYCUTS_D0=0      # Apply D0 selection cuts.
@@ -85,7 +86,7 @@ if [ $INPUT_CASE -eq 6 ]; then # p-p real LHC17p
 fi
 
 if [ $INPUT_CASE -eq 7 ]; then # Pb-Pb real LHC15o (AliHyperloop LHC15o_test sample)
-  find /mnt/temp/Run3data_Vit/LHC15o_converted -name AO2D.root > listrun3.txt || exit 1
+  find /mnt/temp/Run3data_Vit/LHC15o_converted -name AO2D.root | head -n $NFILESMAX > listrun3.txt || exit 1
   DOCONVERT=0; DOALI=0; DOCOMPARE=0
 fi
 
@@ -109,8 +110,8 @@ function MsgErr { echo -e "\e[1;31m$@\e[0m"; }
 
 # Lists of input files
 LISTFILES_ALI="list_ali.txt"
-ls $INPUTDIR/$STRING > $LISTFILES_ALI || { MsgErr "Error: Failed to make a list of input files."; exit 1; }
-LISTFILES_O2="listrun3.txt"
+ls $INPUTDIR/$STRING | head -n $NFILESMAX > $LISTFILES_ALI || { MsgErr "Error: Failed to make a list of input files."; exit 1; }
+LISTFILES_O2="list_o2.txt"
 LISTFILES_O2_RUN5="listrun5.txt"
 
 # Output files names
@@ -131,7 +132,7 @@ O2INPUT=$LISTFILES_O2
 # Adjust settings for Run5.
 if [ $RUN5 -eq 1 ]; then
   MsgWarn "\nUsing Run 5 settings and input"
-  O2INPUT=$LISTFILES_O2_RUN5
+  head -n $NFILESMAX $LISTFILES_O2_RUN5 > $O2INPUT || { MsgErr "Error"; exit 1; }
   JSON="$JSONRUN5"
 fi
 
