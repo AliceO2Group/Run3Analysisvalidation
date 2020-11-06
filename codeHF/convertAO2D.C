@@ -10,7 +10,7 @@ R__ADD_INCLUDE_PATH($ALICE_PHYSICS)
 TChain* CreateChain(const char* xmlfile, const char* type = "ESD");
 TChain* CreateLocalChain(const char* txtfile, const char* type, int nfiles);
 
-void convertAO2D(TString listoffiles, int ismc = 1, int nmaxevents = -1)
+Long64_t convertAO2D(TString listoffiles, int ismc = 1, int nmaxevents = -1)
 {
   const char* anatype = "ESD";
   if (ismc == 1) {
@@ -23,7 +23,7 @@ void convertAO2D(TString listoffiles, int ismc = 1, int nmaxevents = -1)
   // The entries in the txt file can be local paths or alien paths
   TChain* chain = CreateLocalChain(listoffiles.Data(), anatype, -1);
   if (!chain)
-    return;
+    return -1;
   chain->SetNotify(0x0);
   ULong64_t nentries = chain->GetEntries();
   if (nmaxevents != -1)
@@ -43,14 +43,14 @@ void convertAO2D(TString listoffiles, int ismc = 1, int nmaxevents = -1)
   if (ismc)
     converter->SetMCMode();
   if (!mgr->InitAnalysis())
-    return;
+    return -1;
   //PH   mgr->SetBit(AliAnalysisManager::kTrueNotify);
   //mgr->SetRunFromPath(244918);
   mgr->PrintStatus();
 
   mgr->SetDebugLevel(1);
   //   mgr->StartAnalysis("localfile", chain, 123456789, 0);
-  mgr->StartAnalysis("localfile", chain, nentries, 0);
+  return mgr->StartAnalysis("localfile", chain, nentries, 0);
 }
 
 TChain* CreateLocalChain(const char* txtfile, const char* type, int nfiles)
