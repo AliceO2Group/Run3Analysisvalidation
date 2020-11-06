@@ -34,8 +34,9 @@ DEBUG=0             # Print out more information.
 ##############################################################################
 
 # Default settings
-INPUTDIR=""                           # Input directory
-STRING="*/AliESDs.root"               # Input file pattern
+INPUT_LABEL="nothing"                 # Input description
+INPUT_DIR=""                          # Input directory
+INPUT_FILES="*/AliESDs.root"          # Input file pattern
 JSON="$PWD/dpl-config_run3.json"      # Run 3 configuration
 JSONRUN5="$PWD/dpl-config_run5.json"  # Run 5 configuration
 ISINPUTO2=0                           # Input files are in O2 format.
@@ -46,50 +47,59 @@ TRIGGERBITRUN3=-1                     # Run 3 trigger (not used)
 
 # Input specification
 if [ $INPUT_CASE -eq 0 ]; then
-  INPUTDIR="../twikiinput"
-  STRING="AliESDs_ppK0starToyMC.root"
+  INPUT_LABEL="ppK0starToyMC"
+  INPUT_DIR="../twikiinput"
+  INPUT_FILES="AliESDs_ppK0starToyMC.root"
   MASS=1.0
 fi
 
-if [ $INPUT_CASE -eq 1 ]; then # Pb-Pb real LHC15o
-  INPUTDIR="/mnt/temp/Run3data/data/LHC15o_246751/pass1"
+if [ $INPUT_CASE -eq 1 ]; then
+  INPUT_LABEL="Pb-Pb real LHC15o"
+  INPUT_DIR="/mnt/temp/Run3data/data/LHC15o_246751/pass1"
   TRIGGERSTRINGRUN2="CV0L7-B-NOPF-CENT"
   TRIGGERBITRUN3=5 #FIXME
 fi
 
-if [ $INPUT_CASE -eq 2 ]; then # Pb-Pb MC LHC15o
-  INPUTDIR="/data/Run3data/alice_sim_2015_LHC15k1a3_246391/246391"
+if [ $INPUT_CASE -eq 2 ]; then
+  INPUT_LABEL="Pb-Pb MC LHC15o"
+  INPUT_DIR="/data/Run3data/alice_sim_2015_LHC15k1a3_246391/246391"
   ISMC=1
 fi
 
 if [ $INPUT_CASE -eq 3 ]; then
-  INPUTDIR="/data/Run3data/output"
+  INPUT_LABEL="?"
+  INPUT_DIR="/data/Run3data/output"
   MASS=1.0
 fi
 
-if [ $INPUT_CASE -eq 4 ]; then # p-p MC LHC17p
-  INPUTDIR="/data/Run3data/alice_sim_2018_LHC18a4a2_cent/282099"
+if [ $INPUT_CASE -eq 4 ]; then
+  INPUT_LABEL="p-p MC LHC17p"
+  INPUT_DIR="/data/Run3data/alice_sim_2018_LHC18a4a2_cent/282099"
   ISMC=1
 fi
 
-if [ $INPUT_CASE -eq 5 ]; then # p-p MC LHC17p
-  INPUTDIR="/mnt/temp/Run3data_Vit/LHC18a4a2_cent/282341"
+if [ $INPUT_CASE -eq 5 ]; then
+  INPUT_LABEL="p-p MC LHC17p"
+  INPUT_DIR="/mnt/temp/Run3data_Vit/LHC18a4a2_cent/282341"
   ISMC=1
 fi
 
-if [ $INPUT_CASE -eq 6 ]; then # p-p real LHC17p
-  INPUTDIR="/mnt/temp/Run3data_Vit/LHC17p_pass1_CENT_woSDD/282341"
+if [ $INPUT_CASE -eq 6 ]; then
+  INPUT_LABEL="p-p real LHC17p"
+  INPUT_DIR="/mnt/temp/Run3data_Vit/LHC17p_pass1_CENT_woSDD/282341"
 fi
 
-if [ $INPUT_CASE -eq 7 ]; then # Pb-Pb real LHC15o, converted (AliHyperloop LHC15o_test sample)
-  INPUTDIR="/mnt/temp/Run3data_Vit/LHC15o_converted/alice/data/2015/LHC15o/000244918/pass5_lowIR/PWGZZ/Run3_Conversion/96_20201013-1346_child_1/"
-  STRING="*/AO2D.root"
+if [ $INPUT_CASE -eq 7 ]; then
+  INPUT_LABEL="Pb-Pb real LHC15o, converted (AliHyperloop LHC15o_test sample)"
+  INPUT_DIR="/mnt/temp/Run3data_Vit/LHC15o_converted/alice/data/2015/LHC15o/000244918/pass5_lowIR/PWGZZ/Run3_Conversion/96_20201013-1346_child_1/"
+  INPUT_FILES="*/AO2D.root"
   ISINPUTO2=1
 fi
 
-if [ $INPUT_CASE -eq 8 ]; then # Run 5, p-p MC 14 TeV MB
-  INPUTDIR="/data/Run5data/MB_100kev_100cmdefault_05112020"
-  STRING="AODRun5.*.root"
+if [ $INPUT_CASE -eq 8 ]; then
+  INPUT_LABEL="Run 5, p-p MC 14 TeV MB"
+  INPUT_DIR="/data/Run5data/MB_100kev_100cmdefault_05112020"
+  INPUT_FILES="AODRun5.*.root"
   JSON="$JSONRUN5"
   ISINPUTO2=1
   ISMC=1
@@ -132,12 +142,15 @@ CMDROOT="root -b -q -l"
 
 ########## START OF EXECUTION ##########
 
+# Print out input description.
+MsgStep "Processing case $INPUT_CASE: $INPUT_LABEL"
+
 # Delete created files.
 [ $DOCLEAN -eq 1 ] && { bash clean.sh || exit 1; }
 
 # Generate list of input files.
 [ $ISINPUTO2 -eq 1 ] && LISTFILES=$LISTFILES_O2 || LISTFILES=$LISTFILES_ALI
-ls $INPUTDIR/$STRING | head -n $NFILESMAX > $LISTFILES || { MsgErr "Error: Failed to make a list of input files."; exit 1; }
+ls $INPUT_DIR/$INPUT_FILES | head -n $NFILESMAX > $LISTFILES || { MsgErr "Error: Failed to make a list of input files."; exit 1; }
 
 # Make a copy of the default JSON file to modify it.
 JSON_EDIT=""
