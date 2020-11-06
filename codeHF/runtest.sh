@@ -22,7 +22,7 @@ DOO2_SEL_D0=0       # hf-d0-candidate-selector
 DOO2_SEL_LC=0       # hf-lc-candidate-selector
 DOO2_TASK_D0=1      # hf-task-d0
 DOO2_TASK_DPLUS=1   # hf-task-dplus
-DOO2_TASK_LC=1      # hf-task-lc
+DOO2_TASK_LC=0      # hf-task-lc
 
 INPUT_CASE=4        # Input case (See the input specification choices below.)
 NFILESMAX=1         # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
@@ -34,6 +34,8 @@ DEBUG=0             # Print out more information.
 ##############################################################################
 
 # Default settings
+INPUTDIR=""                           # Input directory
+STRING="*/AliESDs.root"               # Input file pattern
 JSON="$PWD/dpl-config_run3.json"      # Run 3 configuration
 JSONRUN5="$PWD/dpl-config_run5.json"  # Run 5 configuration
 ISINPUTO2=0                           # Input files are in O2 format.
@@ -51,38 +53,32 @@ fi
 
 if [ $INPUT_CASE -eq 1 ]; then # Pb-Pb real LHC15o
   INPUTDIR="/mnt/temp/Run3data/data/LHC15o_246751/pass1"
-  STRING="15000246751019.110/AliESDs.root"
   TRIGGERSTRINGRUN2="CV0L7-B-NOPF-CENT"
   TRIGGERBITRUN3=5 #FIXME
 fi
 
 if [ $INPUT_CASE -eq 2 ]; then # Pb-Pb MC LHC15o
   INPUTDIR="/data/Run3data/alice_sim_2015_LHC15k1a3_246391/246391"
-  STRING="00*/AliESDs.root"
   ISMC=1
 fi
 
 if [ $INPUT_CASE -eq 3 ]; then
   INPUTDIR="/data/Run3data/output"
-  STRING="00*/AliESDs.root"
   MASS=1.0
 fi
 
 if [ $INPUT_CASE -eq 4 ]; then # p-p MC LHC17p
   INPUTDIR="/data/Run3data/alice_sim_2018_LHC18a4a2_cent/282099"
-  STRING="001/AliESDs.root"
   ISMC=1
 fi
 
 if [ $INPUT_CASE -eq 5 ]; then # p-p MC LHC17p
   INPUTDIR="/mnt/temp/Run3data_Vit/LHC18a4a2_cent/282341"
-  STRING="001/AliESDs.root"
   ISMC=1
 fi
 
 if [ $INPUT_CASE -eq 6 ]; then # p-p real LHC17p
   INPUTDIR="/mnt/temp/Run3data_Vit/LHC17p_pass1_CENT_woSDD/282341"
-  STRING="17000282099019.1001/AliESDs.root"
 fi
 
 if [ $INPUT_CASE -eq 7 ]; then # Pb-Pb real LHC15o, converted (AliHyperloop LHC15o_test sample)
