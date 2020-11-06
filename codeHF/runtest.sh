@@ -22,7 +22,7 @@ DOO2_SEL_D0=0       # hf-d0-candidate-selector
 DOO2_SEL_LC=0       # hf-lc-candidate-selector
 DOO2_TASK_D0=1      # hf-task-d0
 DOO2_TASK_DPLUS=1   # hf-task-dplus
-DOO2_TASK_LC=0      # hf-task-lc
+DOO2_TASK_LC=1      # hf-task-lc
 
 INPUT_CASE=4        # Input case (See the input specification choices below.)
 NFILESMAX=1         # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
@@ -34,7 +34,7 @@ DEBUG=0             # Print out more information.
 ##############################################################################
 
 # Default settings
-JSON="$PWD/dpl-config_std.json"       # Run 3 configuration
+JSON="$PWD/dpl-config_run3.json"      # Run 3 configuration
 JSONRUN5="$PWD/dpl-config_run5.json"  # Run 5 configuration
 ISINPUTO2=0                           # Input files are in O2 format.
 ISMC=0                                # Switch for MC input
@@ -144,10 +144,11 @@ CMDROOT="root -b -q -l"
 ls $INPUTDIR/$STRING | head -n $NFILESMAX > $LISTFILES || { MsgErr "Error: Failed to make a list of input files."; exit 1; }
 
 # Make a copy of the default JSON file to modify it.
+JSON_EDIT=""
 if [[ $APPLYCUTS_D0 -eq 1 || $APPLYCUTS_LC -eq 1 ]]; then
-  JSONSEL="${JSON/.json/_sel.json}"
-  cp "$JSON" "$JSONSEL" || { MsgErr "Error"; exit 1; }
-  JSON="$JSONSEL"
+  JSON_EDIT="${JSON/.json/_sel.json}"
+  cp "$JSON" "$JSON_EDIT" || { MsgErr "Error"; exit 1; }
+  JSON="$JSON_EDIT"
 fi
 
 # Enable D0 selection.
@@ -248,7 +249,7 @@ if [ $DOO2 -eq 1 ]; then
   [ $DOO2_TASK_D0 -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_D0"; MsgSubStep "  hf-task-d0"; }
   [ $DOO2_TASK_DPLUS -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_DPLUS"; MsgSubStep "  hf-task-dplus"; }
   [ $DOO2_TASK_LC -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_LC"; MsgSubStep "  hf-task-lc"; }
-  O2EXEC=${O2EXEC:3} # Remove the starting " | ".
+  O2EXEC=${O2EXEC:3} # Remove the leading " | ".
   O2SCRIPT="script_o2.sh"
   cat << EOF > $O2SCRIPT # Create a temporary script with the full O2 command.
 #!/bin/bash
@@ -277,7 +278,7 @@ fi
 [ $DOCLEAN -eq 1 ] && {
   rm -f $LISTFILES_ALI && \
   rm -f $LISTFILES_O2 || { MsgErr "Error"; exit 1; }
-  [[ $APPLYCUTS_D0 -eq 1 || $APPLYCUTS_LC -eq 1 ]] && { rm "$JSONSEL" || { MsgErr "Error"; exit 1; } }
+  [ "$JSON_EDIT" ] && { rm "$JSON_EDIT" || { MsgErr "Error"; exit 1; } }
 }
 
 MsgStep "Done"

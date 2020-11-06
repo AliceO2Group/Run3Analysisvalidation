@@ -73,7 +73,7 @@ These steps are performed by default:
    *  Produces an `AnalysisResults_O2.root` file.
    *  Enabled by `DOO2=1`.
    *  If `SAVETREES=1`, tables are saved as trees in an `AnalysisResults_trees_O2.root` file.
-   *  Parameters of individual tasks are picked up from the JSON configuration file `dpl-config_std.json`.
+   *  Parameters of individual tasks are picked up from the JSON configuration file `dpl-config_run3.json`.
    *  List of input files is defined by the variable `O2INPUT` in `runtest.sh`. By default, it is the list of files produced by the conversion stage.
 1. Compare AliPhysics and O<sup>2</sup> output.
    *  Produces comparison plots `comparison_histos_2prong.pdf`, `comparison_ratios_2prong.pdf`, `comparison_histos_3prong.pdf`, `comparison_ratios_3prong.pdf`.
