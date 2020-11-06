@@ -24,8 +24,7 @@ DOO2_TASK_D0=1      # hf-task-d0
 DOO2_TASK_DPLUS=1   # hf-task-dplus
 DOO2_TASK_LC=0      # hf-task-lc
 
-INPUT_CASE=4        # Input type (Run 3) (See the choices below.)
-RUN5=0              # Use Run 5 settings and input.
+INPUT_CASE=4        # Input case (See the input specification choices below.)
 NFILESMAX=1         # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
 SAVETREES=0         # Save O2 tables to trees.
 PARALLELISE=0       # Parallelise O2 tasks. (not working!)
@@ -37,6 +36,7 @@ DEBUG=0             # Print out more information.
 # Default settings
 JSON="$PWD/dpl-config_std.json"       # Run 3 configuration
 JSONRUN5="$PWD/dpl-config_run5.json"  # Run 5 configuration
+ISINPUTO2=0                           # Input files are in O2 format.
 ISMC=0                                # Switch for MC input
 MASS=1.8                              # Hadron mass (only for comparison plots, not used)
 TRIGGERSTRINGRUN2=""                  # Run 2 trigger (not used)
@@ -85,9 +85,18 @@ if [ $INPUT_CASE -eq 6 ]; then # p-p real LHC17p
   STRING="17000282099019.1001/AliESDs.root"
 fi
 
-if [ $INPUT_CASE -eq 7 ]; then # Pb-Pb real LHC15o (AliHyperloop LHC15o_test sample)
-  find /mnt/temp/Run3data_Vit/LHC15o_converted -name AO2D.root | head -n $NFILESMAX > listrun3.txt || exit 1
-  DOCONVERT=0; DOALI=0; DOCOMPARE=0
+if [ $INPUT_CASE -eq 7 ]; then # Pb-Pb real LHC15o, converted (AliHyperloop LHC15o_test sample)
+  INPUTDIR="/mnt/temp/Run3data_Vit/LHC15o_converted/alice/data/2015/LHC15o/000244918/pass5_lowIR/PWGZZ/Run3_Conversion/96_20201013-1346_child_1/"
+  STRING="*/AO2D.root"
+  ISINPUTO2=1
+fi
+
+if [ $INPUT_CASE -eq 8 ]; then # Run 5, p-p MC 14 TeV MB
+  INPUTDIR="/data/Run5data/MB_100kev_100cmdefault_05112020"
+  STRING="AODRun5.*.root"
+  JSON="$JSONRUN5"
+  ISINPUTO2=1
+  ISMC=1
 fi
 
 # Message formatting
@@ -96,23 +105,9 @@ function MsgSubStep { echo -e "\e[1m$@\e[0m"; }
 function MsgWarn { echo -e "\e[1;36m$@\e[0m"; }
 function MsgErr { echo -e "\e[1;31m$@\e[0m"; }
 
-# Handle dependencies. (latest first)
-[ $DOO2_TASK_D0 -eq 1 ] && { DOO2_SEL_D0=1; }
-[ $DOO2_SEL_D0 -eq 1 ] && { DOO2_CAND_2PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
-[ $DOO2_CAND_2PRONG -eq 1 ] && { DOO2_SKIM=1; }
-[ $DOO2_TASK_DPLUS -eq 1 ] && { DOO2_CAND_3PRONG=1; }
-[ $DOO2_TASK_LC -eq 1 ] && { DOO2_SEL_LC=1; }
-[ $DOO2_SEL_LC -eq 1 ] && { DOO2_CAND_3PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
-[ $DOO2_CAND_3PRONG -eq 1 ] && { DOO2_SKIM=1; }
-
-# Delete created files.
-[ $DOCLEAN -eq 1 ] && { bash clean.sh || exit 1; }
-
 # Lists of input files
-LISTFILES_ALI="list_ali.txt"
-ls $INPUTDIR/$STRING | head -n $NFILESMAX > $LISTFILES_ALI || { MsgErr "Error: Failed to make a list of input files."; exit 1; }
-LISTFILES_O2="list_o2.txt"
-LISTFILES_O2_RUN5="listrun5.txt"
+LISTFILES_ALI="list_ali.txt"  # conversion and AliPhysics input
+LISTFILES_O2="list_o2.txt"    # O2 input
 
 # Output files names
 FILEOUT="AnalysisResults.root"
@@ -127,14 +122,26 @@ ENVO2="alienv setenv O2/latest -c"
 ENVALIO2="alienv setenv AliPhysics/latest,O2/latest -c"
 CMDROOT="root -b -q -l"
 
-# Default O2 input (Run 3)
-O2INPUT=$LISTFILES_O2
-# Adjust settings for Run5.
-if [ $RUN5 -eq 1 ]; then
-  MsgWarn "\nUsing Run 5 settings and input"
-  head -n $NFILESMAX $LISTFILES_O2_RUN5 > $O2INPUT || { MsgErr "Error"; exit 1; }
-  JSON="$JSONRUN5"
-fi
+# Handle dependencies. (latest first)
+[ $ISINPUTO2 -eq 1 ] && { DOCONVERT=0; DOALI=0; DOCOMPARE=0; }
+[ $DOO2_TASK_D0 -eq 1 ] && { DOO2_SEL_D0=1; }
+[ $DOO2_SEL_D0 -eq 1 ] && { DOO2_CAND_2PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
+[ $DOO2_CAND_2PRONG -eq 1 ] && { DOO2_SKIM=1; }
+[ $DOO2_TASK_DPLUS -eq 1 ] && { DOO2_CAND_3PRONG=1; }
+[ $DOO2_TASK_LC -eq 1 ] && { DOO2_SEL_LC=1; }
+[ $DOO2_SEL_LC -eq 1 ] && { DOO2_CAND_3PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
+[ $DOO2_CAND_3PRONG -eq 1 ] && { DOO2_SKIM=1; }
+
+########## END OF CONFIGURATION ##########
+
+########## START OF EXECUTION ##########
+
+# Delete created files.
+[ $DOCLEAN -eq 1 ] && { bash clean.sh || exit 1; }
+
+# Generate list of input files.
+[ $ISINPUTO2 -eq 1 ] && LISTFILES=$LISTFILES_O2 || LISTFILES=$LISTFILES_ALI
+ls $INPUTDIR/$STRING | head -n $NFILESMAX > $LISTFILES || { MsgErr "Error: Failed to make a list of input files."; exit 1; }
 
 # Make a copy of the default JSON file to modify it.
 if [[ $APPLYCUTS_D0 -eq 1 || $APPLYCUTS_LC -eq 1 ]]; then
@@ -157,7 +164,6 @@ if [ $APPLYCUTS_LC -eq 1 ]; then
 fi
 
 # Convert AliESDs.root to AO2D.root.
-[[ $RUN5 -eq 1 && $DOCONVERT -eq 1 ]] && { MsgWarn "\nSkipping conversion for Run 5"; DOCONVERT=0; }
 if [ $DOCONVERT -eq 1 ]; then
   [ -f "$LISTFILES_ALI" ] || { MsgErr "\nConverting: Error: File $LISTFILES_ALI does not exist."; exit 1; }
   MsgStep "Converting... ($(cat $LISTFILES_ALI | wc -l) files)"
@@ -166,7 +172,6 @@ if [ $DOCONVERT -eq 1 ]; then
 fi
 
 # Run AliPhysics tasks.
-[[ $RUN5 -eq 1 && $DOALI -eq 1 ]] && { MsgWarn "\nSkipping AliPhysics tasks for Run 5"; DOALI=0; }
 if [ $DOALI -eq 1 ]; then
   [ -f "$LISTFILES_ALI" ] || { MsgErr "\nALI tasks: Error: File $LISTFILES_ALI does not exist."; exit 1; }
   MsgStep "Running tasks with AliPhysics... ($(cat $LISTFILES_ALI | wc -l) files)"
@@ -178,8 +183,8 @@ fi
 
 # Run O2 tasks.
 if [ $DOO2 -eq 1 ]; then
-  [ -f "$O2INPUT" ] || { MsgErr "\nO2 tasks: Error: File $O2INPUT does not exist."; exit 1; }
-  MsgStep "Running tasks with O2... ($(cat $O2INPUT | wc -l) files)"
+  [ -f "$LISTFILES_O2" ] || { MsgErr "\nO2 tasks: Error: File $LISTFILES_O2 does not exist."; exit 1; }
+  MsgStep "Running tasks with O2... ($(cat $LISTFILES_O2 | wc -l) files)"
   rm -f $FILEOUT $FILEOUT_O2 || { MsgErr "Error"; exit 1; }
   # Basic common options
   O2ARGS="--shm-segment-size 16000000000 --configuration json://$JSON -b"
@@ -250,14 +255,13 @@ if [ $DOO2 -eq 1 ]; then
 $O2EXEC
 EOF
   [ $SAVETREES -eq 1 ] || FILEOUT_TREES=""
-  $ENVO2 bash o2_batch.sh $O2INPUT $JSON $O2SCRIPT $DEBUG $FILEOUT_TREES || exit 1 # Run the batch script in the O2 environment.
+  $ENVO2 bash o2_batch.sh $LISTFILES_O2 $JSON $O2SCRIPT $DEBUG $FILEOUT_TREES || exit 1 # Run the batch script in the O2 environment.
   rm -f $O2SCRIPT && \
   mv $FILEOUT $FILEOUT_O2 || { MsgErr "Error"; exit 1; }
   [[ $SAVETREES -eq 1 && "$FILEOUT_TREES" ]] && { mv $FILEOUT_TREES $FILEOUT_TREES_O2 || { MsgErr "Error"; exit 1; } }
 fi
 
 # Compare AliPhysics and O2 output.
-[[ $RUN5 -eq 1 && $DOCOMPARE -eq 1 ]] && { MsgWarn "\nSkipping comparison for Run 5"; DOCOMPARE=0; }
 if [ $DOCOMPARE -eq 1 ]; then
   LOGFILE="log_compare.log"
   MsgStep "Comparing... (logfile: $LOGFILE)"
