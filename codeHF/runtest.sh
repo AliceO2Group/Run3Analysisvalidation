@@ -136,7 +136,7 @@ MsgStep "Processing case $INPUT_CASE: $INPUT_LABEL"
 # Generate list of input files.
 [ $ISINPUTO2 -eq 1 ] && LISTFILES=$LISTFILES_O2 || LISTFILES=$LISTFILES_ALI
 ls $INPUT_DIR/$INPUT_FILES | head -n $NFILESMAX > $LISTFILES
-[ ${PIPESTATUS[0]} -eq 0 ] || { MsgErr "Error: Failed to make a list of input files."; exit 1; }
+[[ ${PIPESTATUS[0]} -eq 0 || ${PIPESTATUS[0]} -eq 141 ]] || { MsgErr "Error: Failed to make a list of input files."; exit 1; }
 
 # Make a copy of the default JSON file to modify it.
 JSON_EDIT=""
