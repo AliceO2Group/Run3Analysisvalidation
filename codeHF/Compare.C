@@ -38,50 +38,67 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
   // Histogram specification: axis label, Run 1 name, Run 3 path/name, rebin, log scale histogram, log scale ratio
 
   VecSpecHis vecHisTracks;
-  AddHistogram(vecHisTracks, "#it{p}_{T} before selections", "hPtAllTracks", "hf-produce-sel-track/hpt_nocuts", 2, 0, 0);
-  AddHistogram(vecHisTracks, "#it{p}_{T} after selections", "hPtSelTracks", "hf-produce-sel-track/hpt_cuts_2prong", 2, 0, 0);
-  AddHistogram(vecHisTracks, "DCA XY to prim vtx after selections", "hImpParSelTracks", "hf-produce-sel-track/hdcatoprimxy_cuts_2prong", 2, 0, 0);
+  AddHistogram(vecHisTracks, "#it{p}_{T} before selections (GeV/#it{c})", "hPtAllTracks", "hf-produce-sel-track/hpt_nocuts", 2, 0, 0);
+  AddHistogram(vecHisTracks, "#it{p}_{T} after selections (GeV/#it{c})", "hPtSelTracks", "hf-produce-sel-track/hpt_cuts_2prong", 2, 0, 0);
+  AddHistogram(vecHisTracks, "DCA XY to prim vtx after selections (cm)", "hImpParSelTracks", "hf-produce-sel-track/hdcatoprimxy_cuts_2prong", 2, 0, 0);
 
   VecSpecHis vecHisSkim;
-  AddHistogram(vecHisSkim, "secondary vtx x - 2prong", "h2ProngVertX", "hf-track-index-skims-creator/hvtx2_x", 5, 0, 0);
-  AddHistogram(vecHisSkim, "secondary vtx y - 2prong", "h2ProngVertY", "hf-track-index-skims-creator/hvtx2_y", 5, 0, 0);
-  AddHistogram(vecHisSkim, "secondary vtx z - 2prong", "h2ProngVertZ", "hf-track-index-skims-creator/hvtx2_z", 5, 0, 0);
-  AddHistogram(vecHisSkim, "secondary vtx x - 3prong", "hDplusVertX", "hf-track-index-skims-creator/hvtx3_x", 5, 0, 0);
-  AddHistogram(vecHisSkim, "secondary vtx y - 3prong", "hDplusVertY", "hf-track-index-skims-creator/hvtx3_y", 5, 0, 0);
-  AddHistogram(vecHisSkim, "secondary vtx z - 3prong", "hDplusVertZ", "hf-track-index-skims-creator/hvtx3_z", 5, 0, 0);
+  AddHistogram(vecHisSkim, "secondary vtx x - 2prong (cm)", "h2ProngVertX", "hf-track-index-skims-creator/hvtx2_x", 5, 0, 0);
+  AddHistogram(vecHisSkim, "secondary vtx y - 2prong (cm)", "h2ProngVertY", "hf-track-index-skims-creator/hvtx2_y", 5, 0, 0);
+  AddHistogram(vecHisSkim, "secondary vtx z - 2prong (cm)", "h2ProngVertZ", "hf-track-index-skims-creator/hvtx2_z", 5, 0, 0);
+  AddHistogram(vecHisSkim, "secondary vtx x - 3prong (cm)", "hDplusVertX", "hf-track-index-skims-creator/hvtx3_x", 5, 0, 0);
+  AddHistogram(vecHisSkim, "secondary vtx y - 3prong (cm)", "hDplusVertY", "hf-track-index-skims-creator/hvtx3_y", 5, 0, 0);
+  AddHistogram(vecHisSkim, "secondary vtx z - 3prong (cm)", "hDplusVertZ", "hf-track-index-skims-creator/hvtx3_z", 5, 0, 0);
 
   VecSpecHis vecHisCand2;
-  AddHistogram(vecHisCand2, "XX element of PV cov. matrix", "hCovMatPrimVXX2Prong", "hf-cand-creator-2prong/hCovPVXX", 1, 0, 0);
-  AddHistogram(vecHisCand2, "XX element of SV cov. matrix", "hCovMatSecVXX2Prong", "hf-cand-creator-2prong/hCovSVXX", 1, 0, 0);
+  AddHistogram(vecHisCand2, "XX element of PV cov. matrix (cm^2)", "hCovMatPrimVXX2Prong", "hf-cand-creator-2prong/hCovPVXX", 1, 0, 0);
+  AddHistogram(vecHisCand2, "XX element of SV cov. matrix (cm^2)", "hCovMatSecVXX2Prong", "hf-cand-creator-2prong/hCovSVXX", 1, 0, 0);
 
   VecSpecHis vecHisCand3;
-  AddHistogram(vecHisCand3, "XX element of PV cov. matrix", "hCovMatPrimVXX3Prong", "hf-cand-creator-3prong/hCovPVXX", 1, 0, 0);
-  AddHistogram(vecHisCand3, "XX element of SV cov. matrix", "hCovMatSecVXX3Prong", "hf-cand-creator-3prong/hCovSVXX", 1, 0, 0);
+  AddHistogram(vecHisCand3, "XX element of PV cov. matrix (cm^2)", "hCovMatPrimVXX3Prong", "hf-cand-creator-3prong/hCovPVXX", 1, 0, 0);
+  AddHistogram(vecHisCand3, "XX element of SV cov. matrix (cm^2)", "hCovMatSecVXX3Prong", "hf-cand-creator-3prong/hCovSVXX", 1, 0, 0);
 
   VecSpecHis vecHisD0;
-  AddHistogram(vecHisD0, "#it{p}_{T} prong 0", "hPtD0Dau0", "hf-task-d0/hptprong0", 2, 0, 0);
-  AddHistogram(vecHisD0, "#it{p}_{T} prong 1", "hPtD0Dau1", "hf-task-d0/hptprong1", 2, 0, 0);
-  AddHistogram(vecHisD0, "#it{p}_{T} D^{0}", "hPtD0", "hf-task-d0/hptcand", 2, 0, 0);
-  AddHistogram(vecHisD0, "2-prong mass (#pi K)", "hInvMassD0", "hf-task-d0/hmass", 2, 0, 0);
+  AddHistogram(vecHisD0, "#it{p}_{T} prong 0  (GeV/#it{c})", "hPtD0Dau0", "hf-task-d0/hptprong0", 2, 0, 0);
+  AddHistogram(vecHisD0, "#it{p}_{T} prong 1  (GeV/#it{c})", "hPtD0Dau1", "hf-task-d0/hptprong1", 2, 0, 0);
+  AddHistogram(vecHisD0, "#it{p}_{T} D^{0}  (GeV/#it{c})", "hPtD0", "hf-task-d0/hptcand", 2, 0, 0);
+  AddHistogram(vecHisD0, "2-prong mass (#pi K) (GeV/#it{c}^{2})", "hInvMassD0", "hf-task-d0/hmass", 2, 0, 0);
   AddHistogram(vecHisD0, "d0 prong 0 (cm)", "hImpParD0Dau0", "hf-task-d0/hd0Prong0", 2, 0, 0);
   AddHistogram(vecHisD0, "d0 prong 1 (cm)", "hImpParD0Dau1", "hf-task-d0/hd0Prong1", 2, 0, 0);
   AddHistogram(vecHisD0, "d0d0 (cm^{2})", "hd0Timesd0", "hf-task-d0/hd0d0", 2, 0, 0);
-  AddHistogram(vecHisD0, "impact parameter error", "hImpParErrD0Dau", "hf-task-d0/hImpParErr", 1, 0, 0);
-  AddHistogram(vecHisD0, "decay length", "hDecLenD0", "hf-task-d0/hdeclength", 2, 0, 0);
-  AddHistogram(vecHisD0, "decay length XY", "hDecLenXYD0", "hf-task-d0/hdeclengthxy", 2, 0, 0);
-  AddHistogram(vecHisD0, "decay length error", "hDecLenErrD0", "hf-task-d0/hDecLenErr", 1, 0, 0);
-  AddHistogram(vecHisD0, "decay length XY error", "hDecLenXYErrD0", "hf-task-d0/hDecLenXYErr", 1, 0, 0);
+  AddHistogram(vecHisD0, "impact parameter error (cm)", "hImpParErrD0Dau", "hf-task-d0/hImpParErr", 1, 0, 0);
+  AddHistogram(vecHisD0, "decay length (cm)", "hDecLenD0", "hf-task-d0/hdeclength", 2, 0, 0);
+  AddHistogram(vecHisD0, "decay length XY (cm)", "hDecLenXYD0", "hf-task-d0/hdeclengthxy", 2, 0, 0);
+  AddHistogram(vecHisD0, "decay length error (cm)", "hDecLenErrD0", "hf-task-d0/hDecLenErr", 1, 0, 0);
+  AddHistogram(vecHisD0, "decay length XY error (cm)", "hDecLenXYErrD0", "hf-task-d0/hDecLenXYErr", 1, 0, 0);
 
   VecSpecHis vecHisDPlus;
-  AddHistogram(vecHisDPlus, "3-prong mass (#pi K #pi)", "hInvMassDplus", "hf-task-dplus/hMass", 2, 0, 0);
+  AddHistogram(vecHisDPlus, "3-prong mass (#pi K #pi) (GeV/#it{c}^{2})", "hInvMassDplus", "hf-task-dplus/hMass", 5, 0, 0);
+  AddHistogram(vecHisDPlus, "secondary vtx x - 3prong (cm)", "hDplusVertX", "hf-track-index-skims-creator/hvtx3_x", 5, 0, 0);
+  AddHistogram(vecHisDPlus, "secondary vtx y - 3prong (cm)", "hDplusVertY", "hf-track-index-skims-creator/hvtx3_y", 5, 0, 0);
+  AddHistogram(vecHisDPlus, "secondary vtx z - 3prong (cm)", "hDplusVertZ", "hf-track-index-skims-creator/hvtx3_z", 5, 0, 0);
+  AddHistogram(vecHisDPlus, "#it{p}_{T} D^{+} (GeV/#it{c})", "hPtDlpus", "hf-task-dplus/hPt", 2, 0, 0);
+  AddHistogram(vecHisDPlus, "decay length (cm)", "hDecLenDplus", "hf-task-dplus/hDecayLength", 4, 0, 0);
+  AddHistogram(vecHisDPlus, "decay length XY (cm)", "hDecLenXYDplus", "hf-task-dplus/hDecayLengthXY", 4, 0, 0);
+  AddHistogram(vecHisDPlus, "norm. decay length XY", "hNormDecLenXYDplus", "hf-task-dplus/hNormalisedDecayLengthXY", 2, 0, 0);
+  AddHistogram(vecHisDPlus, "cos. pointing angle", "hCosPointDplus", "hf-task-dplus/hCPA", 2, 0, 0);
+  AddHistogram(vecHisDPlus, "cos. pointing angle XY", "hCosPointXYDplus", "hf-task-dplus/hCPAxy", 2, 0, 0);
+  AddHistogram(vecHisDPlus, "impact par. xy (cm)", "hImpParXYDplus", "hf-task-dplus/hImpactParameterXY", 4, 0, 0);
+  AddHistogram(vecHisDPlus, "norm. IP", "hNormIPDplus", "hf-task-dplus/hMaxNormalisedDeltaIP", 4, 0, 0);
+  AddHistogram(vecHisDPlus, "sq. sum of prong imp. par. (cm^2)", "hSumSqImpParDplusDau", "hf-task-dplus/hImpactParameterProngSqSum", 2, 0, 0);
+  AddHistogram(vecHisDPlus, "decay length error (cm)", "hDecLenErrDplus", "hf-task-dplus/hDecayLengthError", 2, 0, 0);
+  AddHistogram(vecHisDPlus, "decay length xy error (cm)", "hDecLenXYErrDplus", "hf-task-dplus/hDecayLengthXYError", 2, 0, 0);
+  AddHistogram(vecHisDPlus, "prong impact parameter error (cm)", "hImpParErrDplusDau", "hf-task-dplus/hImpactParameterError", 2, 0, 0);
+  AddHistogram(vecHisDPlus, "XX element of PV cov. matrix (cm^2)", "hCovMatPrimVXX3Prong", "hf-cand-creator-3prong/hCovPVXX", 2, 0, 0);
+  AddHistogram(vecHisDPlus, "XX element of 3-prong SV cov. matrix (cm^2)", "hCovMatSecVXX3Prong", "hf-cand-creator-3prong/hCovSVXX", 2, 0, 0);
 
   VecSpecHis vecHisLc;
-  AddHistogram(vecHisLc, "3-prong mass (p K #pi)", "hInvMassLc", "hf-task-lc/hmass", 2, 0, 0);
-  AddHistogram(vecHisLc, "#it{p}_{T} prong 0", "hPtLcDau0", "hf-task-lc/hptprong0", 2, 0, 0);
-  AddHistogram(vecHisLc, "#it{p}_{T} prong 1", "hPtLcDau1", "hf-task-lc/hptprong1", 2, 0, 0);
-  AddHistogram(vecHisLc, "#it{p}_{T} prong 1", "hPtLcDau2", "hf-task-lc/hptprong2", 2, 0, 0);
-  AddHistogram(vecHisLc, "#it{p}_{T} #Lambda_{c}", "hPtLc", "hf-task-lc/hptcand", 2, 0, 0);
-  AddHistogram(vecHisLc, "decay length", "hDecLenLc", "hf-task-lc/hdeclength", 2, 0, 0);
+  AddHistogram(vecHisLc, "3-prong mass (p K #pi)(GeV/#it{c}^{2}) ", "hInvMassLc", "hf-task-lc/hmass", 2, 0, 0);
+  AddHistogram(vecHisLc, "#it{p}_{T} prong 0  (GeV/#it{c})", "hPtLcDau0", "hf-task-lc/hptprong0", 2, 0, 0);
+  AddHistogram(vecHisLc, "#it{p}_{T} prong 1  (GeV/#it{c})", "hPtLcDau1", "hf-task-lc/hptprong1", 2, 0, 0);
+  AddHistogram(vecHisLc, "#it{p}_{T} prong 2  (GeV/#it{c})", "hPtLcDau2", "hf-task-lc/hptprong2", 2, 0, 0);
+  AddHistogram(vecHisLc, "#it{p}_{T} #Lambda_{c}  (GeV/#it{c})", "hPtLc", "hf-task-lc/hptcand", 2, 0, 0);
+  AddHistogram(vecHisLc, "decay length (cm)", "hDecLenLc", "hf-task-lc/hdeclength", 2, 0, 0);
   AddHistogram(vecHisLc, "CPA", "hCosPointLc", "hf-task-lc/hCPA", 2, 0, 0);
 
   // vector of specifications of vectors: name, VecSpecHis, pads X, pads Y
@@ -99,7 +116,7 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
   if (options.Contains("d0"))
     vecSpecVecSpec.push_back(std::make_tuple("d0", vecHisD0, 5, 3));
   if (options.Contains("dplus"))
-    vecSpecVecSpec.push_back(std::make_tuple("dplus", vecHisDPlus, 5, 3));
+    vecSpecVecSpec.push_back(std::make_tuple("dplus", vecHisDPlus, 5, 4));
   if (options.Contains("lc"))
     vecSpecVecSpec.push_back(std::make_tuple("lc", vecHisLc, 5, 3));
 
