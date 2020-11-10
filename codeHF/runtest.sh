@@ -37,13 +37,19 @@ DEBUG=0             # Print out more information.
 INPUT_LABEL="nothing"                 # Input description
 INPUT_DIR=""                          # Input directory
 INPUT_FILES="*/AliESDs.root"          # Input file pattern
-JSON="$PWD/dpl-config_run3.json"      # Run 3 configuration
-JSONRUN5="$PWD/dpl-config_run5.json"  # Run 5 configuration
+JSON="$PWD/dpl-config_run3.json"      # Default JSON configuration
 ISINPUTO2=0                           # Input files are in O2 format.
 ISMC=0                                # Switch for MC input
 MASS=1.8                              # Hadron mass (only for comparison plots, not used)
 TRIGGERSTRINGRUN2=""                  # Run 2 trigger (not used)
 TRIGGERBITRUN3=-1                     # Run 3 trigger (not used)
+
+# Output files names
+FILEOUT="AnalysisResults.root"
+FILEOUT_ALI="AnalysisResults_ALI.root"
+FILEOUT_O2="AnalysisResults_O2.root"
+FILEOUT_TREES="AnalysisResults_trees.root"
+FILEOUT_TREES_O2="AnalysisResults_trees_O2.root"
 
 # Input specification
 case $INPUT_CASE in
@@ -85,7 +91,24 @@ case $INPUT_CASE in
     INPUT_LABEL="Run 5, p-p MC 14 TeV MB"
     INPUT_DIR="/data/Run5data/MB_100kev_100cmdefault_05112020"
     INPUT_FILES="AODRun5.*.root"
-    JSON="$JSONRUN5"
+    JSON="$PWD/dpl-config_run5.json"
+    FILEOUT_O2="output/AnalysisResults_O2_Run5.root"
+    ISINPUTO2=1
+    ISMC=1;;
+  9)
+    INPUT_LABEL="Run 5, p-p MC 14 TeV MB Scenario 2"
+    INPUT_DIR="/data/Run5data/CCBAR_1Mevents_scenario2_09112020"
+    INPUT_FILES="AODRun5.*.root"
+    JSON="$PWD/dpl-config_run5.json"
+    FILEOUT_O2="output/AnalysisResults_O2_Run5_Scenario2.root"
+    ISINPUTO2=1
+    ISMC=1;;
+  10)
+    INPUT_LABEL="Run 5, p-p MC 14 TeV MB Scenario 3"
+    INPUT_DIR="/data/Run5data/CCBAR_1Mevents_scenario3_09112020"
+    INPUT_FILES="AODRun5.*.root"
+    JSON="$PWD/dpl-config_run5.json"
+    FILEOUT_O2="output/AnalysisResults_O2_Run5_Scenario3.root"
     ISINPUTO2=1
     ISMC=1;;
 esac
@@ -99,13 +122,6 @@ function MsgErr { echo -e "\e[1;31m$@\e[0m"; }
 # Lists of input files
 LISTFILES_ALI="list_ali.txt"  # conversion and AliPhysics input
 LISTFILES_O2="list_o2.txt"    # O2 input
-
-# Output files names
-FILEOUT="AnalysisResults.root"
-FILEOUT_ALI="AnalysisResults_ALI.root"
-FILEOUT_O2="AnalysisResults_O2.root"
-FILEOUT_TREES="AnalysisResults_trees.root"
-FILEOUT_TREES_O2="AnalysisResults_trees_O2.root"
 
 # Steering commands
 ENVALI="alienv setenv AliPhysics/latest -c"
@@ -252,7 +268,6 @@ $O2EXEC
 EOF
   [ $SAVETREES -eq 1 ] || FILEOUT_TREES=""
   $ENVO2 bash o2_batch.sh $LISTFILES_O2 $JSON $O2SCRIPT $DEBUG $FILEOUT_TREES || exit 1 # Run the batch script in the O2 environment.
-  rm -f $O2SCRIPT && \
   mv $FILEOUT $FILEOUT_O2 || { MsgErr "Error"; exit 1; }
   [[ $SAVETREES -eq 1 && "$FILEOUT_TREES" ]] && { mv $FILEOUT_TREES $FILEOUT_TREES_O2 || { MsgErr "Error"; exit 1; } }
 fi
@@ -272,6 +287,7 @@ fi
 # Delete created files.
 [ $DOCLEAN -eq 1 ] && {
   rm -f $LISTFILES_ALI && \
+  rm -f $O2SCRIPT && \
   rm -f $LISTFILES_O2 || { MsgErr "Error"; exit 1; }
   [ "$JSON_EDIT" ] && { rm "$JSON_EDIT" || { MsgErr "Error"; exit 1; } }
 }

@@ -64,7 +64,7 @@ EOF
 done < "$LISTINPUT"
 
 echo "Running O2 jobs..."
-parallel --halt soon,fail=100% < $ListRunScripts > $LogFile 2>&1
+parallel --timeout 200% --delay 0.1 --halt soon,fail=100% < $ListRunScripts > $LogFile 2>&1
 ExitCode=$?
 find /tmp -group $USER -name "localhost*_*" -delete 2> /dev/null # Delete all user's sockets.
 [ $ExitCode -ne 0 ] && { MsgErr "Error\nCheck $(realpath $LogFile)"; exit 1; }
@@ -72,14 +72,15 @@ find /tmp -group $USER -name "localhost*_*" -delete 2> /dev/null # Delete all us
 rm -f $ListRunScripts || { MsgErr "Error"; exit 1; }
 
 echo "Merging output files... (output file: $FILEOUT, logfile: $LogFile)"
-hadd $FILEOUT @"$FilesToMerge" >> $LogFile 2>&1 || \
-{ MsgErr "Error\nCheck $(realpath $LogFile)"; tail -n 2 "$LogFile"; exit 1; }
+FilesToMergeList=$(cat $FilesToMerge)
+hadd -f -k $FILEOUT $FilesToMergeList >> $LogFile 2>&1 || \
+{ MsgErr "Error in merging\nCheck $(realpath $LogFile)"; tail -n 2 "$LogFile"; exit 1; }
 rm -f $FilesToMerge || { MsgErr "Error"; exit 1; }
 
 [ "$FILEOUT_TREE" ] && {
   echo "Merging output trees... (output file: $FILEOUT_TREE, logfile: $LogFile)"
   hadd $FILEOUT_TREE @"$FilesToMergeTree" >> $LogFile 2>&1 || \
-  { MsgErr "Error\nCheck $(realpath $LogFile)"; tail -n 2 "$LogFile"; exit 1; }
+  { MsgErr "Error in merging trees\nCheck $(realpath $LogFile)"; tail -n 2 "$LogFile"; exit 1; }
   rm -f $FilesToMergeTree || { MsgErr "Error"; exit 1; }
 }
 
