@@ -97,7 +97,8 @@ def main(files, th1=True, th2=False, th3=False):
     fout = TFile("Comparison.root", "RECREATE")
     for i in drawn:
         obj = drawn[i][0]
-        obj.Write()
+        print("Writing", obj.GetName())
+        obj.Write(obj.GetName().replace("/", "_folder_"))
     fout.Close()
 
 
