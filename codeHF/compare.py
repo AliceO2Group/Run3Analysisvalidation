@@ -34,7 +34,8 @@ def compare(objs, add_leg_title=True):
         can = d[0]
         can.cd()
         gPad.SetLogy()
-        leg = TLegend(.8, .8, .99, .99, can.GetName())
+        leg = TLegend(.1, .9, .9, .99, can.GetName())
+        leg.SetNColumns(2)
         d.append(leg)
         for j in can.GetListOfPrimitives():
             leg.AddEntry(j)
@@ -74,6 +75,7 @@ def main(files, th1=True, th2=False, th3=False):
         fn = i.GetName()
         fn = fn.replace(".root", "")
         fn = fn.replace("AnalysisResults_O2_Run5_", "")
+        fn = fn.split("/")[-1]
         h[fn] = {}
         l = i.GetListOfKeys()
         for j in l:
