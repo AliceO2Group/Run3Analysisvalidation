@@ -11,6 +11,11 @@ FILEOUT_TREE="$5"
 FILEOUT="AnalysisResults.root"
 
 SCRIPT="$(realpath $SCRIPT)"
+ok=1
+for file in "$SCRIPT" "$JSON"; do
+  [ -f "$file" ] || { MsgErr "Error: File $file does not exist."; ok=0; }
+done
+[ $ok -ne 1 ] && exit 1
 
 LogFile="log_o2.log"
 FilesToMerge="ListOutToMergeO2.txt"
