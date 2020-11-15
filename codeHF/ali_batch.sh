@@ -5,9 +5,12 @@ source messages.sh || { MsgErr "Error: Failed to load message formatting."; exit
 
 LISTINPUT="$1"
 JSON="$2"
-ISMC=$3
+SCRIPT="$3"
 DEBUG=$4
 FILEOUT="AnalysisResults.root"
+
+SCRIPT="$(realpath $SCRIPT)"
+JSON="$(realpath $JSON)"
 
 LogFile="log_ali.log"
 FilesToMerge="ListOutToMergeALI.txt"
@@ -36,7 +39,7 @@ while read FileIn; do
   cat << EOF > $RUNSCRIPT # Create the job script.
 #!/bin/bash
 cd "$DirBase/$DirOut"
-root -b -q -l "$DirBase/RunHFTaskLocal.C(\"$FileIn\", \"$JSON\", $ISMC)" > $LogFile 2>&1
+bash $SCRIPT "$FileIn" "$JSON" > $LogFile 2>&1
 EOF
   echo "bash $(realpath $RUNSCRIPT)" >> "$ListRunScripts" && \
   ((Index+=1)) && \
