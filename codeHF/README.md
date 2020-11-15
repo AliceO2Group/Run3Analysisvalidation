@@ -64,17 +64,18 @@ bash runtest.sh
 These steps are performed by default:
 
 1. Convert input data from the Run 1+2 format into the Run 3 format.
-   *  Specified input `AliESDs.root` files are converted into `AO2D.root` files.
+   *  Specified input `AliESDs.root` files are converted into `AO2D.root` files in the `output_conversion` directory.
    *  Enabled by `DOCONVERT=1`.
 1. Run the analysis tasks with AliPhysics.
-   *  Produces an `AnalysisResults_ALI.root` file.
+   *  Produces an `AnalysisResults_ALI.root` file, resulting from merging output files in the `output_ali` directory.
    *  Enabled by `DOALI=1`.
 1. Run the analysis tasks with O<sup>2</sup>.
-   *  Produces an `AnalysisResults_O2.root` file.
+   *  Produces an `AnalysisResults_O2.root` file, resulting from merging output files in the `output_o2` directory.
    *  Enabled by `DOO2=1`.
    *  If `SAVETREES=1`, tables are saved as trees in an `AnalysisResults_trees_O2.root` file.
    *  Parameters of individual tasks are picked up from the JSON configuration file `dpl-config_run3.json`.
-   *  List of input files is defined by the variable `O2INPUT` in `runtest.sh`. By default, it is the list of files produced by the conversion stage.
+   *  By default, the list of files includes files produced by the conversion stage.
+   *  In case `ISINPUTO2=1` is set in the Input specification section, the conversion, AliPhysics tasks, and comparison steps are disabled and O<sup>2</sup> tasks are executed using the specified input files directly.
 1. Compare AliPhysics and O<sup>2</sup> output.
    *  Produces comparison plots `comparison_histos_2prong.pdf`, `comparison_ratios_2prong.pdf`, `comparison_histos_3prong.pdf`, `comparison_ratios_3prong.pdf`.
    *  Enabled by `DOCOMPARE=1`.
@@ -86,3 +87,4 @@ You should have got all the output files in the `codeHF` directory.
 To confirm that the output of the default settings looks as expected, compare the produced plots with the reference
 `comparison_histos_2prong_ref.pdf`, `comparison_ratios_2prong_ref.pdf`, `comparison_histos_3prong_ref.pdf`, `comparison_ratios_3prong_ref.pdf`.
 If any step fails, the script will exit with the message `Error` and you should look into the respective log file to investigate the problem.
+If the main log file mentions failed jobs, inspect the respective log file in the directory of the corresponding job.
