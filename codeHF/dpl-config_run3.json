@@ -84,7 +84,12 @@
         "d_nSigmaTOFCombined": "5."
     },
     "hf-task-d0": {
-        "cutEtaCandMax": "0.8",
+        "cutEtaCandMax": "-1.",
+        "d_selectionFlagD0": "0",
+        "d_selectionFlagD0bar": "0"
+    },
+    "hf-task-d0-mc": {
+        "cutEtaCandMax": "-1.",
         "d_selectionFlagD0": "0",
         "d_selectionFlagD0bar": "0"
     },
