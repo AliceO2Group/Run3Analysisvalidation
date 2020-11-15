@@ -2,14 +2,16 @@
 
 # Script to run Run 2 to Run 3 conversion in jobs.
 
-# Load utilities.
-source utilities.sh || ErrExit "Failed to load utilities."
-
 LISTINPUT="$1"
 LISTOUTPUT="$2"
 ISMC=$3
 DEBUG=$4
 FILEOUT="AO2D.root"
+
+[ $DEBUG -eq 1 ] && echo "Running $0"
+
+# Load utilities.
+source utilities.sh || ErrExit "Failed to load utilities."
 
 LogFile="log_convert.log"
 ListInOne="list_input.txt"

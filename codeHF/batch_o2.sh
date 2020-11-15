@@ -2,15 +2,17 @@
 
 # Script to run O2 tasks in jobs.
 
-# Load utilities.
-source utilities.sh || ErrExit "Failed to load utilities."
-
 LISTINPUT="$1"
 JSON="$2"
 SCRIPT="$3"
 DEBUG=$4
 FILEOUT_TREE="$5"
 FILEOUT="AnalysisResults.root"
+
+[ $DEBUG -eq 1 ] && echo "Running $0"
+
+# Load utilities.
+source utilities.sh || ErrExit "Failed to load utilities."
 
 CheckFile "$SCRIPT"
 CheckFile "$JSON"

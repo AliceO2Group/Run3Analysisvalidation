@@ -86,6 +86,7 @@ if [ $DOCONVERT -eq 1 ]; then
   CheckFile "$LISTFILES_ALI"
   MsgStep "Converting... ($(cat $LISTFILES_ALI | wc -l) files)"
   [ $ISMC -eq 1 ] && MsgWarn "Using MC mode"
+  [ $DEBUG -eq 1 ] && echo "Loading AliPhysics..."
   $ENVALI bash batch_convert.sh $LISTFILES_ALI $LISTFILES_O2 $ISMC $DEBUG || exit 1 # Run the batch script in the ALI environment.
 fi
 
@@ -96,6 +97,7 @@ if [ $DOALI -eq 1 ]; then
   rm -f $FILEOUT $FILEOUT_ALI || ErrExit
   MakeScriptAli || ErrExit
   CheckFile "$SCRIPT_ALI"
+  [ $DEBUG -eq 1 ] && echo "Loading AliPhysics..."
   $ENVALI bash batch_ali.sh $LISTFILES_ALI $JSON $SCRIPT_ALI $DEBUG || exit 1 # Run the batch script in the ALI environment.
   #$ENVALIO2 bash batch_ali.sh $LISTFILES_ALI $JSON $SCRIPT_ALI $DEBUG || exit 1 # Run the batch script in the ALI+O2 environment.
   mv $FILEOUT $FILEOUT_ALI || ErrExit
@@ -109,6 +111,7 @@ if [ $DOO2 -eq 1 ]; then
   MakeScriptO2 || ErrExit
   CheckFile "$SCRIPT_O2"
   [ $SAVETREES -eq 1 ] || FILEOUT_TREES=""
+  [ $DEBUG -eq 1 ] && echo "Loading O2..."
   $ENVO2 bash batch_o2.sh $LISTFILES_O2 $JSON $SCRIPT_O2 $DEBUG $FILEOUT_TREES || exit 1 # Run the batch script in the O2 environment.
   mv $FILEOUT $FILEOUT_O2 || ErrExit
   [[ $SAVETREES -eq 1 && "$FILEOUT_TREES" ]] && { mv $FILEOUT_TREES $FILEOUT_TREES_O2 || ErrExit; }
@@ -122,7 +125,8 @@ if [ $DOPOSTPROCESS -eq 1 ]; then
   CheckFile "$FILEOUT_O2"
   MakeScriptPostprocess || ErrExit
   CheckFile "$SCRIPT_POSTPROCESS"
-  $ENVALI bash $SCRIPT_POSTPROCESS "$FILEOUT_O2" "$FILEOUT_ALI" > $LOGFILE 2>&1 || ErrExit
+  [ $DEBUG -eq 1 ] && echo "Loading AliPhysics..."
+  $ENVALI bash $SCRIPT_POSTPROCESS "$FILEOUT_O2" "$FILEOUT_ALI" > $LOGFILE 2>&1 || ErrExit "\nCheck $(realpath $LOGFILE)"
 fi
 
 # Delete created files.
