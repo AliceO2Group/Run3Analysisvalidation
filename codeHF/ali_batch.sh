@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Load message formatting.
-source messages.sh || { MsgErr "Error: Failed to load message formatting."; exit 1; }
+# Load utilities.
+source utilities.sh || { MsgErr "Error: Failed to load utilities."; exit 1; }
 
 LISTINPUT="$1"
 JSON="$2"

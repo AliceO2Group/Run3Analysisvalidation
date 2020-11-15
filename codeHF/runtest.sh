@@ -28,8 +28,8 @@ ISMC=0                          # Switch for MC input
 TRIGGERSTRINGRUN2=""            # Run 2 trigger (not used)
 TRIGGERBITRUN3=-1               # Run 3 trigger (not used)
 
-# Load message formatting.
-source messages.sh || { MsgErr "Error: Failed to load message formatting."; exit 1; }
+# Load utilities.
+source utilities.sh || { MsgErr "Error: Failed to load utilities."; exit 1; }
 
 # Lists of input files
 LISTFILES_ALI="list_ali.txt"  # conversion and AliPhysics input
