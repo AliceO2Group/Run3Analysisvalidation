@@ -54,10 +54,10 @@ SCRIPT_POSTPROCESS="script_postprocess.sh"
 source utilities.sh || ErrExit "Failed to load utilities."
 
 # Load input specification.
-source "$CONFIG_INPUT" || ErrExit "Error: Failed to load input specification."
+source "$CONFIG_INPUT" || ErrExit "Failed to load input specification."
 
 # Load tasks configuration.
-source "$CONFIG_TASKS" || ErrExit "Error: Failed to load tasks configuration."
+source "$CONFIG_TASKS" || ErrExit "Failed to load tasks configuration."
 
 ########## END OF CONFIGURATION ##########
 
