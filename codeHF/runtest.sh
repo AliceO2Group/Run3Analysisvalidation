@@ -59,9 +59,6 @@ source "$CONFIG_INPUT" || { MsgErr "Error: Failed to load input specification.";
 # Load tasks configuration.
 source "$CONFIG_TASKS" || { MsgErr "Error: Failed to load tasks configuration."; exit 1; }
 
-# Disable incompatible steps.
-[ $ISINPUTO2 -eq 1 ] && { DOCONVERT=0; DOALI=0; DOPOSTPROCESS=0; }
-
 ########## END OF CONFIGURATION ##########
 
 ########## START OF EXECUTION ##########
