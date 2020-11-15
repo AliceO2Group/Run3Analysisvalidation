@@ -51,6 +51,7 @@ CMDROOT="root -b -q -l"
 
 # Step scripts
 SCRIPT_O2="script_o2.sh"
+SCRIPT_ALI="script_ali.sh"
 
 # Load input specification.
 source "$CONFIG_INPUT" || { MsgErr "Error: Failed to load input specification."; exit 1; }
@@ -92,8 +93,9 @@ if [ $DOALI -eq 1 ]; then
   [ -f "$LISTFILES_ALI" ] || { MsgErr "\nALI tasks: Error: File $LISTFILES_ALI does not exist."; exit 1; }
   MsgStep "Running tasks with AliPhysics... ($(cat $LISTFILES_ALI | wc -l) files)"
   rm -f $FILEOUT $FILEOUT_ALI || { MsgErr "Error"; exit 1; }
-  $ENVALI bash ali_batch.sh $LISTFILES_ALI $JSON $ISMC $DEBUG || exit 1 # Run the batch script in the ALI environment.
-  #$ENVALIO2 bash ali_batch.sh $LISTFILES_ALI $JSON $ISMC $DEBUG || exit 1 # Run the batch script in the ALI+O2 environment.
+  MakeScriptAli || { MsgErr "Error"; exit 1; }
+  $ENVALI bash ali_batch.sh $LISTFILES_ALI $JSON $SCRIPT_ALI $DEBUG || exit 1 # Run the batch script in the ALI environment.
+  #$ENVALIO2 bash ali_batch.sh $LISTFILES_ALI $JSON $SCRIPT_ALI $DEBUG || exit 1 # Run the batch script in the ALI+O2 environment.
   mv $FILEOUT $FILEOUT_ALI || { MsgErr "Error"; exit 1; }
 fi
 

@@ -136,3 +136,13 @@ JSON="\$1"
 $O2EXEC
 EOF
 }
+
+function MakeScriptAli {
+  ALIEXEC="root -b -q -l \"$(realpath RunHFTaskLocal.C)(\\\"\$FileIn\\\", \\\"\$JSON\\\", $ISMC)\""
+  cat << EOF > $SCRIPT_ALI
+#!/bin/bash
+FileIn="\$1"
+JSON="\$2"
+$ALIEXEC
+EOF
+}
