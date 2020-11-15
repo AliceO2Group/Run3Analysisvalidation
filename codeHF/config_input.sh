@@ -5,8 +5,8 @@
 INPUT_CASE=4  # Input case
 NFILESMAX=1   # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
 
-JSONRUN3="$PWD/dpl-config_run3.json"  # Run 3 tasks parameters
-JSONRUN5="$PWD/dpl-config_run5.json"  # Run 5 tasks parameters
+JSONRUN3="dpl-config_run3.json"  # Run 3 tasks parameters
+JSONRUN5="dpl-config_run5.json"  # Run 5 tasks parameters
 JSON="$JSONRUN3"
 
 INPUT_FILES="*/AliESDs.root"  # Input file pattern
