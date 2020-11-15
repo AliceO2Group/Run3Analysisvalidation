@@ -44,11 +44,8 @@ MASS=1.8                        # Hadron mass (only for comparison plots, not us
 TRIGGERSTRINGRUN2=""            # Run 2 trigger (not used)
 TRIGGERBITRUN3=-1               # Run 3 trigger (not used)
 
-# Message formatting
-function MsgStep { echo -e "\n\e[1;32m$@\e[0m"; }
-function MsgSubStep { echo -e "\e[1m$@\e[0m"; }
-function MsgWarn { echo -e "\e[1;36m$@\e[0m"; }
-function MsgErr { echo -e "\e[1;31m$@\e[0m"; }
+# Load message formatting.
+source messages.sh || { MsgErr "Error: Failed to load message formatting."; exit 1; }
 
 # Load input specification.
 source "$INPUT_CONFIG" || { MsgErr "Error: Failed to load input specification."; exit 1; }
