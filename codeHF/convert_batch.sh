@@ -33,7 +33,7 @@ while read FileIn; do
   FileOut="$DirOut/$FILEOUT"
   echo "$DirBase/$FileOut" >> $DirBase/$LISTOUTPUT || { MsgErr "Error"; exit 1; }
   RUNSCRIPT="run.sh"
-  cat << EOF > $RUNSCRIPT # Create a temporary script.
+  cat << EOF > $RUNSCRIPT # Create the job script.
 #!/bin/bash
 cd "$DirBase/$DirOut"
 root -b -q -l "$DirBase/convertAO2D.C(\"$ListInOne\", $ISMC)" > $LogFile 2>&1
