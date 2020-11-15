@@ -88,7 +88,7 @@ fi
 # Run AliPhysics tasks.
 if [ $DOALI -eq 1 ]; then
   [ -f "$LISTFILES_ALI" ] || { MsgErr "\nALI tasks: Error: File $LISTFILES_ALI does not exist."; exit 1; }
-  MsgStep "Running tasks with AliPhysics... ($(cat $LISTFILES_ALI | wc -l) files)"
+  MsgStep "Running AliPhysics tasks... ($(cat $LISTFILES_ALI | wc -l) files)"
   rm -f $FILEOUT $FILEOUT_ALI || { MsgErr "Error"; exit 1; }
   MakeScriptAli || { MsgErr "Error"; exit 1; }
   $ENVALI bash ali_batch.sh $LISTFILES_ALI $JSON $SCRIPT_ALI $DEBUG || exit 1 # Run the batch script in the ALI environment.
@@ -99,7 +99,7 @@ fi
 # Run O2 tasks.
 if [ $DOO2 -eq 1 ]; then
   [ -f "$LISTFILES_O2" ] || { MsgErr "\nO2 tasks: Error: File $LISTFILES_O2 does not exist."; exit 1; }
-  MsgStep "Running tasks with O2... ($(cat $LISTFILES_O2 | wc -l) files)"
+  MsgStep "Running O2 tasks... ($(cat $LISTFILES_O2 | wc -l) files)"
   rm -f $FILEOUT $FILEOUT_O2 || { MsgErr "Error"; exit 1; }
   MakeScriptO2 || { MsgErr "Error"; exit 1; }
   [ $SAVETREES -eq 1 ] || FILEOUT_TREES=""
@@ -110,14 +110,15 @@ fi
 
 # Run output postprocessing. (Compare AliPhysics and O2 output.)
 if [ $DOPOSTPROCESS -eq 1 ]; then
-  LOGFILE="log_compare.log"
-  MsgStep "Comparing... (logfile: $LOGFILE)"
+  LOGFILE="log_postprocess.log"
+  MsgStep "Postprocessing... (logfile: $LOGFILE)"
   ok=1
   for file in "$FILEOUT_ALI" "$FILEOUT_O2"; do
     [ -f "$file" ] || { MsgErr "Error: File $file does not exist."; ok=0; }
   done
   [ $ok -ne 1 ] && exit 1
   MakeScriptPostprocess || { MsgErr "Error"; exit 1; }
+  [ -f "$SCRIPT_POSTPROCESS" ] || { MsgErr "Error: File $SCRIPT_POSTPROCESS does not exist."; exit 1; }
   $ENVALI bash $SCRIPT_POSTPROCESS "$FILEOUT_O2" "$FILEOUT_ALI" > $LOGFILE 2>&1 || { MsgErr "Error"; exit 1; }
 fi
 
