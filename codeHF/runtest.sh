@@ -29,7 +29,7 @@ TRIGGERSTRINGRUN2=""            # Run 2 trigger (not used)
 TRIGGERBITRUN3=-1               # Run 3 trigger (not used)
 
 # Load utilities.
-source utilities.sh || { MsgErr "Error: Failed to load utilities."; exit 1; }
+source utilities.sh || ErrExit "Failed to load utilities."
 
 # Lists of input files
 LISTFILES_ALI="list_ali.txt"  # conversion and AliPhysics input
@@ -54,10 +54,10 @@ SCRIPT_ALI="script_ali.sh"
 SCRIPT_POSTPROCESS="script_postprocess.sh"
 
 # Load input specification.
-source "$CONFIG_INPUT" || { MsgErr "Error: Failed to load input specification."; exit 1; }
+source "$CONFIG_INPUT" || ErrExit "Error: Failed to load input specification."
 
 # Load tasks configuration.
-source "$CONFIG_TASKS" || { MsgErr "Error: Failed to load tasks configuration."; exit 1; }
+source "$CONFIG_TASKS" || ErrExit "Error: Failed to load tasks configuration."
 
 ########## END OF CONFIGURATION ##########
 
@@ -72,14 +72,16 @@ MsgStep "Processing case $INPUT_CASE: $INPUT_LABEL"
 # Generate list of input files.
 [ $ISINPUTO2 -eq 1 ] && LISTFILES=$LISTFILES_O2 || LISTFILES=$LISTFILES_ALI
 ls $INPUT_DIR/$INPUT_FILES | head -n $NFILESMAX > $LISTFILES
-[[ ${PIPESTATUS[0]} -eq 0 || ${PIPESTATUS[0]} -eq 141 ]] || { MsgErr "Error: Failed to make a list of input files."; exit 1; }
+[[ ${PIPESTATUS[0]} -eq 0 || ${PIPESTATUS[0]} -eq 141 ]] || ErrExit "Failed to make a list of input files."
 
 # Modify the JSON file.
-AdjustJson || { MsgErr "Error"; exit 1; }
+CheckFile "$JSON"
+AdjustJson || ErrExit
+CheckFile "$JSON"
 
 # Convert AliESDs.root to AO2D.root.
 if [ $DOCONVERT -eq 1 ]; then
-  [ -f "$LISTFILES_ALI" ] || { MsgErr "\nConverting: Error: File $LISTFILES_ALI does not exist."; exit 1; }
+  CheckFile "$LISTFILES_ALI"
   MsgStep "Converting... ($(cat $LISTFILES_ALI | wc -l) files)"
   [ $ISMC -eq 1 ] && MsgWarn "Using MC mode"
   $ENVALI bash convert_batch.sh $LISTFILES_ALI $LISTFILES_O2 $ISMC $DEBUG || exit 1 # Run the batch script in the ALI environment.
@@ -87,39 +89,38 @@ fi
 
 # Run AliPhysics tasks.
 if [ $DOALI -eq 1 ]; then
-  [ -f "$LISTFILES_ALI" ] || { MsgErr "\nALI tasks: Error: File $LISTFILES_ALI does not exist."; exit 1; }
+  CheckFile "$LISTFILES_ALI"
   MsgStep "Running AliPhysics tasks... ($(cat $LISTFILES_ALI | wc -l) files)"
-  rm -f $FILEOUT $FILEOUT_ALI || { MsgErr "Error"; exit 1; }
-  MakeScriptAli || { MsgErr "Error"; exit 1; }
+  rm -f $FILEOUT $FILEOUT_ALI || ErrExit
+  MakeScriptAli || ErrExit
+  CheckFile "$SCRIPT_ALI"
   $ENVALI bash ali_batch.sh $LISTFILES_ALI $JSON $SCRIPT_ALI $DEBUG || exit 1 # Run the batch script in the ALI environment.
   #$ENVALIO2 bash ali_batch.sh $LISTFILES_ALI $JSON $SCRIPT_ALI $DEBUG || exit 1 # Run the batch script in the ALI+O2 environment.
-  mv $FILEOUT $FILEOUT_ALI || { MsgErr "Error"; exit 1; }
+  mv $FILEOUT $FILEOUT_ALI || ErrExit
 fi
 
 # Run O2 tasks.
 if [ $DOO2 -eq 1 ]; then
-  [ -f "$LISTFILES_O2" ] || { MsgErr "\nO2 tasks: Error: File $LISTFILES_O2 does not exist."; exit 1; }
+  CheckFile "$LISTFILES_O2"
   MsgStep "Running O2 tasks... ($(cat $LISTFILES_O2 | wc -l) files)"
-  rm -f $FILEOUT $FILEOUT_O2 || { MsgErr "Error"; exit 1; }
-  MakeScriptO2 || { MsgErr "Error"; exit 1; }
+  rm -f $FILEOUT $FILEOUT_O2 || ErrExit
+  MakeScriptO2 || ErrExit
+  CheckFile "$SCRIPT_O2"
   [ $SAVETREES -eq 1 ] || FILEOUT_TREES=""
   $ENVO2 bash o2_batch.sh $LISTFILES_O2 $JSON $SCRIPT_O2 $DEBUG $FILEOUT_TREES || exit 1 # Run the batch script in the O2 environment.
-  mv $FILEOUT $FILEOUT_O2 || { MsgErr "Error"; exit 1; }
-  [[ $SAVETREES -eq 1 && "$FILEOUT_TREES" ]] && { mv $FILEOUT_TREES $FILEOUT_TREES_O2 || { MsgErr "Error"; exit 1; } }
+  mv $FILEOUT $FILEOUT_O2 || ErrExit
+  [[ $SAVETREES -eq 1 && "$FILEOUT_TREES" ]] && { mv $FILEOUT_TREES $FILEOUT_TREES_O2 || ErrExit; }
 fi
 
 # Run output postprocessing. (Compare AliPhysics and O2 output.)
 if [ $DOPOSTPROCESS -eq 1 ]; then
   LOGFILE="log_postprocess.log"
   MsgStep "Postprocessing... (logfile: $LOGFILE)"
-  ok=1
-  for file in "$FILEOUT_ALI" "$FILEOUT_O2"; do
-    [ -f "$file" ] || { MsgErr "Error: File $file does not exist."; ok=0; }
-  done
-  [ $ok -ne 1 ] && exit 1
-  MakeScriptPostprocess || { MsgErr "Error"; exit 1; }
-  [ -f "$SCRIPT_POSTPROCESS" ] || { MsgErr "Error: File $SCRIPT_POSTPROCESS does not exist."; exit 1; }
-  $ENVALI bash $SCRIPT_POSTPROCESS "$FILEOUT_O2" "$FILEOUT_ALI" > $LOGFILE 2>&1 || { MsgErr "Error"; exit 1; }
+  CheckFile "$FILEOUT_ALI"
+  CheckFile "$FILEOUT_O2"
+  MakeScriptPostprocess || ErrExit
+  CheckFile "$SCRIPT_POSTPROCESS"
+  $ENVALI bash $SCRIPT_POSTPROCESS "$FILEOUT_O2" "$FILEOUT_ALI" > $LOGFILE 2>&1 || ErrExit
 fi
 
 # Delete created files.
@@ -128,8 +129,8 @@ fi
   rm -f $LISTFILES_O2 && \
   rm -f $SCRIPT_ALI && \
   rm -f $SCRIPT_O2 && \
-  rm -f $SCRIPT_POSTPROCESS || { MsgErr "Error"; exit 1; }
-  [ "$JSON_EDIT" ] && { rm "$JSON_EDIT" || { MsgErr "Error"; exit 1; } }
+  rm -f $SCRIPT_POSTPROCESS || ErrExit
+  [ "$JSON_EDIT" ] && { rm "$JSON_EDIT" || ErrExit; }
 }
 
 MsgStep "Done"

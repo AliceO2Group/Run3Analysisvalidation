@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Load utilities.
-source utilities.sh || { MsgErr "Error: Failed to load utilities."; exit 1; }
+source utilities.sh || ErrExit "Failed to load utilities."
 
 LISTINPUT="$1"
 LISTOUTPUT="$2"
@@ -18,20 +18,20 @@ DirOutMain="output_conversion"
 
 rm -f $ListRunScripts && \
 rm -f $LISTOUTPUT && \
-rm -rf $DirOutMain || { MsgErr "Error"; exit 1; }
+rm -rf $DirOutMain || ErrExit
 
-[ -f "$LISTINPUT" ] || { MsgErr "Error: File $LISTINPUT does not exist."; exit 1; }
+CheckFile "$LISTINPUT"
 echo "Output directory: $DirOutMain (logfiles: $LogFile)"
 while read FileIn; do
-  [ -f "$FileIn" ] || { MsgErr "Error: File $FileIn does not exist."; exit 1; }
+  CheckFile "$FileIn"
   FileIn="$(realpath $FileIn)"
   DirOut="$DirOutMain/$Index"
   mkdir -p $DirOut && \
   cd $DirOut && \
-  echo $FileIn > $ListInOne || { MsgErr "Error"; exit 1; }
+  echo $FileIn > $ListInOne || ErrExit
   [ $DEBUG -eq 1 ] && echo "Input file ($Index): $FileIn"
   FileOut="$DirOut/$FILEOUT"
-  echo "$DirBase/$FileOut" >> $DirBase/$LISTOUTPUT || { MsgErr "Error"; exit 1; }
+  echo "$DirBase/$FileOut" >> $DirBase/$LISTOUTPUT || ErrExit
   RUNSCRIPT="run.sh"
   cat << EOF > $RUNSCRIPT # Create the job script.
 #!/bin/bash
@@ -40,12 +40,12 @@ root -b -q -l "$DirBase/convertAO2D.C(\"$ListInOne\", $ISMC)" > $LogFile 2>&1
 EOF
   echo "bash $(realpath $RUNSCRIPT)" >> "$ListRunScripts" && \
   ((Index+=1)) && \
-  cd $DirBase || { MsgErr "Error"; exit 1; }
+  cd $DirBase || ErrExit
 done < "$LISTINPUT"
 
 echo "Running conversion jobs..."
 parallel --halt soon,fail=100% < $ListRunScripts > $LogFile 2>&1 || \
-{ MsgErr "Error\nCheck $(realpath $LogFile)"; exit 1; }
-rm -f $ListRunScripts || { MsgErr "Error"; exit 1; }
+ErrExit "\nCheck $(realpath $LogFile)"
+rm -f $ListRunScripts || ErrExit
 
 exit 0
