@@ -25,7 +25,6 @@ INPUT_FILES="*/AliESDs.root"    # Input file pattern
 JSON=""                         # Tasks parameters
 ISINPUTO2=0                     # Input files are in O2 format.
 ISMC=0                          # Switch for MC input
-MASS=1.8                        # Hadron mass (only for comparison plots, not used)
 TRIGGERSTRINGRUN2=""            # Run 2 trigger (not used)
 TRIGGERBITRUN3=-1               # Run 3 trigger (not used)
 
@@ -52,6 +51,7 @@ CMDROOT="root -b -q -l"
 # Step scripts
 SCRIPT_O2="script_o2.sh"
 SCRIPT_ALI="script_ali.sh"
+SCRIPT_COMP="script_compare.sh"
 
 # Load input specification.
 source "$CONFIG_INPUT" || { MsgErr "Error: Failed to load input specification."; exit 1; }
@@ -120,14 +120,17 @@ if [ $DOCOMPARE -eq 1 ]; then
     [ -f "$file" ] || { MsgErr "Error: File $file does not exist."; ok=0; }
   done
   [ $ok -ne 1 ] && exit 1
-  $ENVALI $CMDROOT "Compare.C(\"$FILEOUT_O2\", \"$FILEOUT_ALI\", $MASS)" > $LOGFILE 2>&1 || { MsgErr "Error"; exit 1; }
+  MakeScriptCompare || { MsgErr "Error"; exit 1; }
+  $ENVALI bash $SCRIPT_COMP "$FILEOUT_O2" "$FILEOUT_ALI" > $LOGFILE 2>&1 || { MsgErr "Error"; exit 1; }
 fi
 
 # Delete created files.
 [ $DOCLEAN -eq 1 ] && {
   rm -f $LISTFILES_ALI && \
   rm -f $LISTFILES_O2 && \
-  rm -f $SCRIPT_O2 || { MsgErr "Error"; exit 1; }
+  rm -f $SCRIPT_ALI && \
+  rm -f $SCRIPT_O2 && \
+  rm -f $SCRIPT_COMP || { MsgErr "Error"; exit 1; }
   [ "$JSON_EDIT" ] && { rm "$JSON_EDIT" || { MsgErr "Error"; exit 1; } }
 }
 
