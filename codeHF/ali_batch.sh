@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Script to run AliPhysics tasks in jobs.
+
 # Load utilities.
 source utilities.sh || ErrExit "Failed to load utilities."
 

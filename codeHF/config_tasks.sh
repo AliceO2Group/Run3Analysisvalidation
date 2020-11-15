@@ -1,11 +1,26 @@
 #!/bin/bash
 
+# Configuration of tasks for runtest.sh
+
+# Mandatory functions:
+#   AdjustJson             Modifes the JSON file.
+#   MakeScriptAli          Generates the AliPhysics script.
+#   MakeScriptO2           Generates the O2 script.
+#   MakeScriptPostprocess  Generates the postprocessing script.
+
+####################################################################################################
+
+# Steps
+DOCLEAN=1           # Delete created files (before and after running tasks).
+DOCONVERT=1         # Convert AliESDs.root to AO2D.root.
+DOALI=1             # Run AliPhysics tasks.
+DOO2=1              # Run O2 tasks.
+DOPOSTPROCESS=1     # Run output postprocessing. (Compare AliPhysics and O2 output.)
+
 # Disable incompatible steps.
 [ $ISINPUTO2 -eq 1 ] && { DOCONVERT=0; DOALI=0; DOPOSTPROCESS=0; }
 
-# Configuration of tasks
-
-# O2 tasks
+# Activation of O2 tasks
 DOO2_QA=0           # qatask
 DOO2_SKIM=0         # hf-track-index-skims-creator
 DOO2_CAND_2PRONG=0  # hf-candidate-creator-2prong
@@ -18,6 +33,7 @@ DOO2_TASK_D0=1      # hf-task-d0
 DOO2_TASK_DPLUS=1   # hf-task-dplus
 DOO2_TASK_LC=0      # hf-task-lc
 
+# Selection cuts
 APPLYCUTS_D0=0      # Apply D0 selection cuts.
 APPLYCUTS_LC=0      # Apply Λc selection cuts.
 
@@ -25,6 +41,8 @@ PARALLELISE=0       # Parallelise O2 tasks. (not working!)
 SAVETREES=0         # Save O2 tables to trees.
 
 MASS=1.8            # Hadron mass (only for comparison plots, not used)
+
+####################################################################################################
 
 # Modify the JSON file.
 function AdjustJson {
