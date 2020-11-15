@@ -2,7 +2,8 @@
 
 # Input specification for runtest.sh
 
-INPUT_CASE=4 # Input case
+INPUT_CASE=4  # Input case
+NFILESMAX=1   # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
 
 JSONRUN3="$PWD/dpl-config_run3.json"  # Run 3 tasks configuration
 JSONRUN5="$PWD/dpl-config_run5.json"  # Run 5 tasks configuration
