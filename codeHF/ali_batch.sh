@@ -11,10 +11,10 @@ SCRIPT="$3"
 DEBUG=$4
 FILEOUT="AnalysisResults.root"
 
-SCRIPT="$(realpath $SCRIPT)"
-JSON="$(realpath $JSON)"
 CheckFile "$SCRIPT"
 CheckFile "$JSON"
+SCRIPT="$(realpath $SCRIPT)"
+JSON="$(realpath $JSON)"
 
 LogFile="log_ali.log"
 FilesToMerge="ListOutToMergeALI.txt"

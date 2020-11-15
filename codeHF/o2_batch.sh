@@ -12,9 +12,10 @@ DEBUG=$4
 FILEOUT_TREE="$5"
 FILEOUT="AnalysisResults.root"
 
-SCRIPT="$(realpath $SCRIPT)"
 CheckFile "$SCRIPT"
 CheckFile "$JSON"
+SCRIPT="$(realpath $SCRIPT)"
+JSON="$(realpath $JSON)"
 
 LogFile="log_o2.log"
 FilesToMerge="ListOutToMergeO2.txt"
