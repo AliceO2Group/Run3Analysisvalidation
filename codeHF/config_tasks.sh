@@ -38,8 +38,8 @@ APPLYCUTS_D0=0      # Apply D0 selection cuts.
 APPLYCUTS_LC=0      # Apply Λc selection cuts.
 
 SAVETREES=0         # Save O2 tables to trees.
-
 MASS=1.8            # Hadron mass (only for comparison plots, not used)
+DEBUG=0             # Print out more information.
 
 ####################################################################################################
 
@@ -157,7 +157,9 @@ EOF
 }
 
 function MakeScriptPostprocess {
-  POSTEXEC="root -b -q -l \"$(realpath Compare.C)(\\\"\$FileO2\\\", \\\"\$FileAli\\\", $MASS)\""
+  POSTEXEC="echo Postprocessing"
+  [[ $DOALI -eq 1 && $DOO2 -eq 1 && $DOO2_TASK_D0 -eq 1 && $DOO2_TASK_DPLUS -eq 1 ]] && POSTEXEC+=" && root -b -q -l \"$(realpath Compare.C)(\\\"\$FileO2\\\", \\\"\$FileAli\\\", $MASS)\""
+  [[ $DOO2 -eq 1 && $DOO2_TASK_D0 -eq 1 && $ISMC -eq 1 ]] && POSTEXEC+=" && root -b -q -l \"$(realpath PlotEfficiency.C)(\\\"\$FileO2\\\")\""
   cat << EOF > $SCRIPT_POSTPROCESS
 #!/bin/bash
 FileO2="\$1"
