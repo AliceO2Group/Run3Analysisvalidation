@@ -149,12 +149,12 @@ $ALIEXEC
 EOF
 }
 
-function MakeScriptCompare {
-  COMPEXEC="root -b -q -l \"$(realpath Compare.C)(\\\"\$FileO2\\\", \\\"\$FileAli\\\", $MASS)\""
-  cat << EOF > $SCRIPT_COMP
+function MakeScriptPostprocess {
+  POSTEXEC="root -b -q -l \"$(realpath Compare.C)(\\\"\$FileO2\\\", \\\"\$FileAli\\\", $MASS)\""
+  cat << EOF > $SCRIPT_POSTPROCESS
 #!/bin/bash
 FileO2="\$1"
 FileAli="\$2"
-$COMPEXEC
+$POSTEXEC
 EOF
 }

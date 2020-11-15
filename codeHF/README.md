@@ -78,7 +78,7 @@ These steps are performed by default:
    *  In case `ISINPUTO2=1` is set in the Input specification section, the conversion, AliPhysics tasks, and comparison steps are disabled and O<sup>2</sup> tasks are executed using the specified input files directly.
 1. Compare AliPhysics and O<sup>2</sup> output.
    *  Produces comparison plots `comparison_histos_2prong.pdf`, `comparison_ratios_2prong.pdf`, `comparison_histos_3prong.pdf`, `comparison_ratios_3prong.pdf`.
-   *  Enabled by `DOCOMPARE=1`.
+   *  Enabled by `DOPOSTPROCESS=1`.
 
 Individual steps can be disabled by setting the respective variables to `0`.
 Running all the steps with `INPUT_CASE=4` takes about 40 seconds in total.
