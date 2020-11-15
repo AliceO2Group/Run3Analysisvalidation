@@ -1,9 +1,7 @@
 #!/bin/bash
 
-# Message formatting
-function MsgStep { echo -e "\n\e[1;32m$@\e[0m"; }
-function MsgWarn { echo -e "\e[1;36m$@\e[0m"; }
-function MsgErr { echo -e "\e[1;31m$@\e[0m"; }
+# Load message formatting.
+source messages.sh || { MsgErr "Error: Failed to load message formatting."; exit 1; }
 
 MsgStep "Cleaning"
 
