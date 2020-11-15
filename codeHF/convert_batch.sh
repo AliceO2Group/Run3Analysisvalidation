@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Script to run Run 2 to Run 3 conversion in jobs.
+
 # Load utilities.
 source utilities.sh || ErrExit "Failed to load utilities."
 

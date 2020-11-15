@@ -1,19 +1,16 @@
 #!/bin/bash
 
-##############################################################################
-# User settings
+# Steering script to run Run 2 to Run 3 conversion, AliPhysics tasks, O2 tasks, and postprocessing
+
+####################################################################################################
+# Configuration
 
 # Steps
-DOCLEAN=1           # Delete created files (before and after running tasks).
-DOCONVERT=1         # Convert AliESDs.root to AO2D.root.
-DOALI=1             # Run AliPhysics tasks.
-DOO2=1              # Run O2 tasks.
-DOPOSTPROCESS=1     # Run output postprocessing. (Compare AliPhysics and O2 output.)
-
-NFILESMAX=1         # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
-SAVETREES=0         # Save O2 tables to trees.
-DEBUG=0             # Print out more information.
-##############################################################################
+DOCLEAN=1        # Delete created files (before and after running tasks).
+DOCONVERT=1      # Convert AliESDs.root to AO2D.root.
+DOALI=1          # Run AliPhysics tasks.
+DOO2=1           # Run O2 tasks.
+DOPOSTPROCESS=1  # Run output postprocessing. (Compare AliPhysics and O2 output.)
 
 # Default settings
 CONFIG_INPUT="config_input.sh"  # Input specification
@@ -28,8 +25,9 @@ ISMC=0                          # Switch for MC input
 TRIGGERSTRINGRUN2=""            # Run 2 trigger (not used)
 TRIGGERBITRUN3=-1               # Run 3 trigger (not used)
 
-# Load utilities.
-source utilities.sh || ErrExit "Failed to load utilities."
+NFILESMAX=1                     # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
+SAVETREES=0                     # Save O2 tables to trees.
+DEBUG=0                         # Print out more information.
 
 # Lists of input files
 LISTFILES_ALI="list_ali.txt"  # conversion and AliPhysics input
@@ -46,12 +44,14 @@ FILEOUT_TREES_O2="AnalysisResults_trees_O2.root"
 ENVALI="alienv setenv AliPhysics/latest -c"
 ENVO2="alienv setenv O2/latest -c"
 ENVALIO2="alienv setenv AliPhysics/latest,O2/latest -c"
-CMDROOT="root -b -q -l"
 
 # Step scripts
 SCRIPT_O2="script_o2.sh"
 SCRIPT_ALI="script_ali.sh"
 SCRIPT_POSTPROCESS="script_postprocess.sh"
+
+# Load utilities.
+source utilities.sh || ErrExit "Failed to load utilities."
 
 # Load input specification.
 source "$CONFIG_INPUT" || ErrExit "Error: Failed to load input specification."
@@ -60,6 +60,8 @@ source "$CONFIG_INPUT" || ErrExit "Error: Failed to load input specification."
 source "$CONFIG_TASKS" || ErrExit "Error: Failed to load tasks configuration."
 
 ########## END OF CONFIGURATION ##########
+
+####################################################################################################
 
 ########## START OF EXECUTION ##########
 
