@@ -24,7 +24,6 @@ DOO2_TASK_D0=1      # hf-task-d0
 DOO2_TASK_DPLUS=1   # hf-task-dplus
 DOO2_TASK_LC=0      # hf-task-lc
 
-INPUT_CASE=4        # Input case (See the input specification choices below.)
 NFILESMAX=1         # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
 SAVETREES=0         # Save O2 tables to trees.
 PARALLELISE=0       # Parallelise O2 tasks. (not working!)
@@ -34,67 +33,25 @@ DEBUG=0             # Print out more information.
 ##############################################################################
 
 # Default settings
-INPUT_LABEL="nothing"                 # Input description
-INPUT_DIR=""                          # Input directory
-INPUT_FILES="*/AliESDs.root"          # Input file pattern
-JSON="$PWD/dpl-config_run3.json"      # Run 3 configuration
-JSONRUN5="$PWD/dpl-config_run5.json"  # Run 5 configuration
-ISINPUTO2=0                           # Input files are in O2 format.
-ISMC=0                                # Switch for MC input
-MASS=1.8                              # Hadron mass (only for comparison plots, not used)
-TRIGGERSTRINGRUN2=""                  # Run 2 trigger (not used)
-TRIGGERBITRUN3=-1                     # Run 3 trigger (not used)
-
-# Input specification
-case $INPUT_CASE in
-  0) # FIXME: missing input files
-    INPUT_LABEL="ppK0starToyMC"
-    INPUT_DIR="../twikiinput"
-    INPUT_FILES="AliESDs_ppK0starToyMC.root"
-    MASS=1.0;;
-  1) # FIXME: no read permission
-    INPUT_LABEL="Pb-Pb real LHC15o"
-    INPUT_DIR="/mnt/temp/Run3data/data/LHC15o_246751/pass1"
-    TRIGGERSTRINGRUN2="CV0L7-B-NOPF-CENT"
-    TRIGGERBITRUN3=5;; #FIXME
-  2) # FIXME: conversion fails
-    INPUT_LABEL="Pb-Pb MC LHC15o"
-    INPUT_DIR="/data/Run3data/alice_sim_2015_LHC15k1a3_246391/246391"
-    ISMC=1;;
-  3) # FIXME: conversion fails
-    INPUT_LABEL="?"
-    INPUT_DIR="/data/Run3data/output"
-    MASS=1.0;;
-  4)
-    INPUT_LABEL="p-p MC LHC17p"
-    INPUT_DIR="/data/Run3data/alice_sim_2018_LHC18a4a2_cent/282099"
-    ISMC=1;;
-  5)
-    INPUT_LABEL="p-p MC LHC17p"
-    INPUT_DIR="/mnt/temp/Run3data_Vit/LHC18a4a2_cent/282341"
-    ISMC=1;;
-  6)
-    INPUT_LABEL="p-p real LHC17p"
-    INPUT_DIR="/mnt/temp/Run3data_Vit/LHC17p_pass1_CENT_woSDD/282341";;
-  7)
-    INPUT_LABEL="Pb-Pb real LHC15o, converted (AliHyperloop LHC15o_test sample)"
-    INPUT_DIR="/mnt/temp/Run3data_Vit/LHC15o_converted/alice/data/2015/LHC15o/000244918/pass5_lowIR/PWGZZ/Run3_Conversion/96_20201013-1346_child_1"
-    INPUT_FILES="*/AO2D.root"
-    ISINPUTO2=1;;
-  8)
-    INPUT_LABEL="Run 5, p-p MC 14 TeV MB"
-    INPUT_DIR="/data/Run5data/MB_100kev_100cmdefault_05112020"
-    INPUT_FILES="AODRun5.*.root"
-    JSON="$JSONRUN5"
-    ISINPUTO2=1
-    ISMC=1;;
-esac
+INPUT_CONFIG="config_input.sh"  # Input specification
+INPUT_LABEL="nothing"           # Input description
+INPUT_DIR=""                    # Input directory
+INPUT_FILES="*/AliESDs.root"    # Input file pattern
+JSON=""                         # Tasks configuration
+ISINPUTO2=0                     # Input files are in O2 format.
+ISMC=0                          # Switch for MC input
+MASS=1.8                        # Hadron mass (only for comparison plots, not used)
+TRIGGERSTRINGRUN2=""            # Run 2 trigger (not used)
+TRIGGERBITRUN3=-1               # Run 3 trigger (not used)
 
 # Message formatting
 function MsgStep { echo -e "\n\e[1;32m$@\e[0m"; }
 function MsgSubStep { echo -e "\e[1m$@\e[0m"; }
 function MsgWarn { echo -e "\e[1;36m$@\e[0m"; }
 function MsgErr { echo -e "\e[1;31m$@\e[0m"; }
+
+# Load input specification.
+source "$INPUT_CONFIG" || { MsgErr "Error: Failed to load input specification."; exit 1; }
 
 # Lists of input files
 LISTFILES_ALI="list_ali.txt"  # conversion and AliPhysics input
@@ -141,7 +98,7 @@ ls $INPUT_DIR/$INPUT_FILES | head -n $NFILESMAX > $LISTFILES
 # Make a copy of the default JSON file to modify it.
 JSON_EDIT=""
 if [[ $APPLYCUTS_D0 -eq 1 || $APPLYCUTS_LC -eq 1 ]]; then
-  JSON_EDIT="${JSON/.json/_sel.json}"
+  JSON_EDIT="${JSON/.json/_edit.json}"
   cp "$JSON" "$JSON_EDIT" || { MsgErr "Error"; exit 1; }
   JSON="$JSON_EDIT"
 fi
