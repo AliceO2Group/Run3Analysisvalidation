@@ -57,7 +57,7 @@ function MakeScriptO2 {
   [ $DOO2_CAND_3PRONG -eq 1 ] && { DOO2_SKIM=1; }
 
   # Basic common options
-  O2ARGS="--shm-segment-size 16000000000 --configuration json://$JSON -b"
+  O2ARGS="--shm-segment-size 16000000000 --configuration json://\$JSON -b"
   # Options to save tables in trees
   [ $SAVETREES -eq 1 ] && {
     MsgWarn "Tables will be saved in trees."
@@ -132,6 +132,7 @@ function MakeScriptO2 {
   # Create the script with the full O2 command.
   cat << EOF > $SCRIPT_O2
 #!/bin/bash
+JSON="\$1"
 $O2EXEC
 EOF
 }

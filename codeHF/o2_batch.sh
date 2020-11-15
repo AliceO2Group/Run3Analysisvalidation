@@ -10,6 +10,8 @@ DEBUG=$4
 FILEOUT_TREE="$5"
 FILEOUT="AnalysisResults.root"
 
+SCRIPT="$(realpath $SCRIPT)"
+
 LogFile="log_o2.log"
 FilesToMerge="ListOutToMergeO2.txt"
 FilesToMergeTree="ListOutToMergeO2Tree.txt"
@@ -35,9 +37,7 @@ while read FileIn; do
   mkdir -p $DirOut && \
   cd $DirOut && \
   cp "$JSON" $JSONLocal && \
-  sed -e "s!@$LISTINPUT!$FileIn!g" $JSONLocal > $JSONLocal.tmp && mv $JSONLocal.tmp $JSONLocal && \
-  cp "$DirBase/$SCRIPT" . && \
-  sed -e "s!$DirBase!$PWD!g" $SCRIPT > $SCRIPT.tmp && mv $SCRIPT.tmp $SCRIPT || { MsgErr "Error"; exit 1; }
+  sed -e "s!@$LISTINPUT!$FileIn!g" $JSONLocal > $JSONLocal.tmp && mv $JSONLocal.tmp $JSONLocal || { MsgErr "Error"; exit 1; }
   [ $DEBUG -eq 1 ] && echo "Input file ($Index): $FileIn"
   FileOut="$DirOut/$FILEOUT"
   echo $FileOut >> "$DirBase/$FilesToMerge" || { MsgErr "Error"; exit 1; }
@@ -46,10 +46,10 @@ while read FileIn; do
     echo $FileOutTree >> "$DirBase/$FilesToMergeTree" || { MsgErr "Error"; exit 1; }
   }
   RUNSCRIPT="run.sh"
-  cat << EOF > $RUNSCRIPT # Create a temporary script.
+  cat << EOF > $RUNSCRIPT # Create the job script.
 #!/bin/bash
 cd "$DirBase/$DirOut"
-bash $SCRIPT > $LogFile 2>&1
+bash $SCRIPT "$DirBase/$DirOut/$JSONLocal" > $LogFile 2>&1
 ExitCode=\$?
 grep WARN "$LogFile" | sort -u
 pid=\$(tail -n 2 "$LogFile" | grep "is exiting" | cut -d " " -f 3) # Get the process ID from the O2 log.
