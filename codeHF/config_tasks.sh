@@ -21,6 +21,8 @@ APPLYCUTS_LC=0      # Apply Λc selection cuts.
 PARALLELISE=0       # Parallelise O2 tasks. (not working!)
 SAVETREES=0         # Save O2 tables to trees.
 
+MASS=1.8            # Hadron mass (only for comparison plots, not used)
+
 # Modify the JSON file.
 function AdjustJson {
   # Make a copy of the default JSON file to modify it.
@@ -144,5 +146,15 @@ function MakeScriptAli {
 FileIn="\$1"
 JSON="\$2"
 $ALIEXEC
+EOF
+}
+
+function MakeScriptCompare {
+  COMPEXEC="root -b -q -l \"$(realpath Compare.C)(\\\"\$FileO2\\\", \\\"\$FileAli\\\", $MASS)\""
+  cat << EOF > $SCRIPT_COMP
+#!/bin/bash
+FileO2="\$1"
+FileAli="\$2"
+$COMPEXEC
 EOF
 }
