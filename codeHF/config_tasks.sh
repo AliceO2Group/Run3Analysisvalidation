@@ -37,7 +37,6 @@ DOO2_TASK_LC=0      # hf-task-lc
 APPLYCUTS_D0=0      # Apply D0 selection cuts.
 APPLYCUTS_LC=0      # Apply Λc selection cuts.
 
-PARALLELISE=0       # Parallelise O2 tasks. (not working!)
 SAVETREES=0         # Save O2 tables to trees.
 
 MASS=1.8            # Hadron mass (only for comparison plots, not used)
@@ -108,19 +107,6 @@ function MakeScriptO2 {
     O2ARGS_CAND_3PRONG+=" --doMC"
     O2ARGS_TASK_D0+=" --doMC"
   }
-
-  # Options to parallelise
-  if [ $PARALLELISE -eq 1 ]; then
-    NPROC=3
-    MsgWarn "O2 parallelisation ON ($NPROC)"
-    O2ARGS_QA+=" --pipeline qa-tracking-kine:$NPROC,qa-tracking-resolution:$NPROC"
-    O2ARGS_SKIM+=" --pipeline hf-produce-sel-track:$NPROC,hf-track-index-skims-creator:$NPROC"
-    O2ARGS_CAND_2PRONG+=" --pipeline hf-cand-creator-2prong:$NPROC,hf-cand-creator-2prong-expressions:$NPROC"
-    O2ARGS_CAND_3PRONG+=" --pipeline hf-cand-creator-3prong:$NPROC,hf-cand-creator-3prong-expressions:$NPROC"
-    O2ARGS_TASK_D0+=" --pipeline hf-task-d0:$NPROC"
-    O2ARGS_TASK_DPLUS+=" --pipeline hf-task-dplus:$NPROC"
-    O2ARGS_TASK_LC+=" --pipeline hf-task-lc:$NPROC"
-  fi
 
   # Pair O2 executables with their respective options.
   O2EXEC_QA="o2-analysis-qatask $O2ARGS_QA"
