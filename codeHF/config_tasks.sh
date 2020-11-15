@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Disable incompatible steps.
+[ $ISINPUTO2 -eq 1 ] && { DOCONVERT=0; DOALI=0; DOPOSTPROCESS=0; }
+
 # Configuration of tasks
 
 # O2 tasks

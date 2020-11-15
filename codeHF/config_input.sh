@@ -9,6 +9,8 @@ JSONRUN3="$PWD/dpl-config_run3.json"  # Run 3 tasks configuration
 JSONRUN5="$PWD/dpl-config_run5.json"  # Run 5 tasks configuration
 JSON="$JSONRUN3"
 
+INPUT_FILES="*/AliESDs.root"    # Input file pattern
+
 case $INPUT_CASE in
   0) # FIXME: missing input files
     INPUT_LABEL="ppK0starToyMC"
