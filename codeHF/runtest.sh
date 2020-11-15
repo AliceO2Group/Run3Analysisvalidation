@@ -8,7 +8,7 @@ DOCLEAN=1           # Delete created files (before and after running tasks).
 DOCONVERT=1         # Convert AliESDs.root to AO2D.root.
 DOALI=1             # Run AliPhysics tasks.
 DOO2=1              # Run O2 tasks.
-DOCOMPARE=1         # Compare AliPhysics and O2 output.
+DOPOSTPROCESS=1     # Run output postprocessing. (Compare AliPhysics and O2 output.)
 
 NFILESMAX=1         # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
 SAVETREES=0         # Save O2 tables to trees.
@@ -51,7 +51,7 @@ CMDROOT="root -b -q -l"
 # Step scripts
 SCRIPT_O2="script_o2.sh"
 SCRIPT_ALI="script_ali.sh"
-SCRIPT_COMP="script_compare.sh"
+SCRIPT_POSTPROCESS="script_postprocess.sh"
 
 # Load input specification.
 source "$CONFIG_INPUT" || { MsgErr "Error: Failed to load input specification."; exit 1; }
@@ -60,7 +60,7 @@ source "$CONFIG_INPUT" || { MsgErr "Error: Failed to load input specification.";
 source "$CONFIG_TASKS" || { MsgErr "Error: Failed to load tasks configuration."; exit 1; }
 
 # Disable incompatible steps.
-[ $ISINPUTO2 -eq 1 ] && { DOCONVERT=0; DOALI=0; DOCOMPARE=0; }
+[ $ISINPUTO2 -eq 1 ] && { DOCONVERT=0; DOALI=0; DOPOSTPROCESS=0; }
 
 ########## END OF CONFIGURATION ##########
 
@@ -111,8 +111,8 @@ if [ $DOO2 -eq 1 ]; then
   [[ $SAVETREES -eq 1 && "$FILEOUT_TREES" ]] && { mv $FILEOUT_TREES $FILEOUT_TREES_O2 || { MsgErr "Error"; exit 1; } }
 fi
 
-# Compare AliPhysics and O2 output.
-if [ $DOCOMPARE -eq 1 ]; then
+# Run output postprocessing. (Compare AliPhysics and O2 output.)
+if [ $DOPOSTPROCESS -eq 1 ]; then
   LOGFILE="log_compare.log"
   MsgStep "Comparing... (logfile: $LOGFILE)"
   ok=1
@@ -120,8 +120,8 @@ if [ $DOCOMPARE -eq 1 ]; then
     [ -f "$file" ] || { MsgErr "Error: File $file does not exist."; ok=0; }
   done
   [ $ok -ne 1 ] && exit 1
-  MakeScriptCompare || { MsgErr "Error"; exit 1; }
-  $ENVALI bash $SCRIPT_COMP "$FILEOUT_O2" "$FILEOUT_ALI" > $LOGFILE 2>&1 || { MsgErr "Error"; exit 1; }
+  MakeScriptPostprocess || { MsgErr "Error"; exit 1; }
+  $ENVALI bash $SCRIPT_POSTPROCESS "$FILEOUT_O2" "$FILEOUT_ALI" > $LOGFILE 2>&1 || { MsgErr "Error"; exit 1; }
 fi
 
 # Delete created files.
@@ -130,7 +130,7 @@ fi
   rm -f $LISTFILES_O2 && \
   rm -f $SCRIPT_ALI && \
   rm -f $SCRIPT_O2 && \
-  rm -f $SCRIPT_COMP || { MsgErr "Error"; exit 1; }
+  rm -f $SCRIPT_POSTPROCESS || { MsgErr "Error"; exit 1; }
   [ "$JSON_EDIT" ] && { rm "$JSON_EDIT" || { MsgErr "Error"; exit 1; } }
 }
 
