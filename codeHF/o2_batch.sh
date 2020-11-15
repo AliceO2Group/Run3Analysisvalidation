@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Load utilities.
-source utilities.sh || { MsgErr "Error: Failed to load utilities."; exit 1; }
+source utilities.sh || ErrExit "Failed to load utilities."
 
 LISTINPUT="$1"
 JSON="$2"
@@ -11,11 +11,8 @@ FILEOUT_TREE="$5"
 FILEOUT="AnalysisResults.root"
 
 SCRIPT="$(realpath $SCRIPT)"
-ok=1
-for file in "$SCRIPT" "$JSON"; do
-  [ -f "$file" ] || { MsgErr "Error: File $file does not exist."; ok=0; }
-done
-[ $ok -ne 1 ] && exit 1
+CheckFile "$SCRIPT"
+CheckFile "$JSON"
 
 LogFile="log_o2.log"
 FilesToMerge="ListOutToMergeO2.txt"
@@ -31,24 +28,24 @@ rm -f $FilesToMerge && \
 rm -f $FilesToMergeTree && \
 rm -f $FILEOUT && \
 rm -f $FILEOUT_TREE && \
-rm -rf $DirOutMain || { MsgErr "Error"; exit 1; }
+rm -rf $DirOutMain || ErrExit
 
-[ -f "$LISTINPUT" ] || { MsgErr "Error: File $LISTINPUT does not exist."; exit 1; }
+CheckFile "$LISTINPUT"
 echo "Output directory: $DirOutMain (logfiles: $LogFile)"
 while read FileIn; do
-  [ -f "$FileIn" ] || { MsgErr "Error: File $FileIn does not exist."; exit 1; }
+  CheckFile "$FileIn"
   FileIn="$(realpath $FileIn)"
   DirOut="$DirOutMain/$Index"
   mkdir -p $DirOut && \
   cd $DirOut && \
   cp "$JSON" $JSONLocal && \
-  sed -e "s!@$LISTINPUT!$FileIn!g" $JSONLocal > $JSONLocal.tmp && mv $JSONLocal.tmp $JSONLocal || { MsgErr "Error"; exit 1; }
+  sed -e "s!@$LISTINPUT!$FileIn!g" $JSONLocal > $JSONLocal.tmp && mv $JSONLocal.tmp $JSONLocal || ErrExit
   [ $DEBUG -eq 1 ] && echo "Input file ($Index): $FileIn"
   FileOut="$DirOut/$FILEOUT"
-  echo $FileOut >> "$DirBase/$FilesToMerge" || { MsgErr "Error"; exit 1; }
+  echo $FileOut >> "$DirBase/$FilesToMerge" || ErrExit
   [ "$FILEOUT_TREE" ] && {
     FileOutTree="$DirOut/$FILEOUT_TREE"
-    echo $FileOutTree >> "$DirBase/$FilesToMergeTree" || { MsgErr "Error"; exit 1; }
+    echo $FileOutTree >> "$DirBase/$FilesToMergeTree" || ErrExit
   }
   RUNSCRIPT="run.sh"
   cat << EOF > $RUNSCRIPT # Create the job script.
@@ -63,27 +60,27 @@ exit \$ExitCode
 EOF
   echo "bash $(realpath $RUNSCRIPT)" >> "$ListRunScripts" && \
   ((Index+=1)) && \
-  cd $DirBase || { MsgErr "Error"; exit 1; }
+  cd $DirBase || ErrExit
 done < "$LISTINPUT"
 
 echo "Running O2 jobs..."
 parallel --halt soon,fail=100% < $ListRunScripts > $LogFile 2>&1
 ExitCode=$?
 find /tmp -group $USER -name "localhost*_*" -delete 2> /dev/null # Delete all user's sockets.
-[ $ExitCode -ne 0 ] && { MsgErr "Error\nCheck $(realpath $LogFile)"; exit 1; }
+[ $ExitCode -ne 0 ] && ErrExit "\nCheck $(realpath $LogFile)"
 [ "$(grep WARN "$LogFile")" ] && MsgWarn "There were warnings!\nCheck $(realpath $LogFile)"
-rm -f $ListRunScripts || { MsgErr "Error"; exit 1; }
+rm -f $ListRunScripts || ErrExit
 
 echo "Merging output files... (output file: $FILEOUT, logfile: $LogFile)"
 hadd $FILEOUT @"$FilesToMerge" >> $LogFile 2>&1 || \
 { MsgErr "Error\nCheck $(realpath $LogFile)"; tail -n 2 "$LogFile"; exit 1; }
-rm -f $FilesToMerge || { MsgErr "Error"; exit 1; }
+rm -f $FilesToMerge || ErrExit
 
 [ "$FILEOUT_TREE" ] && {
   echo "Merging output trees... (output file: $FILEOUT_TREE, logfile: $LogFile)"
   hadd $FILEOUT_TREE @"$FilesToMergeTree" >> $LogFile 2>&1 || \
   { MsgErr "Error\nCheck $(realpath $LogFile)"; tail -n 2 "$LogFile"; exit 1; }
-  rm -f $FilesToMergeTree || { MsgErr "Error"; exit 1; }
+  rm -f $FilesToMergeTree || ErrExit
 }
 
 exit 0

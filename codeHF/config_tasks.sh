@@ -32,7 +32,7 @@ function AdjustJson {
   JSON_EDIT=""
   if [[ $APPLYCUTS_D0 -eq 1 || $APPLYCUTS_LC -eq 1 ]]; then
     JSON_EDIT="${JSON/.json/_edit.json}"
-    cp "$JSON" "$JSON_EDIT" || { MsgErr "Error"; exit 1; }
+    cp "$JSON" "$JSON_EDIT" || ErrExit
     JSON="$JSON_EDIT"
   fi
 
@@ -40,13 +40,13 @@ function AdjustJson {
   if [ $APPLYCUTS_D0 -eq 1 ]; then
     MsgWarn "\nUsing D0 selection cuts"
     sed -e "s!\"d_selectionFlagD0\": \"0\"!\"d_selectionFlagD0\": \"1\"!g" "$JSON" > "$JSON.tmp" && mv "$JSON.tmp" "$JSON" && \
-    sed -e "s!\"d_selectionFlagD0bar\": \"0\"!\"d_selectionFlagD0bar\": \"1\"!g" "$JSON" > "$JSON.tmp" && mv "$JSON.tmp" "$JSON" || { MsgErr "Error"; exit 1; }
+    sed -e "s!\"d_selectionFlagD0bar\": \"0\"!\"d_selectionFlagD0bar\": \"1\"!g" "$JSON" > "$JSON.tmp" && mv "$JSON.tmp" "$JSON" || ErrExit
   fi
 
   # Enable Λc selection.
   if [ $APPLYCUTS_LC -eq 1 ]; then
     MsgWarn "\nUsing Λc selection cuts"
-    sed -e "s!\"d_selectionFlagLc\": \"0\"!\"d_selectionFlagLc\": \"1\"!g" "$JSON" > "$JSON.tmp" && mv "$JSON.tmp" "$JSON" || { MsgErr "Error"; exit 1; }
+    sed -e "s!\"d_selectionFlagLc\": \"0\"!\"d_selectionFlagLc\": \"1\"!g" "$JSON" > "$JSON.tmp" && mv "$JSON.tmp" "$JSON" || ErrExit
   fi
 }
 
