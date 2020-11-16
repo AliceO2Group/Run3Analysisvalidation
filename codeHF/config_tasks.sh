@@ -1,9 +1,10 @@
 #!/bin/bash
 
 # Configuration of tasks for runtest.sh
-# (Modifies step activation, modifies JSON, generates step scripts.)
+# (Cleans directory, modifies step activation, modifies JSON, generates step scripts.)
 
 # Mandatory functions:
+#   Clean                  Performs cleanup before (argument=1) and after (argument=2) running.
 #   AdjustJson             Modifes the JSON file.
 #   MakeScriptAli          Generates the AliPhysics script.
 #   MakeScriptO2           Generates the O2 script.
@@ -46,6 +47,24 @@ DEBUG=0             # Print out more information.
 DIR_THIS="$(dirname $(realpath $0))"
 
 ####################################################################################################
+
+# Clean before (argument=1) and after (argument=2) running.
+function Clean {
+  # Cleanup before running
+  [ $1 -eq 1 ] && { bash clean.sh || ErrExit; }
+
+  # Cleanup after running
+  [ $1 -eq 2 ] && {
+    rm -f $LISTFILES_ALI && \
+    rm -f $LISTFILES_O2 && \
+    rm -f $SCRIPT_ALI && \
+    rm -f $SCRIPT_O2 && \
+    rm -f $SCRIPT_POSTPROCESS || ErrExit "Failed to rm created files."
+    [ "$JSON_EDIT" ] && { rm "$JSON_EDIT" || ErrExit "Failed to rm $JSON_EDIT."; }
+  }
+
+  return 0
+}
 
 # Modify the JSON file.
 function AdjustJson {
