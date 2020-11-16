@@ -16,8 +16,7 @@ case $INPUT_CASE in
   0) # FIXME: missing input files
     INPUT_LABEL="ppK0starToyMC"
     INPUT_DIR="../twikiinput"
-    INPUT_FILES="AliESDs_ppK0starToyMC.root"
-    MASS=1.0;;
+    INPUT_FILES="AliESDs_ppK0starToyMC.root";;
   1) # FIXME: no read permission
     INPUT_LABEL="Pb-Pb real LHC15o"
     INPUT_DIR="/mnt/temp/Run3data/data/LHC15o_246751/pass1"
@@ -29,8 +28,7 @@ case $INPUT_CASE in
     ISMC=1;;
   3) # FIXME: conversion fails
     INPUT_LABEL="?"
-    INPUT_DIR="/data/Run3data/output"
-    MASS=1.0;;
+    INPUT_DIR="/data/Run3data/output";;
   4)
     INPUT_LABEL="p-p MC LHC17p"
     INPUT_DIR="/data/Run3data/alice_sim_2018_LHC18a4a2_cent/282099"

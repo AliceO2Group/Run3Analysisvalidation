@@ -40,18 +40,16 @@ APPLYCUTS_D0=0      # Apply D0 selection cuts.
 APPLYCUTS_LC=0      # Apply Λc selection cuts.
 
 SAVETREES=0         # Save O2 tables to trees.
-MASS=1.8            # Hadron mass (only for comparison plots, not used)
 DEBUG=0             # Print out more information.
 
-# This directory
-DIR_THIS="$(dirname $(realpath $0))"
+MASS=1.8            # Hadron mass (only for comparison plots, not used)
 
 ####################################################################################################
 
 # Clean before (argument=1) and after (argument=2) running.
 function Clean {
   # Cleanup before running
-  [ $1 -eq 1 ] && { bash clean.sh || ErrExit; }
+  [ $1 -eq 1 ] && { bash "$DIR_TASKS/clean.sh" || ErrExit; }
 
   # Cleanup after running
   [ $1 -eq 2 ] && {
@@ -171,7 +169,7 @@ EOF
 }
 
 function MakeScriptAli {
-  ALIEXEC="root -b -q -l \"$DIR_THIS/RunHFTaskLocal.C(\\\"\$FileIn\\\", \\\"\$JSON\\\", $ISMC)\""
+  ALIEXEC="root -b -q -l \"$DIR_TASKS/RunHFTaskLocal.C(\\\"\$FileIn\\\", \\\"\$JSON\\\", $ISMC)\""
   cat << EOF > $SCRIPT_ALI
 #!/bin/bash
 FileIn="\$1"
@@ -182,8 +180,8 @@ EOF
 
 function MakeScriptPostprocess {
   POSTEXEC="echo Postprocessing"
-  [[ $DOALI -eq 1 && $DOO2 -eq 1 && $DOO2_TASK_D0 -eq 1 && $DOO2_TASK_DPLUS -eq 1 ]] && POSTEXEC+=" && root -b -q -l \"$DIR_THIS/Compare.C(\\\"\$FileO2\\\", \\\"\$FileAli\\\", $MASS)\""
-  [[ $DOO2 -eq 1 && $DOO2_TASK_D0 -eq 1 && $ISMC -eq 1 ]] && POSTEXEC+=" && root -b -q -l \"$DIR_THIS/PlotEfficiency.C(\\\"\$FileO2\\\")\""
+  [[ $DOALI -eq 1 && $DOO2 -eq 1 && $DOO2_TASK_D0 -eq 1 && $DOO2_TASK_DPLUS -eq 1 ]] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/Compare.C(\\\"\$FileO2\\\", \\\"\$FileAli\\\", $MASS)\""
+  [[ $DOO2 -eq 1 && $DOO2_TASK_D0 -eq 1 && $ISMC -eq 1 ]] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/PlotEfficiency.C(\\\"\$FileO2\\\")\""
   cat << EOF > $SCRIPT_POSTPROCESS
 #!/bin/bash
 FileO2="\$1"
