@@ -5,7 +5,7 @@
 
 # Mandatory functions:
 #   Clean                  Performs cleanup before (argument=1) and after (argument=2) running.
-#   AdjustJson             Modifes the JSON file.
+#   AdjustJson             Modifies the JSON file.
 #   MakeScriptAli          Generates the AliPhysics script.
 #   MakeScriptO2           Generates the O2 script.
 #   MakeScriptPostprocess  Generates the postprocessing script.
