@@ -50,6 +50,7 @@ FILEOUT_TREES_O2="AnalysisResults_trees_O2.root"
 ENVALI="alienv setenv AliPhysics/latest -c"
 ENVO2="alienv setenv O2/latest -c"
 ENVALIO2="alienv setenv AliPhysics/latest,O2/latest -c"
+ENVPOST="$ENVALI"
 
 # Step scripts
 SCRIPT_O2="script_o2.sh"
@@ -155,7 +156,7 @@ if [ $DOPOSTPROCESS -eq 1 ]; then
   MakeScriptPostprocess || ErrExit "MakeScriptPostprocess failed."
   CheckFile "$SCRIPT_POSTPROCESS"
   [ $DEBUG -eq 1 ] && echo "Loading AliPhysics..."
-  $ENVALI bash "$SCRIPT_POSTPROCESS" "$FILEOUT_O2" "$FILEOUT_ALI" > $LOGFILE 2>&1 || ErrExit "\nCheck $(realpath $LOGFILE)"
+  $ENVPOST bash "$SCRIPT_POSTPROCESS" "$FILEOUT_O2" "$FILEOUT_ALI" > $LOGFILE 2>&1 || ErrExit "\nCheck $(realpath $LOGFILE)"
 fi
 
 # Clean after running.
