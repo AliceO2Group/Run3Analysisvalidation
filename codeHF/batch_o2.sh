@@ -33,7 +33,7 @@ rm -f $FilesToMerge && \
 rm -f $FilesToMergeTree && \
 rm -f $FILEOUT && \
 rm -f $FILEOUT_TREE && \
-rm -rf $DirOutMain || ErrExit
+rm -rf $DirOutMain || ErrExit "Failed to delete output files."
 
 CheckFile "$LISTINPUT"
 echo "Output directory: $DirOutMain (logfiles: $LogFile)"
@@ -44,13 +44,13 @@ while read FileIn; do
   mkdir -p $DirOut && \
   cd $DirOut && \
   cp "$JSON" $JSONLocal && \
-  sed -e "s!@$LISTINPUT!$FileIn!g" $JSONLocal > $JSONLocal.tmp && mv $JSONLocal.tmp $JSONLocal || ErrExit
+  sed -e "s!@$LISTINPUT!$FileIn!g" $JSONLocal > $JSONLocal.tmp && mv $JSONLocal.tmp $JSONLocal || ErrExit "Failed to sed $JSONLocal."
   [ $DEBUG -eq 1 ] && echo "Input file ($Index): $FileIn"
   FileOut="$DirOut/$FILEOUT"
-  echo $FileOut >> "$DirBase/$FilesToMerge" || ErrExit
+  echo $FileOut >> "$DirBase/$FilesToMerge" || ErrExit "Failed to echo to $DirBase/$FilesToMerge."
   [ "$FILEOUT_TREE" ] && {
     FileOutTree="$DirOut/$FILEOUT_TREE"
-    echo $FileOutTree >> "$DirBase/$FilesToMergeTree" || ErrExit
+    echo $FileOutTree >> "$DirBase/$FilesToMergeTree" || ErrExit "Failed to echo to $DirBase/$FilesToMergeTree."
   }
   RUNSCRIPT="run.sh"
   cat << EOF > $RUNSCRIPT # Create the job script.
@@ -65,7 +65,7 @@ exit \$ExitCode
 EOF
   echo "bash $(realpath $RUNSCRIPT)" >> "$ListRunScripts" && \
   ((Index+=1)) && \
-  cd $DirBase || ErrExit
+  cd $DirBase || ErrExit "Failed to cd $DirBase."
 done < "$LISTINPUT"
 
 echo "Running O2 jobs..."
@@ -74,18 +74,18 @@ ExitCode=$?
 find /tmp -group $USER -name "localhost*_*" -delete 2> /dev/null # Delete all user's sockets.
 [ $ExitCode -ne 0 ] && ErrExit "\nCheck $(realpath $LogFile)"
 [ "$(grep WARN "$LogFile")" ] && MsgWarn "There were warnings!\nCheck $(realpath $LogFile)"
-rm -f $ListRunScripts || ErrExit
+rm -f $ListRunScripts || ErrExit "Failed to rm $ListRunScripts."
 
 echo "Merging output files... (output file: $FILEOUT, logfile: $LogFile)"
 hadd $FILEOUT @"$FilesToMerge" >> $LogFile 2>&1 || \
 { MsgErr "Error\nCheck $(realpath $LogFile)"; tail -n 2 "$LogFile"; exit 1; }
-rm -f $FilesToMerge || ErrExit
+rm -f $FilesToMerge || ErrExit "Failed to rm $FilesToMerge."
 
 [ "$FILEOUT_TREE" ] && {
   echo "Merging output trees... (output file: $FILEOUT_TREE, logfile: $LogFile)"
   hadd $FILEOUT_TREE @"$FilesToMergeTree" >> $LogFile 2>&1 || \
   { MsgErr "Error\nCheck $(realpath $LogFile)"; tail -n 2 "$LogFile"; exit 1; }
-  rm -f $FilesToMergeTree || ErrExit
+  rm -f $FilesToMergeTree || ErrExit "Failed to rm $FilesToMergeTree."
 }
 
 exit 0

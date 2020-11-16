@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Configuration of tasks for runtest.sh
-# (Modifies step activation, modifies JSON, generates task scripts.)
+# (Modifies step activation, modifies JSON, generates step scripts.)
 
 # Mandatory functions:
 #   AdjustJson             Modifes the JSON file.
@@ -50,7 +50,7 @@ function AdjustJson {
   JSON_EDIT=""
   if [[ $APPLYCUTS_D0 -eq 1 || $APPLYCUTS_LC -eq 1 ]]; then
     JSON_EDIT="${JSON/.json/_edit.json}"
-    cp "$JSON" "$JSON_EDIT" || ErrExit
+    cp "$JSON" "$JSON_EDIT" || ErrExit "Failed to cp $JSON $JSON_EDIT."
     JSON="$JSON_EDIT"
   fi
 
@@ -58,13 +58,13 @@ function AdjustJson {
   if [ $APPLYCUTS_D0 -eq 1 ]; then
     MsgWarn "\nUsing D0 selection cuts"
     sed -e "s!\"d_selectionFlagD0\": \"0\"!\"d_selectionFlagD0\": \"1\"!g" "$JSON" > "$JSON.tmp" && mv "$JSON.tmp" "$JSON" && \
-    sed -e "s!\"d_selectionFlagD0bar\": \"0\"!\"d_selectionFlagD0bar\": \"1\"!g" "$JSON" > "$JSON.tmp" && mv "$JSON.tmp" "$JSON" || ErrExit
+    sed -e "s!\"d_selectionFlagD0bar\": \"0\"!\"d_selectionFlagD0bar\": \"1\"!g" "$JSON" > "$JSON.tmp" && mv "$JSON.tmp" "$JSON" || ErrExit "Failed to sed $JSON."
   fi
 
   # Enable Λc selection.
   if [ $APPLYCUTS_LC -eq 1 ]; then
     MsgWarn "\nUsing Λc selection cuts"
-    sed -e "s!\"d_selectionFlagLc\": \"0\"!\"d_selectionFlagLc\": \"1\"!g" "$JSON" > "$JSON.tmp" && mv "$JSON.tmp" "$JSON" || ErrExit
+    sed -e "s!\"d_selectionFlagLc\": \"0\"!\"d_selectionFlagLc\": \"1\"!g" "$JSON" > "$JSON.tmp" && mv "$JSON.tmp" "$JSON" || ErrExit "Failed to sed $JSON."
   fi
 }
 

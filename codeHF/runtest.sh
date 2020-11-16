@@ -14,7 +14,7 @@ DOPOSTPROCESS=1  # Run output postprocessing. (Compare AliPhysics and O2 output.
 
 # Default settings
 CONFIG_INPUT="config_input.sh"  # Input specification (Modifies input parameters.)
-CONFIG_TASKS="config_tasks.sh"  # Tasks configuration (Modifies step activation, modifies JSON and generates task scripts via functions AdjustJson, MakeScriptAli, MakeScriptO2, MakeScriptPostprocess.)
+CONFIG_TASKS="config_tasks.sh"  # Tasks configuration (Modifies step activation, modifies JSON and generates step scripts via functions AdjustJson, MakeScriptAli, MakeScriptO2, MakeScriptPostprocess.)
 INPUT_CASE=-1                   # Input case
 INPUT_LABEL="nothing"           # Input description
 INPUT_DIR=""                    # Input directory
@@ -78,7 +78,7 @@ ls $INPUT_DIR/$INPUT_FILES | head -n $NFILESMAX > $LISTFILES
 
 # Modify the JSON file.
 CheckFile "$JSON"
-AdjustJson || ErrExit
+AdjustJson || ErrExit "AdjustJson failed."
 CheckFile "$JSON"
 
 # Convert AliESDs.root to AO2D.root.
@@ -94,27 +94,27 @@ fi
 if [ $DOALI -eq 1 ]; then
   CheckFile "$LISTFILES_ALI"
   MsgStep "Running AliPhysics tasks... ($(cat $LISTFILES_ALI | wc -l) files)"
-  rm -f $FILEOUT $FILEOUT_ALI || ErrExit
-  MakeScriptAli || ErrExit
+  rm -f $FILEOUT $FILEOUT_ALI || ErrExit "Failed to rm $FILEOUT $FILEOUT_ALI."
+  MakeScriptAli || ErrExit "MakeScriptAli failed."
   CheckFile "$SCRIPT_ALI"
   [ $DEBUG -eq 1 ] && echo "Loading AliPhysics..."
   $ENVALI bash batch_ali.sh $LISTFILES_ALI $JSON $SCRIPT_ALI $DEBUG || exit 1 # Run the batch script in the ALI environment.
   #$ENVALIO2 bash batch_ali.sh $LISTFILES_ALI $JSON $SCRIPT_ALI $DEBUG || exit 1 # Run the batch script in the ALI+O2 environment.
-  mv $FILEOUT $FILEOUT_ALI || ErrExit
+  mv $FILEOUT $FILEOUT_ALI || ErrExit "Failed to mv $FILEOUT $FILEOUT_ALI."
 fi
 
 # Run O2 tasks.
 if [ $DOO2 -eq 1 ]; then
   CheckFile "$LISTFILES_O2"
   MsgStep "Running O2 tasks... ($(cat $LISTFILES_O2 | wc -l) files)"
-  rm -f $FILEOUT $FILEOUT_O2 || ErrExit
-  MakeScriptO2 || ErrExit
+  rm -f $FILEOUT $FILEOUT_O2 || ErrExit "Failed to rm $FILEOUT $FILEOUT_O2."
+  MakeScriptO2 || ErrExit "MakeScriptO2 failed."
   CheckFile "$SCRIPT_O2"
   [ $SAVETREES -eq 1 ] || FILEOUT_TREES=""
   [ $DEBUG -eq 1 ] && echo "Loading O2..."
   $ENVO2 bash batch_o2.sh $LISTFILES_O2 $JSON $SCRIPT_O2 $DEBUG $FILEOUT_TREES || exit 1 # Run the batch script in the O2 environment.
-  mv $FILEOUT $FILEOUT_O2 || ErrExit
-  [[ $SAVETREES -eq 1 && "$FILEOUT_TREES" ]] && { mv $FILEOUT_TREES $FILEOUT_TREES_O2 || ErrExit; }
+  mv $FILEOUT $FILEOUT_O2 || ErrExit "Failed to mv $FILEOUT $FILEOUT_O2."
+  [[ $SAVETREES -eq 1 && "$FILEOUT_TREES" ]] && { mv $FILEOUT_TREES $FILEOUT_TREES_O2 || ErrExit "Failed to mv $FILEOUT_TREES $FILEOUT_TREES_O2."; }
 fi
 
 # Run output postprocessing. (Compare AliPhysics and O2 output.)
@@ -123,7 +123,7 @@ if [ $DOPOSTPROCESS -eq 1 ]; then
   MsgStep "Postprocessing... (logfile: $LOGFILE)"
   CheckFile "$FILEOUT_ALI"
   CheckFile "$FILEOUT_O2"
-  MakeScriptPostprocess || ErrExit
+  MakeScriptPostprocess || ErrExit "MakeScriptPostprocess failed."
   CheckFile "$SCRIPT_POSTPROCESS"
   [ $DEBUG -eq 1 ] && echo "Loading AliPhysics..."
   $ENVALI bash $SCRIPT_POSTPROCESS "$FILEOUT_O2" "$FILEOUT_ALI" > $LOGFILE 2>&1 || ErrExit "\nCheck $(realpath $LOGFILE)"
@@ -135,8 +135,8 @@ fi
   rm -f $LISTFILES_O2 && \
   rm -f $SCRIPT_ALI && \
   rm -f $SCRIPT_O2 && \
-  rm -f $SCRIPT_POSTPROCESS || ErrExit
-  [ "$JSON_EDIT" ] && { rm "$JSON_EDIT" || ErrExit; }
+  rm -f $SCRIPT_POSTPROCESS || ErrExit "Failed to rm created files."
+  [ "$JSON_EDIT" ] && { rm "$JSON_EDIT" || ErrExit "Failed to rm $JSON_EDIT."; }
 }
 
 MsgStep "Done"
