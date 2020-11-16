@@ -59,7 +59,7 @@ while read FileIn; do
   cat << EOF > $RUNSCRIPT # Create the job script.
 #!/bin/bash
 cd "$DirBase/$DirOut"
-bash $SCRIPT "$DirBase/$DirOut/$JSONLocal" > $LogFile 2>&1
+bash $SCRIPT "$FileIn" "$DirBase/$DirOut/$JSONLocal" > $LogFile 2>&1
 ExitCode=\$?
 grep WARN "$LogFile" | sort -u
 pid=\$(tail -n 2 "$LogFile" | grep "is exiting" | cut -d " " -f 3) # Get the process ID from the O2 log.
