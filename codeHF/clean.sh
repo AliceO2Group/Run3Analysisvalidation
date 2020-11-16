@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Load utilities.
-source utilities.sh || ErrExit "Failed to load utilities."
+source utilities.sh || { echo "Error: Failed to load utilities."; exit 1; }
 
 MsgStep "Cleaning"
 
