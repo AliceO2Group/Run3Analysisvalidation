@@ -51,7 +51,24 @@ SCRIPT_ALI="script_ali.sh"
 SCRIPT_POSTPROCESS="script_postprocess.sh"
 
 # Load utilities.
-source utilities.sh || ErrExit "Failed to load utilities."
+source utilities.sh || { echo "Error: Failed to load utilities."; exit 1; }
+
+# Parse command line options.
+function Help { echo "Usage: bash $0 [-i <input config>] [-t <task config>] "; }
+while getopts ":hi:t:" opt; do
+  case ${opt} in
+    h)
+      Help; exit 0;;
+    i)
+      CONFIG_INPUT="$OPTARG";;
+    t)
+      CONFIG_TASKS="$OPTARG";;
+    \?)
+      MsgErr "Invalid option: $OPTARG" 1>&2; Help; exit 1;;
+    :)
+      MsgErr "Invalid option: $OPTARG requires an argument." 1>&2; Help; exit 1;;
+  esac
+done
 
 # Load input specification.
 source "$CONFIG_INPUT" || ErrExit "Failed to load input specification."
@@ -64,6 +81,8 @@ source "$CONFIG_TASKS" || ErrExit "Failed to load tasks configuration."
 ####################################################################################################
 
 ########## START OF EXECUTION ##########
+
+[ $DEBUG -eq 1 ] && { echo "$0"; echo "Input specification: $CONFIG_INPUT"; echo "Tasks configuration: $CONFIG_TASKS"; }
 
 # Print out input description.
 MsgStep "Processing case $INPUT_CASE: $INPUT_LABEL"

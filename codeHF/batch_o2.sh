@@ -12,7 +12,7 @@ FILEOUT="AnalysisResults.root"
 [ $DEBUG -eq 1 ] && echo "Running $0"
 
 # Load utilities.
-source utilities.sh || ErrExit "Failed to load utilities."
+source utilities.sh || { echo "Error: Failed to load utilities."; exit 1; }
 
 CheckFile "$SCRIPT"
 CheckFile "$JSON"
