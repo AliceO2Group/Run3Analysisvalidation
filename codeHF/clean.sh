@@ -1,7 +1,12 @@
 #!/bin/bash
 
+# Script to delete created files
+
+# This directory
+DIR_THIS="$(dirname $(realpath $0))"
+
 # Load utilities.
-source utilities.sh || { echo "Error: Failed to load utilities."; exit 1; }
+source "$DIR_THIS/utilities.sh" || { echo "Error: Failed to load utilities."; exit 1; }
 
 MsgStep "Cleaning"
 

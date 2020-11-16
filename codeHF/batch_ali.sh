@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script to run AliPhysics tasks in jobs.
+# Script to run AliPhysics tasks in jobs
 
 LISTINPUT="$1"
 JSON="$2"
@@ -10,8 +10,11 @@ FILEOUT="AnalysisResults.root"
 
 [ $DEBUG -eq 1 ] && echo "Running $0"
 
+# This directory
+DIR_THIS="$(dirname $(realpath $0))"
+
 # Load utilities.
-source utilities.sh || { echo "Error: Failed to load utilities."; exit 1; }
+source "$DIR_THIS/utilities.sh" || { echo "Error: Failed to load utilities."; exit 1; }
 
 CheckFile "$SCRIPT"
 CheckFile "$JSON"
