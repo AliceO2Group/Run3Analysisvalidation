@@ -140,8 +140,6 @@ fi
 if [ $DOPOSTPROCESS -eq 1 ]; then
   LOGFILE="log_postprocess.log"
   MsgStep "Postprocessing... (logfile: $LOGFILE)"
-  CheckFile "$FILEOUT_ALI"
-  CheckFile "$FILEOUT_O2"
   MakeScriptPostprocess || ErrExit "MakeScriptPostprocess failed."
   CheckFile "$SCRIPT_POSTPROCESS"
   [ $DEBUG -eq 1 ] && echo "Loading AliPhysics..."
