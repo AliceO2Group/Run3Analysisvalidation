@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Input specification for runtest.sh
+# (Modifies input parameters.)
 
 INPUT_CASE=4  # Input case
 NFILESMAX=1   # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)

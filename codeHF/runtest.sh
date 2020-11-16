@@ -13,8 +13,8 @@ DOO2=1           # Run O2 tasks.
 DOPOSTPROCESS=1  # Run output postprocessing. (Compare AliPhysics and O2 output.)
 
 # Default settings
-CONFIG_INPUT="config_input.sh"  # Input specification
-CONFIG_TASKS="config_tasks.sh"  # Tasks configuration; provides functions: AdjustJson, MakeScriptO2
+CONFIG_INPUT="config_input.sh"  # Input specification (Modifies input parameters.)
+CONFIG_TASKS="config_tasks.sh"  # Tasks configuration (Modifies step activation, modifies JSON and generates task scripts via functions AdjustJson, MakeScriptAli, MakeScriptO2, MakeScriptPostprocess.)
 INPUT_CASE=-1                   # Input case
 INPUT_LABEL="nothing"           # Input description
 INPUT_DIR=""                    # Input directory

@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Configuration of tasks for runtest.sh
+# (Modifies step activation, modifies JSON, generates task scripts.)
 
 # Mandatory functions:
 #   AdjustJson             Modifes the JSON file.
