@@ -14,7 +14,7 @@ DOPOSTPROCESS=1  # Run output postprocessing. (Compare AliPhysics and O2 output.
 
 # Default settings
 CONFIG_INPUT="config_input.sh"  # Input specification (Modifies input parameters.)
-CONFIG_TASKS="config_tasks.sh"  # Tasks configuration (Modifies step activation, modifies JSON and generates step scripts via functions AdjustJson, MakeScriptAli, MakeScriptO2, MakeScriptPostprocess.)
+CONFIG_TASKS="config_tasks.sh"  # Tasks configuration (Cleans directory, modifies step activation, modifies JSON and generates step scripts via functions Clean, AdjustJson, MakeScriptAli, MakeScriptO2, MakeScriptPostprocess.)
 INPUT_CASE=-1                   # Input case
 INPUT_LABEL="nothing"           # Input description
 INPUT_DIR=""                    # Input directory
@@ -90,8 +90,11 @@ source "$CONFIG_TASKS" || ErrExit "Failed to load tasks configuration."
 # Print out input description.
 MsgStep "Processing case $INPUT_CASE: $INPUT_LABEL"
 
-# Delete created files.
-[ $DOCLEAN -eq 1 ] && { bash "$DIR_TEST/clean.sh" || exit 1; }
+# Clean before running.
+if [ $DOCLEAN -eq 1 ]; then
+  MsgStep "Cleaning..."
+  Clean 1 || ErrExit "Clean failed."
+fi
 
 # Generate list of input files.
 [ $ISINPUTO2 -eq 1 ] && LISTFILES=$LISTFILES_O2 || LISTFILES=$LISTFILES_ALI
@@ -99,6 +102,7 @@ ls $INPUT_DIR/$INPUT_FILES | head -n $NFILESMAX > $LISTFILES
 [[ ${PIPESTATUS[0]} -eq 0 || ${PIPESTATUS[0]} -eq 141 ]] || ErrExit "Failed to make a list of input files."
 
 # Modify the JSON file.
+MsgStep "Modifying JSON file..."
 CheckFile "$JSON"
 AdjustJson || ErrExit "AdjustJson failed."
 CheckFile "$JSON"
@@ -149,15 +153,11 @@ if [ $DOPOSTPROCESS -eq 1 ]; then
   $ENVALI bash "$SCRIPT_POSTPROCESS" "$FILEOUT_O2" "$FILEOUT_ALI" > $LOGFILE 2>&1 || ErrExit "\nCheck $(realpath $LOGFILE)"
 fi
 
-# Delete created files.
-[ $DOCLEAN -eq 1 ] && {
-  rm -f $LISTFILES_ALI && \
-  rm -f $LISTFILES_O2 && \
-  rm -f $SCRIPT_ALI && \
-  rm -f $SCRIPT_O2 && \
-  rm -f $SCRIPT_POSTPROCESS || ErrExit "Failed to rm created files."
-  [ "$JSON_EDIT" ] && { rm "$JSON_EDIT" || ErrExit "Failed to rm $JSON_EDIT."; }
-}
+# Clean after running.
+if [ $DOCLEAN -eq 1 ]; then
+  MsgStep "Cleaning..."
+  Clean 2 || ErrExit "Clean failed."
+fi
 
 MsgStep "Done"
 
