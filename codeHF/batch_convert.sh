@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script to run Run 2 to Run 3 conversion in jobs.
+# Script to run Run 2 to Run 3 conversion in jobs
 
 LISTINPUT="$1"
 LISTOUTPUT="$2"
@@ -10,8 +10,11 @@ FILEOUT="AO2D.root"
 
 [ $DEBUG -eq 1 ] && echo "Running $0"
 
+# This directory
+DIR_THIS="$(dirname $(realpath $0))"
+
 # Load utilities.
-source utilities.sh || { echo "Error: Failed to load utilities."; exit 1; }
+source "$DIR_THIS/utilities.sh" || { echo "Error: Failed to load utilities."; exit 1; }
 
 LogFile="log_convert.log"
 ListInOne="list_input.txt"
@@ -40,7 +43,7 @@ while read FileIn; do
   cat << EOF > $RUNSCRIPT # Create the job script.
 #!/bin/bash
 cd "$DirBase/$DirOut"
-root -b -q -l "$DirBase/convertAO2D.C(\"$ListInOne\", $ISMC)" > $LogFile 2>&1
+root -b -q -l "$DIR_THIS/convertAO2D.C(\"$ListInOne\", $ISMC)" > $LogFile 2>&1
 EOF
   echo "bash $(realpath $RUNSCRIPT)" >> "$ListRunScripts" && \
   ((Index+=1)) && \

@@ -42,6 +42,9 @@ SAVETREES=0         # Save O2 tables to trees.
 MASS=1.8            # Hadron mass (only for comparison plots, not used)
 DEBUG=0             # Print out more information.
 
+# This directory
+DIR_THIS="$(dirname $(realpath $0))"
+
 ####################################################################################################
 
 # Modify the JSON file.
@@ -148,7 +151,7 @@ EOF
 }
 
 function MakeScriptAli {
-  ALIEXEC="root -b -q -l \"$(realpath RunHFTaskLocal.C)(\\\"\$FileIn\\\", \\\"\$JSON\\\", $ISMC)\""
+  ALIEXEC="root -b -q -l \"$DIR_THIS/RunHFTaskLocal.C(\\\"\$FileIn\\\", \\\"\$JSON\\\", $ISMC)\""
   cat << EOF > $SCRIPT_ALI
 #!/bin/bash
 FileIn="\$1"
@@ -159,8 +162,8 @@ EOF
 
 function MakeScriptPostprocess {
   POSTEXEC="echo Postprocessing"
-  [[ $DOALI -eq 1 && $DOO2 -eq 1 && $DOO2_TASK_D0 -eq 1 && $DOO2_TASK_DPLUS -eq 1 ]] && POSTEXEC+=" && root -b -q -l \"$(realpath Compare.C)(\\\"\$FileO2\\\", \\\"\$FileAli\\\", $MASS)\""
-  [[ $DOO2 -eq 1 && $DOO2_TASK_D0 -eq 1 && $ISMC -eq 1 ]] && POSTEXEC+=" && root -b -q -l \"$(realpath PlotEfficiency.C)(\\\"\$FileO2\\\")\""
+  [[ $DOALI -eq 1 && $DOO2 -eq 1 && $DOO2_TASK_D0 -eq 1 && $DOO2_TASK_DPLUS -eq 1 ]] && POSTEXEC+=" && root -b -q -l \"$DIR_THIS/Compare.C(\\\"\$FileO2\\\", \\\"\$FileAli\\\", $MASS)\""
+  [[ $DOO2 -eq 1 && $DOO2_TASK_D0 -eq 1 && $ISMC -eq 1 ]] && POSTEXEC+=" && root -b -q -l \"$DIR_THIS/PlotEfficiency.C(\\\"\$FileO2\\\")\""
   cat << EOF > $SCRIPT_POSTPROCESS
 #!/bin/bash
 FileO2="\$1"
