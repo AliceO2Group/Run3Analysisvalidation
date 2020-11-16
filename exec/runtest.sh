@@ -60,7 +60,7 @@ SCRIPT_POSTPROCESS="script_postprocess.sh"
 source "$DIR_EXEC/utilities.sh" || { echo "Error: Failed to load utilities."; exit 1; }
 
 # Parse command line options.
-function Help { echo "Usage: bash $0 [-i <input config>] [-t <task config>] "; }
+function Help { echo "Usage: bash [<path>/]$(basename $0) [-h] [-i <input config>] [-t <task config>]"; }
 while getopts ":hi:t:" opt; do
   case ${opt} in
     h)
