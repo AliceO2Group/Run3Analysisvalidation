@@ -22,7 +22,7 @@ DirOutMain="output_conversion"
 
 rm -f $ListRunScripts && \
 rm -f $LISTOUTPUT && \
-rm -rf $DirOutMain || ErrExit
+rm -rf $DirOutMain || ErrExit "Failed to delete output files."
 
 CheckFile "$LISTINPUT"
 echo "Output directory: $DirOutMain (logfiles: $LogFile)"
@@ -32,10 +32,10 @@ while read FileIn; do
   DirOut="$DirOutMain/$Index"
   mkdir -p $DirOut && \
   cd $DirOut && \
-  echo $FileIn > $ListInOne || ErrExit
+  echo $FileIn > "$ListInOne" || ErrExit "Failed to echo to $ListInOne."
   [ $DEBUG -eq 1 ] && echo "Input file ($Index): $FileIn"
   FileOut="$DirOut/$FILEOUT"
-  echo "$DirBase/$FileOut" >> $DirBase/$LISTOUTPUT || ErrExit
+  echo "$DirBase/$FileOut" >> "$DirBase/$LISTOUTPUT" || ErrExit "Failed to echo to $DirBase/$LISTOUTPUT."
   RUNSCRIPT="run.sh"
   cat << EOF > $RUNSCRIPT # Create the job script.
 #!/bin/bash
@@ -44,12 +44,12 @@ root -b -q -l "$DirBase/convertAO2D.C(\"$ListInOne\", $ISMC)" > $LogFile 2>&1
 EOF
   echo "bash $(realpath $RUNSCRIPT)" >> "$ListRunScripts" && \
   ((Index+=1)) && \
-  cd $DirBase || ErrExit
+  cd $DirBase || ErrExit "Failed to cd $DirBase."
 done < "$LISTINPUT"
 
 echo "Running conversion jobs..."
 parallel --halt soon,fail=100% < $ListRunScripts > $LogFile 2>&1 || \
 ErrExit "\nCheck $(realpath $LogFile)"
-rm -f $ListRunScripts || ErrExit
+rm -f $ListRunScripts || ErrExit "Failed to rm $ListRunScripts."
 
 exit 0
