@@ -20,6 +20,8 @@ Check [this presentation](https://indico.cern.ch/event/932917/contributions/3920
 
 ## Validation
 
+See the `README` in the main repository directory to get familiar with the validation framework.
+
 The HF validation code performs the D<sup>0</sup> and D<sup>+</sup> reconstruction analysis using AliPhysics (Run 1+2) and O<sup>2</sup> (Run 3) and produces comparison plots for various decay parameter distributions.
 
 The validation steps are defined in the task configuration script `config_tasks.sh`.
@@ -47,3 +49,5 @@ The postprocessing step produces comparison plots `comparison_histos_2prong.pdf`
 
 To confirm that the output of the default settings looks as expected, compare the produced plots with their reference counterparts
 `comparison_histos_2prong_ref.pdf`, `comparison_ratios_2prong_ref.pdf`, `comparison_histos_3prong_ref.pdf`, `comparison_ratios_3prong_ref.pdf`.
+
+The complete list of commit hashes used to produce the reference plots can be found in `versions_ref.txt`.
