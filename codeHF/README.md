@@ -1,6 +1,6 @@
 # Prepared HF tasks and tests
 
-## HF decay reconstruction task
+## HF decay reconstruction tasks
 The prepared HF example allows you to run reconstruction of 2-prong and 3-prong secondary vertices and a simple analysis of D<sup>0</sup> mesons. The entire data processing procedure in O<sup>2</sup> involves three steps:
 1. Pre-selection of secondary tracks
    * Performed by the [HFTrackIndexSkimsCreator](https://github.com/AliceO2Group/AliceO2/blob/dev/Analysis/Tasks/PWGHF/HFTrackIndexSkimsCreator.cxx) class
@@ -18,73 +18,32 @@ The prepared HF example allows you to run reconstruction of 2-prong and 3-prong 
 
 Check [this presentation](https://indico.cern.ch/event/932917/contributions/3920363/attachments/2065207/3465791/20200629_PWGHF_report.pdf) to learn more about the design of the underlying data processing scheme that includes skimming, decay reconstruction and analysis.
 
-## Run 3 code validation
+## Validation
 
-The results and the intermediate data processing steps can be cross-checked with their counterparts in AliPhysics.
-To perform this Run 3 code validation, you need to run a dedicated code that is not part of the O<sup>2</sup> framework.
-It runs the same analysis using AliPhysics and O<sup>2</sup> and produces comparison plots.
+The HF validation code performs the D<sup>0</sup> and D<sup>+</sup> reconstruction analysis using AliPhysics (Run 1+2) and O<sup>2</sup> (Run 3) and produces comparison plots for various decay parameter distributions.
 
-### Download the comparison software
-
-You can download the validation code:
-```bash
-git clone https://github.com/AliceO2Group/Run3Analysisvalidation.git
-cd Run3Analysisvalidation/codeHF
-```
-
-### Install parallelisation software
-
-The execution of validation steps is parallelised using the [GNU Parallel](https://www.gnu.org/software/parallel/) tool.
-You need to have it installed on your machine to run the comparison code.
-You can install GNU Parallel on Ubuntu-based systems with:
-```bash
-sudo apt install parallel
-```
+The validation steps are defined in the task configuration script `config_tasks.sh`.
 
 ### Select your data
 
-In order to run the analysis with AliPhysics, you need `AliESDs.root` files and specify their location by setting the variables `INPUT_DIR` and `INPUT_FILES` in the `runtest.sh` steering script in the `codeHF` directory.
+In order to run the analysis with AliPhysics, you need `AliESDs.root` files and specify their location by setting the variables `INPUT_DIR` and `INPUT_FILES` in your input specification script.
 To process Monte Carlo data, you also need the corresponding `galice.root` and `Kinematics.root` files.
 
-The steering script contains some hard-coded paths for different cases.
-By default `INPUT_CASE=4` is enabled.
+The default HF input specification script `config_input.sh` contains some predefined input cases with hard-coded paths.
+By default `INPUT_CASE=4` is selected.
 To run the code with the same input files locally on your machine, download them from `/alice/sim/2018/LHC18a4a2_cent/282099/001/` on the Grid.
 
 ### Run the example
 
-Now you are ready to run the validation code.
-It performs the D<sup>0</sup> and D<sup>+</sup> reconstruction analysis using AliPhysics (Run 1+2) and O<sup>2</sup> (Run 3) and produces comparison plots for various decay parameter distributions.
-
-Execute the steering script from the `codeHF` directory:
+Enter the `codeHF` directory and execute the steering script:
 
 ```bash
 bash runtest.sh
 ```
 
-These steps are performed by default:
-
-1. Convert input data from the Run 1+2 format into the Run 3 format.
-   *  Specified input `AliESDs.root` files are converted into `AO2D.root` files in the `output_conversion` directory.
-   *  Enabled by `DOCONVERT=1`.
-1. Run the analysis tasks with AliPhysics.
-   *  Produces an `AnalysisResults_ALI.root` file, resulting from merging output files in the `output_ali` directory.
-   *  Enabled by `DOALI=1`.
-1. Run the analysis tasks with O<sup>2</sup>.
-   *  Produces an `AnalysisResults_O2.root` file, resulting from merging output files in the `output_o2` directory.
-   *  Enabled by `DOO2=1`.
-   *  If `SAVETREES=1`, tables are saved as trees in an `AnalysisResults_trees_O2.root` file.
-   *  Parameters of individual tasks are picked up from the JSON configuration file `dpl-config_run3.json`.
-   *  By default, the list of files includes files produced by the conversion stage.
-   *  In case `ISINPUTO2=1` is set in the Input specification section, the conversion, AliPhysics tasks, and comparison steps are disabled and O<sup>2</sup> tasks are executed using the specified input files directly.
-1. Compare AliPhysics and O<sup>2</sup> output.
-   *  Produces comparison plots `comparison_histos_2prong.pdf`, `comparison_ratios_2prong.pdf`, `comparison_histos_3prong.pdf`, `comparison_ratios_3prong.pdf`.
-   *  Enabled by `DOPOSTPROCESS=1`.
-
-Individual steps can be disabled by setting the respective variables to `0`.
 Running all the steps with `INPUT_CASE=4` takes about 40 seconds in total.
-If everything went fine, the script will exit with the message `Done`.
-You should have got all the output files in the `codeHF` directory.
-To confirm that the output of the default settings looks as expected, compare the produced plots with the reference
+
+The postprocessing step produces comparison plots `comparison_histos_2prong.pdf`, `comparison_ratios_2prong.pdf`, `comparison_histos_3prong.pdf`, `comparison_ratios_3prong.pdf`.
+
+To confirm that the output of the default settings looks as expected, compare the produced plots with their reference counterparts
 `comparison_histos_2prong_ref.pdf`, `comparison_ratios_2prong_ref.pdf`, `comparison_histos_3prong_ref.pdf`, `comparison_ratios_3prong_ref.pdf`.
-If any step fails, the script will exit with the message `Error` and you should look into the respective log file to investigate the problem.
-If the main log file mentions failed jobs, inspect the respective log file in the directory of the corresponding job.
