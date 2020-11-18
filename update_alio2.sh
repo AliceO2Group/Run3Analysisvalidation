@@ -32,13 +32,16 @@ ALIBUILD_DIR_ARCH="$ALICE_DIR/sw/$ALIBUILD_ARCH"
 ALIBUILD_DIR_BUILD="$ALICE_DIR/sw/BUILD"
 
 # alidist
+ALIDIST_NAME="alidist"
 ALIDIST_UPDATE=1
 ALIDIST_DIR="$ALICE_DIR/alidist"
 ALIDIST_REMOTE_MAIN="upstream"
 ALIDIST_REMOTE_FORK=""
 ALIDIST_BRANCH_MAIN="master"
+ALIDIST_SPECS=("$ALIDIST_NAME" $ALIDIST_UPDATE "$ALIDIST_DIR" "$ALIDIST_REMOTE_MAIN" "$ALIDIST_REMOTE_FORK" "$ALIDIST_BRANCH_MAIN")
 
 # AliPhysics
+ALIPHYSICS_NAME="AliPhysics"
 ALIPHYSICS_UPDATE=1
 ALIPHYSICS_DIR="$ALICE_DIR/AliPhysics"
 ALIPHYSICS_REMOTE_MAIN="upstream"
@@ -46,8 +49,10 @@ ALIPHYSICS_REMOTE_FORK="origin"
 ALIPHYSICS_BRANCH_MAIN="master"
 ALIPHYSICS_BUILD_OPT="--defaults user-next-root6"
 ALIPHYSICS_BUILD=1
+ALIPHYSICS_SPECS=("$ALIPHYSICS_NAME" $ALIPHYSICS_UPDATE "$ALIPHYSICS_DIR" "$ALIPHYSICS_REMOTE_MAIN" "$ALIPHYSICS_REMOTE_FORK" "$ALIPHYSICS_BRANCH_MAIN" "$ALIPHYSICS_BUILD_OPT" $ALIPHYSICS_BUILD)
 
 # O2
+O2_NAME="O2"
 O2_UPDATE=1
 O2_DIR="$ALICE_DIR/O2"
 O2_REMOTE_MAIN="upstream"
@@ -55,24 +60,58 @@ O2_REMOTE_FORK="origin"
 O2_BRANCH_MAIN="dev"
 O2_BUILD_OPT="--defaults o2"
 O2_BUILD=1
+O2_SPECS=("$O2_NAME" $O2_UPDATE "$O2_DIR" "$O2_REMOTE_MAIN" "$O2_REMOTE_FORK" "$O2_BRANCH_MAIN" "$O2_BUILD_OPT" $O2_BUILD)
 
 # Run 3 validation
+RUN3VALIDATE_NAME="Run 3 validation"
 RUN3VALIDATE_UPDATE=1
 RUN3VALIDATE_DIR="$(dirname $(realpath $0))"
 RUN3VALIDATE_REMOTE_MAIN="upstream"
 RUN3VALIDATE_REMOTE_FORK="origin"
 RUN3VALIDATE_BRANCH_MAIN="master"
-####################################################################################################
+RUN3VALIDATE_SPECS=("$RUN3VALIDATE_NAME" $RUN3VALIDATE_UPDATE "$RUN3VALIDATE_DIR" "$RUN3VALIDATE_REMOTE_MAIN" "$RUN3VALIDATE_REMOTE_FORK" "$RUN3VALIDATE_BRANCH_MAIN")
 
-# Report error and exit
-function ErrExit { echo -e "\e[1;31mError\e[0m"; exit 1; }
+# List of packages to consider. (Put alidist first!)
+LIST_PKG=(
+"ALIDIST_SPECS"
+"ALIPHYSICS_SPECS"
+"O2_SPECS"
+"RUN3VALIDATE_SPECS"
+)
+####################################################################################################
 
 # Message formatting
 function MsgStep { echo -e "\n\e[1;32m$@\e[0m"; }
 function MsgSubStep { echo -e "\n\e[1m$@\e[0m"; }
 function MsgSubSubStep { echo -e "\e[4m$@\e[0m"; }
 function MsgWarn { echo -e "\e[1;36m$@\e[0m"; }
+function MsgErr { echo -e "\e[1;31m$@\e[0m"; }
 
+# Throw error and exit.
+function ErrExit {
+  MsgErr "Error: $@"; exit 1;
+}
+
+# Print out package summary.
+function PackageSummary {
+  local -n Specs=$1
+  NArgs=${#Specs[@]}
+  [ "$NArgs" -lt 1 ] && ErrExit "Bad array."
+  [ "$NArgs" -lt 6 ] && ErrExit "Package: ${Specs[0]}: Incomplete list of parameters."
+  echo "Package: ${Specs[0]}"
+  echo "Update: ${Specs[1]}"
+  echo "Repository: ${Specs[2]}"
+  echo "Upstream remote: ${Specs[3]}"
+  echo "Fork remote: ${Specs[4]}"
+  echo "Main branch: ${Specs[5]}"
+  [ "$NArgs" -ge 8 ] && {
+    echo "Build: ${Specs[7]}"
+    echo "Build options: ${Specs[6]}"
+  }
+  return 0
+}
+
+# Print out name of the current branch and the hash of the last commit.
 function PrintLastCommit {
   BRANCH=$(git rev-parse --abbrev-ref HEAD)
   COMMIT=$(git log -n 1 --pretty='format:%ci %h %s')
@@ -105,6 +144,7 @@ function UpdateBranch {
     MsgSubSubStep "-- Pushing branch $BRANCH_ to $REMOTE_FORK_"
     git push -f $REMOTE_FORK_ $BRANCH_ || ErrExit
   fi
+  return 0
 }
 
 # Update the main and the current branch and push to the fork repository (if specified).
@@ -121,7 +161,7 @@ function UpdateGit {
   echo "Current branch: $BRANCH"
 
   # Skip update when on detached HEAD.
-  [ "$BRANCH" == "HEAD" ] && { MsgSubStep "- Skipping update because of detached HEAD"; return; }
+  [ "$BRANCH" == "HEAD" ] && { MsgSubStep "- Skipping update because of detached HEAD"; return 0; }
 
   # Stash uncommitted local changes.
   MsgSubStep "- Stashing potential uncommitted local changes"
@@ -137,33 +177,60 @@ function UpdateGit {
 
   # Unstash stashed changes if any.
   [ $NSTASH_NEW -ne $NSTASH_OLD ] && { MsgSubStep "- Unstashing uncommitted local changes"; git stash pop || ErrExit; }
+  return 0
 }
 
-# alidist
-if [ $ALIDIST_UPDATE -eq 1 ]; then
-  MsgStep "Updating alidist"
-  UpdateGit "$ALIDIST_DIR" $ALIDIST_REMOTE_MAIN $ALIDIST_BRANCH_MAIN $ALIDIST_REMOTE_FORK
-fi
+function BuildPackage {
+  PkgName="$1"
+  PkgBuildOpt="$2"
+  [ "$PkgName" ] || ErrExit "Empty package name"
+  "$(which aliBuild)" && cd "$ALICE_DIR" && aliBuild build $PkgName $PkgBuildOpt $ALIBUILD_OPT || ErrExit;
+}
 
-# AliPhysics
-if [ $ALIPHYSICS_UPDATE -eq 1 ]; then
-  MsgStep "Updating AliPhysics"
-  UpdateGit "$ALIPHYSICS_DIR" $ALIPHYSICS_REMOTE_MAIN $ALIPHYSICS_BRANCH_MAIN $ALIPHYSICS_REMOTE_FORK
-  [ $ALIPHYSICS_BUILD -eq 1 ] && { MsgSubStep "- Building AliPhysics"; cd "$ALICE_DIR" && aliBuild build AliPhysics $ALIPHYSICS_BUILD_OPT $ALIBUILD_OPT || ErrExit; }
-fi
+# Do the full update of a package.
+function UpdatePackage {
+  # Get package specification parameters.
+  local -n Specs=$1
+  NArgs=${#Specs[@]}
+  [ "$NArgs" -lt 1 ] && ErrExit "Bad array. $Specs"
+  Name="${Specs[0]}"
+  MsgStep "Updating $Name"
+  [ "$NArgs" -lt 6 ] && ErrExit "Incomplete list of parameters."
+  DoUpdate=${Specs[1]}
+  PathRepo="${Specs[2]}"
+  RemoteMain="${Specs[3]}"
+  RemoteFork="${Specs[4]}"
+  BranchMain="${Specs[5]}"
+  DoBuild=0
+  BuildOpt=""
+  [ "$NArgs" -ge 8 ] && {
+    BuildOpt="${Specs[6]}"
+    DoBuild=${Specs[7]}
+  }
+  # Update repository.
+  [ $DoUpdate -eq 1 ] && { UpdateGit "$PathRepo" $RemoteMain $BranchMain $RemoteFork; } || { echo "Update deactivated. Skipping"; }
+  # Build package.
+  [ $DoBuild -eq 1 ] && { MsgSubStep "- Building $Name"; BuildPackage "$Name" "$BuildOpt" || ErrExit; }
+  return 0
+}
+####################################################################################################
 
-# O2
-if [ $O2_UPDATE -eq 1 ]; then
-  MsgStep "Updating O2"
-  UpdateGit "$O2_DIR" $O2_REMOTE_MAIN $O2_BRANCH_MAIN $O2_REMOTE_FORK
-  [ $O2_BUILD -eq 1 ] && { MsgSubStep "- Building O2"; cd "$ALICE_DIR" && aliBuild build O2 $O2_BUILD_OPT $ALIBUILD_OPT || ErrExit; }
-fi
+########## EXECUTION ##########
 
-# Run 3 validation
-if [ $RUN3VALIDATE_UPDATE -eq 1 ]; then
-  MsgStep "Updating Run3Analysisvalidation"
-  UpdateGit "$RUN3VALIDATE_DIR" $RUN3VALIDATE_REMOTE_MAIN $RUN3VALIDATE_BRANCH_MAIN $RUN3VALIDATE_REMOTE_FORK
-fi
+# Print out summary of parameters for each package.
+for pkg in "${LIST_PKG[@]}"; do
+  arr="$pkg[@]"
+  spec=("${!arr}")
+  PackageSummary spec
+  echo ""
+done
+
+# Update all packages in the list.
+for pkg in "${LIST_PKG[@]}"; do
+  arr="$pkg[@]"
+  spec=("${!arr}")
+  UpdatePackage spec || ErrExit
+done
 
 # Cleanup
 if [ $CLEAN -eq 1 ]; then
@@ -178,7 +245,7 @@ if [ $CLEAN -eq 1 ]; then
     # Check existence of the build directories.
     MsgSubSubStep "-- Checking existence of the build directories"
     [[ -d "$ALIBUILD_DIR_ARCH" && -d "$ALIBUILD_DIR_BUILD" ]] || ErrExit
-    # Get paths to the latest builds of AliPhysics and O2.
+    # Get paths to the latest builds of AliPhysics and O2. (They need to be recreated manually because aliBuild creates them only when the package needs to be rebuilt.)
     MsgSubSubStep "-- Getting paths to latest builds of AliPhysics and O2"
     PATH_BUILD_ALI_BUILD="$(realpath $ALIBUILD_DIR_BUILD/AliPhysics-latest)" && [ -d "$PATH_BUILD_ALI_BUILD" ] || ErrExit
     PATH_BUILD_ALI_ARCH="$(realpath $ALIBUILD_DIR_ARCH/AliPhysics/latest)" && [ -d "$PATH_BUILD_ALI_ARCH" ] || ErrExit
