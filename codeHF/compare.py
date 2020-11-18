@@ -1,11 +1,18 @@
 #!/usr/bin/env python3
 
+"""
+Comparison script.
+Comparing different files with same structure and same plot names.
+To run your comparison between AnalysisResults1.root AnalysisResults2.root you can use:
+./compare.py AnalysisResults1.root AnalysisResults2.root -b
+"""
+
 from ROOT import TFile, TCanvas, TLegend, gPad, TColor, TH1, TLatex
 import argparse
 import itertools
 
 
-def compare(objs, add_leg_title=True):
+def compare(objs, add_leg_title=True, normalize=True):
     print("Comparing")
     cols = ['#e41a1c', '#377eb8', '#4daf4a']
     colors = {}
@@ -28,7 +35,10 @@ def compare(objs, add_leg_title=True):
             obj.SetBit(TH1.kNoTitle)
             obj.SetBit(TH1.kNoStats)
             obj.SetTitle(i)
-            drawn[j].append(obj.DrawNormalized(opt))
+            if normalize:
+                drawn[j].append(obj.DrawNormalized(opt))
+            else:
+                drawn[j].append(obj.DrawClone(opt))
     for i in drawn:
         d = drawn[i]
         can = d[0]

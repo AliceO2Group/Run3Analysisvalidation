@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+"""
+Script to plot together canvases in different files
+"""
 
 from ROOT import TFile, TColor, TLegend
 from sys import argv
