@@ -8,17 +8,16 @@
 # - Force-push the branch into the remote fork repository if specified.
 # AliPhysics and O2 are built using the respective current branches and the specified build options.
 
-#################################################################
+####################################################################################################
 # User settings:
 # paths, names of remotes (check git remote -v), build options.
 
 # Delete unnecessary files.
 CLEAN=1
-CLEAN_AGGRESSIVE=0 # Delete store and SOURCES except for AliPhysics and O2.
 
-# Delete all builds other than the latest ones (i.e. the ones currently being built in this script).
-# WARNING: Do not enable this if you need to keep several builds of the same package (AliPhysics, O2) (e.g. for different branches or commits).
-PURGE_BUILDS=0 # NOT WORKING YET!
+# Delete all builds that are not needed to run the latest AliPhysics and O2 builds.
+# WARNING: Do not enable this if you need to keep several builds of AliPhysics or O2 (e.g. for different branches or commits) or builds of other development packages!
+PURGE_BUILDS=1
 
 # Print out an overview of the latest commits of repositories.
 PRINT_COMMITS=1
@@ -29,6 +28,8 @@ ALICE_DIR="$HOME/alice"
 # aliBuild
 ALIBUILD_ARCH=$(aliBuild architecture) # system architecture
 ALIBUILD_OPT="-a $ALIBUILD_ARCH"
+ALIBUILD_DIR_ARCH="$ALICE_DIR/sw/$ALIBUILD_ARCH"
+ALIBUILD_DIR_BUILD="$ALICE_DIR/sw/BUILD"
 
 # alidist
 ALIDIST_UPDATE=1
@@ -61,7 +62,7 @@ RUN3VALIDATE_DIR="$(dirname $(realpath $0))"
 RUN3VALIDATE_REMOTE_MAIN="upstream"
 RUN3VALIDATE_REMOTE_FORK="origin"
 RUN3VALIDATE_BRANCH_MAIN="master"
-#################################################################
+####################################################################################################
 
 # Report error and exit
 function ErrExit { echo -e "\e[1;31mError\e[0m"; exit 1; }
@@ -165,31 +166,52 @@ if [ $RUN3VALIDATE_UPDATE -eq 1 ]; then
 fi
 
 # Cleanup
-  if [ $CLEAN -eq 1 ]; then
-  MsgStep "Cleaning builds"
+if [ $CLEAN -eq 1 ]; then
+  MsgStep "Cleaning aliBuild files"
+
+  # Get the directory size before cleaning.
+  SIZE_BEFORE=$(du -s $ALICE_DIR | cut -f1)
 
   # Delete all symlinks to builds and recreate the latest ones to allow deleting of all other builds.
   if [ $PURGE_BUILDS -eq 1 ]; then
-    MsgWarn "Purging builds"
-    # Delete all symlinks to builds.
-    MsgSubStep "- Deleting symlinks to builds"
-    find "$ALICE_DIR/sw/$ALIBUILD_ARCH/" -mindepth 2 -maxdepth 2 -type l -delete || ErrExit
-    find "$ALICE_DIR/sw/BUILD" -mindepth 1 -maxdepth 1 -type l -delete || ErrExit
-    # Recreate symlinks to the latest builds.
-    MsgSubStep "- Re-building AliPhysics"; cd "$ALICE_DIR" && aliBuild build AliPhysics $ALIPHYSICS_BUILD_OPT $ALIBUILD_OPT > /dev/null 2>&1 || ErrExit
-    MsgSubStep "- Re-building O2"; cd "$ALICE_DIR" && aliBuild build O2 $O2_BUILD_OPT $ALIBUILD_OPT > /dev/null 2>&1 || ErrExit
+    MsgSubStep "- Purging builds"
+    # Check existence of the build directories.
+    MsgSubSubStep "-- Checking existence of the build directories"
+    [[ -d "$ALIBUILD_DIR_ARCH" && -d "$ALIBUILD_DIR_BUILD" ]] || ErrExit
+    # Get paths to the latest builds of AliPhysics and O2.
+    MsgSubSubStep "-- Getting paths to latest builds of AliPhysics and O2"
+    PATH_BUILD_ALI_BUILD="$(realpath $ALIBUILD_DIR_BUILD/AliPhysics-latest)" && [ -d "$PATH_BUILD_ALI_BUILD" ] || ErrExit
+    PATH_BUILD_ALI_ARCH="$(realpath $ALIBUILD_DIR_ARCH/AliPhysics/latest)" && [ -d "$PATH_BUILD_ALI_ARCH" ] || ErrExit
+    PATH_BUILD_O2_ARCH="$(realpath $ALIBUILD_DIR_ARCH/O2/latest)" && [ -d "$PATH_BUILD_O2_ARCH" ] || ErrExit
+    PATH_BUILD_O2_BUILD="$(realpath $ALIBUILD_DIR_BUILD/O2-latest)" && [ -d "$PATH_BUILD_O2_BUILD" ] || ErrExit
+    for path in "$PATH_BUILD_ALI_ARCH" "$PATH_BUILD_O2_ARCH" "$PATH_BUILD_ALI_BUILD" "$PATH_BUILD_O2_BUILD"; do
+      echo $path
+    done
+    # Delete symlinks to all builds.
+    MsgSubSubStep "-- Deleting symlinks to all builds"
+    find "$ALIBUILD_DIR_ARCH" -mindepth 2 -maxdepth 2 -type l -delete || ErrExit
+    find "$ALIBUILD_DIR_BUILD" -mindepth 1 -maxdepth 1 -type l -delete || ErrExit
+    # Recreate symlinks to the latest builds of dependencies.
+    MsgSubSubStep "-- Re-building AliPhysics to recreate symlinks"; cd "$ALICE_DIR" && aliBuild build AliPhysics $ALIPHYSICS_BUILD_OPT $ALIBUILD_OPT > /dev/null 2>&1 || ErrExit
+    MsgSubSubStep "-- Re-building O2 to recreate symlinks"; cd "$ALICE_DIR" && aliBuild build O2 $O2_BUILD_OPT $ALIBUILD_OPT > /dev/null 2>&1 || ErrExit
+    # Recreate symlinks to the latest builds of AliPhysics and O2.
+    MsgSubSubStep "-- Recreating symlinks to the latest builds of AliPhysics and O2"
+    ln -snf "$(basename "$PATH_BUILD_ALI_BUILD")" "$(dirname "$PATH_BUILD_ALI_BUILD")/AliPhysics-latest" || ErrExit
+    ln -snf "$(basename "$PATH_BUILD_ALI_ARCH")" "$(dirname "$PATH_BUILD_ALI_ARCH")/latest" || ErrExit
+    ln -snf "$(basename "$PATH_BUILD_O2_BUILD")" "$(dirname "$PATH_BUILD_O2_BUILD")/O2-latest" || ErrExit
+    ln -snf "$(basename "$PATH_BUILD_O2_ARCH")" "$(dirname "$PATH_BUILD_O2_ARCH")/latest" || ErrExit
   fi
 
-  aliBuild clean $ALIBUILD_OPT
+  # Delete obsolete builds.
+  MsgSubStep "- Deleting obsolete builds"
+  cd "$ALICE_DIR" && aliBuild clean $ALIBUILD_OPT
 
-  # Delete store and SOURCES (except for AliPhysics and O2).
-  if [ $CLEAN_AGGRESSIVE -eq 1 ]; then
-    MsgWarn "Cleaning aggressively"
-    #find "$ALICE_DIR/sw/SOURCES" -mindepth 1 -maxdepth 1 ! -name AliPhysics ! -name O2 -exec rm -rf {} \; || ErrExit
-    rm -rf "$ALICE_DIR/sw/TARS/$ALIBUILD_ARCH/store" || ErrExit
-    # Delete broken links.
-    #find -L "$ALICE_DIR/sw/TARS/$ALIBUILD_ARCH" -type l -delete || ErrExit
-  fi
+  # Get the directory size after cleaning.
+  SIZE_AFTER=$(du -s $ALICE_DIR | cut -f1)
+  # Report size difference.
+  SIZE_DIFF=$(( SIZE_BEFORE - SIZE_AFTER ))
+  [ "$(which numfmt)" ] && SIZE_DIFF=$(numfmt --to=si $SIZE_DIFF) # Convert the number of bytes to a human-readable format.
+  echo "Freed up ${SIZE_DIFF}B disk space."
 fi
 
 # Print out latest commits.
