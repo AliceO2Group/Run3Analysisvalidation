@@ -155,4 +155,8 @@ If your repository is currently on a feature branch (different from the main bra
 All your personal changes (committed and uncommitted) are preserved via rebasing and stashing.
 Check the description of the script behaviour inside the script itself for more details.
 
+If `CLEAN=1`, obsolete builds are deleted from the `sw` directory at the end.
+If `PURGE_BUILDS=1`, a deeper purging is done by deleting all builds that are not needed to run the latest AliPhysics and O2 builds.
+WARNING: Do not enable the purging if you need to keep several builds of AliPhysics or O2 (e.g. for different branches or commits) or builds of other development packages!
+
 You can easily extend the script to include any other local Git repository on your machine that you wish to be updated in the same way.
