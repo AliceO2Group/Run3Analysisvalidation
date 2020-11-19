@@ -28,8 +28,11 @@ ALIBUILD_OPT="-a $ALIBUILD_ARCH"
 ALIBUILD_DIR_ARCH="$ALICE_DIR/sw/$ALIBUILD_ARCH"  # directory with builds of all packages
 ALIBUILD_DIR_BUILD="$ALICE_DIR/sw/BUILD"  # directory with builds of development packages
 
-# List of packages to update/build.
+# List of packages to update/build
 LIST_PKG_SPECS=()
+
+# List of development aliBuild packages
+LIST_PKG_DEV_SPECS=()
 
 # Delete unnecessary files.
 CLEAN=1
@@ -212,28 +215,37 @@ if [ $CLEAN -eq 1 ]; then
     # Check existence of the build directories.
     MsgSubSubStep "-- Checking existence of the build directories"
     [[ -d "$ALIBUILD_DIR_ARCH" && -d "$ALIBUILD_DIR_BUILD" ]] || ErrExit
-    # Get paths to the latest builds of AliPhysics and O2. (They need to be recreated manually because aliBuild creates them only when the package needs to be rebuilt.)
-    MsgSubSubStep "-- Getting paths to latest builds of AliPhysics and O2"
-    PATH_BUILD_ALI_BUILD="$(realpath $ALIBUILD_DIR_BUILD/AliPhysics-latest)" && [ -d "$PATH_BUILD_ALI_BUILD" ] || ErrExit
-    PATH_BUILD_ALI_ARCH="$(realpath $ALIBUILD_DIR_ARCH/AliPhysics/latest)" && [ -d "$PATH_BUILD_ALI_ARCH" ] || ErrExit
-    PATH_BUILD_O2_ARCH="$(realpath $ALIBUILD_DIR_ARCH/O2/latest)" && [ -d "$PATH_BUILD_O2_ARCH" ] || ErrExit
-    PATH_BUILD_O2_BUILD="$(realpath $ALIBUILD_DIR_BUILD/O2-latest)" && [ -d "$PATH_BUILD_O2_BUILD" ] || ErrExit
-    for path in "$PATH_BUILD_ALI_ARCH" "$PATH_BUILD_O2_ARCH" "$PATH_BUILD_ALI_BUILD" "$PATH_BUILD_O2_BUILD"; do
+    # Get paths to the latest builds of development packages. (They need to be recreated manually because aliBuild creates them only when the package needs to be rebuilt.)
+    MsgSubSubStep "-- Getting paths to latest builds of development packages"
+    arrPathBuild=()
+    arrPathArch=()
+    for pkg in "${LIST_PKG_DEV_SPECS[@]}" ; do
+      arr="$pkg[@]"
+      spec=("${!arr}")
+      Name="${spec[0]}"
+      path="$(realpath $ALIBUILD_DIR_BUILD/${Name}-latest)" && [ -d "$path" ] && arrPathBuild+=("$path") || ErrExit
+      echo $path
+      path="$(realpath $ALIBUILD_DIR_ARCH/${Name}/latest)" && [ -d "$path" ] && arrPathArch+=("$path") || ErrExit
       echo $path
     done
     # Delete symlinks to all builds.
     MsgSubSubStep "-- Deleting symlinks to all builds"
     find "$ALIBUILD_DIR_ARCH" -mindepth 2 -maxdepth 2 -type l -delete || ErrExit
     find "$ALIBUILD_DIR_BUILD" -mindepth 1 -maxdepth 1 -type l -delete || ErrExit
-    # Recreate symlinks to the latest builds of dependencies.
-    MsgSubSubStep "-- Re-building AliPhysics to recreate symlinks"; cd "$ALICE_DIR" && aliBuild build AliPhysics $ALIPHYSICS_BUILD_OPT $ALIBUILD_OPT > /dev/null 2>&1 || ErrExit
-    MsgSubSubStep "-- Re-building O2 to recreate symlinks"; cd "$ALICE_DIR" && aliBuild build O2 $O2_BUILD_OPT $ALIBUILD_OPT > /dev/null 2>&1 || ErrExit
-    # Recreate symlinks to the latest builds of AliPhysics and O2.
-    MsgSubSubStep "-- Recreating symlinks to the latest builds of AliPhysics and O2"
-    ln -snf "$(basename "$PATH_BUILD_ALI_BUILD")" "$(dirname "$PATH_BUILD_ALI_BUILD")/AliPhysics-latest" || ErrExit
-    ln -snf "$(basename "$PATH_BUILD_ALI_ARCH")" "$(dirname "$PATH_BUILD_ALI_ARCH")/latest" || ErrExit
-    ln -snf "$(basename "$PATH_BUILD_O2_BUILD")" "$(dirname "$PATH_BUILD_O2_BUILD")/O2-latest" || ErrExit
-    ln -snf "$(basename "$PATH_BUILD_O2_ARCH")" "$(dirname "$PATH_BUILD_O2_ARCH")/latest" || ErrExit
+    # Recreate symlinks to the latest builds of development packages and their dependencies.
+    for ((i = 0; i < ${#LIST_PKG_DEV_SPECS[@]}; ++i)); do
+      pkg="${LIST_PKG_DEV_SPECS[i]}"
+      arr="$pkg[@]"
+      spec=("${!arr}")
+      Name="${spec[0]}"
+      BuildOpt="${spec[6]}"
+      MsgSubSubStep "-- Re-building $Name to recreate symlinks of dependencies"; cd "$ALICE_DIR" && BuildPackage "$Name" "$BuildOpt" > /dev/null 2>&1 || ErrExit
+      MsgSubSubStep "-- Recreating symlinks to the latest builds of $Name"
+      echo "${arrPathBuild[i]}"
+      echo "${arrPathArch[i]}"
+      ln -snf "$(basename "${arrPathBuild[i]}")" "$(dirname "${arrPathBuild[i]}")/${Name}-latest" || ErrExit
+      ln -snf "$(basename "${arrPathArch[i]}")" "$(dirname "${arrPathArch[i]}")/latest" || ErrExit
+    done
   fi
 
   # Delete obsolete builds.
