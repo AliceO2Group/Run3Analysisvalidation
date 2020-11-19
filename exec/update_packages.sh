@@ -292,7 +292,7 @@ if [ $CLEAN -eq 1 ]; then
   SIZE_AFTER=$(du -s $ALICE_DIR | cut -f1)
   # Report size difference.
   SIZE_DIFF=$(( SIZE_BEFORE - SIZE_AFTER ))
-  [ "$(which numfmt)" ] && SIZE_DIFF=$(numfmt --to=si $SIZE_DIFF) # Convert the number of bytes to a human-readable format.
+  [ "$(which numfmt)" ] && SIZE_DIFF=$(numfmt --to=si --round=nearest -- $SIZE_DIFF) # Convert the number of bytes to a human-readable format.
   echo "Freed up ${SIZE_DIFF}B of disk space."
 fi
 
