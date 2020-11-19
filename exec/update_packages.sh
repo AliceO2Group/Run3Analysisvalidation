@@ -243,7 +243,7 @@ if [ $CLEAN -eq 1 ]; then
   MsgStep "Cleaning aliBuild files"
 
   # Get the directory size before cleaning.
-  SIZE_BEFORE=$(du -s $ALICE_DIR | cut -f1)
+  SIZE_BEFORE=$(du -sb $ALICE_DIR | cut -f1)
 
   # Delete all symlinks to builds and recreate the latest ones to allow deleting of all other builds.
   if [ $PURGE_BUILDS -eq 1 ]; then
@@ -289,7 +289,7 @@ if [ $CLEAN -eq 1 ]; then
   cd "$ALICE_DIR" && aliBuild clean $ALIBUILD_OPT
 
   # Get the directory size after cleaning.
-  SIZE_AFTER=$(du -s $ALICE_DIR | cut -f1)
+  SIZE_AFTER=$(du -sb $ALICE_DIR | cut -f1)
   # Report size difference.
   SIZE_DIFF=$(( SIZE_BEFORE - SIZE_AFTER ))
   [ "$(which numfmt)" ] && SIZE_DIFF=$(numfmt --to=si --round=nearest -- $SIZE_DIFF) # Convert the number of bytes to a human-readable format.
