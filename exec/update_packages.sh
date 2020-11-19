@@ -1,83 +1,46 @@
 #!/bin/bash
 
-# This script performs a complete update of an AliPhysics + O2 installation.
+# This script updates local and remote Git repositories, builds aliBuild packages and does cleanup.
 
 # The main Git branch (and the current one if different from the main one) is updated in the following way:
 # - Pull & rebase the branch from the same branch in the remote fork repository if specified.
 # - Pull & rebase the branch from the main branch in the main remote repository.
 # - Force-push the branch into the remote fork repository if specified.
-# AliPhysics and O2 are built using the respective current branches and the specified build options.
+# aliBuild packages are built using the respective current branches and the specified build options.
 
 ####################################################################################################
-# User settings:
-# paths, names of remotes (check git remote -v), build options.
+
+# Settings
+
+# This directory
+DIR_EXEC="$(dirname $(realpath $0))"
+
+# Configuration file
+FILE_CONFIG="$DIR_EXEC/../config/config_update.sh"
+
+# Main ALICE software directory
+ALICE_DIR="$HOME/alice"
+
+# aliBuild
+[ "$(which aliBuild)" ] || ErrExit "aliBuild not found"
+ALIBUILD_ARCH=$(aliBuild architecture)  # system architecture (as detected by aliBuild)
+ALIBUILD_OPT="-a $ALIBUILD_ARCH"
+ALIBUILD_DIR_ARCH="$ALICE_DIR/sw/$ALIBUILD_ARCH"  # directory with builds of all packages
+ALIBUILD_DIR_BUILD="$ALICE_DIR/sw/BUILD"  # directory with builds of development packages
+
+# List of packages to update/build.
+LIST_PKG_SPECS=()
 
 # Delete unnecessary files.
 CLEAN=1
 
 # Delete all builds that are not needed to run the latest AliPhysics and O2 builds.
 # WARNING: Do not enable this if you need to keep several builds of AliPhysics or O2 (e.g. for different branches or commits) or builds of other development packages!
-PURGE_BUILDS=1
+PURGE_BUILDS=0
 
 # Print out an overview of the latest commits of repositories.
 PRINT_COMMITS=1
 
-# Main ALICE software directory
-ALICE_DIR="$HOME/alice"
-
-# aliBuild
-ALIBUILD_ARCH=$(aliBuild architecture) # system architecture
-ALIBUILD_OPT="-a $ALIBUILD_ARCH"
-ALIBUILD_DIR_ARCH="$ALICE_DIR/sw/$ALIBUILD_ARCH"
-ALIBUILD_DIR_BUILD="$ALICE_DIR/sw/BUILD"
-
-# alidist
-ALIDIST_NAME="alidist"
-ALIDIST_UPDATE=1
-ALIDIST_DIR="$ALICE_DIR/alidist"
-ALIDIST_REMOTE_MAIN="upstream"
-ALIDIST_REMOTE_FORK=""
-ALIDIST_BRANCH_MAIN="master"
-ALIDIST_SPECS=("$ALIDIST_NAME" $ALIDIST_UPDATE "$ALIDIST_DIR" "$ALIDIST_REMOTE_MAIN" "$ALIDIST_REMOTE_FORK" "$ALIDIST_BRANCH_MAIN")
-
-# AliPhysics
-ALIPHYSICS_NAME="AliPhysics"
-ALIPHYSICS_UPDATE=1
-ALIPHYSICS_DIR="$ALICE_DIR/AliPhysics"
-ALIPHYSICS_REMOTE_MAIN="upstream"
-ALIPHYSICS_REMOTE_FORK="origin"
-ALIPHYSICS_BRANCH_MAIN="master"
-ALIPHYSICS_BUILD_OPT="--defaults user-next-root6"
-ALIPHYSICS_BUILD=1
-ALIPHYSICS_SPECS=("$ALIPHYSICS_NAME" $ALIPHYSICS_UPDATE "$ALIPHYSICS_DIR" "$ALIPHYSICS_REMOTE_MAIN" "$ALIPHYSICS_REMOTE_FORK" "$ALIPHYSICS_BRANCH_MAIN" "$ALIPHYSICS_BUILD_OPT" $ALIPHYSICS_BUILD)
-
-# O2
-O2_NAME="O2"
-O2_UPDATE=1
-O2_DIR="$ALICE_DIR/O2"
-O2_REMOTE_MAIN="upstream"
-O2_REMOTE_FORK="origin"
-O2_BRANCH_MAIN="dev"
-O2_BUILD_OPT="--defaults o2"
-O2_BUILD=1
-O2_SPECS=("$O2_NAME" $O2_UPDATE "$O2_DIR" "$O2_REMOTE_MAIN" "$O2_REMOTE_FORK" "$O2_BRANCH_MAIN" "$O2_BUILD_OPT" $O2_BUILD)
-
-# Run 3 validation
-RUN3VALIDATE_NAME="Run 3 validation"
-RUN3VALIDATE_UPDATE=1
-RUN3VALIDATE_DIR="$(dirname $(realpath $0))"
-RUN3VALIDATE_REMOTE_MAIN="upstream"
-RUN3VALIDATE_REMOTE_FORK="origin"
-RUN3VALIDATE_BRANCH_MAIN="master"
-RUN3VALIDATE_SPECS=("$RUN3VALIDATE_NAME" $RUN3VALIDATE_UPDATE "$RUN3VALIDATE_DIR" "$RUN3VALIDATE_REMOTE_MAIN" "$RUN3VALIDATE_REMOTE_FORK" "$RUN3VALIDATE_BRANCH_MAIN")
-
-# List of packages to consider. (Put alidist first!)
-LIST_PKG=(
-"ALIDIST_SPECS"
-"ALIPHYSICS_SPECS"
-"O2_SPECS"
-"RUN3VALIDATE_SPECS"
-)
 ####################################################################################################
 
 # Message formatting
@@ -213,12 +176,16 @@ function UpdatePackage {
   [ $DoBuild -eq 1 ] && { MsgSubStep "- Building $Name"; BuildPackage "$Name" "$BuildOpt" || ErrExit; }
   return 0
 }
+
 ####################################################################################################
 
 ########## EXECUTION ##########
 
+# Load configuration.
+source "$FILE_CONFIG" || ErrExit "Failed to load configuration from $FILE_CONFIG."
+
 # Print out summary of parameters for each package.
-for pkg in "${LIST_PKG[@]}"; do
+for pkg in "${LIST_PKG_SPECS[@]}"; do
   arr="$pkg[@]"
   spec=("${!arr}")
   PackageSummary spec
@@ -226,7 +193,7 @@ for pkg in "${LIST_PKG[@]}"; do
 done
 
 # Update all packages in the list.
-for pkg in "${LIST_PKG[@]}"; do
+for pkg in "${LIST_PKG_SPECS[@]}"; do
   arr="$pkg[@]"
   spec=("${!arr}")
   UpdatePackage spec || ErrExit
