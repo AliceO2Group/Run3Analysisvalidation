@@ -12,11 +12,11 @@
 
 # Settings
 
-# This directory
-DIR_EXEC="$(dirname $(realpath $0))"
+# This repository directory
+DIR_REPO="$(realpath $(dirname $0)/..)"
 
 # Configuration file
-FILE_CONFIG="$DIR_EXEC/../config/config_update.sh"
+FILE_CONFIG="$DIR_REPO/config/config_update.sh"
 
 # Main ALICE software directory
 ALICE_DIR="$HOME/alice"
@@ -82,6 +82,7 @@ function PrintLastCommit {
   BRANCH=$(git rev-parse --abbrev-ref HEAD)
   COMMIT=$(git log -n 1 --pretty='format:%ci %h %s')
   echo "$BRANCH $COMMIT"
+  return 0
 }
 
 # Update a given branch and push to the fork repository (if specified).
@@ -150,7 +151,7 @@ function BuildPackage {
   PkgName="$1"
   PkgBuildOpt="$2"
   [ "$PkgName" ] || ErrExit "Empty package name"
-  "$(which aliBuild)" && cd "$ALICE_DIR" && aliBuild build $PkgName $PkgBuildOpt $ALIBUILD_OPT || ErrExit;
+  cd "$ALICE_DIR" && aliBuild build $PkgName $PkgBuildOpt $ALIBUILD_OPT || ErrExit;
 }
 
 # Do the full update of a package.
@@ -180,20 +181,55 @@ function UpdatePackage {
   return 0
 }
 
+function Help { echo "Usage: bash [<path>/]$(basename $0) [-h] [-c <config>] [-d]"; }
+
 ####################################################################################################
 
 ########## EXECUTION ##########
 
+# Parse command line options.
+while getopts ":hc:d" opt; do
+  case ${opt} in
+    h)
+      Help; exit 0;;
+    c)
+      FILE_CONFIG="$OPTARG";;
+    d)
+      DRYRUN=1;;
+    \?)
+      MsgErr "Invalid option: $OPTARG" 1>&2; Help; exit 1;;
+    :)
+      MsgErr "Invalid option: $OPTARG requires an argument." 1>&2; Help; exit 1;;
+  esac
+done
+
 # Load configuration.
 source "$FILE_CONFIG" || ErrExit "Failed to load configuration from $FILE_CONFIG."
 
-# Print out summary of parameters for each package.
-for pkg in "${LIST_PKG_SPECS[@]}"; do
-  arr="$pkg[@]"
-  spec=("${!arr}")
-  PackageSummary spec
-  echo ""
-done
+# Dry run: Print out configuration and exit.
+if [ $DRYRUN -eq 1 ]; then
+  MsgStep "Configuration:"
+  echo "Configuration file: $FILE_CONFIG"
+  echo "Main ALICE software directory: $ALICE_DIR"
+  echo "System architecture: $ALIBUILD_ARCH"
+  echo "Cleanup: $CLEAN"
+  echo "Purging: $PURGE_BUILDS"
+  echo "Print commits: $PRINT_COMMITS"
+  MsgSubStep "Package settings:"
+  for pkg in "${LIST_PKG_SPECS[@]}"; do
+    arr="$pkg[@]"
+    spec=("${!arr}")
+    echo ""
+    PackageSummary spec
+  done
+  MsgSubStep "Development packages:"
+  for pkg in "${LIST_PKG_DEV_SPECS[@]}"; do
+    arr="$pkg[@]"
+    spec=("${!arr}")
+    echo "${spec[0]}"
+  done
+  exit 0
+fi
 
 # Update all packages in the list.
 for pkg in "${LIST_PKG_SPECS[@]}"; do
@@ -257,7 +293,7 @@ if [ $CLEAN -eq 1 ]; then
   # Report size difference.
   SIZE_DIFF=$(( SIZE_BEFORE - SIZE_AFTER ))
   [ "$(which numfmt)" ] && SIZE_DIFF=$(numfmt --to=si $SIZE_DIFF) # Convert the number of bytes to a human-readable format.
-  echo "Freed up ${SIZE_DIFF}B disk space."
+  echo "Freed up ${SIZE_DIFF}B of disk space."
 fi
 
 # Print out latest commits.
@@ -266,7 +302,7 @@ if [ $PRINT_COMMITS -eq 1 ]; then
   for pkg in "${LIST_PKG_SPECS[@]}"; do
     arr="$pkg[@]"
     spec=("${!arr}")
-    echo "${spec[0]}: $( cd "${spec[2]}" && PrintLastCommit )"
+    echo "${spec[0]}: $( cd "${spec[2]}" && PrintLastCommit || ErrExit )"
   done
 fi
 
