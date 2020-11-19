@@ -251,10 +251,11 @@ fi
 # Print out latest commits.
 if [ $PRINT_COMMITS -eq 1 ]; then
   MsgStep "Latest commits"
-  echo "alidist: $( cd "$ALIDIST_DIR" && PrintLastCommit )"
-  echo "AliPhysics: $( cd "$ALIPHYSICS_DIR" && PrintLastCommit )"
-  echo "O2: $( cd "$O2_DIR" && PrintLastCommit )"
-  echo "Run 3 validation: $( cd "$RUN3VALIDATE_DIR" && PrintLastCommit )"
+  for pkg in "${LIST_PKG_SPECS[@]}"; do
+    arr="$pkg[@]"
+    spec=("${!arr}")
+    echo "${spec[0]}: $( cd "${spec[2]}" && PrintLastCommit )"
+  done
 fi
 
 MsgStep "Done"
