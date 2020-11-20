@@ -37,8 +37,10 @@ LIST_PKG_DEV_SPECS=()
 # Delete unnecessary files.
 CLEAN=1
 
-# Delete all builds that are not needed to run the latest AliPhysics and O2 builds.
-# WARNING: Do not enable this if you need to keep several builds of AliPhysics or O2 (e.g. for different branches or commits) or builds of other development packages!
+# Delete all builds that are not needed to run the latest builds of specified development packages.
+# WARNING: This feature requires all development packages to be specified and added in the list LIST_PKG_DEV_SPECS! Builds of missing packages will be deleted!
+# WARNING: This feature executes "aliBuild build" for all development packages. If a package needs to be rebuilt, it will be rebuilt!
+# WARNING: Do not enable this if you need to keep several builds per development package (e.g. for different branches or commits)!
 PURGE_BUILDS=0
 
 # Print out an overview of the latest commits of repositories.
@@ -293,7 +295,7 @@ if [ $CLEAN -eq 1 ]; then
   # Report size difference.
   SIZE_DIFF=$(( SIZE_BEFORE - SIZE_AFTER ))
   [ "$(which numfmt)" ] && SIZE_DIFF=$(numfmt --to=si --round=nearest -- $SIZE_DIFF) # Convert the number of bytes to a human-readable format.
-  echo "Freed up ${SIZE_DIFF}B of disk space."
+  echo -e "\nFreed up ${SIZE_DIFF}B of disk space."
 fi
 
 # Print out latest commits.

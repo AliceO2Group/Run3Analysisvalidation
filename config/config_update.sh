@@ -9,15 +9,17 @@
 # Delete unnecessary files.
 CLEAN=1
 
-# Delete all builds that are not needed to run the latest AliPhysics and O2 builds.
-# WARNING: Do not enable this if you need to keep several builds of AliPhysics or O2 (e.g. for different branches or commits) or builds of other development packages!
+# Delete all builds that are not needed to run the latest builds of specified development packages.
+# WARNING: This feature requires all development packages to be specified and added in the list LIST_PKG_DEV_SPECS! Builds of missing packages will be deleted!
+# WARNING: This feature executes "aliBuild build" for all development packages. If a package needs to be rebuilt, it will be rebuilt!
+# WARNING: Do not enable this if you need to keep several builds per development package (e.g. for different branches or commits)!
 PURGE_BUILDS=0
 
 # Print out an overview of the latest commits of repositories.
 PRINT_COMMITS=1
 
 # Main ALICE software directory
-#ALICE_DIR="$HOME/alice"
+ALICE_DIR="$HOME/alice"
 
 # aliBuild
 #ALIBUILD_ARCH=$(aliBuild architecture) # system architecture
