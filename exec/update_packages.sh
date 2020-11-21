@@ -46,6 +46,9 @@ PURGE_BUILDS=0
 # Print out an overview of the latest commits of repositories.
 PRINT_COMMITS=1
 
+# Display configuration without doing anything.
+DRYRUN=0
+
 ####################################################################################################
 
 # Message formatting
