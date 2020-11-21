@@ -20,7 +20,7 @@ DOO2=1              # Run O2 tasks.
 DOPOSTPROCESS=1     # Run output postprocessing. (Compare AliPhysics and O2 output.)
 
 # Disable incompatible steps.
-[ $ISINPUTO2 -eq 1 ] && { DOCONVERT=0; DOALI=0; DOPOSTPROCESS=0; }
+[ $ISINPUTO2 -eq 1 ] && { DOCONVERT=0; DOALI=0; }
 
 # Activation of O2 tasks
 DOO2_QA=0           # qatask
