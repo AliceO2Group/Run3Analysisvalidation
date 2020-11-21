@@ -294,8 +294,10 @@ if [ $CLEAN -eq 1 ]; then
   SIZE_AFTER=$(du -sb $ALICE_DIR/sw | cut -f1)
   # Report size difference.
   SIZE_DIFF=$(( SIZE_BEFORE - SIZE_AFTER ))
-  [ "$(which numfmt)" ] && SIZE_DIFF=$(numfmt --to=si --round=nearest -- $SIZE_DIFF) # Convert the number of bytes to a human-readable format.
+  # Convert the number of bytes to a human-readable format.
+  [ "$(which numfmt)" ] && { SIZE_DIFF=$(numfmt --to=si --round=nearest -- $SIZE_DIFF); SIZE_AFTER=$(numfmt --to=si --round=nearest -- $SIZE_AFTER); }
   echo -e "\nFreed up ${SIZE_DIFF}B of disk space."
+  echo "Directory $ALICE_DIR/sw takes ${SIZE_AFTER}B."
 fi
 
 # Print out latest commits.
