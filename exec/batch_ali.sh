@@ -47,7 +47,8 @@ while read FileIn; do
   RUNSCRIPT="run.sh"
   cat << EOF > $RUNSCRIPT # Create the job script.
 #!/bin/bash
-cd "$DirBase/$DirOut"
+DirThis="\$(dirname \$(realpath \$0))"
+cd "\$DirThis"
 bash $SCRIPT "$FileIn" "$JSON" > $LogFile 2>&1
 EOF
   echo "bash $(realpath $RUNSCRIPT)" >> "$ListRunScripts" && \
