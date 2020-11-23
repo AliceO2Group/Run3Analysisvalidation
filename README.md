@@ -53,7 +53,7 @@ The steering script `runtest.sh` performs the following execution steps:
  * Done
    * This step is just a visual confirmation that all steps have finished without errors.
 
-All steps are activated by default and some can be disabled indiviually by setting the respective activation variables to `0` in user's task configuration.
+All steps are activated by default and some can be disabled individually by setting the respective activation variables to `0` in user's task configuration.
 
 ### Configuration
 
@@ -71,7 +71,7 @@ bash [<path>/]runtest.sh [-h] [-i <input config>] [-t <task config>]
  * Defaults to `config_input.sh` (in the current directory).
 
 `<task config>` Task configuration
- * Bash script that cleans the directory, deactivates step, modifies JSON, generates step scripts.
+ * Bash script that cleans the directory, deactivates steps, modifies the JSON file, generates step scripts.
  * This script defines what the validation steps will do.
  * Defaults to `config_tasks.sh` (in the current directory).
  * Provides these mandatory functions:
@@ -79,7 +79,7 @@ bash [<path>/]runtest.sh [-h] [-i <input config>] [-t <task config>]
    * `AdjustJson`             Modifies the JSON file. (e.g. selection cut activation)
    * `MakeScriptAli`          Generates the AliPhysics step script.
    * `MakeScriptO2`           Generates the O<sup>2</sup> step script.
-   * `MakeScriptPostprocess`  Generates the postprocessing step script. (e.g plotting)
+   * `MakeScriptPostprocess`  Generates the postprocessing step script. (e.g. plotting)
  * The `Clean` function takes one argument: `$1=1` before running, `$1=2` after running.
  * The AliPhysics and O<sup>2</sup> step scripts take two arguments: `$1="<input file>"`, `$2="<JSON file>"`.
  * The postprocessing step script takes two arguments: `$1="<O2 output file>"`, `$2="<AliPhysics output file>"`.
@@ -143,20 +143,36 @@ All these maintenance steps can be fully automated using the `update_packages.sh
 and installations up to date with the latest development in the respective main branches.
 This includes updating alidist, AliPhysics, O<sup>2</sup>, and this Run 3 validation code repository, as well as re-building your AliPhysics and O<sup>2</sup> installations via aliBuild and deleting obsolete builds.
 
-All you need to do is to make sure that the strings in the `User settings` block of the script correspond to your local setup and
+All you need to do is to make sure that the strings in the `config/config_update.sh` script correspond to your local setup and
 adjust the activation switches, if needed, to change the list of steps to be executed.
+By default, O<sup>2</sup> and Run3Analysisvalidation are activated for build and update.
+Settings for alidist and AliPhysics are also included but with deactivated build and update.
 
-You can then start the full update of your code and installations by running the script from any directory on your system:
+You can execute the script from any directory on your system using the following syntax:
 ```bash
-bash <path to the Run3Analysisvalidation directory>/exec/update_packages.sh
+bash <path to the Run3Analysisvalidation directory>/exec/update_packages.sh [-h] [-c <config>] [-d]
 ```
 
-If your repository is currently on a feature branch (different from the main branch), both the main branch and your feature branch will be updated from the main branch.
+`h` (Help) Prints out the usage specification above.
+
+`<config>` Configuration script including the package specification
+ * Defaults to `config/config_update.sh` (in the Run3Analysisvalidation repository).
+
+`d` (Dry run) Displays configuration without doing anything.
+
+If you are happy with the configuration, you can then start the script and it will take care of the full update of your code and installations for all the activated packages.
+
+If your repository is currently on a feature branch (different from the main branch), both the main branch and your feature branch will be updated from the main branch in the main (upstream) remote repository.
+The main and the current branch are each first updated from their respective counterparts in the fork remote repository and then from the upstream main branch.
+The updated history of each branch is then force-pushed to the fork repository.
+This allows for synchronisation across machines where commits pushed to the fork repository from another machine are first incorporated locally before pushing new commits.
 All your personal changes (committed and uncommitted) are preserved via rebasing and stashing.
 Check the description of the script behaviour inside the script itself for more details.
 
 If `CLEAN=1`, obsolete builds are deleted from the `sw` directory at the end.
 If `PURGE_BUILDS=1`, a deeper purging is done by deleting all builds that are not needed to run the latest AliPhysics and O2 builds.
-WARNING: Do not enable the purging if you need to keep several builds of AliPhysics or O2 (e.g. for different branches or commits) or builds of other development packages!
+WARNING: Do not enable the purging if you need to keep several builds of AliPhysics or O2 (e.g. for different branches or commits) or builds of other development packages not specified in your configuration!
 
-You can easily extend the script to include any other local Git repository on your machine that you wish to be updated in the same way.
+If any error occurs during the script execution, the script will report the error and exit immediately.
+
+You can easily extend the script to include any other local Git repository and any other aliBuild development package on your machine that you wish to be updated in the same way.
