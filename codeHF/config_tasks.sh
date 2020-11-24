@@ -26,21 +26,21 @@ DOPOSTPROCESS=1     # Run output postprocessing. (Compare AliPhysics and O2 outp
 # Activation of O2 tasks
 DOO2_QA=0           # qatask
 DOO2_SKIM=0         # hf-track-index-skims-creator
-DOO2_CAND_2PRONG=0  # hf-candidate-creator-2prong
+DOO2_CAND_2PRONG=1  # hf-candidate-creator-2prong
 DOO2_CAND_3PRONG=0  # hf-candidate-creator-3prong
-DOO2_PID_TPC=0      # pid-tpc
-DOO2_PID_TOF=0      # pid-tof
+DOO2_PID_TPC=1      # pid-tpc
+DOO2_PID_TOF=1      # pid-tof
 DOO2_SEL_D0=0       # hf-d0-candidate-selector
 DOO2_SEL_LC=0       # hf-lc-candidate-selector
-DOO2_TASK_D0=1      # hf-task-d0
-DOO2_TASK_DPLUS=1   # hf-task-dplus
-DOO2_TASK_LC=1      # hf-task-lc
+DOO2_TASK_D0=0      # hf-task-d0
+DOO2_TASK_DPLUS=0   # hf-task-dplus
+DOO2_TASK_LC=0      # hf-task-lc
 
 # Selection cuts
 APPLYCUTS_D0=0      # Apply D0 selection cuts.
 APPLYCUTS_LC=0      # Apply Λc selection cuts.
 
-SAVETREES=0         # Save O2 tables to trees.
+SAVETREES=1         # Save O2 tables to trees.
 DEBUG=0             # Print out more information.
 
 ####################################################################################################
@@ -125,6 +125,8 @@ function MakeScriptO2 {
     O2ARGS_TASK_D0+=" --doMC"
     O2ARGS_TASK_LC+=" --doMC"
   }
+
+  O2ARGS_CAND_2PRONG+=" --writeTree"
 
   # Pair O2 executables with their respective options.
   O2EXEC_QA="o2-analysis-qatask $O2ARGS_QA"
