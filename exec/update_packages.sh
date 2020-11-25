@@ -25,8 +25,6 @@ ALICE_DIR="$HOME/alice"
 [ "$(which aliBuild)" ] || ErrExit "aliBuild not found"
 ALIBUILD_ARCH=$(aliBuild architecture)  # system architecture (as detected by aliBuild)
 ALIBUILD_OPT="-a $ALIBUILD_ARCH"
-ALIBUILD_DIR_ARCH="$ALICE_DIR/sw/$ALIBUILD_ARCH"  # directory with builds of all packages
-ALIBUILD_DIR_BUILD="$ALICE_DIR/sw/BUILD"  # directory with builds of development packages
 
 # List of packages to update/build
 LIST_PKG_SPECS=()
@@ -210,6 +208,8 @@ done
 
 # Load configuration.
 source "$FILE_CONFIG" || ErrExit "Failed to load configuration from $FILE_CONFIG."
+ALIBUILD_DIR_ARCH="$ALICE_DIR/sw/$ALIBUILD_ARCH"  # directory with builds of all packages
+ALIBUILD_DIR_BUILD="$ALICE_DIR/sw/BUILD"  # directory with builds of development packages
 
 # Dry run: Print out configuration and exit.
 if [ $DRYRUN -eq 1 ]; then
