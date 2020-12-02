@@ -56,7 +56,7 @@ EOF
   cd $DirBase || ErrExit "Failed to cd $DirBase."
 done < "$LISTINPUT"
 
-echo "Running AliPhysics jobs..."
+echo "Running AliPhysics jobs... ($(cat $ListRunScripts | wc -l) jobs)"
 OPT_PARALLEL="--halt soon,fail=100%"
 if [ $DEBUG -eq 0 ]; then
   parallel $OPT_PARALLEL < $ListRunScripts > $LogFile 2>&1
