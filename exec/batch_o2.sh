@@ -73,7 +73,12 @@ EOF
 done < "$LISTINPUT"
 
 echo "Running O2 jobs..."
-parallel --halt soon,fail=100% < $ListRunScripts > $LogFile 2>&1
+OPT_PARALLEL="--halt soon,fail=100%"
+if [ $DEBUG -eq 0 ]; then
+  parallel $OPT_PARALLEL < $ListRunScripts > $LogFile 2>&1
+else
+  parallel $OPT_PARALLEL --will-cite --progress < $ListRunScripts > $LogFile
+fi
 ExitCode=$?
 find /tmp -group $USER -name "localhost*_*" -delete 2> /dev/null # Delete all user's sockets.
 [ $ExitCode -ne 0 ] && ErrExit "\nCheck $(realpath $LogFile)"

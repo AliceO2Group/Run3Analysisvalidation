@@ -52,8 +52,13 @@ EOF
 done < "$LISTINPUT"
 
 echo "Running conversion jobs..."
-parallel --halt soon,fail=100% < $ListRunScripts > $LogFile 2>&1 || \
-ErrExit "\nCheck $(realpath $LogFile)"
+OPT_PARALLEL="--halt soon,fail=100%"
+if [ $DEBUG -eq 0 ]; then
+  parallel $OPT_PARALLEL < $ListRunScripts > $LogFile 2>&1
+else
+  parallel $OPT_PARALLEL --will-cite --progress < $ListRunScripts > $LogFile
+fi
+[ $? -ne 0 ] && ErrExit "\nCheck $(realpath $LogFile)"
 rm -f $ListRunScripts || ErrExit "Failed to rm $ListRunScripts."
 
 exit 0
