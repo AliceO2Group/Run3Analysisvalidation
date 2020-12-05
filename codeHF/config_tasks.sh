@@ -33,7 +33,7 @@ DOO2_SEL_D0=0       # hf-d0-candidate-selector
 DOO2_SEL_LC=0       # hf-lc-candidate-selector
 DOO2_TASK_D0=1      # hf-task-d0
 DOO2_TASK_DPLUS=1   # hf-task-dplus
-DOO2_TASK_LC=0      # hf-task-lc
+DOO2_TASK_LC=1      # hf-task-lc
 
 # Selection cuts
 APPLYCUTS_D0=0      # Apply D0 selection cuts.
@@ -127,6 +127,7 @@ function MakeScriptO2 {
     O2ARGS_CAND_2PRONG+=" --doMC"
     O2ARGS_CAND_3PRONG+=" --doMC"
     O2ARGS_TASK_D0+=" --doMC"
+    O2ARGS_TASK_LC+=" --doMC"
   }
 
   # Pair O2 executables with their respective options.
@@ -180,7 +181,7 @@ EOF
 
 function MakeScriptPostprocess {
   POSTEXEC="echo Postprocessing"
-  [[ $DOALI -eq 1 && $DOO2 -eq 1 && $DOO2_TASK_D0 -eq 1 && $DOO2_TASK_DPLUS -eq 1 ]] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/Compare.C(\\\"\$FileO2\\\", \\\"\$FileAli\\\", $MASS)\""
+  [[ $DOALI -eq 1 && $DOO2 -eq 1 && $DOO2_TASK_D0 -eq 1 && $DOO2_TASK_DPLUS -eq 1 && $DOO2_TASK_LC -eq 1 ]] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/Compare.C(\\\"\$FileO2\\\", \\\"\$FileAli\\\", $MASS)\""
   [[ $DOO2 -eq 1 && $DOO2_TASK_D0 -eq 1 && $ISMC -eq 1 ]] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/PlotEfficiency.C(\\\"\$FileO2\\\")\""
   cat << EOF > $SCRIPT_POSTPROCESS
 #!/bin/bash

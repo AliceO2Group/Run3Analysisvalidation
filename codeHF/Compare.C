@@ -24,7 +24,7 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
     return 1;
   }
 
-  const int nhisto = 19;
+  const int nhisto = 26;
   const int nhisto_2prong = 15;
   TString histonameRun1[nhisto] = {"hPtAllTracks",
                                    "hPtSelTracks",
@@ -49,7 +49,14 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
                                    //"hCovSVXX",
                                    "hDplusVertX",
                                    "hDplusVertY",
-                                   "hDplusVertZ"
+                                   "hDplusVertZ",
+                                   "hInvMassLc",
+                                   "hPtLc",
+                                   "hPtLcDau0",
+                                   "hPtLcDau1",
+                                   "hPtLcDau2",
+                                   "hDecLenLc",
+                                   "hCosPointLc"
                                    };
   TString histonameRun3[nhisto] = {"hf-produce-sel-track/hpt_nocuts",
                                    "hf-produce-sel-track/hpt_cuts_2prong",
@@ -66,7 +73,7 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
                                    "hf-task-d0/hd0Prong1",
                                    "hf-task-d0/hd0d0",
                                    "hf-task-d0/hmass",
-                                   "hf-task-dplus/hmass",
+                                   "hf-task-dplus/hMass",
                                    //"hf-task-d0/hImpParErr",
                                    //"hf-task-d0/hDecLenErr",
                                    //"hf-task-d0/hDecLenXYErr",
@@ -74,7 +81,14 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
                                    //"hf-cand-creator-2prong/hCovSVXX",
                                    "hf-track-index-skims-creator/hvtx3_x",
                                    "hf-track-index-skims-creator/hvtx3_y",
-                                   "hf-track-index-skims-creator/hvtx3_z"
+                                   "hf-track-index-skims-creator/hvtx3_z",
+                                   "hf-task-lc/hmass", 
+                                   "hf-task-lc/hptcand",
+                                   "hf-task-lc/hptprong0",
+                                   "hf-task-lc/hptprong1",
+                                   "hf-task-lc/hptprong2",
+                                   "hf-task-lc/hdeclength",
+                                   "hf-task-lc/hCPA"
                                    };
   TString xaxis[nhisto] = {"#it{p}_{T} before selections",
                            "#it{p}_{T} after selections",
@@ -99,9 +113,17 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
                            //"XX element of SV cov. matrix",
                            "secondary vtx x - 3prong",
                            "secondary vtx y - 3prong",
-                           "secondary vtx z - 3prong"
+                           "secondary vtx z - 3prong",
+                           "3-prong mass (p K #pi)",
+                           "#Lambda_{c} #it{p}_{T} cand",
+                           "#Lambda_{c} #it{p}_{T} prong 0",
+                           "#Lambda_{c} #it{p}_{T} prong 1",
+                           "#Lambda_{c} #it{p}_{T} prong 2",
+                           "#Lambda_{c} Decay Length",
+                           "#Lambda_{c} CPA"
                            };
-  int rebin[nhisto] = {2, 2, 2, 5, 5, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2/*, 1, 1, 1, 1, 1*/, 5, 5, 5};
+  //int rebin[nhisto] = {2, 2, 2, 5, 5, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2/*, 1, 1, 1, 1, 1*/,5, 5, 5, 2, 1, 1, 1, 1, 1, 1, 5, 5, 5};
+  int rebin[nhisto] = {2, 2, 2, 5, 5, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2/*, 1, 1, 1, 1, 1*/,5, 5, 5, 2, 1, 1, 1, 1, 1, 1};
   TH1F* hRun1[nhisto];
   TH1F* hRun3[nhisto];
   TH1F* hRatio[nhisto];
