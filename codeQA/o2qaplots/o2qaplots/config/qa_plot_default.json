@@ -1,0 +1,97 @@
+{
+  "numberOfTracks": {
+    "x_axis": {
+      "view_range": [
+        0,
+        200
+      ]
+    }
+  },
+  "numberOfContributors": {
+    "x_axis": {
+      "view_range": [
+        0,
+        200
+      ]
+    }
+  },
+  "pt": {
+    "x_axis": {
+      "view_range": [
+        0.1,
+        10
+      ],
+      "log": true
+    },
+    "y_axis": {
+      "view_range": [
+        0.00001,
+        1
+      ],
+      "log": true
+    }
+  },
+  "ptResolution": {
+    "x_axis": {
+      "view_range": [
+        -0.2,
+        0.2
+      ]
+    }
+  },
+  "ptResolutionVsPt": {
+    "x_axis": {
+      "log": true
+    }
+  },
+  "ptDiffMCRec": {
+    "x_axis": {
+      "view_range": [
+        -0.1,
+        0.1
+      ]
+    }
+  },
+  "impactParameterRPhiVsPt": {
+    "x_axis": {
+      "log": true
+    }
+  },
+  "impactParameterErrorRPhiVsPt": {
+    "x_axis": {
+      "log": true
+    },
+    "y_axis": {
+      "view_range": [
+        80,
+        110
+      ]
+    }
+  },
+  "impactParameterZVsPt": {
+    "x_axis": {
+      "log": true
+    }
+  },
+  "impactParameterErrorZVsPt": {
+    "x_axis": {
+      "log": true
+    }
+  },
+  "primaryTrackEfficiency": {
+    "x_axis": {
+      "log": true,
+      "view_range": [
+        0.01,
+        1
+      ]
+    },
+    "y_axis": {
+      "log": false,
+      "view_range": [
+        0,
+        1.5
+      ]
+    }
+  }
+}

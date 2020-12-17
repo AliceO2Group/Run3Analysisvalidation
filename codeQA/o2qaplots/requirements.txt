@@ -1,0 +1,8 @@
+matplotlib==3.3.2
+numpy==1.19.4
+pandas==1.1.4
+pytest==6.1.2
+seaborn==0.11.0
+setuptools>=50.3.2
+uproot==3.13.0
+tqdm==4.54.0
