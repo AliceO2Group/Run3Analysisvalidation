@@ -3,8 +3,9 @@
 # Input specification for runtest.sh
 # (Modifies input parameters.)
 
-INPUT_CASE=4  # Input case
-NFILESMAX=1   # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
+INPUT_CASE=4    # Input case
+NFILESMAX=1     # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
+NFILESPERJOB=1  # Number of O2 input files per job
 
 JSONRUN3="dpl-config_run3.json"  # Run 3 tasks parameters
 JSONRUN5="dpl-config_run5.json"  # Run 5 tasks parameters
