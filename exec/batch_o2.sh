@@ -6,7 +6,8 @@ LISTINPUT="$1"
 JSON="$2"
 SCRIPT="$3"
 DEBUG=$4
-FILEOUT_TREE="$5"
+NFILESPERJOB=$5
+FILEOUT_TREE="$6"
 FILEOUT="AnalysisResults.root"
 
 [ $DEBUG -eq 1 ] && echo "Running $0"
@@ -23,14 +24,15 @@ SCRIPT="$(realpath $SCRIPT)"
 JSON="$(realpath $JSON)"
 
 LogFile="log_o2.log"
+ListIn="list_o2.txt"
 FilesToMerge="ListOutToMergeO2.txt"
 FilesToMergeTree="ListOutToMergeO2Tree.txt"
 DirBase="$PWD"
-Index=0
-JSONLocal=$(basename $JSON)
-ListRunScripts="$DirBase/ListRunScripts.txt"
+IndexFile=0
+ListRunScripts="$DirBase/ListRunScriptsO2.txt"
 DirOutMain="output_o2"
 
+# Clean before running.
 rm -f $ListRunScripts && \
 rm -f $FilesToMerge && \
 rm -f $FilesToMergeTree && \
@@ -40,36 +42,27 @@ rm -rf $DirOutMain || ErrExit "Failed to delete output files."
 
 CheckFile "$LISTINPUT"
 echo "Output directory: $DirOutMain (logfiles: $LogFile)"
+# Loop over input files
 while read FileIn; do
   CheckFile "$FileIn"
   FileIn="$(realpath $FileIn)"
-  DirOut="$DirOutMain/$Index"
-  mkdir -p $DirOut && \
-  cd $DirOut && \
-  cp "$JSON" $JSONLocal && \
-  sed -e "s!@$LISTINPUT!$FileIn!g" $JSONLocal > $JSONLocal.tmp && mv $JSONLocal.tmp $JSONLocal || ErrExit "Failed to sed $JSONLocal."
-  [ $DEBUG -eq 1 ] && echo "Input file ($Index): $FileIn"
-  FileOut="$DirOut/$FILEOUT"
-  echo $FileOut >> "$DirBase/$FilesToMerge" || ErrExit "Failed to echo to $DirBase/$FilesToMerge."
-  [ "$FILEOUT_TREE" ] && {
-    FileOutTree="$DirOut/$FILEOUT_TREE"
-    echo $FileOutTree >> "$DirBase/$FilesToMergeTree" || ErrExit "Failed to echo to $DirBase/$FilesToMergeTree."
-  }
-  RUNSCRIPT="run.sh"
-  cat << EOF > $RUNSCRIPT # Create the job script.
-#!/bin/bash
-DirThis="\$(dirname \$(realpath \$0))"
-cd "\$DirThis"
-bash $SCRIPT "$FileIn" "\$DirThis/$JSONLocal" > $LogFile 2>&1
-ExitCode=\$?
-grep WARN "$LogFile" | sort -u
-pid=\$(tail -n 2 "$LogFile" | grep "is exiting" | cut -d " " -f 3) # Get the process ID from the O2 log.
-find /tmp -group \$USER -name "localhost\${pid}_*" -delete 2> /dev/null # Delete the process sockets.
-exit \$ExitCode
-EOF
-  echo "bash $(realpath $RUNSCRIPT)" >> "$ListRunScripts" && \
-  ((Index+=1)) && \
-  cd $DirBase || ErrExit "Failed to cd $DirBase."
+  IndexJob=$((IndexFile / NFILESPERJOB))
+  DirOut="$DirOutMain/$IndexJob"
+  # New job
+  if [ $((IndexFile % NFILESPERJOB)) -eq 0 ]; then
+    mkdir -p $DirOut || ErrExit "Failed to mkdir $DirOut."
+    FileOut="$DirOut/$FILEOUT"
+    echo $FileOut >> "$DirBase/$FilesToMerge" || ErrExit "Failed to echo to $DirBase/$FilesToMerge."
+    [ "$FILEOUT_TREE" ] && {
+      FileOutTree="$DirOut/$FILEOUT_TREE"
+      echo $FileOutTree >> "$DirBase/$FilesToMergeTree" || ErrExit "Failed to echo to $DirBase/$FilesToMergeTree."
+    }
+    # Add this job in the list of commands.
+    echo "cd \"$DirOut\" && bash \"$DIR_THIS/run_o2.sh\" \"$SCRIPT\" \"$ListIn\" \"$JSON\" \"$LogFile\"" >> "$ListRunScripts" || ErrExit "Failed to echo to $ListRunScripts."
+  fi
+  echo $FileIn >> "$DirOut/$ListIn" || ErrExit "Failed to echo to $DirOut/$ListIn."
+  [ $DEBUG -eq 1 ] && echo "Input file ($IndexFile, job $IndexJob): $FileIn"
+  ((IndexFile+=1))
 done < "$LISTINPUT"
 
 echo "Running O2 jobs... ($(cat $ListRunScripts | wc -l) jobs)"
@@ -80,7 +73,7 @@ else
   parallel $OPT_PARALLEL --will-cite --progress < $ListRunScripts > $LogFile
 fi
 ExitCode=$?
-find /tmp -group $USER -name "localhost*_*" -delete 2> /dev/null # Delete all user's sockets.
+find /tmp -maxdepth 1 -type s -group $USER -name "localhost*_*" -delete 2> /dev/null # Delete all user's sockets.
 [ $ExitCode -ne 0 ] && ErrExit "\nCheck $(realpath $LogFile)"
 [ "$(grep WARN "$LogFile")" ] && MsgWarn "There were warnings!\nCheck $(realpath $LogFile)"
 rm -f $ListRunScripts || ErrExit "Failed to rm $ListRunScripts."
