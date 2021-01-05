@@ -27,7 +27,8 @@ ISMC=0                          # Input files are MC data.
 TRIGGERSTRINGRUN2=""            # Run 2 trigger (not used)
 TRIGGERBITRUN3=-1               # Run 3 trigger (not used)
 NFILESMAX=1                     # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
-NFILESPERJOB=1                  # Number of O2 input files per job
+NFILESPERJOB_CONVERT=1          # Number of input files per conversion job
+NFILESPERJOB_O2=1               # Number of input files per O2 job
 
 # Other options
 SAVETREES=0                     # Save O2 tables to trees.
@@ -120,7 +121,7 @@ if [ $DOCONVERT -eq 1 ]; then
   MsgStep "Converting... ($(cat $LISTFILES_ALI | wc -l) files)"
   [ $ISMC -eq 1 ] && MsgWarn "Using MC mode"
   [ $DEBUG -eq 1 ] && echo "Loading AliPhysics..."
-  $ENVALI bash "$DIR_EXEC/batch_convert.sh" $LISTFILES_ALI $LISTFILES_O2 $ISMC $DEBUG || exit 1 # Run the batch script in the ALI environment.
+  $ENVALI bash "$DIR_EXEC/batch_convert.sh" $LISTFILES_ALI $LISTFILES_O2 $ISMC $DEBUG $NFILESPERJOB_CONVERT || exit 1 # Run the batch script in the ALI environment.
 fi
 
 # Run AliPhysics tasks.
@@ -145,7 +146,7 @@ if [ $DOO2 -eq 1 ]; then
   CheckFile "$SCRIPT_O2"
   [ $SAVETREES -eq 1 ] || FILEOUT_TREES=""
   [ $DEBUG -eq 1 ] && echo "Loading O2..."
-  $ENVO2 bash "$DIR_EXEC/batch_o2.sh" $LISTFILES_O2 $JSON $SCRIPT_O2 $DEBUG $NFILESPERJOB $FILEOUT_TREES || exit 1 # Run the batch script in the O2 environment.
+  $ENVO2 bash "$DIR_EXEC/batch_o2.sh" $LISTFILES_O2 $JSON $SCRIPT_O2 $DEBUG $NFILESPERJOB_O2 $FILEOUT_TREES || exit 1 # Run the batch script in the O2 environment.
   mv $FILEOUT $FILEOUT_O2 || ErrExit "Failed to mv $FILEOUT $FILEOUT_O2."
   [[ $SAVETREES -eq 1 && "$FILEOUT_TREES" ]] && { mv $FILEOUT_TREES $FILEOUT_TREES_O2 || ErrExit "Failed to mv $FILEOUT_TREES $FILEOUT_TREES_O2."; }
 fi
