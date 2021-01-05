@@ -22,12 +22,13 @@ SCRIPT="$(realpath $SCRIPT)"
 JSON="$(realpath $JSON)"
 
 LogFile="log_ali.log"
-FilesToMerge="ListOutToMergeALI.txt"
+FilesToMerge="ListOutToMergeAli.txt"
 DirBase="$PWD"
 Index=0
-ListRunScripts="$DirBase/ListRunScripts.txt"
+ListRunScripts="$DirBase/ListRunScriptsAli.txt"
 DirOutMain="output_ali"
 
+# Clean before running.
 rm -f $ListRunScripts && \
 rm -f $FilesToMerge && \
 rm -f $FILEOUT && \
@@ -35,25 +36,18 @@ rm -rf $DirOutMain || ErrExit "Failed to delete output files."
 
 CheckFile "$LISTINPUT"
 echo "Output directory: $DirOutMain (logfiles: $LogFile)"
+# Loop over input files
 while read FileIn; do
   CheckFile "$FileIn"
   FileIn="$(realpath $FileIn)"
   DirOut="$DirOutMain/$Index"
-  mkdir -p $DirOut && \
-  cd $DirOut || ErrExit "Failed to cd $DirOut."
+  mkdir -p $DirOut || ErrExit "Failed to mkdir $DirOut."
   [ $DEBUG -eq 1 ] && echo "Input file ($Index): $FileIn"
   FileOut="$DirOut/$FILEOUT"
   echo "$FileOut" >> "$DirBase/$FilesToMerge" || ErrExit "Failed to echo to $DirBase/$FilesToMerge."
-  RUNSCRIPT="run.sh"
-  cat << EOF > $RUNSCRIPT # Create the job script.
-#!/bin/bash
-DirThis="\$(dirname \$(realpath \$0))"
-cd "\$DirThis"
-bash $SCRIPT "$FileIn" "$JSON" > $LogFile 2>&1
-EOF
-  echo "bash $(realpath $RUNSCRIPT)" >> "$ListRunScripts" && \
-  ((Index+=1)) && \
-  cd $DirBase || ErrExit "Failed to cd $DirBase."
+  # Add this job in the list of commands.
+  echo "cd \"$DirOut\" && bash \"$DIR_THIS/run_ali.sh\" \"$SCRIPT\" \"$FileIn\" \"$JSON\" \"$LogFile\"" >> "$ListRunScripts" || ErrExit "Failed to echo to $ListRunScripts."
+  ((Index+=1))
 done < "$LISTINPUT"
 
 echo "Running AliPhysics jobs... ($(cat $ListRunScripts | wc -l) jobs)"
