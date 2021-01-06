@@ -25,6 +25,8 @@ ALICE_DIR="$HOME/alice"
 [ "$(which aliBuild)" ] || ErrExit "aliBuild not found"
 ALIBUILD_ARCH=$(aliBuild architecture)  # system architecture (as detected by aliBuild)
 ALIBUILD_OPT="-a $ALIBUILD_ARCH"
+ALIBUILD_VERSION=$(aliBuild version | cut -d " " -f3)
+ALIBUILD_VERSION=${ALIBUILD_VERSION//./}
 
 # List of packages to update/build
 LIST_PKG_SPECS=()
@@ -256,19 +258,22 @@ if [ $CLEAN -eq 1 ]; then
     # Check existence of the build directories.
     MsgSubSubStep "-- Checking existence of the build directories"
     [[ -d "$ALIBUILD_DIR_ARCH" && -d "$ALIBUILD_DIR_BUILD" ]] || ErrExit
-    # Get paths to the latest builds of development packages. (They need to be recreated manually because aliBuild creates them only when the package needs to be rebuilt.)
-    MsgSubSubStep "-- Getting paths to latest builds of development packages"
-    arrPathBuild=()
-    arrPathArch=()
-    for pkg in "${LIST_PKG_DEV_SPECS[@]}" ; do
-      arr="$pkg[@]"
-      spec=("${!arr}")
-      Name="${spec[0]}"
-      path="$(realpath $ALIBUILD_DIR_BUILD/${Name}-latest)" && [ -d "$path" ] && arrPathBuild+=("$path") || ErrExit
-      echo $path
-      path="$(realpath $ALIBUILD_DIR_ARCH/${Name}/latest)" && [ -d "$path" ] && arrPathArch+=("$path") || ErrExit
-      echo $path
-    done
+    # Needed for aliBuild < 1.6.5
+    [ "$ALIBUILD_VERSION" -lt 165 ] && {
+      # Get paths to the latest builds of development packages. (They need to be recreated manually because aliBuild creates them only when the package needs to be rebuilt.)
+      MsgSubSubStep "-- Getting paths to latest builds of development packages"
+      arrPathBuild=()
+      arrPathArch=()
+      for pkg in "${LIST_PKG_DEV_SPECS[@]}"; do
+        arr="$pkg[@]"
+        spec=("${!arr}")
+        Name="${spec[0]}"
+        path="$(realpath $ALIBUILD_DIR_BUILD/${Name}-latest)" && [ -d "$path" ] && arrPathBuild+=("$path") || ErrExit
+        echo $path
+        path="$(realpath $ALIBUILD_DIR_ARCH/${Name}/latest)" && [ -d "$path" ] && arrPathArch+=("$path") || ErrExit
+        echo $path
+      done
+    }
     # Delete symlinks to all builds.
     MsgSubSubStep "-- Deleting symlinks to all builds"
     find "$ALIBUILD_DIR_ARCH" -mindepth 2 -maxdepth 2 -type l -delete || ErrExit
@@ -280,12 +285,15 @@ if [ $CLEAN -eq 1 ]; then
       spec=("${!arr}")
       Name="${spec[0]}"
       BuildOpt="${spec[6]}"
-      MsgSubSubStep "-- Re-building $Name to recreate symlinks of dependencies"; cd "$ALICE_DIR" && BuildPackage "$Name" "$BuildOpt" > /dev/null 2>&1 || ErrExit
-      MsgSubSubStep "-- Recreating symlinks to the latest builds of $Name"
-      echo "${arrPathBuild[i]}"
-      echo "${arrPathArch[i]}"
-      ln -snf "$(basename "${arrPathBuild[i]}")" "$(dirname "${arrPathBuild[i]}")/${Name}-latest" || ErrExit
-      ln -snf "$(basename "${arrPathArch[i]}")" "$(dirname "${arrPathArch[i]}")/latest" || ErrExit
+      MsgSubSubStep "-- Re-building $Name to recreate symlinks"; cd "$ALICE_DIR" && BuildPackage "$Name" "$BuildOpt" > /dev/null 2>&1 || ErrExit
+      # Needed for aliBuild < 1.6.5
+      [ "$ALIBUILD_VERSION" -lt 165 ] && {
+        MsgSubSubStep "-- Recreating symlinks to the latest builds of $Name"
+        echo "${arrPathBuild[i]}"
+        echo "${arrPathArch[i]}"
+        ln -snf "$(basename "${arrPathBuild[i]}")" "$(dirname "${arrPathBuild[i]}")/${Name}-latest" || ErrExit
+        ln -snf "$(basename "${arrPathArch[i]}")" "$(dirname "${arrPathArch[i]}")/latest" || ErrExit
+      }
     done
   fi
 
