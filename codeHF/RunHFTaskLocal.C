@@ -1,7 +1,8 @@
+TChain* CreateLocalChain(const char* txtfile);
 
-void RunHFTaskLocal(TString esdfilename = "./AliESDs.root",
-                    TString jsonfilename = "dpl-config_std.json",
-                    Bool_t isMC = kFALSE)
+Long64_t RunHFTaskLocal(TString txtfile = "./list_ali.txt",
+                        TString jsonfilename = "dpl-config_std.json",
+                        Bool_t isMC = kFALSE)
 {
   // Load common libraries
   gSystem->Load("libCore.so");
@@ -18,8 +19,11 @@ void RunHFTaskLocal(TString esdfilename = "./AliESDs.root",
 
   AliAnalysisManager* mgr = new AliAnalysisManager("testAnalysis");
 
-  TChain* chainESD = new TChain("esdTree");
-  chainESD->Add(esdfilename.Data());
+  TChain* chainESD = CreateLocalChain(txtfile.Data());
+  if (!chainESD) {
+    Error("CreateLocalChain", "Failed to create chain from file %s", txtfile.Data());
+    return -1;
+  }
 
   // Create and configure the alien handler plugin
   AliESDInputHandler* esdH = new AliESDInputHandler();
@@ -39,5 +43,36 @@ void RunHFTaskLocal(TString esdfilename = "./AliESDs.root",
 
   mgr->InitAnalysis();
   mgr->PrintStatus();
-  mgr->StartAnalysis("local", chainESD);
+  return mgr->StartAnalysis("local", chainESD);
 };
+
+TChain* CreateLocalChain(const char* txtfile)
+{
+  // Open the file
+  ifstream in;
+  in.open(txtfile);
+  Int_t count = 0;
+  // Read the input list of files and add them to the chain
+  TString line;
+  TChain* chain = new TChain("esdTree");
+  while (in.good()) {
+    in >> line;
+    if (line.IsNull() || line.BeginsWith("#"))
+      continue;
+    TString esdFile(line);
+    TFile* file = TFile::Open(esdFile);
+    if (file && !file->IsZombie()) {
+      chain->Add(esdFile);
+      file->Close();
+    } else {
+      Error("CreateLocalChain", "Skipping un-openable file: %s", esdFile.Data());
+    }
+  }
+  in.close();
+  if (!chain->GetListOfFiles()->GetEntries()) {
+    Error("CreateLocalChain", "No file from %s could be opened", txtfile);
+    delete chain;
+    return nullptr;
+  }
+  return chain;
+}

@@ -28,6 +28,7 @@ TRIGGERSTRINGRUN2=""            # Run 2 trigger (not used)
 TRIGGERBITRUN3=-1               # Run 3 trigger (not used)
 NFILESMAX=1                     # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
 NFILESPERJOB_CONVERT=1          # Number of input files per conversion job
+NFILESPERJOB_ALI=1              # Number of input files per AliPhysics job
 NFILESPERJOB_O2=1               # Number of input files per O2 job
 
 # Other options
@@ -132,7 +133,7 @@ if [ $DOALI -eq 1 ]; then
   MakeScriptAli || ErrExit "MakeScriptAli failed."
   CheckFile "$SCRIPT_ALI"
   [ $DEBUG -eq 1 ] && echo "Loading AliPhysics..."
-  $ENVALI bash "$DIR_EXEC/batch_ali.sh" $LISTFILES_ALI $JSON $SCRIPT_ALI $DEBUG || exit 1 # Run the batch script in the ALI environment.
+  $ENVALI bash "$DIR_EXEC/batch_ali.sh" $LISTFILES_ALI $JSON $SCRIPT_ALI $DEBUG $NFILESPERJOB_ALI || exit 1 # Run the batch script in the ALI environment.
   #$ENVALIO2 bash "$DIR_EXEC/batch_ali.sh" $LISTFILES_ALI $JSON $SCRIPT_ALI $DEBUG || exit 1 # Run the batch script in the ALI+O2 environment.
   mv $FILEOUT $FILEOUT_ALI || ErrExit "Failed to mv $FILEOUT $FILEOUT_ALI."
 fi
