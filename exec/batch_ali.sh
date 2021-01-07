@@ -6,6 +6,7 @@ LISTINPUT="$1"
 JSON="$2"
 SCRIPT="$3"
 DEBUG=$4
+NFILESPERJOB=$5
 FILEOUT="AnalysisResults.root"
 
 [ $DEBUG -eq 1 ] && echo "Running $0"
@@ -22,9 +23,10 @@ SCRIPT="$(realpath $SCRIPT)"
 JSON="$(realpath $JSON)"
 
 LogFile="log_ali.log"
+ListIn="list_ali.txt"
 FilesToMerge="ListOutToMergeAli.txt"
 DirBase="$PWD"
-Index=0
+IndexFile=0
 ListRunScripts="$DirBase/ListRunScriptsAli.txt"
 DirOutMain="output_ali"
 
@@ -40,14 +42,19 @@ echo "Output directory: $DirOutMain (logfiles: $LogFile)"
 while read FileIn; do
   CheckFile "$FileIn"
   FileIn="$(realpath $FileIn)"
-  DirOut="$DirOutMain/$Index"
-  mkdir -p $DirOut || ErrExit "Failed to mkdir $DirOut."
-  [ $DEBUG -eq 1 ] && echo "Input file ($Index): $FileIn"
-  FileOut="$DirOut/$FILEOUT"
-  echo "$FileOut" >> "$DirBase/$FilesToMerge" || ErrExit "Failed to echo to $DirBase/$FilesToMerge."
-  # Add this job in the list of commands.
-  echo "cd \"$DirOut\" && bash \"$DIR_THIS/run_ali.sh\" \"$SCRIPT\" \"$FileIn\" \"$JSON\" \"$LogFile\"" >> "$ListRunScripts" || ErrExit "Failed to echo to $ListRunScripts."
-  ((Index+=1))
+  IndexJob=$((IndexFile / NFILESPERJOB))
+  DirOut="$DirOutMain/$IndexJob"
+  # New job
+  if [ $((IndexFile % NFILESPERJOB)) -eq 0 ]; then
+    mkdir -p $DirOut || ErrExit "Failed to mkdir $DirOut."
+    FileOut="$DirOut/$FILEOUT"
+    echo "$FileOut" >> "$DirBase/$FilesToMerge" || ErrExit "Failed to echo to $DirBase/$FilesToMerge."
+    # Add this job in the list of commands.
+    echo "cd \"$DirOut\" && bash \"$DIR_THIS/run_ali.sh\" \"$SCRIPT\" \"$ListIn\" \"$JSON\" \"$LogFile\"" >> "$ListRunScripts" || ErrExit "Failed to echo to $ListRunScripts."
+  fi
+  echo $FileIn >> "$DirOut/$ListIn" || ErrExit "Failed to echo to $DirOut/$ListIn."
+  [ $DEBUG -eq 1 ] && echo "Input file ($IndexFile, job $IndexJob): $FileIn"
+  ((IndexFile+=1))
 done < "$LISTINPUT"
 
 echo "Running AliPhysics jobs... ($(cat $ListRunScripts | wc -l) jobs)"
