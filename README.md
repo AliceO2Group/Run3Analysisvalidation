@@ -90,6 +90,18 @@ Dummy examples can be found in: `config/config_input_dummy.sh`, `config/config_t
 
 ## Preparation
 
+### Build AliPhysics and O<sup>2</sup>
+
+Follow [the official installation instructions](https://alice-doc.github.io/alice-analysis-tutorial/building/) to build
+AliPhysics and O<sup>2</sup> on your machine.
+
+Make sure the AliPhysics and O<sup>2</sup> environments can be entered using the following respective commands.
+
+```bash
+alienv enter AliPhysics/latest
+alienv enter O2/latest
+```
+
 ### Download the comparison software
 
 ```bash
@@ -170,8 +182,8 @@ All your personal changes (committed and uncommitted) are preserved via rebasing
 Check the description of the script behaviour inside the script itself for more details.
 
 If `CLEAN=1`, obsolete builds are deleted from the `sw` directory at the end.
-If `PURGE_BUILDS=1`, a deeper purging is done by deleting all builds that are not needed to run the latest AliPhysics and O2 builds.
-WARNING: Do not enable the purging if you need to keep several builds of AliPhysics or O2 (e.g. for different branches or commits) or builds of other development packages not specified in your configuration!
+If `PURGE_BUILDS=1`, a deeper purging is done by deleting all builds that are not needed to run the latest AliPhysics and O<sup>2</sup> builds.
+WARNING: Do not enable the purging if you need to keep several builds of AliPhysics or O<sup>2</sup> (e.g. for different branches or commits) or builds of other development packages not specified in your configuration!
 
 If any error occurs during the script execution, the script will report the error and exit immediately.
 
