@@ -57,6 +57,7 @@ while read FileIn; do
   ((IndexFile+=1))
 done < "$LISTINPUT"
 
+CheckFile "$ListRunScripts"
 echo "Running AliPhysics jobs... ($(cat $ListRunScripts | wc -l) jobs)"
 OPT_PARALLEL="--halt soon,fail=100%"
 if [ $DEBUG -eq 0 ]; then
