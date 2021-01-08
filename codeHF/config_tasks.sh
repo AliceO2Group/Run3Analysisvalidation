@@ -158,6 +158,7 @@ function MakeScriptO2 {
   [ $DOO2_TASK_DPLUS -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_DPLUS"; MsgSubStep "  hf-task-dplus"; }
   [ $DOO2_TASK_LC -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_LC"; MsgSubStep "  hf-task-lc"; }
   O2EXEC=${O2EXEC:3} # Remove the leading " | ".
+  [ "$O2EXEC" ] || ErrExit "Nothing to do!"
 
   # Create the script with the full O2 command.
   cat << EOF > $SCRIPT_O2
