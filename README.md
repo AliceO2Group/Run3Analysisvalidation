@@ -102,6 +102,9 @@ alienv enter AliPhysics/latest
 alienv enter O2/latest
 ```
 
+**Make sure that your bash environment is clean!
+Do not load ROOT, AliPhysics, O<sup>2</sup> or any other aliBuild package environment before running the framework!**
+
 ### Download the comparison software
 
 ```bash
