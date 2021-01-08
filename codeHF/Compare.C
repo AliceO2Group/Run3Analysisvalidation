@@ -66,7 +66,7 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
                                    "hf-task-d0/hd0Prong1",
                                    "hf-task-d0/hd0d0",
                                    "hf-task-d0/hmass",
-                                   "hf-task-dplus/hmass",
+                                   "hf-task-dplus/hMass",
                                    //"hf-task-d0/hImpParErr",
                                    //"hf-task-d0/hDecLenErr",
                                    //"hf-task-d0/hDecLenXYErr",
@@ -139,6 +139,12 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
   for (int index = 0; index < nhisto_2prong; index++) {
     nRun1 = hRun1[index]->GetEntries();
     nRun3 = hRun3[index]->GetEntries();
+    /*
+    Printf("%d: bins: %d, %d, ranges: %g-%g, %g-%g",
+      index, hRun1[index]->GetNbinsX(), hRun3[index]->GetNbinsX(),
+      hRun1[index]->GetXaxis()->GetBinLowEdge(1), hRun1[index]->GetXaxis()->GetBinUpEdge(hRun1[index]->GetNbinsX()),
+      hRun3[index]->GetXaxis()->GetBinLowEdge(1), hRun3[index]->GetXaxis()->GetBinUpEdge(hRun3[index]->GetNbinsX()));
+    */
     auto pad = cv->cd(index + 1);
     if (donorm) {
       hRun1[index]->Scale(1./nRun1);
