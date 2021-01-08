@@ -9,8 +9,8 @@ LOGFILE="$4"
 bash "$SCRIPT" "$FILEIN" "$JSON" > "$LOGFILE" 2>&1
 ExitCode=$?
 
-# Show warnings in the log file.
-grep WARN "$LOGFILE" | sort -u
+# Show warnings and errors in the log file.
+grep -e \\[WARN\\] -e \\[ERROR\\] "$LOGFILE" | sort -u
 
 # Clean.
 pid=$(tail -n 2 "$LOGFILE" | grep "is exiting" | cut -d " " -f 3) # Get the process ID from the O2 log.

@@ -9,4 +9,7 @@ LOGFILE="$4"
 bash "$SCRIPT" "$FILEIN" "$JSON" > "$LOGFILE" 2>&1
 ExitCode=$?
 
+# Show warnings, errors and fatals in the log file.
+grep -e '^'W- -e '^'Warning -e '^'E- -e '^'Error -e '^'F- -e '^'Fatal "$LOGFILE" | sort -u
+
 exit $ExitCode

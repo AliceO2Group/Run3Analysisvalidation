@@ -122,7 +122,8 @@ if [ $DOCONVERT -eq 1 ]; then
   MsgStep "Converting... ($(cat $LISTFILES_ALI | wc -l) files)"
   [ $ISMC -eq 1 ] && MsgWarn "Using MC mode"
   [ $DEBUG -eq 1 ] && echo "Loading AliPhysics..."
-  $ENVALI bash "$DIR_EXEC/batch_convert.sh" $LISTFILES_ALI $LISTFILES_O2 $ISMC $DEBUG $NFILESPERJOB_CONVERT || exit 1 # Run the batch script in the ALI environment.
+  # Run the batch script in the ALI environment.
+  $ENVALI bash "$DIR_EXEC/batch_convert.sh" $LISTFILES_ALI $LISTFILES_O2 $ISMC $DEBUG $NFILESPERJOB_CONVERT || exit 1
 fi
 
 # Run AliPhysics tasks.
@@ -133,8 +134,10 @@ if [ $DOALI -eq 1 ]; then
   MakeScriptAli || ErrExit "MakeScriptAli failed."
   CheckFile "$SCRIPT_ALI"
   [ $DEBUG -eq 1 ] && echo "Loading AliPhysics..."
-  $ENVALI bash "$DIR_EXEC/batch_ali.sh" $LISTFILES_ALI $JSON $SCRIPT_ALI $DEBUG $NFILESPERJOB_ALI || exit 1 # Run the batch script in the ALI environment.
-  #$ENVALIO2 bash "$DIR_EXEC/batch_ali.sh" $LISTFILES_ALI $JSON $SCRIPT_ALI $DEBUG || exit 1 # Run the batch script in the ALI+O2 environment.
+  # Run the batch script in the ALI environment.
+  $ENVALI bash "$DIR_EXEC/batch_ali.sh" $LISTFILES_ALI $JSON $SCRIPT_ALI $DEBUG $NFILESPERJOB_ALI || exit 1
+  # Run the batch script in the ALI+O2 environment.
+  #$ENVALIO2 bash "$DIR_EXEC/batch_ali.sh" $LISTFILES_ALI $JSON $SCRIPT_ALI $DEBUG || exit 1
   mv $FILEOUT $FILEOUT_ALI || ErrExit "Failed to mv $FILEOUT $FILEOUT_ALI."
 fi
 
@@ -147,19 +150,24 @@ if [ $DOO2 -eq 1 ]; then
   CheckFile "$SCRIPT_O2"
   [ $SAVETREES -eq 1 ] || FILEOUT_TREES=""
   [ $DEBUG -eq 1 ] && echo "Loading O2..."
-  $ENVO2 bash "$DIR_EXEC/batch_o2.sh" $LISTFILES_O2 $JSON $SCRIPT_O2 $DEBUG $NFILESPERJOB_O2 $FILEOUT_TREES || exit 1 # Run the batch script in the O2 environment.
+  # Run the batch script in the O2 environment.
+  $ENVO2 bash "$DIR_EXEC/batch_o2.sh" $LISTFILES_O2 $JSON $SCRIPT_O2 $DEBUG $NFILESPERJOB_O2 $FILEOUT_TREES || exit 1
   mv $FILEOUT $FILEOUT_O2 || ErrExit "Failed to mv $FILEOUT $FILEOUT_O2."
   [[ $SAVETREES -eq 1 && "$FILEOUT_TREES" ]] && { mv $FILEOUT_TREES $FILEOUT_TREES_O2 || ErrExit "Failed to mv $FILEOUT_TREES $FILEOUT_TREES_O2."; }
 fi
 
 # Run output postprocessing. (Compare AliPhysics and O2 output.)
 if [ $DOPOSTPROCESS -eq 1 ]; then
-  LOGFILE="log_postprocess.log"
-  MsgStep "Postprocessing... (logfile: $LOGFILE)"
+  LogFile="log_postprocess.log"
+  MsgStep "Postprocessing... (logfile: $LogFile)"
   MakeScriptPostprocess || ErrExit "MakeScriptPostprocess failed."
   CheckFile "$SCRIPT_POSTPROCESS"
   [ $DEBUG -eq 1 ] && echo "Loading AliPhysics..."
-  $ENVPOST bash "$SCRIPT_POSTPROCESS" "$FILEOUT_O2" "$FILEOUT_ALI" > $LOGFILE 2>&1 || ErrExit "\nCheck $(realpath $LOGFILE)"
+  # Run the batch script in the postprocessing environment.
+  $ENVPOST bash "$SCRIPT_POSTPROCESS" "$FILEOUT_O2" "$FILEOUT_ALI" > $LogFile 2>&1 || ErrExit "\nCheck $(realpath $LogFile)"
+  [ "$(grep -e '^'W- -e '^'Warning "$LogFile")" ] && MsgWarn "There were warnings!\nCheck $(realpath $LogFile)"
+  [ "$(grep -e '^'E- -e '^'Error "$LogFile")" ] && MsgErr "There were errors!\nCheck $(realpath $LogFile)"
+  [ "$(grep -e '^'F- -e '^'Fatal "$LogFile")" ] && ErrExit "There were fatal errors!\nCheck $(realpath $LogFile)"
 fi
 
 # Clean after running.

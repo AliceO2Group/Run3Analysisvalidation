@@ -58,6 +58,9 @@ else
   parallel $OPT_PARALLEL --will-cite --progress < $ListRunScripts > $LogFile
 fi
 [ $? -ne 0 ] && ErrExit "\nCheck $(realpath $LogFile)"
+[ "$(grep -e '^'W- -e '^'Warning "$LogFile")" ] && MsgWarn "There were warnings!\nCheck $(realpath $LogFile)"
+[ "$(grep -e '^'E- -e '^'Error "$LogFile")" ] && MsgErr "There were errors!\nCheck $(realpath $LogFile)"
+[ "$(grep -e '^'F- -e '^'Fatal "$LogFile")" ] && ErrExit "There were fatal errors!\nCheck $(realpath $LogFile)"
 rm -f $ListRunScripts || ErrExit "Failed to rm $ListRunScripts."
 
 exit 0
