@@ -75,7 +75,8 @@ fi
 ExitCode=$?
 find /tmp -maxdepth 1 -type s -group $USER -name "localhost*_*" -delete 2> /dev/null # Delete all user's sockets.
 [ $ExitCode -ne 0 ] && ErrExit "\nCheck $(realpath $LogFile)"
-[ "$(grep WARN "$LogFile")" ] && MsgWarn "There were warnings!\nCheck $(realpath $LogFile)"
+[ "$(grep \\[WARN\\] "$LogFile")" ] && MsgWarn "There were warnings!\nCheck $(realpath $LogFile)"
+[ "$(grep \\[ERROR\\] "$LogFile")" ] && MsgErr "There were errors!\nCheck $(realpath $LogFile)"
 rm -f $ListRunScripts || ErrExit "Failed to rm $ListRunScripts."
 
 echo "Merging output files... (output file: $FILEOUT, logfile: $LogFile)"
