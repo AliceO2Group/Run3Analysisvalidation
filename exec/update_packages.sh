@@ -210,14 +210,17 @@ done
 
 # Load configuration.
 source "$FILE_CONFIG" || ErrExit "Failed to load configuration from $FILE_CONFIG."
-ALIBUILD_DIR_ARCH="$ALICE_DIR/sw/$ALIBUILD_ARCH"  # directory with builds of all packages
-ALIBUILD_DIR_BUILD="$ALICE_DIR/sw/BUILD"  # directory with builds of development packages
+[ "$ALIBUILD_WORK_DIR" ] || ErrExit "ALIBUILD_WORK_DIR is not defined."
+[ -d "$ALIBUILD_WORK_DIR" ] || ErrExit "$ALIBUILD_WORK_DIR does not exist."
+ALIBUILD_DIR_ARCH="$ALIBUILD_WORK_DIR/$ALIBUILD_ARCH"  # directory with builds of all packages
+ALIBUILD_DIR_BUILD="$ALIBUILD_WORK_DIR/BUILD"  # directory with builds of development packages
 
 # Dry run: Print out configuration and exit.
 if [ $DRYRUN -eq 1 ]; then
   MsgStep "Configuration:"
   echo "Configuration file: $FILE_CONFIG"
   echo "Main ALICE software directory: $ALICE_DIR"
+  echo "aliBuild working directory: $ALIBUILD_WORK_DIR"
   echo "System architecture: $ALIBUILD_ARCH"
   echo "Cleanup: $CLEAN"
   echo "Purging: $PURGE_BUILDS"
@@ -250,14 +253,14 @@ if [ $CLEAN -eq 1 ]; then
   MsgStep "Cleaning aliBuild files"
 
   # Get the directory size before cleaning.
-  SIZE_BEFORE=$(du -sb $ALICE_DIR/sw | cut -f1)
+  SIZE_BEFORE=$(du -sb $ALIBUILD_WORK_DIR | cut -f1)
 
   # Delete all symlinks to builds and recreate the latest ones to allow deleting of all other builds.
   if [ $PURGE_BUILDS -eq 1 ]; then
     MsgSubStep "- Purging builds"
     # Check existence of the build directories.
     MsgSubSubStep "-- Checking existence of the build directories"
-    [[ -d "$ALIBUILD_DIR_ARCH" && -d "$ALIBUILD_DIR_BUILD" ]] || ErrExit
+    [[ -d "$ALIBUILD_DIR_ARCH" && -d "$ALIBUILD_DIR_BUILD" ]] || ErrExit "Build directories do not exist."
     # Needed for aliBuild < 1.6.5
     [ "$ALIBUILD_VERSION" -lt 165 ] && {
       # Get paths to the latest builds of development packages. (They need to be recreated manually because aliBuild creates them only when the package needs to be rebuilt.)
@@ -302,13 +305,13 @@ if [ $CLEAN -eq 1 ]; then
   cd "$ALICE_DIR" && aliBuild clean $ALIBUILD_OPT
 
   # Get the directory size after cleaning.
-  SIZE_AFTER=$(du -sb $ALICE_DIR/sw | cut -f1)
+  SIZE_AFTER=$(du -sb $ALIBUILD_WORK_DIR | cut -f1)
   # Report size difference.
   SIZE_DIFF=$(( SIZE_BEFORE - SIZE_AFTER ))
   # Convert the number of bytes to a human-readable format.
   [ "$(which numfmt)" ] && { SIZE_DIFF=$(numfmt --to=si --round=nearest -- $SIZE_DIFF); SIZE_AFTER=$(numfmt --to=si --round=nearest -- $SIZE_AFTER); }
   echo -e "\nFreed up ${SIZE_DIFF}B of disk space."
-  echo "Directory $ALICE_DIR/sw takes ${SIZE_AFTER}B."
+  echo "Directory $ALIBUILD_WORK_DIR takes ${SIZE_AFTER}B."
 fi
 
 # Print out latest commits.
