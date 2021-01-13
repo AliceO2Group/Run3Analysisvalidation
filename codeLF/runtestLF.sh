@@ -25,7 +25,7 @@ if [[ $DOCONVERT -eq 1 ]]; then
     root -q -l "convertAO2D.C(\"$LISTNAME\", 0)"
     if [[ -z $1 ]]; then
         echo "Enter to continue"
-        read INP
+        read -r
     fi
 fi
 
@@ -35,7 +35,7 @@ if [[ $DORUN1 -eq 1 ]]; then
     index=0
     echo "Reading file list from $LISTNAME"
     cat $LISTNAME
-    while read F ; do
+    while read -r F ; do
         if [[ $F != *".root" ]]; then
             continue
         fi
@@ -50,17 +50,17 @@ if [[ $DORUN1 -eq 1 ]]; then
         index=$((index+1))
         echo $index
         # break
-    done <"$LISTNAME"
+    done < "$LISTNAME"
     wait
     rm "PidSpectra.root"
     hadd PidSpectra.root @"$fileouttxt"
     rm PidSpectra_*.root
-    
+
     # root -l PidSpectra.root open.C
     # ./plot.py PidSpectra.root filterEl-task
     if [[ -z $1 ]]; then
         echo "Enter to continue"
-        read INP
+        read -r
     fi
 fi
 
@@ -70,7 +70,7 @@ if [[ $DORUN3 -eq 1 ]]; then
     # ./plot.py AnalysisResults.root filterEl-task
     if [[ -z $1 ]]; then
         echo "Enter to continue"
-        read INP
+        read -r
     fi
 fi
 
@@ -83,7 +83,7 @@ fi
 if [[ $DORUN3ONAOD -eq 1 ]]; then
     o2-analysis-spectra --aod-file /data/Run3data/5_20200131-0902/0001/AO2D.root --readers 80 -b
     echo "Enter to continue"
-    read INP
+    read -r
 fi
 
 rm localhost*_*
