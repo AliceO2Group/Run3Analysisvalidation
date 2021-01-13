@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC2015 # Ignore A && B || C.
 
 # This script updates local and remote Git repositories, builds aliBuild packages and does cleanup.
 
@@ -13,7 +14,7 @@
 # Settings
 
 # This repository directory
-DIR_REPO="$(realpath $(dirname $0)/..)"
+DIR_REPO="$(realpath "$(dirname "$0")"/..)"
 
 # Configuration file
 FILE_CONFIG="$DIR_REPO/config/config_update.sh"
@@ -52,15 +53,15 @@ DRYRUN=0
 ####################################################################################################
 
 # Message formatting
-function MsgStep { echo -e "\n\e[1;32m$@\e[0m"; }
-function MsgSubStep { echo -e "\n\e[1m$@\e[0m"; }
-function MsgSubSubStep { echo -e "\e[4m$@\e[0m"; }
-function MsgWarn { echo -e "\e[1;36m$@\e[0m"; }
-function MsgErr { echo -e "\e[1;31m$@\e[0m"; }
+function MsgStep { echo -e "\n\e[1;32m$*\e[0m"; }
+function MsgSubStep { echo -e "\n\e[1m$*\e[0m"; }
+function MsgSubSubStep { echo -e "\e[4m$*\e[0m"; }
+function MsgWarn { echo -e "\e[1;36m$*\e[0m"; }
+function MsgErr { echo -e "\e[1;31m$*\e[0m"; }
 
 # Throw error and exit.
 function ErrExit {
-  MsgErr "Error: $@"; exit 1;
+  MsgErr "Error: $*"; exit 1;
 }
 
 # Print out package summary.
@@ -99,22 +100,22 @@ function UpdateBranch {
   [ "$4" ] && REMOTE_FORK_="$4"
 
   MsgSubStep "- Updating branch $BRANCH_"
-  git checkout $BRANCH_ || ErrExit
+  git checkout "$BRANCH_" || ErrExit
 
   # Synchronise with the fork first, just in case there are some commits pushed from another local repository.
   if [ "$REMOTE_FORK_" ]; then
     MsgSubSubStep "-- Updating branch $BRANCH_ from $REMOTE_FORK_/$BRANCH_"
-    git pull --rebase $REMOTE_FORK_ $BRANCH_ || ErrExit
+    git pull --rebase "$REMOTE_FORK_" "$BRANCH_" || ErrExit
   fi
 
   # Synchronise with upstream/main.
   MsgSubSubStep "-- Updating branch $BRANCH_ from $REMOTE_MAIN_/$BRANCH_MAIN_"
-  git pull --rebase $REMOTE_MAIN_ $BRANCH_MAIN_ || ErrExit
+  git pull --rebase "$REMOTE_MAIN_" "$BRANCH_MAIN_" || ErrExit
 
   # Push to the fork.
   if [ "$REMOTE_FORK_" ]; then
     MsgSubSubStep "-- Pushing branch $BRANCH_ to $REMOTE_FORK_"
-    git push -f $REMOTE_FORK_ $BRANCH_ || ErrExit
+    git push -f "$REMOTE_FORK_" "$BRANCH_" || ErrExit
   fi
   return 0
 }
@@ -142,13 +143,13 @@ function UpdateGit {
   NSTASH_NEW=$(git stash list | wc -l) || ErrExit
 
   # Update the main branch.
-  UpdateBranch $REMOTE_MAIN $BRANCH_MAIN $BRANCH_MAIN $REMOTE_FORK || ErrExit
+  UpdateBranch "$REMOTE_MAIN" "$BRANCH_MAIN" "$BRANCH_MAIN" "$REMOTE_FORK" || ErrExit
 
   # Update the current branch.
-  [ "$BRANCH" != "$BRANCH_MAIN" ] && { UpdateBranch $REMOTE_MAIN $BRANCH_MAIN $BRANCH $REMOTE_FORK || ErrExit; }
+  [ "$BRANCH" != "$BRANCH_MAIN" ] && { UpdateBranch "$REMOTE_MAIN" "$BRANCH_MAIN" "$BRANCH" "$REMOTE_FORK" || ErrExit; }
 
   # Unstash stashed changes if any.
-  [ $NSTASH_NEW -ne $NSTASH_OLD ] && { MsgSubStep "- Unstashing uncommitted local changes"; git stash pop || ErrExit; }
+  [ "$NSTASH_NEW" -ne "$NSTASH_OLD" ] && { MsgSubStep "- Unstashing uncommitted local changes"; git stash pop || ErrExit; }
   return 0
 }
 
@@ -156,7 +157,8 @@ function BuildPackage {
   PkgName="$1"
   PkgBuildOpt="$2"
   [ "$PkgName" ] || ErrExit "Empty package name"
-  cd "$ALICE_DIR" && aliBuild build $PkgName $PkgBuildOpt $ALIBUILD_OPT || ErrExit;
+  # shellcheck disable=SC2086 # Ignore unquoted options.
+  cd "$ALICE_DIR" && aliBuild build "$PkgName" $PkgBuildOpt $ALIBUILD_OPT || ErrExit;
 }
 
 # Do the full update of a package.
@@ -180,13 +182,13 @@ function UpdatePackage {
     DoBuild=${Specs[7]}
   }
   # Update repository.
-  [ $DoUpdate -eq 1 ] && { UpdateGit "$PathRepo" $RemoteMain $BranchMain $RemoteFork; } || { echo "Update deactivated. Skipping"; }
+  [ "$DoUpdate" -eq 1 ] && { UpdateGit "$PathRepo" "$RemoteMain" "$BranchMain" "$RemoteFork"; } || { echo "Update deactivated. Skipping"; }
   # Build package.
-  [ $DoBuild -eq 1 ] && { MsgSubStep "- Building $Name"; BuildPackage "$Name" "$BuildOpt" || ErrExit; }
+  [ "$DoBuild" -eq 1 ] && { MsgSubStep "- Building $Name"; BuildPackage "$Name" "$BuildOpt" || ErrExit; }
   return 0
 }
 
-function Help { echo "Usage: bash [<path>/]$(basename $0) [-h] [-c <config>] [-d]"; }
+function Help { echo "Usage: bash [<path>/]$(basename "$0") [-h] [-c <config>] [-d]"; }
 
 ####################################################################################################
 
@@ -209,6 +211,7 @@ while getopts ":hc:d" opt; do
 done
 
 # Load configuration.
+# shellcheck disable=SC1090 # Ignore non-constant source.
 source "$FILE_CONFIG" || ErrExit "Failed to load configuration from $FILE_CONFIG."
 [ "$ALIBUILD_WORK_DIR" ] || ErrExit "ALIBUILD_WORK_DIR is not defined."
 [ -d "$ALIBUILD_WORK_DIR" ] || ErrExit "$ALIBUILD_WORK_DIR does not exist."
@@ -227,14 +230,14 @@ if [ $DRYRUN -eq 1 ]; then
   echo "Print commits: $PRINT_COMMITS"
   MsgSubStep "Package settings:"
   for pkg in "${LIST_PKG_SPECS[@]}"; do
-    arr="$pkg[@]"
+    arr="${pkg}[@]"
     spec=("${!arr}")
     echo ""
     PackageSummary spec
   done
   MsgSubStep "Development packages:"
   for pkg in "${LIST_PKG_DEV_SPECS[@]}"; do
-    arr="$pkg[@]"
+    arr="${pkg}[@]"
     spec=("${!arr}")
     echo "${spec[0]}"
   done
@@ -243,7 +246,7 @@ fi
 
 # Update all packages in the list.
 for pkg in "${LIST_PKG_SPECS[@]}"; do
-  arr="$pkg[@]"
+  arr="${pkg}[@]"
   spec=("${!arr}")
   UpdatePackage spec || ErrExit
 done
@@ -253,7 +256,7 @@ if [ $CLEAN -eq 1 ]; then
   MsgStep "Cleaning aliBuild files"
 
   # Get the directory size before cleaning.
-  SIZE_BEFORE=$(du -sb $ALIBUILD_WORK_DIR | cut -f1)
+  SIZE_BEFORE=$(du -sb "$ALIBUILD_WORK_DIR" | cut -f1)
 
   # Delete all symlinks to builds and recreate the latest ones to allow deleting of all other builds.
   if [ $PURGE_BUILDS -eq 1 ]; then
@@ -268,13 +271,13 @@ if [ $CLEAN -eq 1 ]; then
       arrPathBuild=()
       arrPathArch=()
       for pkg in "${LIST_PKG_DEV_SPECS[@]}"; do
-        arr="$pkg[@]"
+        arr="${pkg}[@]"
         spec=("${!arr}")
         Name="${spec[0]}"
-        path="$(realpath $ALIBUILD_DIR_BUILD/${Name}-latest)" && [ -d "$path" ] && arrPathBuild+=("$path") || ErrExit
-        echo $path
-        path="$(realpath $ALIBUILD_DIR_ARCH/${Name}/latest)" && [ -d "$path" ] && arrPathArch+=("$path") || ErrExit
-        echo $path
+        path="$(realpath "$ALIBUILD_DIR_BUILD"/"${Name}"-latest)" && [ -d "$path" ] && arrPathBuild+=("$path") || ErrExit
+        echo "$path"
+        path="$(realpath "$ALIBUILD_DIR_ARCH"/"${Name}"/latest)" && [ -d "$path" ] && arrPathArch+=("$path") || ErrExit
+        echo "$path"
       done
     }
     # Delete symlinks to all builds.
@@ -284,7 +287,7 @@ if [ $CLEAN -eq 1 ]; then
     # Recreate symlinks to the latest builds of development packages and their dependencies.
     for ((i = 0; i < ${#LIST_PKG_DEV_SPECS[@]}; ++i)); do
       pkg="${LIST_PKG_DEV_SPECS[i]}"
-      arr="$pkg[@]"
+      arr="${pkg}[@]"
       spec=("${!arr}")
       Name="${spec[0]}"
       BuildOpt="${spec[6]}"
@@ -302,14 +305,15 @@ if [ $CLEAN -eq 1 ]; then
 
   # Delete obsolete builds.
   MsgSubStep "- Deleting obsolete builds"
+  # shellcheck disable=SC2086 # Ignore unquoted options.
   cd "$ALICE_DIR" && aliBuild clean $ALIBUILD_OPT
 
   # Get the directory size after cleaning.
-  SIZE_AFTER=$(du -sb $ALIBUILD_WORK_DIR | cut -f1)
+  SIZE_AFTER=$(du -sb "$ALIBUILD_WORK_DIR" | cut -f1)
   # Report size difference.
   SIZE_DIFF=$(( SIZE_BEFORE - SIZE_AFTER ))
   # Convert the number of bytes to a human-readable format.
-  [ "$(which numfmt)" ] && { SIZE_DIFF=$(numfmt --to=si --round=nearest -- $SIZE_DIFF); SIZE_AFTER=$(numfmt --to=si --round=nearest -- $SIZE_AFTER); }
+  [ "$(which numfmt)" ] && { SIZE_DIFF=$(numfmt --to=si --round=nearest -- $SIZE_DIFF); SIZE_AFTER=$(numfmt --to=si --round=nearest -- "$SIZE_AFTER"); }
   echo -e "\nFreed up ${SIZE_DIFF}B of disk space."
   echo "Directory $ALIBUILD_WORK_DIR takes ${SIZE_AFTER}B."
 fi
@@ -318,7 +322,7 @@ fi
 if [ $PRINT_COMMITS -eq 1 ]; then
   MsgStep "Latest commits"
   for pkg in "${LIST_PKG_SPECS[@]}"; do
-    arr="$pkg[@]"
+    arr="${pkg}[@]"
     spec=("${!arr}")
     echo "${spec[0]}: $( cd "${spec[2]}" && PrintLastCommit || ErrExit )"
   done

@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC2034 # Ignore unused parameters.
 
 # Input specification for runtest.sh
 # (Modifies input parameters.)
