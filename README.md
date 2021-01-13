@@ -1,5 +1,7 @@
 # Run 3 validation framework
 
+[![GitHub Super-Linter](https://github.com/AliceO2Group/Run3Analysisvalidation/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
+
 ## Introduction
 
 The main purpose of the Run 3 validation framework is to provide a compact and flexible tool for validation of the
