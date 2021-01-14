@@ -1,6 +1,7 @@
 # Run 3 validation framework
 
-[![GitHub Super-Linter](https://github.com/AliceO2Group/Run3Analysisvalidation/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
+[![GitHub Super-Linter](https://github.com/AliceO2Group/Run3Analysisvalidation/workflows/Super-Linter/badge.svg)](https://github.com/marketplace/actions/super-linter)
+[![GitHub Clang Format Linter](https://github.com/AliceO2Group/Run3Analysisvalidation/workflows/Clang%20Format%20Linter/badge.svg)](https://github.com/marketplace/actions/clang-format-lint)
 
 ## Introduction
 
