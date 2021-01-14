@@ -49,8 +49,7 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
                                    //"hCovSVXX",
                                    "hDplusVertX",
                                    "hDplusVertY",
-                                   "hDplusVertZ"
-                                   };
+                                   "hDplusVertZ"};
   TString histonameRun3[nhisto] = {"hf-produce-sel-track/hpt_nocuts",
                                    "hf-produce-sel-track/hpt_cuts_2prong",
                                    "hf-produce-sel-track/hdcatoprimxy_cuts_2prong",
@@ -74,8 +73,7 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
                                    //"hf-cand-creator-2prong/hCovSVXX",
                                    "hf-track-index-skims-creator/hvtx3_x",
                                    "hf-track-index-skims-creator/hvtx3_y",
-                                   "hf-track-index-skims-creator/hvtx3_z"
-                                   };
+                                   "hf-track-index-skims-creator/hvtx3_z"};
   TString xaxis[nhisto] = {"#it{p}_{T} before selections",
                            "#it{p}_{T} after selections",
                            "DCA XY to prim vtx after selections",
@@ -99,9 +97,8 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
                            //"XX element of SV cov. matrix",
                            "secondary vtx x - 3prong",
                            "secondary vtx y - 3prong",
-                           "secondary vtx z - 3prong"
-                           };
-  int rebin[nhisto] = {2, 2, 2, 5, 5, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2/*, 1, 1, 1, 1, 1*/, 5, 5, 5};
+                           "secondary vtx z - 3prong"};
+  int rebin[nhisto] = {2, 2, 2, 5, 5, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 /*, 1, 1, 1, 1, 1*/, 5, 5, 5};
   TH1F* hRun1[nhisto];
   TH1F* hRun3[nhisto];
   TH1F* hRatio[nhisto];
@@ -147,8 +144,8 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
     */
     auto pad = cv->cd(index + 1);
     if (donorm) {
-      hRun1[index]->Scale(1./nRun1);
-      hRun3[index]->Scale(1./nRun3);
+      hRun1[index]->Scale(1. / nRun1);
+      hRun3[index]->Scale(1. / nRun3);
     }
     hRun1[index]->Rebin(rebin[index]);
     hRun3[index]->Rebin(rebin[index]);
@@ -161,12 +158,12 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
     yMin = TMath::Min(hRun3[index]->GetMinimum(0), hRun1[index]->GetMinimum(0));
     yMax = TMath::Max(hRun3[index]->GetMaximum(), hRun1[index]->GetMaximum());
     if (LogScale && yMin > 0 && yMax > 0) {
-      yRange = yMax/yMin;
-      hRun1[index]->GetYaxis()->SetRangeUser(yMin/std::pow(yRange, marginLow/k), yMax * std::pow(yRange, marginHigh/k));
+      yRange = yMax / yMin;
+      hRun1[index]->GetYaxis()->SetRangeUser(yMin / std::pow(yRange, marginLow / k), yMax * std::pow(yRange, marginHigh / k));
       pad->SetLogy();
     } else {
       yRange = yMax - yMin;
-      hRun1[index]->GetYaxis()->SetRangeUser(yMin - marginLow/k * yRange, yMax + marginHigh/k * yRange);
+      hRun1[index]->GetYaxis()->SetRangeUser(yMin - marginLow / k * yRange, yMax + marginHigh / k * yRange);
     }
     hRun1[index]->Draw();
     hRun3[index]->Draw("same");
@@ -177,16 +174,16 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
     auto padR = cr->cd(index + 1);
     hRatio[index] = (TH1F*)hRun3[index]->Clone(Form("hRatio%d", index));
     hRatio[index]->Divide(hRun1[index]);
-    hRatio[index]->SetTitle(Form("Entries ratio: %g;%s;Run3/Run1", (double)nRun3/(double)nRun1, xaxis[index].Data()));
+    hRatio[index]->SetTitle(Form("Entries ratio: %g;%s;Run3/Run1", (double)nRun3 / (double)nRun1, xaxis[index].Data()));
     yMin = hRatio[index]->GetMinimum(0);
     yMax = hRatio[index]->GetMaximum();
     if (LogScaleR && yMin > 0 && yMax > 0) {
-      yRange = yMax/yMin;
-      hRatio[index]->GetYaxis()->SetRangeUser(yMin/std::pow(yRange, marginLow/k), yMax * std::pow(yRange, marginHigh/k));
+      yRange = yMax / yMin;
+      hRatio[index]->GetYaxis()->SetRangeUser(yMin / std::pow(yRange, marginLow / k), yMax * std::pow(yRange, marginHigh / k));
       padR->SetLogy();
     } else {
       yRange = yMax - yMin;
-      hRatio[index]->GetYaxis()->SetRangeUser(yMin - marginRLow/kR * yRange, yMax + marginRHigh/kR * yRange);
+      hRatio[index]->GetYaxis()->SetRangeUser(yMin - marginRLow / kR * yRange, yMax + marginRHigh / kR * yRange);
     }
     hRatio[index]->Draw();
   }
@@ -202,8 +199,8 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
     nRun3 = hRun3[index]->GetEntries();
     auto pad = cv3->cd(i + 1);
     if (donorm) {
-      hRun1[index]->Scale(1./nRun1);
-      hRun3[index]->Scale(1./nRun3);
+      hRun1[index]->Scale(1. / nRun1);
+      hRun3[index]->Scale(1. / nRun3);
     }
     hRun1[index]->Rebin(rebin[index]);
     hRun3[index]->Rebin(rebin[index]);
@@ -216,12 +213,12 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
     yMin = TMath::Min(hRun3[index]->GetMinimum(0), hRun1[index]->GetMinimum(0));
     yMax = TMath::Max(hRun3[index]->GetMaximum(), hRun1[index]->GetMaximum());
     if (LogScale && yMin > 0 && yMax > 0) {
-      yRange = yMax/yMin;
-      hRun1[index]->GetYaxis()->SetRangeUser(yMin/std::pow(yRange, marginLow/k), yMax * std::pow(yRange, marginHigh/k));
+      yRange = yMax / yMin;
+      hRun1[index]->GetYaxis()->SetRangeUser(yMin / std::pow(yRange, marginLow / k), yMax * std::pow(yRange, marginHigh / k));
       pad->SetLogy();
     } else {
       yRange = yMax - yMin;
-      hRun1[index]->GetYaxis()->SetRangeUser(yMin - marginLow/k * yRange, yMax + marginHigh/k * yRange);
+      hRun1[index]->GetYaxis()->SetRangeUser(yMin - marginLow / k * yRange, yMax + marginHigh / k * yRange);
     }
     hRun1[index]->Draw();
     hRun3[index]->Draw("same");
@@ -232,19 +229,19 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
     auto padR = cr3->cd(i + 1);
     hRatio[index] = (TH1F*)hRun3[index]->Clone(Form("hRatio%d", index));
     hRatio[index]->Divide(hRun1[index]);
-    hRatio[index]->SetTitle(Form("Entries ratio: %g;%s;Run3/Run1", (double)nRun3/(double)nRun1, xaxis[index].Data()));
+    hRatio[index]->SetTitle(Form("Entries ratio: %g;%s;Run3/Run1", (double)nRun3 / (double)nRun1, xaxis[index].Data()));
     yMin = hRatio[index]->GetMinimum(0);
     yMax = hRatio[index]->GetMaximum();
     if (LogScaleR && yMin > 0 && yMax > 0) {
-      yRange = yMax/yMin;
-      hRatio[index]->GetYaxis()->SetRangeUser(yMin/std::pow(yRange, marginLow/k), yMax * std::pow(yRange, marginHigh/k));
+      yRange = yMax / yMin;
+      hRatio[index]->GetYaxis()->SetRangeUser(yMin / std::pow(yRange, marginLow / k), yMax * std::pow(yRange, marginHigh / k));
       padR->SetLogy();
     } else {
       yRange = yMax - yMin;
-      hRatio[index]->GetYaxis()->SetRangeUser(yMin - marginRLow/kR * yRange, yMax + marginRHigh/kR * yRange);
+      hRatio[index]->GetYaxis()->SetRangeUser(yMin - marginRLow / kR * yRange, yMax + marginRHigh / kR * yRange);
     }
     hRatio[index]->Draw();
-    i=i+1;
+    i = i + 1;
   }
 
   cv->SaveAs("comparison_histos_2prong.pdf");
