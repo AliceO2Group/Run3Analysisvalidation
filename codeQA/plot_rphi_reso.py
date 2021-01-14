@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
 import argparse
-from ROOT import TFile, TH1, TLegend, TColor, TCanvas, TGraph, TObjArray
+
+from ROOT import TH1, TCanvas, TColor, TFile, TGraph, TLegend, TObjArray
 
 canvases = []
 

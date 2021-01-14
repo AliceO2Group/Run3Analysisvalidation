@@ -7,8 +7,9 @@ To run your comparison between AnalysisResults1.root AnalysisResults2.root you c
 ./compare.py AnalysisResults1.root AnalysisResults2.root -b
 """
 
-from ROOT import TFile, TCanvas, TLegend, gPad, TColor, TH1  # , TLatex
 import argparse
+
+from ROOT import TH1, TCanvas, TColor, TFile, TLegend, gPad
 
 # import itertools
 

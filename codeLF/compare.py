@@ -1,17 +1,8 @@
 #!/usr/bin/python3
 
-from ROOT import (
-    TFile,
-    # gROOT,
-    gStyle,
-    TLegend,
-    TCanvas,
-    gPad,
-    gSystem,
-    TLatex,
-    TPaveText,
-)
 from sys import argv
+
+from ROOT import TCanvas, TFile, TLatex, TLegend, TPaveText, gPad, gStyle, gSystem
 
 
 def get(f, hn, d1, d3=None, V=True):
