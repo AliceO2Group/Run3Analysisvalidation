@@ -159,7 +159,11 @@ def drawtwo(h, logx=False, logy=False, project=True, ratio=True, V=True):
         draw(hrun3, "same")
         drawcounts([hrun2, hrun3])
     print(
-        "Entries of", hrun2.GetName(), hrun2.GetEntries(), "vs", hrun3.GetEntries(),
+        "Entries of",
+        hrun2.GetName(),
+        hrun2.GetEntries(),
+        "vs",
+        hrun3.GetEntries(),
     )
     if "TH1" in h[0].ClassName():
         legends[-1].Draw()

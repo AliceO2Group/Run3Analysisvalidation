@@ -11,7 +11,7 @@ from sys import argv
 def main(filename, canvases):
     f = TFile(filename, "READ")
     f.ls()
-    cols = ['#e41a1c', '#377eb8', '#4daf4a']
+    cols = ["#e41a1c", "#377eb8", "#4daf4a"]
     cols = [TColor.GetColor(i) for i in cols]
     print("Canvases", canvases)
     canname = canvases[0]
@@ -21,7 +21,7 @@ def main(filename, canvases):
     lcan.FindObject("TPave").SetHeader("")
     can.Draw()
     print(can)
-    leg = TLegend(.7, .7, .9, .9)
+    leg = TLegend(0.7, 0.7, 0.9, 0.9)
     for i in canvases[1:]:
         print("Getting", i)
         c = f.Get(i)
