@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 
-from ROOT import TFile, TCanvas, gPad
 from sys import argv
+
+from ROOT import TCanvas, TFile, gPad
 
 
 def get(fn, dn, hn, V=False):
