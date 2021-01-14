@@ -2,7 +2,6 @@
 
 import argparse
 from ROOT import TFile, TH1, TLegend, TColor, TCanvas, TGraph, TObjArray
-from sys import argv
 
 canvases = []
 
@@ -66,7 +65,7 @@ def main(input_files, tags, show=True):
         # print(i, j, t)
         g.append(make_reso(j, t, show))
     can = TCanvas("all", "all")
-    frame = can.DrawFrame(
+    can.DrawFrame(
         0,
         0,
         1,

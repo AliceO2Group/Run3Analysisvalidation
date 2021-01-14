@@ -7,9 +7,10 @@ To run your comparison between AnalysisResults1.root AnalysisResults2.root you c
 ./compare.py AnalysisResults1.root AnalysisResults2.root -b
 """
 
-from ROOT import TFile, TCanvas, TLegend, gPad, TColor, TH1, TLatex
+from ROOT import TFile, TCanvas, TLegend, gPad, TColor, TH1  # , TLatex
 import argparse
-import itertools
+
+# import itertools
 
 
 def compare(objs, add_leg_title=True, normalize=True):
@@ -88,8 +89,8 @@ def main(files, th1=True, th2=False, th3=False):
         fn = fn.replace("AnalysisResults_O2_Run5_", "")
         fn = fn.split("/")[-1]
         h[fn] = {}
-        l = i.GetListOfKeys()
-        for j in l:
+        lk = i.GetListOfKeys()
+        for j in lk:
             # h[fn] = list(itertools.chain(*extract(i.Get(j.GetName()))))
             o = extract(i.Get(j.GetName()))
             for k in o:
