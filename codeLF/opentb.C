@@ -1,3 +1,0 @@
-
-
-void opentb() { new TBrowser(); }
