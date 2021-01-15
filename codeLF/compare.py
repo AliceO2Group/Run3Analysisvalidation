@@ -2,7 +2,16 @@
 
 from sys import argv
 
-from ROOT import TCanvas, TFile, TLatex, TLegend, TPaveText, gPad, gStyle, gSystem
+from ROOT import (
+    TCanvas,
+    TFile,
+    TLatex,
+    TLegend,
+    TPaveText,
+    gPad,
+    gStyle,
+    gSystem,
+)
 
 
 def get(f, hn, d1, d3=None, V=True):
@@ -149,13 +158,7 @@ def drawtwo(h, logx=False, logy=False, project=True, ratio=True, V=True):
         draw(hrun2)
         draw(hrun3, "same")
         drawcounts([hrun2, hrun3])
-    print(
-        "Entries of",
-        hrun2.GetName(),
-        hrun2.GetEntries(),
-        "vs",
-        hrun3.GetEntries(),
-    )
+    print("Entries of", hrun2.GetName(), hrun2.GetEntries(), "vs", hrun3.GetEntries())
     if "TH1" in h[0].ClassName():
         legends[-1].Draw()
     if ratio:
