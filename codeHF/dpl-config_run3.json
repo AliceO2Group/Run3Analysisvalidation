@@ -12,10 +12,14 @@
         "doCutQuality": "true",
         "d_tpcnclsfound": "71",
         "ptmintrack_2prong": "0.",
+        "dcatoprimxy_2prong_maxpt": "2.",
         "dcatoprimxymin_2prong": "0.03",
+        "dcatoprimxymax_2prong": "1.00",
         "etamax_2prong": "999.",
         "ptmintrack_3prong": "0.",
+        "dcatoprimxy_3prong_maxpt": "2.",
         "dcatoprimxymin_3prong": "0.03",
+        "dcatoprimxymax_3prong": "1.00",
         "etamax_3prong": "999."
     },
     "hf-track-index-skims-creator": {
