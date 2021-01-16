@@ -9,7 +9,7 @@ void AddHistogram(VecSpecHis& vec, TString label, TString nameRun1, TString name
   vec.push_back(std::make_tuple(label, nameRun1, nameRun3, rebin));
 }
 
-Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "AnalysisResults.root", double mass = 1.8, bool donorm = false)
+Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "AnalysisResults_ALI.root")
 {
   gStyle->SetOptStat(0);
   gStyle->SetPalette(0);
@@ -97,11 +97,12 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ana
   Float_t kR = 1. - marginRHigh - marginRLow;
   bool LogScaleR = false;
   Float_t yMin, yMax, yRange;
-  Int_t nRun1, nRun3;
+  Int_t nRun1, nRun3, rebin;
 
   TH1F* hRun1 = nullptr;
   TH1F* hRun3 = nullptr;
   TH1F* hRatio = nullptr;
+  TString labelAxis = "";
   TString nameHisRun1 = "";
   TString nameHisRun3 = "";
   TCanvas* canHis = nullptr;
@@ -121,9 +122,12 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ana
     // loop over histograms
     for (int index = 0; index < vecSpec.size(); index++) {
       auto spec = vecSpec[index];
+      labelAxis = std::get<0>(spec);
+      nameHisRun1 = std::get<1>(spec);
+      nameHisRun3 = std::get<2>(spec);
+      rebin = std::get<3>(spec);
 
       // Get AliPhysics histogram.
-      nameHisRun1 = std::get<1>(spec);
       hRun1 = (TH1F*)lRun1->FindObject(nameHisRun1.Data());
       if (!hRun1) {
         printf("Failed to load %s from %s\n", nameHisRun1.Data(), filerun1.Data());
@@ -131,7 +135,6 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ana
       }
 
       // Get O2 histogram.
-      nameHisRun3 = std::get<2>(spec);
       hRun3 = (TH1F*)fRun3->Get(nameHisRun3.Data());
       if (!hRun3) {
         printf("Failed to load %s from %s\n", nameHisRun3.Data(), filerun3.Data());
@@ -149,17 +152,13 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ana
 
       // Histograms
       auto pad = canHis->cd(index + 1);
-      if (donorm) {
-        hRun1->Scale(1. / nRun1);
-        hRun3->Scale(1. / nRun3);
-      }
-      hRun1->Rebin(std::get<3>(spec));
-      hRun3->Rebin(std::get<3>(spec));
+      hRun1->Rebin(rebin);
+      hRun3->Rebin(rebin);
       hRun1->SetLineColor(1);
       hRun1->SetLineWidth(2);
       hRun3->SetLineColor(2);
       hRun3->SetLineWidth(1);
-      hRun1->SetTitle(Form("Entries: Run1: %d, Run3: %d;%s;Entries", nRun1, nRun3, std::get<0>(spec).Data()));
+      hRun1->SetTitle(Form("Entries: Run1: %d, Run3: %d;%s;Entries", nRun1, nRun3, labelAxis.Data()));
       hRun1->GetYaxis()->SetMaxDigits(3);
       yMin = TMath::Min(hRun3->GetMinimum(0), hRun1->GetMinimum(0));
       yMax = TMath::Max(hRun3->GetMaximum(), hRun1->GetMaximum());
@@ -182,7 +181,7 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ana
       auto padR = canRat->cd(index + 1);
       hRatio = (TH1F*)hRun3->Clone(Form("hRatio%d", index));
       hRatio->Divide(hRun1);
-      hRatio->SetTitle(Form("Entries ratio: %g;%s;Run3/Run1", (double)nRun3 / (double)nRun1, std::get<0>(spec).Data()));
+      hRatio->SetTitle(Form("Entries ratio: %g;%s;Run3/Run1", (double)nRun3 / (double)nRun1, labelAxis.Data()));
       yMin = hRatio->GetMinimum(0);
       yMax = hRatio->GetMaximum();
       if (LogScaleR && yMin > 0 && yMax > 0) {
