@@ -43,8 +43,6 @@ APPLYCUTS_LC=0      # Apply Λc selection cuts.
 SAVETREES=0         # Save O2 tables to trees.
 DEBUG=0             # Print out more information.
 
-MASS=1.8            # Hadron mass (only for comparison plots, not used)
-
 ####################################################################################################
 
 # Clean before (argument=1) and after (argument=2) running.
@@ -179,7 +177,15 @@ EOF
 
 function MakeScriptPostprocess {
   POSTEXEC="echo Postprocessing"
-  [[ $DOALI -eq 1 && $DOO2 -eq 1 && $DOO2_TASK_D0 -eq 1 && $DOO2_TASK_DPLUS -eq 1 ]] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/Compare.C(\\\"\$FileO2\\\", \\\"\$FileAli\\\", $MASS)\""
+  [[ $DOALI -eq 1 && $DOO2 -eq 1 ]] && {
+    OPT_COMPARE=""
+    [ $DOO2_SKIM -eq 1 ] && OPT_COMPARE+="-tracks-skim"
+    [ $DOO2_CAND_2PRONG -eq 1 ] && OPT_COMPARE+="-cand2"
+    [ $DOO2_CAND_3PRONG -eq 1 ] && OPT_COMPARE+="-cand3"
+    [ $DOO2_TASK_D0 -eq 1 ] && OPT_COMPARE+="-d0"
+    [ $DOO2_TASK_DPLUS -eq 1 ] && OPT_COMPARE+="-dplus"
+    [ "$OPT_COMPARE" ] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/Compare.C(\\\"\$FileO2\\\", \\\"\$FileAli\\\", \\\"$OPT_COMPARE\\\")\""
+  }
   [[ $DOO2 -eq 1 && $DOO2_TASK_D0 -eq 1 && $ISMC -eq 1 ]] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/PlotEfficiency.C(\\\"\$FileO2\\\")\""
   cat << EOF > "$SCRIPT_POSTPROCESS"
 #!/bin/bash
