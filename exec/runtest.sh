@@ -166,7 +166,7 @@ if [ $DOPOSTPROCESS -eq 1 ]; then
   [ $DEBUG -eq 1 ] && echo "Loading AliPhysics..."
   # Run the batch script in the postprocessing environment.
   $ENVPOST bash "$SCRIPT_POSTPROCESS" "$FILEOUT_O2" "$FILEOUT_ALI" > $LogFile 2>&1 || ErrExit "\nCheck $(realpath $LogFile)"
-  grep -q -e '^'"W-" -e '^'"Warning" "$LogFile" && MsgWarn "There were warnings!\nCheck $(realpath $LogFile)"
+  grep -q -e '^'"W-" -e '^'"Warning" -e "warning" "$LogFile" && MsgWarn "There were warnings!\nCheck $(realpath $LogFile)"
   grep -q -e '^'"E-" -e '^'"Error" "$LogFile" && MsgErr "There were errors!\nCheck $(realpath $LogFile)"
   grep -q -e '^'"F-" -e '^'"Fatal" "$LogFile" && ErrExit "There were fatal errors!\nCheck $(realpath $LogFile)"
 fi
