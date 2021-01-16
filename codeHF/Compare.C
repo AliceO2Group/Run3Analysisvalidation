@@ -75,22 +75,22 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
   VecSpecHis vecHisDPlus;
   AddHistogram(vecHisDPlus, "3-prong mass (#pi K #pi)", "hInvMassDplus", "hf-task-dplus/hMass", 2, 0, 0);
 
-  // vector of specifications of vectors: name, VecSpecHis
-  std::vector<std::tuple<TString, VecSpecHis>> vecSpecVecSpec;
+  // vector of specifications of vectors: name, VecSpecHis, pads X, pads Y
+  std::vector<std::tuple<TString, VecSpecHis, int, int>> vecSpecVecSpec;
 
   // Add vector specifications in the vector.
   if (options.Contains("tracks"))
-    vecSpecVecSpec.push_back(std::make_tuple("tracks", vecHisTracks));
+    vecSpecVecSpec.push_back(std::make_tuple("tracks", vecHisTracks, 5, 3));
   if (options.Contains("skim"))
-    vecSpecVecSpec.push_back(std::make_tuple("skim", vecHisSkim));
+    vecSpecVecSpec.push_back(std::make_tuple("skim", vecHisSkim, 5, 3));
   if (options.Contains("cand2"))
-    vecSpecVecSpec.push_back(std::make_tuple("cand2", vecHisCand2));
+    vecSpecVecSpec.push_back(std::make_tuple("cand2", vecHisCand2, 5, 3));
   if (options.Contains("cand3"))
-    vecSpecVecSpec.push_back(std::make_tuple("cand3", vecHisCand3));
+    vecSpecVecSpec.push_back(std::make_tuple("cand3", vecHisCand3, 5, 3));
   if (options.Contains("d0"))
-    vecSpecVecSpec.push_back(std::make_tuple("d0", vecHisD0));
+    vecSpecVecSpec.push_back(std::make_tuple("d0", vecHisD0, 5, 3));
   if (options.Contains("dplus"))
-    vecSpecVecSpec.push_back(std::make_tuple("dplus", vecHisDPlus));
+    vecSpecVecSpec.push_back(std::make_tuple("dplus", vecHisDPlus, 5, 3));
 
   // Histogram plot vertical margins
   Float_t marginHigh = 0.05;
@@ -118,12 +118,14 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
   for (const auto& specVecSpec : vecSpecVecSpec) {
     auto nameSpec = std::get<0>(specVecSpec); // list name
     auto vecSpec = std::get<1>(specVecSpec);  // list of histogram specs.
+    int nPadsX = std::get<2>(specVecSpec);    // number of horizontal pads
+    int nPadsY = std::get<3>(specVecSpec);    // number of vertical pads
     Printf("\nProcessing histogram list: %s (%d)", nameSpec.Data(), (int)vecSpec.size());
 
     TCanvas* canHis = new TCanvas(Form("canHis_%s", nameSpec.Data()), Form("Histos_%s", nameSpec.Data()), 3000, 1600);
-    canHis->Divide(5, 3);
+    canHis->Divide(nPadsX, nPadsY);
     TCanvas* canRat = new TCanvas(Form("canRat_%s", nameSpec.Data()), Form("Ratios_%s", nameSpec.Data()), 3000, 1600);
-    canRat->Divide(5, 3);
+    canRat->Divide(nPadsX, nPadsY);
 
     // loop over histograms
     for (int index = 0; index < vecSpec.size(); index++) {
