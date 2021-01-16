@@ -1,4 +1,4 @@
-Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Vertices2prong-ITS1.root", double mass = 1.8, bool donorm = false)
+Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "AnalysisResults.root", double mass = 1.8, bool donorm = false)
 {
   gStyle->SetOptStat(0);
   gStyle->SetPalette(0);
@@ -128,12 +128,20 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
   Float_t yMin, yMax, yRange;
   Int_t nRun1, nRun3;
 
-  TCanvas* cv = new TCanvas("cv", "Histos", 3000, 1600);
-  cv->Divide(5, 3);
-  TCanvas* cr = new TCanvas("cr", "Ratios", 3000, 1600);
-  cr->Divide(5, 3);
+  TCanvas* cv2 = new TCanvas("cv2", "Histos", 3000, 1600);
+  cv2->Divide(5, 3);
+  TCanvas* cr2 = new TCanvas("cr2", "Ratios", 3000, 1600);
+  cr2->Divide(5, 3);
 
-  for (int index = 0; index < nhisto_2prong; index++) {
+  TCanvas* cv3 = new TCanvas("cv3", "Histos", 3000, 1600);
+  cv3->Divide(5, 3);
+  TCanvas* cr3 = new TCanvas("cr3", "Ratios", 3000, 1600);
+  cr3->Divide(5, 3);
+
+  TCanvas* canHis = cv2;
+  TCanvas* canRat = cr2;
+
+  for (int index = 0, indexPad = 1; index < nhisto; index++, indexPad++) {
     nRun1 = hRun1[index]->GetEntries();
     nRun3 = hRun3[index]->GetEntries();
     /*
@@ -142,7 +150,15 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
       hRun1[index]->GetXaxis()->GetBinLowEdge(1), hRun1[index]->GetXaxis()->GetBinUpEdge(hRun1[index]->GetNbinsX()),
       hRun3[index]->GetXaxis()->GetBinLowEdge(1), hRun3[index]->GetXaxis()->GetBinUpEdge(hRun3[index]->GetNbinsX()));
     */
-    auto pad = cv->cd(index + 1);
+    if (index == nhisto_2prong) {
+      canHis = cv3;
+      canRat = cr3;
+      indexPad-=nhisto_2prong;
+    }
+
+    Printf("Index: %d, pad index: %d", index, indexPad);
+
+    auto pad = canHis->cd(indexPad);
     if (donorm) {
       hRun1[index]->Scale(1. / nRun1);
       hRun3[index]->Scale(1. / nRun3);
@@ -171,7 +187,8 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
     legend->AddEntry(hRun1[index], "Run1", "L");
     legend->AddEntry(hRun3[index], "Run3", "L");
     legend->Draw();
-    auto padR = cr->cd(index + 1);
+
+    auto padR = canRat->cd(indexPad);
     hRatio[index] = (TH1F*)hRun3[index]->Clone(Form("hRatio%d", index));
     hRatio[index]->Divide(hRun1[index]);
     hRatio[index]->SetTitle(Form("Entries ratio: %g;%s;Run3/Run1", (double)nRun3 / (double)nRun1, xaxis[index].Data()));
@@ -188,64 +205,8 @@ Int_t Compare(TString filerun3 = "AnalysisResults.root", TString filerun1 = "Ver
     hRatio[index]->Draw();
   }
 
-  TCanvas* cv3 = new TCanvas("cv3", "Histos", 3000, 1600);
-  cv3->Divide(5, 3);
-  TCanvas* cr3 = new TCanvas("cr3", "Ratios", 3000, 1600);
-  cr3->Divide(5, 3);
-
-  Int_t i = 0;
-  for (int index = nhisto_2prong; index < nhisto; index++) {
-    nRun1 = hRun1[index]->GetEntries();
-    nRun3 = hRun3[index]->GetEntries();
-    auto pad = cv3->cd(i + 1);
-    if (donorm) {
-      hRun1[index]->Scale(1. / nRun1);
-      hRun3[index]->Scale(1. / nRun3);
-    }
-    hRun1[index]->Rebin(rebin[index]);
-    hRun3[index]->Rebin(rebin[index]);
-    hRun1[index]->SetLineColor(1);
-    hRun1[index]->SetLineWidth(2);
-    hRun3[index]->SetLineColor(2);
-    hRun3[index]->SetLineWidth(1);
-    hRun1[index]->SetTitle(Form("Entries: Run1: %d, Run3: %d;%s;Entries", nRun1, nRun3, xaxis[index].Data()));
-    hRun1[index]->GetYaxis()->SetMaxDigits(3);
-    yMin = TMath::Min(hRun3[index]->GetMinimum(0), hRun1[index]->GetMinimum(0));
-    yMax = TMath::Max(hRun3[index]->GetMaximum(), hRun1[index]->GetMaximum());
-    if (LogScale && yMin > 0 && yMax > 0) {
-      yRange = yMax / yMin;
-      hRun1[index]->GetYaxis()->SetRangeUser(yMin / std::pow(yRange, marginLow / k), yMax * std::pow(yRange, marginHigh / k));
-      pad->SetLogy();
-    } else {
-      yRange = yMax - yMin;
-      hRun1[index]->GetYaxis()->SetRangeUser(yMin - marginLow / k * yRange, yMax + marginHigh / k * yRange);
-    }
-    hRun1[index]->Draw();
-    hRun3[index]->Draw("same");
-    TLegend* legend = new TLegend(0.7, 0.7, 0.9, 0.9);
-    legend->AddEntry(hRun1[index], "Run1", "L");
-    legend->AddEntry(hRun3[index], "Run3", "L");
-    legend->Draw();
-    auto padR = cr3->cd(i + 1);
-    hRatio[index] = (TH1F*)hRun3[index]->Clone(Form("hRatio%d", index));
-    hRatio[index]->Divide(hRun1[index]);
-    hRatio[index]->SetTitle(Form("Entries ratio: %g;%s;Run3/Run1", (double)nRun3 / (double)nRun1, xaxis[index].Data()));
-    yMin = hRatio[index]->GetMinimum(0);
-    yMax = hRatio[index]->GetMaximum();
-    if (LogScaleR && yMin > 0 && yMax > 0) {
-      yRange = yMax / yMin;
-      hRatio[index]->GetYaxis()->SetRangeUser(yMin / std::pow(yRange, marginLow / k), yMax * std::pow(yRange, marginHigh / k));
-      padR->SetLogy();
-    } else {
-      yRange = yMax - yMin;
-      hRatio[index]->GetYaxis()->SetRangeUser(yMin - marginRLow / kR * yRange, yMax + marginRHigh / kR * yRange);
-    }
-    hRatio[index]->Draw();
-    i = i + 1;
-  }
-
-  cv->SaveAs("comparison_histos_2prong.pdf");
-  cr->SaveAs("comparison_ratios_2prong.pdf");
+  cv2->SaveAs("comparison_histos_2prong.pdf");
+  cr2->SaveAs("comparison_ratios_2prong.pdf");
   cv3->SaveAs("comparison_histos_3prong.pdf");
   cr3->SaveAs("comparison_ratios_3prong.pdf");
   return 0;
