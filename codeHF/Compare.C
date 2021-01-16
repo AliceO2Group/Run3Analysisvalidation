@@ -9,7 +9,7 @@ void AddHistogram(VecSpecHis& vec, TString label, TString nameRun1, TString name
   vec.push_back(std::make_tuple(label, nameRun1, nameRun3, rebin));
 }
 
-Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "AnalysisResults_ALI.root")
+Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "AnalysisResults_ALI.root", TString options = "")
 {
   gStyle->SetOptStat(0);
   gStyle->SetPalette(0);
@@ -79,12 +79,18 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
   std::vector<std::tuple<TString, VecSpecHis>> vecSpecVecSpec;
 
   // Add vector specifications in the vector.
-  vecSpecVecSpec.push_back(std::make_tuple("tracks", vecHisTracks));
-  vecSpecVecSpec.push_back(std::make_tuple("skim", vecHisSkim));
-  vecSpecVecSpec.push_back(std::make_tuple("cand2", vecHisCand2));
-  vecSpecVecSpec.push_back(std::make_tuple("cand3", vecHisCand3));
-  vecSpecVecSpec.push_back(std::make_tuple("d0", vecHisD0));
-  vecSpecVecSpec.push_back(std::make_tuple("dplus", vecHisDPlus));
+  if (options.Contains("tracks"))
+    vecSpecVecSpec.push_back(std::make_tuple("tracks", vecHisTracks));
+  if (options.Contains("skim"))
+    vecSpecVecSpec.push_back(std::make_tuple("skim", vecHisSkim));
+  if (options.Contains("cand2"))
+    vecSpecVecSpec.push_back(std::make_tuple("cand2", vecHisCand2));
+  if (options.Contains("cand3"))
+    vecSpecVecSpec.push_back(std::make_tuple("cand3", vecHisCand3));
+  if (options.Contains("d0"))
+    vecSpecVecSpec.push_back(std::make_tuple("d0", vecHisD0));
+  if (options.Contains("dplus"))
+    vecSpecVecSpec.push_back(std::make_tuple("dplus", vecHisDPlus));
 
   // Histogram plot vertical margins
   Float_t marginHigh = 0.05;
