@@ -75,6 +75,15 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
   VecSpecHis vecHisDPlus;
   AddHistogram(vecHisDPlus, "3-prong mass (#pi K #pi)", "hInvMassDplus", "hf-task-dplus/hMass", 2, 0, 0);
 
+  VecSpecHis vecHisLc;
+  AddHistogram(vecHisLc, "3-prong mass (p K #pi)", "hInvMassLc", "hf-task-lc/hmass", 2, 0, 0);
+  AddHistogram(vecHisLc, "#it{p}_{T} prong 0", "hPtLcDau0", "hf-task-lc/hptprong0", 2, 0, 0);
+  AddHistogram(vecHisLc, "#it{p}_{T} prong 1", "hPtLcDau1", "hf-task-lc/hptprong1", 2, 0, 0);
+  AddHistogram(vecHisLc, "#it{p}_{T} prong 1", "hPtLcDau2", "hf-task-lc/hptprong2", 2, 0, 0);
+  AddHistogram(vecHisLc, "#it{p}_{T} #Lambda_{c}", "hPtLc", "hf-task-lc/hptcand", 2, 0, 0);
+  AddHistogram(vecHisLc, "decay length", "hDecLenLc", "hf-task-lc/hdeclength", 2, 0, 0);
+  AddHistogram(vecHisLc, "CPA", "hCosPointLc", "hf-task-lc/hCPA", 2, 0, 0);
+
   // vector of specifications of vectors: name, VecSpecHis, pads X, pads Y
   std::vector<std::tuple<TString, VecSpecHis, int, int>> vecSpecVecSpec;
 
@@ -91,6 +100,8 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
     vecSpecVecSpec.push_back(std::make_tuple("d0", vecHisD0, 5, 3));
   if (options.Contains("dplus"))
     vecSpecVecSpec.push_back(std::make_tuple("dplus", vecHisDPlus, 5, 3));
+  if (options.Contains("lc"))
+    vecSpecVecSpec.push_back(std::make_tuple("lc", vecHisLc, 5, 3));
 
   // Histogram plot vertical margins
   Float_t marginHigh = 0.05;
