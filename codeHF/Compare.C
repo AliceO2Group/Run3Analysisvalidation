@@ -51,12 +51,12 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
   AddHistogram(vecHisSkim, "secondary vtx z - 3prong (cm)", "hDplusVertZ", "hf-track-index-skims-creator/hvtx3_z", 5, 0, 0);
 
   VecSpecHis vecHisCand2;
-  AddHistogram(vecHisCand2, "XX element of PV cov. matrix (cm^2)", "hCovMatPrimVXX2Prong", "hf-cand-creator-2prong/hCovPVXX", 1, 0, 0);
-  AddHistogram(vecHisCand2, "XX element of SV cov. matrix (cm^2)", "hCovMatSecVXX2Prong", "hf-cand-creator-2prong/hCovSVXX", 1, 0, 0);
+  AddHistogram(vecHisCand2, "XX element of PV cov. matrix (cm^{2})", "hCovMatPrimVXX2Prong", "hf-cand-creator-2prong/hCovPVXX", 1, 0, 0);
+  AddHistogram(vecHisCand2, "XX element of SV cov. matrix (cm^{2})", "hCovMatSecVXX2Prong", "hf-cand-creator-2prong/hCovSVXX", 1, 0, 0);
 
   VecSpecHis vecHisCand3;
-  AddHistogram(vecHisCand3, "XX element of PV cov. matrix (cm^2)", "hCovMatPrimVXX3Prong", "hf-cand-creator-3prong/hCovPVXX", 1, 0, 0);
-  AddHistogram(vecHisCand3, "XX element of SV cov. matrix (cm^2)", "hCovMatSecVXX3Prong", "hf-cand-creator-3prong/hCovSVXX", 1, 0, 0);
+  AddHistogram(vecHisCand3, "XX element of PV cov. matrix (cm^{2})", "hCovMatPrimVXX3Prong", "hf-cand-creator-3prong/hCovPVXX", 1, 0, 0);
+  AddHistogram(vecHisCand3, "XX element of SV cov. matrix (cm^{2})", "hCovMatSecVXX3Prong", "hf-cand-creator-3prong/hCovSVXX", 1, 0, 0);
 
   VecSpecHis vecHisD0;
   AddHistogram(vecHisD0, "#it{p}_{T} prong 0  (GeV/#it{c})", "hPtD0Dau0", "hf-task-d0/hptprong0", 2, 0, 0);
@@ -85,12 +85,12 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
   AddHistogram(vecHisDPlus, "cos. pointing angle XY", "hCosPointXYDplus", "hf-task-dplus/hCPAxy", 2, 0, 0);
   AddHistogram(vecHisDPlus, "impact par. xy (cm)", "hImpParXYDplus", "hf-task-dplus/hImpactParameterXY", 4, 0, 0);
   AddHistogram(vecHisDPlus, "norm. IP", "hNormIPDplus", "hf-task-dplus/hMaxNormalisedDeltaIP", 4, 0, 0);
-  AddHistogram(vecHisDPlus, "sq. sum of prong imp. par. (cm^2)", "hSumSqImpParDplusDau", "hf-task-dplus/hImpactParameterProngSqSum", 2, 0, 0);
+  AddHistogram(vecHisDPlus, "sq. sum of prong imp. par. (cm^{2})", "hSumSqImpParDplusDau", "hf-task-dplus/hImpactParameterProngSqSum", 2, 0, 0);
   AddHistogram(vecHisDPlus, "decay length error (cm)", "hDecLenErrDplus", "hf-task-dplus/hDecayLengthError", 2, 0, 0);
   AddHistogram(vecHisDPlus, "decay length xy error (cm)", "hDecLenXYErrDplus", "hf-task-dplus/hDecayLengthXYError", 2, 0, 0);
   AddHistogram(vecHisDPlus, "prong impact parameter error (cm)", "hImpParErrDplusDau", "hf-task-dplus/hImpactParameterError", 2, 0, 0);
-  AddHistogram(vecHisDPlus, "XX element of PV cov. matrix (cm^2)", "hCovMatPrimVXX3Prong", "hf-cand-creator-3prong/hCovPVXX", 2, 0, 0);
-  AddHistogram(vecHisDPlus, "XX element of 3-prong SV cov. matrix (cm^2)", "hCovMatSecVXX3Prong", "hf-cand-creator-3prong/hCovSVXX", 2, 0, 0);
+  AddHistogram(vecHisDPlus, "XX element of PV cov. matrix (cm^{2})", "hCovMatPrimVXX3Prong", "hf-cand-creator-3prong/hCovPVXX", 2, 0, 0);
+  AddHistogram(vecHisDPlus, "XX element of 3-prong SV cov. matrix (cm^{2})", "hCovMatSecVXX3Prong", "hf-cand-creator-3prong/hCovSVXX", 2, 0, 0);
 
   VecSpecHis vecHisLc;
   AddHistogram(vecHisLc, "3-prong mass (p K #pi)(GeV/#it{c}^{2}) ", "hInvMassLc", "hf-task-lc/hmass", 2, 0, 0);
