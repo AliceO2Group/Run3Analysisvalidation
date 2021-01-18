@@ -149,6 +149,10 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
     int nPadsX = std::get<2>(specVecSpec);    // number of horizontal pads
     int nPadsY = std::get<3>(specVecSpec);    // number of vertical pads
     Printf("\nProcessing histogram list: %s (%d)", nameSpec.Data(), (int)vecSpec.size());
+    if (nPadsX * nPadsY < vecSpec.size()) {
+      Printf("Not enough pads (%d)", nPadsX * nPadsY);
+      return 1;
+    }
 
     TCanvas* canHis = new TCanvas(Form("canHis_%s", nameSpec.Data()), Form("Histos_%s", nameSpec.Data()), 3000, 1600);
     canHis->Divide(nPadsX, nPadsY);
