@@ -74,9 +74,6 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
 
   VecSpecHis vecHisDPlus;
   AddHistogram(vecHisDPlus, "3-prong mass (#pi K #pi) (GeV/#it{c}^{2})", "hInvMassDplus", "hf-task-dplus/hMass", 5, 0, 0);
-  AddHistogram(vecHisDPlus, "secondary vtx x - 3prong (cm)", "hDplusVertX", "hf-track-index-skims-creator/hvtx3_x", 5, 0, 0);
-  AddHistogram(vecHisDPlus, "secondary vtx y - 3prong (cm)", "hDplusVertY", "hf-track-index-skims-creator/hvtx3_y", 5, 0, 0);
-  AddHistogram(vecHisDPlus, "secondary vtx z - 3prong (cm)", "hDplusVertZ", "hf-track-index-skims-creator/hvtx3_z", 5, 0, 0);
   AddHistogram(vecHisDPlus, "#it{p}_{T} D^{+} (GeV/#it{c})", "hPtDlpus", "hf-task-dplus/hPt", 2, 0, 0);
   AddHistogram(vecHisDPlus, "decay length (cm)", "hDecLenDplus", "hf-task-dplus/hDecayLength", 4, 0, 0);
   AddHistogram(vecHisDPlus, "decay length XY (cm)", "hDecLenXYDplus", "hf-task-dplus/hDecayLengthXY", 4, 0, 0);
@@ -89,8 +86,6 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
   AddHistogram(vecHisDPlus, "decay length error (cm)", "hDecLenErrDplus", "hf-task-dplus/hDecayLengthError", 2, 0, 0);
   AddHistogram(vecHisDPlus, "decay length xy error (cm)", "hDecLenXYErrDplus", "hf-task-dplus/hDecayLengthXYError", 2, 0, 0);
   AddHistogram(vecHisDPlus, "prong impact parameter error (cm)", "hImpParErrDplusDau", "hf-task-dplus/hImpactParameterError", 2, 0, 0);
-  AddHistogram(vecHisDPlus, "XX element of PV cov. matrix (cm^{2})", "hCovMatPrimVXX3Prong", "hf-cand-creator-3prong/hCovPVXX", 2, 0, 0);
-  AddHistogram(vecHisDPlus, "XX element of 3-prong SV cov. matrix (cm^{2})", "hCovMatSecVXX3Prong", "hf-cand-creator-3prong/hCovSVXX", 2, 0, 0);
 
   VecSpecHis vecHisLc;
   AddHistogram(vecHisLc, "3-prong mass (p K #pi)(GeV/#it{c}^{2}) ", "hInvMassLc", "hf-task-lc/hmass", 2, 0, 0);
@@ -116,7 +111,7 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
   if (options.Contains("d0"))
     vecSpecVecSpec.push_back(std::make_tuple("d0", vecHisD0, 5, 3));
   if (options.Contains("dplus"))
-    vecSpecVecSpec.push_back(std::make_tuple("dplus", vecHisDPlus, 5, 4));
+    vecSpecVecSpec.push_back(std::make_tuple("dplus", vecHisDPlus, 5, 3));
   if (options.Contains("lc"))
     vecSpecVecSpec.push_back(std::make_tuple("lc", vecHisLc, 5, 3));
 
