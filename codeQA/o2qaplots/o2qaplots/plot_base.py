@@ -114,7 +114,8 @@ class PlottingTask:
     Attributes:
         parser_description: string with the description which will be shown when this plotting macro is run from the
             command line.
-        base_arguments: list with the common configurables for any process. Each argument should have the type Configurable.
+        base_arguments: list with the common configurables for any process. Each argument should have the type C
+            onfigurable.
         arguments: list with the configurables for the process.
 
     """

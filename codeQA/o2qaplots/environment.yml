@@ -1,0 +1,10 @@
+name: o2qa
+channels:
+  - conda-forge
+  - defaults
+
+dependencies:
+  - python=3.6
+  - root=6.20.6
+  - pylint
+  - autopep8

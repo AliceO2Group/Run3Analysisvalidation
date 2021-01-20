@@ -22,7 +22,7 @@ class ImpactParameter(pb.PlottingTask):
 
     ip_histograms = [ip_rphi_pt, ip_rphi_eta, ip_rphi_phi, ip_rphi_eta, ip_z_eta, ip_z_phi]
 
-    configurables = [pb.Configurable("show_fits", '--show-fits', '-s', action='store_true', default=False,
+    configurables = [pb.Configurable("show_fits", '--show-fits', '-sf', action='store_true', default=False,
                                      help='')]
 
     plotting_function = plot_1d_legend
