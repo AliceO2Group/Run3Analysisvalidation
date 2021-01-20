@@ -12,10 +12,14 @@
         "doCutQuality": "false",
         "d_tpcnclsfound": "-999999",
         "ptmintrack_2prong": ".3",
+        "dcatoprimxy_2prong_maxpt": "2.",
         "dcatoprimxymin_2prong": "0.0",
+        "dcatoprimxymax_2prong": "1.0",
         "etamax_2prong": "1.44",
         "ptmintrack_3prong": ".3",
+        "dcatoprimxy_3prong_maxpt": "2.",
         "dcatoprimxymin_3prong": "0.0",
+        "dcatoprimxymax_3prong": "1.0",
         "etamax_3prong": "1.44"
     },
     "hf-track-index-skims-creator": {
@@ -29,31 +33,31 @@
         "d_minparamchange": "0.001",
         "d_minrelchi2change": "0.9",
         "configs": {
-            "mPtD0Min": "0.",
-            "mInvMassD0Min": "1.61",
-            "mInvMassD0Max": "2.12",
-            "mCPAD0Min": "0.5",
-            "mImpParProductD0Max": "0.00",
-            "mPtJpsiMin": "0.",
-            "mInvMassJpsiMin": "2.5",
-            "mInvMassJpsiMax": "4.1",
-            "mCPAJpsiMin": "-2",
-            "mImpParProductJpsiMax": "1000.00",
-            "mPtDPlusMin": "2.",
-            "mInvMassDPlusMin": "1.67",
-            "mInvMassDPlusMax": "2.07",
-            "mCPADPlusMin": "0.95",
-            "mDecLenDPlusMin": "0.05",
-            "mPtLcMin": "4.",
-            "mInvMassLcMin": "2.15",
-            "mInvMassLcMax": "2.42",
-            "mCPALcMin": "-2.",
-            "mDecLenLcMin": "0.", 
-            "mPtDsMin": "1.5",
-            "mInvMassDsMin": "1.74",
-            "mInvMassDsMax": "2.18",
-            "mCPADsMin": "0.94",
-            "mDecLenDsMin": "0.02"
+            "mPtD0ToPiKMin": "0.",
+            "mInvMassD0ToPiKMin": "1.61",
+            "mInvMassD0ToPiKMax": "2.12",
+            "mCPAD0ToPiKMin": "0.5",
+            "mImpParProductD0ToPiKMax": "0.00",
+            "mPtJpsiToEEMin": "0.",
+            "mInvMassJpsiToEEMin": "2.5",
+            "mInvMassJpsiToEEMax": "4.1",
+            "mCPAJpsiToEEMin": "-2",
+            "mImpParProductJpsiToEEMax": "1000.00",
+            "mPtDPlusToPiKPiMin": "2.",
+            "mInvMassDPlusToPiKPiMin": "1.67",
+            "mInvMassDPlusToPiKPiMax": "2.07",
+            "mCPADPlusToPiKPiMin": "0.95",
+            "mDecLenDPlusToPiKPiMin": "0.05",
+            "mPtLcToPKPiMin": "4.",
+            "mInvMassLcToPKPiMin": "1.98",
+            "mInvMassLcToPKPiMax": "2.58",
+            "mCPALcToPKPiMin": "-2.",
+            "mDecLenLcToPKPiMin": "0.", 
+            "mPtDsToPiKKMin": "1.5",
+            "mInvMassDsToPiKKMin": "1.74",
+            "mInvMassDsToPiKKMax": "2.18",
+            "mCPADsToPiKKMin": "0.94",
+            "mDecLenDsToPiKKMin": "0.02"
         }
     },
     "hf-cand-creator-2prong": {
@@ -113,7 +117,12 @@
     "hf-task-dplus": {
         "d_selectionFlagDPlus": "0"
     },
-     "hf-task-lc": {
+    "hf-task-lc": {
+        "cutEtaCandMax": "-1.",
+        "d_selectionFlagLc": "0"
+    },
+    "hf-task-lc-mc": {
+        "cutEtaCandMax": "-1.",
         "d_selectionFlagLc": "0"
     },
     "internal-dpl-aod-writer": {

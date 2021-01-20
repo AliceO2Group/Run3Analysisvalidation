@@ -1,17 +1,17 @@
 #!/usr/bin/python3
 
-from ROOT import (
-    TFile,
-    gROOT,
-    gStyle,
-    TLegend,
-    TCanvas,
-    gPad,
-    gSystem,
-    TLatex,
-    TPaveText,
-)
 from sys import argv
+
+from ROOT import (
+    TCanvas,
+    TFile,
+    TLatex,
+    TLegend,
+    TPaveText,
+    gPad,
+    gStyle,
+    gSystem,
+)
 
 
 def get(f, hn, d1, d3=None, V=True):
@@ -41,7 +41,7 @@ ldrawn = []
 
 
 def drawrange(x, y, xtit="", ytit=""):
-    if type(x) != type([]):
+    if not isinstance(x, list):
         if xtit == "":
             xtit = x.GetXaxis().GetTitle()
         x = [x.GetXaxis().GetBinLowEdge(1), x.GetXaxis().GetBinUpEdge(x.GetNbinsX())]
@@ -57,7 +57,7 @@ def draw(h, opt="", copy=False, labelize=True):
     if copy:
         print("Drawing", h, "as a copy")
         hd = h.DrawCopy(opt)
-        if type(copy) == type(""):
+        if isinstance(copy, str):
             hd.SetName(hd.GetName() + copy)
         else:
             hd.SetName(hd.GetName() + "copy")
@@ -117,11 +117,11 @@ legends = []
 
 
 def makelegend(h):
-    l = TLegend(0.7, 0.7, 0.9, 0.9)
+    leg = TLegend(0.7, 0.7, 0.9, 0.9)
     for i in h:
-        l.AddEntry(i, "", "f")
-    # l.SetHeader("Legend","C"); // option "C" allows to center the header
-    legends.append(l)
+        leg.AddEntry(i, "", "f")
+    # leg.SetHeader("Legend","C"); // option "C" allows to center the header
+    legends.append(leg)
 
 
 def drawtwo(h, logx=False, logy=False, project=True, ratio=True, V=True):
@@ -158,9 +158,7 @@ def drawtwo(h, logx=False, logy=False, project=True, ratio=True, V=True):
         draw(hrun2)
         draw(hrun3, "same")
         drawcounts([hrun2, hrun3])
-    print(
-        "Entries of", hrun2.GetName(), hrun2.GetEntries(), "vs", hrun3.GetEntries(),
-    )
+    print("Entries of", hrun2.GetName(), hrun2.GetEntries(), "vs", hrun3.GetEntries())
     if "TH1" in h[0].ClassName():
         legends[-1].Draw()
     if ratio:

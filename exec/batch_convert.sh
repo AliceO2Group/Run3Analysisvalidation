@@ -6,54 +6,62 @@ LISTINPUT="$1"
 LISTOUTPUT="$2"
 ISMC=$3
 DEBUG=$4
+NFILESPERJOB=$5
 FILEOUT="AO2D.root"
 
-[ $DEBUG -eq 1 ] && echo "Running $0"
+[ "$DEBUG" -eq 1 ] && echo "Running $0"
 
 # This directory
-DIR_THIS="$(dirname $(realpath $0))"
+DIR_THIS="$(dirname "$(realpath "$0")")"
 
 # Load utilities.
+# shellcheck disable=SC1090 # Ignore non-constant source.
 source "$DIR_THIS/utilities.sh" || { echo "Error: Failed to load utilities."; exit 1; }
 
 LogFile="log_convert.log"
-ListInOne="list_input.txt"
+ListIn="list_convert.txt"
 DirBase="$PWD"
-Index=0
-ListRunScripts="$DirBase/ListRunScripts.txt"
+IndexFile=0
+ListRunScripts="$DirBase/ListRunScriptsConversion.txt"
 DirOutMain="output_conversion"
 
-rm -f $ListRunScripts && \
-rm -f $LISTOUTPUT && \
-rm -rf $DirOutMain || ErrExit "Failed to delete output files."
+# Clean before running.
+rm -rf "$ListRunScripts" "$LISTOUTPUT" "$DirOutMain" || ErrExit "Failed to delete output files."
 
 CheckFile "$LISTINPUT"
 echo "Output directory: $DirOutMain (logfiles: $LogFile)"
-while read FileIn; do
+# Loop over input files
+while read -r FileIn; do
   CheckFile "$FileIn"
-  FileIn="$(realpath $FileIn)"
-  DirOut="$DirOutMain/$Index"
-  mkdir -p $DirOut && \
-  cd $DirOut && \
-  echo $FileIn > "$ListInOne" || ErrExit "Failed to echo to $ListInOne."
-  [ $DEBUG -eq 1 ] && echo "Input file ($Index): $FileIn"
-  FileOut="$DirOut/$FILEOUT"
-  echo "$DirBase/$FileOut" >> "$DirBase/$LISTOUTPUT" || ErrExit "Failed to echo to $DirBase/$LISTOUTPUT."
-  RUNSCRIPT="run.sh"
-  cat << EOF > $RUNSCRIPT # Create the job script.
-#!/bin/bash
-DirThis="\$(dirname \$(realpath \$0))"
-cd "\$DirThis"
-root -b -q -l "$DIR_THIS/convertAO2D.C(\"$ListInOne\", $ISMC)" > $LogFile 2>&1
-EOF
-  echo "bash $(realpath $RUNSCRIPT)" >> "$ListRunScripts" && \
-  ((Index+=1)) && \
-  cd $DirBase || ErrExit "Failed to cd $DirBase."
+  FileIn="$(realpath "$FileIn")"
+  IndexJob=$((IndexFile / NFILESPERJOB))
+  DirOut="$DirOutMain/$IndexJob"
+  # New job
+  if [ $((IndexFile % NFILESPERJOB)) -eq 0 ]; then
+    mkdir -p $DirOut || ErrExit "Failed to mkdir $DirOut."
+    FileOut="$DirOut/$FILEOUT"
+    echo "$DirBase/$FileOut" >> "$DirBase/$LISTOUTPUT" || ErrExit "Failed to echo to $DirBase/$LISTOUTPUT."
+    # Add this job in the list of commands.
+    echo "cd \"$DirOut\" && bash \"$DIR_THIS/run_convert.sh\" \"$ListIn\" $ISMC \"$LogFile\"" >> "$ListRunScripts" || ErrExit "Failed to echo to $ListRunScripts."
+  fi
+  echo "$FileIn" >> "$DirOut/$ListIn" || ErrExit "Failed to echo to $DirOut/$ListIn."
+  [ "$DEBUG" -eq 1 ] && echo "Input file ($IndexFile, job $IndexJob): $FileIn"
+  ((IndexFile+=1))
 done < "$LISTINPUT"
 
-echo "Running conversion jobs..."
-parallel --halt soon,fail=100% < $ListRunScripts > $LogFile 2>&1 || \
-ErrExit "\nCheck $(realpath $LogFile)"
-rm -f $ListRunScripts || ErrExit "Failed to rm $ListRunScripts."
+CheckFile "$ListRunScripts"
+echo "Running conversion jobs... ($(wc -l < "$ListRunScripts") jobs)"
+OPT_PARALLEL="--halt soon,fail=100%"
+if [ "$DEBUG" -eq 0 ]; then
+  # shellcheck disable=SC2086 # Ignore unquoted options.
+  parallel $OPT_PARALLEL < "$ListRunScripts" > $LogFile 2>&1
+else
+  # shellcheck disable=SC2086 # Ignore unquoted options.
+  parallel $OPT_PARALLEL --will-cite --progress < "$ListRunScripts" > $LogFile
+fi || ErrExit "\nCheck $(realpath $LogFile)"
+grep -q -e '^'"W-" -e '^'"Warning" "$LogFile" && MsgWarn "There were warnings!\nCheck $(realpath $LogFile)"
+grep -q -e '^'"E-" -e '^'"Error" "$LogFile" && MsgErr "There were errors!\nCheck $(realpath $LogFile)"
+grep -q -e '^'"F-" -e '^'"Fatal" "$LogFile" && ErrExit "There were fatal errors!\nCheck $(realpath $LogFile)"
+rm -f "$ListRunScripts" || ErrExit "Failed to rm $ListRunScripts."
 
 exit 0

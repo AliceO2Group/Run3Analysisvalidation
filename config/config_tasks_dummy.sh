@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC2034 # Ignore unused parameters.
 
 # Configuration of tasks for runtest.sh
 # (Cleans directory, modifies step activation, modifies JSON, generates step scripts.)
@@ -26,10 +27,10 @@ DEBUG=1             # Print out more information.
 # Clean before (argument=1) and after (argument=2) running.
 function Clean {
   # Cleanup before running
-  [ $1 -eq 1 ] && MsgWarn "Before"
+  [ "$1" -eq 1 ] && MsgWarn "Before"
 
   # Cleanup after running
-  [ $1 -eq 2 ] && MsgWarn "After"
+  [ "$1" -eq 2 ] && MsgWarn "After"
 
   return 0
 }
@@ -45,7 +46,7 @@ function MakeScriptO2 {
   O2EXEC="echo \"O2\""
   O2EXEC+=" && cp \"\$FileIn\" $FILEOUT"
   # Create the script with the full O2 command.
-  cat << EOF > $SCRIPT_O2
+  cat << EOF > "$SCRIPT_O2"
 #!/bin/bash
 FileIn="\$1"
 JSON="\$2"
@@ -57,7 +58,7 @@ function MakeScriptAli {
   MsgWarn "Running MakeScriptAli"
   ALIEXEC="echo \"Ali\""
   ALIEXEC+=" && cp \"\$FileIn\" $FILEOUT"
-  cat << EOF > $SCRIPT_ALI
+  cat << EOF > "$SCRIPT_ALI"
 #!/bin/bash
 FileIn="\$1"
 JSON="\$2"
@@ -68,7 +69,7 @@ EOF
 function MakeScriptPostprocess {
   MsgWarn "Running MakeScriptPostprocess"
   POSTEXEC="echo \"Postprocessing\""
-  cat << EOF > $SCRIPT_POSTPROCESS
+  cat << EOF > "$SCRIPT_POSTPROCESS"
 #!/bin/bash
 FileO2="\$1"
 FileAli="\$2"

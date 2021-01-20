@@ -4,30 +4,31 @@
 Script to plot together canvases in different files
 """
 
-from ROOT import TFile, TColor, TLegend
 from sys import argv
+
+from ROOT import TColor, TFile  # , TLegend
 
 
 def main(filename, canvases):
     f = TFile(filename, "READ")
     f.ls()
-    cols = ['#e41a1c', '#377eb8', '#4daf4a']
+    cols = ["#e41a1c", "#377eb8", "#4daf4a"]
     cols = [TColor.GetColor(i) for i in cols]
     print("Canvases", canvases)
     canname = canvases[0]
-    hname = canname.split("_folder_")[-1]
+    canname.split("_folder_")[-1]
     can = f.Get(canname)
     lcan = can.GetListOfPrimitives()
     lcan.FindObject("TPave").SetHeader("")
     can.Draw()
     print(can)
-    leg = TLegend(.7, .7, .9, .9)
+    # leg = TLegend(0.7, 0.7, 0.9, 0.9)
     for i in canvases[1:]:
         print("Getting", i)
         c = f.Get(i)
-        l = c.GetListOfPrimitives()
-        # l.ls()
-        for j in l:
+        lp = c.GetListOfPrimitives()
+        # lp.ls()
+        for j in lp:
             if "TH1" not in j.ClassName():
                 continue
             print(j)

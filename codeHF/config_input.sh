@@ -1,16 +1,20 @@
 #!/bin/bash
+# shellcheck disable=SC2034 # Ignore unused parameters.
 
 # Input specification for runtest.sh
 # (Modifies input parameters.)
 
-INPUT_CASE=4  # Input case
-NFILESMAX=1   # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
+INPUT_CASE=4            # Input case
+NFILESMAX=1             # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
+NFILESPERJOB_CONVERT=1  # Number of input files per conversion job
+NFILESPERJOB_ALI=1      # Number of input files per AliPhysics job
+NFILESPERJOB_O2=1       # Number of input files per O2 job
 
 JSONRUN3="dpl-config_run3.json"  # Run 3 tasks parameters
 JSONRUN5="dpl-config_run5.json"  # Run 5 tasks parameters
 JSON="$JSONRUN3"
 
-INPUT_FILES="*/AliESDs.root"  # Input file pattern
+INPUT_FILES="AliESDs.root"  # Input file pattern
 
 case $INPUT_CASE in
   0) # FIXME: missing input files
@@ -43,7 +47,7 @@ case $INPUT_CASE in
   7)
     INPUT_LABEL="Pb-Pb real LHC15o, converted (AliHyperloop LHC15o_test sample)"
     INPUT_DIR="/mnt/temp/Run3data_Vit/LHC15o_converted/alice/data/2015/LHC15o/000244918/pass5_lowIR/PWGZZ/Run3_Conversion/96_20201013-1346_child_1"
-    INPUT_FILES="*/AO2D.root"
+    INPUT_FILES="AO2D.root"
     ISINPUTO2=1;;
   8)
     INPUT_LABEL="Run 5, p-p MC 14 TeV MB"

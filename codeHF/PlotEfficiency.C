@@ -38,14 +38,14 @@ Int_t PlotEfficiency(TString filerun3 = "AnalysisResults.root")
   Printf("Gen. D0bar → π− K+:\t%g", hNGen->GetBinContent(6));
   */
 
-  TString histonameRec="hf-task-d0-mc/hPtRecSig";
+  TString histonameRec = "hf-task-d0-mc/hPtRecSig";
   TH1F* hPtRec = (TH1F*)fRun3->Get(histonameRec.Data());
   if (!hPtRec) {
     printf("Failed to load %s from %s\n", histonameRec.Data(), filerun3.Data());
     return 1;
   }
 
-  TString histonameGen="hf-task-d0-mc/hPtGen";
+  TString histonameGen = "hf-task-d0-mc/hPtGen";
   TH1F* hPtGen = (TH1F*)fRun3->Get(histonameGen.Data());
   if (!hPtGen) {
     printf("Failed to load %s from %s\n", histonameGen.Data(), filerun3.Data());
@@ -66,7 +66,7 @@ Int_t PlotEfficiency(TString filerun3 = "AnalysisResults.root")
   Int_t nRec, nGen;
   Int_t iNRebin = 4;
   Double_t dRebin[] = {0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 5, 6, 8, 10};
-  const Int_t NRebin = sizeof(dRebin)/sizeof(dRebin[0]) - 1;
+  const Int_t NRebin = sizeof(dRebin) / sizeof(dRebin[0]) - 1;
 
   TCanvas* cv = new TCanvas("cv", "Histos", 1200, 1000);
   TCanvas* cr = new TCanvas("cr", "Eff", 1200, 1000);
@@ -87,12 +87,12 @@ Int_t PlotEfficiency(TString filerun3 = "AnalysisResults.root")
   yMin = TMath::Min(hPtRec->GetMinimum(0), hPtGen->GetMinimum(0));
   yMax = TMath::Max(hPtRec->GetMaximum(), hPtGen->GetMaximum());
   if (LogScale && yMin > 0 && yMax > 0) {
-    yRange = yMax/yMin;
-    hPtGen->GetYaxis()->SetRangeUser(yMin/std::pow(yRange, marginLow/k), yMax * std::pow(yRange, marginHigh/k));
+    yRange = yMax / yMin;
+    hPtGen->GetYaxis()->SetRangeUser(yMin / std::pow(yRange, marginLow / k), yMax * std::pow(yRange, marginHigh / k));
     cv->SetLogy();
   } else {
     yRange = yMax - yMin;
-    hPtGen->GetYaxis()->SetRangeUser(yMin - marginLow/k * yRange, yMax + marginHigh/k * yRange);
+    hPtGen->GetYaxis()->SetRangeUser(yMin - marginLow / k * yRange, yMax + marginHigh / k * yRange);
   }
   hPtGen->Draw();
   hPtRec->Draw("same");
@@ -103,16 +103,16 @@ Int_t PlotEfficiency(TString filerun3 = "AnalysisResults.root")
   cr->cd();
   TH1F* hEff = (TH1F*)hPtRec->Clone("hEff");
   hEff->Divide(hPtGen);
-  hEff->SetTitle(Form("Entries ratio: %g;#it{p}_{T} (GeV/#it{c});efficiency", (double)nRec/(double)nGen));
+  hEff->SetTitle(Form("Entries ratio: %g;#it{p}_{T} (GeV/#it{c});efficiency", (double)nRec / (double)nGen));
   yMin = hEff->GetMinimum(0);
   yMax = hEff->GetMaximum();
   if (LogScaleR && yMin > 0 && yMax > 0) {
-    yRange = yMax/yMin;
-    hEff->GetYaxis()->SetRangeUser(yMin/std::pow(yRange, marginLow/k), yMax * std::pow(yRange, marginHigh/k));
+    yRange = yMax / yMin;
+    hEff->GetYaxis()->SetRangeUser(yMin / std::pow(yRange, marginLow / k), yMax * std::pow(yRange, marginHigh / k));
     cr->SetLogy();
   } else {
     yRange = yMax - yMin;
-    hEff->GetYaxis()->SetRangeUser(yMin - marginRLow/kR * yRange, yMax + marginRHigh/kR * yRange);
+    hEff->GetYaxis()->SetRangeUser(yMin - marginRLow / kR * yRange, yMax + marginRHigh / kR * yRange);
   }
   hEff->Draw();
 

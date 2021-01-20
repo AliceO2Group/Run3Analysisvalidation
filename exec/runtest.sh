@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC1090,SC2034 # Ignore non-constant source, unused triggers and DIR_TASKS.
 
 # Steering script to run Run 2 to Run 3 conversion, AliPhysics tasks, O2 tasks, and postprocessing
 
@@ -20,20 +21,23 @@ CONFIG_TASKS="config_tasks.sh"  # Tasks configuration (Cleans directory, modifie
 INPUT_CASE=-1                   # Input case
 INPUT_LABEL="nothing"           # Input description
 INPUT_DIR="$PWD"                # Input directory
-INPUT_FILES="*/AliESDs.root"    # Input file pattern
+INPUT_FILES="AliESDs.root"      # Input file pattern
 JSON="dpl-config.json"          # Tasks parameters
 ISINPUTO2=0                     # Input files are in O2 format.
 ISMC=0                          # Input files are MC data.
 TRIGGERSTRINGRUN2=""            # Run 2 trigger (not used)
 TRIGGERBITRUN3=-1               # Run 3 trigger (not used)
 NFILESMAX=1                     # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
+NFILESPERJOB_CONVERT=1          # Number of input files per conversion job
+NFILESPERJOB_ALI=1              # Number of input files per AliPhysics job
+NFILESPERJOB_O2=1               # Number of input files per O2 job
 
 # Other options
 SAVETREES=0                     # Save O2 tables to trees.
 DEBUG=0                         # Print out more information.
 
 # This directory
-DIR_EXEC="$(dirname $(realpath $0))"
+DIR_EXEC="$(dirname "$(realpath "$0")")"
 
 # Lists of input files
 LISTFILES_ALI="list_ali.txt"  # conversion and AliPhysics input
@@ -49,7 +53,7 @@ FILEOUT_TREES_O2="AnalysisResults_trees_O2.root"
 # Steering commands
 ENVALI="alienv setenv AliPhysics/latest -c"
 ENVO2="alienv setenv O2/latest -c"
-ENVALIO2="alienv setenv AliPhysics/latest,O2/latest -c"
+#ENVALIO2="alienv setenv AliPhysics/latest,O2/latest -c"
 ENVPOST="$ENVALI"
 
 # Step scripts
@@ -61,7 +65,7 @@ SCRIPT_POSTPROCESS="script_postprocess.sh"
 source "$DIR_EXEC/utilities.sh" || { echo "Error: Failed to load utilities."; exit 1; }
 
 # Parse command line options.
-function Help { echo "Usage: bash [<path>/]$(basename $0) [-h] [-i <input config>] [-t <task config>]"; }
+function Help { echo "Usage: bash [<path>/]$(basename "$0") [-h] [-i <input config>] [-t <task config>]"; }
 while getopts ":hi:t:" opt; do
   case ${opt} in
     h)
@@ -82,7 +86,7 @@ source "$CONFIG_INPUT" || ErrExit "Failed to load input specification."
 
 # Load tasks configuration.
 source "$CONFIG_TASKS" || ErrExit "Failed to load tasks configuration."
-DIR_TASKS="$(dirname $(realpath $CONFIG_TASKS))"
+DIR_TASKS="$(dirname "$(realpath "$CONFIG_TASKS")")"
 
 ########## END OF CONFIGURATION ##########
 
@@ -103,8 +107,8 @@ fi
 
 # Generate list of input files.
 MsgStep "Generating list of input files..."
-[ $ISINPUTO2 -eq 1 ] && LISTFILES=$LISTFILES_O2 || LISTFILES=$LISTFILES_ALI
-ls $INPUT_DIR/$INPUT_FILES | head -n $NFILESMAX > $LISTFILES
+[ $ISINPUTO2 -eq 1 ] && LISTFILES="$LISTFILES_O2" || LISTFILES="$LISTFILES_ALI"
+find "$INPUT_DIR" -name "$INPUT_FILES" | sort | head -n $NFILESMAX > "$LISTFILES"
 [[ ${PIPESTATUS[0]} -eq 0 || ${PIPESTATUS[0]} -eq 141 ]] || ErrExit "Failed to make a list of input files."
 
 # Modify the JSON file.
@@ -116,47 +120,55 @@ CheckFile "$JSON"
 # Convert AliESDs.root to AO2D.root.
 if [ $DOCONVERT -eq 1 ]; then
   CheckFile "$LISTFILES_ALI"
-  MsgStep "Converting... ($(cat $LISTFILES_ALI | wc -l) files)"
+  MsgStep "Converting... ($(wc -l < "$LISTFILES_ALI") files)"
   [ $ISMC -eq 1 ] && MsgWarn "Using MC mode"
   [ $DEBUG -eq 1 ] && echo "Loading AliPhysics..."
-  $ENVALI bash "$DIR_EXEC/batch_convert.sh" $LISTFILES_ALI $LISTFILES_O2 $ISMC $DEBUG || exit 1 # Run the batch script in the ALI environment.
+  # Run the batch script in the ALI environment.
+  $ENVALI bash "$DIR_EXEC/batch_convert.sh" "$LISTFILES_ALI" "$LISTFILES_O2" $ISMC $DEBUG $NFILESPERJOB_CONVERT || exit 1
 fi
 
 # Run AliPhysics tasks.
 if [ $DOALI -eq 1 ]; then
   CheckFile "$LISTFILES_ALI"
-  MsgStep "Running AliPhysics tasks... ($(cat $LISTFILES_ALI | wc -l) files)"
-  rm -f $FILEOUT $FILEOUT_ALI || ErrExit "Failed to rm $FILEOUT $FILEOUT_ALI."
+  MsgStep "Running AliPhysics tasks... ($(wc -l < "$LISTFILES_ALI") files)"
+  rm -f "$FILEOUT" "$FILEOUT_ALI" || ErrExit "Failed to rm $FILEOUT $FILEOUT_ALI."
   MakeScriptAli || ErrExit "MakeScriptAli failed."
   CheckFile "$SCRIPT_ALI"
   [ $DEBUG -eq 1 ] && echo "Loading AliPhysics..."
-  $ENVALI bash "$DIR_EXEC/batch_ali.sh" $LISTFILES_ALI $JSON $SCRIPT_ALI $DEBUG || exit 1 # Run the batch script in the ALI environment.
-  #$ENVALIO2 bash "$DIR_EXEC/batch_ali.sh" $LISTFILES_ALI $JSON $SCRIPT_ALI $DEBUG || exit 1 # Run the batch script in the ALI+O2 environment.
-  mv $FILEOUT $FILEOUT_ALI || ErrExit "Failed to mv $FILEOUT $FILEOUT_ALI."
+  # Run the batch script in the ALI environment.
+  $ENVALI bash "$DIR_EXEC/batch_ali.sh" "$LISTFILES_ALI" "$JSON" "$SCRIPT_ALI" $DEBUG $NFILESPERJOB_ALI || exit 1
+  # Run the batch script in the ALI+O2 environment.
+  #$ENVALIO2 bash "$DIR_EXEC/batch_ali.sh" $LISTFILES_ALI $JSON $SCRIPT_ALI $DEBUG || exit 1
+  mv "$FILEOUT" "$FILEOUT_ALI" || ErrExit "Failed to mv $FILEOUT $FILEOUT_ALI."
 fi
 
 # Run O2 tasks.
 if [ $DOO2 -eq 1 ]; then
   CheckFile "$LISTFILES_O2"
-  MsgStep "Running O2 tasks... ($(cat $LISTFILES_O2 | wc -l) files)"
-  rm -f $FILEOUT $FILEOUT_O2 || ErrExit "Failed to rm $FILEOUT $FILEOUT_O2."
+  MsgStep "Running O2 tasks... ($(wc -l < "$LISTFILES_O2") files)"
+  rm -f "$FILEOUT" "$FILEOUT_O2" || ErrExit "Failed to rm $FILEOUT $FILEOUT_O2."
   MakeScriptO2 || ErrExit "MakeScriptO2 failed."
   CheckFile "$SCRIPT_O2"
   [ $SAVETREES -eq 1 ] || FILEOUT_TREES=""
   [ $DEBUG -eq 1 ] && echo "Loading O2..."
-  $ENVO2 bash "$DIR_EXEC/batch_o2.sh" $LISTFILES_O2 $JSON $SCRIPT_O2 $DEBUG $FILEOUT_TREES || exit 1 # Run the batch script in the O2 environment.
-  mv $FILEOUT $FILEOUT_O2 || ErrExit "Failed to mv $FILEOUT $FILEOUT_O2."
-  [[ $SAVETREES -eq 1 && "$FILEOUT_TREES" ]] && { mv $FILEOUT_TREES $FILEOUT_TREES_O2 || ErrExit "Failed to mv $FILEOUT_TREES $FILEOUT_TREES_O2."; }
+  # Run the batch script in the O2 environment.
+  $ENVO2 bash "$DIR_EXEC/batch_o2.sh" "$LISTFILES_O2" "$JSON" "$SCRIPT_O2" $DEBUG $NFILESPERJOB_O2 "$FILEOUT_TREES" || exit 1
+  mv "$FILEOUT" "$FILEOUT_O2" || ErrExit "Failed to mv $FILEOUT $FILEOUT_O2."
+  [[ $SAVETREES -eq 1 && "$FILEOUT_TREES" ]] && { mv "$FILEOUT_TREES" "$FILEOUT_TREES_O2" || ErrExit "Failed to mv $FILEOUT_TREES $FILEOUT_TREES_O2."; }
 fi
 
 # Run output postprocessing. (Compare AliPhysics and O2 output.)
 if [ $DOPOSTPROCESS -eq 1 ]; then
-  LOGFILE="log_postprocess.log"
-  MsgStep "Postprocessing... (logfile: $LOGFILE)"
+  LogFile="log_postprocess.log"
+  MsgStep "Postprocessing... (logfile: $LogFile)"
   MakeScriptPostprocess || ErrExit "MakeScriptPostprocess failed."
   CheckFile "$SCRIPT_POSTPROCESS"
   [ $DEBUG -eq 1 ] && echo "Loading AliPhysics..."
-  $ENVPOST bash "$SCRIPT_POSTPROCESS" "$FILEOUT_O2" "$FILEOUT_ALI" > $LOGFILE 2>&1 || ErrExit "\nCheck $(realpath $LOGFILE)"
+  # Run the batch script in the postprocessing environment.
+  $ENVPOST bash "$SCRIPT_POSTPROCESS" "$FILEOUT_O2" "$FILEOUT_ALI" > $LogFile 2>&1 || ErrExit "\nCheck $(realpath $LogFile)"
+  grep -q -e '^'"W-" -e '^'"Warning" -e "warning" "$LogFile" && MsgWarn "There were warnings!\nCheck $(realpath $LogFile)"
+  grep -q -e '^'"E-" -e '^'"Error" "$LogFile" && MsgErr "There were errors!\nCheck $(realpath $LogFile)"
+  grep -q -e '^'"F-" -e '^'"Fatal" "$LogFile" && ErrExit "There were fatal errors!\nCheck $(realpath $LogFile)"
 fi
 
 # Clean after running.

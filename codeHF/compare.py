@@ -7,14 +7,16 @@ To run your comparison between AnalysisResults1.root AnalysisResults2.root you c
 ./compare.py AnalysisResults1.root AnalysisResults2.root -b
 """
 
-from ROOT import TFile, TCanvas, TLegend, gPad, TColor, TH1, TLatex
 import argparse
-import itertools
+
+from ROOT import TH1, TCanvas, TColor, TFile, TLegend, gPad
+
+# import itertools
 
 
 def compare(objs, add_leg_title=True, normalize=True):
     print("Comparing")
-    cols = ['#e41a1c', '#377eb8', '#4daf4a']
+    cols = ["#e41a1c", "#377eb8", "#4daf4a"]
     colors = {}
     drawn = {}
     for i in objs:
@@ -44,7 +46,7 @@ def compare(objs, add_leg_title=True, normalize=True):
         can = d[0]
         can.cd()
         gPad.SetLogy()
-        leg = TLegend(.1, .9, .9, .99, can.GetName())
+        leg = TLegend(0.1, 0.9, 0.9, 0.99, can.GetName())
         leg.SetNColumns(2)
         d.append(leg)
         for j in can.GetListOfPrimitives():
@@ -58,28 +60,29 @@ def main(files, th1=True, th2=False, th3=False):
     h = {}
 
     def extract(directory):
-            def accept_obj(entry):
-                if not th1 and "TH1" in entry.ClassName():
-                    return False
-                if not th2 and "TH2" in entry.ClassName():
-                    return False
-                if not th3 and "TH3" in entry.ClassName():
-                    return False
-                return True
-            o = []
-            print("Dir", directory)
-            for i in directory.GetListOfKeys():
-                obj = directory.Get(i.GetName())
-                if not accept_obj(obj):
-                    continue
-                if "TDirectory" in obj.ClassName():
-                    for j in obj.GetListOfKeys():
-                        if not accept_obj(obj.Get(j.GetName())):
-                            continue
-                        o.append(f"{directory.GetName()}/{i.GetName()}/{j.GetName()}")
-                    continue
-                o.append(f"{directory.GetName()}/{i.GetName()}")
-            return o
+        def accept_obj(entry):
+            if not th1 and "TH1" in entry.ClassName():
+                return False
+            if not th2 and "TH2" in entry.ClassName():
+                return False
+            if not th3 and "TH3" in entry.ClassName():
+                return False
+            return True
+
+        o = []
+        print("Dir", directory)
+        for i in directory.GetListOfKeys():
+            obj = directory.Get(i.GetName())
+            if not accept_obj(obj):
+                continue
+            if "TDirectory" in obj.ClassName():
+                for j in obj.GetListOfKeys():
+                    if not accept_obj(obj.Get(j.GetName())):
+                        continue
+                    o.append(f"{directory.GetName()}/{i.GetName()}/{j.GetName()}")
+                continue
+            o.append(f"{directory.GetName()}/{i.GetName()}")
+        return o
 
     for i in f:
         fn = i.GetName()
@@ -87,12 +90,12 @@ def main(files, th1=True, th2=False, th3=False):
         fn = fn.replace("AnalysisResults_O2_Run5_", "")
         fn = fn.split("/")[-1]
         h[fn] = {}
-        l = i.GetListOfKeys()
-        for j in l:
+        lk = i.GetListOfKeys()
+        for j in lk:
             # h[fn] = list(itertools.chain(*extract(i.Get(j.GetName()))))
             o = extract(i.Get(j.GetName()))
             for k in o:
-                h[fn][k] = i.Get(k) 
+                h[fn][k] = i.Get(k)
     drawn = compare(h)
     first = True
     for i in drawn:
@@ -115,8 +118,7 @@ def main(files, th1=True, th2=False, th3=False):
 if __name__ == "__main__":
     pass
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("files", type=str, nargs="+",
-                        help="Input files")
+    parser.add_argument("files", type=str, nargs="+", help="Input files")
     parser.add_argument("-v", action="store_true", help="Verbose mode")
     parser.add_argument("-b", action="store_true", help="Background mode")
     args = parser.parse_args()

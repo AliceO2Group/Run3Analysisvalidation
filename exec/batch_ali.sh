@@ -6,64 +6,73 @@ LISTINPUT="$1"
 JSON="$2"
 SCRIPT="$3"
 DEBUG=$4
+NFILESPERJOB=$5
 FILEOUT="AnalysisResults.root"
 
-[ $DEBUG -eq 1 ] && echo "Running $0"
+[ "$DEBUG" -eq 1 ] && echo "Running $0"
 
 # This directory
-DIR_THIS="$(dirname $(realpath $0))"
+DIR_THIS="$(dirname "$(realpath "$0")")"
 
 # Load utilities.
+# shellcheck disable=SC1090 # Ignore non-constant source.
 source "$DIR_THIS/utilities.sh" || { echo "Error: Failed to load utilities."; exit 1; }
 
 CheckFile "$SCRIPT"
 CheckFile "$JSON"
-SCRIPT="$(realpath $SCRIPT)"
-JSON="$(realpath $JSON)"
+SCRIPT="$(realpath "$SCRIPT")"
+JSON="$(realpath "$JSON")"
 
 LogFile="log_ali.log"
-FilesToMerge="ListOutToMergeALI.txt"
+ListIn="list_ali.txt"
+FilesToMerge="ListOutToMergeAli.txt"
 DirBase="$PWD"
-Index=0
-ListRunScripts="$DirBase/ListRunScripts.txt"
+IndexFile=0
+ListRunScripts="$DirBase/ListRunScriptsAli.txt"
 DirOutMain="output_ali"
 
-rm -f $ListRunScripts && \
-rm -f $FilesToMerge && \
-rm -f $FILEOUT && \
-rm -rf $DirOutMain || ErrExit "Failed to delete output files."
+# Clean before running.
+rm -rf "$ListRunScripts" "$FilesToMerge" "$FILEOUT" "$DirOutMain" || ErrExit "Failed to delete output files."
 
 CheckFile "$LISTINPUT"
 echo "Output directory: $DirOutMain (logfiles: $LogFile)"
-while read FileIn; do
+# Loop over input files
+while read -r FileIn; do
   CheckFile "$FileIn"
-  FileIn="$(realpath $FileIn)"
-  DirOut="$DirOutMain/$Index"
-  mkdir -p $DirOut && \
-  cd $DirOut || ErrExit "Failed to cd $DirOut."
-  [ $DEBUG -eq 1 ] && echo "Input file ($Index): $FileIn"
-  FileOut="$DirOut/$FILEOUT"
-  echo "$FileOut" >> "$DirBase/$FilesToMerge" || ErrExit "Failed to echo to $DirBase/$FilesToMerge."
-  RUNSCRIPT="run.sh"
-  cat << EOF > $RUNSCRIPT # Create the job script.
-#!/bin/bash
-DirThis="\$(dirname \$(realpath \$0))"
-cd "\$DirThis"
-bash $SCRIPT "$FileIn" "$JSON" > $LogFile 2>&1
-EOF
-  echo "bash $(realpath $RUNSCRIPT)" >> "$ListRunScripts" && \
-  ((Index+=1)) && \
-  cd $DirBase || ErrExit "Failed to cd $DirBase."
+  FileIn="$(realpath "$FileIn")"
+  IndexJob=$((IndexFile / NFILESPERJOB))
+  DirOut="$DirOutMain/$IndexJob"
+  # New job
+  if [ $((IndexFile % NFILESPERJOB)) -eq 0 ]; then
+    mkdir -p $DirOut || ErrExit "Failed to mkdir $DirOut."
+    FileOut="$DirOut/$FILEOUT"
+    echo "$FileOut" >> "$DirBase/$FilesToMerge" || ErrExit "Failed to echo to $DirBase/$FilesToMerge."
+    # Add this job in the list of commands.
+    echo "cd \"$DirOut\" && bash \"$DIR_THIS/run_ali.sh\" \"$SCRIPT\" \"$ListIn\" \"$JSON\" \"$LogFile\"" >> "$ListRunScripts" || ErrExit "Failed to echo to $ListRunScripts."
+  fi
+  echo "$FileIn" >> "$DirOut/$ListIn" || ErrExit "Failed to echo to $DirOut/$ListIn."
+  [ "$DEBUG" -eq 1 ] && echo "Input file ($IndexFile, job $IndexJob): $FileIn"
+  ((IndexFile+=1))
 done < "$LISTINPUT"
 
-echo "Running AliPhysics jobs..."
-parallel --halt soon,fail=100% < $ListRunScripts > $LogFile 2>&1 || \
-ErrExit "\nCheck $(realpath $LogFile)"
-rm -f $ListRunScripts || ErrExit "Failed to rm $ListRunScripts."
+CheckFile "$ListRunScripts"
+echo "Running AliPhysics jobs... ($(wc -l < "$ListRunScripts") jobs)"
+OPT_PARALLEL="--halt soon,fail=100%"
+if [ "$DEBUG" -eq 0 ]; then
+  # shellcheck disable=SC2086 # Ignore unquoted options.
+  parallel $OPT_PARALLEL < "$ListRunScripts" > $LogFile 2>&1
+else
+  # shellcheck disable=SC2086 # Ignore unquoted options.
+  parallel $OPT_PARALLEL --will-cite --progress < "$ListRunScripts" > $LogFile
+fi || ErrExit "\nCheck $(realpath $LogFile)"
+grep -q -e '^'"W-" -e '^'"Warning" "$LogFile" && MsgWarn "There were warnings!\nCheck $(realpath $LogFile)"
+grep -q -e '^'"E-" -e '^'"Error" "$LogFile" && MsgErr "There were errors!\nCheck $(realpath $LogFile)"
+grep -q -e '^'"F-" -e '^'"Fatal" "$LogFile" && ErrExit "There were fatal errors!\nCheck $(realpath $LogFile)"
+rm -f "$ListRunScripts" || ErrExit "Failed to rm $ListRunScripts."
 
 echo "Merging output files... (output file: $FILEOUT, logfile: $LogFile)"
-hadd $FILEOUT @"$FilesToMerge" >> $LogFile 2>&1 || \
+hadd "$FILEOUT" @"$FilesToMerge" >> $LogFile 2>&1 || \
 { MsgErr "Error\nCheck $(realpath $LogFile)"; tail -n 2 "$LogFile"; exit 1; }
-rm -f $FilesToMerge || ErrExit "Failed to rm $FilesToMerge."
+rm -f "$FilesToMerge" || ErrExit "Failed to rm $FilesToMerge."
 
 exit 0

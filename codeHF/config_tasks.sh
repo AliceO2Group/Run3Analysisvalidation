@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC2034 # Ignore unused parameters.
 
 # Configuration of tasks for runtest.sh
 # (Cleans directory, modifies step activation, modifies JSON, generates step scripts.)
@@ -20,7 +21,7 @@ DOO2=1              # Run O2 tasks.
 DOPOSTPROCESS=1     # Run output postprocessing. (Compare AliPhysics and O2 output.)
 
 # Disable incompatible steps.
-[ $ISINPUTO2 -eq 1 ] && { DOCONVERT=0; DOALI=0; }
+[ "$ISINPUTO2" -eq 1 ] && { DOCONVERT=0; DOALI=0; }
 
 # Activation of O2 tasks
 DOO2_QA=0           # qatask
@@ -33,7 +34,7 @@ DOO2_SEL_D0=0       # hf-d0-candidate-selector
 DOO2_SEL_LC=0       # hf-lc-candidate-selector
 DOO2_TASK_D0=1      # hf-task-d0
 DOO2_TASK_DPLUS=1   # hf-task-dplus
-DOO2_TASK_LC=0      # hf-task-lc
+DOO2_TASK_LC=1      # hf-task-lc
 
 # Selection cuts
 APPLYCUTS_D0=0      # Apply D0 selection cuts.
@@ -42,22 +43,16 @@ APPLYCUTS_LC=0      # Apply Λc selection cuts.
 SAVETREES=0         # Save O2 tables to trees.
 DEBUG=0             # Print out more information.
 
-MASS=1.8            # Hadron mass (only for comparison plots, not used)
-
 ####################################################################################################
 
 # Clean before (argument=1) and after (argument=2) running.
 function Clean {
   # Cleanup before running
-  [ $1 -eq 1 ] && { bash "$DIR_TASKS/clean.sh" || ErrExit; }
+  [ "$1" -eq 1 ] && { bash "$DIR_TASKS/clean.sh" || ErrExit; }
 
   # Cleanup after running
-  [ $1 -eq 2 ] && {
-    rm -f $LISTFILES_ALI && \
-    rm -f $LISTFILES_O2 && \
-    rm -f $SCRIPT_ALI && \
-    rm -f $SCRIPT_O2 && \
-    rm -f $SCRIPT_POSTPROCESS || ErrExit "Failed to rm created files."
+  [ "$1" -eq 2 ] && {
+    rm -f "$LISTFILES_ALI" "$LISTFILES_O2" "$SCRIPT_ALI" "$SCRIPT_O2" "$SCRIPT_POSTPROCESS" || ErrExit "Failed to rm created files."
     [ "$JSON_EDIT" ] && { rm "$JSON_EDIT" || ErrExit "Failed to rm $JSON_EDIT."; }
   }
 
@@ -77,14 +72,14 @@ function AdjustJson {
   # Enable D0 selection.
   if [ $APPLYCUTS_D0 -eq 1 ]; then
     MsgWarn "\nUsing D0 selection cuts"
-    sed -e "s!\"d_selectionFlagD0\": \"0\"!\"d_selectionFlagD0\": \"1\"!g" "$JSON" > "$JSON.tmp" && mv "$JSON.tmp" "$JSON" && \
-    sed -e "s!\"d_selectionFlagD0bar\": \"0\"!\"d_selectionFlagD0bar\": \"1\"!g" "$JSON" > "$JSON.tmp" && mv "$JSON.tmp" "$JSON" || ErrExit "Failed to sed $JSON."
+    ReplaceString "\"d_selectionFlagD0\": \"0\"" "\"d_selectionFlagD0\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"d_selectionFlagD0bar\": \"0\"" "\"d_selectionFlagD0bar\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable Λc selection.
   if [ $APPLYCUTS_LC -eq 1 ]; then
     MsgWarn "\nUsing Λc selection cuts"
-    sed -e "s!\"d_selectionFlagLc\": \"0\"!\"d_selectionFlagLc\": \"1\"!g" "$JSON" > "$JSON.tmp" && mv "$JSON.tmp" "$JSON" || ErrExit "Failed to sed $JSON."
+    ReplaceString "\"d_selectionFlagLc\": \"0\"" "\"d_selectionFlagLc\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 }
 
@@ -100,14 +95,15 @@ function MakeScriptO2 {
   [ $DOO2_CAND_3PRONG -eq 1 ] && { DOO2_SKIM=1; }
 
   # Basic common options
-  O2ARGS="--shm-segment-size 16000000000 --configuration json://\$JSON -b"
+  O2ARGS="--aod-memory-rate-limit 10000000000 --shm-segment-size 16000000000 --configuration json://\$JSON -b"
   # Options to save tables in trees
   [ $SAVETREES -eq 1 ] && {
     MsgWarn "Tables will be saved in trees."
     O2TABLES=""
     [ $DOO2_SKIM -eq 1 ] && { O2TABLES+="AOD/HFSELTRACK/0,AOD/HFTRACKIDXP2/0,AOD/HFTRACKIDXP3/0"; }
-    [ $DOO2_CAND_2PRONG -eq 1 ] && { O2TABLES+=",AOD/HFCANDP2BASE/0,AOD/HFCANDP2EXT/0"; [ $ISMC -eq 1 ] && O2TABLES+=",AOD/HFCANDP2MCREC/0,AOD/HFCANDP2MCGEN/0"; }
-    [ $DOO2_CAND_3PRONG -eq 1 ] && { O2TABLES+=",AOD/HFCANDP3BASE/0,AOD/HFCANDP3EXT/0"; [ $ISMC -eq 1 ] && O2TABLES+=",AOD/HFCANDP3MCREC/0,AOD/HFCANDP3MCGEN/0"; }
+    [ $DOO2_CAND_2PRONG -eq 1 ] && { O2TABLES+=",AOD/HFCANDP2BASE/0,AOD/HFCANDP2EXT/0"; [ "$ISMC" -eq 1 ] && O2TABLES+=",AOD/HFCANDP2MCREC/0,AOD/HFCANDP2MCGEN/0"; }
+    [ $DOO2_CAND_3PRONG -eq 1 ] && { O2TABLES+=",AOD/HFCANDP3BASE/0,AOD/HFCANDP3EXT/0"; [ "$ISMC" -eq 1 ] && O2TABLES+=",AOD/HFCANDP3MCREC/0,AOD/HFCANDP3MCGEN/0"; }
+    # shellcheck disable=SC2015 # Ignore A && B || C.
     [ "$O2TABLES" ] && { O2ARGS+=" --aod-writer-keep $O2TABLES"; } || { MsgWarn "Empty list of tables!"; }
   }
   # Task-specific options
@@ -123,10 +119,11 @@ function MakeScriptO2 {
   O2ARGS_TASK_DPLUS="$O2ARGS"
   O2ARGS_TASK_LC="$O2ARGS"
   # MC
-  [ $ISMC -eq 1 ] && {
+  [ "$ISMC" -eq 1 ] && {
     O2ARGS_CAND_2PRONG+=" --doMC"
     O2ARGS_CAND_3PRONG+=" --doMC"
     O2ARGS_TASK_D0+=" --doMC"
+    O2ARGS_TASK_LC+=" --doMC"
   }
 
   # Pair O2 executables with their respective options.
@@ -158,9 +155,10 @@ function MakeScriptO2 {
   [ $DOO2_TASK_DPLUS -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_DPLUS"; MsgSubStep "  hf-task-dplus"; }
   [ $DOO2_TASK_LC -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_LC"; MsgSubStep "  hf-task-lc"; }
   O2EXEC=${O2EXEC:3} # Remove the leading " | ".
+  [ "$O2EXEC" ] || ErrExit "Nothing to do!"
 
   # Create the script with the full O2 command.
-  cat << EOF > $SCRIPT_O2
+  cat << EOF > "$SCRIPT_O2"
 #!/bin/bash
 FileIn="\$1"
 JSON="\$2"
@@ -170,7 +168,7 @@ EOF
 
 function MakeScriptAli {
   ALIEXEC="root -b -q -l \"$DIR_TASKS/RunHFTaskLocal.C(\\\"\$FileIn\\\", \\\"\$JSON\\\", $ISMC)\""
-  cat << EOF > $SCRIPT_ALI
+  cat << EOF > "$SCRIPT_ALI"
 #!/bin/bash
 FileIn="\$1"
 JSON="\$2"
@@ -180,9 +178,18 @@ EOF
 
 function MakeScriptPostprocess {
   POSTEXEC="echo Postprocessing"
-  [[ $DOALI -eq 1 && $DOO2 -eq 1 && $DOO2_TASK_D0 -eq 1 && $DOO2_TASK_DPLUS -eq 1 ]] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/Compare.C(\\\"\$FileO2\\\", \\\"\$FileAli\\\", $MASS)\""
+  [[ $DOALI -eq 1 && $DOO2 -eq 1 ]] && {
+    OPT_COMPARE=""
+    [ $DOO2_SKIM -eq 1 ] && OPT_COMPARE+="-tracks-skim"
+    [ $DOO2_CAND_2PRONG -eq 1 ] && OPT_COMPARE+="-cand2"
+    [ $DOO2_CAND_3PRONG -eq 1 ] && OPT_COMPARE+="-cand3"
+    [ $DOO2_TASK_D0 -eq 1 ] && OPT_COMPARE+="-d0"
+    [ $DOO2_TASK_DPLUS -eq 1 ] && OPT_COMPARE+="-dplus"
+    [ $DOO2_TASK_LC -eq 1 ] && OPT_COMPARE+="-lc"
+    [ "$OPT_COMPARE" ] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/Compare.C(\\\"\$FileO2\\\", \\\"\$FileAli\\\", \\\"$OPT_COMPARE\\\")\""
+  }
   [[ $DOO2 -eq 1 && $DOO2_TASK_D0 -eq 1 && $ISMC -eq 1 ]] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/PlotEfficiency.C(\\\"\$FileO2\\\")\""
-  cat << EOF > $SCRIPT_POSTPROCESS
+  cat << EOF > "$SCRIPT_POSTPROCESS"
 #!/bin/bash
 FileO2="\$1"
 FileAli="\$2"
