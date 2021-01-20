@@ -114,6 +114,14 @@
         "d_selectionFlagD0": "0",
         "d_selectionFlagD0bar": "0"
     },
+    "hf-jpsi-candidate-selector": {
+        "d_pTCandMin": "0.",
+        "d_pTCandMax": "50.",
+        "d_pidTPCMinpT": "0.15",
+        "d_pidTPCMaxpT": "5.0",
+        "d_TPCNClsFindablePIDCut": "70.",
+        "d_nSigmaTPC": "3."
+    },
     "hf-task-dplus": {
         "d_selectionFlagDPlus": "0"
     },
@@ -124,6 +132,14 @@
     "hf-task-lc-mc": {
         "cutEtaCandMax": "-1.",
         "d_selectionFlagLc": "0"
+    },
+    "hf-task-jpsi": {
+      "cutEtaCandMax": "-1.",
+      "d_selectionFlagJpsi": "0"
+     },
+     "hf-task-jpsi-mc": {
+         "cutEtaCandMax": "-1.",
+      "d_selectionFlagJpsi": "0"
     },
     "internal-dpl-aod-writer": {
     }
