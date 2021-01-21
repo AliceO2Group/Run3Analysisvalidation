@@ -136,7 +136,7 @@
     "hf-task-jpsi": {
         "cutEtaCandMax": "-1.",
         "d_selectionFlagJpsi": "0"
-     },
+    },
     "hf-task-jpsi-mc": {
         "cutEtaCandMax": "-1.",
         "d_selectionFlagJpsi": "0"
