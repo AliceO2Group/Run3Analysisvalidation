@@ -40,7 +40,7 @@ DOO2_TASK_JPSI=1    # hf-task-jpsi
 # Selection cuts
 APPLYCUTS_D0=0      # Apply D0 selection cuts.
 APPLYCUTS_LC=0      # Apply Λc selection cuts.
-APPLYCUTS_JPSI=1    # Apply J/ψ selection cuts.
+APPLYCUTS_JPSI=0    # Apply J/ψ selection cuts.
 
 SAVETREES=0         # Save O2 tables to trees.
 DEBUG=0             # Print out more information.

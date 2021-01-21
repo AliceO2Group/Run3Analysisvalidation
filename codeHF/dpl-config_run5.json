@@ -134,12 +134,12 @@
         "d_selectionFlagLc": "0"
     },
     "hf-task-jpsi": {
-      "cutEtaCandMax": "-1.",
-      "d_selectionFlagJpsi": "0"
+        "cutEtaCandMax": "-1.",
+        "d_selectionFlagJpsi": "0"
      },
-     "hf-task-jpsi-mc": {
-      "cutEtaCandMax": "-1.",
-      "d_selectionFlagJpsi": "0"
+    "hf-task-jpsi-mc": {
+        "cutEtaCandMax": "-1.",
+        "d_selectionFlagJpsi": "0"
     },
     "internal-dpl-aod-writer": {
     }
