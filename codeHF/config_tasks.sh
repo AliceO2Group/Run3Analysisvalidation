@@ -30,9 +30,9 @@ DOO2_CAND_2PRONG=0  # hf-candidate-creator-2prong
 DOO2_CAND_3PRONG=0  # hf-candidate-creator-3prong
 DOO2_PID_TPC=0      # pid-tpc
 DOO2_PID_TOF=0      # pid-tof
-DOO2_SEL_D0=1       # hf-d0-candidate-selector
-DOO2_SEL_LC=1       # hf-lc-candidate-selector
-DOO2_SEL_JPSI=1     # hf-jpsi-toee-candidate-selector
+DOO2_SEL_D0=0       # hf-d0-candidate-selector
+DOO2_SEL_LC=0       # hf-lc-candidate-selector
+DOO2_SEL_JPSI=0     # hf-jpsi-toee-candidate-selector
 DOO2_TASK_D0=1      # hf-task-d0
 DOO2_TASK_DPLUS=1   # hf-task-dplus
 DOO2_TASK_LC=1      # hf-task-lc
@@ -40,7 +40,7 @@ DOO2_TASK_JPSI=1    # hf-task-jpsi
 # Selection cuts
 APPLYCUTS_D0=0      # Apply D0 selection cuts.
 APPLYCUTS_LC=0      # Apply Λc selection cuts.
-APPLYCUTS_JPSI=1    # Apply Jpsi selection cuts.
+APPLYCUTS_JPSI=1    # Apply J/ψ selection cuts.
 
 SAVETREES=0         # Save O2 tables to trees.
 DEBUG=0             # Print out more information.
@@ -84,9 +84,9 @@ function AdjustJson {
     ReplaceString "\"d_selectionFlagLc\": \"0\"" "\"d_selectionFlagLc\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
   
-    # Enable Jpsi selection.
+    # Enable J/ψ selection.
   if [ $APPLYCUTS_JPSI -eq 1 ]; then
-    MsgWarn "\nUsing Jpsi selection cuts"
+    MsgWarn "\nUsing J/ψ selection cuts"
     ReplaceString "\"d_selectionFlagJpsi\": \"0\"" "\"d_selectionFlagJpsi\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 }
