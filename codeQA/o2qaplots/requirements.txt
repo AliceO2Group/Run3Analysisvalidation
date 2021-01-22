@@ -5,3 +5,9 @@ seaborn==0.11.0
 setuptools>=50.3.2
 uproot==3.13.0
 tqdm==4.54.0
+autopep8==1.5.4
+black==19.10b0
+flake8==3.8.4
+isort==5.7.0
+pylint==2.6.0
+rope==0.18.0

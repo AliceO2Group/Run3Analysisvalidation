@@ -1,7 +1,6 @@
 import json
 
 import pytest
-
 from o2qaplots.config import AxisConfig, PlotConfig
 
 
@@ -51,4 +50,4 @@ def test_plot_config(dict_example):
     assert n_tracks.x_axis.view_range == [0, 200]
 
     assert n_tracks.y_axis.log is True
-    assert n_tracks.y_axis.view_range == [0., 1.]
+    assert n_tracks.y_axis.view_range == [0.0, 1.0]

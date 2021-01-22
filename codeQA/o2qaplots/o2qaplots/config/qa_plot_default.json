@@ -24,11 +24,6 @@
       "log": true
     },
     "y_axis": {
-      "view_range": [
-        0.00001,
-        1
-      ],
-      "log": true
     }
   },
   "ptResolution": {
@@ -41,7 +36,6 @@
   },
   "ptResolutionVsPt": {
     "x_axis": {
-      "log": true
     }
   },
   "ptDiffMCRec": {
@@ -54,12 +48,11 @@
   },
   "impactParameterRPhiVsPt": {
     "x_axis": {
-      "log": true
     }
   },
   "impactParameterErrorRPhiVsPt": {
     "x_axis": {
-      "log": true
+      "view_range": [0.001, 10]
     },
     "y_axis": {
       "view_range": [
@@ -70,12 +63,10 @@
   },
   "impactParameterZVsPt": {
     "x_axis": {
-      "log": true
     }
   },
   "impactParameterErrorZVsPt": {
     "x_axis": {
-      "log": true
     }
   },
   "primaryTrackEfficiency": {

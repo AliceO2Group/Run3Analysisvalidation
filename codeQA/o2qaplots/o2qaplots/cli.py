@@ -1,55 +1,46 @@
-import o2qaplots.efficiency.efficiency as eff
-import o2qaplots.tracking_resolution.ip.ip as ip
-import o2qaplots.compare as compare
-import o2qaplots.plot as plot
 import argparse
 
 import ROOT
+from o2qaplots.efficiency.efficiency import Efficiency
+from o2qaplots.plot1d import Plot1D, Plot2D
+from o2qaplots.tracking_resolution.ip.ip import ImpactParameter
+
 ROOT.PyConfig.IgnoreCommandLineOptions = True
 
+
 def cli():
-    """Main entrypoint of the program. 
+    """Main entrypoint of the program.
     It redirects the input to the correct task."""
 
+    help_general = "Action to be performed."
+
     parser = argparse.ArgumentParser()
-    subparsers = parser.add_subparsers(
-        dest='command', help='Action to be performed.')
+    subparsers = parser.add_subparsers(dest="command", help=help_general)
 
-    plot_parser = subparsers.add_parser(
-        'plot', description=plot.parser_description)
-    plot.add_parser_options(plot_parser)
+    tasks = [Efficiency, ImpactParameter, Plot1D, Plot2D]
 
-    compare_parser = subparsers.add_parser(
-        'compare', description=compare.parser_description)
-    compare.add_parser_options(compare_parser)
-
-    impact_parameter_parser = subparsers.add_parser(
-        'ip', description=ip.ImpactParameter.parser_description)
-    ip.ImpactParameter.add_parser_options(impact_parameter_parser)
-
-    efficiency_parser = subparsers.add_parser(
-        'eff', description=eff.Efficiency.parser_description)
-    eff.Efficiency.add_parser_options(efficiency_parser)
+    for t in tasks:
+        t.add_to_subparsers(subparsers)
 
     args = parser.parse_args()
-    args_to_pop = ['command']
+    args_to_pop = ["command"]
 
     task_arguments = vars(args).copy()
 
     for arg in args_to_pop:
         task_arguments.pop(arg)
 
-    if args.command == 'plot':
-        plot.plot(args)
-    elif args.command == 'compare':
-        compare.compare(args)
-    elif args.command == 'ip':
-        ip.ImpactParameter(**task_arguments).run()
-    elif args.command == 'eff':
-        eff.Efficiency(**task_arguments).run()
-    else:
-        raise ValueError("The argument " + str(args.command) + " is invalid.")
+    task_to_run = None
+
+    for task in tasks:
+        if args.command == task.parser_command:
+            task_to_run = task
+
+    if task is None:
+        raise ValueError("Task not defined.")
+
+    task_to_run(**task_arguments).run()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     cli()

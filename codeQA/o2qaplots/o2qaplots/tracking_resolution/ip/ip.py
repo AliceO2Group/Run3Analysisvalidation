@@ -1,57 +1,83 @@
-import ROOT
-
 import o2qaplots.plot as pl
-import o2qaplots.plot_base as pb
+import ROOT
+from o2qaplots.plot_base import (
+    Configurable,
+    PlottingTask,
+    ROOTObj,
+    TaskInput,
+    macro,
+)
 
 
 def plot_1d_legend(x, *args, **kwargs):
     return pl.plot_1d([x[0][0]], *args, legend=x[0][1], **kwargs)
 
 
-class ImpactParameter(pb.PlottingTask):
-    parser_description = 'Plots the Impact Parameter resolution in the rphi and z direction. ' \
-                         'Currently it can only handle ONE file at at time. This will change soon.'
+class ImpactParameter(PlottingTask):
+    parser_description = (
+        "Plots the Impact Parameter resolution in the rphi and z direction. "
+        "Currently it can only handle ONE file at at time. This will change soon."
+    )
+    parser_command = "ip"
 
-    ip_rphi_pt = pb.TaskInputObj(['qa-tracking-resolution', 'impactParameter'], 'impactParameterRPhiVsPt')
-    ip_rphi_eta = pb.TaskInputObj(['qa-tracking-resolution', 'impactParameter'], 'impactParameterRPhiVsEta')
-    ip_rphi_phi = pb.TaskInputObj(['qa-tracking-resolution', 'impactParameter'], 'impactParameterRPhiVsPhi')
+    ip_rphi_pt = TaskInput(
+        "qa-tracking-resolution/impactParameter/impactParameterRPhiVsPt"
+    )
+    ip_rphi_eta = TaskInput(
+        "qa-tracking-resolution/impactParameter/impactParameterRPhiVsEta"
+    )
+    ip_rphi_phi = TaskInput(
+        "qa-tracking-resolution/impactParameter/impactParameterRPhiVsPhi"
+    )
+    ip_z_pt = TaskInput("qa-tracking-resolution/impactParameter/impactParameterZVsPt")
+    ip_z_eta = TaskInput("qa-tracking-resolution/impactParameter/impactParameterZVsEta")
+    ip_z_phi = TaskInput("qa-tracking-resolution/impactParameter/impactParameterZVsPhi")
 
-    ip_z_pt = pb.TaskInputObj(['qa-tracking-resolution', 'impactParameter'], 'impactParameterZVsPt')
-    ip_z_eta = pb.TaskInputObj(['qa-tracking-resolution', 'impactParameter'], 'impactParameterZVsEta')
-    ip_z_phi = pb.TaskInputObj(['qa-tracking-resolution', 'impactParameter'], 'impactParameterZVsPhi')
+    ip_histograms = [
+        ip_rphi_pt,
+        ip_rphi_eta,
+        ip_rphi_phi,
+        ip_rphi_eta,
+        ip_z_eta,
+        ip_z_phi,
+    ]
 
-    ip_histograms = [ip_rphi_pt, ip_rphi_eta, ip_rphi_phi, ip_rphi_eta, ip_z_eta, ip_z_phi]
-
-    configurables = [pb.Configurable("show_fits", '--show-fits', '-sf', action='store_true', default=False,
-                                     help='')]
+    show_fits = Configurable(
+        "--show-fits", "-sf", action="store_true", default=False, help="",
+    )
 
     plotting_function = plot_1d_legend
 
     def process(self):
         fit_slices, legends = calculate_ip_resolution(self.ip_rphi_pt)
-        return {pb.ROOTObj(['qa-tracking-resolution'], f'fit_slice_{i}'): (fit_slice, legend)
-                for fit_slice, legend, i in zip(fit_slices, legends, range(len(fit_slices)))}
+        return {
+            ROOTObj(f"qa-tracking-resolution/fit_slice_{i}"): (fit_slice, legend)
+            for fit_slice, legend, i in zip(fit_slices, legends, range(len(fit_slices)))
+        }
 
 
-def calculate_ip_resolution(ip_vs_var, fast_bootstrap=False):
+def calculate_ip_resolution(ip_vs_var):
     """Calculates the impact parameter (ip) resolution vs a particular variable.
 
     Args:
-        ip_vs_var: a ROOT TH2 histogram with the ip in the y axis and the dependent variable in the x axis.
-        fast_bootstrap: if true, the points are smeared assuming a gaussian distribution. If not, no assumption is
-            made and the distribution is sampled and filled with the same amout of entries.
+        ip_vs_var: a ROOT TH2 histogram with the ip in the y axis and the
+            dependent variable in the x axis.
     """
 
     ROOT.TH1.AddDirectory(False)
-    projections = [ip_vs_var.ProjectionY(ip_vs_var.GetName() + f'_{i}', i, i)
-                   for i in range(1, ip_vs_var.GetNbinsX() + 1)]
+    projections = [
+        ip_vs_var.ProjectionY(ip_vs_var.GetName() + f"_{i}", i, i)
+        for i in range(1, ip_vs_var.GetNbinsX() + 1)
+    ]
 
-    function = ROOT.TF1('gaus', 'gaus', -1000, 1000)
+    function = ROOT.TF1("gaus", "gaus", -1000, 1000)
     legends = []
 
     for hist_slice, i in zip(projections, range(1, len(projections) + 1)):
-        hist_slice.GetYaxis().SetTitle(f'Counts ({ip_vs_var.GetXaxis().GetBinLowEdge(i)}, '
-                                       f'{ip_vs_var.GetXaxis().GetBinUpEdge(i)})')
+        hist_slice.GetYaxis().SetTitle(
+            f"Counts ({ip_vs_var.GetXaxis().GetBinLowEdge(i)}, "
+            f"{ip_vs_var.GetXaxis().GetBinUpEdge(i)})"
+        )
 
         hist_slice.GetXaxis().SetRangeUser(-400, 400)
         fit_results = hist_slice.Fit(function, "QRS")
@@ -71,14 +97,14 @@ def calculate_ip_resolution(ip_vs_var, fast_bootstrap=False):
             mean, mean_error = hist_slice.GetMean(), hist_slice.GetMeanError()
 
         legend = ROOT.TLegend()
-        legend.SetHeader('Gaussian fit results (#chi^   {{2}}/NDF = {0:.2f})'.format(chi2))
-        legend.AddEntry(ROOT.nullptr, 'Mean = {0:.2f} #pm {1:.2f}'.format(mean, mean_error))
-        legend.AddEntry(ROOT.nullptr, 'Sigma = {0:.2f} #pm {1:.2f}'.format(sigma, sigma_error))
+        legend.SetHeader(f"Gaussian fit results (#chi^{{2}}/NDF = {chi2:.2f})")
+        legend.AddEntry(ROOT.nullptr, f"Mean = {mean:.2f} #pm {mean_error:.2f}")
+        legend.AddEntry(ROOT.nullptr, f"Sigma = {sigma:.2f} #pm {sigma_error:.2f}")
 
         legends.append(legend)
 
     return projections, legends
 
 
-if __name__ == '__main__':
-    pb.macro(ImpactParameter)
+if __name__ == "__main__":
+    macro(ImpactParameter)

@@ -1,86 +1,52 @@
-from collections import namedtuple
-
-import ROOT
+import pathlib
 
 
-class ROOTObjInfo(namedtuple('HistogramInfoBase', ['path', 'name', 'root_class'])):
-    def __hash__(self):
-        return hash('/'.join(self.path) + '/' + self.name)
+def check_file_exists(file):
+    """Checks if file exists.
+
+    Raises:
+        FileNotFoundError is file does not exist.
+    """
+    file_path = pathlib.Path(file)
+    if not file_path.is_file():
+        raise FileNotFoundError("It was not possible find the file: " + file)
 
 
-def is_root_histogram(class_name: str):
-    """Returns whether class_name represents a ROOT histogram."""
-    if class_name.startswith('TH') or class_name.startswith('TProfile'):
-        return True
-    return False
-
-
-def discover_histograms(file_name):
+def discover_root_objects(file, type_check):
     """Discovers the histograms saved in a file with multiple TDirectories.
 
     Args:
-        file_name: the file to be inspected.
+        file: the file to be inspected.
+        type_check: a function to be called in the object to determine if they should
+            be selected.
 
     Returns
         histograms: a list with HistogramInfo for each histogram.
     """
-    file = ROOT.TFile(file_name)
-    file_iterator = ROOT.TIter(file.GetListOfKeys())
     histograms = list()
 
-    path = []
-    _find_root_histograms_in_iterator(path, file_iterator, histograms, file)
+    _find_objects_in_path(None, histograms, file, type_check)
 
     return histograms
 
 
-def _find_root_histograms_in_iterator(iterator_path, iterator, results, current_root_tdirectory):
-    for key in iterator:
-        if is_root_histogram(key.GetClassName()):
-            histogram = ROOTObjInfo(iterator_path, key.GetName(), key.GetClassName())
-            results.append(histogram)
+def _find_objects_in_path(path, results, file, type_check):
+
+    if path is None:
+        key_list = file.GetListOfKeys()
+    else:
+        try:
+            key_list = file.Get(path).GetListOfKeys()
+        except AttributeError:
+            return
+
+    for key in key_list:
+        key_path = f"{path}/{key.GetName()}"
+
+        if path is None:
+            key_path = key.GetName()
+
+        if type_check(key.GetClassName()):
+            results.append(key_path)
         else:
-            new_path = iterator_path + [key.GetName()]
-            new_directory = current_root_tdirectory.Get(key.GetName())
-            iterator_dir = ROOT.TIter(new_directory.GetListOfKeys())
-            _find_root_histograms_in_iterator(new_path, iterator_dir, results, new_directory)
-
-    return results
-
-
-def discover_categories(file_name):
-    file = ROOT.TFile(file_name)
-    file_iterator = ROOT.TIter(file.GetListOfKeys())
-
-    return [category_key.GetName() for category_key in file_iterator]
-
-
-def discover_histograms_by_type(file_name):
-    """Discovers the histograms saved in a file with multiple TDirectories.
-
-    Args:
-        file_name: the file to be inspected.
-
-    Returns
-        histograms: a dictionary with {folder: {type: [histogram_name, ] }]}
-    """
-
-    file = ROOT.TFile(file_name)
-    file_iterator = ROOT.TIter(file.GetListOfKeys())
-    histograms = dict()
-
-    for category_key in file_iterator:
-        category = file.Get(category_key.GetName())
-
-        histograms_this_cat = dict()
-        for histogram in ROOT.TIter(category.GetListOfKeys()):
-            histogram_class = histogram.GetClassName()
-
-            if histogram_class not in histograms_this_cat.keys():
-                histograms_this_cat[histogram_class] = [histogram.GetName()]
-            else:
-                histograms_this_cat[histogram_class] += [histogram.GetName()]
-
-        histograms[category_key.GetName()] = histograms_this_cat
-
-    return histograms
+            _find_objects_in_path(key_path, results, file, type_check)
