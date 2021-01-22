@@ -51,7 +51,7 @@ case $INPUT_CASE in
     ISINPUTO2=1;;
   8)
     INPUT_LABEL="Run 5, p-p MC 14 TeV CCBAR, Scenario 3"
-    INPUT_DIR="/data/Run5data/CCbar_5Mev_scenario3_18012021"
+    INPUT_DIR="/data/Run5data/CCbar_5Mev_scenario3_exampleRun5"
     INPUT_FILES="AODRun5.*.root"
     JSON="$JSONRUN5"
     ISINPUTO2=1
