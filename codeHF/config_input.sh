@@ -1,10 +1,11 @@
 #!/bin/bash
+# shellcheck disable=SC2034 # Ignore unused parameters.
 
 # Input specification for runtest.sh
 # (Modifies input parameters.)
 
-INPUT_CASE=4  # Input case
-NFILESMAX=1   # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
+INPUT_CASE=4            # Input case
+NFILESMAX=1             # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
 NFILESPERJOB_CONVERT=1  # Number of input files per conversion job
 NFILESPERJOB_ALI=1      # Number of input files per AliPhysics job
 NFILESPERJOB_O2=1       # Number of input files per O2 job
