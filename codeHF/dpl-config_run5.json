@@ -91,7 +91,7 @@
         "d_nSigmaTOF": "300.",
         "d_nSigmaTOFCombined": "5000."
     },
-     "hf-lc-candidate-selector": {
+    "hf-lc-candidate-selector": {
         "d_pTCandMin": "0.",
         "d_pTCandMax": "36.",
         "d_pidTPCMinpT": "0.15",
@@ -104,14 +104,14 @@
         "d_nSigmaTOF": "3.",
         "d_nSigmaTOFCombined": "5."
     },
-     "hf-jpsi-toee-candidate-selector": {
-         "d_pTCandMin": "0.",
-         "d_pTCandMax": "50.",
-         "d_pidTPCMinpT": "0.15",
-         "d_pidTPCMaxpT": "5.0",
-         "d_TPCNClsFindablePIDCut": "70.",
-         "d_nSigmaTPC": "3."
-     },
+    "hf-jpsi-toee-candidate-selector": {
+        "d_pTCandMin": "0.",
+        "d_pTCandMax": "50.",
+        "d_pidTPCMinpT": "0.15",
+        "d_pidTPCMaxpT": "5.0",
+        "d_TPCNClsFindablePIDCut": "70.",
+        "d_nSigmaTPC": "3."
+    },
     "hf-task-d0": {
         "cutEtaCandMax": "1.44",
         "d_selectionFlagD0": "0",
