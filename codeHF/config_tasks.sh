@@ -32,13 +32,15 @@ DOO2_PID_TPC=0      # pid-tpc
 DOO2_PID_TOF=0      # pid-tof
 DOO2_SEL_D0=0       # hf-d0-candidate-selector
 DOO2_SEL_LC=0       # hf-lc-candidate-selector
+DOO2_SEL_JPSI=0     # hf-jpsi-toee-candidate-selector
 DOO2_TASK_D0=1      # hf-task-d0
 DOO2_TASK_DPLUS=1   # hf-task-dplus
 DOO2_TASK_LC=1      # hf-task-lc
-
+DOO2_TASK_JPSI=1    # hf-task-jpsi
 # Selection cuts
 APPLYCUTS_D0=0      # Apply D0 selection cuts.
 APPLYCUTS_LC=0      # Apply Λc selection cuts.
+APPLYCUTS_JPSI=0    # Apply J/ψ selection cuts.
 
 SAVETREES=0         # Save O2 tables to trees.
 DEBUG=0             # Print out more information.
@@ -63,7 +65,7 @@ function Clean {
 function AdjustJson {
   # Make a copy of the default JSON file to modify it.
   JSON_EDIT=""
-  if [[ $APPLYCUTS_D0 -eq 1 || $APPLYCUTS_LC -eq 1 ]]; then
+  if [[ $APPLYCUTS_D0 -eq 1 || $APPLYCUTS_LC -eq 1 || $APPLYCUTS_JPSI ]]; then
     JSON_EDIT="${JSON/.json/_edit.json}"
     cp "$JSON" "$JSON_EDIT" || ErrExit "Failed to cp $JSON $JSON_EDIT."
     JSON="$JSON_EDIT"
@@ -81,6 +83,12 @@ function AdjustJson {
     MsgWarn "\nUsing Λc selection cuts"
     ReplaceString "\"d_selectionFlagLc\": \"0\"" "\"d_selectionFlagLc\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
+  
+    # Enable J/ψ selection.
+  if [ $APPLYCUTS_JPSI -eq 1 ]; then
+    MsgWarn "\nUsing J/ψ selection cuts"
+    ReplaceString "\"d_selectionFlagJpsi\": \"0\"" "\"d_selectionFlagJpsi\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  fi
 }
 
 # Generate the O2 script containing the full workflow specification.
@@ -88,6 +96,8 @@ function MakeScriptO2 {
   # Handle dependencies. (latest first)
   [ $DOO2_TASK_D0 -eq 1 ] && { DOO2_SEL_D0=1; }
   [ $DOO2_SEL_D0 -eq 1 ] && { DOO2_CAND_2PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
+  [ $DOO2_TASK_JPSI -eq 1 ] && { DOO2_SEL_JPSI=1; }
+  [ $DOO2_SEL_JPSI -eq 1 ] && { DOO2_CAND_2PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
   [ $DOO2_CAND_2PRONG -eq 1 ] && { DOO2_SKIM=1; }
   [ $DOO2_TASK_DPLUS -eq 1 ] && { DOO2_CAND_3PRONG=1; }
   [ $DOO2_TASK_LC -eq 1 ] && { DOO2_SEL_LC=1; }
@@ -114,8 +124,10 @@ function MakeScriptO2 {
   O2ARGS_PID_TPC="$O2ARGS"
   O2ARGS_PID_TOF="$O2ARGS"
   O2ARGS_SEL_D0="$O2ARGS"
+  O2ARGS_SEL_JPSI="$O2ARGS"
   O2ARGS_SEL_LC="$O2ARGS"
   O2ARGS_TASK_D0="$O2ARGS"
+  O2ARGS_TASK_JPSI="$O2ARGS"
   O2ARGS_TASK_DPLUS="$O2ARGS"
   O2ARGS_TASK_LC="$O2ARGS"
   # MC
@@ -124,6 +136,7 @@ function MakeScriptO2 {
     O2ARGS_CAND_3PRONG+=" --doMC"
     O2ARGS_TASK_D0+=" --doMC"
     O2ARGS_TASK_LC+=" --doMC"
+    O2ARGS_TASK_JPSI+=" --doMC"
   }
 
   # Pair O2 executables with their respective options.
@@ -135,7 +148,9 @@ function MakeScriptO2 {
   O2EXEC_PID_TOF="o2-analysis-pid-tof $O2ARGS_PID_TOF"
   O2EXEC_SEL_D0="o2-analysis-hf-d0-candidate-selector $O2ARGS_SEL_D0"
   O2EXEC_SEL_LC="o2-analysis-hf-lc-candidate-selector $O2ARGS_SEL_LC"
+  O2EXEC_SEL_JPSI="o2-analysis-hf-jpsi-toee-candidate-selector $O2ARGS_SEL_JPSI"
   O2EXEC_TASK_D0="o2-analysis-hf-task-d0 $O2ARGS_TASK_D0"
+  O2EXEC_TASK_JPSI="o2-analysis-hf-task-jpsi $O2ARGS_TASK_JPSI"
   O2EXEC_TASK_DPLUS="o2-analysis-hf-task-dplus $O2ARGS_TASK_DPLUS"
   O2EXEC_TASK_LC="o2-analysis-hf-task-lc $O2ARGS_TASK_LC"
 
@@ -150,10 +165,12 @@ function MakeScriptO2 {
   [ $DOO2_PID_TPC -eq 1 ] && { O2EXEC+=" | $O2EXEC_PID_TPC"; MsgSubStep "  pid-tpc"; }
   [ $DOO2_PID_TOF -eq 1 ] && { O2EXEC+=" | $O2EXEC_PID_TOF"; MsgSubStep "  pid-tof"; }
   [ $DOO2_SEL_D0 -eq 1 ] && { O2EXEC+=" | $O2EXEC_SEL_D0"; MsgSubStep "  hf-d0-candidate-selector"; }
+  [ $DOO2_SEL_JPSI -eq 1 ] && { O2EXEC+=" | $O2EXEC_SEL_JPSI"; MsgSubStep "  hf-jpsi-toee-candidate-selector"; }
   [ $DOO2_SEL_LC -eq 1 ] && { O2EXEC+=" | $O2EXEC_SEL_LC"; MsgSubStep "  hf-lc-candidate-selector"; }
   [ $DOO2_TASK_D0 -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_D0"; MsgSubStep "  hf-task-d0"; }
   [ $DOO2_TASK_DPLUS -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_DPLUS"; MsgSubStep "  hf-task-dplus"; }
   [ $DOO2_TASK_LC -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_LC"; MsgSubStep "  hf-task-lc"; }
+  [ $DOO2_TASK_JPSI -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_JPSI"; MsgSubStep "  hf-task-jpsi"; }
   O2EXEC=${O2EXEC:3} # Remove the leading " | ".
   [ "$O2EXEC" ] || ErrExit "Nothing to do!"
 
@@ -186,6 +203,7 @@ function MakeScriptPostprocess {
     [ $DOO2_TASK_D0 -eq 1 ] && OPT_COMPARE+="-d0"
     [ $DOO2_TASK_DPLUS -eq 1 ] && OPT_COMPARE+="-dplus"
     [ $DOO2_TASK_LC -eq 1 ] && OPT_COMPARE+="-lc"
+    [ $DOO2_TASK_JPSI -eq 1 ] && OPT_COMPARE+="-jpsi"
     [ "$OPT_COMPARE" ] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/Compare.C(\\\"\$FileO2\\\", \\\"\$FileAli\\\", \\\"$OPT_COMPARE\\\")\""
   }
   [[ $DOO2 -eq 1 && $DOO2_TASK_D0 -eq 1 && $ISMC -eq 1 ]] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/PlotEfficiency.C(\\\"\$FileO2\\\")\""

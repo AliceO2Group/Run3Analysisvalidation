@@ -96,6 +96,17 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
   AddHistogram(vecHisLc, "decay length (cm)", "hDecLenLc", "hf-task-lc/hdeclength", 2, 0, 0);
   AddHistogram(vecHisLc, "CPA", "hCosPointLc", "hf-task-lc/hCPA", 2, 0, 0);
 
+  VecSpecHis vecHisJpsi;
+  AddHistogram(vecHisJpsi, "#it{p}_{T} prong 0", "hPtJpsiDau0", "hf-task-jpsi/hptprong0", 2, 0, 0);
+  AddHistogram(vecHisJpsi, "#it{p}_{T} prong 1", "hPtJpsiDau1", "hf-task-jpsi/hptprong1", 2, 0, 0);
+  AddHistogram(vecHisJpsi, "#it{p}_{T} Jpsi", "hPtJpsi", "hf-task-jpsi/hptcand", 2, 0, 0);
+  AddHistogram(vecHisJpsi, "2-prong mass (#e+ e-)", "hInvMassJpsi", "hf-task-jpsi/hmass", 2, 0, 0);
+  AddHistogram(vecHisJpsi, "d0 prong 0 (cm)", "hImpParJpsiDau0", "hf-task-jpsi/hd0Prong0", 2, 0, 0);
+  AddHistogram(vecHisJpsi, "d0 prong 1 (cm)", "hImpParJpsiDau1", "hf-task-jpsi/hd0Prong1", 2, 0, 0);
+  AddHistogram(vecHisJpsi, "d0d0 (cm^{2})", "hd0Timesd0Jpsi", "hf-task-jpsi/hd0d0", 2, 0, 0);
+  AddHistogram(vecHisJpsi, "decay length (cm)", "hDecLenJpsi", "hf-task-jpsi/hdeclength", 2, 0, 0);
+  AddHistogram(vecHisJpsi, "decay length XY (cm)", "hDecLenXYJpsi", "hf-task-jpsi/hdeclengthxy", 2, 0, 0);
+
   // vector of specifications of vectors: name, VecSpecHis, pads X, pads Y
   std::vector<std::tuple<TString, VecSpecHis, int, int>> vecSpecVecSpec;
 
@@ -114,6 +125,8 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
     vecSpecVecSpec.push_back(std::make_tuple("dplus", vecHisDPlus, 5, 3));
   if (options.Contains("lc"))
     vecSpecVecSpec.push_back(std::make_tuple("lc", vecHisLc, 5, 3));
+  if (options.Contains("jpsi"))
+    vecSpecVecSpec.push_back(std::make_tuple("jpsi", vecHisJpsi, 5, 3));
 
   // Histogram plot vertical margins
   Float_t marginHigh = 0.05;

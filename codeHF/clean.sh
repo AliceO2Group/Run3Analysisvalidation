@@ -11,6 +11,7 @@ comparison_histos_cand3.pdf comparison_ratios_cand3.pdf \
 comparison_histos_d0.pdf comparison_ratios_d0.pdf \
 comparison_histos_dplus.pdf comparison_ratios_dplus.pdf \
 comparison_histos_lc.pdf comparison_ratios_lc.pdf \
+comparison_histos_jpsi.pdf comparison_ratios_jpsi.pdf \
 D0_MC_eff.pdf  D0_MC_pT.pdf \
 ./*.log \
 output_* \
