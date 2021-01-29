@@ -12,7 +12,9 @@ comparison_histos_d0.pdf comparison_ratios_d0.pdf \
 comparison_histos_dplus.pdf comparison_ratios_dplus.pdf \
 comparison_histos_lc.pdf comparison_ratios_lc.pdf \
 comparison_histos_jpsi.pdf comparison_ratios_jpsi.pdf \
-D0_MC_eff.pdf  D0_MC_pT.pdf \
+MC_d0_eff.pdf MC_d0_pT.pdf \
+MC_lc_eff.pdf MC_lc_pT.pdf \
+MC_jpsi_eff.pdf MC_jpsi_pT.pdf \
 ./*.log \
 output_* \
 || { echo "Error: Failed to delete files."; exit 1; }

@@ -83,7 +83,7 @@ function AdjustJson {
     MsgWarn "\nUsing Λc selection cuts"
     ReplaceString "\"d_selectionFlagLc\": \"0\"" "\"d_selectionFlagLc\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
-  
+
     # Enable J/ψ selection.
   if [ $APPLYCUTS_JPSI -eq 1 ]; then
     MsgWarn "\nUsing J/ψ selection cuts"
@@ -195,6 +195,7 @@ EOF
 
 function MakeScriptPostprocess {
   POSTEXEC="echo Postprocessing"
+  # Compare AliPhysics and O2 histograms.
   [[ $DOALI -eq 1 && $DOO2 -eq 1 ]] && {
     OPT_COMPARE=""
     [ $DOO2_SKIM -eq 1 ] && OPT_COMPARE+="-tracks-skim"
@@ -206,7 +207,14 @@ function MakeScriptPostprocess {
     [ $DOO2_TASK_JPSI -eq 1 ] && OPT_COMPARE+="-jpsi"
     [ "$OPT_COMPARE" ] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/Compare.C(\\\"\$FileO2\\\", \\\"\$FileAli\\\", \\\"$OPT_COMPARE\\\")\""
   }
-  [[ $DOO2 -eq 1 && $DOO2_TASK_D0 -eq 1 && $ISMC -eq 1 ]] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/PlotEfficiency.C(\\\"\$FileO2\\\")\""
+  # Plot particle reconstruction efficiencies.
+  [[ $DOO2 -eq 1 && $ISMC -eq 1 ]] && {
+    PARTICLES=""
+    [ $DOO2_TASK_D0 -eq 1 ] && PARTICLES+="-d0"
+    [ $DOO2_TASK_LC -eq 1 ] && PARTICLES+="-lc"
+    [ $DOO2_TASK_JPSI -eq 1 ] && PARTICLES+="-jpsi"
+    [ "$PARTICLES" ] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/PlotEfficiency.C(\\\"\$FileO2\\\", \\\"$PARTICLES\\\")\""
+  }
   cat << EOF > "$SCRIPT_POSTPROCESS"
 #!/bin/bash
 FileO2="\$1"
