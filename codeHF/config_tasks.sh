@@ -37,7 +37,7 @@ DOO2_TASK_D0=1      # hf-task-d0
 DOO2_TASK_DPLUS=1   # hf-task-dplus
 DOO2_TASK_LC=1      # hf-task-lc
 DOO2_TASK_JPSI=1    # hf-task-jpsi
-DOO2_TASK_BPLUS=1   # hf-task-bplus
+DOO2_TASK_BPLUS=0   # hf-task-bplus
 # Selection cuts
 APPLYCUTS_D0=0      # Apply D0 selection cuts.
 APPLYCUTS_LC=0      # Apply Λc selection cuts.
