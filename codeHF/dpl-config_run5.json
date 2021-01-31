@@ -99,10 +99,10 @@
         "d_pidTOFMinpT": "1000.",
         "d_pidTOFMaxpT": "2000.",
         "d_TPCNClsFindablePIDCut": "-9999",
-        "d_nSigmaTPC": "3.",
-        "d_nSigmaTPCCombined": "5.",
-        "d_nSigmaTOF": "3.",
-        "d_nSigmaTOFCombined": "5."
+        "d_nSigmaTPC": "1000.",
+        "d_nSigmaTPCCombined": "500.",
+        "d_nSigmaTOF": "300.",
+        "d_nSigmaTOFCombined": "5000."
     },
     "hf-jpsi-toee-candidate-selector": {
         "d_pTCandMin": "0.",
