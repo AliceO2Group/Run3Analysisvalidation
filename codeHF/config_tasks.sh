@@ -24,7 +24,8 @@ DOPOSTPROCESS=1     # Run output postprocessing. (Compare AliPhysics and O2 outp
 [ "$ISINPUTO2" -eq 1 ] && { DOCONVERT=0; DOALI=0; }
 
 # Activation of O2 tasks
-DOO2_QA=0           # qatask
+DOO2_QA_EFF=1       # qa-efficiency
+DOO2_QA_SIM=1       # qa-simple
 DOO2_SKIM=0         # hf-track-index-skims-creator
 DOO2_CAND_2PRONG=0  # hf-candidate-creator-2prong
 DOO2_CAND_3PRONG=0  # hf-candidate-creator-3prong
@@ -117,7 +118,8 @@ function MakeScriptO2 {
     [ "$O2TABLES" ] && { O2ARGS+=" --aod-writer-keep $O2TABLES"; } || { MsgWarn "Empty list of tables!"; }
   }
   # Task-specific options
-  O2ARGS_QA="$O2ARGS"
+  O2ARGS_QA_EFF="$O2ARGS"
+  O2ARGS_QA_SIM="$O2ARGS"
   O2ARGS_SKIM="$O2ARGS"
   O2ARGS_CAND_2PRONG="$O2ARGS"
   O2ARGS_CAND_3PRONG="$O2ARGS"
@@ -140,7 +142,8 @@ function MakeScriptO2 {
   }
 
   # Pair O2 executables with their respective options.
-  O2EXEC_QA="o2-analysis-qatask $O2ARGS_QA"
+  O2EXEC_QA_EFF="o2-analysis-qa-efficiency $O2ARGS_QA_EFF"
+  O2EXEC_QA_SIM="o2-analysis-qa-simple $O2ARGS_QA_SIM"
   O2EXEC_SKIM="o2-analysis-hf-track-index-skims-creator $O2ARGS_SKIM"
   O2EXEC_CAND_2PRONG="o2-analysis-hf-candidate-creator-2prong $O2ARGS_CAND_2PRONG"
   O2EXEC_CAND_3PRONG="o2-analysis-hf-candidate-creator-3prong $O2ARGS_CAND_3PRONG"
@@ -155,10 +158,12 @@ function MakeScriptO2 {
   O2EXEC_TASK_LC="o2-analysis-hf-task-lc $O2ARGS_TASK_LC"
 
   # Form the full O2 command.
-  [[ $DOO2_QA -eq 1 && $ISMC -eq 0 ]] && { MsgWarn "Skipping the QA task for non-MC input"; DOO2_QA=0; } # Disable running the QA task for non-MC input.
+  [[ $DOO2_QA_EFF -eq 1 && $ISMC -eq 0 ]] && { MsgWarn "Skipping the QA task efficiency for non-MC input"; DOO2_QA_EFF=0; } # Disable running the QA task for non-MC input.
+  [[ $DOO2_QA_SIM -eq 1 && $ISMC -eq 0 ]] && { MsgWarn "Skipping the QA task simple for non-MC input"; DOO2_QA_SIM=0; } # Disable running the QA task for non-MC input.
   echo "Tasks to be executed:"
   O2EXEC=""
-  [ $DOO2_QA -eq 1 ] && { O2EXEC+=" | $O2EXEC_QA"; MsgSubStep "  qatask"; }
+  [ $DOO2_QA_EFF -eq 1 ] && { O2EXEC+=" | $O2EXEC_QA_EFF"; MsgSubStep "  qa-efficiency"; }
+  [ $DOO2_QA_SIM -eq 1 ] && { O2EXEC+=" | $O2EXEC_QA_SIM"; MsgSubStep "  qa-simple"; }
   [ $DOO2_SKIM -eq 1 ] && { O2EXEC+=" | $O2EXEC_SKIM"; MsgSubStep "  hf-track-index-skims-creator"; }
   [ $DOO2_CAND_2PRONG -eq 1 ] && { O2EXEC+=" | $O2EXEC_CAND_2PRONG"; MsgSubStep "  hf-candidate-creator-2prong"; }
   [ $DOO2_CAND_3PRONG -eq 1 ] && { O2EXEC+=" | $O2EXEC_CAND_3PRONG"; MsgSubStep "  hf-candidate-creator-3prong"; }
