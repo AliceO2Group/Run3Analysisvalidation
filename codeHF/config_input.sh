@@ -50,8 +50,22 @@ case $INPUT_CASE in
     INPUT_FILES="AO2D.root"
     ISINPUTO2=1;;
   8)
-    INPUT_LABEL="Run 5, p-p MC 14 TeV CCBAR, Scenario 3"
+    INPUT_LABEL="Run 5, p-p MC 14 TeV CCBAR, Scenario 2"
     INPUT_DIR="/data/Run5data/CCBAR_5Mevents_scenario2_26012021"
+    INPUT_FILES="AODRun5.*.root"
+    JSON="$JSONRUN5"
+    ISINPUTO2=1
+    ISMC=1;;
+  9)
+    INPUT_LABEL="Run 5, p-p MC 14 TeV ONIA, Scenario 2"
+    INPUT_DIR="/data/Run5data/ONIA_10Mev_scenario2_28012021"
+    INPUT_FILES="AODRun5.*.root"
+    JSON="$JSONRUN5"
+    ISINPUTO2=1
+    ISMC=1;;
+  10)
+    INPUT_LABEL="Run 5, p-p MC 14 TeV MB, Scenario 2"
+    INPUT_DIR="/data/Run5data/MB_20Mev_scenario2_25012021"
     INPUT_FILES="AODRun5.*.root"
     JSON="$JSONRUN5"
     ISINPUTO2=1
