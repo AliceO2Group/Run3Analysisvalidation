@@ -47,7 +47,7 @@ def efficiencyhadron(had, var):
     hden.Rebin(4)
     eff = TEfficiency(hnum, hden)
     eff.Draw()
-    ceffhf.SaveAs("efficiency_hfcand%s.pdf" % var)
+    ceffhf.SaveAs("efficiency_hfcand%s%s.pdf" % (var, had))
 
 efficiencytracking()
 efficiencyhadron("lc", "Eta")
