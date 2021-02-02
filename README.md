@@ -3,6 +3,20 @@
 [![GitHub Super-Linter](https://github.com/AliceO2Group/Run3Analysisvalidation/workflows/Super-Linter/badge.svg)](https://github.com/marketplace/actions/super-linter)
 [![GitHub Clang Format Linter](https://github.com/AliceO2Group/Run3Analysisvalidation/workflows/Clang%20Format%20Linter/badge.svg)](https://github.com/marketplace/actions/clang-format-lint)
 
+## Table of contents
+
+* [Introduction](#introduction)
+* [Overview](#overview)
+  * [Execution](#execution)
+  * [Configuration](#configuration)
+* [Preparation](#preparation)
+  * [Build AliPhysics and O<sup>2</sup>](#build-aliphysics-and-o-sup-2--sup-)
+  * [Download the comparison software](#download-the-comparison-software)
+  * [Install parallelisation software](#install-parallelisation-software)
+* [Run the framework](#run-the-framework)
+* [Heavy-flavour analyses](#heavy-flavour-analyses)
+* [Keep your repositories and installations up to date](#keep-your-repositories-and-installations-up-to-date)
+
 ## Introduction
 
 The main purpose of the Run 3 validation framework is to provide a compact and flexible tool for validation of the
