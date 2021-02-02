@@ -43,7 +43,7 @@ class ImpactParameter(PlottingTask):
     ]
 
     show_fits = Configurable(
-        "--show-fits", "-sf", action="store_true", default=False, help="",
+        "--show-fits", "-sf", action="store_true", default=False, help=""
     )
 
     plotting_function = plot_1d_legend
