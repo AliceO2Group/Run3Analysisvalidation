@@ -151,9 +151,7 @@ def _build_legend(canvas, labels):
         legend.SetFillStyle(0)
 
 
-def plot_2d(
-    histogram, draw_option="colz1", labels=None, plot_config=None,
-):
+def plot_2d(histogram, draw_option="colz1", labels=None, plot_config=None):
     """Plot a list of histograms to a canvas. """
     canvas = ROOT.TCanvas()
     canvas.cd()
