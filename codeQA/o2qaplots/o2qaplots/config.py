@@ -40,9 +40,7 @@ class PlotConfig:
 
     """
 
-    def __init__(
-        self, x_axis=AxisConfig(), y_axis=AxisConfig(),
-    ):
+    def __init__(self, x_axis=AxisConfig(), y_axis=AxisConfig()):
         if not isinstance(x_axis, AxisConfig):
             x_axis = AxisConfig(**x_axis)
 
