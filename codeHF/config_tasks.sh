@@ -95,10 +95,10 @@ function AdjustJson {
 # Generate the O2 script containing the full workflow specification.
 function MakeScriptO2 {
   # Handle dependencies. (latest first)
+  [ $DOO2_TASK_BPLUS -eq 1 ] && { DOO2_SEL_D0=1; }
   [ $DOO2_TASK_D0 -eq 1 ] && { DOO2_SEL_D0=1; }
   [ $DOO2_SEL_D0 -eq 1 ] && { DOO2_CAND_2PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
   [ $DOO2_TASK_JPSI -eq 1 ] && { DOO2_SEL_JPSI=1; }
-  [ $DOO2_TASK_BPLUS -eq 1 ] && { DOO2_SEL_D0=1; }
   [ $DOO2_SEL_JPSI -eq 1 ] && { DOO2_CAND_2PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
   [ $DOO2_CAND_2PRONG -eq 1 ] && { DOO2_SKIM=1; }
   [ $DOO2_TASK_DPLUS -eq 1 ] && { DOO2_CAND_3PRONG=1; }
