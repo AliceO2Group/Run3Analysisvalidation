@@ -16,6 +16,9 @@
 * [Run the framework](#run-the-framework)
 * [Heavy-flavour analyses](#heavy-flavour-analyses)
 * [Keep your repositories and installations up to date](#keep-your-repositories-and-installations-up-to-date)
+* [Continuous integration tests](#continuous-integration-tests)
+  * [C++](#c)
+  * [Python](#python)
 
 ## Introduction
 
@@ -208,3 +211,29 @@ WARNING: Do not enable the purging if you need to keep several builds of AliPhys
 If any error occurs during the script execution, the script will report the error and exit immediately.
 
 You can easily extend the script to include any other local Git repository and any other aliBuild development package on your machine that you wish to be updated in the same way.
+
+## Continuous integration tests
+
+Validity and quality of the code in the repository are checked on Github by several tools (linters) that support many coding languages.
+Linters run automatically for every push or pull request.
+**Please make sure that your code passes all the tests before making a pull request.**
+
+Here are some tips how to check your code locally with the linters that usually complain the most.
+
+### C++
+
+* [ClangFormat](https://clang.llvm.org/docs/ClangFormat.html) - automatic reformatting of C++ sources files according to configurable style guides
+
+```bash
+clang-format -style=file -i <file>
+```
+
+### Python
+
+* [Black](https://github.com/psf/black) - “uncompromising Python code formatter”
+* [flake8](https://gitlab.com/pycqa/flake8) - “tool that glues together pep8, pyflakes, mccabe, and third-party plugins to check the style and quality of some python code”
+* [isort](https://github.com/PyCQA/isort) - “utility to sort imports alphabetically, and automatically separated into sections and by type”
+
+```bash
+black . && flake8 . && isort .
+```
