@@ -33,20 +33,20 @@ case $INPUT_CASE in
   3) # FIXME: conversion fails
     INPUT_LABEL="?"
     INPUT_DIR="/data/Run3data/output";;
-  4)
+  4) # FIXME: hanging when running multiple jobs with only hf-track-index-skims-creator
     INPUT_LABEL="p-p MC LHC17p"
     INPUT_DIR="/data/Run3data/alice_sim_2018_LHC18a4a2_cent/282099"
     ISMC=1;;
-  5)
+  5) # FIXME: hanging when running multiple jobs with only hf-track-index-skims-creator, conversion fails for some files (e.g. 1326)
     INPUT_LABEL="p-p MC LHC17p"
     INPUT_DIR="/mnt/temp/Run3data_Vit/LHC18a4a2_cent/282341"
     ISMC=1;;
   6)
     INPUT_LABEL="p-p real LHC17p"
     INPUT_DIR="/mnt/temp/Run3data_Vit/LHC17p_pass1_CENT_woSDD/282341";;
-  7)
+  7) # FIXME: hanging
     INPUT_LABEL="Pb-Pb real LHC15o, converted (AliHyperloop LHC15o_test sample)"
-    INPUT_DIR="/mnt/temp/Run3data_Vit/LHC15o_converted/alice/data/2015/LHC15o/000244918/pass5_lowIR/PWGZZ/Run3_Conversion/96_20201013-1346_child_1"
+    INPUT_DIR="/mnt/temp/Run3data_Vit/LHC15o_converted/alice/data/2015/LHC15o/000244918/pass5_lowIR/PWGZZ/Run3_Conversion/138_20210129-0800_child_1"
     INPUT_FILES="AO2D.root"
     ISINPUTO2=1;;
   8)
@@ -63,12 +63,11 @@ case $INPUT_CASE in
     JSON="$JSONRUN5"
     ISINPUTO2=1
     ISMC=1;;
-  10)
+  10) # FIXME: segmentation violation when running hf-track-index-skims-creator
     INPUT_LABEL="Run 5, p-p MC 14 TeV MB, Scenario 2"
     INPUT_DIR="/data/Run5data/MB_20Mev_scenario2_25012021"
     INPUT_FILES="AODRun5.*.root"
     JSON="$JSONRUN5"
     ISINPUTO2=1
     ISMC=1;;
-
 esac
