@@ -17,27 +17,24 @@ JSON="$JSONRUN3"
 INPUT_FILES="AliESDs.root"  # Input file pattern
 
 case $INPUT_CASE in
-  0) # FIXME: missing input files
-    INPUT_LABEL="ppK0starToyMC"
-    INPUT_DIR="../twikiinput"
-    INPUT_FILES="AliESDs_ppK0starToyMC.root";;
   1) # FIXME: no read permission
     INPUT_LABEL="Pb-Pb real LHC15o"
     INPUT_DIR="/mnt/temp/Run3data/data/LHC15o_246751/pass1"
     TRIGGERSTRINGRUN2="CV0L7-B-NOPF-CENT"
     TRIGGERBITRUN3=5;; #FIXME
-  2) # FIXME: conversion fails
+  2) # FIXME: vertices outside beam pipe
     INPUT_LABEL="Pb-Pb MC LHC15o"
     INPUT_DIR="/data/Run3data/alice_sim_2015_LHC15k1a3_246391/246391"
     ISMC=1;;
-  3) # FIXME: conversion fails
+  3) # FIXME: nothing selected, missing O2 histograms
     INPUT_LABEL="?"
-    INPUT_DIR="/data/Run3data/output";;
-  4) # FIXME: hanging when running multiple jobs with only hf-track-index-skims-creator
+    INPUT_DIR="/data/Run3data/output"
+    ISMC=1;;
+  4)
     INPUT_LABEL="p-p MC LHC17p"
     INPUT_DIR="/data/Run3data/alice_sim_2018_LHC18a4a2_cent/282099"
     ISMC=1;;
-  5) # FIXME: hanging when running multiple jobs with only hf-track-index-skims-creator, conversion fails for some files (e.g. 1326)
+  5) # FIXME: Conversion fails for some files (e.g. 1326).
     INPUT_LABEL="p-p MC LHC17p"
     INPUT_DIR="/mnt/temp/Run3data_Vit/LHC18a4a2_cent/282341"
     ISMC=1;;
