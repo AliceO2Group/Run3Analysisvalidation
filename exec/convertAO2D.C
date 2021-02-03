@@ -10,10 +10,10 @@ R__ADD_INCLUDE_PATH($ALICE_PHYSICS)
 TChain* CreateChain(const char* xmlfile, const char* type = "ESD");
 TChain* CreateLocalChain(const char* txtfile, const char* type, int nfiles);
 
-Long64_t convertAO2D(TString listoffiles, int ismc = 1, int nmaxevents = -1)
+Long64_t convertAO2D(TString listoffiles, bool ismc = 1, int nmaxevents = -1)
 {
   const char* anatype = "ESD";
-  if (ismc == 1) {
+  if (ismc) {
     std::cout << "I AM DOING MC" << std::endl;
   }
 
@@ -34,7 +34,7 @@ Long64_t convertAO2D(TString listoffiles, int ismc = 1, int nmaxevents = -1)
   AliESDInputHandler* handler = AddESDHandler();
 
   AddTaskMultSelection();
-  AddTaskPhysicsSelection();
+  AddTaskPhysicsSelection(ismc);
   AddTaskPIDResponse();
   if (ismc)
     AliMCEventHandler* handlerMC = AddMCHandler();
