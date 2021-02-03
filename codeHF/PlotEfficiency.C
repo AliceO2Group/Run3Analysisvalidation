@@ -65,7 +65,6 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
 
     // pT spectra
     auto padH = canPt->cd();
-    SetPad(padH, logScaleH);
     hPtGen->Rebin(iNRebin);
     hPtRec->Rebin(iNRebin);
     //hPtRec = (TH1F*)hPtRec->Rebin(NRebin, "hPtRecR", dRebin);
@@ -79,6 +78,7 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
     yMin = TMath::Min(hPtRec->GetMinimum(0), hPtGen->GetMinimum(0));
     yMax = TMath::Max(hPtRec->GetMaximum(), hPtGen->GetMaximum());
     SetHistogram(hPtGen, yMin, yMax, marginLow, marginHigh, logScaleH);
+    SetPad(padH, logScaleH);
     hPtGen->Draw();
     hPtRec->Draw("same");
     TLegend* legend = new TLegend(0.72, 0.72, 0.92, 0.92);
@@ -88,13 +88,13 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
 
     // efficiency
     auto padR = canEff->cd();
-    SetPad(padR, logScaleR);
     TH1F* hEff = (TH1F*)hPtRec->Clone("hEff");
     hEff->Divide(hPtGen);
     hEff->SetTitle(Form("Entries ratio: %g;#it{p}_{T} (GeV/#it{c});efficiency", (double)nRec / (double)nGen));
     yMin = hEff->GetMinimum(0);
     yMax = hEff->GetMaximum();
     SetHistogram(hEff, yMin, yMax, marginRLow, marginRHigh, logScaleR);
+    SetPad(padR, logScaleR);
     hEff->Draw();
 
     canPt->SaveAs(Form("MC_%s_pT.pdf", particle.Data()));

@@ -213,7 +213,6 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
 
       // Histograms
       auto padH = canHis->cd(index + 1);
-      SetPad(padH, logScaleH);
       hRun1->Rebin(rebin);
       hRun3->Rebin(rebin);
       hRun1->SetLineColor(1);
@@ -225,6 +224,7 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
       yMin = TMath::Min(hRun3->GetMinimum(0), hRun1->GetMinimum(0));
       yMax = TMath::Max(hRun3->GetMaximum(), hRun1->GetMaximum());
       SetHistogram(hRun1, yMin, yMax, marginLow, marginHigh, logScaleH);
+      SetPad(padH, logScaleH);
       hRun1->Draw();
       hRun3->Draw("same");
       TLegend* legend = new TLegend(0.8, 0.72, 1., 0.92);
@@ -235,13 +235,13 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
       // Ratio
       if (doRatio) {
         auto padR = canRat->cd(index + 1);
-        SetPad(padR, logScaleR);
         hRatio = (TH1F*)hRun3->Clone(Form("hRatio%d", index));
         hRatio->Divide(hRun1);
         hRatio->SetTitle(Form("Entries ratio: %g;%s;Run3/Run1", (double)nRun3 / (double)nRun1, labelAxis.Data()));
         yMin = hRatio->GetMinimum(0);
         yMax = hRatio->GetMaximum();
         SetHistogram(hRatio, yMin, yMax, marginRLow, marginRHigh, logScaleR);
+        SetPad(padR, logScaleR);
         hRatio->Draw();
       }
     }
