@@ -57,8 +57,6 @@ SAVETREES=0         # Save O2 tables to trees.
 USEO2VERTEXER=0     # Use the O2 vertexer in AliPhysics.
 DORATIO=0           # Plot histogram ratios in comparison.
 
-DEBUG=0             # Print out more information.
-
 ####################################################################################################
 
 # Clean before (argument=1) and after (argument=2) running.

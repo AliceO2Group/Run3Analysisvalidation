@@ -80,10 +80,12 @@ All steps are activated by default and some can be disabled individually by sett
 The steering script `runtest.sh` can be executed with the following optional arguments:
 
 ```bash
-bash [<path>/]runtest.sh [-h] [-i <input config>] [-t <task config>]
+bash [<path>/]runtest.sh [-h] [-i <input config>] [-t <task config>] [-d]
 ```
 
-`h` Prints out the usage specification above.
+`-h` Prints out the usage specification above.
+
+`-d` (Debug mode) Prints out more information about settings and execution.
 
 `<input config>` Input specification
 * Bash script that modifies input parameters.
@@ -155,7 +157,7 @@ JSON file is expected in the current directory unless specified otherwise.
 Variable `DIR_TASKS` stores the path to the task configuration script directory.
 It can be used inside that script to refer to other files in the same directory, (e.g. cleaning script, ROOT macros).
 
-Set `DEBUG=1` to see more details in the terminal.
+Use the debug command line option `-d` to see more details in the terminal.
 
 If everything went fine, the script will exit with the message `Done` and you should have got all the output files in the current directory.
 
@@ -188,12 +190,12 @@ You can execute the script from any directory on your system using the following
 bash <path to the Run3Analysisvalidation directory>/exec/update_packages.sh [-h] [-c <config>] [-d]
 ```
 
-`h` (Help) Prints out the usage specification above.
+`-h` (Help) Prints out the usage specification above.
 
 `<config>` Configuration script including the package specification
 * Defaults to `config/config_update.sh` (in the Run3Analysisvalidation repository).
 
-`d` (Dry run) Displays configuration without doing anything.
+`-d` (Dry run) Displays configuration without doing anything.
 
 If you are happy with the configuration, you can then start the script and it will take care of the full update of your code and installations for all the activated packages.
 

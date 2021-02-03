@@ -65,8 +65,8 @@ SCRIPT_POSTPROCESS="script_postprocess.sh"
 source "$DIR_EXEC/utilities.sh" || { echo "Error: Failed to load utilities."; exit 1; }
 
 # Parse command line options.
-function Help { echo "Usage: bash [<path>/]$(basename "$0") [-h] [-i <input config>] [-t <task config>]"; }
-while getopts ":hi:t:" opt; do
+function Help { echo "Usage: bash [<path>/]$(basename "$0") [-h] [-i <input config>] [-t <task config>] [-d]"; }
+while getopts ":hi:t:d" opt; do
   case ${opt} in
     h)
       Help; exit 0;;
@@ -74,6 +74,8 @@ while getopts ":hi:t:" opt; do
       CONFIG_INPUT="$OPTARG";;
     t)
       CONFIG_TASKS="$OPTARG";;
+    d)
+      DEBUG=1;;
     \?)
       MsgErr "Invalid option: $OPTARG" 1>&2; Help; exit 1;;
     :)
