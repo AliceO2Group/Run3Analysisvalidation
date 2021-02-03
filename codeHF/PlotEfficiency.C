@@ -1,3 +1,7 @@
+// Plotting of reconstruction efficiency
+
+#include "utils_plot.h"
+
 Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particles = "d0")
 {
   gStyle->SetOptStat(0);
@@ -8,14 +12,12 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
   // vertical margins of the pT spectra plot
   Float_t marginHigh = 0.05;
   Float_t marginLow = 0.05;
-  Float_t k = 1. - marginHigh - marginLow;
-  bool LogScale = true;
+  bool logScaleH = true;
   // vertical margins of the efficiency plot
   Float_t marginRHigh = 0.05;
   Float_t marginRLow = 0.05;
-  Float_t kR = 1. - marginRHigh - marginRLow;
-  bool LogScaleR = false;
-  Float_t yMin, yMax, yRange;
+  bool logScaleR = false;
+  Float_t yMin, yMax;
   Int_t nRec, nGen;
   // binning
   Int_t iNRebin = 4;
@@ -62,7 +64,8 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
     nRec = hPtRec->GetEntries();
 
     // pT spectra
-    canPt->cd();
+    auto padH = canPt->cd();
+    SetPad(padH, logScaleH);
     hPtGen->Rebin(iNRebin);
     hPtRec->Rebin(iNRebin);
     //hPtRec = (TH1F*)hPtRec->Rebin(NRebin, "hPtRecR", dRebin);
@@ -75,36 +78,23 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
     hPtGen->GetYaxis()->SetMaxDigits(3);
     yMin = TMath::Min(hPtRec->GetMinimum(0), hPtGen->GetMinimum(0));
     yMax = TMath::Max(hPtRec->GetMaximum(), hPtGen->GetMaximum());
-    if (LogScale && yMin > 0 && yMax > 0) {
-      yRange = yMax / yMin;
-      hPtGen->GetYaxis()->SetRangeUser(yMin / std::pow(yRange, marginLow / k), yMax * std::pow(yRange, marginHigh / k));
-      canPt->SetLogy();
-    } else {
-      yRange = yMax - yMin;
-      hPtGen->GetYaxis()->SetRangeUser(yMin - marginLow / k * yRange, yMax + marginHigh / k * yRange);
-    }
+    SetHistogram(hPtGen, yMin, yMax, marginLow, marginHigh, logScaleH);
     hPtGen->Draw();
     hPtRec->Draw("same");
-    TLegend* legend = new TLegend(0.7, 0.7, 0.9, 0.9);
+    TLegend* legend = new TLegend(0.72, 0.72, 0.92, 0.92);
     legend->AddEntry(hPtRec, "Rec", "L");
     legend->AddEntry(hPtGen, "Gen", "L");
     legend->Draw();
 
     // efficiency
-    canEff->cd();
+    auto padR = canEff->cd();
+    SetPad(padR, logScaleR);
     TH1F* hEff = (TH1F*)hPtRec->Clone("hEff");
     hEff->Divide(hPtGen);
     hEff->SetTitle(Form("Entries ratio: %g;#it{p}_{T} (GeV/#it{c});efficiency", (double)nRec / (double)nGen));
     yMin = hEff->GetMinimum(0);
     yMax = hEff->GetMaximum();
-    if (LogScaleR && yMin > 0 && yMax > 0) {
-      yRange = yMax / yMin;
-      hEff->GetYaxis()->SetRangeUser(yMin / std::pow(yRange, marginRLow / kR), yMax * std::pow(yRange, marginRHigh / kR));
-      canEff->SetLogy();
-    } else {
-      yRange = yMax - yMin;
-      hEff->GetYaxis()->SetRangeUser(yMin - marginRLow / kR * yRange, yMax + marginRHigh / kR * yRange);
-    }
+    SetHistogram(hEff, yMin, yMax, marginRLow, marginRHigh, logScaleR);
     hEff->Draw();
 
     canPt->SaveAs(Form("MC_%s_pT.pdf", particle.Data()));
