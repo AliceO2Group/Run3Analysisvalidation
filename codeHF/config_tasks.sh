@@ -39,6 +39,9 @@ DOO2_TASK_DPLUS=1   # hf-task-dplus
 DOO2_TASK_LC=1      # hf-task-lc
 DOO2_TASK_JPSI=1    # hf-task-jpsi
 DOO2_TASK_BPLUS=0   # hf-task-bplus
+DOO2_TREE_D0=1      # hf-tree-creator-d0-tokpi
+DOO2_TREE_LC=1      # hf-tree-creator-lc-topkpi
+
 # Selection cuts
 APPLYCUTS_D0=0      # Apply D0 selection cuts.
 APPLYCUTS_LC=0      # Apply Λc selection cuts.
@@ -95,7 +98,15 @@ function AdjustJson {
 
 # Generate the O2 script containing the full workflow specification.
 function MakeScriptO2 {
+  # Deactivate MC-only tasks for non-MC input.
+  [[ $DOO2_QA_EFF -eq 1 && $ISMC -eq 0 ]] && { MsgWarn "Skipping the QA task efficiency for non-MC input"; DOO2_QA_EFF=0; }
+  [[ $DOO2_QA_SIM -eq 1 && $ISMC -eq 0 ]] && { MsgWarn "Skipping the QA task simple for non-MC input"; DOO2_QA_SIM=0; }
+  [[ $DOO2_TREE_D0 -eq 1 && $ISMC -eq 0 ]] && { MsgWarn "Skipping the D0 tree creator for non-MC input"; DOO2_TREE_D0=0; }
+  [[ $DOO2_TREE_LC -eq 1 && $ISMC -eq 0 ]] && { MsgWarn "Skipping the Λc tree creator for non-MC input"; DOO2_TREE_LC=0; }
+
   # Handle dependencies. (latest first)
+  [ $DOO2_TREE_D0 -eq 1 ] && { DOO2_SEL_D0=1; }
+  [ $DOO2_TREE_LC -eq 1 ] && { DOO2_SEL_LC=1; }
   [ $DOO2_TASK_BPLUS -eq 1 ] && { DOO2_SEL_D0=1; }
   [ $DOO2_TASK_D0 -eq 1 ] && { DOO2_SEL_D0=1; }
   [ $DOO2_SEL_D0 -eq 1 ] && { DOO2_CAND_2PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
@@ -109,16 +120,21 @@ function MakeScriptO2 {
 
   # Basic common options
   O2ARGS="--aod-memory-rate-limit 10000000000 --shm-segment-size 16000000000 --configuration json://\$JSON -b"
+
   # Options to save tables in trees
   [ $SAVETREES -eq 1 ] && {
     MsgWarn "Tables will be saved in trees."
     O2TABLES=""
-    [ $DOO2_SKIM -eq 1 ] && { O2TABLES+="AOD/HFSELTRACK/0,AOD/HFTRACKIDXP2/0,AOD/HFTRACKIDXP3/0"; }
+    [ $DOO2_SKIM -eq 1 ] && { O2TABLES+=",AOD/HFSELTRACK/0,AOD/HFTRACKIDXP2/0,AOD/HFTRACKIDXP3/0"; }
     [ $DOO2_CAND_2PRONG -eq 1 ] && { O2TABLES+=",AOD/HFCANDP2BASE/0,AOD/HFCANDP2EXT/0"; [ "$ISMC" -eq 1 ] && O2TABLES+=",AOD/HFCANDP2MCREC/0,AOD/HFCANDP2MCGEN/0"; }
     [ $DOO2_CAND_3PRONG -eq 1 ] && { O2TABLES+=",AOD/HFCANDP3BASE/0,AOD/HFCANDP3EXT/0"; [ "$ISMC" -eq 1 ] && O2TABLES+=",AOD/HFCANDP3MCREC/0,AOD/HFCANDP3MCGEN/0"; }
+    [ $DOO2_TREE_D0 -eq 1 ] && { O2TABLES+=",AOD/HFCANDP2Full/0,AOD/HFCANDP2FullE/0,AOD/HFCANDP2FullP/0"; }
+    [ $DOO2_TREE_LC -eq 1 ] && { O2TABLES+=",AOD/HFCANDP3Full/0,AOD/HFCANDP3FullE/0,AOD/HFCANDP3FullP/0"; }
+    O2TABLES=${O2TABLES:1} # Remove the leading comma.
     # shellcheck disable=SC2015 # Ignore A && B || C.
-    [ "$O2TABLES" ] && { O2ARGS+=" --aod-writer-keep $O2TABLES"; } || { MsgWarn "Empty list of tables!"; }
+    [ "$O2TABLES" ] && { O2ARGS+=" --aod-writer-keep $O2TABLES"; } || { ErrExit "Empty list of tables!"; }
   }
+
   # Task-specific options
   O2ARGS_QA_EFF="$O2ARGS"
   O2ARGS_QA_SIM="$O2ARGS"
@@ -135,6 +151,8 @@ function MakeScriptO2 {
   O2ARGS_TASK_DPLUS="$O2ARGS"
   O2ARGS_TASK_LC="$O2ARGS"
   O2ARGS_TASK_BPLUS="$O2ARGS"
+  O2ARGS_TREE_D0="$O2ARGS"
+  O2ARGS_TREE_LC="$O2ARGS"
   # MC
   [ "$ISMC" -eq 1 ] && {
     O2ARGS_CAND_2PRONG+=" --doMC"
@@ -160,10 +178,10 @@ function MakeScriptO2 {
   O2EXEC_TASK_DPLUS="o2-analysis-hf-task-dplus $O2ARGS_TASK_DPLUS"
   O2EXEC_TASK_LC="o2-analysis-hf-task-lc $O2ARGS_TASK_LC"
   O2EXEC_TASK_BPLUS="o2-analysis-hf-task-bplus $O2ARGS_TASK_BPLUS"
+  O2EXEC_TREE_D0="o2-analysis-hf-tree-creator-d0-tokpi $O2ARGS_TREE_D0"
+  O2EXEC_TREE_LC="o2-analysis-hf-tree-creator-lc-topkpi $O2ARGS_TREE_LC"
 
   # Form the full O2 command.
-  [[ $DOO2_QA_EFF -eq 1 && $ISMC -eq 0 ]] && { MsgWarn "Skipping the QA task efficiency for non-MC input"; DOO2_QA_EFF=0; } # Disable running the QA task for non-MC input.
-  [[ $DOO2_QA_SIM -eq 1 && $ISMC -eq 0 ]] && { MsgWarn "Skipping the QA task simple for non-MC input"; DOO2_QA_SIM=0; } # Disable running the QA task for non-MC input.
   echo "Tasks to be executed:"
   O2EXEC=""
   [ $DOO2_QA_EFF -eq 1 ] && { O2EXEC+=" | $O2EXEC_QA_EFF"; MsgSubStep "  qa-efficiency"; }
@@ -181,6 +199,8 @@ function MakeScriptO2 {
   [ $DOO2_TASK_LC -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_LC"; MsgSubStep "  hf-task-lc"; }
   [ $DOO2_TASK_JPSI -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_JPSI"; MsgSubStep "  hf-task-jpsi"; }
   [ $DOO2_TASK_BPLUS -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_BPLUS"; MsgSubStep "  hf-task-bplus"; }
+  [ $DOO2_TREE_D0 -eq 1 ] && { O2EXEC+=" | $O2EXEC_TREE_D0"; MsgSubStep "  hf-tree-creator-d0-tokpi"; }
+  [ $DOO2_TREE_LC -eq 1 ] && { O2EXEC+=" | $O2EXEC_TREE_LC"; MsgSubStep "  hf-tree-creator-lc-topkpi"; }
   O2EXEC=${O2EXEC:3} # Remove the leading " | ".
   [ "$O2EXEC" ] || ErrExit "Nothing to do!"
 
