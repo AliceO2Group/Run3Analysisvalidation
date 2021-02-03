@@ -24,23 +24,29 @@ DOPOSTPROCESS=1     # Run output postprocessing. (Compare AliPhysics and O2 outp
 [ "$ISINPUTO2" -eq 1 ] && { DOCONVERT=0; DOALI=0; }
 
 # Activation of O2 tasks
+# QA
 DOO2_QA_EFF=1       # qa-efficiency
 DOO2_QA_SIM=1       # qa-simple
+# PID
+DOO2_PID_TPC=0      # pid-tpc
+DOO2_PID_TOF=0      # pid-tof
+# Vertexing
 DOO2_SKIM=0         # hf-track-index-skims-creator
 DOO2_CAND_2PRONG=0  # hf-candidate-creator-2prong
 DOO2_CAND_3PRONG=0  # hf-candidate-creator-3prong
-DOO2_PID_TPC=0      # pid-tpc
-DOO2_PID_TOF=0      # pid-tof
+# Selectors
 DOO2_SEL_D0=0       # hf-d0-candidate-selector
 DOO2_SEL_LC=0       # hf-lc-candidate-selector
 DOO2_SEL_JPSI=0     # hf-jpsi-toee-candidate-selector
+# User tasks
 DOO2_TASK_D0=1      # hf-task-d0
-DOO2_TASK_DPLUS=1   # hf-task-dplus
-DOO2_TASK_LC=1      # hf-task-lc
-DOO2_TASK_JPSI=1    # hf-task-jpsi
+DOO2_TASK_DPLUS=0   # hf-task-dplus
+DOO2_TASK_LC=0      # hf-task-lc
+DOO2_TASK_JPSI=0    # hf-task-jpsi
 DOO2_TASK_BPLUS=0   # hf-task-bplus
-DOO2_TREE_D0=1      # hf-tree-creator-d0-tokpi
-DOO2_TREE_LC=1      # hf-tree-creator-lc-topkpi
+# Tree creators
+DOO2_TREE_D0=0      # hf-tree-creator-d0-tokpi
+DOO2_TREE_LC=0      # hf-tree-creator-lc-topkpi
 
 # Selection cuts
 APPLYCUTS_D0=0      # Apply D0 selection cuts.
@@ -70,7 +76,7 @@ function Clean {
 function AdjustJson {
   # Make a copy of the default JSON file to modify it.
   JSON_EDIT=""
-  if [[ $APPLYCUTS_D0 -eq 1 || $APPLYCUTS_LC -eq 1 || $APPLYCUTS_JPSI ]]; then
+  if [[ $APPLYCUTS_D0 -eq 1 || $APPLYCUTS_LC -eq 1 || $APPLYCUTS_JPSI -eq 1 ]]; then
     JSON_EDIT="${JSON/.json/_edit.json}"
     cp "$JSON" "$JSON_EDIT" || ErrExit "Failed to cp $JSON $JSON_EDIT."
     JSON="$JSON_EDIT"
@@ -99,24 +105,28 @@ function AdjustJson {
 # Generate the O2 script containing the full workflow specification.
 function MakeScriptO2 {
   # Deactivate MC-only tasks for non-MC input.
-  [[ $DOO2_QA_EFF -eq 1 && $ISMC -eq 0 ]] && { MsgWarn "Skipping the QA task efficiency for non-MC input"; DOO2_QA_EFF=0; }
-  [[ $DOO2_QA_SIM -eq 1 && $ISMC -eq 0 ]] && { MsgWarn "Skipping the QA task simple for non-MC input"; DOO2_QA_SIM=0; }
-  [[ $DOO2_TREE_D0 -eq 1 && $ISMC -eq 0 ]] && { MsgWarn "Skipping the D0 tree creator for non-MC input"; DOO2_TREE_D0=0; }
-  [[ $DOO2_TREE_LC -eq 1 && $ISMC -eq 0 ]] && { MsgWarn "Skipping the Λc tree creator for non-MC input"; DOO2_TREE_LC=0; }
+  [ "$ISMC" -eq 0 ] && {
+    [ $DOO2_QA_EFF -eq 1 ] && { MsgWarn "Skipping the QA task efficiency for non-MC input"; DOO2_QA_EFF=0; }
+    [ $DOO2_QA_SIM -eq 1 ] && { MsgWarn "Skipping the QA task simple for non-MC input"; DOO2_QA_SIM=0; }
+    [ $DOO2_TREE_D0 -eq 1 ] && { MsgWarn "Skipping the D0 tree creator for non-MC input"; DOO2_TREE_D0=0; }
+    [ $DOO2_TREE_LC -eq 1 ] && { MsgWarn "Skipping the Λc tree creator for non-MC input"; DOO2_TREE_LC=0; }
+  }
 
   # Handle dependencies. (latest first)
+  # Tree creators
   [ $DOO2_TREE_D0 -eq 1 ] && { DOO2_SEL_D0=1; }
   [ $DOO2_TREE_LC -eq 1 ] && { DOO2_SEL_LC=1; }
-  [ $DOO2_TASK_BPLUS -eq 1 ] && { DOO2_SEL_D0=1; }
+  # User tasks
   [ $DOO2_TASK_D0 -eq 1 ] && { DOO2_SEL_D0=1; }
-  [ $DOO2_SEL_D0 -eq 1 ] && { DOO2_CAND_2PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
   [ $DOO2_TASK_JPSI -eq 1 ] && { DOO2_SEL_JPSI=1; }
-  [ $DOO2_SEL_JPSI -eq 1 ] && { DOO2_CAND_2PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
-  [ $DOO2_CAND_2PRONG -eq 1 ] && { DOO2_SKIM=1; }
-  [ $DOO2_TASK_DPLUS -eq 1 ] && { DOO2_CAND_3PRONG=1; }
   [ $DOO2_TASK_LC -eq 1 ] && { DOO2_SEL_LC=1; }
-  [ $DOO2_SEL_LC -eq 1 ] && { DOO2_CAND_3PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
-  [ $DOO2_CAND_3PRONG -eq 1 ] && { DOO2_SKIM=1; }
+  [ $DOO2_TASK_DPLUS -eq 1 ] && { DOO2_CAND_3PRONG=1; }
+  [ $DOO2_TASK_BPLUS -eq 1 ] && { DOO2_SEL_D0=1; }
+  # Selectors
+  [[ $DOO2_SEL_D0 -eq 1 || $DOO2_SEL_JPSI -eq 1 ]] && { DOO2_CAND_2PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
+  [[ $DOO2_SEL_LC -eq 1 ]] && { DOO2_CAND_3PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
+  # Vertexing
+  [[ $DOO2_CAND_2PRONG -eq 1 || $DOO2_CAND_3PRONG -eq 1 ]] && { DOO2_SKIM=1; }
 
   # Basic common options
   O2ARGS="--aod-memory-rate-limit 10000000000 --shm-segment-size 16000000000 --configuration json://\$JSON -b"
