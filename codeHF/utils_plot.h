@@ -16,7 +16,7 @@ void SetPad(TVirtualPad* pad, bool logScale)
   }
 }
 
-void SetHistogram(TH1* his, Float_t yMin, Float_t yMax, Float_t marginLow, Float_t marginHigh, bool logScale)
+void SetHistogram(TH1* his, Float_t yMin, Float_t yMax, Float_t marginLow, Float_t marginHigh, bool& logScale)
 {
   Float_t textsize = 0.05;
   his->GetYaxis()->SetTitleSize(textsize);
@@ -29,6 +29,7 @@ void SetHistogram(TH1* his, Float_t yMin, Float_t yMax, Float_t marginLow, Float
     yRange = yMax / yMin;
     his->GetYaxis()->SetRangeUser(yMin / std::pow(yRange, marginLow / k), yMax * std::pow(yRange, marginHigh / k));
   } else {
+    logScale = false;
     yRange = yMax - yMin;
     his->GetYaxis()->SetRangeUser(yMin - marginLow / k * yRange, yMax + marginHigh / k * yRange);
   }
