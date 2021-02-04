@@ -1,4 +1,4 @@
-alidist: master 2020-10-20 19:15:44 +0200 43401b1 add dependency to OpenSSL (#2329)
-AliPhysics: master 2020-10-21 12:32:54 +0200 446f68ebfc Merge pull request #15897 from mcolocci/master
-O2: dev 2020-10-21 11:39:06 +0200 9768573970 PWGHF: Extend and improve track index skimming. (#4647)
-Run 3 validation: master 2020-10-21 12:45:32 +0200 d886911 Update configuration.
+alidist: master 2021-02-03 22:10:18 +0100 c9b6c5a bump infologger (#2808)
+AliPhysics: master 2021-02-03 23:01:26 +0100 64ee243e1d Merge pull request #16821 from fjonasALICE/master
+O2: dev 2021-02-03 23:37:25 +0100 64d56ea416 Digits labels should be read via ConstMCTruthContainer
+Run 3 validation: master 2021-02-04 00:54:48 +0100 3938aed Update input cases.

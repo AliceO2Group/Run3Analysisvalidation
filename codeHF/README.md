@@ -1,20 +1,24 @@
 # Prepared HF tasks and tests
 
 ## HF decay reconstruction tasks
-The prepared HF example allows you to run reconstruction of 2-prong and 3-prong secondary vertices and a simple analysis of D<sup>0</sup> mesons. The entire data processing procedure in O<sup>2</sup> involves three steps:
+The prepared HF example allows you to run reconstruction of 2-prong secondary vertices and a simple analysis of D<sup>0</sup> mesons. The entire data processing procedure in O<sup>2</sup> involves several steps:
 1. Pre-selection of secondary tracks
    * Performed by the [HFTrackIndexSkimsCreator](https://github.com/AliceO2Group/AliceO2/blob/dev/Analysis/Tasks/PWGHF/HFTrackIndexSkimsCreator.cxx) class
    in the `o2-analysis-hf-track-index-skims-creator` binary.
    * Includes track selection, candidate preselection, and secondary vertex reconstruction.
-1. Reconstruction of 2-prong and 3-prong decay candidates
-   * Performed by the [HFCandidateCreator2Prong](https://github.com/AliceO2Group/AliceO2/blob/dev/Analysis/Tasks/PWGHF/HFCandidateCreator2Prong.cxx)
-   and [HFCandidateCreator3Prong](https://github.com/AliceO2Group/AliceO2/blob/dev/Analysis/Tasks/PWGHF/HFCandidateCreator3Prong.cxx) classes in the
-   `o2-analysis-hf-candidate-creator-2prong` and `o2-analysis-hf-candidate-creator-3prong` binaries.
-   * Reconstructs the secondary vertices again and creates 2-prong and 3-prong decay candidates.
-1. D<sup>0</sup> and D<sup>+</sup> analysis tasks
-   * Performed by the [TaskD0](https://github.com/AliceO2Group/AliceO2/blob/dev/Analysis/Tasks/PWGHF/taskD0.cxx)
-   and [TaskDPlus](https://github.com/AliceO2Group/AliceO2/blob/dev/Analysis/Tasks/PWGHF/taskDPlus.cxx) classes in the
-   `o2-analysis-hf-task-d0` and `o2-analysis-hf-task-dplus` binaries.
+1. Reconstruction of 2-prong decay candidates
+   * Performed by the [HFCandidateCreator2Prong](https://github.com/AliceO2Group/AliceO2/blob/dev/Analysis/Tasks/PWGHF/HFCandidateCreator2Prong.cxx) class
+   in the `o2-analysis-hf-candidate-creator-2prong` binary.
+   * Reconstructs the secondary vertices again and creates 2-prong decay candidates.
+   * Performs MC matching of the reconstructed candidates and of the generated particles.
+1. Final selection of candidates
+   * Performed by the [HFD0CandidateSelector](https://github.com/AliceO2Group/AliceO2/blob/dev/Analysis/Tasks/PWGHF/HFD0CandidateSelector.cxx) class
+   in the `o2-analysis-hf-d0-candidate-selector` binary.
+   * Appplies cuts on the parameters of the decay topology and track PID cuts.
+1. D<sup>0</sup> analysis task
+   * Performed by the [TaskD0](https://github.com/AliceO2Group/AliceO2/blob/dev/Analysis/Tasks/PWGHF/taskD0.cxx) class
+   in the `o2-analysis-hf-task-d0` binary.
+   * Fills histograms with kinematic properties of selected candidates (and matched particles).
 
 Check [this presentation](https://indico.cern.ch/event/932917/contributions/3920363/attachments/2065207/3465791/20200629_PWGHF_report.pdf) to learn more about the design of the underlying data processing scheme that includes skimming, decay reconstruction and analysis.
 
@@ -22,7 +26,7 @@ Check [this presentation](https://indico.cern.ch/event/932917/contributions/3920
 
 See the `README` in the main repository directory to get familiar with the validation framework.
 
-The HF validation code performs the D<sup>0</sup> and D<sup>+</sup> reconstruction analysis using AliPhysics (Run 1+2) and O<sup>2</sup> (Run 3) and produces comparison plots for various decay parameter distributions.
+The default example in the HF validation code performs the D<sup>0</sup> reconstruction analysis using AliPhysics (Run 1+2) and O<sup>2</sup> (Run 3) and produces comparison plots for various decay parameter distributions.
 
 The validation steps are defined in the task configuration script `config_tasks.sh`.
 
@@ -45,9 +49,8 @@ bash runtest.sh
 
 Running all the steps with `INPUT_CASE=4` takes about 40 seconds in total.
 
-The postprocessing step produces comparison plots `comparison_histos_2prong.pdf`, `comparison_ratios_2prong.pdf`, `comparison_histos_3prong.pdf`, `comparison_ratios_3prong.pdf`.
+The postprocessing step produces several plots `comparison_histos_(...).pdf`, `MC_(...).pdf`.
 
-To confirm that the output of the default settings looks as expected, compare the produced plots with their reference counterparts
-`comparison_histos_2prong_ref.pdf`, `comparison_ratios_2prong_ref.pdf`, `comparison_histos_3prong_ref.pdf`, `comparison_ratios_3prong_ref.pdf`.
+To confirm that the output of the default settings looks as expected, compare the produced plots with their reference counterparts `(...)_ref.pdf`.
 
 The complete list of commit hashes used to produce the reference plots can be found in `versions_ref.txt`.
