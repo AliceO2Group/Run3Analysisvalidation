@@ -70,10 +70,7 @@ if [ "$DEBUG" -eq 0 ]; then
 else
   # shellcheck disable=SC2086 # Ignore unquoted options.
   parallel $OPT_PARALLEL --will-cite --progress < "$ListRunScripts" > $LogFile
-fi
-ExitCode=$?
-find /tmp -maxdepth 1 -type s -group "$USER" -name "localhost*_*" -delete 2> /dev/null # Delete all user's sockets.
-[ $ExitCode -ne 0 ] && ErrExit "\nCheck $(realpath $LogFile)"
+fi || ErrExit "\nCheck $(realpath $LogFile)"
 grep -q "\\[WARN\\]" "$LogFile" && MsgWarn "There were warnings!\nCheck $(realpath $LogFile)"
 grep -q "\\[ERROR\\]" "$LogFile" && MsgErr "There were errors!\nCheck $(realpath $LogFile)"
 rm -f "$ListRunScripts" || ErrExit "Failed to rm $ListRunScripts."
