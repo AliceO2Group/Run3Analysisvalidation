@@ -220,7 +220,9 @@ function MakeScriptO2 {
 #!/bin/bash
 FileIn="\$1"
 JSON="\$2"
-$O2EXEC
+mkdir sockets && \
+$O2EXEC --fairmq-ipc-prefix sockets && \
+rm -r sockets
 EOF
 }
 
