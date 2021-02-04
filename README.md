@@ -64,7 +64,7 @@ The steering script `runtest.sh` performs the following execution steps:
   * Parameters of individual tasks are picked up from the JSON configuration file (`dpl-config.json` by default).
   * By default, the list of input files includes files produced by the conversion step.
   * In case you want to use `AO2D.root` files as input directly, you can set `ISINPUTO2=1` in your input specification
-    and use it in your configuration to deactivate incompatible steps (typically the conversion, AliPhysics tasks, and comparison).
+    and use it in your configuration to deactivate incompatible steps (typically the conversion and AliPhysics tasks).
 * Run output postprocessing. (activated by `DOPOSTPROCESS=1`)
   * Executes the postprocessing step script.
   * This step typically compares AliPhysics and O<sup>2</sup> output and produces plots.
