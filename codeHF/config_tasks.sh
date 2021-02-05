@@ -42,11 +42,12 @@ DOO2_SEL_DPLUS=0    # hf-dplus-topikpi-candidate-selector
 DOO2_SEL_LC=0       # hf-lc-candidate-selector
 DOO2_SEL_JPSI=0     # hf-jpsi-toee-candidate-selector
 # User tasks
-DOO2_TASK_D0=1      # hf-task-d0
+DOO2_TASK_D0=0      # hf-task-d0
 DOO2_TASK_DPLUS=0   # hf-task-dplus
 DOO2_TASK_LC=0      # hf-task-lc
-DOO2_TASK_JPSI=0    # hf-task-jpsi
+DOO2_TASK_JPSI=1    # hf-task-jpsi
 DOO2_TASK_BPLUS=0   # hf-task-bplus
+DOO2_TASK_X=1   		# hf-task-x
 # Tree creators
 DOO2_TREE_D0=0      # hf-tree-creator-d0-tokpi
 DOO2_TREE_LC=0      # hf-tree-creator-lc-topkpi
@@ -55,9 +56,9 @@ DOO2_TREE_LC=0      # hf-tree-creator-lc-topkpi
 APPLYCUTS_D0=0      # Apply D0 selection cuts.
 APPLYCUTS_DPLUS=0   # Apply D+ selection cuts.
 APPLYCUTS_LC=0      # Apply Λc selection cuts.
-APPLYCUTS_JPSI=0    # Apply J/ψ selection cuts.
+APPLYCUTS_JPSI=1    # Apply J/ψ selection cuts.
 
-SAVETREES=0         # Save O2 tables to trees.
+SAVETREES=1         # Save O2 tables to trees.
 USEO2VERTEXER=0     # Use the O2 vertexer in AliPhysics.
 DORATIO=0           # Plot histogram ratios in comparison.
 
@@ -137,6 +138,7 @@ function MakeScriptO2 {
   [ $DOO2_TASK_LC -eq 1 ] && { DOO2_SEL_LC=1; }
   [ $DOO2_TASK_DPLUS -eq 1 ] && { DOO2_SEL_DPLUS=1; }
   [ $DOO2_TASK_BPLUS -eq 1 ] && { DOO2_SEL_D0=1; }
+	[ $DOO2_TASK_X -eq 1 ] && { DOO2_SEL_JPSI=1; }
   # Selectors
   [[ $DOO2_SEL_D0 -eq 1 || $DOO2_SEL_JPSI -eq 1 ]] && { DOO2_CAND_2PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
   [[ $DOO2_SEL_LC -eq 1 || $DOO2_SEL_DPLUS -eq 1 ]] && { DOO2_CAND_3PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
@@ -180,6 +182,7 @@ function MakeScriptO2 {
   O2ARGS_TASK_DPLUS="$O2ARGS"
   O2ARGS_TASK_LC="$O2ARGS"
   O2ARGS_TASK_BPLUS="$O2ARGS"
+	O2ARGS_TASK_X="$O2ARGS"
   O2ARGS_TREE_D0="$O2ARGS"
   O2ARGS_TREE_LC="$O2ARGS"
   O2ARGS_MC_VALID="$O2ARGS"
@@ -211,6 +214,7 @@ function MakeScriptO2 {
   O2EXEC_TASK_DPLUS="o2-analysis-hf-task-dplus $O2ARGS_TASK_DPLUS"
   O2EXEC_TASK_LC="o2-analysis-hf-task-lc $O2ARGS_TASK_LC"
   O2EXEC_TASK_BPLUS="o2-analysis-hf-task-bplus $O2ARGS_TASK_BPLUS"
+	O2EXEC_TASK_X="o2-analysis-hf-task-x $O2ARGS_TASK_X"
   O2EXEC_TREE_D0="o2-analysis-hf-tree-creator-d0-tokpi $O2ARGS_TREE_D0"
   O2EXEC_TREE_LC="o2-analysis-hf-tree-creator-lc-topkpi $O2ARGS_TREE_LC"
   O2EXEC_MC_VALID="o2-analysis-hf-mc-validation $O2ARGS_MC_VALID"
@@ -235,6 +239,7 @@ function MakeScriptO2 {
   [ $DOO2_TASK_LC -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_LC"; MsgSubStep "  hf-task-lc"; }
   [ $DOO2_TASK_JPSI -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_JPSI"; MsgSubStep "  hf-task-jpsi"; }
   [ $DOO2_TASK_BPLUS -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_BPLUS"; MsgSubStep "  hf-task-bplus"; }
+	[ $DOO2_TASK_X -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_X"; MsgSubStep "  hf-task-x"; }
   [ $DOO2_TREE_D0 -eq 1 ] && { O2EXEC+=" | $O2EXEC_TREE_D0"; MsgSubStep "  hf-tree-creator-d0-tokpi"; }
   [ $DOO2_TREE_LC -eq 1 ] && { O2EXEC+=" | $O2EXEC_TREE_LC"; MsgSubStep "  hf-tree-creator-lc-topkpi"; }
   [ $DOO2_MC_VALID -eq 1 ] && { O2EXEC+=" | $O2EXEC_MC_VALID"; MsgSubStep "  hf-mc-validation"; }
