@@ -14,6 +14,7 @@
   * [Download the comparison software](#download-the-comparison-software)
   * [Install parallelisation software](#install-parallelisation-software)
 * [Run the framework](#run-the-framework)
+* [Job debugging](#job-debugging)
 * [Heavy-flavour analyses](#heavy-flavour-analyses)
 * [Keep your repositories and installations up to date](#keep-your-repositories-and-installations-up-to-date)
 * [Continuous integration tests](#continuous-integration-tests)
@@ -164,6 +165,30 @@ If everything went fine, the script will exit with the message `Done` and you sh
 If any step fails, the script will display an error message and you should look into the respective log file to investigate the problem.
 
 If the main log file of a validation step mentions "parallel: This job failed:", inspect the respective log file in the directory of the corresponding job.
+
+## Job debugging
+
+If you run many parallelised jobs and some of them don't finish successfully, you can make use of the debugging script `debug.sh` in the `exec` directory
+which can help you figure out what went wrong, where and why.
+
+You can execute the script from the current working directory using the following syntax (options can be combined):
+```bash
+bash [<path>/]debug.sh [-h] [-t TYPE] [-b [-u]] [-f] [-w] [-e]
+```
+
+`-h` Print out the usage help.
+
+`TYPE` Job type: `conversion`, `ali`, `o2` (`o2` by default)
+
+`-b`  Show bad jobs (without output file or successful end).
+
+`-u`  Mark unfinished jobs (running, hanging, aborted). (Requires `-b`.)
+
+`-f`  Show input files of bad jobs.
+
+`-w`  Show warnings (for all jobs).
+
+`-e`  Show errors (for all jobs).
 
 ## Heavy-flavour analyses
 
