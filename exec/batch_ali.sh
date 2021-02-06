@@ -56,7 +56,7 @@ while read -r FileIn; do
 done < "$LISTINPUT"
 
 CheckFile "$ListRunScripts"
-echo "Running AliPhysics jobs... ($(wc -l < "$ListRunScripts") jobs)"
+echo "Running AliPhysics jobs... ($(wc -l < "$ListRunScripts") jobs, $NFILESPERJOB files/job)"
 OPT_PARALLEL="--halt soon,fail=100%"
 if [ "$DEBUG" -eq 0 ]; then
   # shellcheck disable=SC2086 # Ignore unquoted options.
@@ -67,7 +67,7 @@ else
 fi || ErrExit "\nCheck $(realpath $LogFile)"
 grep -q -e '^'"W-" -e '^'"Warning" "$LogFile" && MsgWarn "There were warnings!\nCheck $(realpath $LogFile)"
 grep -q -e '^'"E-" -e '^'"Error" "$LogFile" && MsgErr "There were errors!\nCheck $(realpath $LogFile)"
-grep -q -e '^'"F-" -e '^'"Fatal" "$LogFile" && ErrExit "There were fatal errors!\nCheck $(realpath $LogFile)"
+grep -q -e '^'"F-" -e '^'"Fatal" -e "segmentation" "$LogFile" && ErrExit "There were fatal errors!\nCheck $(realpath $LogFile)"
 rm -f "$ListRunScripts" || ErrExit "Failed to rm $ListRunScripts."
 
 echo "Merging output files... (output file: $FILEOUT, logfile: $LogFile)"

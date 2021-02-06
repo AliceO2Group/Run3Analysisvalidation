@@ -36,6 +36,11 @@ NFILESPERJOB_O2=1               # Number of input files per O2 job
 SAVETREES=0                     # Save O2 tables to trees.
 DEBUG=0                         # Print out more information.
 
+# Performance
+NCORES=$(nproc)                 # Ideal number of used cores
+NCORESPERJOB_ALI=1              # Average number of cores used by one AliPhysics job
+NCORESPERJOB_O2=1.6             # Average number of cores used by one O2 job
+
 # This directory
 DIR_EXEC="$(dirname "$(realpath "$0")")"
 
@@ -122,23 +127,27 @@ CheckFile "$JSON"
 # Convert AliESDs.root to AO2D.root.
 if [ $DOCONVERT -eq 1 ]; then
   CheckFile "$LISTFILES_ALI"
-  MsgStep "Converting... ($(wc -l < "$LISTFILES_ALI") files)"
+  NFILES=$(wc -l < "$LISTFILES_ALI")
+  NFILESPERJOB_CONVERT=$(python3 -c "n = $NFILESPERJOB_CONVERT; print(n if n > 0 else max(1, round($NFILES * $NCORESPERJOB_ALI / $NCORES)))")
+  MsgStep "Converting... ($NFILES files)"
   [ $ISMC -eq 1 ] && MsgWarn "Using MC mode"
   [ $DEBUG -eq 1 ] && echo "Loading AliPhysics..."
   # Run the batch script in the ALI environment.
-  $ENVALI bash "$DIR_EXEC/batch_convert.sh" "$LISTFILES_ALI" "$LISTFILES_O2" $ISMC $DEBUG $NFILESPERJOB_CONVERT || exit 1
+  $ENVALI bash "$DIR_EXEC/batch_convert.sh" "$LISTFILES_ALI" "$LISTFILES_O2" $ISMC $DEBUG "$NFILESPERJOB_CONVERT" || exit 1
 fi
 
 # Run AliPhysics tasks.
 if [ $DOALI -eq 1 ]; then
   CheckFile "$LISTFILES_ALI"
-  MsgStep "Running AliPhysics tasks... ($(wc -l < "$LISTFILES_ALI") files)"
+  NFILES=$(wc -l < "$LISTFILES_ALI")
+  NFILESPERJOB_ALI=$(python3 -c "n = $NFILESPERJOB_ALI; print(n if n > 0 else max(1, round($NFILES * $NCORESPERJOB_ALI / $NCORES)))")
+  MsgStep "Running AliPhysics tasks... ($NFILES files)"
   rm -f "$FILEOUT" "$FILEOUT_ALI" || ErrExit "Failed to rm $FILEOUT $FILEOUT_ALI."
   MakeScriptAli || ErrExit "MakeScriptAli failed."
   CheckFile "$SCRIPT_ALI"
   [ $DEBUG -eq 1 ] && echo "Loading AliPhysics..."
   # Run the batch script in the ALI environment.
-  $ENVALI bash "$DIR_EXEC/batch_ali.sh" "$LISTFILES_ALI" "$JSON" "$SCRIPT_ALI" $DEBUG $NFILESPERJOB_ALI || exit 1
+  $ENVALI bash "$DIR_EXEC/batch_ali.sh" "$LISTFILES_ALI" "$JSON" "$SCRIPT_ALI" $DEBUG "$NFILESPERJOB_ALI" || exit 1
   # Run the batch script in the ALI+O2 environment.
   #$ENVALIO2 bash "$DIR_EXEC/batch_ali.sh" $LISTFILES_ALI $JSON $SCRIPT_ALI $DEBUG || exit 1
   mv "$FILEOUT" "$FILEOUT_ALI" || ErrExit "Failed to mv $FILEOUT $FILEOUT_ALI."
@@ -147,14 +156,16 @@ fi
 # Run O2 tasks.
 if [ $DOO2 -eq 1 ]; then
   CheckFile "$LISTFILES_O2"
-  MsgStep "Running O2 tasks... ($(wc -l < "$LISTFILES_O2") files)"
+  NFILES=$(wc -l < "$LISTFILES_O2")
+  NFILESPERJOB_O2=$(python3 -c "n = $NFILESPERJOB_O2; print(n if n > 0 else min(16, max(1, round($NFILES * $NCORESPERJOB_O2 / $NCORES))))") # FIXME: Jobs with more than 16 files per job lose data.
+  MsgStep "Running O2 tasks... ($NFILES files)"
   rm -f "$FILEOUT" "$FILEOUT_O2" || ErrExit "Failed to rm $FILEOUT $FILEOUT_O2."
   MakeScriptO2 || ErrExit "MakeScriptO2 failed."
   CheckFile "$SCRIPT_O2"
   [ $SAVETREES -eq 1 ] || FILEOUT_TREES=""
   [ $DEBUG -eq 1 ] && echo "Loading O2..."
   # Run the batch script in the O2 environment.
-  $ENVO2 bash "$DIR_EXEC/batch_o2.sh" "$LISTFILES_O2" "$JSON" "$SCRIPT_O2" $DEBUG $NFILESPERJOB_O2 "$FILEOUT_TREES" || exit 1
+  $ENVO2 bash "$DIR_EXEC/batch_o2.sh" "$LISTFILES_O2" "$JSON" "$SCRIPT_O2" $DEBUG "$NFILESPERJOB_O2" "$FILEOUT_TREES" || exit 1
   mv "$FILEOUT" "$FILEOUT_O2" || ErrExit "Failed to mv $FILEOUT $FILEOUT_O2."
   [[ $SAVETREES -eq 1 && "$FILEOUT_TREES" ]] && { mv "$FILEOUT_TREES" "$FILEOUT_TREES_O2" || ErrExit "Failed to mv $FILEOUT_TREES $FILEOUT_TREES_O2."; }
 fi
