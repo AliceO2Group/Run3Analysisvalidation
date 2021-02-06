@@ -62,7 +62,7 @@ while read -r FileIn; do
 done < "$LISTINPUT"
 
 CheckFile "$ListRunScripts"
-echo "Running O2 jobs... ($(wc -l < "$ListRunScripts") jobs)"
+echo "Running O2 jobs... ($(wc -l < "$ListRunScripts") jobs, $NFILESPERJOB files/job)"
 OPT_PARALLEL="--halt soon,fail=100%"
 if [ "$DEBUG" -eq 0 ]; then
   # shellcheck disable=SC2086 # Ignore unquoted options.
@@ -72,7 +72,7 @@ else
   parallel $OPT_PARALLEL --will-cite --progress < "$ListRunScripts" > $LogFile
 fi || ErrExit "\nCheck $(realpath $LogFile)"
 grep -q "\\[WARN\\]" "$LogFile" && MsgWarn "There were warnings!\nCheck $(realpath $LogFile)"
-grep -q "\\[ERROR\\]" "$LogFile" && MsgErr "There were errors!\nCheck $(realpath $LogFile)"
+grep -q -e "\\[ERROR\\]" -e "segmentation" "$LogFile" && MsgErr "There were errors!\nCheck $(realpath $LogFile)"
 rm -f "$ListRunScripts" || ErrExit "Failed to rm $ListRunScripts."
 
 echo "Merging output files... (output file: $FILEOUT, logfile: $LogFile)"
