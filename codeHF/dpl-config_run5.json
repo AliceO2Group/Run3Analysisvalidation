@@ -113,12 +113,12 @@
         "d_nSigmaTPC": "3."
     },
     "hf-task-d0": {
-        "cutEtaCandMax": "1.44",
+        "cutYCandMax": "0.8",
         "d_selectionFlagD0": "0",
         "d_selectionFlagD0bar": "0"
     },
     "hf-task-d0-mc": {
-        "cutEtaCandMax": "1.44",
+        "cutYCandMax": "0.8",
         "d_selectionFlagD0": "0",
         "d_selectionFlagD0bar": "0"
     },
@@ -126,19 +126,19 @@
         "d_selectionFlagDPlus": "0"
     },
     "hf-task-lc": {
-        "cutEtaCandMax": "-1.",
+        "cutYCandMax": "0.8",
         "d_selectionFlagLc": "0"
     },
     "hf-task-lc-mc": {
-        "cutEtaCandMax": "-1.",
+        "cutYCandMax": "0.8",
         "d_selectionFlagLc": "0"
     },
     "hf-task-jpsi": {
-        "cutEtaCandMax": "-1.",
+        "cutYCandMax": "0.8",
         "d_selectionFlagJpsi": "0"
     },
     "hf-task-jpsi-mc": {
-        "cutEtaCandMax": "-1.",
+        "cutYCandMax": "0.8",
         "d_selectionFlagJpsi": "0"
     },
     "internal-dpl-aod-writer": {
