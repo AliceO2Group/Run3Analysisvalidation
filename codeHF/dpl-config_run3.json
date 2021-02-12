@@ -91,6 +91,17 @@
         "d_nSigmaTOF": "3.",
         "d_nSigmaTOFCombined": "5."
     },
+    "hf-dplus-topikpi-candidate-selector": {
+        "d_pTCandMin": "0.",
+        "d_pTCandMax": "36.",
+        "d_pidTPCMinpT": "0.15",
+        "d_pidTPCMaxpT": "-1.",
+        "d_pidTOFMinpT": "0.15",
+        "d_pidTOFMaxpT": "-1.",
+        "d_TPCNClsFindablePIDCut": "50.",
+        "d_nSigmaTPC": "3.",
+        "d_nSigmaTOF": "3."
+    },
     "hf-lc-candidate-selector": {
         "d_pTCandMin": "0.",
         "d_pTCandMax": "36.",
@@ -123,6 +134,11 @@
         "d_selectionFlagD0bar": "0"
     },
     "hf-task-dplus": {
+        "cutYCandMax": "0.8",
+        "d_selectionFlagDPlus": "0"
+    },
+    "hf-task-dplus-mc": {
+        "cutYCandMax": "0.8",
         "d_selectionFlagDPlus": "0"
     },
     "hf-task-lc": {
