@@ -115,8 +115,11 @@ fi
 # Generate list of input files.
 MsgStep "Generating list of input files..."
 [ $ISINPUTO2 -eq 1 ] && LISTFILES="$LISTFILES_O2" || LISTFILES="$LISTFILES_ALI"
+INPUT_DIR="$(realpath "$INPUT_DIR")"
+[ $DEBUG -eq 1 ] && { echo "Searching for $INPUT_FILES in $INPUT_DIR"; }
 find "$INPUT_DIR" -name "$INPUT_FILES" | sort | head -n $NFILESMAX > "$LISTFILES"
 [[ ${PIPESTATUS[0]} -eq 0 || ${PIPESTATUS[0]} -eq 141 ]] || ErrExit "Failed to make a list of input files."
+[ "$(wc -l < "$LISTFILES")" -eq 0 ] && { ErrExit "No input files!"; }
 
 # Modify the JSON file.
 MsgStep "Modifying JSON file..."
@@ -128,6 +131,7 @@ CheckFile "$JSON"
 if [ $DOCONVERT -eq 1 ]; then
   CheckFile "$LISTFILES_ALI"
   NFILES=$(wc -l < "$LISTFILES_ALI")
+  [ "$NFILES" -eq 0 ] && { ErrExit "No input conversion files!"; }
   NFILESPERJOB_CONVERT=$(python3 -c "n = $NFILESPERJOB_CONVERT; print(n if n > 0 else max(1, round($NFILES * $NCORESPERJOB_ALI / $NCORES)))")
   MsgStep "Converting... ($NFILES files)"
   [ $ISMC -eq 1 ] && MsgWarn "Using MC mode"
@@ -140,6 +144,7 @@ fi
 if [ $DOALI -eq 1 ]; then
   CheckFile "$LISTFILES_ALI"
   NFILES=$(wc -l < "$LISTFILES_ALI")
+  [ "$NFILES" -eq 0 ] && { ErrExit "No input AliPhysics files!"; }
   NFILESPERJOB_ALI=$(python3 -c "n = $NFILESPERJOB_ALI; print(n if n > 0 else max(1, round($NFILES * $NCORESPERJOB_ALI / $NCORES)))")
   MsgStep "Running AliPhysics tasks... ($NFILES files)"
   rm -f "$FILEOUT" "$FILEOUT_ALI" || ErrExit "Failed to rm $FILEOUT $FILEOUT_ALI."
@@ -157,6 +162,7 @@ fi
 if [ $DOO2 -eq 1 ]; then
   CheckFile "$LISTFILES_O2"
   NFILES=$(wc -l < "$LISTFILES_O2")
+  [ "$NFILES" -eq 0 ] && { ErrExit "No input O2 files!"; }
   NFILESPERJOB_O2=$(python3 -c "n = $NFILESPERJOB_O2; print(n if n > 0 else min(16, max(1, round($NFILES * $NCORESPERJOB_O2 / $NCORES))))") # FIXME: Jobs with more than 16 files per job lose data.
   MsgStep "Running O2 tasks... ($NFILES files)"
   rm -f "$FILEOUT" "$FILEOUT_O2" || ErrExit "Failed to rm $FILEOUT $FILEOUT_O2."
