@@ -125,9 +125,6 @@ alienv enter AliPhysics/latest
 alienv enter O2/latest
 ```
 
-**Make sure that your bash environment is clean!
-Do not load ROOT, AliPhysics, O<sup>2</sup> or any other aliBuild package environment before running the framework!**
-
 ### Download the comparison software
 
 ```bash
@@ -148,6 +145,9 @@ sudo apt install parallel
 ## Run the framework
 
 Now you are ready to run the validation code.
+
+**Make sure that your bash environment is clean!
+Do not load ROOT, AliPhysics, O<sup>2</sup> or any other aliBuild package environment before running the framework!**
 
 Enter any directory and execute the steering script `runtest.sh`.
 (You can create a symlink for convenience.)
