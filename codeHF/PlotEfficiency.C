@@ -43,7 +43,7 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
     }
     Printf("\nPlotting efficiency for: %s", particle.Data());
 
-    TString histonameRec = Form("hf-task-%s-mc/hPtRecSig", particle.Data());
+    TString histonameRec = Form("hf-task-%s-mc/hPtGenSig", particle.Data()); // Use hPtRecSig for reconstruction level pT.
     TH1F* hPtRec = (TH1F*)file->Get(histonameRec.Data());
     if (!hPtRec) {
       Printf("Error: Failed to load %s from %s", histonameRec.Data(), pathFile.Data());
