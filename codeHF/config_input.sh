@@ -37,7 +37,7 @@ case $INPUT_CASE in
     INPUT_LABEL="p-p MC LHC17p"
     INPUT_DIR="/data/Run3data/alice_sim_2018_LHC18a4a2_cent/282099"
     ISMC=1;;
-  5) # FIXME: Conversion fails for some files (e.g. 1326).
+  5)
     INPUT_LABEL="p-p MC LHC17p"
     INPUT_DIR="/mnt/temp/Run3data_Vit/LHC18a4a2_cent/282341"
     ISMC=1;;
@@ -51,21 +51,21 @@ case $INPUT_CASE in
     ISINPUTO2=1;;
   8)
     INPUT_LABEL="Run 5, p-p MC 14 TeV CCBAR, Scenario 2"
-    INPUT_DIR="/data/Run5data/CCBAR_5Mevents_scenario2_26012021"
+    INPUT_DIR="/data/Run5data/CCBAR_scenario2_latest"
     INPUT_FILES="AODRun5.*.root"
     JSON="$JSONRUN5"
     ISINPUTO2=1
     ISMC=1;;
   9)
     INPUT_LABEL="Run 5, p-p MC 14 TeV ONIA, Scenario 2"
-    INPUT_DIR="/data/Run5data/ONIA_10Mev_scenario2_28012021"
+    INPUT_DIR="/data/Run5data/ONIA_scenario2_latest"
     INPUT_FILES="AODRun5.*.root"
     JSON="$JSONRUN5"
     ISINPUTO2=1
     ISMC=1;;
-  10) # FIXME: segmentation violation when running hf-track-index-skims-creator
+  10)
     INPUT_LABEL="Run 5, p-p MC 14 TeV MB, Scenario 2"
-    INPUT_DIR="/data/Run5data/MB_20Mev_scenario2_25012021"
+    INPUT_DIR="/data/Run5data/MB_scenario2_latest"
     INPUT_FILES="AODRun5.*.root"
     JSON="$JSONRUN5"
     ISINPUTO2=1
