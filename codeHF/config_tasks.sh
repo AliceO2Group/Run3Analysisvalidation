@@ -27,6 +27,7 @@ DOPOSTPROCESS=1     # Run output postprocessing. (Compare AliPhysics and O2 outp
 # QA
 DOO2_QA_EFF=1       # qa-efficiency
 DOO2_QA_SIM=1       # qa-simple
+DOO2_MC_VALID=0     # hf-mc-validation
 # PID
 DOO2_PID_TPC=0      # pid-tpc
 DOO2_PID_TOF=0      # pid-tof
@@ -111,9 +112,12 @@ function MakeScriptO2 {
     [ $DOO2_QA_SIM -eq 1 ] && { MsgWarn "Skipping the QA task simple for non-MC input"; DOO2_QA_SIM=0; }
     [ $DOO2_TREE_D0 -eq 1 ] && { MsgWarn "Skipping the D0 tree creator for non-MC input"; DOO2_TREE_D0=0; }
     [ $DOO2_TREE_LC -eq 1 ] && { MsgWarn "Skipping the Λc tree creator for non-MC input"; DOO2_TREE_LC=0; }
+    [ $DOO2_MC_VALID -eq 1 ] && { MsgWarn "Skipping the MC validation task for non-MC input"; DOO2_MC_VALID=0; }
   }
 
   # Handle dependencies. (latest first)
+  # QA
+  [ $DOO2_MC_VALID -eq 1 ] && { DOO2_SEL_D0=1; }
   # Tree creators
   [ $DOO2_TREE_D0 -eq 1 ] && { DOO2_SEL_D0=1; }
   [ $DOO2_TREE_LC -eq 1 ] && { DOO2_SEL_LC=1; }
@@ -129,7 +133,7 @@ function MakeScriptO2 {
   # Vertexing
   [[ $DOO2_CAND_2PRONG -eq 1 || $DOO2_CAND_3PRONG -eq 1 ]] && { DOO2_SKIM=1; }
 
-  # Basic common options
+  # General options
   O2ARGS="--aod-memory-rate-limit 10000000000 --shm-segment-size 16000000000 --configuration json://\$JSON -b"
 
   # Options to save tables in trees
@@ -164,6 +168,7 @@ function MakeScriptO2 {
   O2ARGS_TASK_BPLUS="$O2ARGS"
   O2ARGS_TREE_D0="$O2ARGS"
   O2ARGS_TREE_LC="$O2ARGS"
+  O2ARGS_MC_VALID="$O2ARGS"
   # MC
   [ "$ISMC" -eq 1 ] && {
     O2ARGS_CAND_2PRONG+=" --doMC"
@@ -191,6 +196,7 @@ function MakeScriptO2 {
   O2EXEC_TASK_BPLUS="o2-analysis-hf-task-bplus $O2ARGS_TASK_BPLUS"
   O2EXEC_TREE_D0="o2-analysis-hf-tree-creator-d0-tokpi $O2ARGS_TREE_D0"
   O2EXEC_TREE_LC="o2-analysis-hf-tree-creator-lc-topkpi $O2ARGS_TREE_LC"
+  O2EXEC_MC_VALID="o2-analysis-hf-mc-validation $O2ARGS_MC_VALID"
 
   # Form the full O2 command.
   echo "Tasks to be executed:"
@@ -212,6 +218,7 @@ function MakeScriptO2 {
   [ $DOO2_TASK_BPLUS -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_BPLUS"; MsgSubStep "  hf-task-bplus"; }
   [ $DOO2_TREE_D0 -eq 1 ] && { O2EXEC+=" | $O2EXEC_TREE_D0"; MsgSubStep "  hf-tree-creator-d0-tokpi"; }
   [ $DOO2_TREE_LC -eq 1 ] && { O2EXEC+=" | $O2EXEC_TREE_LC"; MsgSubStep "  hf-tree-creator-lc-topkpi"; }
+  [ $DOO2_MC_VALID -eq 1 ] && { O2EXEC+=" | $O2EXEC_MC_VALID"; MsgSubStep "  hf-mc-validation"; }
   O2EXEC=${O2EXEC:3} # Remove the leading " | ".
   [ "$O2EXEC" ] || ErrExit "Nothing to do!"
 
