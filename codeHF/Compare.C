@@ -42,7 +42,10 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
   VecSpecHis vecHisTracks;
   AddHistogram(vecHisTracks, "#it{p}_{T} before selections (GeV/#it{c})", "hPtAllTracks", "hf-produce-sel-track/hpt_nocuts", 2, 1, 0);
   AddHistogram(vecHisTracks, "#it{p}_{T} after selections (GeV/#it{c})", "hPtSelTracks", "hf-produce-sel-track/hpt_cuts_2prong", 2, 1, 0);
-  AddHistogram(vecHisTracks, "DCA XY to prim vtx after selections (cm)", "hImpParSelTracks", "hf-produce-sel-track/hdcatoprimxy_cuts_2prong", 2, 1, 0);
+  AddHistogram(vecHisTracks, "DCA XY to prim. vtx. (2-prong sel.) (cm)", "hImpParSelTracks2prong", "hf-produce-sel-track/hdcatoprimxy_cuts_2prong", 2, 1, 0);
+  AddHistogram(vecHisTracks, "DCA XY to prim. vtx. (3-prong sel.) (cm)", "hImpParSelTracks3prong", "hf-produce-sel-track/hdcatoprimxy_cuts_3prong", 2, 1, 0);
+  AddHistogram(vecHisTracks, "#it{#eta} (2-prong sel.)", "hEtaSelTracks2prong", "hf-produce-sel-track/heta_cuts_2prong", 2, 0, 0);
+  AddHistogram(vecHisTracks, "#it{#eta} (3-prong sel.)", "hEtaSelTracks3prong", "hf-produce-sel-track/heta_cuts_3prong", 2, 0, 0);
 
   VecSpecHis vecHisSkim;
   AddHistogram(vecHisSkim, "secondary vtx x - 2prong (cm)", "h2ProngVertX", "hf-track-index-skims-creator/hvtx2_x", 5, 1, 0);
