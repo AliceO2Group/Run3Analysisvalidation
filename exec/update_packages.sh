@@ -37,6 +37,8 @@ LIST_PKG_DEV_SPECS=()
 
 # Delete unnecessary files.
 CLEAN=1
+CLEAN_AGGRESSIVE=1
+CLEAN_OPT=""
 
 # Delete all builds that are not needed to run the latest builds of specified development packages.
 # WARNING: This feature requires all development packages to be specified and added in the list LIST_PKG_DEV_SPECS! Builds of missing packages will be deleted!
@@ -259,7 +261,7 @@ if [ $CLEAN -eq 1 ]; then
   SIZE_BEFORE=$(du -sb "$ALIBUILD_WORK_DIR" | cut -f1)
 
   # Delete all symlinks to builds and recreate the latest ones to allow deleting of all other builds.
-  [[ $PURGE_BUILDS -eq 1 && "$ALIBUILD_VERSION" -lt 172 ]] && { MsgWarn "- Skipping purging, unsupported version of aliBuild (< 1.7.2)"; PURGE_BUILDS=0; }
+  [[ $PURGE_BUILDS -eq 1 && "$ALIBUILD_VERSION" -lt 172 ]] && { MsgWarn "Skipping purging, unsupported version of aliBuild (< 1.7.2)"; PURGE_BUILDS=0; }
   if [ $PURGE_BUILDS -eq 1 ]; then
     MsgSubStep "- Purging builds"
     # Check existence of the build directories.
@@ -282,8 +284,9 @@ if [ $CLEAN -eq 1 ]; then
 
   # Delete obsolete builds.
   MsgSubStep "- Deleting obsolete builds"
+  [ $CLEAN_AGGRESSIVE -eq 1 ] && { MsgWarn "Using aggressive cleanup"; CLEAN_OPT="--aggressive-cleanup"; }
   # shellcheck disable=SC2086 # Ignore unquoted options.
-  cd "$ALICE_DIR" && aliBuild clean $ALIBUILD_OPT
+  cd "$ALICE_DIR" && aliBuild clean $ALIBUILD_OPT $CLEAN_OPT
 
   # Get the directory size after cleaning.
   SIZE_AFTER=$(du -sb "$ALIBUILD_WORK_DIR" | cut -f1)
