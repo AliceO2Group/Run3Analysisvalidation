@@ -102,22 +102,22 @@ function UpdateBranch {
   [ "$4" ] && REMOTE_FORK_="$4"
 
   MsgSubStep "- Updating branch $BRANCH_"
-  git checkout "$BRANCH_" || ErrExit
+  git checkout "$BRANCH_" || ErrExit "git checkout $BRANCH_ failed."
 
   # Synchronise with the fork first, just in case there are some commits pushed from another local repository.
   if [ "$REMOTE_FORK_" ]; then
     MsgSubSubStep "-- Updating branch $BRANCH_ from $REMOTE_FORK_/$BRANCH_"
-    git pull --rebase "$REMOTE_FORK_" "$BRANCH_" || ErrExit
+    git pull --rebase "$REMOTE_FORK_" "$BRANCH_" || ErrExit "git pull --rebase $REMOTE_FORK_ $BRANCH_ failed."
   fi
 
   # Synchronise with upstream/main.
   MsgSubSubStep "-- Updating branch $BRANCH_ from $REMOTE_MAIN_/$BRANCH_MAIN_"
-  git pull --rebase "$REMOTE_MAIN_" "$BRANCH_MAIN_" || ErrExit
+  git pull --rebase "$REMOTE_MAIN_" "$BRANCH_MAIN_" || ErrExit "git pull --rebase $REMOTE_MAIN_ $BRANCH_MAIN_ failed."
 
   # Push to the fork.
   if [ "$REMOTE_FORK_" ]; then
     MsgSubSubStep "-- Pushing branch $BRANCH_ to $REMOTE_FORK_"
-    git push -f "$REMOTE_FORK_" "$BRANCH_" || ErrExit
+    git push -f "$REMOTE_FORK_" "$BRANCH_" || ErrExit "git push -f $REMOTE_FORK_ $BRANCH_ failed"
   fi
   return 0
 }
@@ -131,7 +131,7 @@ function UpdateGit {
   [ "$4" ] && REMOTE_FORK="$4"
 
   # Move to the Git repository and get the name of the current branch.
-  cd "$DIR" && BRANCH=$(git rev-parse --abbrev-ref HEAD) || ErrExit
+  cd "$DIR" && BRANCH=$(git rev-parse --abbrev-ref HEAD) || ErrExit "Failed to get the name of the current branch."
   #echo "Directory: $DIR"
   echo "Current branch: $BRANCH"
 
@@ -142,16 +142,16 @@ function UpdateGit {
   MsgSubStep "- Stashing potential uncommitted local changes"
   NSTASH_OLD=$(git stash list | wc -l) && \
   git stash && \
-  NSTASH_NEW=$(git stash list | wc -l) || ErrExit
+  NSTASH_NEW=$(git stash list | wc -l) || ErrExit "git stash failed."
 
   # Update the main branch.
-  UpdateBranch "$REMOTE_MAIN" "$BRANCH_MAIN" "$BRANCH_MAIN" "$REMOTE_FORK" || ErrExit
+  UpdateBranch "$REMOTE_MAIN" "$BRANCH_MAIN" "$BRANCH_MAIN" "$REMOTE_FORK" || ErrExit "Failed to update branch $BRANCH_MAIN."
 
   # Update the current branch.
-  [ "$BRANCH" != "$BRANCH_MAIN" ] && { UpdateBranch "$REMOTE_MAIN" "$BRANCH_MAIN" "$BRANCH" "$REMOTE_FORK" || ErrExit; }
+  [ "$BRANCH" != "$BRANCH_MAIN" ] && { UpdateBranch "$REMOTE_MAIN" "$BRANCH_MAIN" "$BRANCH" "$REMOTE_FORK" || ErrExit "Failed to update branch $BRANCH."; }
 
   # Unstash stashed changes if any.
-  [ "$NSTASH_NEW" -ne "$NSTASH_OLD" ] && { MsgSubStep "- Unstashing uncommitted local changes"; git stash pop || ErrExit; }
+  [ "$NSTASH_NEW" -ne "$NSTASH_OLD" ] && { MsgSubStep "- Unstashing uncommitted local changes"; git stash pop || ErrExit "git stash pop failed."; }
   return 0
 }
 
@@ -160,7 +160,7 @@ function BuildPackage {
   PkgBuildOpt="$2"
   [ "$PkgName" ] || ErrExit "Empty package name"
   # shellcheck disable=SC2086 # Ignore unquoted options.
-  cd "$ALICE_DIR" && aliBuild build "$PkgName" $PkgBuildOpt $ALIBUILD_OPT || ErrExit;
+  cd "$ALICE_DIR" && aliBuild build "$PkgName" $PkgBuildOpt $ALIBUILD_OPT || ErrExit "aliBuild build $PkgName $PkgBuildOpt $ALIBUILD_OPT failed."
 }
 
 # Do the full update of a package.
@@ -184,9 +184,9 @@ function UpdatePackage {
     DoBuild=${Specs[7]}
   }
   # Update repository.
-  [ "$DoUpdate" -eq 1 ] && { UpdateGit "$PathRepo" "$RemoteMain" "$BranchMain" "$RemoteFork"; } || { echo "Update deactivated. Skipping"; }
+  [ "$DoUpdate" -eq 1 ] && { UpdateGit "$PathRepo" "$RemoteMain" "$BranchMain" "$RemoteFork" || ErrExit "Failed to update $Name repository."; } || { echo "Update deactivated. Skipping"; }
   # Build package.
-  [ "$DoBuild" -eq 1 ] && { MsgSubStep "- Building $Name"; BuildPackage "$Name" "$BuildOpt" || ErrExit; }
+  [ "$DoBuild" -eq 1 ] && { MsgSubStep "- Building $Name"; BuildPackage "$Name" "$BuildOpt" || ErrExit "Failed to build $Name."; }
   return 0
 }
 
@@ -250,7 +250,7 @@ fi
 for pkg in "${LIST_PKG_SPECS[@]}"; do
   arr="${pkg}[@]"
   spec=("${!arr}")
-  UpdatePackage spec || ErrExit
+  UpdatePackage spec || ErrExit "Failed to update packages."
 done
 
 # Cleanup
@@ -269,8 +269,8 @@ if [ $CLEAN -eq 1 ]; then
     [[ -d "$ALIBUILD_DIR_ARCH" && -d "$ALIBUILD_DIR_BUILD" ]] || ErrExit "Build directories do not exist."
     # Delete symlinks to all builds.
     MsgSubSubStep "-- Deleting symlinks to all builds"
-    find "$ALIBUILD_DIR_ARCH" -mindepth 2 -maxdepth 2 -type l -delete || ErrExit
-    find "$ALIBUILD_DIR_BUILD" -mindepth 1 -maxdepth 1 -type l -delete || ErrExit
+    find "$ALIBUILD_DIR_ARCH" -mindepth 2 -maxdepth 2 -type l -delete || ErrExit "Failed to delete symlinks in $ALIBUILD_DIR_ARCH."
+    find "$ALIBUILD_DIR_BUILD" -mindepth 1 -maxdepth 1 -type l -delete || ErrExit "Failed to delete symlinks in $ALIBUILD_DIR_BUILD."
     # Recreate symlinks to the latest builds of development packages and their dependencies.
     for ((i = 0; i < ${#LIST_PKG_DEV_SPECS[@]}; ++i)); do
       pkg="${LIST_PKG_DEV_SPECS[i]}"
@@ -278,7 +278,7 @@ if [ $CLEAN -eq 1 ]; then
       spec=("${!arr}")
       Name="${spec[0]}"
       BuildOpt="${spec[6]}"
-      MsgSubSubStep "-- Re-building $Name to recreate symlinks"; cd "$ALICE_DIR" && BuildPackage "$Name" "$BuildOpt" > /dev/null 2>&1 || ErrExit
+      MsgSubSubStep "-- Re-building $Name to recreate symlinks"; cd "$ALICE_DIR" && BuildPackage "$Name" "$BuildOpt" > /dev/null 2>&1 || ErrExit "Failed to rebuild $Name."
     done
   fi
 
@@ -286,7 +286,7 @@ if [ $CLEAN -eq 1 ]; then
   MsgSubStep "- Deleting obsolete builds"
   [ $CLEAN_AGGRESSIVE -eq 1 ] && { MsgWarn "Using aggressive cleanup"; CLEAN_OPT="--aggressive-cleanup"; }
   # shellcheck disable=SC2086 # Ignore unquoted options.
-  cd "$ALICE_DIR" && aliBuild clean $ALIBUILD_OPT $CLEAN_OPT
+  cd "$ALICE_DIR" && aliBuild clean $ALIBUILD_OPT $CLEAN_OPT || ErrExit "aliBuild clean $ALIBUILD_OPT $CLEAN_OPT failed."
 
   # Get the directory size after cleaning.
   SIZE_AFTER=$(du -sb "$ALIBUILD_WORK_DIR" | cut -f1)
