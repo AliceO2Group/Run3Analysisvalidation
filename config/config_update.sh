@@ -9,6 +9,7 @@
 
 # Delete unnecessary files.
 CLEAN=1
+CLEAN_AGGRESSIVE=1
 
 # Delete all builds that are not needed to run the latest builds of specified development packages.
 # WARNING: This feature requires all development packages to be specified and added in the list LIST_PKG_DEV_SPECS! Builds of missing packages will be deleted!
