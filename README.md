@@ -10,13 +10,13 @@
   * [Execution](#execution)
   * [Configuration](#configuration)
 * [Preparation](#preparation)
-  * [Build AliPhysics and O<sup>2</sup>](#build-aliphysics-and-o-sup-2--sup-)
-  * [Download the comparison software](#download-the-comparison-software)
+  * [Build AliPhysics and O<sup>2</sup>](#build-aliphysics-and-o2)
+  * [Download the validation framework](#download-the-validation-framework)
   * [Install parallelisation software](#install-parallelisation-software)
 * [Run the framework](#run-the-framework)
 * [Job debugging](#job-debugging)
 * [Heavy-flavour analyses](#heavy-flavour-analyses)
-* [Keep your repositories and installations up to date](#keep-your-repositories-and-installations-up-to-date)
+* [Keep your repositories and installations up to date and clean](#keep-your-repositories-and-installations-up-to-date-and-clean)
 * [Continuous integration tests](#continuous-integration-tests)
   * [C++](#c)
   * [Python](#python)
@@ -125,7 +125,7 @@ alienv enter AliPhysics/latest
 alienv enter O2/latest
 ```
 
-### Download the comparison software
+### Download the validation framework
 
 ```bash
 git clone https://github.com/AliceO2Group/Run3Analysisvalidation.git
@@ -194,7 +194,7 @@ bash [<path>/]debug.sh [-h] [-t TYPE] [-b [-u]] [-f] [-w] [-e]
 
 Enter the `codeHF` directory and see the `README`.
 
-## Keep your repositories and installations up to date
+## Keep your repositories and installations up to date and clean
 
 With the ongoing fast development, it can easily happen that updating the O<sup>2</sup> part of the validation
 also requires updating the AliPhysics installation which then requires updating the alidist recipes as well.
