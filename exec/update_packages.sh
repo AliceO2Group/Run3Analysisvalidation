@@ -37,7 +37,7 @@ LIST_PKG_DEV_SPECS=()
 
 # Delete unnecessary files.
 CLEAN=1
-CLEAN_AGGRESSIVE=1
+CLEAN_AGGRESSIVE=0
 CLEAN_OPT=""
 
 # Delete all builds that are not needed to run the latest builds of specified development packages.
