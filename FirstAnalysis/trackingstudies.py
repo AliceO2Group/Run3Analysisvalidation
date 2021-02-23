@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-from ROOT import TH1F, TCanvas, TEfficiency, TFile, TLegend, gPad
-
+from ROOT import TH1F, TCanvas, TEfficiency, TFile, TLegend, gPad # pylint: disable=import-error, no-name-in-module, unused-import
 
 def efficiencytracking():
 
@@ -59,7 +58,7 @@ def efficiencyhadron(had, var):
     ceffhf.SaveAs("efficiency_hfcand%s%s.root" % (had, var))
 
 
-def pTdistribution (had):
+def pt_distr (had):
     fileo2 = TFile("../codeHF/AnalysisResults_O2.root")
     cpt = TCanvas("cpt", "pT distribution")
     cpt.SetCanvasSize(1500, 700)
@@ -100,7 +99,8 @@ def tracking_resolution(var1, mode, var2, var3):
         himp_par.Draw("coltz")
         cres.SaveAs("impact_parameter_resolution%sVs%s.pdf" %(var2,var3))
     if var1 == "impactParameterError":
-        himp_par_err = fileo2.Get("qa-tracking-resolution/impactParameter/%s%sVs%s" % (var1, var2, var3))
+        himp_par_err = \
+                fileo2.Get("qa-tracking-resolution/impactParameter/%s%sVs%s" % (var1, var2, var3))
         himp_par_err.Draw("coltz")
         cres.SaveAs("impactParameterError_resolution%sVs%s.pdf" %(var2,var3))
     if var1 == "phi":
@@ -116,27 +116,26 @@ def tracking_resolution(var1, mode, var2, var3):
 
 def vertex_distributions (var):
     #x, y, z
-   fileo2 = TFile("../codeHF/AnalysisResults_O2.root")
-   cvertex = TCanvas("cvertex", "vertex ")
-   cvertex.SetCanvasSize(1500, 700)
-   cvertex.Divide(2, 1)
-   hvertex = fileo2.Get("qa-global-observables/collision/%s" % var)
-   hvertex.Draw()
-   cvertex.SaveAs("vertex_%s.pdf" % var)
-   cvertex.SaveAs("vertex_%s.root" % var)
+    fileo2 = TFile("../codeHF/AnalysisResults_O2.root")
+    cvertex = TCanvas("cvertex", "vertex ")
+    cvertex.SetCanvasSize(1500, 700)
+    cvertex.Divide(2, 1)
+    hvertex = fileo2.Get("qa-global-observables/collision/%s" % var)
+    hvertex.Draw()
+    cvertex.SaveAs("vertex_%s.pdf" % var)
+    cvertex.SaveAs("vertex_%s.root" % var)
 
 def drawhisto (had,var):
-   fileo2 = TFile("../codeHF/AnalysisResults_O2.root")
-   cvarhf = TCanvas("cvarhf", "A Simple Graph Example")
-   cvarhf.SetCanvasSize(1500, 700)
-   cvarhf.Divide(2, 1)
-   #hnum = fileo2.Get("qa-tracking-efficiency-%s/num%s" % (had, var))
-   hden = fileo2.Get("qa-tracking-efficiency-%s/den%s" % (had, var))
-   hden.Rebin(4)
-   hden.Draw()
- #  hnum.Draw("same")  
-   cvarhf.SaveAs("Var_hfcand%s%s.pdf" % (had, var))
-   cvarhf.SaveAs("Var_hfcand%s%s.root" % (had, var))
+    fileo2 = TFile("../codeHF/AnalysisResults_O2.root")
+    cvarhf = TCanvas("cvarhf", "A Simple Graph Example")
+    cvarhf.SetCanvasSize(1500, 700)
+    cvarhf.Divide(2, 1)
+    #hnum = fileo2.Get("qa-tracking-efficiency-%s/num%s" % (had, var))
+    hden = fileo2.Get("qa-tracking-efficiency-%s/den%s" % (had, var))
+    hden.Rebin(4)
+    hden.Draw()
+    cvarhf.SaveAs("Var_hfcand%s%s.pdf" % (had, var))
+    cvarhf.SaveAs("Var_hfcand%s%s.root" % (had, var))
 
 efficiencytracking()
 #efficiencyhadron("kaon", "Eta")
@@ -145,11 +144,11 @@ drawhisto("kaon", "")
 #efficiencyhadron("kaon", "Eta")
 #drawhisto("electron", "")
 #drawhisto("electron", "Eta")
-pTdistribution("kaon")
-pTdistribution("pion")
-pTdistribution("proton")
-pTdistribution("electron")
-pTdistribution("muon")
+pt_distr("kaon")
+pt_distr("pion")
+pt_distr("proton")
+pt_distr("electron")
+pt_distr("muon")
 vertex_distributions("X")
 vertex_distributions("Y")
 vertex_distributions("Z")
