@@ -31,6 +31,7 @@ DOO2_MC_VALID=0     # hf-mc-validation
 # PID
 DOO2_PID_TPC=0      # pid-tpc
 DOO2_PID_TOF=0      # pid-tof
+DOO2_PID_TOF_QA=0   # pid-tof-qa
 # Vertexing
 DOO2_SKIM=0         # hf-track-index-skims-creator
 DOO2_CAND_2PRONG=0  # hf-candidate-creator-2prong
@@ -110,6 +111,7 @@ function MakeScriptO2 {
   [ "$ISMC" -eq 0 ] && {
     [ $DOO2_QA_EFF -eq 1 ] && { MsgWarn "Skipping the QA task efficiency for non-MC input"; DOO2_QA_EFF=0; }
     [ $DOO2_QA_SIM -eq 1 ] && { MsgWarn "Skipping the QA task simple for non-MC input"; DOO2_QA_SIM=0; }
+    [ $DOO2_PID_TOF_QA -eq 1 ] && { MsgWarn "Skipping the TOF PID QA for non-MC input"; DOO2_PID_TOF_QA=0; }
     [ $DOO2_TREE_D0 -eq 1 ] && { MsgWarn "Skipping the D0 tree creator for non-MC input"; DOO2_TREE_D0=0; }
     [ $DOO2_TREE_LC -eq 1 ] && { MsgWarn "Skipping the Λc tree creator for non-MC input"; DOO2_TREE_LC=0; }
     [ $DOO2_MC_VALID -eq 1 ] && { MsgWarn "Skipping the MC validation task for non-MC input"; DOO2_MC_VALID=0; }
@@ -132,6 +134,8 @@ function MakeScriptO2 {
   [[ $DOO2_SEL_LC -eq 1 ]] && { DOO2_CAND_3PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
   # Vertexing
   [[ $DOO2_CAND_2PRONG -eq 1 || $DOO2_CAND_3PRONG -eq 1 ]] && { DOO2_SKIM=1; }
+  # PID
+  [ $DOO2_PID_TOF_QA -eq 1 ] && { DOO2_PID_TOF=1; }
 
   # General options
   O2ARGS="--aod-memory-rate-limit 10000000000 --shm-segment-size 16000000000 --configuration json://\$JSON -b"
@@ -158,6 +162,7 @@ function MakeScriptO2 {
   O2ARGS_CAND_3PRONG="$O2ARGS"
   O2ARGS_PID_TPC="$O2ARGS"
   O2ARGS_PID_TOF="$O2ARGS"
+  O2ARGS_PID_TOF_QA="$O2ARGS"
   O2ARGS_SEL_D0="$O2ARGS"
   O2ARGS_SEL_JPSI="$O2ARGS"
   O2ARGS_SEL_LC="$O2ARGS"
@@ -186,6 +191,7 @@ function MakeScriptO2 {
   O2EXEC_CAND_3PRONG="o2-analysis-hf-candidate-creator-3prong $O2ARGS_CAND_3PRONG"
   O2EXEC_PID_TPC="o2-analysis-pid-tpc $O2ARGS_PID_TPC"
   O2EXEC_PID_TOF="o2-analysis-pid-tof $O2ARGS_PID_TOF"
+  O2EXEC_PID_TOF_QA="o2-analysis-pid-tof-qa $O2ARGS_PID_TOF_QA"
   O2EXEC_SEL_D0="o2-analysis-hf-d0-candidate-selector $O2ARGS_SEL_D0"
   O2EXEC_SEL_LC="o2-analysis-hf-lc-candidate-selector $O2ARGS_SEL_LC"
   O2EXEC_SEL_JPSI="o2-analysis-hf-jpsi-toee-candidate-selector $O2ARGS_SEL_JPSI"
@@ -208,6 +214,7 @@ function MakeScriptO2 {
   [ $DOO2_CAND_3PRONG -eq 1 ] && { O2EXEC+=" | $O2EXEC_CAND_3PRONG"; MsgSubStep "  hf-candidate-creator-3prong"; }
   [ $DOO2_PID_TPC -eq 1 ] && { O2EXEC+=" | $O2EXEC_PID_TPC"; MsgSubStep "  pid-tpc"; }
   [ $DOO2_PID_TOF -eq 1 ] && { O2EXEC+=" | $O2EXEC_PID_TOF"; MsgSubStep "  pid-tof"; }
+  [ $DOO2_PID_TOF_QA -eq 1 ] && { O2EXEC+=" | $O2EXEC_PID_TOF_QA"; MsgSubStep "  pid-tof-qa"; }
   [ $DOO2_SEL_D0 -eq 1 ] && { O2EXEC+=" | $O2EXEC_SEL_D0"; MsgSubStep "  hf-d0-candidate-selector"; }
   [ $DOO2_SEL_JPSI -eq 1 ] && { O2EXEC+=" | $O2EXEC_SEL_JPSI"; MsgSubStep "  hf-jpsi-toee-candidate-selector"; }
   [ $DOO2_SEL_LC -eq 1 ] && { O2EXEC+=" | $O2EXEC_SEL_LC"; MsgSubStep "  hf-lc-candidate-selector"; }
