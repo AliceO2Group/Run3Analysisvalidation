@@ -134,6 +134,8 @@ function MakeScriptO2 {
   [[ $DOO2_SEL_LC -eq 1 ]] && { DOO2_CAND_3PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
   # Vertexing
   [[ $DOO2_CAND_2PRONG -eq 1 || $DOO2_CAND_3PRONG -eq 1 ]] && { DOO2_SKIM=1; }
+  # PID
+  [ $DOO2_PID_TOF_QA -eq 1 ] && { DOO2_PID_TOF=1; }
 
   # General options
   O2ARGS="--aod-memory-rate-limit 10000000000 --shm-segment-size 16000000000 --configuration json://\$JSON -b"
