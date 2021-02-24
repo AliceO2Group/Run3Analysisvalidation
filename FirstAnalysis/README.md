@@ -1,4 +1,4 @@
-# Run 3 First analysis framework
+# O2 First analysis framework
 
 ## Table of contents
 
