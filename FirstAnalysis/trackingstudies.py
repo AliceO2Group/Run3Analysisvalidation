@@ -1,11 +1,9 @@
 #!/ usr / bin / env python
-from ROOT import (  # pylint
+from ROOT import (  # pylint: disable=import-error, no-name-in-module, unused-import; TEfficiency,; TLegend,; gPad,
     TCanvas,
-    TEfficiency,
     TFile,
-    TLegend,
-    gPad,
 )
+
 
 # superimposed reco and gen distributions per specie
 def specie_distribution(had, var):
