@@ -16,4 +16,4 @@ also for performing Run5 analysis.
 ## Available samples ALICE3
 * D2H KrKr production (X events):
   * AOD O2 tables: /data/Run5data/EMBEDDING_KrKr_CCBARLc_scenario3/TEST
-  * Analysis result:
+  * Analysis result:  /data/Run5data_samples/EMBEDDING_KrKr_CCBARLc_scenario3_20210224/AnalysisResults_O2.root
