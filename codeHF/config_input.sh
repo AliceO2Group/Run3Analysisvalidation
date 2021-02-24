@@ -70,4 +70,11 @@ case $INPUT_CASE in
     JSON="$JSONRUN5"
     ISINPUTO2=1
     ISMC=1;;
+  11)
+    INPUT_LABEL="Run 5, KrKr MC 6.46 TeV MB, Scenario 3"
+    INPUT_DIR="/data/Run5data/EMBEDDING_KrKr_CCBARLc_scenario3/TEST"
+    INPUT_FILES="AODRun5.*.root"
+    JSON="$JSONRUN5"
+    ISINPUTO2=1
+    ISMC=1;;
 esac

@@ -86,6 +86,7 @@
         "d_pidTOFMinpT": "1000.",
         "d_pidTOFMaxpT": "2000.",
         "d_TPCNClsFindablePIDCut": "-9999",
+        "b_requireTPC": "false",
         "d_nSigmaTPC": "1000.",
         "d_nSigmaTPCCombined": "500.",
         "d_nSigmaTOF": "300.",
@@ -99,6 +100,7 @@
         "d_pidTOFMinpT": "1000.",
         "d_pidTOFMaxpT": "2000.",
         "d_TPCNClsFindablePIDCut": "-9999",
+        "b_requireTPC": "false",
         "d_nSigmaTPC": "1000.",
         "d_nSigmaTPCCombined": "500.",
         "d_nSigmaTOF": "300.",
@@ -110,6 +112,7 @@
         "d_pidTPCMinpT": "0.15",
         "d_pidTPCMaxpT": "5.0",
         "d_TPCNClsFindablePIDCut": "70.",
+        "b_requireTPC": "false",
         "d_nSigmaTPC": "3."
     },
     "hf-task-d0": {
