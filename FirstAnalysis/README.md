@@ -1,4 +1,4 @@
-# O2 First analysis framework
+# O2 First analysis utilities
 
 ## Table of contents
 
