@@ -13,7 +13,7 @@ It includes for the moment a set of QA plotting macros to inspect AnalysisResult
 It also includes some preliminary functionalities for performing efficiency corrections of HF analyses. It is currently being used
 also for performing Run5 analysis. 
 
-## Available datasets
-* The steering script `runtest.sh` provides control parameters and interface to the machinery for task execution.
-* User provides configuration bash scripts which:
-  * modify control parameters,
+## Available samples ALICE3
+* D2H KrKr production (X events):
+  * AOD O2 tables:
+  * Analysis result:
