@@ -3,8 +3,7 @@
 ## Table of contents
 
 * [Introduction](#introduction)
-* [Overview](#overview)
-  * [Execution](#execution)
+* [Available samples ALICE3](#available-samples-alice3)
 
 
 ## Introduction
