@@ -1,4 +1,5 @@
-from ROOT import (  # pylint: disable=import-error, no-name-in-module, unused-import; TEfficiency,; TLegend,; gPad,
+#!/usr/bin/env python
+from ROOT import (  
     TCanvas,
     TFile,
 )
@@ -103,12 +104,12 @@ specie_distribution("muon", "pt")
 specie_distribution("kaon", "eta")
 specie_distribution("pion", "eta")
 specie_distribution("proton", "eta")
-specie_distribution("electon", "eta")
+specie_distribution("electron", "eta")
 specie_distribution("muon", "eta")
 specie_distribution("kaon", "phi")
 specie_distribution("pion", "phi")
 specie_distribution("proton", "phi")
-specie_distribution("electon", "phi")
+specie_distribution("electron", "phi")
 specie_distribution("muon", "phi")
 vertex_distributions("X")
 vertex_distributions("Y")

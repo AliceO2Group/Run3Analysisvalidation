@@ -1,4 +1,5 @@
-from ROOT import (  # pylint: disable=import-error, no-name-in-module, unused-import
+#!/usr/bin/env python
+from ROOT import (  
     TH1F,
     TCanvas,
     TEfficiency,
