@@ -1,12 +1,5 @@
 #!/usr/bin/env python
-from ROOT import (  
-    TH1F,
-    TCanvas,
-    TEfficiency,
-    TFile,
-    TLegend,
-    gPad,
-)
+from ROOT import TH1F, TCanvas, TEfficiency, TFile, TLegend, gPad
 
 
 def efficiencytracking():

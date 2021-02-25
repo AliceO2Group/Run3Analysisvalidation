@@ -1,8 +1,5 @@
 #!/usr/bin/env python
-from ROOT import (  
-    TCanvas,
-    TFile,
-)
+from ROOT import TCanvas, TFile
 
 
 # superimposed reco and gen distributions per specie
