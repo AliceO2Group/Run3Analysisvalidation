@@ -26,7 +26,7 @@ def efficiencytracking(var):
     if var == "eta":
         hempty = TH1F("hempty", ";eta;efficiency", 100, -4.0, 4.0)
     if var == "phi":
-        hempty = TH1F("hempty", ";phi;efficiency", 100, 0., 6.0)
+        hempty = TH1F("hempty", ";phi;efficiency", 100, 0.0, 6.0)
     hempty.Draw()
     leg = TLegend(0.1, 0.7, 0.3, 0.9, "")
     leg.SetFillColor(0)
@@ -70,7 +70,4 @@ def efficiencyhadron(had, var):
 efficiencytracking("pt")
 efficiencytracking("eta")
 efficiencytracking("phi")
-#efficiencyhadron("lc", "Pt")
-
-
-    
+# efficiencyhadron("lc", "Pt")
