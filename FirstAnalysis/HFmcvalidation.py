@@ -3,8 +3,8 @@ from ROOT import TCanvas, TFile, TGaxis, TLegend, gStyle
 
 def printCanvas(canvas, title):
     format_list = [".png", ".pdf", ".root"]
-    for i, format in enumerate(format_list):
-        canvas.SaveAs("./"+title + format_list[i])
+    for fileFormat in format_list:
+        canvas.SaveAs(title + fileFormat)
 
 
 def count_HFquarks_perColl(file, var):
@@ -51,7 +51,7 @@ def momentum_check(file):
 
 def p_diff_reco_MC(file):
     gStyle.SetOptStat(0)
-    components_list = ["x", "y", "z"]  # , "electron", "muon"]
+    components_list = ["x", "y", "z"]
     color_list = [1, 2, 4]
     cpt = TCanvas("c1", "Momentum Difference")
     cpt.SetCanvasSize(1500, 1500)
@@ -80,7 +80,7 @@ def p_diff_reco_MC(file):
 def secondary_vertex_reco_MC(file):
     gStyle.SetOptStat(0)
     TGaxis.SetMaxDigits(3)
-    components_list = ["x", "y", "z"]  # , "electron", "muon"]
+    components_list = ["x", "y", "z"]
     color_list = [1, 2, 4]
     csecvertex = TCanvas("c1", "Secondary Vertex Difference")
     csecvertex.SetCanvasSize(1000, 700)
@@ -117,15 +117,15 @@ def decayLength_reco_MC(file):
 fileo2 = TFile("../codeHF/CCbar_pp_AnalysisResults_O2_500files.root")
 # Generated Level Validation
 quark_list = ["C", "Cbar", "B", "Bbar"]
-for i, comp in enumerate(quark_list):
-    count_HFquarks_perColl(fileo2, quark_list[i])
+for quark in quark_list:
+    count_HFquarks_perColl(fileo2, quark)
 particle_list = ["Dzero", "Dplus", "Dstar", "LambdaC"]
-for i, comp in enumerate(particle_list):
-    count_Particle_perColl(fileo2, particle_list[i])
+for particle in particle_list:
+    count_Particle_perColl(fileo2, particle)
 momentum_check(fileo2)
 mom_list = ["P", "Px", "Py", "Pz", "Pt"]
-for i, comp in enumerate(mom_list):
-    momentum_Conservation(fileo2, mom_list[i])
+for comp in mom_list:
+    momentum_Conservation(fileo2, comp)
 # Reconstructed Level Validation
 p_diff_reco_MC(fileo2)
 secondary_vertex_reco_MC(fileo2)
