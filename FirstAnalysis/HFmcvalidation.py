@@ -1,65 +1,58 @@
 from ROOT import TCanvas, TFile, TGaxis, TLegend, gStyle
 
 
-def count_HFquarks_perColl(var):
-    fileo2 = TFile("../codeHF/CCbar_pp_AnalysisResults_O2_500files.root")
+def printCanvas(canvas, title):
+    format_list = [".png", ".pdf", ".root"]
+    for i, format in enumerate(format_list):
+        canvas.SaveAs("./"+title + format_list[i])
+
+
+def count_HFquarks_perColl(file, var):
     cquark = TCanvas("cquark", "%s per collision" % var)
     cquark.SetCanvasSize(900, 700)
     cquark.Divide(2, 1)
-    hq = fileo2.Get("hf-mc-validation-gen/hCountAverage%s" % var)
+    hq = file.Get("hf-mc-validation-gen/hCountAverage%s" % var)
     hq.GetXaxis().SetRangeUser(0.0, 8.0)
     hq.SetTitle("Number of %s quarks per collision" % var)
     hq.Draw("")
-    cquark.SaveAs("QuarkCountsPerCollision%s.pdf" % var)
-    cquark.SaveAs("QuarkCountsPerCollision%s.root" % var)
-    cquark.SaveAs("QuarkCountsPerCollision%s.png" % var)
+    printCanvas(cquark, "QuarkCountsPerCollision%s" % var)
 
 
-def count_Particle_perColl(var):
-    fileo2 = TFile("../codeHF/CCbar_pp_AnalysisResults_O2_500files.root")
+def count_Particle_perColl(file, var):
     cparticle = TCanvas("cparticle", "%s per collision" % var)
     cparticle.SetCanvasSize(900, 700)
     cparticle.Divide(2, 1)
-    hp = fileo2.Get("hf-mc-validation-gen/hCouterPerCollision%s" % var)
+    hp = file.Get("hf-mc-validation-gen/hCouterPerCollision%s" % var)
     hp.Draw("")
-    cparticle.SaveAs("%sPerCollision.pdf" % var)
-    cparticle.SaveAs("%sPerCollision.root" % var)
-    cparticle.SaveAs("%sPerCollision.png" % var)
+    printCanvas(cparticle, "%sPerCollision" % var)
 
 
-def momentum_Conservation(var):
-    fileo2 = TFile("../codeHF/CCbar_pp_AnalysisResults_O2_500files.root")
+def momentum_Conservation(file, var):
     cmomentum = TCanvas("cmomentum", "Momentum Conservation %s" % var)
     cmomentum.SetCanvasSize(900, 700)
     cmomentum.Divide(2, 1)
     if var == "P":
-        hp = fileo2.Get("hf-mc-validation-gen/h%sdiffMotherDaughterGen" % var)
+        hp = file.Get("hf-mc-validation-gen/h%sdiffMotherDaughterGen" % var)
         hp.SetTitle("Momentum Conservtion: magnitude (Gen)")
     else:
-        hp = fileo2.Get("hf-mc-validation-gen/h%sDiffMotherDaughterGen" % var)
+        hp = file.Get("hf-mc-validation-gen/h%sDiffMotherDaughterGen" % var)
         hp.SetTitle("Momentum Conservation: %s component" % var)
     hp.Draw("")
-    cmomentum.SaveAs("%sconservation.pdf" % var)
-    cmomentum.SaveAs("%sconservation.root" % var)
-    cmomentum.SaveAs("%sconservation.png" % var)
+    printCanvas(cmomentum, "%sconservation" % var)
 
 
-def momentum_check():
-    fileo2 = TFile("../codeHF/CCbar_pp_AnalysisResults_O2_500files.root")
+def momentum_check(file):
     cMomCheck = TCanvas("cMomCheck", "Momentum Conservation Check")
     cMomCheck.SetCanvasSize(900, 700)
-    hMomCheck = fileo2.Get("hf-mc-validation-gen/hMomentumCheck")
+    hMomCheck = file.Get("hf-mc-validation-gen/hMomentumCheck")
     hMomCheck.Draw()
-    cMomCheck.SaveAs("MomentumCheck.pdf")
-    cMomCheck.SaveAs("MomentumCheck.root")
-    cMomCheck.SaveAs("MomentumCheck.png")
+    printCanvas(cMomCheck, "MomentumCheck")
 
 
-def p_diff_reco_MC():
+def p_diff_reco_MC(file):
     gStyle.SetOptStat(0)
     components_list = ["x", "y", "z"]  # , "electron", "muon"]
     color_list = [1, 2, 4]
-    fileo2 = TFile("../codeHF/CCbar_pp_AnalysisResults_O2_500files.root")
     cpt = TCanvas("c1", "Momentum Difference")
     cpt.SetCanvasSize(1500, 1500)
     cpt.cd()
@@ -67,7 +60,7 @@ def p_diff_reco_MC():
     leg = TLegend(0.1, 0.7, 0.4, 0.9, "")
     leg.SetFillColor(0)
     for i, comp in enumerate(components_list):
-        hp = fileo2.Get("hf-mc-validation-rec/histP%s" % comp)
+        hp = file.Get("hf-mc-validation-rec/histP%s" % comp)
         hp.Rebin(2)
         hp.SetLineColor(color_list[i])
         hp.SetLineWidth(2)
@@ -81,17 +74,14 @@ def p_diff_reco_MC():
             hp.Draw()
         leg.AddEntry(mom_list[i], "P%s component" % comp)
     leg.Draw()
-    cpt.SaveAs("p_recoMC_diff.pdf")
-    cpt.SaveAs("p_recoMC_diff.png")
-    cpt.SaveAs("p_recoMC_diff.root")
+    printCanvas(cpt, "p_recoMC_diff")
 
 
-def secondary_vertex_reco_MC():
+def secondary_vertex_reco_MC(file):
     gStyle.SetOptStat(0)
     TGaxis.SetMaxDigits(3)
     components_list = ["x", "y", "z"]  # , "electron", "muon"]
     color_list = [1, 2, 4]
-    fileo2 = TFile("../codeHF/CCbar_pp_AnalysisResults_O2_500files.root")
     csecvertex = TCanvas("c1", "Secondary Vertex Difference")
     csecvertex.SetCanvasSize(1000, 700)
     csecvertex.cd()
@@ -99,7 +89,7 @@ def secondary_vertex_reco_MC():
     leg = TLegend(0.1, 0.7, 0.4, 0.9, "Sec. Vertex:")
     leg.SetFillColor(0)
     for i, comp in enumerate(components_list):
-        hsecvertex = fileo2.Get("hf-mc-validation-rec/histSecV%s" % comp)
+        hsecvertex = file.Get("hf-mc-validation-rec/histSecV%s" % comp)
         hsecvertex.Rebin(1)
         hsecvertex.SetLineColor(color_list[i])
         hsecvertex.SetLineWidth(2)
@@ -109,42 +99,34 @@ def secondary_vertex_reco_MC():
         else:
             hsecvertex.SetTitle("Secondary Vertex difference Rec-Gen")
             hsecvertex.GetXaxis().SetTitle("V_{i}^{reco}-V_{i}^{gen} (cm)")
-            # hsecvertex.GetXaxis().SetRangeUser(-1.20, 1.10)
             hsecvertex.Draw()
         leg.AddEntry(secvertex_list[i], "%s component" % comp)
     leg.Draw()
-    csecvertex.SaveAs("SecVertex_recoMC_diff.pdf")
-    csecvertex.SaveAs("SecVertex_recoMC_diff.png")
-    csecvertex.SaveAs("SecVertex_recoMC_diff.root")
+    printCanvas(csecvertex, "SecVertex_recoMC_diff")
 
 
-def decayLength_reco_MC():
-    # x, y, z
-    fileo2 = TFile("../codeHF/CCbar_pp_AnalysisResults_O2_500files.root")
+def decayLength_reco_MC(file):
     cDecLenRes = TCanvas("cDecLenRes", "Decay Length")
     cDecLenRes.SetCanvasSize(900, 700)
-    hDecLenRes = fileo2.Get("hf-mc-validation-rec/histDecLen")
+    hDecLenRes = file.Get("hf-mc-validation-rec/histDecLen")
     hDecLenRes.Rebin(2)
     hDecLenRes.Draw()
-    cDecLenRes.SaveAs("Resolution_DecayLength.pdf")
-    cDecLenRes.SaveAs("Resolution_DecayLength.root")
-    cDecLenRes.SaveAs("Resolution_DecayLength.png")
+    printCanvas(cDecLenRes, "Resolution_DecayLength")
 
 
-count_HFquarks_perColl("C")
-count_HFquarks_perColl("Cbar")
-count_HFquarks_perColl("B")
-count_HFquarks_perColl("Bbar")
-count_Particle_perColl("Dzero")
-count_Particle_perColl("Dplus")
-count_Particle_perColl("Dstar")
-count_Particle_perColl("LambdaC")
-momentum_check()
-momentum_Conservation("P")
-momentum_Conservation("Px")
-momentum_Conservation("Py")
-momentum_Conservation("Pz")
-momentum_Conservation("Pt")
-p_diff_reco_MC()
-secondary_vertex_reco_MC()
-decayLength_reco_MC()
+fileo2 = TFile("../codeHF/CCbar_pp_AnalysisResults_O2_500files.root")
+# Generated Level Validation
+quark_list = ["C", "Cbar", "B", "Bbar"]
+for i, comp in enumerate(quark_list):
+    count_HFquarks_perColl(fileo2, quark_list[i])
+particle_list = ["Dzero", "Dplus", "Dstar", "LambdaC"]
+for i, comp in enumerate(particle_list):
+    count_Particle_perColl(fileo2, particle_list[i])
+momentum_check(fileo2)
+mom_list = ["P", "Px", "Py", "Pz", "Pt"]
+for i, comp in enumerate(mom_list):
+    momentum_Conservation(fileo2, mom_list[i])
+# Reconstructed Level Validation
+p_diff_reco_MC(fileo2)
+secondary_vertex_reco_MC(fileo2)
+decayLength_reco_MC(fileo2)
