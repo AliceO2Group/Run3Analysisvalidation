@@ -68,8 +68,7 @@ def efficiencyhadron(had, var):
     hden.Rebin(4)
     eff = TEfficiency(hnum, hden)
     eff.Draw()
-    ceffhf.SaveAs("efficiency_hfcand%s%s.pdf" % (had, var))
-    ceffhf.SaveAs("efficiency_hfcand%s%s.root" % (had, var))
+    saveCanvas(ceffhf, "efficiency_hfcand%s%s" % (had, var))
 
 
 var_list = ["pt", "eta", "phi"]
