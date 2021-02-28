@@ -155,7 +155,7 @@ function MakeScriptO2 {
   }
 
   # Task-specific options
-  O2ARGS_QA_EFF="$O2ARGS"
+  O2ARGS_QA_EFF="$O2ARGS --eff-el 1 --eff-mu 1 --eff-pi 1 --eff-ka 1 --eff-pr 1"
   O2ARGS_QA_SIM="$O2ARGS"
   O2ARGS_SKIM="$O2ARGS"
   O2ARGS_CAND_2PRONG="$O2ARGS"
