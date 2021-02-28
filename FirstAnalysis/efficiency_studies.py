@@ -2,6 +2,12 @@
 from ROOT import TH1F, TCanvas, TEfficiency, TFile, TLegend, gPad
 
 
+def saveCanvas(canvas, title):
+    format_list = [".png", ".pdf", ".root"]
+    for fileFormat in format_list:
+        canvas.SaveAs(title + fileFormat)
+
+
 def efficiencytracking(var):
     # plots the efficiency vs pT, eta and phi for all the species(it extracts the
     # Efficiency from qa - tracking - efficiency if you have ran with-- make - eff)
@@ -23,9 +29,9 @@ def efficiencytracking(var):
     eff_list = []
     if var == "pt":
         hempty = TH1F("hempty", ";p_{T};efficiency", 100, 0.0015, 15)
-    if var == "eta":
+    elif var == "eta":
         hempty = TH1F("hempty", ";eta;efficiency", 100, -4.0, 4.0)
-    if var == "phi":
+    elif var == "phi":
         hempty = TH1F("hempty", ";phi;efficiency", 100, 0.0, 6.0)
     hempty.Draw()
     leg = TLegend(0.1, 0.7, 0.3, 0.9, "")
@@ -35,17 +41,16 @@ def efficiencytracking(var):
         leff = fileo2.Get("qa-tracking-efficiency-%s/Efficiency" % had)
         if var == "pt":
             eff = leff.At(0)
-        if var == "eta":
+        elif var == "eta":
             eff = leff.At(1)
-        if var == "phi":
+        elif var == "phi":
             eff = leff.At(2)
         eff.SetLineColor(color_list[i])
         eff_list.append(eff)
         eff.Draw("same")
         leg.AddEntry(eff_list[i], had)
     leg.Draw()
-    c1.SaveAs("efficiency_tracking_%s.pdf" % var)
-    c1.SaveAs("efficiency_tracking_%s.root" % var)
+    saveCanvas(c1, "efficiency_tracking_%s" % var)
 
 
 def efficiencyhadron(had, var):
@@ -67,7 +72,6 @@ def efficiencyhadron(had, var):
     ceffhf.SaveAs("efficiency_hfcand%s%s.root" % (had, var))
 
 
-efficiencytracking("pt")
-efficiencytracking("eta")
-efficiencytracking("phi")
-# efficiencyhadron("lc", "Pt")
+var_list = ["pt", "eta", "phi"]
+for var in var_list:
+    efficiencytracking(var)
