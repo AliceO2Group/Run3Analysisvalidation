@@ -6,7 +6,14 @@ DEFAULT_BRANCH: master # Usually master or main
 # ENABLE: # If you use ENABLE variable, all other languages/formats/tooling-formats will be disabled by default
 # ENABLE_LINTERS: # If you use ENABLE_LINTERS variable, all other linters will be disabled by default
 DISABLE:
-  - COPYPASTE # Comment to disable checks of abusive copy-pastes
-  - SPELL # Comment to disable checks of spelling mistakes # - SPELL # Uncomment to disable checks of spelling mistakes
+  - C
+  - COPYPASTE # abusive copy-pastes
+  - SPELL # spelling mistakes
+DISABLE_LINTERS:
+  - CPP_CPPLINT
+  - BASH_EXEC
+  - BASH_SHFMT
 SHOW_ELAPSED_TIME: true
 FILEIO_REPORTER: false
+GITHUB_COMMENT_REPORTER: false
+UPDATED_SOURCES_REPORTER: true
