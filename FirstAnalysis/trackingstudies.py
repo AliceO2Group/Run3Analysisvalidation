@@ -1,10 +1,11 @@
 #!/usr/bin/env python
-from ROOT import TCanvas, TFile
+from ROOT import TCanvas, TFile, TLegend, gStyle
 
 
 # superimposed reco and gen distributions per specie
 def specie_distribution(had, var):
     fileo2 = TFile("../codeHF/AnalysisResults_O2.root")
+    gStyle.SetOptStat(0)
     cpt = TCanvas("cpt", "pT distribution")
     cpt.SetCanvasSize(1500, 700)
     cpt.Divide(2, 1)
@@ -13,8 +14,18 @@ def specie_distribution(had, var):
     hden.Rebin(4)
     hnum.Rebin(4)
     hnum.SetLineColor(6)
+    hden.GetYaxis().SetRangeUser(
+        0.7 * hnum.GetBinContent(hden.GetMinimumBin()),
+        1.3 * hden.GetBinContent(hden.GetMaximumBin()),
+    )
     hden.Draw()
     hnum.Draw("same")
+    hden.SetTitle("%s tracks %s distribution" % (had, var))
+    leg = TLegend(0.7, 0.7, 0.9, 0.9, "")
+    leg.SetFillColor(0)
+    leg.AddEntry(hnum, "Rec. Level")
+    leg.AddEntry(hden, "Gen. Level")
+    leg.Draw()
     cpt.SaveAs("%sdistribution_hfcand%s.pdf" % (var, had))
     cpt.SaveAs("%sdustribution_hfcand%s.root" % (var, had))
 
@@ -23,9 +34,12 @@ def multiplicity():
     fileo2 = TFile("../codeHF/AnalysisResults_O2.root")
     cmult = TCanvas("cmult", "mult distribution")
     cmult.SetCanvasSize(1500, 700)
+    cmult.SetLogy()
     cmult.Divide(2, 1)
     hmult = fileo2.Get("qa-global-observables/multiplicity/numberOfTracks")
+    hmult.Rebin(4)
     hmult.Draw()
+    hmult.SetTitle("Multiplicity Distribution")
     cmult.SaveAs("multiplicity.pdf")
     cmult.SaveAs("multiplicity.root")
 
@@ -49,6 +63,7 @@ def tracking_resolution(var1, mode, var2, var3):
     if var1 == "eta":
         heta = fileo2.Get("qa-tracking-resolution/eta/etaDiffMCRecoVsEta%s" % mode)
         heta.Draw("coltz")
+        heta.SetTitle("#eta resolution")
         cres.SaveAs("Resolution_%s_%s.pdf" % (var1, var2))
         cres.SaveAs("Resolution_%s_%s.root" % (var1, var2))
     if var1 == "impactParameter":
@@ -56,21 +71,27 @@ def tracking_resolution(var1, mode, var2, var3):
             "qa-tracking-resolution/%s/%s%sVs%s" % (var1, var1, var2, var3)
         )
         himp_par.Draw("coltz")
+        himp_par.SetTitle("Impact Parameter resolution: %s Vs %s" % (var2, var3))
         cres.SaveAs("impact_parameter_resolution%sVs%s.pdf" % (var2, var3))
     if var1 == "impactParameterError":
         himp_par_err = fileo2.Get(
             "qa-tracking-resolution/impactParameter/%s%sVs%s" % (var1, var2, var3)
         )
         himp_par_err.Draw("coltz")
+        himp_par_err.SetTitle(
+            "Impact Parameter Error resolution: %s Vs %s" % (var2, var3)
+        )
         cres.SaveAs("impactParameterError_resolution%sVs%s.pdf" % (var2, var3))
     if var1 == "phi":
         hphi = fileo2.Get("qa-tracking-resolution/phi/phiDiffMCRec")
         hphi.Draw()
+        hphi.SetTitle("#phi resolution")
         cres.SaveAs("phi_resolution.pdf")
         cres.SaveAs("phi_resolution.root")
     if var1 == "pt":
         h_pt = fileo2.Get("qa-tracking-resolution/pt/ptResolutionVs%s" % var2)
         h_pt.Draw("coltz")
+        h_pt.SetTitle("p_{T} resolution")
         cres.SaveAs("ptResolutionVs%s.pdf" % var2)
         cres.SaveAs("ptResolutionVs%s.root" % var2)
 
@@ -80,17 +101,14 @@ def vertex_distributions(var):
     cvertex = TCanvas("cvertex", "vertex ")
     cvertex.SetCanvasSize(1500, 700)
     cvertex.Divide(2, 1)
-    cvertex_res = TCanvas("cvertex", "vertex ")
-    cvertex_res.SetCanvasSize(1500, 700)
-    cvertex_res.Divide(2, 1)
     hvertex = fileo2.Get("qa-global-observables/collision/%s" % var)
+    cvertex.cd(1)
     hvertex.Draw()
     hvertex_res = fileo2.Get("qa-global-observables/collision/%svsNContrib" % var)
+    cvertex.cd(2)
     hvertex_res.Draw("coltz")
     cvertex.SaveAs("vertex_%s.pdf" % var)
     cvertex.SaveAs("vertex_%s.root" % var)
-    cvertex_res.SaveAs("vertex_res_%s.pdf" % var)
-    cvertex_res.SaveAs("vertex_res_%s.root" % var)
 
 
 multiplicity()
