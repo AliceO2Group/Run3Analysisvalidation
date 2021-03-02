@@ -1,3 +1,4 @@
 *.root
 *.pdf
 *.log
+report/
