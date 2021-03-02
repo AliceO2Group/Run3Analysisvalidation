@@ -1,12 +1,6 @@
 import o2qaplots.plot as pl
 import ROOT
-from o2qaplots.plot_base import (
-    Configurable,
-    PlottingTask,
-    ROOTObj,
-    TaskInput,
-    macro,
-)
+from o2qaplots.plot_base import Configurable, PlottingTask, ROOTObj, TaskInput, macro
 
 
 def plot_1d_legend(x, *args, **kwargs):
