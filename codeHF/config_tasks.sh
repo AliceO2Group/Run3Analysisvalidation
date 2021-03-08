@@ -53,7 +53,7 @@ DOO2_TREE_LC=0      # hf-tree-creator-lc-topkpi
 
 # Selection cuts
 APPLYCUTS_D0=0      # Apply D0 selection cuts.
-APPLYCUTS_DPLUS=0   # Apply Dplus selection cuts.
+APPLYCUTS_DPLUS=0   # Apply D+ selection cuts.
 APPLYCUTS_LC=0      # Apply Λc selection cuts.
 APPLYCUTS_JPSI=0    # Apply J/ψ selection cuts.
 
@@ -94,9 +94,9 @@ function AdjustJson {
     ReplaceString "\"d_selectionFlagD0bar\": \"0\"" "\"d_selectionFlagD0bar\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
-  # Enable Dplus selection.
+  # Enable D+ selection.
   if [ $APPLYCUTS_DPLUS -eq 1 ]; then
-    MsgWarn "\nUsing Dplus selection cuts"
+    MsgWarn "\nUsing D+ selection cuts"
     ReplaceString "\"d_selectionFlagDPlus\": \"0\"" "\"d_selectionFlagDPlus\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
