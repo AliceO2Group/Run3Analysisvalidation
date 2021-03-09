@@ -82,7 +82,7 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
   AddHistogram(vecHisDPlus, "#it{p}_{T} prong 0 (GeV/#it{c})", "hPtDplusDau0", "hf-task-dplus/hPtProng0", 2, 1, 0);
   AddHistogram(vecHisDPlus, "#it{p}_{T} prong 1 (GeV/#it{c})", "hPtDplusDau1", "hf-task-dplus/hPtProng1", 2, 1, 0);
   AddHistogram(vecHisDPlus, "#it{p}_{T} prong 2 (GeV/#it{c})", "hPtDplusDau2", "hf-task-dplus/hPtProng2", 2, 1, 0);
-  AddHistogram(vecHisDPlus, "#it{p}_{T} D^{+} (GeV/#it{c})", "hPtDlpus", "hf-task-dplus/hPt", 2, 1, 0);
+  AddHistogram(vecHisDPlus, "#it{p}_{T} D^{+} (GeV/#it{c})", "hPtDplus", "hf-task-dplus/hPt", 2, 1, 0);
   AddHistogram(vecHisDPlus, "3-prong mass (#pi K #pi) (GeV/#it{c}^{2})", "hInvMassDplus", "hf-task-dplus/hMass", 5, 0, 0);
   AddHistogram(vecHisDPlus, "impact par. XY (cm)", "hImpParXYDplus", "hf-task-dplus/hImpactParameterXY", 4, 1, 0);
   AddHistogram(vecHisDPlus, "decay length (cm)", "hDecLenDplus", "hf-task-dplus/hDecayLength", 4, 1, 0);
