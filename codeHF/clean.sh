@@ -13,6 +13,7 @@ comparison_histos_dplus.pdf comparison_ratios_dplus.pdf \
 comparison_histos_lc.pdf comparison_ratios_lc.pdf \
 comparison_histos_jpsi.pdf comparison_ratios_jpsi.pdf \
 MC_d0_eff.pdf MC_d0_pT.pdf \
+MC_dplus_eff.pdf MC_dplus_pT.pdf \
 MC_lc_eff.pdf MC_lc_pT.pdf \
 MC_jpsi_eff.pdf MC_jpsi_pT.pdf \
 ./*.log \
