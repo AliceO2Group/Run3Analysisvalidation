@@ -51,9 +51,9 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
   AddHistogram(vecHisSkim, "secondary vtx x - 2prong (cm)", "h2ProngVertX", "hf-track-index-skims-creator/hvtx2_x", 5, 1, 0);
   AddHistogram(vecHisSkim, "secondary vtx y - 2prong (cm)", "h2ProngVertY", "hf-track-index-skims-creator/hvtx2_y", 5, 1, 0);
   AddHistogram(vecHisSkim, "secondary vtx z - 2prong (cm)", "h2ProngVertZ", "hf-track-index-skims-creator/hvtx2_z", 5, 1, 0);
-  AddHistogram(vecHisSkim, "secondary vtx x - 3prong (cm)", "hDplusVertX", "hf-track-index-skims-creator/hvtx3_x", 5, 1, 0);
-  AddHistogram(vecHisSkim, "secondary vtx y - 3prong (cm)", "hDplusVertY", "hf-track-index-skims-creator/hvtx3_y", 5, 1, 0);
-  AddHistogram(vecHisSkim, "secondary vtx z - 3prong (cm)", "hDplusVertZ", "hf-track-index-skims-creator/hvtx3_z", 5, 1, 0);
+  AddHistogram(vecHisSkim, "secondary vtx x - 3prong (cm)", "h3ProngVertX", "hf-track-index-skims-creator/hvtx3_x", 5, 1, 0);
+  AddHistogram(vecHisSkim, "secondary vtx y - 3prong (cm)", "h3ProngVertY", "hf-track-index-skims-creator/hvtx3_y", 5, 1, 0);
+  AddHistogram(vecHisSkim, "secondary vtx z - 3prong (cm)", "h3ProngVertZ", "hf-track-index-skims-creator/hvtx3_z", 5, 1, 0);
 
   VecSpecHis vecHisCand2;
   AddHistogram(vecHisCand2, "XX element of PV cov. matrix (cm^{2})", "hCovMatPrimVXX2Prong", "hf-cand-creator-2prong/hCovPVXX", 1, 1, 0);
