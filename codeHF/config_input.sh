@@ -78,7 +78,7 @@ case $INPUT_CASE in
     ISINPUTO2=1
     ISMC=1;;
   12)
-    INPUT_LABEL="p-p MC 13 TeV Xic, LHC19g6f"
+    INPUT_LABEL="p-p MC LHC19g6f" # dedicated Xic run2 MC (pp @ 13 TeV)"
     INPUT_DIR="/data/Xi_c_MC/LHC19g6f3/264347"
     ISMC=1;;
 esac
