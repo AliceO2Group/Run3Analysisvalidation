@@ -154,7 +154,7 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
   Int_t nRun1, nRun3, rebin;
 
   TH1F* hRun1 = nullptr;
-  TH1F* hRun3 = nullptr;
+  TH1D* hRun3 = nullptr;
   TH1F* hRatio = nullptr;
   TString labelAxis = "";
   TString nameHisRun1 = "";
@@ -199,10 +199,16 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
       }
 
       // Get O2 histogram.
-      hRun3 = (TH1F*)fRun3->Get(nameHisRun3.Data());
-      if (!hRun3) {
+      auto oRun3 = fRun3->Get(nameHisRun3.Data());
+      if (!oRun3) {
         printf("Failed to load %s from %s\n", nameHisRun3.Data(), filerun3.Data());
         return 1;
+      }
+
+      if (oRun3->InheritsFrom("TH2")) {
+        hRun3 = ((TH2D*)oRun3)->ProjectionX();
+      } else {
+        hRun3 = (TH1D*)oRun3;
       }
 
       Printf("%d (%s, %s): bins: %d, %d, ranges: %g-%g, %g-%g",
