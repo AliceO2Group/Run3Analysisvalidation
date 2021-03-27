@@ -196,10 +196,10 @@
     "hf-jpsi-toee-candidate-selector": {
         "d_pTCandMin": "0.",
         "d_pTCandMax": "50.",
-        "d_pidTPCMinpT": "0.15",
-        "d_pidTPCMaxpT": "5.0",
-        "d_TPCNClsFindablePIDCut": "70.",
-        "d_nSigmaTPC": "3."
+        "d_pidTPCMinpT": "1000.",
+        "d_pidTPCMaxpT": "2000.",
+        "d_TPCNClsFindablePIDCut": "-9999",
+        "d_nSigmaTPC": "1000."
     },
     "hf-task-d0": {
         "cutYCandMax": "0.8",
@@ -270,6 +270,10 @@
         "d_selectionFlagJpsi": "0"
     },
     "hf-task-jpsi-mc": {
+        "cutYCandMax": "0.8",
+        "d_selectionFlagJpsi": "0"
+    },
+    "hf-task-x": {
         "cutYCandMax": "0.8",
         "d_selectionFlagJpsi": "0"
     },

@@ -49,6 +49,7 @@ DOO2_TASK_LC=0      # hf-task-lc
 DOO2_TASK_XIC=0     # hf-task-xic
 DOO2_TASK_JPSI=0    # hf-task-jpsi
 DOO2_TASK_BPLUS=0   # hf-task-bplus
+DOO2_TASK_X=0       # hf-task-x
 # Tree creators
 DOO2_TREE_D0=0      # hf-tree-creator-d0-tokpi
 DOO2_TREE_LC=0      # hf-tree-creator-lc-topkpi
@@ -147,6 +148,7 @@ function MakeScriptO2 {
   [ $DOO2_TASK_XIC -eq 1 ] && { DOO2_SEL_XIC=1; }
   [ $DOO2_TASK_DPLUS -eq 1 ] && { DOO2_SEL_DPLUS=1; }
   [ $DOO2_TASK_BPLUS -eq 1 ] && { DOO2_SEL_D0=1; }
+  [ $DOO2_TASK_X -eq 1 ] && { DOO2_SEL_JPSI=1; }
   # Selectors
   [[ $DOO2_SEL_D0 -eq 1 || $DOO2_SEL_JPSI -eq 1 ]] && { DOO2_CAND_2PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
   [[ $DOO2_SEL_LC -eq 1 || $DOO2_SEL_XIC -eq 1 || $DOO2_SEL_DPLUS -eq 1 ]] && { DOO2_CAND_3PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
@@ -192,6 +194,7 @@ function MakeScriptO2 {
   O2ARGS_TASK_LC="$O2ARGS"
   O2ARGS_TASK_XIC="$O2ARGS"
   O2ARGS_TASK_BPLUS="$O2ARGS"
+  O2ARGS_TASK_X="$O2ARGS"
   O2ARGS_TREE_D0="$O2ARGS"
   O2ARGS_TREE_LC="$O2ARGS"
   O2ARGS_MC_VALID="$O2ARGS"
@@ -226,6 +229,7 @@ function MakeScriptO2 {
   O2EXEC_TASK_LC="o2-analysis-hf-task-lc $O2ARGS_TASK_LC"
   O2EXEC_TASK_XIC="o2-analysis-hf-task-xic $O2ARGS_TASK_XIC"
   O2EXEC_TASK_BPLUS="o2-analysis-hf-task-bplus $O2ARGS_TASK_BPLUS"
+  O2EXEC_TASK_X="o2-analysis-hf-task-x $O2ARGS_TASK_X"
   O2EXEC_TREE_D0="o2-analysis-hf-tree-creator-d0-tokpi $O2ARGS_TREE_D0"
   O2EXEC_TREE_LC="o2-analysis-hf-tree-creator-lc-topkpi $O2ARGS_TREE_LC"
   O2EXEC_MC_VALID="o2-analysis-hf-mc-validation $O2ARGS_MC_VALID"
@@ -252,6 +256,7 @@ function MakeScriptO2 {
   [ $DOO2_TASK_XIC -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_XIC"; MsgSubStep "  hf-task-xic"; }
   [ $DOO2_TASK_JPSI -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_JPSI"; MsgSubStep "  hf-task-jpsi"; }
   [ $DOO2_TASK_BPLUS -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_BPLUS"; MsgSubStep "  hf-task-bplus"; }
+  [ $DOO2_TASK_X -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_X"; MsgSubStep "  hf-task-x"; }
   [ $DOO2_TREE_D0 -eq 1 ] && { O2EXEC+=" | $O2EXEC_TREE_D0"; MsgSubStep "  hf-tree-creator-d0-tokpi"; }
   [ $DOO2_TREE_LC -eq 1 ] && { O2EXEC+=" | $O2EXEC_TREE_LC"; MsgSubStep "  hf-tree-creator-lc-topkpi"; }
   [ $DOO2_MC_VALID -eq 1 ] && { O2EXEC+=" | $O2EXEC_MC_VALID"; MsgSubStep "  hf-mc-validation"; }
