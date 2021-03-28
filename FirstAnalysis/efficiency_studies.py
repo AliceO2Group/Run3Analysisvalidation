@@ -112,5 +112,10 @@ def efficiencyhadron(had, var):
 
 
 var_list = ["Pt", "Eta", "Phi"]
+hfhadron_list = ["d0", "dplus", "lc", "xic", "jpsi"]
+
 for var in var_list:
     efficiencytracking(var)
+
+for had in hfhadron_list:
+    efficiencyhadron(had, "Pt")
