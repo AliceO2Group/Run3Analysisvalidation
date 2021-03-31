@@ -4,7 +4,7 @@
 # Input specification for runtest.sh
 # (Modifies input parameters.)
 
-INPUT_CASE=4            # Input case
+INPUT_CASE=2            # Input case
 
 NFILESMAX=1             # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
 
@@ -20,65 +20,35 @@ JSON="$JSONRUN3"
 INPUT_FILES="AliESDs.root"  # Input file pattern
 
 case $INPUT_CASE in
-  1) # FIXME: no read permission
-    INPUT_LABEL="Pb-Pb real LHC15o"
-    INPUT_DIR="/mnt/temp/Run3data/data/LHC15o_246751/pass1"
-    TRIGGERSTRINGRUN2="CV0L7-B-NOPF-CENT"
-    TRIGGERBITRUN3=5;; #FIXME
-  2) # FIXME: vertices outside beam pipe
-    INPUT_LABEL="Pb-Pb MC LHC15o"
-    INPUT_DIR="/data/Run3data/alice_sim_2015_LHC15k1a3_246391/246391"
+  1)
+    INPUT_LABEL="Run 2, p-p real LHC17p"
+    INPUT_DIR="/mnt/data/Run2/LHC17p_pass1_CENT_woSDD/282341";;
+  2)
+    INPUT_LABEL="Run 2, p-p MC LHC17p"
+    INPUT_DIR="/mnt/data/Run2/LHC18a4a2_cent/282099"
     ISMC=1;;
-  3) # FIXME: nothing selected, missing O2 histograms
-    INPUT_LABEL="?"
-    INPUT_DIR="/data/Run3data/output"
+  3)
+    INPUT_LABEL="Run 2, p-p MC LHC17p"
+    INPUT_DIR="/mnt/data/Run2/LHC18a4a2_cent/282341"
     ISMC=1;;
   4)
-    INPUT_LABEL="p-p MC LHC17p"
-    INPUT_DIR="/data/Run3data/alice_sim_2018_LHC18a4a2_cent/282099"
-    ISMC=1;;
+    INPUT_LABEL="Run 2, Pb-Pb real LHC15o"
+    INPUT_DIR="/mnt/data/Run2/LHC15o/246751/pass1"
+    TRIGGERSTRINGRUN2="CV0L7-B-NOPF-CENT"
+    TRIGGERBITRUN3=5;; #FIXME
   5)
-    INPUT_LABEL="p-p MC LHC17p"
-    INPUT_DIR="/mnt/temp/Run3data_Vit/LHC18a4a2_cent/282341"
+    INPUT_LABEL="Run 2, Pb-Pb MC LHC15o"
+    INPUT_DIR="/mnt/data/Run2/LHC15k1a3/246391"
     ISMC=1;;
   6)
-    INPUT_LABEL="p-p real LHC17p"
-    INPUT_DIR="/mnt/temp/Run3data_Vit/LHC17p_pass1_CENT_woSDD/282341";;
-  7) # FIXME: hanging
-    INPUT_LABEL="Pb-Pb real LHC15o, converted (AliHyperloop LHC15o_test sample)"
-    INPUT_DIR="/mnt/temp/Run3data_Vit/LHC15o_converted/alice/data/2015/LHC15o/000244918/pass5_lowIR/PWGZZ/Run3_Conversion/138_20210129-0800_child_1"
-    INPUT_FILES="AO2D.root"
-    ISINPUTO2=1;;
-  8)
-    INPUT_LABEL="Run 5, p-p MC 14 TeV CCBAR, Scenario 2"
-    INPUT_DIR="/data/Run5data/CCBAR_scenario2_latest"
+    INPUT_LABEL="Run 2, p-p MC LHC16p, dedicated Ξc"
+    INPUT_DIR="/mnt/data/Run2/LHC19g6f3/264347"
+    ISMC=1;;
+  7)
+    INPUT_LABEL="Run 5, p-p MC 14 TeV MB, Scenario 3"
+    INPUT_DIR="/data/Run5/MC/pp_14TeV/MB_S3_latest"
     INPUT_FILES="AODRun5.*.root"
     JSON="$JSONRUN5"
     ISINPUTO2=1
-    ISMC=1;;
-  9)
-    INPUT_LABEL="Run 5, p-p MC 14 TeV ONIA, Scenario 2"
-    INPUT_DIR="/data/Run5data/ONIA_scenario2_latest"
-    INPUT_FILES="AODRun5.*.root"
-    JSON="$JSONRUN5"
-    ISINPUTO2=1
-    ISMC=1;;
-  10)
-    INPUT_LABEL="Run 5, p-p MC 14 TeV MB, Scenario 2"
-    INPUT_DIR="/data/Run5data/MB_scenario2_latest"
-    INPUT_FILES="AODRun5.*.root"
-    JSON="$JSONRUN5"
-    ISINPUTO2=1
-    ISMC=1;;
-  11)
-    INPUT_LABEL="Run 5, KrKr MC 6.46 TeV MB, Scenario 3"
-    INPUT_DIR="/data/Run5data/EMBEDDING_KrKr_CCBARLc_scenario3/TEST"
-    INPUT_FILES="AODRun5.*.root"
-    JSON="$JSONRUN5"
-    ISINPUTO2=1
-    ISMC=1;;
-  12)
-    INPUT_LABEL="p-p MC LHC16p, dedicated Ξc"
-    INPUT_DIR="/data/Xi_c_MC/LHC19g6f3/264347"
     ISMC=1;;
 esac

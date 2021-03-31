@@ -36,7 +36,7 @@ In order to run the analysis with AliPhysics, you need `AliESDs.root` files and 
 To process Monte Carlo data, you also need the corresponding `galice.root` and `Kinematics.root` files.
 
 The default HF input specification script `config_input.sh` contains some predefined input cases with hard-coded paths.
-By default `INPUT_CASE=4` is selected.
+By default `INPUT_CASE=2` is selected.
 To run the code with the same input files locally on your machine, download them from `/alice/sim/2018/LHC18a4a2_cent/282099/001/` on the Grid.
 
 ### Run the example
@@ -47,7 +47,7 @@ Enter the `codeHF` directory and execute the steering script:
 bash runtest.sh
 ```
 
-Running all the steps with `INPUT_CASE=4` takes about 40 seconds in total.
+Running all the steps with `INPUT_CASE=2` takes about 40 seconds in total.
 
 The postprocessing step produces several plots `comparison_histos_(...).pdf`, `MC_(...).pdf`.
 
