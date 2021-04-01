@@ -36,6 +36,7 @@ DOO2_PID_TOF_QA=0   # pid-tof-qa
 DOO2_SKIM=0         # hf-track-index-skims-creator
 DOO2_CAND_2PRONG=0  # hf-candidate-creator-2prong
 DOO2_CAND_3PRONG=0  # hf-candidate-creator-3prong
+DOO2_CAND_X=0       # hf-candidate-creator-x
 # Selectors
 DOO2_SEL_D0=0       # hf-d0-candidate-selector
 DOO2_SEL_DPLUS=0    # hf-dplus-topikpi-candidate-selector
@@ -148,7 +149,9 @@ function MakeScriptO2 {
   [ $DOO2_TASK_XIC -eq 1 ] && { DOO2_SEL_XIC=1; }
   [ $DOO2_TASK_DPLUS -eq 1 ] && { DOO2_SEL_DPLUS=1; }
   [ $DOO2_TASK_BPLUS -eq 1 ] && { DOO2_SEL_D0=1; }
-  [ $DOO2_TASK_X -eq 1 ] && { DOO2_SEL_JPSI=1; }
+  [ $DOO2_TASK_X -eq 1 ] && { DOO2_CAND_X=1; }
+  # Cascade vertexing
+  [ $DOO2_CAND_X -eq 1 ] && { DOO2_SEL_JPSI=1; }
   # Selectors
   [[ $DOO2_SEL_D0 -eq 1 || $DOO2_SEL_JPSI -eq 1 ]] && { DOO2_CAND_2PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
   [[ $DOO2_SEL_LC -eq 1 || $DOO2_SEL_XIC -eq 1 || $DOO2_SEL_DPLUS -eq 1 ]] && { DOO2_CAND_3PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
@@ -180,6 +183,7 @@ function MakeScriptO2 {
   O2ARGS_SKIM="$O2ARGS"
   O2ARGS_CAND_2PRONG="$O2ARGS"
   O2ARGS_CAND_3PRONG="$O2ARGS"
+  O2ARGS_CAND_X="$O2ARGS"
   O2ARGS_PID_TPC="$O2ARGS --pid-el 1 --pid-mu 1 --pid-pi 1 --pid-ka 1 --pid-pr 1"
   O2ARGS_PID_TOF="$O2ARGS --pid-el 1 --pid-mu 1 --pid-pi 1 --pid-ka 1 --pid-pr 1"
   O2ARGS_PID_TOF_QA="$O2ARGS"
@@ -202,11 +206,13 @@ function MakeScriptO2 {
   [ "$ISMC" -eq 1 ] && {
     O2ARGS_CAND_2PRONG+=" --doMC"
     O2ARGS_CAND_3PRONG+=" --doMC"
+    O2ARGS_CAND_X+=" --doMC"
     O2ARGS_TASK_D0+=" --doMC"
     O2ARGS_TASK_DPLUS+=" --doMC"
     O2ARGS_TASK_LC+=" --doMC"
     O2ARGS_TASK_XIC+=" --doMC"
     O2ARGS_TASK_JPSI+=" --doMC"
+    O2ARGS_TASK_X+=" --doMC"
   }
 
   # Pair O2 executables with their respective options.
@@ -215,6 +221,7 @@ function MakeScriptO2 {
   O2EXEC_SKIM="o2-analysis-hf-track-index-skims-creator $O2ARGS_SKIM"
   O2EXEC_CAND_2PRONG="o2-analysis-hf-candidate-creator-2prong $O2ARGS_CAND_2PRONG"
   O2EXEC_CAND_3PRONG="o2-analysis-hf-candidate-creator-3prong $O2ARGS_CAND_3PRONG"
+  O2EXEC_CAND_X="o2-analysis-hf-candidate-creator-x $O2ARGS_CAND_X"
   O2EXEC_PID_TPC="o2-analysis-pid-tpc $O2ARGS_PID_TPC"
   O2EXEC_PID_TOF="o2-analysis-pid-tof $O2ARGS_PID_TOF"
   O2EXEC_PID_TOF_QA="o2-analysis-pid-tof-qa $O2ARGS_PID_TOF_QA"
@@ -242,6 +249,7 @@ function MakeScriptO2 {
   [ $DOO2_SKIM -eq 1 ] && { O2EXEC+=" | $O2EXEC_SKIM"; MsgSubStep "  hf-track-index-skims-creator"; }
   [ $DOO2_CAND_2PRONG -eq 1 ] && { O2EXEC+=" | $O2EXEC_CAND_2PRONG"; MsgSubStep "  hf-candidate-creator-2prong"; }
   [ $DOO2_CAND_3PRONG -eq 1 ] && { O2EXEC+=" | $O2EXEC_CAND_3PRONG"; MsgSubStep "  hf-candidate-creator-3prong"; }
+  [ $DOO2_CAND_X -eq 1 ] && { O2EXEC+=" | $O2EXEC_CAND_X"; MsgSubStep "  hf-candidate-creator-x"; }
   [ $DOO2_PID_TPC -eq 1 ] && { O2EXEC+=" | $O2EXEC_PID_TPC"; MsgSubStep "  pid-tpc"; }
   [ $DOO2_PID_TOF -eq 1 ] && { O2EXEC+=" | $O2EXEC_PID_TOF"; MsgSubStep "  pid-tof"; }
   [ $DOO2_PID_TOF_QA -eq 1 ] && { O2EXEC+=" | $O2EXEC_PID_TOF_QA"; MsgSubStep "  pid-tof-qa"; }
@@ -307,6 +315,7 @@ function MakeScriptPostprocess {
     [ $DOO2_TASK_LC -eq 1 ] && PARTICLES+="-lc"
     [ $DOO2_TASK_XIC -eq 1 ] && PARTICLES+="-xic"
     [ $DOO2_TASK_JPSI -eq 1 ] && PARTICLES+="-jpsi"
+    [ $DOO2_TASK_X -eq 1 ] && PARTICLES+="-x"
     [ "$PARTICLES" ] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/PlotEfficiency.C(\\\"\$FileO2\\\", \\\"$PARTICLES\\\")\""
   }
   cat << EOF > "$SCRIPT_POSTPROCESS"
