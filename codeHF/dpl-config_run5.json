@@ -41,7 +41,7 @@
             "mPtJpsiToEEMin": "2.",
             "mInvMassJpsiToEEMin": "2.5",
             "mInvMassJpsiToEEMax": "4.1",
-            "mCPAJpsiToEEMin": ".8",
+            "mCPAJpsiToEEMin": "-2",
             "mImpParProductJpsiToEEMax": "1000.00",
             "mPtDPlusToPiKPiMin": "2.",
             "mInvMassDPlusToPiKPiMin": "1.67",
@@ -270,6 +270,10 @@
         "d_selectionFlagJpsi": "0"
     },
     "hf-task-jpsi-mc": {
+        "cutYCandMax": "0.8",
+        "d_selectionFlagJpsi": "0"
+    },
+    "hf-candidate-creator-x": {
         "cutYCandMax": "0.8",
         "d_selectionFlagJpsi": "0"
     },
