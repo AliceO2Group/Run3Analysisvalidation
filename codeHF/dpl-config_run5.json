@@ -95,7 +95,7 @@
         "d_nSigmaTPCCombined": "500.",
         "d_nSigmaTOF": "300.",
         "d_nSigmaTOFCombined": "5000.",
-        "ptBins": {
+        "pTBins": {
             "values": [
                 "0",
                 "0.5",
@@ -200,7 +200,7 @@
         "d_pidTPCMaxpT": "2000.",
         "d_TPCNClsFindablePIDCut": "-9999",
         "d_nSigmaTPC": "1000.",
-        "ptBins": {
+        "pTBins": {
             "values": [
                 "0",
                 "0.5",
@@ -295,7 +295,7 @@
     "hf-task-jpsi": {
         "cutYCandMax": "0.8",
         "d_selectionFlagJpsi": "0",
-        "ptBins": {
+        "pTBins": {
             "values": [
                 "0",
                 "0.5",
