@@ -149,7 +149,9 @@ function MakeScriptO2 {
   [ $DOO2_TASK_XIC -eq 1 ] && { DOO2_SEL_XIC=1; }
   [ $DOO2_TASK_DPLUS -eq 1 ] && { DOO2_SEL_DPLUS=1; }
   [ $DOO2_TASK_BPLUS -eq 1 ] && { DOO2_SEL_D0=1; }
-  [ $DOO2_TASK_X -eq 1 ] && { DOO2_SEL_JPSI=1; DOO2_CAND_X=1; }
+  [ $DOO2_TASK_X -eq 1 ] && { DOO2_CAND_X=1; }
+  # Cascade vertexing
+  [ $DOO2_CAND_X -eq 1 ] && { DOO2_SEL_JPSI=1; }
   # Selectors
   [[ $DOO2_SEL_D0 -eq 1 || $DOO2_SEL_JPSI -eq 1 ]] && { DOO2_CAND_2PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
   [[ $DOO2_SEL_LC -eq 1 || $DOO2_SEL_XIC -eq 1 || $DOO2_SEL_DPLUS -eq 1 ]] && { DOO2_CAND_3PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
