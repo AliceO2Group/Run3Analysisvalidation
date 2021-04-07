@@ -37,7 +37,7 @@ SAVETREES=0                     # Save O2 tables to trees.
 DEBUG=0                         # Print out more information.
 
 # Performance
-NCORES=10     #$(nproc)                 # Ideal number of used cores
+NCORES=$(nproc)                 # Ideal number of used cores
 NCORESPERJOB_ALI=1              # Average number of cores used by one AliPhysics job
 NCORESPERJOB_O2=1.6             # Average number of cores used by one O2 job
 
