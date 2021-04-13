@@ -211,6 +211,7 @@ function MakeScriptO2 {
     O2ARGS_TASK_LC+=" --doMC"
     O2ARGS_TASK_XIC+=" --doMC"
     O2ARGS_TASK_JPSI+=" --doMC"
+    O2ARGS_TASK_X+=" --doMC"
   }
 
   # Pair O2 executables with their respective options.
@@ -313,6 +314,7 @@ function MakeScriptPostprocess {
     [ $DOO2_TASK_LC -eq 1 ] && PARTICLES+="-lc"
     [ $DOO2_TASK_XIC -eq 1 ] && PARTICLES+="-xic"
     [ $DOO2_TASK_JPSI -eq 1 ] && PARTICLES+="-jpsi"
+    [ $DOO2_TASK_X -eq 1 ] && PARTICLES+="-x"
     [ "$PARTICLES" ] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/PlotEfficiency.C(\\\"\$FileO2\\\", \\\"$PARTICLES\\\")\""
   }
   cat << EOF > "$SCRIPT_POSTPROCESS"
