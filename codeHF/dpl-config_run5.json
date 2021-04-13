@@ -281,6 +281,10 @@
         "cutYCandMax": "0.8",
         "d_selectionFlagJpsi": "0"
     },
+    "hf-task-x-mc": {
+        "cutYCandMax": "0.8",
+        "d_selectionFlagJpsi": "0"
+    },
     "qa-tracking-efficiency-electron": {
         "eta-min": "-3",
         "eta-max": "3",
