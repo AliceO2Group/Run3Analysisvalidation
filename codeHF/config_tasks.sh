@@ -206,6 +206,7 @@ function MakeScriptO2 {
   [ "$ISMC" -eq 1 ] && {
     O2ARGS_CAND_2PRONG+=" --doMC"
     O2ARGS_CAND_3PRONG+=" --doMC"
+    O2ARGS_CAND_X+=" --doMC"
     O2ARGS_TASK_D0+=" --doMC"
     O2ARGS_TASK_DPLUS+=" --doMC"
     O2ARGS_TASK_LC+=" --doMC"
