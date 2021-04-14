@@ -12,15 +12,40 @@
         "doCutQuality": "false",
         "d_tpcnclsfound": "-999999",
         "ptmintrack_2prong": ".3",
-        "dcatoprimxy_2prong_maxpt": "2.",
-        "dcatoprimxymin_2prong": "0.001",
-        "dcatoprimxymax_2prong": "1.0",
+        "ptbins_singletrack": {
+            "values": [
+                "0.",
+                "0.5",
+                "1.",
+                "1.5",
+                "2.",
+                "3.",
+                "100."
+            ]
+        },
         "etamax_2prong": "1.44",
+        "cuts_singletrack_2prong": {
+            "values": [
+                ["0.001", "1.0"],
+                ["0.001", "1.0"],
+                ["0.001", "1.0"],
+                ["0.001", "1.0"],
+                ["0.000", "10."],
+                ["0.000", "10."]
+            ]
+        },
         "ptmintrack_3prong": ".3",
-        "dcatoprimxy_3prong_maxpt": "2.",
-        "dcatoprimxymin_3prong": "0.001",
-        "dcatoprimxymax_3prong": "1.0",
-        "etamax_3prong": "1.44"
+        "etamax_3prong": "1.44",
+        "cuts_singletrack_3prong": {
+            "values": [
+                ["0.001", "1.0"],
+                ["0.001", "1.0"],
+                ["0.001", "1.0"],
+                ["0.001", "1.0"],
+                ["0.000", "10."],
+                ["0.000", "10."]
+            ]
+        }
     },
     "hf-track-index-skims-creator": {
         "b_dovalplots": "true",
