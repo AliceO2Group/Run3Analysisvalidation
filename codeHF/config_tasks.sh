@@ -318,7 +318,7 @@ function MakeScriptPostprocess {
     [ $DOO2_TASK_DPLUS -eq 1 ] && OPT_COMPARE+="-dplus"
     [ $DOO2_TASK_LC -eq 1 ] && OPT_COMPARE+="-lc"
     [ $DOO2_TASK_XIC -eq 1 ] && OPT_COMPARE+="-xic"
-    [ $DOO2_TASK_JPSI -eq 1 ] && OPT_COMPARE+="-jpsi"
+    [ $DOO2_TASK_JPSI_EE -eq 1 ] && OPT_COMPARE+="-jpsiToEE"
     [ "$OPT_COMPARE" ] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/Compare.C(\\\"\$FileO2\\\", \\\"\$FileAli\\\", \\\"$OPT_COMPARE\\\", $DORATIO)\""
   }
   # Plot particle reconstruction efficiencies.
@@ -328,7 +328,7 @@ function MakeScriptPostprocess {
     [ $DOO2_TASK_DPLUS -eq 1 ] && PARTICLES+="-dplus"
     [ $DOO2_TASK_LC -eq 1 ] && PARTICLES+="-lc"
     [ $DOO2_TASK_XIC -eq 1 ] && PARTICLES+="-xic"
-    [ $DOO2_TASK_JPSI -eq 1 ] && PARTICLES+="-jpsi"
+    [ $DOO2_TASK_JPSI_EE -eq 1 ] && PARTICLES+="-jpsiToEE"
     [ "$PARTICLES" ] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/PlotEfficiency.C(\\\"\$FileO2\\\", \\\"$PARTICLES\\\")\""
   }
   cat << EOF > "$SCRIPT_POSTPROCESS"
