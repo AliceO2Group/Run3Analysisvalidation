@@ -15,55 +15,59 @@
 
 # Steps
 DOCLEAN=1           # Delete created files (before and after running tasks).
-DOCONVERT=1         # Convert AliESDs.root to AO2D.root.
-DOALI=1             # Run AliPhysics tasks.
+DOCONVERT=0         # Convert AliESDs.root to AO2D.root.
+DOALI=0             # Run AliPhysics tasks.
 DOO2=1              # Run O2 tasks.
-DOPOSTPROCESS=1     # Run output postprocessing. (Compare AliPhysics and O2 output.)
+DOPOSTPROCESS=0     # Run output postprocessing. (Compare AliPhysics and O2 output.)
 
 # Disable incompatible steps.
 [ "$ISINPUTO2" -eq 1 ] && { DOCONVERT=0; DOALI=0; }
 
 # Activation of O2 tasks
 # QA
-DOO2_QA_EFF=1       # qa-efficiency
-DOO2_QA_SIM=1       # qa-simple
-DOO2_MC_VALID=0     # hf-mc-validation
-# PID
-DOO2_PID_TPC=0      # pid-tpc
-DOO2_PID_TOF=0      # pid-tof
-DOO2_PID_TOF_QA=0   # pid-tof-qa
-# Vertexing
-DOO2_SKIM=0         # hf-track-index-skims-creator
-DOO2_CAND_2PRONG=0  # hf-candidate-creator-2prong
-DOO2_CAND_3PRONG=0  # hf-candidate-creator-3prong
-# Selectors
-DOO2_SEL_D0=0       # hf-d0-candidate-selector
-DOO2_SEL_DPLUS=0    # hf-dplus-topikpi-candidate-selector
-DOO2_SEL_LC=0       # hf-lc-candidate-selector
-DOO2_SEL_XIC=0      # hf-xic-topkpi-candidate-selector
-DOO2_SEL_JPSI=0     # hf-jpsi-toee-candidate-selector
-# User tasks
-DOO2_TASK_D0=1      # hf-task-d0
-DOO2_TASK_DPLUS=0   # hf-task-dplus
-DOO2_TASK_LC=0      # hf-task-lc
-DOO2_TASK_XIC=0     # hf-task-xic
-DOO2_TASK_JPSI=0    # hf-task-jpsi
-DOO2_TASK_BPLUS=0   # hf-task-bplus
-DOO2_TASK_X=0       # hf-task-x
-# Tree creators
-DOO2_TREE_D0=0      # hf-tree-creator-d0-tokpi
-DOO2_TREE_LC=0      # hf-tree-creator-lc-topkpi
-
-# Selection cuts
-APPLYCUTS_D0=0      # Apply D0 selection cuts.
-APPLYCUTS_DPLUS=0   # Apply D+ selection cuts.
-APPLYCUTS_LC=0      # Apply Λc selection cuts.
-APPLYCUTS_XIC=0     # Apply Ξc selection cuts.
-APPLYCUTS_JPSI=0    # Apply J/ψ selection cuts.
-
-SAVETREES=0         # Save O2 tables to trees.
-USEO2VERTEXER=0     # Use the O2 vertexer in AliPhysics.
-DORATIO=0           # Plot histogram ratios in comparison.
+DOO2_QA_EFF=0                # qa-efficiency
+DOO2_QA_SIM=0                # qa-simple
+DOO2_MC_VALID=0              # hf-mc-validation
+# PID		             
+DOO2_PID_TPC=0               # pid-tpc
+DOO2_PID_TOF=0               # pid-tof
+DOO2_PID_TOF_QA=0            # pid-tof-qa
+# Vertexing	             
+DOO2_SKIM=0                  # hf-track-index-skims-creator
+DOO2_CAND_2PRONG=0           # hf-candidate-creator-2prong
+DOO2_CAND_3PRONG=0           # hf-candidate-creator-3prong
+# Selectors	             
+DOO2_SEL_D0=0                # hf-d0-candidate-selector
+DOO2_SEL_DPLUS=0             # hf-dplus-topikpi-candidate-selector
+DOO2_SEL_LC=0                # hf-lc-candidate-selector
+DOO2_SEL_XIC=0               # hf-xic-topkpi-candidate-selector
+DOO2_SEL_JPSI_EE=0           # hf-jpsi-toee-candidate-selector
+DOO2_SEL_JPSI_MUMU=1         # hf-jpsi-toMuMu-candidate-selector
+# User tasks	             
+DOO2_TASK_D0=0               # hf-task-d0
+DOO2_TASK_DPLUS=0            # hf-task-dplus
+DOO2_TASK_LC=0               # hf-task-lc
+DOO2_TASK_XIC=0              # hf-task-xic
+DOO2_TASK_JPSI_EE=0          # hf-task-jpsi-toee
+DOO2_TASK_JPSI_MUMU=1        # hf-task-jpsi-toMuMu
+DOO2_TASK_BPLUS=0            # hf-task-bplus
+DOO2_TASK_X_PIPI_EE=0        # hf-task-x-PiPi-ee
+DOO2_TASK_X_PIPI_MUMU=0      # hf-task-x-PiPi-MuMu
+# Tree creators	             
+DOO2_TREE_D0=0               # hf-tree-creator-d0-tokpi
+DOO2_TREE_LC=0               # hf-tree-creator-lc-topkpi
+		             
+# Selection cuts             
+APPLYCUTS_D0=0               # Apply D0 selection cuts.
+APPLYCUTS_DPLUS=0            # Apply D+ selection cuts.
+APPLYCUTS_LC=0               # Apply Λc selection cuts.
+APPLYCUTS_XIC=0              # Apply Ξc selection cuts.
+APPLYCUTS_JPSI_EE=0          # Apply J/ψ to ee selection cuts.
+APPLYCUTS_JPSI_MUMU=1        # Apply J/ψ to MuMu selection cuts.
+		             
+SAVETREES=0                  # Save O2 tables to trees.
+USEO2VERTEXER=0              # Use the O2 vertexer in AliPhysics.
+DORATIO=0                    # Plot histogram ratios in comparison.
 
 ####################################################################################################
 
@@ -85,7 +89,7 @@ function Clean {
 function AdjustJson {
   # Make a copy of the default JSON file to modify it.
   JSON_EDIT=""
-  if [[ $APPLYCUTS_D0 -eq 1 || $APPLYCUTS_DPLUS -eq 1 || $APPLYCUTS_LC -eq 1 || $APPLYCUTS_XIC -eq 1 || $APPLYCUTS_JPSI -eq 1 ]]; then
+  if [[ $APPLYCUTS_D0 -eq 1 || $APPLYCUTS_DPLUS -eq 1 || $APPLYCUTS_LC -eq 1 || $APPLYCUTS_XIC -eq 1 || $APPLYCUTS_JPSI_EE -eq 1 || $APPLYCUTS_JPSI_MUMU -eq 1 ]]; then
     JSON_EDIT="${JSON/.json/_edit.json}"
     cp "$JSON" "$JSON_EDIT" || ErrExit "Failed to cp $JSON $JSON_EDIT."
     JSON="$JSON_EDIT"
@@ -116,10 +120,16 @@ function AdjustJson {
     ReplaceString "\"d_selectionFlagXic\": \"0\"" "\"d_selectionFlagXic\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
-    # Enable J/ψ selection.
-  if [ $APPLYCUTS_JPSI -eq 1 ]; then
-    MsgWarn "\nUsing J/ψ selection cuts"
-    ReplaceString "\"d_selectionFlagJpsi\": \"0\"" "\"d_selectionFlagJpsi\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    # Enable J/ψ to ee selection.
+  if [ $APPLYCUTS_JPSI_EE -eq 1 ]; then
+    MsgWarn "\nUsing J/ψ to ee selection cuts"
+    ReplaceString "\"d_selectionFlagJpsiToEE\": \"0\"" "\"d_selectionFlagJpsiToEE\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  fi
+
+  # Enable J/ψ to MuMu selection.
+  if [ $APPLYCUTS_JPSI_MUMU -eq 1 ]; then
+    MsgWarn "\nUsing J/ψ to MuMu selection cuts"
+    ReplaceString "\"d_selectionFlagJpsiToMuMu\": \"0\"" "\"d_selectionFlagJpsiToMuMu\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 }
 
@@ -143,14 +153,16 @@ function MakeScriptO2 {
   [ $DOO2_TREE_LC -eq 1 ] && { DOO2_SEL_LC=1; }
   # User tasks
   [ $DOO2_TASK_D0 -eq 1 ] && { DOO2_SEL_D0=1; }
-  [ $DOO2_TASK_JPSI -eq 1 ] && { DOO2_SEL_JPSI=1; }
+  [ $DOO2_TASK_JPSI_EE -eq 1 ] && { DOO2_SEL_JPSI_EE=1; }
+  [ $DOO2_TASK_JPSI_MUMU -eq 1 ] && { DOO2_SEL_JPSI_MUMU=1; }
   [ $DOO2_TASK_LC -eq 1 ] && { DOO2_SEL_LC=1; }
   [ $DOO2_TASK_XIC -eq 1 ] && { DOO2_SEL_XIC=1; }
   [ $DOO2_TASK_DPLUS -eq 1 ] && { DOO2_SEL_DPLUS=1; }
   [ $DOO2_TASK_BPLUS -eq 1 ] && { DOO2_SEL_D0=1; }
-  [ $DOO2_TASK_X -eq 1 ] && { DOO2_SEL_JPSI=1; }
+  [ $DOO2_TASK_X_PIPI_EE -eq 1 ] && { DOO2_SEL_JPSI_EE=1; }
+  [ $DOO2_TASK_X_PIPI_MUMU -eq 1 ] && { DOO2_SEL_JPSI_MUMU=1; }
   # Selectors
-  [[ $DOO2_SEL_D0 -eq 1 || $DOO2_SEL_JPSI -eq 1 ]] && { DOO2_CAND_2PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
+  [[ $DOO2_SEL_D0 -eq 1 || $DOO2_SEL_JPSI_EE -eq 1 || $DOO2_SEL_JPSI_MUMU -eq 1 ]] && { DOO2_CAND_2PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
   [[ $DOO2_SEL_LC -eq 1 || $DOO2_SEL_XIC -eq 1 || $DOO2_SEL_DPLUS -eq 1 ]] && { DOO2_CAND_3PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
   # Vertexing
   [[ $DOO2_CAND_2PRONG -eq 1 || $DOO2_CAND_3PRONG -eq 1 ]] && { DOO2_SKIM=1; }
@@ -184,17 +196,20 @@ function MakeScriptO2 {
   O2ARGS_PID_TOF="$O2ARGS"
   O2ARGS_PID_TOF_QA="$O2ARGS"
   O2ARGS_SEL_D0="$O2ARGS"
-  O2ARGS_SEL_JPSI="$O2ARGS"
+  O2ARGS_SEL_JPSI_EE="$O2ARGS"
+  O2ARGS_SEL_JPSI_MUMU="$O2ARGS"
   O2ARGS_SEL_DPLUS="$O2ARGS"
   O2ARGS_SEL_LC="$O2ARGS"
   O2ARGS_SEL_XIC="$O2ARGS"
   O2ARGS_TASK_D0="$O2ARGS"
-  O2ARGS_TASK_JPSI="$O2ARGS"
+  O2ARGS_TASK_JPSI_EE="$O2ARGS"
+  O2ARGS_TASK_JPSI_MUMU="$O2ARGS"
   O2ARGS_TASK_DPLUS="$O2ARGS"
   O2ARGS_TASK_LC="$O2ARGS"
   O2ARGS_TASK_XIC="$O2ARGS"
   O2ARGS_TASK_BPLUS="$O2ARGS"
-  O2ARGS_TASK_X="$O2ARGS"
+  O2ARGS_TASK_X_PIPI_EE="$O2ARGS"
+  O2ARGS_TASK_X_PIPI_MUMU="$O2ARGS"
   O2ARGS_TREE_D0="$O2ARGS"
   O2ARGS_TREE_LC="$O2ARGS"
   O2ARGS_MC_VALID="$O2ARGS"
@@ -206,7 +221,8 @@ function MakeScriptO2 {
     O2ARGS_TASK_DPLUS+=" --doMC"
     O2ARGS_TASK_LC+=" --doMC"
     O2ARGS_TASK_XIC+=" --doMC"
-    O2ARGS_TASK_JPSI+=" --doMC"
+    O2ARGS_TASK_JPSI_EE+=" --doMC"
+    O2ARGS_TASK_JPSI_MUMU+=" --doMC"
   }
 
   # Pair O2 executables with their respective options.
@@ -222,14 +238,17 @@ function MakeScriptO2 {
   O2EXEC_SEL_DPLUS="o2-analysis-hf-dplus-topikpi-candidate-selector $O2ARGS_SEL_DPLUS"
   O2EXEC_SEL_LC="o2-analysis-hf-lc-candidate-selector $O2ARGS_SEL_LC"
   O2EXEC_SEL_XIC="o2-analysis-hf-xic-topkpi-candidate-selector $O2ARGS_SEL_XIC"
-  O2EXEC_SEL_JPSI="o2-analysis-hf-jpsi-toee-candidate-selector $O2ARGS_SEL_JPSI"
+  O2EXEC_SEL_JPSI_EE="o2-analysis-hf-jpsi-toee-candidate-selector $O2ARGS_SEL_JPSI_EE"
+  O2EXEC_SEL_JPSI_MUMU="o2-analysis-hf-jpsi-toMuMu-candidate-selector $O2ARGS_SEL_JPSI_MUMU"
   O2EXEC_TASK_D0="o2-analysis-hf-task-d0 $O2ARGS_TASK_D0"
-  O2EXEC_TASK_JPSI="o2-analysis-hf-task-jpsi $O2ARGS_TASK_JPSI"
+  O2EXEC_TASK_JPSI_EE="o2-analysis-hf-task-jpsi-toee $O2ARGS_TASK_JPSI_EE"
+  O2EXEC_TASK_JPSI_MUMU="o2-analysis-hf-task-jpsi-toMuMu $O2ARGS_TASK_JPSI_MUMU"
   O2EXEC_TASK_DPLUS="o2-analysis-hf-task-dplus $O2ARGS_TASK_DPLUS"
   O2EXEC_TASK_LC="o2-analysis-hf-task-lc $O2ARGS_TASK_LC"
   O2EXEC_TASK_XIC="o2-analysis-hf-task-xic $O2ARGS_TASK_XIC"
   O2EXEC_TASK_BPLUS="o2-analysis-hf-task-bplus $O2ARGS_TASK_BPLUS"
-  O2EXEC_TASK_X="o2-analysis-hf-task-x $O2ARGS_TASK_X"
+  O2EXEC_TASK_X_PIPI_EE="o2-analysis-hf-task-x-topipiee $O2ARGS_TASK_X_PIPI_EE"
+  O2EXEC_TASK_X_PIPI_MUMU="o2-analysis-hf-task-x-topipimumu $O2ARGS_TASK_X_PIPI_MUMU"
   O2EXEC_TREE_D0="o2-analysis-hf-tree-creator-d0-tokpi $O2ARGS_TREE_D0"
   O2EXEC_TREE_LC="o2-analysis-hf-tree-creator-lc-topkpi $O2ARGS_TREE_LC"
   O2EXEC_MC_VALID="o2-analysis-hf-mc-validation $O2ARGS_MC_VALID"
@@ -246,7 +265,8 @@ function MakeScriptO2 {
   [ $DOO2_PID_TOF -eq 1 ] && { O2EXEC+=" | $O2EXEC_PID_TOF"; MsgSubStep "  pid-tof"; }
   [ $DOO2_PID_TOF_QA -eq 1 ] && { O2EXEC+=" | $O2EXEC_PID_TOF_QA"; MsgSubStep "  pid-tof-qa"; }
   [ $DOO2_SEL_D0 -eq 1 ] && { O2EXEC+=" | $O2EXEC_SEL_D0"; MsgSubStep "  hf-d0-candidate-selector"; }
-  [ $DOO2_SEL_JPSI -eq 1 ] && { O2EXEC+=" | $O2EXEC_SEL_JPSI"; MsgSubStep "  hf-jpsi-toee-candidate-selector"; }
+  [ $DOO2_SEL_JPSI_EE -eq 1 ] && { O2EXEC+=" | $O2EXEC_SEL_JPSI_EE"; MsgSubStep "  hf-jpsi-toee-candidate-selector"; }
+  [ $DOO2_SEL_JPSI_MUMU -eq 1 ] && { O2EXEC+=" | $O2EXEC_SEL_JPSI_MUMU"; MsgSubStep "  hf-jpsi-toMuMu-candidate-selector"; }
   [ $DOO2_SEL_DPLUS -eq 1 ] && { O2EXEC+=" | $O2EXEC_SEL_DPLUS"; MsgSubStep "  hf-dplus-topikpi-candidate-selector"; }
   [ $DOO2_SEL_LC -eq 1 ] && { O2EXEC+=" | $O2EXEC_SEL_LC"; MsgSubStep "  hf-lc-candidate-selector"; }
   [ $DOO2_SEL_XIC -eq 1 ] && { O2EXEC+=" | $O2EXEC_SEL_XIC"; MsgSubStep "  hf-xic-topkpi-candidate-selector"; }
@@ -254,9 +274,11 @@ function MakeScriptO2 {
   [ $DOO2_TASK_DPLUS -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_DPLUS"; MsgSubStep "  hf-task-dplus"; }
   [ $DOO2_TASK_LC -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_LC"; MsgSubStep "  hf-task-lc"; }
   [ $DOO2_TASK_XIC -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_XIC"; MsgSubStep "  hf-task-xic"; }
-  [ $DOO2_TASK_JPSI -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_JPSI"; MsgSubStep "  hf-task-jpsi"; }
+  [ $DOO2_TASK_JPSI_EE -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_JPSI_EE"; MsgSubStep "  hf-task-jpsi-toee"; }
+  [ $DOO2_TASK_JPSI_MUMU -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_JPSI_MUMU"; MsgSubStep "  hf-task-jpsi-tomumu"; }
   [ $DOO2_TASK_BPLUS -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_BPLUS"; MsgSubStep "  hf-task-bplus"; }
-  [ $DOO2_TASK_X -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_X"; MsgSubStep "  hf-task-x"; }
+  [ $DOO2_TASK_X_PIPI_EE -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_X_PIPI_EE"; MsgSubStep "  hf-task-x-topipiee"; }
+  [ $DOO2_TASK_X_PIPI_MUMU -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_X_PIPI_MUMU"; MsgSubStep "  hf-task-x-topipimumu"; }
   [ $DOO2_TREE_D0 -eq 1 ] && { O2EXEC+=" | $O2EXEC_TREE_D0"; MsgSubStep "  hf-tree-creator-d0-tokpi"; }
   [ $DOO2_TREE_LC -eq 1 ] && { O2EXEC+=" | $O2EXEC_TREE_LC"; MsgSubStep "  hf-tree-creator-lc-topkpi"; }
   [ $DOO2_MC_VALID -eq 1 ] && { O2EXEC+=" | $O2EXEC_MC_VALID"; MsgSubStep "  hf-mc-validation"; }
