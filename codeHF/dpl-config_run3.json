@@ -283,6 +283,44 @@
             ]
         }
     },
+    "hf-x-tojpsipipi-candidate-selector": {
+        "d_pTCandMin": "0.",
+        "d_pTCandMax": "50.",
+        "d_pidTPCMinpT": "1000.",
+        "d_pidTPCMaxpT": "2000.",
+        "d_pidTOFMinpT": "1000.",
+        "d_pidTOFMaxpT": "2000.",
+        "d_TPCNClsFindablePIDCut": "-9999",
+        "d_nSigmaTPC": "1000.",
+        "d_nSigmaTOF": "1000.",
+        "pTBins": {
+            "values": [
+                "0",
+                "0.5",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "7",
+                "10",
+                "15"
+            ]
+        },
+        "X_to_jpsipipi_cuts": {
+            "values": [
+                ["0.5", "0.80", "0.001", "0.001", "3.0", "0.15"],
+                ["0.5", "0.80", "0.001", "0.001", "3.0", "0.15"],
+                ["0.5", "0.80", "0.001", "0.001", "3.0", "0.15"],
+                ["0.5", "0.80", "0.001", "0.001", "3.0", "0.15"],
+                ["0.5", "0.80", "0.001", "0.001", "3.0", "0.15"],
+                ["0.5", "0.80", "0.001", "0.001", "3.0", "0.15"],
+                ["0.5", "0.80", "0.001", "0.001", "3.0", "0.15"],
+                ["0.5", "0.80", "0.001", "0.001", "3.0", "0.15"],
+                ["0.5", "0.80", "0.001", "0.001", "3.0", "0.15"]
+            ]
+        }
+    },
     "hf-task-d0": {
         "cutYCandMax": "0.8",
         "d_selectionFlagD0": "0",
@@ -390,11 +428,11 @@
     },
     "hf-task-x": {
         "cutYCandMax": "0.8",
-        "d_selectionFlagJpsi": "0"
+        "d_selectionFlagX": "0"
     },
     "hf-task-x-mc": {
         "cutYCandMax": "0.8",
-        "d_selectionFlagJpsi": "0"
+        "d_selectionFlagX": "0"
     },
     "qa-tracking-efficiency-electron": {
         "eta-min": "-3",

@@ -43,6 +43,7 @@ DOO2_SEL_DPLUS=0    # hf-dplus-topikpi-candidate-selector
 DOO2_SEL_LC=0       # hf-lc-candidate-selector
 DOO2_SEL_XIC=0      # hf-xic-topkpi-candidate-selector
 DOO2_SEL_JPSI=0     # hf-jpsi-toee-candidate-selector
+DOO2_SEL_X=0        # hf-xic-topkpi-candidate-selector
 # User tasks
 DOO2_TASK_D0=1      # hf-task-d0
 DOO2_TASK_DPLUS=0   # hf-task-dplus
@@ -61,6 +62,7 @@ APPLYCUTS_DPLUS=0   # Apply D+ selection cuts.
 APPLYCUTS_LC=0      # Apply Λc selection cuts.
 APPLYCUTS_XIC=0     # Apply Ξc selection cuts.
 APPLYCUTS_JPSI=0    # Apply J/ψ selection cuts.
+APPLYCUTS_X=0       # Apply X selection cuts.
 
 SAVETREES=0         # Save O2 tables to trees.
 USEO2VERTEXER=0     # Use the O2 vertexer in AliPhysics.
@@ -86,7 +88,7 @@ function Clean {
 function AdjustJson {
   # Make a copy of the default JSON file to modify it.
   JSON_EDIT=""
-  if [[ $APPLYCUTS_D0 -eq 1 || $APPLYCUTS_DPLUS -eq 1 || $APPLYCUTS_LC -eq 1 || $APPLYCUTS_XIC -eq 1 || $APPLYCUTS_JPSI -eq 1 ]]; then
+  if [[ $APPLYCUTS_D0 -eq 1 || $APPLYCUTS_DPLUS -eq 1 || $APPLYCUTS_LC -eq 1 || $APPLYCUTS_XIC -eq 1 || $APPLYCUTS_JPSI -eq 1 || $APPLYCUTS_X -eq 1 ]]; then
     JSON_EDIT="${JSON/.json/_edit.json}"
     cp "$JSON" "$JSON_EDIT" || ErrExit "Failed to cp $JSON $JSON_EDIT."
     JSON="$JSON_EDIT"
@@ -122,6 +124,12 @@ function AdjustJson {
     MsgWarn "\nUsing J/ψ selection cuts"
     ReplaceString "\"d_selectionFlagJpsi\": \"0\"" "\"d_selectionFlagJpsi\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
+
+    # Enable X(3872) selection.
+  if [ $APPLYCUTS_X -eq 1 ]; then
+    MsgWarn "\nUsing X(3872) selection cuts"
+    ReplaceString "\"d_selectionFlagX\": \"0\"" "\"d_selectionFlagX\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  fi
 }
 
 # Generate the O2 script containing the full workflow specification.
@@ -149,8 +157,9 @@ function MakeScriptO2 {
   [ $DOO2_TASK_XIC -eq 1 ] && { DOO2_SEL_XIC=1; }
   [ $DOO2_TASK_DPLUS -eq 1 ] && { DOO2_SEL_DPLUS=1; }
   [ $DOO2_TASK_BPLUS -eq 1 ] && { DOO2_SEL_D0=1; }
-  [ $DOO2_TASK_X -eq 1 ] && { DOO2_CAND_X=1; }
-  # Cascade vertexing
+  [ $DOO2_TASK_X -eq 1 ] && { DOO2_SEL_X=1; }
+  # Cascade selectors & vertexing
+  [ $DOO2_SEL_X -eq 1 ] && { DOO2_CAND_X=1; }
   [ $DOO2_CAND_X -eq 1 ] && { DOO2_SEL_JPSI=1; }
   # Selectors
   [[ $DOO2_SEL_D0 -eq 1 || $DOO2_SEL_JPSI -eq 1 ]] && { DOO2_CAND_2PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
@@ -192,6 +201,7 @@ function MakeScriptO2 {
   O2ARGS_SEL_DPLUS="$O2ARGS"
   O2ARGS_SEL_LC="$O2ARGS"
   O2ARGS_SEL_XIC="$O2ARGS"
+  O2ARGS_SEL_X="$O2ARGS"
   O2ARGS_TASK_D0="$O2ARGS"
   O2ARGS_TASK_JPSI="$O2ARGS"
   O2ARGS_TASK_DPLUS="$O2ARGS"
@@ -230,6 +240,7 @@ function MakeScriptO2 {
   O2EXEC_SEL_LC="o2-analysis-hf-lc-candidate-selector $O2ARGS_SEL_LC"
   O2EXEC_SEL_XIC="o2-analysis-hf-xic-topkpi-candidate-selector $O2ARGS_SEL_XIC"
   O2EXEC_SEL_JPSI="o2-analysis-hf-jpsi-toee-candidate-selector $O2ARGS_SEL_JPSI"
+  O2EXEC_SEL_X="o2-analysis-hf-x-tojpsipipi-candidate-selector $O2ARGS_SEL_X"
   O2EXEC_TASK_D0="o2-analysis-hf-task-d0 $O2ARGS_TASK_D0"
   O2EXEC_TASK_JPSI="o2-analysis-hf-task-jpsi $O2ARGS_TASK_JPSI"
   O2EXEC_TASK_DPLUS="o2-analysis-hf-task-dplus $O2ARGS_TASK_DPLUS"
@@ -258,6 +269,7 @@ function MakeScriptO2 {
   [ $DOO2_SEL_DPLUS -eq 1 ] && { O2EXEC+=" | $O2EXEC_SEL_DPLUS"; MsgSubStep "  hf-dplus-topikpi-candidate-selector"; }
   [ $DOO2_SEL_LC -eq 1 ] && { O2EXEC+=" | $O2EXEC_SEL_LC"; MsgSubStep "  hf-lc-candidate-selector"; }
   [ $DOO2_SEL_XIC -eq 1 ] && { O2EXEC+=" | $O2EXEC_SEL_XIC"; MsgSubStep "  hf-xic-topkpi-candidate-selector"; }
+  [ $DOO2_SEL_X -eq 1 ] && { O2EXEC+=" | $O2EXEC_SEL_X"; MsgSubStep "  hf-x-tojpsipipi-candidate-selector"; }
   [ $DOO2_TASK_D0 -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_D0"; MsgSubStep "  hf-task-d0"; }
   [ $DOO2_TASK_DPLUS -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_DPLUS"; MsgSubStep "  hf-task-dplus"; }
   [ $DOO2_TASK_LC -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_LC"; MsgSubStep "  hf-task-lc"; }
