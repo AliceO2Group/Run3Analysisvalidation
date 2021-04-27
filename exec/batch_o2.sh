@@ -9,6 +9,7 @@ DEBUG=$4
 NFILESPERJOB=$5
 FILEOUT_TREE="$6"
 FILEOUT="AnalysisResults.root"
+NJOBSPARALLEL=$7
 
 [ "$DEBUG" -eq 1 ] && echo "Running $0"
 
@@ -16,7 +17,7 @@ FILEOUT="AnalysisResults.root"
 DIR_THIS="$(dirname "$(realpath "$0")")"
 
 # Load utilities.
-# shellcheck disable=SC1090 # Ignore non-constant source.
+# shellcheck disable=SC1091 # Ignore not following.
 source "$DIR_THIS/utilities.sh" || { echo "Error: Failed to load utilities."; exit 1; }
 
 CheckFile "$SCRIPT"
@@ -62,8 +63,8 @@ while read -r FileIn; do
 done < "$LISTINPUT"
 
 CheckFile "$ListRunScripts"
-echo "Running O2 jobs... ($(wc -l < "$ListRunScripts") jobs, $NFILESPERJOB files/job)"
-OPT_PARALLEL="--halt soon,fail=100%"
+echo "Running O2 jobs... ($(wc -l < "$ListRunScripts") jobs, $NJOBSPARALLEL parallel, $NFILESPERJOB files/job)"
+OPT_PARALLEL="--halt soon,fail=100% --jobs $NJOBSPARALLEL"
 if [ "$DEBUG" -eq 0 ]; then
   # shellcheck disable=SC2086 # Ignore unquoted options.
   parallel $OPT_PARALLEL < "$ListRunScripts" > $LogFile 2>&1
