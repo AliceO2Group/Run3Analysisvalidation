@@ -9,6 +9,7 @@ DEBUG=$4
 NFILESPERJOB=$5
 FILEOUT_TREE="$6"
 FILEOUT="AnalysisResults.root"
+NJOBSPARALLEL=$7
 
 [ "$DEBUG" -eq 1 ] && echo "Running $0"
 
@@ -62,8 +63,8 @@ while read -r FileIn; do
 done < "$LISTINPUT"
 
 CheckFile "$ListRunScripts"
-echo "Running O2 jobs... ($(wc -l < "$ListRunScripts") jobs, $NFILESPERJOB files/job)"
-OPT_PARALLEL="--halt soon,fail=100%"
+echo "Running O2 jobs... ($(wc -l < "$ListRunScripts") jobs, $NJOBSPARALLEL parallel, $NFILESPERJOB files/job)"
+OPT_PARALLEL="--halt soon,fail=100% --jobs $NJOBSPARALLEL"
 if [ "$DEBUG" -eq 0 ]; then
   # shellcheck disable=SC2086 # Ignore unquoted options.
   parallel $OPT_PARALLEL < "$ListRunScripts" > $LogFile 2>&1
