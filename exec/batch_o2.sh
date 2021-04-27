@@ -17,7 +17,7 @@ NJOBSPARALLEL=$7
 DIR_THIS="$(dirname "$(realpath "$0")")"
 
 # Load utilities.
-# shellcheck disable=SC1090 # Ignore non-constant source.
+# shellcheck disable=SC1091 # Ignore not following.
 source "$DIR_THIS/utilities.sh" || { echo "Error: Failed to load utilities."; exit 1; }
 
 CheckFile "$SCRIPT"

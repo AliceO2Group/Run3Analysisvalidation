@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck disable=SC1090,SC2034 # Ignore non-constant source, unused triggers and DIR_TASKS.
+# shellcheck disable=SC1090,SC1091,SC2034 # Ignore non-constant source, not following, unused triggers and DIR_TASKS.
 
 # Steering script to run Run 2 to Run 3 conversion, AliPhysics tasks, O2 tasks, and postprocessing
 
