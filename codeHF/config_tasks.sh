@@ -158,7 +158,7 @@ function MakeScriptO2 {
   [ $DOO2_PID_TOF_QA -eq 1 ] && { DOO2_PID_TOF=1; }
 
   # General options
-  O2ARGS="--aod-memory-rate-limit 10000000000 --shm-segment-size 16000000000 --configuration json://\$JSON -b"
+  O2ARGS="--aod-memory-rate-limit 2000000000 --shm-segment-size 16000000000 --configuration json://\$JSON -b"
 
   # Options to save tables in trees
   [ $SAVETREES -eq 1 ] && {
