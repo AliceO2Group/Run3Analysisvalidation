@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck disable=SC1090,SC2034 # Ignore non-constant source, unused triggers and DIR_TASKS.
+# shellcheck disable=SC1090,SC1091,SC2034 # Ignore non-constant source, not following, unused triggers and DIR_TASKS.
 
 # Steering script to run Run 2 to Run 3 conversion, AliPhysics tasks, O2 tasks, and postprocessing
 
@@ -40,6 +40,7 @@ DEBUG=0                         # Print out more information.
 NCORES=$(nproc)                 # Ideal number of used cores
 NCORESPERJOB_ALI=1              # Average number of cores used by one AliPhysics job
 NCORESPERJOB_O2=1.6             # Average number of cores used by one O2 job
+NJOBSPARALLEL_O2=$(nproc)       # Maximum number of simultaneously running O2 jobs
 
 # This directory
 DIR_EXEC="$(dirname "$(realpath "$0")")"
@@ -171,7 +172,7 @@ if [ $DOO2 -eq 1 ]; then
   [ $SAVETREES -eq 1 ] || FILEOUT_TREES=""
   [ $DEBUG -eq 1 ] && echo "Loading O2..."
   # Run the batch script in the O2 environment.
-  $ENVO2 bash "$DIR_EXEC/batch_o2.sh" "$LISTFILES_O2" "$JSON" "$SCRIPT_O2" $DEBUG "$NFILESPERJOB_O2" "$FILEOUT_TREES" || exit 1
+  $ENVO2 bash "$DIR_EXEC/batch_o2.sh" "$LISTFILES_O2" "$JSON" "$SCRIPT_O2" $DEBUG "$NFILESPERJOB_O2" "$FILEOUT_TREES" "$NJOBSPARALLEL_O2" || exit 1
   mv "$FILEOUT" "$FILEOUT_O2" || ErrExit "Failed to mv $FILEOUT $FILEOUT_O2."
   [[ $SAVETREES -eq 1 && "$FILEOUT_TREES" ]] && { mv "$FILEOUT_TREES" "$FILEOUT_TREES_O2" || ErrExit "Failed to mv $FILEOUT_TREES $FILEOUT_TREES_O2."; }
 fi
