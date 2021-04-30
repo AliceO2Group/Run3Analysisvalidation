@@ -253,12 +253,18 @@
         "d_pTCandMax": "50.",
         "d_pidTPCMinpT": "1000.",
         "d_pidTPCMaxpT": "2000.",
+        "d_pidTOFMinpT": "0.15",
+        "d_pidTOFMaxpT": "15.",
+        "d_pidRICHMinpT": "0.15",
+        "d_pidRICHMaxpT": "15.",
         "d_TPCNClsFindablePIDCut": "-9999",
         "d_nSigmaTPC": "1000.",
+        "d_nSigmaTPC": "3.",
+        "d_nSigmaTOF": "3.",
+        "d_nSigmaRICH": "3.",
         "pTBins": {
             "values": [
                 "0",
-                "0.5",
                 "1",
                 "2",
                 "3",
@@ -271,7 +277,6 @@
         },
         "Jpsi_to_ee_cuts": {
             "values": [
-                ["0.5", "0.2", "0.4", "1"],
                 ["0.5", "0.2", "0.4", "1"],
                 ["0.5", "0.2", "0.4", "1"],
                 ["0.5", "0.2", "0.4", "1"],
@@ -363,12 +368,11 @@
         "d_selectionFlagXic": "0"
     },
     "hf-task-jpsi": {
-        "cutYCandMax": "0.8",
+        "cutYCandMax": "1.44",
         "d_selectionFlagJpsi": "0",
         "pTBins": {
             "values": [
                 "0",
-                "0.5",
                 "1",
                 "2",
                 "3",
@@ -381,10 +385,18 @@
         }
     },
     "hf-task-jpsi-mc": {
+        "cutYCandMax": "1.44",
+        "d_selectionFlagJpsi": "0"
+    },
+    "hf-candidate-creator-x": {
         "cutYCandMax": "0.8",
         "d_selectionFlagJpsi": "0"
     },
     "hf-task-x": {
+        "cutYCandMax": "0.8",
+        "d_selectionFlagJpsi": "0"
+    },
+    "hf-task-x-mc": {
         "cutYCandMax": "0.8",
         "d_selectionFlagJpsi": "0"
     },
