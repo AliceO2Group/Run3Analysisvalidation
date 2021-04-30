@@ -388,15 +388,7 @@
         "cutYCandMax": "1.44",
         "d_selectionFlagJpsi": "0"
     },
-    "hf-candidate-creator-x": {
-        "cutYCandMax": "0.8",
-        "d_selectionFlagJpsi": "0"
-    },
     "hf-task-x": {
-        "cutYCandMax": "0.8",
-        "d_selectionFlagJpsi": "0"
-    },
-    "hf-task-x-mc": {
         "cutYCandMax": "0.8",
         "d_selectionFlagJpsi": "0"
     },
