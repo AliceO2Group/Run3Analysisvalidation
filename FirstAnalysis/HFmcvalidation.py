@@ -23,7 +23,7 @@ def count_Particle_perColl(file, var):
     cparticle = TCanvas("cparticle", "%s per collision" % var)
     cparticle.SetCanvasSize(900, 700)
     cparticle.Divide(2, 1)
-    hp = file.Get("hf-mc-validation-gen/hCouterPerCollision%s" % var)
+    hp = file.Get("hf-mc-validation-gen/hCounterPerCollision%s" % var)
     hp.Draw("")
     printCanvas(cparticle, "BtoDForcedProduction/%sPerCollision" % var)
 
