@@ -54,4 +54,18 @@ case $INPUT_CASE in
     JSON="$JSONRUN5"
     ISINPUTO2=1
     ISMC=1;;
+  8)
+    INPUT_LABEL="Run 5, p-p MC 14 TeV MB, Scenario 3"
+    INPUT_DIR="/home/mmazzill/pp14TeV_oniaX_10M_sc3_werner_26042021"
+    INPUT_FILES="AODRun5.*.root"
+    JSON="$JSONRUN5"
+    ISINPUTO2=1
+    ISMC=1;;
+  9)
+    INPUT_LABEL="Run 5, p-p MC 14 TeV MB, Scenario 3"
+    INPUT_DIR="/home/mmazzill/pp14TeV_inel_20M_sc3_werner_26042021"
+    INPUT_FILES="AODRun5.*.root"
+    JSON="$JSONRUN5"
+    ISINPUTO2=1
+    ISMC=1;;
 esac
