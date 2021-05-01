@@ -17,8 +17,11 @@ NFILESPERJOB_O2=1       # O2
 NJOBSPARALLEL_O2=$(python3 -c "print(min(10, round($(nproc) / 2)))")
 
 JSONRUN3="dpl-config_run3.json"  # Run 3 tasks parameters
-JSONRUN5_HF="dpl-config_run5_hf.json"  # Run 5 tasks parameters
-JSONRUN5_ONIAX="dpl-config_run5_oniaX.json"  # Run 5 tasks parameters
+# Run 5 tasks parameters for open HF study
+JSONRUN5_HF="dpl-config_run5_hf.json"
+# Run 5 tasks parameters for onia studies:
+# J/psi and X (higher pt cut on 2-prong decay tracks and no DCA cut on single track)
+JSONRUN5_ONIAX="dpl-config_run5_oniaX.json"
 JSON="$JSONRUN3"
 
 INPUT_FILES="AliESDs.root"  # Input file pattern
