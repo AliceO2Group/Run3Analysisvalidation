@@ -17,7 +17,8 @@ NFILESPERJOB_O2=1       # O2
 NJOBSPARALLEL_O2=$(python3 -c "print(min(10, round($(nproc) / 2)))")
 
 JSONRUN3="dpl-config_run3.json"  # Run 3 tasks parameters
-JSONRUN5="dpl-config_run5.json"  # Run 5 tasks parameters
+JSONRUN5_HF="dpl-config_run5_hf.json"  # Run 5 tasks parameters
+JSONRUN5_ONIAX="dpl-config_run5_oniaX.json"  # Run 5 tasks parameters
 JSON="$JSONRUN3"
 
 INPUT_FILES="AliESDs.root"  # Input file pattern
@@ -51,21 +52,21 @@ case $INPUT_CASE in
     INPUT_LABEL="Run 5, p-p MC 14 TeV MB, Scenario 3"
     INPUT_DIR="/data/Run5/MC/pp_14TeV/MB_S3_latest"
     INPUT_FILES="AODRun5.*.root"
-    JSON="$JSONRUN5"
+    JSON="$JSONRUN5_HF"
     ISINPUTO2=1
     ISMC=1;;
   8)
-    INPUT_LABEL="Run 5, p-p MC 14 TeV MB, Scenario 3"
+    INPUT_LABEL="Run 5, p-p MC 14 TeV ONIAX, Scenario 3"
     INPUT_DIR="/home/mmazzill/pp14TeV_oniaX_10M_sc3_werner_26042021"
     INPUT_FILES="AODRun5.*.root"
-    JSON="$JSONRUN5"
+    JSON="$JSONRUN5_ONIAX"
     ISINPUTO2=1
     ISMC=1;;
   9)
     INPUT_LABEL="Run 5, p-p MC 14 TeV MB, Scenario 3"
     INPUT_DIR="/home/mmazzill/pp14TeV_inel_20M_sc3_werner_26042021"
     INPUT_FILES="AODRun5.*.root"
-    JSON="$JSONRUN5"
+    JSON="$JSONRUN5_HF"
     ISINPUTO2=1
     ISMC=1;;
 esac
