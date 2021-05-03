@@ -36,17 +36,20 @@ DOO2_PID_TOF_QA=0   # pid-tof-qa
 DOO2_SKIM=0         # hf-track-index-skims-creator
 DOO2_CAND_2PRONG=0  # hf-candidate-creator-2prong
 DOO2_CAND_3PRONG=0  # hf-candidate-creator-3prong
+DOO2_CAND_XICC=0    # hf-candidate-creator-xicc
 # Selectors
 DOO2_SEL_D0=0       # hf-d0-candidate-selector
 DOO2_SEL_DPLUS=0    # hf-dplus-topikpi-candidate-selector
 DOO2_SEL_LC=0       # hf-lc-candidate-selector
 DOO2_SEL_XIC=0      # hf-xic-topkpi-candidate-selector
+DOO2_SEL_XICC=0     # hf-xicc-topkpipi-candidate-selector
 DOO2_SEL_JPSI=0     # hf-jpsi-toee-candidate-selector
 # User tasks
 DOO2_TASK_D0=1      # hf-task-d0
 DOO2_TASK_DPLUS=0   # hf-task-dplus
 DOO2_TASK_LC=0      # hf-task-lc
 DOO2_TASK_XIC=0     # hf-task-xic
+DOO2_TASK_XICC=0    # hf-task-xicc
 DOO2_TASK_JPSI=0    # hf-task-jpsi
 DOO2_TASK_BPLUS=0   # hf-task-bplus
 DOO2_TASK_X=0       # hf-task-x
@@ -59,6 +62,7 @@ APPLYCUTS_D0=0      # Apply D0 selection cuts.
 APPLYCUTS_DPLUS=0   # Apply D+ selection cuts.
 APPLYCUTS_LC=0      # Apply Λc selection cuts.
 APPLYCUTS_XIC=0     # Apply Ξc selection cuts.
+APPLYCUTS_XICC=0    # Apply Ξcc selection cuts.
 APPLYCUTS_JPSI=0    # Apply J/ψ selection cuts.
 
 SAVETREES=0         # Save O2 tables to trees.
@@ -85,7 +89,7 @@ function Clean {
 function AdjustJson {
   # Make a copy of the default JSON file to modify it.
   JSON_EDIT=""
-  if [[ $APPLYCUTS_D0 -eq 1 || $APPLYCUTS_DPLUS -eq 1 || $APPLYCUTS_LC -eq 1 || $APPLYCUTS_XIC -eq 1 || $APPLYCUTS_JPSI -eq 1 ]]; then
+  if [[ $APPLYCUTS_D0 -eq 1 || $APPLYCUTS_DPLUS -eq 1 || $APPLYCUTS_LC -eq 1 || $APPLYCUTS_XIC -eq 1 || $APPLYCUTS_XICC -eq 1 || $APPLYCUTS_JPSI -eq 1 ]]; then
     JSON_EDIT="${JSON/.json/_edit.json}"
     cp "$JSON" "$JSON_EDIT" || ErrExit "Failed to cp $JSON $JSON_EDIT."
     JSON="$JSON_EDIT"
@@ -116,7 +120,13 @@ function AdjustJson {
     ReplaceString "\"d_selectionFlagXic\": \"0\"" "\"d_selectionFlagXic\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
-    # Enable J/ψ selection.
+  # Enable Ξcc selection.
+  if [ $APPLYCUTS_XICC -eq 1 ]; then
+    MsgWarn "\nUsing Ξcc selection cuts"
+    ReplaceString "\"d_selectionFlagXicc\": \"0\"" "\"d_selectionFlagXicc\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  fi
+
+  # Enable J/ψ selection.
   if [ $APPLYCUTS_JPSI -eq 1 ]; then
     MsgWarn "\nUsing J/ψ selection cuts"
     ReplaceString "\"d_selectionFlagJpsi\": \"0\"" "\"d_selectionFlagJpsi\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
@@ -146,12 +156,19 @@ function MakeScriptO2 {
   [ $DOO2_TASK_JPSI -eq 1 ] && { DOO2_SEL_JPSI=1; }
   [ $DOO2_TASK_LC -eq 1 ] && { DOO2_SEL_LC=1; }
   [ $DOO2_TASK_XIC -eq 1 ] && { DOO2_SEL_XIC=1; }
+  [ $DOO2_TASK_XICC -eq 1 ] && { DOO2_SEL_XICC=1; }
   [ $DOO2_TASK_DPLUS -eq 1 ] && { DOO2_SEL_DPLUS=1; }
   [ $DOO2_TASK_BPLUS -eq 1 ] && { DOO2_SEL_D0=1; }
   [ $DOO2_TASK_X -eq 1 ] && { DOO2_SEL_JPSI=1; }
+
+  # Selectors for cascades
+  [ $DOO2_SEL_XICC -eq 1 ] && { DOO2_CAND_XICC=1; }
+  [ $DOO2_CAND_XICC -eq 1 ] && { DOO2_SEL_XIC=1; }
+
   # Selectors
   [[ $DOO2_SEL_D0 -eq 1 || $DOO2_SEL_JPSI -eq 1 ]] && { DOO2_CAND_2PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
   [[ $DOO2_SEL_LC -eq 1 || $DOO2_SEL_XIC -eq 1 || $DOO2_SEL_DPLUS -eq 1 ]] && { DOO2_CAND_3PRONG=1; DOO2_PID_TPC=1; DOO2_PID_TOF=1; }
+
   # Vertexing
   [[ $DOO2_CAND_2PRONG -eq 1 || $DOO2_CAND_3PRONG -eq 1 ]] && { DOO2_SKIM=1; }
   # PID
@@ -167,6 +184,7 @@ function MakeScriptO2 {
     [ $DOO2_SKIM -eq 1 ] && { O2TABLES+=",AOD/HFSELTRACK/0,AOD/HFTRACKIDXP2/0,AOD/HFTRACKIDXP3/0"; }
     [ $DOO2_CAND_2PRONG -eq 1 ] && { O2TABLES+=",AOD/HFCANDP2BASE/0,AOD/HFCANDP2EXT/0"; [ "$ISMC" -eq 1 ] && O2TABLES+=",AOD/HFCANDP2MCREC/0,AOD/HFCANDP2MCGEN/0"; }
     [ $DOO2_CAND_3PRONG -eq 1 ] && { O2TABLES+=",AOD/HFCANDP3BASE/0,AOD/HFCANDP3EXT/0"; [ "$ISMC" -eq 1 ] && O2TABLES+=",AOD/HFCANDP3MCREC/0,AOD/HFCANDP3MCGEN/0"; }
+    [ $DOO2_CAND_XICC -eq 1 ] && { O2TABLES+=",AOD/HFCANDXICCBASE/0,AOD/HFCANDXICCEXT/0"; [ "$ISMC" -eq 1 ] && O2TABLES+=",AOD/HFCANDXICCMCREC/0,AOD/HFCANDXICCMCGEN/0"; }
     [ $DOO2_TREE_D0 -eq 1 ] && { O2TABLES+=",AOD/HFCANDP2Full/0,AOD/HFCANDP2FullE/0,AOD/HFCANDP2FullP/0"; }
     [ $DOO2_TREE_LC -eq 1 ] && { O2TABLES+=",AOD/HFCANDP3Full/0,AOD/HFCANDP3FullE/0,AOD/HFCANDP3FullP/0"; }
     O2TABLES=${O2TABLES:1} # Remove the leading comma.
@@ -180,6 +198,7 @@ function MakeScriptO2 {
   O2ARGS_SKIM="$O2ARGS"
   O2ARGS_CAND_2PRONG="$O2ARGS"
   O2ARGS_CAND_3PRONG="$O2ARGS"
+  O2ARGS_CAND_XICC="$O2ARGS"
   O2ARGS_PID_TPC="$O2ARGS --pid-el 1 --pid-mu 1 --pid-pi 1 --pid-ka 1 --pid-pr 1"
   O2ARGS_PID_TOF="$O2ARGS --pid-el 1 --pid-mu 1 --pid-pi 1 --pid-ka 1 --pid-pr 1"
   O2ARGS_PID_TOF_QA="$O2ARGS"
@@ -188,11 +207,13 @@ function MakeScriptO2 {
   O2ARGS_SEL_DPLUS="$O2ARGS"
   O2ARGS_SEL_LC="$O2ARGS"
   O2ARGS_SEL_XIC="$O2ARGS"
+  O2ARGS_SEL_XICC="$O2ARGS"
   O2ARGS_TASK_D0="$O2ARGS"
   O2ARGS_TASK_JPSI="$O2ARGS"
   O2ARGS_TASK_DPLUS="$O2ARGS"
   O2ARGS_TASK_LC="$O2ARGS"
   O2ARGS_TASK_XIC="$O2ARGS"
+  O2ARGS_TASK_XICC="$O2ARGS"
   O2ARGS_TASK_BPLUS="$O2ARGS"
   O2ARGS_TASK_X="$O2ARGS"
   O2ARGS_TREE_D0="$O2ARGS"
@@ -202,10 +223,12 @@ function MakeScriptO2 {
   [ "$ISMC" -eq 1 ] && {
     O2ARGS_CAND_2PRONG+=" --doMC"
     O2ARGS_CAND_3PRONG+=" --doMC"
+    O2ARGS_CAND_XICC+=" --doMC"
     O2ARGS_TASK_D0+=" --doMC"
     O2ARGS_TASK_DPLUS+=" --doMC"
     O2ARGS_TASK_LC+=" --doMC"
     O2ARGS_TASK_XIC+=" --doMC"
+    O2ARGS_TASK_XICC+=" --doMC"
     O2ARGS_TASK_JPSI+=" --doMC"
   }
 
@@ -215,6 +238,7 @@ function MakeScriptO2 {
   O2EXEC_SKIM="o2-analysis-hf-track-index-skims-creator $O2ARGS_SKIM"
   O2EXEC_CAND_2PRONG="o2-analysis-hf-candidate-creator-2prong $O2ARGS_CAND_2PRONG"
   O2EXEC_CAND_3PRONG="o2-analysis-hf-candidate-creator-3prong $O2ARGS_CAND_3PRONG"
+  O2EXEC_CAND_XICC="o2-analysis-hf-candidate-creator-xicc $O2ARGS_CAND_XICC"
   O2EXEC_PID_TPC="o2-analysis-pid-tpc $O2ARGS_PID_TPC"
   O2EXEC_PID_TOF="o2-analysis-pid-tof $O2ARGS_PID_TOF"
   O2EXEC_PID_TOF_QA="o2-analysis-pid-tof-qa $O2ARGS_PID_TOF_QA"
@@ -222,12 +246,14 @@ function MakeScriptO2 {
   O2EXEC_SEL_DPLUS="o2-analysis-hf-dplus-topikpi-candidate-selector $O2ARGS_SEL_DPLUS"
   O2EXEC_SEL_LC="o2-analysis-hf-lc-candidate-selector $O2ARGS_SEL_LC"
   O2EXEC_SEL_XIC="o2-analysis-hf-xic-topkpi-candidate-selector $O2ARGS_SEL_XIC"
+  O2EXEC_SEL_XICC="o2-analysis-hf-xicc-topkpipi-candidate-selector $O2ARGS_SEL_XICC"
   O2EXEC_SEL_JPSI="o2-analysis-hf-jpsi-toee-candidate-selector $O2ARGS_SEL_JPSI"
   O2EXEC_TASK_D0="o2-analysis-hf-task-d0 $O2ARGS_TASK_D0"
   O2EXEC_TASK_JPSI="o2-analysis-hf-task-jpsi $O2ARGS_TASK_JPSI"
   O2EXEC_TASK_DPLUS="o2-analysis-hf-task-dplus $O2ARGS_TASK_DPLUS"
   O2EXEC_TASK_LC="o2-analysis-hf-task-lc $O2ARGS_TASK_LC"
   O2EXEC_TASK_XIC="o2-analysis-hf-task-xic $O2ARGS_TASK_XIC"
+  O2EXEC_TASK_XICC="o2-analysis-hf-task-xicc $O2ARGS_TASK_XICC"
   O2EXEC_TASK_BPLUS="o2-analysis-hf-task-bplus $O2ARGS_TASK_BPLUS"
   O2EXEC_TASK_X="o2-analysis-hf-task-x $O2ARGS_TASK_X"
   O2EXEC_TREE_D0="o2-analysis-hf-tree-creator-d0-tokpi $O2ARGS_TREE_D0"
@@ -242,6 +268,7 @@ function MakeScriptO2 {
   [ $DOO2_SKIM -eq 1 ] && { O2EXEC+=" | $O2EXEC_SKIM"; MsgSubStep "  hf-track-index-skims-creator"; }
   [ $DOO2_CAND_2PRONG -eq 1 ] && { O2EXEC+=" | $O2EXEC_CAND_2PRONG"; MsgSubStep "  hf-candidate-creator-2prong"; }
   [ $DOO2_CAND_3PRONG -eq 1 ] && { O2EXEC+=" | $O2EXEC_CAND_3PRONG"; MsgSubStep "  hf-candidate-creator-3prong"; }
+  [ $DOO2_CAND_XICC -eq 1 ] && { O2EXEC+=" | $O2EXEC_CAND_XICC"; MsgSubStep "  hf-candidate-creator-xicc"; }
   [ $DOO2_PID_TPC -eq 1 ] && { O2EXEC+=" | $O2EXEC_PID_TPC"; MsgSubStep "  pid-tpc"; }
   [ $DOO2_PID_TOF -eq 1 ] && { O2EXEC+=" | $O2EXEC_PID_TOF"; MsgSubStep "  pid-tof"; }
   [ $DOO2_PID_TOF_QA -eq 1 ] && { O2EXEC+=" | $O2EXEC_PID_TOF_QA"; MsgSubStep "  pid-tof-qa"; }
@@ -250,10 +277,12 @@ function MakeScriptO2 {
   [ $DOO2_SEL_DPLUS -eq 1 ] && { O2EXEC+=" | $O2EXEC_SEL_DPLUS"; MsgSubStep "  hf-dplus-topikpi-candidate-selector"; }
   [ $DOO2_SEL_LC -eq 1 ] && { O2EXEC+=" | $O2EXEC_SEL_LC"; MsgSubStep "  hf-lc-candidate-selector"; }
   [ $DOO2_SEL_XIC -eq 1 ] && { O2EXEC+=" | $O2EXEC_SEL_XIC"; MsgSubStep "  hf-xic-topkpi-candidate-selector"; }
+  [ $DOO2_SEL_XICC -eq 1 ] && { O2EXEC+=" | $O2EXEC_SEL_XICC"; MsgSubStep "  hf-xicc-topkpipi-candidate-selector"; }
   [ $DOO2_TASK_D0 -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_D0"; MsgSubStep "  hf-task-d0"; }
   [ $DOO2_TASK_DPLUS -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_DPLUS"; MsgSubStep "  hf-task-dplus"; }
   [ $DOO2_TASK_LC -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_LC"; MsgSubStep "  hf-task-lc"; }
   [ $DOO2_TASK_XIC -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_XIC"; MsgSubStep "  hf-task-xic"; }
+  [ $DOO2_TASK_XICC -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_XICC"; MsgSubStep "  hf-task-xicc"; }
   [ $DOO2_TASK_JPSI -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_JPSI"; MsgSubStep "  hf-task-jpsi"; }
   [ $DOO2_TASK_BPLUS -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_BPLUS"; MsgSubStep "  hf-task-bplus"; }
   [ $DOO2_TASK_X -eq 1 ] && { O2EXEC+=" | $O2EXEC_TASK_X"; MsgSubStep "  hf-task-x"; }
@@ -306,6 +335,7 @@ function MakeScriptPostprocess {
     [ $DOO2_TASK_DPLUS -eq 1 ] && PARTICLES+="-dplus"
     [ $DOO2_TASK_LC -eq 1 ] && PARTICLES+="-lc"
     [ $DOO2_TASK_XIC -eq 1 ] && PARTICLES+="-xic"
+    [ $DOO2_TASK_XICC -eq 1 ] && PARTICLES+="-xicc"
     [ $DOO2_TASK_JPSI -eq 1 ] && PARTICLES+="-jpsi"
     [ "$PARTICLES" ] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/PlotEfficiency.C(\\\"\$FileO2\\\", \\\"$PARTICLES\\\")\""
   }
