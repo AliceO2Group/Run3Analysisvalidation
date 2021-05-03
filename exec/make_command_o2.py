@@ -6,6 +6,7 @@ Author: Vít Kučera <vit.kucera@cern.ch>
 """
 
 import argparse
+import os
 import sys
 
 import yaml
@@ -165,6 +166,7 @@ def main():
     workflows_add = args.workflows.split() if args.workflows else ""
     mc_mode = args.mc
     save_tables = args.tables
+    make_graph = args.graph
 
     # Open database input file.
     if debug:
@@ -286,6 +288,43 @@ def main():
 
     # Print out the command.
     print(command)
+
+    # Produce topology graph.
+    if make_graph:
+        basename, _ = os.path.splitext(file_database)
+        ext_graph = "pdf"
+        file_dot = basename + ".gv"
+        file_graph = basename + "." + ext_graph
+        eprint("Making diagram in: %s" % file_dot)
+        dot = "digraph {\n"
+        dot += "  edge [dir=back] // inverted arrow direction\n"
+        dot += "  rankdir=BT // bottom to top drawing\n"
+        dot += "  ranksep=2 // vertical node separation\n"
+        dot += '  node [shape=box, style="filled,rounded", fillcolor=papayawhip, fontname=Courier, fontsize=20]\n'
+        for wf, dic_wf_single in dic_wf.items():
+            if not dic_wf_single["activate"]:
+                continue
+            # hyphens are not allowed in node names
+            node_wf = wf.replace("-", "_")
+            # replace hyphens with line breaks to save horizontal space
+            label_wf = wf.replace("-", "\\n")
+            dot += '  %s [label="%s"]\n' % (node_wf, label_wf)
+            if "dependencies" in dic_wf_single:
+                nodes_dep = join_strings(dic_wf_single["dependencies"]).replace(
+                    "-", "_"
+                )
+                dot += "  %s -> {%s}\n" % (node_wf, nodes_dep)
+        dot += "}\n"
+        try:
+            with open(file_dot, "w") as output_dot:
+                output_dot.write(dot)
+        except IOError:
+            msg_err("Failed to open file " + file_dot)
+            sys.exit(1)
+        eprint(
+            "Produce graph with Graphviz: dot -T%s %s -o %s"
+            % (ext_graph, file_dot, file_graph)
+        )
 
 
 main()

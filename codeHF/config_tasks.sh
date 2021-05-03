@@ -16,7 +16,7 @@
 # Steps
 DOCLEAN=1           # Delete created files (before and after running tasks).
 DOCONVERT=1         # Convert AliESDs.root to AO2D.root.
-DOALI=0             # Run AliPhysics tasks.
+DOALI=1             # Run AliPhysics tasks.
 DOO2=1              # Run O2 tasks.
 DOPOSTPROCESS=1     # Run output postprocessing. (Compare AliPhysics and O2 output.)
 
@@ -25,11 +25,12 @@ DOPOSTPROCESS=1     # Run output postprocessing. (Compare AliPhysics and O2 outp
 
 # O2 database
 DATABASE_O2="workflows.yml"
+MAKE_GRAPH=0        # Make topology graph.
 
 # Activation of O2 workflows
 # QA
-DOO2_QA_EFF=1       # qa-efficiency
-DOO2_QA_SIM=1       # qa-simple
+DOO2_QA_EFF=0       # qa-efficiency
+DOO2_QA_SIM=0       # qa-simple
 DOO2_MC_VALID=1     # hf-mc-validation
 # PID
 DOO2_PID_TPC=0      # pid-tpc
@@ -158,6 +159,7 @@ function MakeScriptO2 {
   [ "$ISMC" -eq 1 ] && OPT_MAKECMD+=" --mc"
   [ "$DEBUG" -eq 1 ] && OPT_MAKECMD+=" -d"
   [ $SAVETREES -eq 1 ] && OPT_MAKECMD+=" -t"
+  [ $MAKE_GRAPH -eq 1 ] && OPT_MAKECMD+=" -g"
 
   # Generate the O2 command.
   MAKECMD="python3 $DIR_EXEC/make_command_o2.py $DATABASE_O2 $OPT_MAKECMD"
