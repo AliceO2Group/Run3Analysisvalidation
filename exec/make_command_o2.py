@@ -44,7 +44,7 @@ def join_strings(obj):
 
 
 def join_to_list(obj, list_out: list):
-    """Append string or list another list."""
+    """Append string or list to another list."""
     if isinstance(obj, str):
         list_out.append(obj)
     elif isinstance(obj, list):
