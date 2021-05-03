@@ -144,19 +144,18 @@ def main():
         "database of workflows and options."
     )
     parser.add_argument("database", help="database with workflows and options")
-    parser.add_argument("-o", dest="output", help="output file")
-    parser.add_argument(
-        "-g", "--graph", action="store_true", help="make topology graph"
-    )
-    parser.add_argument(
-        "-d", "--debug", action="store_true", help="print debugging info"
-    )
     parser.add_argument(
         "-w", "--workflows", type=str, help="explicitly requested workflows"
     )
     parser.add_argument("--mc", action="store_true", help="Monte Carlo mode")
     parser.add_argument(
         "-t", "--tables", action="store_true", help="save table into trees"
+    )
+    parser.add_argument(
+        "-g", "--graph", action="store_true", help="make topology graph"
+    )
+    parser.add_argument(
+        "-d", "--debug", action="store_true", help="print debugging info"
     )
     args = parser.parse_args()
     file_database = args.database
