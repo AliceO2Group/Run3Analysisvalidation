@@ -39,7 +39,7 @@ def join_strings(obj):
         return " ".join(obj)
     else:
         msg_err("Cannot convert %s into a string" % type(obj))
-        return None
+        sys.exit(1)
 
 
 def join_to_list(obj, list_out: list):
@@ -50,7 +50,7 @@ def join_to_list(obj, list_out: list):
         list_out += obj
     else:
         msg_err("Cannot convert %s into a string" % type(obj))
-        return None
+        sys.exit(1)
 
 
 def healthy_structure(
@@ -111,7 +111,7 @@ def healthy_structure(
 def activate_workflow(wf: str, dic_wf: dict, mc=False, level=0, debug=False):
     """Activate a workflows and its dependencies."""
     if debug:
-        eprint("  " + level * "  " + wf)
+        eprint((level + 1) * "  " + wf)
     if wf in dic_wf:
         dic_wf_single = dic_wf[wf]
         # Deactivate workflow if it needs MC and input is not MC.
@@ -144,45 +144,47 @@ def main():
         description="Generates full O2 command based on a YAML "
         "database of workflows and options."
     )
-    parser.add_argument("input", help="database with workflows")
+    parser.add_argument("database", help="database with workflows and options")
     parser.add_argument("-o", dest="output", help="output file")
     parser.add_argument(
-        "-g", "--graph", action="store_true", help="Make topology graph."
+        "-g", "--graph", action="store_true", help="make topology graph"
     )
     parser.add_argument(
-        "-d", "--debug", action="store_true", help="Print debugging info."
+        "-d", "--debug", action="store_true", help="print debugging info"
     )
-    parser.add_argument("-w", "--workflows", type=str, help="explicit workflows")
+    parser.add_argument(
+        "-w", "--workflows", type=str, help="explicitly requested workflows"
+    )
     parser.add_argument("--mc", action="store_true", help="Monte Carlo mode")
     parser.add_argument(
-        "-t", "--tables", action="store_true", help="Save table into trees"
+        "-t", "--tables", action="store_true", help="save table into trees"
     )
     args = parser.parse_args()
-    file_input = args.input
+    file_database = args.database
     debug = args.debug
     workflows_add = args.workflows.split() if args.workflows else ""
     mc_mode = args.mc
     save_tables = args.tables
 
-    if debug:
-        eprint("Input: " + file_input)
-    if mc_mode:
-        msg_warn("MC mode is on")
-    if save_tables:
-        msg_warn("Tables will be saved in trees.")
-
     # Open database input file.
+    if debug:
+        eprint("Input database: " + file_database)
     try:
-        with open(args.input, "r") as file_in:
+        with open(file_database, "r") as file_in:
             dic_in = yaml.safe_load(file_in)
     except IOError:
-        msg_err("Failed to open file " + args.input)
+        msg_err("Failed to open file " + file_database)
         sys.exit(1)
 
     # Check valid structure of the input database.
     if not healthy_structure(dic_in):
-        msg_err("Bad structure.")
+        msg_err("Bad structure!")
         sys.exit(1)
+
+    if mc_mode:
+        msg_warn("MC mode is on.")
+    if save_tables:
+        msg_warn("Tables will be saved in trees.")
 
     # Get workflow-independent options.
     dic_opt = dic_in["options"]
@@ -203,7 +205,7 @@ def main():
     # requested at command line
     if workflows_add:
         if debug:
-            eprint("\nWorkflows specified at command line:")
+            eprint("\nWorkflows specified on command line:")
             eprint("\n".join("  " + wf for wf in workflows_add))
         list_wf_activated += workflows_add
     # Remove duplicities.
