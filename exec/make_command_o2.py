@@ -54,9 +54,7 @@ def join_to_list(obj, list_out: list):
         sys.exit(1)
 
 
-def healthy_structure(
-    dic_full: dict
-):  # pylint: disable=too-many-return-statements, too-many-branches
+def healthy_structure(dic_full: dict):
     """Check correct structure of the database."""
     if not isinstance(dic_full, dict):
         msg_err("No dictionary found.")
