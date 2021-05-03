@@ -16,7 +16,7 @@
 # Steps
 DOCLEAN=1           # Delete created files (before and after running tasks).
 DOCONVERT=1         # Convert AliESDs.root to AO2D.root.
-DOALI=1             # Run AliPhysics tasks.
+DOALI=0             # Run AliPhysics tasks.
 DOO2=1              # Run O2 tasks.
 DOPOSTPROCESS=1     # Run output postprocessing. (Compare AliPhysics and O2 output.)
 
@@ -28,13 +28,13 @@ DATABASE_O2="workflows.yml"
 
 # Activation of O2 workflows
 # QA
-DOO2_QA_EFF=0       # qa-efficiency
-DOO2_QA_SIM=0       # qa-simple
-DOO2_MC_VALID=0     # hf-mc-validation
+DOO2_QA_EFF=1       # qa-efficiency
+DOO2_QA_SIM=1       # qa-simple
+DOO2_MC_VALID=1     # hf-mc-validation
 # PID
 DOO2_PID_TPC=0      # pid-tpc
 DOO2_PID_TOF=0      # pid-tof
-DOO2_PID_TOF_QA=0   # pid-tof-qa
+DOO2_PID_TOF_QA=0   # pid-tof-qa-mc
 # Vertexing
 DOO2_SKIM=0         # hf-track-index-skims-creator
 DOO2_CAND_2PRONG=0  # hf-candidate-creator-2prong
@@ -47,15 +47,15 @@ DOO2_SEL_XIC=0      # hf-xic-topkpi-candidate-selector
 DOO2_SEL_JPSI=0     # hf-jpsi-toee-candidate-selector
 # User tasks
 DOO2_TASK_D0=1      # hf-task-d0
-DOO2_TASK_DPLUS=0   # hf-task-dplus
-DOO2_TASK_LC=0      # hf-task-lc
-DOO2_TASK_XIC=0     # hf-task-xic
+DOO2_TASK_DPLUS=1   # hf-task-dplus
+DOO2_TASK_LC=1      # hf-task-lc
+DOO2_TASK_XIC=1     # hf-task-xic
 DOO2_TASK_JPSI=0    # hf-task-jpsi
-DOO2_TASK_BPLUS=0   # hf-task-bplus
+DOO2_TASK_BPLUS=1   # hf-task-bplus
 DOO2_TASK_X=0       # hf-task-x
 # Tree creators
-DOO2_TREE_D0=0      # hf-tree-creator-d0-tokpi
-DOO2_TREE_LC=0      # hf-tree-creator-lc-topkpi
+DOO2_TREE_D0=1      # hf-tree-creator-d0-tokpi
+DOO2_TREE_LC=1      # hf-tree-creator-lc-topkpi
 
 # Selection cuts
 APPLYCUTS_D0=0      # Apply D0 selection cuts.
@@ -136,7 +136,7 @@ function MakeScriptO2 {
   [ $DOO2_CAND_3PRONG -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-3prong"
   [ $DOO2_PID_TPC -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tpc"
   [ $DOO2_PID_TOF -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tof"
-  [ $DOO2_PID_TOF_QA -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tof-qa"
+  [ $DOO2_PID_TOF_QA -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tof-qa-mc"
   [ $DOO2_SEL_D0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-d0-candidate-selector"
   [ $DOO2_SEL_JPSI -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-jpsi-toee-candidate-selector"
   [ $DOO2_SEL_DPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-dplus-topikpi-candidate-selector"

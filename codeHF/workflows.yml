@@ -113,7 +113,7 @@ workflows:
     activate: no
     requires_mc: yes
 
-  o2-analysis-pid-tof-qa:
+  o2-analysis-pid-tof-qa-mc:
     activate: no
     requires_mc: yes
     dependencies: o2-analysis-pid-tof
