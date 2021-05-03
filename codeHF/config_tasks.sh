@@ -155,8 +155,8 @@ function MakeScriptO2 {
 
   # Translate options into arguments of the generating script.
   OPT_MAKECMD=""
-  [ $ISMC -eq 1 ] && OPT_MAKECMD+=" --mc"
-  [ $DEBUG -eq 1 ] && OPT_MAKECMD+=" -d"
+  [ "$ISMC" -eq 1 ] && OPT_MAKECMD+=" --mc"
+  [ "$DEBUG" -eq 1 ] && OPT_MAKECMD+=" -d"
   [ $SAVETREES -eq 1 ] && OPT_MAKECMD+=" -t"
 
   # Generate the O2 command.
