@@ -3,14 +3,13 @@ from ROOT import TCanvas, TFile, TLegend, gStyle
 
 
 def saveCanvas(canvas, title):
-    format_list = ["png", ".pdf", ".root"]
+    format_list = [".png", ".pdf", ".root"]
     for fileFormat in format_list:
         canvas.SaveAs(title + fileFormat)
 
 
 # superimposed reco and gen distributions per specie
-def specie_distribution(had, var):
-    fileo2 = TFile("../codeHF/AnalysisResults_O2.root")
+def specie_distribution(fileo2, had, var):
     gStyle.SetOptStat(0)
     cpt = TCanvas("cpt", "pT distribution")
     cpt.SetCanvasSize(1500, 700)
@@ -35,8 +34,7 @@ def specie_distribution(had, var):
     saveCanvas(cpt, "%sdistribution_hfcand%s" % (var, had))
 
 
-def multiplicity():
-    fileo2 = TFile("../codeHF/AnalysisResults_O2.root")
+def multiplicity(fileo2):
     cmult = TCanvas("cmult", "mult distribution")
     cmult.SetCanvasSize(1500, 700)
     cmult.SetLogy()
@@ -48,8 +46,7 @@ def multiplicity():
     saveCanvas(cmult, "multiplicity")
 
 
-def var_tracking(var):
-    fileo2 = TFile("../codeHF/AnalysisResults_O2.root")
+def var_tracking(fileo2, var):
     cvar = TCanvas("cvar", "var distribution")
     cvar.SetCanvasSize(1800, 800)
     cvar.Divide(2, 1)
@@ -59,8 +56,7 @@ def var_tracking(var):
     saveCanvas(cvar, "tracking_%s" % var)
 
 
-def tracking_resolution(var1, mode, var2, var3):
-    fileo2 = TFile("../codeHF/AnalysisResults_O2.root")
+def tracking_resolution(fileo2, var1, mode, var2, var3):
     cres = TCanvas("cres", "resolution distribution")
     cres.SetCanvasSize(1500, 700)
     if var1 == "eta":
@@ -73,6 +69,7 @@ def tracking_resolution(var1, mode, var2, var3):
         himp_par = fileo2.Get(
             "qa-tracking-resolution/%s/%s%sVs%s" % (var1, var1, var2, var3)
         )
+        cres.SetLogz()
         himp_par.Draw("coltz")
         himp_par.SetTitle("Impact Parameter resolution: %s Vs %s" % (var2, var3))
         saveCanvas(cres, "impact_parameter_resolution%sVs%s" % (var2, var3))
@@ -80,11 +77,14 @@ def tracking_resolution(var1, mode, var2, var3):
         himp_par_err = fileo2.Get(
             "qa-tracking-resolution/impactParameter/%s%sVs%s" % (var1, var2, var3)
         )
+        cres.SetLogz()
         himp_par_err.Draw("coltz")
         himp_par_err.SetTitle(
             "Impact Parameter Error resolution: %s Vs %s" % (var2, var3)
         )
-        saveCanvas(cres, "impactParameterError_resolution%sVs%s" % (var2, var3))
+        saveCanvas(
+            cres, "impactParameterError_resolution%sVs%s" % (var2, var3)
+        )
     if var1 == "phi":
         hphi = fileo2.Get("qa-tracking-resolution/phi/phiDiffMCRec")
         hphi.Draw()
@@ -96,8 +96,7 @@ def tracking_resolution(var1, mode, var2, var3):
         saveCanvas(cres, "ptResolutionVs%s" % var2)
 
 
-def vertex_distributions(var):
-    fileo2 = TFile("../codeHF/AnalysisResults_O2.root")
+def vertex_distributions(fileo2, var):
     cvertex = TCanvas("cvertex", "vertex ")
     cvertex.SetCanvasSize(1800, 700)
     cvertex.Divide(2, 1)
@@ -106,29 +105,35 @@ def vertex_distributions(var):
     hvertex.Draw()
     hvertex_res = fileo2.Get("qa-global-observables/collision/%svsNContrib" % var)
     cvertex.cd(2)
+    cvertex.cd(2).SetLogz()
     hvertex_res.Draw("coltz")
     saveCanvas(cvertex, "vertex_%s" % var)
 
 
-multiplicity()
+# fileo2 = TFile("/data/Run5/plots/new_0427/KrKr_6p460TeV_inel_200K_sc3_werner_22042021_-2_2.root")
+fileo2 = TFile(
+    "../codeHF/AnalysisResults_O2.root"
+)
+# multiplicity(fileo2)
 specie_list = ["pion", "proton", "kaon", "electron", "muon"]
 var_list = ["pt", "eta", "phi"]
 for specie in specie_list:
     for var in var_list:
-        specie_distribution(specie, var)
+        specie_distribution(fileo2, specie, var)
 
 vertex_coord_list = ["X", "Y", "Z"]
 for coord in vertex_coord_list:
-    vertex_distributions(coord)
+    vertex_distributions(fileo2, coord)
 
 for var in var_list:
-    var_tracking(var)
+    var_tracking(fileo2, var)
 
 var1_list = ["RPhi", "Z"]
 var2_list = ["Pt", "Phi", "Eta"]
-tracking_resolution("eta", "MC", "", "")
-tracking_resolution("pt", "", "Eta", "")
+tracking_resolution(fileo2, "eta", "MC", "", "")
+tracking_resolution(fileo2, "pt", "", "Eta", "")
+tracking_resolution(fileo2, "pt", "", "Pt", "")
 for var1 in var1_list:
     for var2 in var2_list:
-        tracking_resolution("impactParameter", "MC", var1, var2)
-        tracking_resolution("impactParameterError", "MC", var1, var2)
+        tracking_resolution(fileo2, "impactParameter", "MC", var1, var2)
+        tracking_resolution(fileo2, "impactParameterError", "MC", var1, var2)

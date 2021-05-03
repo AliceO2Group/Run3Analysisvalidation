@@ -107,7 +107,7 @@ def plot_together(f1, f2, var):
     latex0.SetTextAlign(12)
     latex0.SetTextFont(42)
     # latex0.DrawLatex(1.8,15, "|#eta|< 2")
-    printCanvas(cp_res, "%sPointingResolutionTOT_log_novtx" % var)
+    printCanvas(cp_res, "%sPointingResolutionTOT" % var)
 
 
 def ImpactParResolutionZVsPt(filename, tag="", fit_range=20):
@@ -252,14 +252,14 @@ def plot_together2(f1, f2, var):
 
 
 ImpactParResolutionRPhiVsPt(
-    "impact_parameter_resolutionRPhiVsPt_pp_novtx.root", "pp", 20
+    "impact_parameter_resolutionRPhiVsPt_pp.root", "pp", 20
 )
 ImpactParResolutionRPhiVsPt(
-    "impact_parameter_resolutionRPhiVsPt_KrKr_novtx.root", "KrKr", 10
+    "impact_parameter_resolutionRPhiVsPt_KrKr.root", "KrKr", 10
 )
-PtResolutionVsVar("ptResolutionVsPt_KrKr_werner_2000.root", "Pt", "KrKr")
+PtResolutionVsVar("ptResolutionVsPt_KrKr_werner.root", "Pt", "KrKr")
 PtResolutionVsVar("ptResolutionVsPt_pp_werner.root", "Pt", "pp")
-PtResolutionVsVar("ptResolutionVsEta_KrKr_werner_2000.root", "Eta", "KrKr")
+PtResolutionVsVar("ptResolutionVsEta_KrKr_werner.root", "Eta", "KrKr")
 PtResolutionVsVar("ptResolutionVsEta_pp_werner.root", "Eta", "pp")
 plot_together(
     "RPhiPointingResolutionpp.root", "RPhiPointingResolutionKrKr.root", "RPhi"
@@ -269,6 +269,6 @@ plot_together2("PtResolutionVsEtapp.root", "PtResolutionVsEtaKrKr.root", "Eta")
 
 # p2 = ImpactParResolutionRPhiVsPt("../codeHF/AnalysisResults_O2.root","KrKr", 10)
 # plot_together([p1, p2])
-ImpactParResolutionZVsPt("impact_parameter_resolutionZVsPt_pp_novtx.root", "pp", 20)
-ImpactParResolutionZVsPt("impact_parameter_resolutionZVsPt_KrKr_novtx.root", "KrKr", 10)
+ImpactParResolutionZVsPt("impact_parameter_resolutionZVsPt_pp.root", "pp", 20)
+ImpactParResolutionZVsPt("impact_parameter_resolutionZVsPt_KrKr.root", "KrKr", 10)
 plot_together("ZPointingResolutionpp.root", "ZPointingResolutionKrKr.root", "Z")

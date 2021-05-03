@@ -97,7 +97,7 @@ def efficiencytracking(fileo2, var):
         gr.Draw(" same p")
         leg.AddEntry(eff_list[i], had, "p")
     leg.Draw()
-    saveCanvas(c1, "efficiency_tracking_%s_KrKr_eta01_final" % var)
+    saveCanvas(c1, "efficiency_tracking_%s_KrKr_eta05_final" % var)
 
 
 def efficiencyhadron(had, var):
@@ -214,7 +214,7 @@ fileo2_2 = TFile(
 plot_together(fileo2, fileo2_2)
 
 fileo2 = TFile(
-    "/home/mmazzill/alice/Run3Analysisvalidation/codeHF/AnalysisResults_O2_KrKr_eta01.root"
+    "../codeHF/AnalysisResults_O2_KrKr_eta05.root"
 )
 # fileo2_2 = TFile("../codeHF/AnalysisResults_O2_pT1_piel_rebin.root")
 var_list = ["Pt", "Eta", "Phi"]

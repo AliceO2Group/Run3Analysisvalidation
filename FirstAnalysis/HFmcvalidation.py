@@ -16,7 +16,7 @@ def count_HFquarks_perColl(file, var):
     hq.GetXaxis().SetRangeUser(0.0, 8.0)
     hq.SetTitle("Number of %s quarks per collision" % var)
     hq.Draw("")
-    printCanvas(cquark, "BtoDForcedProduction/QuarkCountsPerCollision%s" % var)
+    printCanvas(cquark, "QuarkCountsPerCollision%s" % var)
 
 
 def count_Particle_perColl(file, var):
@@ -25,7 +25,7 @@ def count_Particle_perColl(file, var):
     cparticle.Divide(2, 1)
     hp = file.Get("hf-mc-validation-gen/hCouterPerCollision%s" % var)
     hp.Draw("")
-    printCanvas(cparticle, "BtoDForcedProduction/%sPerCollision" % var)
+    printCanvas(cparticle, "%sPerCollision" % var)
 
 
 def momentum_Conservation(file, var):
@@ -39,7 +39,7 @@ def momentum_Conservation(file, var):
         hp = file.Get("hf-mc-validation-gen/h%sDiffMotherDaughterGen" % var)
         hp.SetTitle("Momentum Conservation: %s component" % var)
     hp.Draw("")
-    printCanvas(cmomentum, "BtoDForcedProduction/%sconservation" % var)
+    printCanvas(cmomentum, "%sconservation" % var)
 
 
 def momentum_check(file):
@@ -47,7 +47,7 @@ def momentum_check(file):
     cMomCheck.SetCanvasSize(900, 700)
     hMomCheck = file.Get("hf-mc-validation-gen/hMomentumCheck")
     hMomCheck.Draw()
-    printCanvas(cMomCheck, "BtoDForcedProduction/MomentumCheck")
+    printCanvas(cMomCheck, "MomentumCheck")
 
 
 def p_diff_reco_MC(file):
@@ -75,7 +75,7 @@ def p_diff_reco_MC(file):
             hp.Draw()
         leg.AddEntry(mom_list[i], "P%s component" % comp)
     leg.Draw()
-    printCanvas(cpt, "BtoDForcedProduction/p_recoMC_diff")
+    printCanvas(cpt, "p_recoMC_diff")
 
 
 def secondary_vertex_reco_MC(file):
@@ -148,7 +148,7 @@ def secondary_vertex_reco_MC(file):
     latex4.SetTextSize(0.045)
     latex4.SetTextFont(42)
     latex4.DrawLatex(0.0032, 20, "4 < #it{p}_{T}(#Lambda_{c})< 6 GeV/#it{c}")
-    printCanvas(csecvertex, "BtoDForcedProduction/SecVertex_recoMC_diff_last_4_6")
+    printCanvas(csecvertex, "SecVertex_recoMC_diff_last_4_6")
 
 
 def decayLength_reco_MC(file):
@@ -157,12 +157,12 @@ def decayLength_reco_MC(file):
     hDecLenRes = file.Get("hf-mc-validation-rec/histDecLen")
     hDecLenRes.Rebin(2)
     hDecLenRes.Draw()
-    printCanvas(cDecLenRes, "BtoDForcedProduction/Resolution_DecayLength")
+    printCanvas(cDecLenRes, "Resolution_DecayLength")
 
 
 # fileo2 = TFile("/data/Run5/plots/new_pro/AnalysisResults_O2_pp14TeV_ccbar_10M_sc3werner_20042021.root")
 fileo2 = TFile(
-    "/home/mmazzill/alice/Run3Analysisvalidation/codeHF/AnalysisResults_O2_LcpKpi_4_6.root"
+    "../codeHF/AnalysisResults_O2_LcpKpi_4_6.root"
 )
 # Generated Level Validation
 quark_list = ["C", "Cbar", "B", "Bbar"]
