@@ -15,7 +15,6 @@
         "d_bz": "5.",
         "doCutQuality": "false",
         "d_tpcnclsfound": "-999999",
-        "ptmintrack_2prong": ".3",
         "ptbins_singletrack": {
             "values": [
                 "0.",
@@ -27,6 +26,7 @@
                 "100."
             ]
         },
+        "ptmintrack_2prong": ".3",
         "etamax_2prong": "1.44",
         "cuts_singletrack_2prong": {
             "values": [
