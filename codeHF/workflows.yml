@@ -1,0 +1,134 @@
+options:
+  global: "--fairmq-ipc-prefix sockets"
+  local: ["--aod-memory-rate-limit 2000000000", "--shm-segment-size 16000000000", "--configuration json://$JSON", "-b"]
+
+workflows:
+
+  # Skimming
+
+  o2-analysis-hf-track-index-skims-creator:
+    activate: no
+    tables: [HFSELTRACK, HFTRACKIDXP2, HFTRACKIDXP3]
+
+  # Candidate creators
+
+  o2-analysis-hf-candidate-creator-2prong: &cand_creator
+    activate: no
+    dependencies: [o2-analysis-hf-track-index-skims-creator]
+    options:
+      mc: "--doMC"
+    tables:
+      default: [HFCANDP2BASE, HFCANDP2EXT]
+      mc: [HFCANDP2MCREC, HFCANDP2MCGEN]
+
+  o2-analysis-hf-candidate-creator-3prong:
+    <<: *cand_creator
+    activate: no
+    tables:
+      default: [HFCANDP3BASE, HFCANDP3EXT]
+      mc: [HFCANDP3MCREC, HFCANDP3MCGEN]
+
+  # Selectors
+
+  o2-analysis-hf-d0-candidate-selector: &selector_2prong
+    activate: no
+    dependencies: [o2-analysis-hf-candidate-creator-2prong, o2-analysis-pid-tpc, o2-analysis-pid-tof]
+
+  o2-analysis-hf-jpsi-toee-candidate-selector:
+    <<: *selector_2prong
+    activate: no
+
+  o2-analysis-hf-dplus-topikpi-candidate-selector: &selector_3prong
+    activate: no
+    dependencies: [o2-analysis-hf-candidate-creator-3prong, o2-analysis-pid-tpc, o2-analysis-pid-tof]
+
+  o2-analysis-hf-lc-candidate-selector:
+    <<: *selector_3prong
+    activate: no
+
+  o2-analysis-hf-xic-topkpi-candidate-selector:
+    <<: *selector_3prong
+    activate: no
+
+  # Analysis tasks
+
+  o2-analysis-hf-task-d0: &task
+    activate: no
+    dependencies: o2-analysis-hf-d0-candidate-selector
+    options:
+      mc: "--doMC"
+
+  o2-analysis-hf-task-jpsi:
+    <<: *task
+    activate: no
+    dependencies: o2-analysis-hf-jpsi-toee-candidate-selector
+
+  o2-analysis-hf-task-dplus:
+    <<: *task
+    activate: no
+    dependencies: o2-analysis-hf-dplus-topikpi-candidate-selector
+
+  o2-analysis-hf-task-lc:
+    <<: *task
+    activate: no
+    dependencies: o2-analysis-hf-lc-candidate-selector
+
+  o2-analysis-hf-task-xic:
+    <<: *task
+    activate: no
+    dependencies: o2-analysis-hf-xic-topkpi-candidate-selector
+
+  o2-analysis-hf-task-bplus:
+    <<: *task
+    activate: no
+    dependencies: o2-analysis-hf-d0-candidate-selector
+
+  o2-analysis-hf-task-x:
+    <<: *task
+    activate: no
+    dependencies: o2-analysis-hf-jpsi-toee-candidate-selector
+
+  # Tree creators
+
+  o2-analysis-hf-tree-creator-d0-tokpi:
+    activate: no
+    requires_mc: yes
+    dependencies: o2-analysis-hf-d0-candidate-selector
+    tables: [HFCANDP2Full, HFCANDP2FullE, HFCANDP2FullP]
+
+  o2-analysis-hf-tree-creator-lc-topkpi:
+    activate: no
+    requires_mc: yes
+    dependencies: o2-analysis-hf-lc-candidate-selector
+    tables: [HFCANDP3Full, HFCANDP3FullE, HFCANDP3FullP]
+
+  # QA
+
+  o2-analysis-qa-efficiency:
+    activate: no
+    requires_mc: yes
+    options: "--eff-el 1 --eff-mu 1 --eff-pi 1 --eff-ka 1 --eff-pr 1"
+
+  o2-analysis-qa-simple:
+    activate: no
+    requires_mc: yes
+
+  o2-analysis-pid-tof-qa-mc:
+    activate: no
+    requires_mc: yes
+    dependencies: o2-analysis-pid-tof
+
+  o2-analysis-hf-mc-validation:
+    activate: no
+    requires_mc: yes
+    dependencies: o2-analysis-hf-d0-candidate-selector
+
+  # PID
+
+  o2-analysis-pid-tpc:
+    activate: no
+    options: "--pid-el 1 --pid-mu 1 --pid-pi 1 --pid-ka 1 --pid-pr 1"
+
+  o2-analysis-pid-tof:
+    activate: no
+    options: "--pid-el 1 --pid-mu 1 --pid-pi 1 --pid-ka 1 --pid-pr 1"
