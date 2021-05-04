@@ -158,7 +158,7 @@ def main():
         "-d", "--debug", action="store_true", help="print debugging info"
     )
     args = parser.parse_args()
-    file_database = args.database
+    path_file_database = args.database
     debug = args.debug
     workflows_add = args.workflows.split() if args.workflows else ""
     mc_mode = args.mc
@@ -167,12 +167,12 @@ def main():
 
     # Open database input file.
     if debug:
-        eprint("Input database: " + file_database)
+        eprint("Input database: " + path_file_database)
     try:
-        with open(file_database, "r") as file_in:
-            dic_in = yaml.safe_load(file_in)
+        with open(path_file_database, "r") as file_database:
+            dic_in = yaml.safe_load(file_database)
     except IOError:
-        msg_err("Failed to open file " + file_database)
+        msg_err("Failed to open file " + path_file_database)
         sys.exit(1)
 
     # Check valid structure of the input database.
@@ -288,11 +288,11 @@ def main():
 
     # Produce topology graph.
     if make_graph:
-        basename, _ = os.path.splitext(file_database)
+        basename, _ = os.path.splitext(path_file_database)
         ext_graph = "pdf"
-        file_dot = basename + ".gv"
-        file_graph = basename + "." + ext_graph
-        eprint("Making diagram in: %s" % file_dot)
+        path_file_dot = basename + ".gv"
+        path_file_graph = basename + "." + ext_graph
+        eprint("Making diagram in: %s" % path_file_dot)
         dot = "digraph {\n"
         dot += "  edge [dir=back] // inverted arrow direction\n"
         dot += "  rankdir=BT // bottom to top drawing\n"
@@ -313,14 +313,14 @@ def main():
                 dot += "  %s -> {%s}\n" % (node_wf, nodes_dep)
         dot += "}\n"
         try:
-            with open(file_dot, "w") as output_dot:
-                output_dot.write(dot)
+            with open(path_file_dot, "w") as file_dot:
+                file_dot.write(dot)
         except IOError:
-            msg_err("Failed to open file " + file_dot)
+            msg_err("Failed to open file " + path_file_dot)
             sys.exit(1)
         eprint(
             "Produce graph with Graphviz: dot -T%s %s -o %s"
-            % (ext_graph, file_dot, file_graph)
+            % (ext_graph, path_file_dot, path_file_graph)
         )
 
 
