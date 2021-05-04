@@ -4,11 +4,23 @@ options:
 
 workflows:
 
-  # Skimming
+  # Event selection
+  o2-analysis-timestamp:
+    activate: no
+    options:
+      mc: "--isMC 1"
+
+  o2-analysis-event-selection:
+    activate: no
+    options:
+      mc: "--isMC 1"
+
+      # Skimming
 
   o2-analysis-hf-track-index-skims-creator:
     activate: no
     tables: [HFSELTRACK, HFTRACKIDXP2, HFTRACKIDXP3]
+    dependencies: [o2-analysis-timestamp, o2-analysis-event-selection]
 
   # Candidate creators
 
