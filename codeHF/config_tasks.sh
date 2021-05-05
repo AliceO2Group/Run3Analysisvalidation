@@ -39,7 +39,7 @@ DOO2_PID_TPC=0      # pid-tpc
 DOO2_PID_TOF=0      # pid-tof
 DOO2_PID_TOF_QA=0   # pid-tof-qa-mc
 # Vertexing
-DOO2_SKIM=1         # hf-track-index-skims-creator
+DOO2_SKIM=0         # hf-track-index-skims-creator
 DOO2_CAND_2PRONG=0  # hf-candidate-creator-2prong
 DOO2_CAND_3PRONG=0  # hf-candidate-creator-3prong
 # Selectors
@@ -49,7 +49,7 @@ DOO2_SEL_LC=0       # hf-lc-candidate-selector
 DOO2_SEL_XIC=0      # hf-xic-topkpi-candidate-selector
 DOO2_SEL_JPSI=0     # hf-jpsi-toee-candidate-selector
 # User tasks
-DOO2_TASK_D0=0      # hf-task-d0
+DOO2_TASK_D0=1      # hf-task-d0
 DOO2_TASK_DPLUS=0   # hf-task-dplus
 DOO2_TASK_LC=0      # hf-task-lc
 DOO2_TASK_XIC=0     # hf-task-xic
