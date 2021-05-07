@@ -1,9 +1,14 @@
 options:
   global: "--fairmq-ipc-prefix sockets"
-  local: ["--aod-memory-rate-limit 2000000000", "--shm-segment-size 16000000000", "--configuration json://$JSON", "-b"]
+  local:
+    [
+      "--aod-memory-rate-limit 2000000000",
+      "--shm-segment-size 16000000000",
+      "--configuration json://$JSON",
+      "-b",
+    ]
 
 workflows:
-
   # Skimming
 
   o2-analysis-hf-track-index-skims-creator:
@@ -39,7 +44,12 @@ workflows:
 
   o2-analysis-hf-d0-candidate-selector: &selector_2prong
     activate: no
-    dependencies: [o2-analysis-hf-candidate-creator-2prong, o2-analysis-pid-tpc, o2-analysis-pid-tof]
+    dependencies:
+      [
+        o2-analysis-hf-candidate-creator-2prong,
+        o2-analysis-pid-tpc,
+        o2-analysis-pid-tof,
+      ]
 
   o2-analysis-hf-jpsi-toee-candidate-selector:
     <<: *selector_2prong
@@ -47,7 +57,12 @@ workflows:
 
   o2-analysis-hf-dplus-topikpi-candidate-selector: &selector_3prong
     activate: no
-    dependencies: [o2-analysis-hf-candidate-creator-3prong, o2-analysis-pid-tpc, o2-analysis-pid-tof]
+    dependencies:
+      [
+        o2-analysis-hf-candidate-creator-3prong,
+        o2-analysis-pid-tpc,
+        o2-analysis-pid-tof,
+      ]
 
   o2-analysis-hf-lc-candidate-selector:
     <<: *selector_3prong
