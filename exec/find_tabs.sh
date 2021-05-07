@@ -6,7 +6,7 @@ status=0
 # loop over files
 while IFS= read -r f; do
   # ignore binary files
-  file -i "$f" | grep -q "charset=binary" && continue
+  file -bi "$f" | grep -q "charset=binary" && continue
   # find tabs in file
   echo "Scanning file: $f"
   if grep -q -P "\t" "$f"; then
