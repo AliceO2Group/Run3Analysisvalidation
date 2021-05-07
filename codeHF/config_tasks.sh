@@ -40,6 +40,7 @@ DOO2_PID_TOF_QA=0   # pid-tof-qa-mc
 DOO2_SKIM=0         # hf-track-index-skims-creator
 DOO2_CAND_2PRONG=0  # hf-candidate-creator-2prong
 DOO2_CAND_3PRONG=0  # hf-candidate-creator-3prong
+DOO2_CAND_XICC=1    # hf-candidate-creator-xicc
 # Selectors
 DOO2_SEL_D0=0       # hf-d0-candidate-selector
 DOO2_SEL_DPLUS=0    # hf-dplus-topikpi-candidate-selector
@@ -51,6 +52,7 @@ DOO2_TASK_D0=1      # hf-task-d0
 DOO2_TASK_DPLUS=0   # hf-task-dplus
 DOO2_TASK_LC=0      # hf-task-lc
 DOO2_TASK_XIC=0     # hf-task-xic
+DOO2_TASK_XICC=0    # hf-task-xicc
 DOO2_TASK_JPSI=0    # hf-task-jpsi
 DOO2_TASK_BPLUS=0   # hf-task-bplus
 DOO2_TASK_X=0       # hf-task-x
@@ -63,6 +65,7 @@ APPLYCUTS_D0=0      # Apply D0 selection cuts.
 APPLYCUTS_DPLUS=0   # Apply D+ selection cuts.
 APPLYCUTS_LC=0      # Apply Λc selection cuts.
 APPLYCUTS_XIC=0     # Apply Ξc selection cuts.
+APPLYCUTS_XICC=0    # Apply Ξcc selection cuts.
 APPLYCUTS_JPSI=0    # Apply J/ψ selection cuts.
 
 SAVETREES=0         # Save O2 tables to trees.
@@ -120,7 +123,7 @@ function AdjustJson {
     ReplaceString "\"d_selectionFlagXic\": \"0\"" "\"d_selectionFlagXic\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
-    # Enable J/ψ selection.
+  # Enable J/ψ selection.
   if [ $APPLYCUTS_JPSI -eq 1 ]; then
     MsgWarn "\nUsing J/ψ selection cuts"
     ReplaceString "\"d_selectionFlagJpsi\": \"0\"" "\"d_selectionFlagJpsi\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
@@ -135,6 +138,7 @@ function MakeScriptO2 {
   [ $DOO2_SKIM -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-track-index-skims-creator"
   [ $DOO2_CAND_2PRONG -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-2prong"
   [ $DOO2_CAND_3PRONG -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-3prong"
+  [ $DOO2_CAND_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-xicc"
   [ $DOO2_PID_TPC -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tpc"
   [ $DOO2_PID_TOF -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tof"
   [ $DOO2_PID_TOF_QA -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tof-qa-mc"

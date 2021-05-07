@@ -28,6 +28,13 @@ workflows:
       default: [HFCANDP3BASE, HFCANDP3EXT]
       mc: [HFCANDP3MCREC, HFCANDP3MCGEN]
 
+  o2-analysis-hf-candidate-creator-xicc:
+    <<: *cand_creator
+    activate: no
+    tables:
+      default: [HFCANDXICCBASE, HFCANDXICCEXT]
+      mc: [HFCANDXICCMCREC, HFCANDXICCMCGEN]
+
   # Selectors
 
   o2-analysis-hf-d0-candidate-selector: &selector_2prong
