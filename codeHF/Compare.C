@@ -125,21 +125,21 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
   std::vector<std::tuple<TString, VecSpecHis, int, int>> vecSpecVecSpec;
 
   // Add vector specifications in the vector.
-  if (options.Contains("tracks"))
+  if (options.Contains(" tracks "))
     vecSpecVecSpec.push_back(std::make_tuple("tracks", vecHisTracks, 5, 3));
-  if (options.Contains("skim"))
+  if (options.Contains(" skim "))
     vecSpecVecSpec.push_back(std::make_tuple("skim", vecHisSkim, 5, 3));
-  if (options.Contains("cand2"))
+  if (options.Contains(" cand2 "))
     vecSpecVecSpec.push_back(std::make_tuple("cand2", vecHisCand2, 5, 3));
-  if (options.Contains("cand3"))
+  if (options.Contains(" cand3 "))
     vecSpecVecSpec.push_back(std::make_tuple("cand3", vecHisCand3, 5, 3));
-  if (options.Contains("d0"))
+  if (options.Contains(" d0 "))
     vecSpecVecSpec.push_back(std::make_tuple("d0", vecHisD0, 5, 3));
-  if (options.Contains("dplus"))
+  if (options.Contains(" dplus "))
     vecSpecVecSpec.push_back(std::make_tuple("dplus", vecHisDPlus, 6, 3));
-  if (options.Contains("lc"))
+  if (options.Contains(" lc "))
     vecSpecVecSpec.push_back(std::make_tuple("lc", vecHisLc, 5, 3));
-  if (options.Contains("jpsi"))
+  if (options.Contains(" jpsi "))
     vecSpecVecSpec.push_back(std::make_tuple("jpsi", vecHisJpsi, 5, 3));
 
   // Histogram plot vertical margins

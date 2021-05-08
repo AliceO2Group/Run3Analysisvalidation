@@ -31,7 +31,7 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
   }
 
   TObjArray* arrayParticle = 0;
-  arrayParticle = particles.Tokenize("-");
+  arrayParticle = particles.Tokenize(" ");
   TString particle = "";
 
   // loop over particles

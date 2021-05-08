@@ -6,9 +6,16 @@ workflows:
 
   # Skimming
 
-  o2-analysis-hf-track-index-skims-creator:
+  o2-analysis-hf-track-index-skims-creator: &skim_creator
     activate: no
+    executable: o2-analysis-hf-track-index-skims-creator
     tables: [HFSELTRACK, HFTRACKIDXP2, HFTRACKIDXP3]
+
+  o2-analysis-hf-track-index-skims-creator_v0:
+    <<: *skim_creator
+    activate: no
+    dependencies: o2-analysis-lambdakzerobuilder
+    options: "--do-LcK0Sp"
 
   # Candidate creators
 
@@ -27,6 +34,12 @@ workflows:
     tables:
       default: [HFCANDP3BASE, HFCANDP3EXT]
       mc: [HFCANDP3MCREC, HFCANDP3MCGEN]
+
+  o2-analysis-hf-candidate-creator-cascade:
+    activate: no
+    dependencies: o2-analysis-hf-track-index-skims-creator_v0
+    options:
+      mc: "--doMC"
 
   # Selectors
 
@@ -54,6 +67,10 @@ workflows:
     <<: *selector_3prong
     activate: no
     tables: HFSELXICCAND
+
+  o2-analysis-hf-lc-tok0sp-candidate-selector:
+    activate: no
+    dependencies: [o2-analysis-hf-candidate-creator-cascade, o2-analysis-pid-tpc-full, o2-analysis-pid-tof-full]
 
   # Analysis tasks
 
@@ -92,6 +109,11 @@ workflows:
     <<: *task
     activate: no
     dependencies: o2-analysis-hf-jpsi-toee-candidate-selector
+
+  o2-analysis-hf-task-lc-tok0sp:
+    <<: *task
+    activate: no
+    dependencies: o2-analysis-hf-lc-tok0sp-candidate-selector
 
   # Tree creators
 
@@ -137,4 +159,17 @@ workflows:
     activate: no
 
   o2-analysis-pid-tof-beta:
+    activate: no
+
+  # LF
+
+  o2-analysis-lambdakzerobuilder:
+    activate: no
+    dependencies: [o2-analysis-trackextension, o2-analysis-weak-decay-indices]
+    options: "--v0radius 0.9"
+
+  o2-analysis-trackextension:
+    activate: no
+
+  o2-analysis-weak-decay-indices:
     activate: no

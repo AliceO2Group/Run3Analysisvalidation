@@ -54,6 +54,7 @@ DOO2_TASK_XIC=0     # hf-task-xic
 DOO2_TASK_JPSI=0    # hf-task-jpsi
 DOO2_TASK_BPLUS=0   # hf-task-bplus
 DOO2_TASK_X=0       # hf-task-x
+DOO2_TASK_LCK0SP=0  # hf-task-lc-tok0sp
 # Tree creators
 DOO2_TREE_D0=0      # hf-tree-creator-d0-tokpi
 DOO2_TREE_LC=0      # hf-tree-creator-lc-topkpi
@@ -150,6 +151,7 @@ function MakeScriptO2 {
   [ $DOO2_TASK_XIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-xic"
   [ $DOO2_TASK_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-bplus"
   [ $DOO2_TASK_X -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-x"
+  [ $DOO2_TASK_LCK0SP -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-lc-tok0sp"
   [ $DOO2_TREE_D0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-d0-tokpi"
   [ $DOO2_TREE_LC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-lc-topkpi"
   [ $DOO2_MC_VALID -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-mc-validation"
@@ -193,24 +195,25 @@ function MakeScriptPostprocess {
   # Compare AliPhysics and O2 histograms.
   [[ $DOALI -eq 1 && $DOO2 -eq 1 ]] && {
     OPT_COMPARE=""
-    [ $DOO2_SKIM -eq 1 ] && OPT_COMPARE+="-tracks-skim"
-    [ $DOO2_CAND_2PRONG -eq 1 ] && OPT_COMPARE+="-cand2"
-    [ $DOO2_CAND_3PRONG -eq 1 ] && OPT_COMPARE+="-cand3"
-    [ $DOO2_TASK_D0 -eq 1 ] && OPT_COMPARE+="-d0"
-    [ $DOO2_TASK_DPLUS -eq 1 ] && OPT_COMPARE+="-dplus"
-    [ $DOO2_TASK_LC -eq 1 ] && OPT_COMPARE+="-lc"
-    [ $DOO2_TASK_XIC -eq 1 ] && OPT_COMPARE+="-xic"
-    [ $DOO2_TASK_JPSI -eq 1 ] && OPT_COMPARE+="-jpsi"
+    [ $DOO2_SKIM -eq 1 ] && OPT_COMPARE+=" tracks-skim "
+    [ $DOO2_CAND_2PRONG -eq 1 ] && OPT_COMPARE+=" cand2 "
+    [ $DOO2_CAND_3PRONG -eq 1 ] && OPT_COMPARE+=" cand3 "
+    [ $DOO2_TASK_D0 -eq 1 ] && OPT_COMPARE+=" d0 "
+    [ $DOO2_TASK_DPLUS -eq 1 ] && OPT_COMPARE+=" dplus "
+    [ $DOO2_TASK_LC -eq 1 ] && OPT_COMPARE+=" lc "
+    [ $DOO2_TASK_XIC -eq 1 ] && OPT_COMPARE+=" xic "
+    [ $DOO2_TASK_JPSI -eq 1 ] && OPT_COMPARE+=" jpsi "
     [ "$OPT_COMPARE" ] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/Compare.C(\\\"\$FileO2\\\", \\\"\$FileAli\\\", \\\"$OPT_COMPARE\\\", $DORATIO)\""
   }
   # Plot particle reconstruction efficiencies.
   [[ $DOO2 -eq 1 && $ISMC -eq 1 ]] && {
     PARTICLES=""
-    [ $DOO2_TASK_D0 -eq 1 ] && PARTICLES+="-d0"
-    [ $DOO2_TASK_DPLUS -eq 1 ] && PARTICLES+="-dplus"
-    [ $DOO2_TASK_LC -eq 1 ] && PARTICLES+="-lc"
-    [ $DOO2_TASK_XIC -eq 1 ] && PARTICLES+="-xic"
-    [ $DOO2_TASK_JPSI -eq 1 ] && PARTICLES+="-jpsi"
+    [ $DOO2_TASK_D0 -eq 1 ] && PARTICLES+=" d0 "
+    [ $DOO2_TASK_DPLUS -eq 1 ] && PARTICLES+=" dplus "
+    [ $DOO2_TASK_LC -eq 1 ] && PARTICLES+=" lc "
+    [ $DOO2_TASK_XIC -eq 1 ] && PARTICLES+=" xic "
+    [ $DOO2_TASK_JPSI -eq 1 ] && PARTICLES+=" jpsi "
+    [ $DOO2_TASK_LCK0SP -eq 1 ] && PARTICLES+=" lc-tok0sP "
     [ "$PARTICLES" ] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/PlotEfficiency.C(\\\"\$FileO2\\\", \\\"$PARTICLES\\\")\""
   }
   cat << EOF > "$SCRIPT_POSTPROCESS"
