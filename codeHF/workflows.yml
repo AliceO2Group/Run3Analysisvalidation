@@ -127,8 +127,6 @@ workflows:
 
   o2-analysis-pid-tpc:
     activate: no
-    options: "--pid-el 1 --pid-mu 1 --pid-pi 1 --pid-ka 1 --pid-pr 1"
 
   o2-analysis-pid-tof:
     activate: no
-    options: "--pid-el 1 --pid-mu 1 --pid-pi 1 --pid-ka 1 --pid-pr 1"
