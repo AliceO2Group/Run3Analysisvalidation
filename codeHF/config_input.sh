@@ -53,7 +53,7 @@ case $INPUT_CASE in
     ISMC=1;;
   7)
     INPUT_LABEL="Run 5, p-p MC 14 TeV MB, Scenario 3, HF analysis setup using dpl-config_run5_hf.json"
-    INPUT_DIR="/home/ginnocen/alice/DelphesO2/examples/scripts/myoutputfolder"
+    INPUT_DIR="/home/mmazzill/pp14TeV_inel_20M_sc3_werner_26042021"
     INPUT_FILES="AODRun5.*.root"
     JSON="$JSONRUN5_HF"
     ISINPUTO2=1
