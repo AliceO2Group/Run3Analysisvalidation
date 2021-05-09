@@ -128,8 +128,17 @@ alienv enter O2/latest
 ### Download the validation framework
 
 ```bash
-git clone https://github.com/AliceO2Group/Run3Analysisvalidation.git
+git clone --origin upstream https://github.com/AliceO2Group/Run3Analysisvalidation.git
 cd Run3Analysisvalidation
+```
+
+#### For developers: Fork the repository
+
+* Create your fork repository on GitHub.
+* Add it as your remote:
+
+```bash
+git remote add origin git@github.com:<your-github-username>/Run3Analysisvalidation.git
 ```
 
 ### Install parallelisation software
@@ -241,7 +250,7 @@ You can easily extend the script to include any other local Git repository and a
 
 ## Continuous integration tests
 
-Validity and quality of the code in the repository are checked on Github by several tools (linters) that support many coding languages.
+Validity and quality of the code in the repository are checked on GitHub by several tools (linters) that support many coding languages.
 Linters run automatically for every push or pull request.
 **Please make sure that your code passes all the tests before making a pull request.**
 

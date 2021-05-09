@@ -138,6 +138,8 @@ if [ $DOCONVERT -eq 1 ]; then
   [ $ISMC -eq 1 ] && MsgWarn "Using MC mode"
   [ $DEBUG -eq 1 ] && echo "Loading AliPhysics..."
   # Run the batch script in the ALI environment.
+  [ "$O2_ROOT" ] && { MsgWarn "O2 environment is loaded - expect errors!"; }
+  [ "$ALICE_PHYSICS" ] && { MsgWarn "AliPhysics environment is already loaded."; ENVALI=""; }
   $ENVALI bash "$DIR_EXEC/batch_convert.sh" "$LISTFILES_ALI" "$LISTFILES_O2" $ISMC $DEBUG "$NFILESPERJOB_CONVERT" || exit 1
 fi
 
@@ -153,6 +155,8 @@ if [ $DOALI -eq 1 ]; then
   CheckFile "$SCRIPT_ALI"
   [ $DEBUG -eq 1 ] && echo "Loading AliPhysics..."
   # Run the batch script in the ALI environment.
+  [ "$O2_ROOT" ] && { MsgWarn "O2 environment is loaded - expect errors!"; }
+  [ "$ALICE_PHYSICS" ] && { MsgWarn "AliPhysics environment is already loaded."; ENVALI=""; }
   $ENVALI bash "$DIR_EXEC/batch_ali.sh" "$LISTFILES_ALI" "$JSON" "$SCRIPT_ALI" $DEBUG "$NFILESPERJOB_ALI" || exit 1
   # Run the batch script in the ALI+O2 environment.
   #$ENVALIO2 bash "$DIR_EXEC/batch_ali.sh" $LISTFILES_ALI $JSON $SCRIPT_ALI $DEBUG || exit 1
@@ -172,6 +176,8 @@ if [ $DOO2 -eq 1 ]; then
   [ $SAVETREES -eq 1 ] || FILEOUT_TREES=""
   [ $DEBUG -eq 1 ] && echo "Loading O2..."
   # Run the batch script in the O2 environment.
+  [ "$ALICE_PHYSICS" ] && { MsgWarn "AliPhysics environment is loaded - expect errors!"; }
+  [ "$O2_ROOT" ] && { MsgWarn "O2 environment is already loaded."; ENVO2=""; }
   $ENVO2 bash "$DIR_EXEC/batch_o2.sh" "$LISTFILES_O2" "$JSON" "$SCRIPT_O2" $DEBUG "$NFILESPERJOB_O2" "$FILEOUT_TREES" "$NJOBSPARALLEL_O2" || exit 1
   mv "$FILEOUT" "$FILEOUT_O2" || ErrExit "Failed to mv $FILEOUT $FILEOUT_O2."
   [[ $SAVETREES -eq 1 && "$FILEOUT_TREES" ]] && { mv "$FILEOUT_TREES" "$FILEOUT_TREES_O2" || ErrExit "Failed to mv $FILEOUT_TREES $FILEOUT_TREES_O2."; }
@@ -185,6 +191,8 @@ if [ $DOPOSTPROCESS -eq 1 ]; then
   CheckFile "$SCRIPT_POSTPROCESS"
   [ $DEBUG -eq 1 ] && echo "Loading AliPhysics..."
   # Run the batch script in the postprocessing environment.
+  [ "$O2_ROOT" ] && { MsgWarn "O2 environment is loaded - expect errors!"; }
+  [ "$ALICE_PHYSICS" ] && { MsgWarn "AliPhysics environment is already loaded."; ENVALI=""; }
   $ENVPOST bash "$SCRIPT_POSTPROCESS" "$FILEOUT_O2" "$FILEOUT_ALI" > $LogFile 2>&1 || ErrExit "\nCheck $(realpath $LogFile)"
   grep -q -e '^'"W-" -e '^'"Warning" -e "warning" "$LogFile" && MsgWarn "There were warnings!\nCheck $(realpath $LogFile)"
   grep -q -e '^'"E-" -e '^'"Error" "$LogFile" && MsgErr "There were errors!\nCheck $(realpath $LogFile)"
