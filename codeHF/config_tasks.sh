@@ -40,7 +40,7 @@ DOO2_PID_TOF_QA=0   # pid-tof-qa-mc
 DOO2_SKIM=0         # hf-track-index-skims-creator
 DOO2_CAND_2PRONG=0  # hf-candidate-creator-2prong
 DOO2_CAND_3PRONG=0  # hf-candidate-creator-3prong
-DOO2_CAND_XICC=1    # hf-candidate-creator-xicc
+DOO2_CAND_XICC=0    # hf-candidate-creator-xicc
 # Selectors
 DOO2_SEL_D0=0       # hf-d0-candidate-selector
 DOO2_SEL_DPLUS=0    # hf-dplus-topikpi-candidate-selector
@@ -152,6 +152,7 @@ function MakeScriptO2 {
   [ $DOO2_TASK_DPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-dplus"
   [ $DOO2_TASK_LC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-lc"
   [ $DOO2_TASK_XIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-xic"
+  [ $DOO2_TASK_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-xicc"
   [ $DOO2_TASK_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-bplus"
   [ $DOO2_TASK_X -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-x"
   [ $DOO2_TREE_D0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-d0-tokpi"
@@ -214,6 +215,7 @@ function MakeScriptPostprocess {
     [ $DOO2_TASK_DPLUS -eq 1 ] && PARTICLES+="-dplus"
     [ $DOO2_TASK_LC -eq 1 ] && PARTICLES+="-lc"
     [ $DOO2_TASK_XIC -eq 1 ] && PARTICLES+="-xic"
+    [ $DOO2_TASK_XICC -eq 1 ] && PARTICLES+="-xicc"
     [ $DOO2_TASK_JPSI -eq 1 ] && PARTICLES+="-jpsi"
     [ "$PARTICLES" ] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/PlotEfficiency.C(\\\"\$FileO2\\\", \\\"$PARTICLES\\\")\""
   }
