@@ -79,4 +79,12 @@ case $INPUT_CASE in
     JSON="$JSONRUN5_HF"
     ISINPUTO2=1
     ISMC=1;;
+  11)
+    INPUT_LABEL="Run 5, p-p MC 14 TeV Multicharm enriched, Scenario 3, HF analysis setup using dpl-config_run5_hf.json"
+    #INPUT_DIR="/home/ginnocen/alice/DelphesO2/examples/scripts"
+    INPUT_DIR="/home/mmazzill/pp14TeV_XiccGun_ccbar_10M_07052021"
+    INPUT_FILES="AODRun5.*.root"
+    JSON="$JSONRUN5_HF"
+    ISINPUTO2=1
+    ISMC=1;;
 esac
