@@ -83,10 +83,10 @@
             "mInvMassDsToPiKKMax": "2.18",
             "mCPADsToPiKKMin": "0.94",
             "mDecLenDsToPiKKMin": "0.02",
-            "mPtXicToPKPiMin": "4.",
+            "mPtXicToPKPiMin": "1.",
             "mInvMassXicToPKPiMin": "2.10",
             "mInvMassXicToPKPiMax": "2.80",
-            "mCPAXicToPKPiMin": "-2.",
+            "mCPAXicToPKPiMin": "0.9",
             "mDecLenXicToPKPiMin": "0."
         }
     },
@@ -237,16 +237,45 @@
     "hf-xic-topkpi-candidate-selector": {
         "d_pTCandMin": "0.",
         "d_pTCandMax": "36.",
-        "d_FilterPID": "false",
-        "d_pidTPCMinpT": "0.15",
-        "d_pidTPCMaxpT": "1.0",
-        "d_pidTOFMinpT": "0.5",
+        "d_FilterPID": "true",
+        "d_pidTPCMinpT": "1000.",
+        "d_pidTPCMaxpT": "2000.",
+        "d_pidTOFMinpT": "0.15",
         "d_pidTOFMaxpT": "4.0",
-        "d_TPCNClsFindablePIDCut": "70.",
-        "d_nSigmaTPC": "3.",
-        "d_nSigmaTPCCombined": "5.",
+        "d_TPCNClsFindablePIDCut": "-9999",
+        "d_nSigmaTPC": "1000.",
+        "d_nSigmaTPCCombined": "500.",
         "d_nSigmaTOF": "3.",
-        "d_nSigmaTOFCombined": "5."
+        "d_nSigmaTOFCombined": "5.",
+        "ptBins": {
+            "values": [
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "8",
+                "10",
+                "24",
+                "36"
+            ]
+        },
+        "Xic_to_p_K_pi_cuts": {
+            "values": [
+                [ "0.400", "0.4", "0.4", "0.4", "5.e-5", "0.", "0.004", "0.85"],
+                [ "0.400", "0.4", "0.4", "0.4", "5.e-5", "0.", "0.004", "0.85"],
+                [ "0.400", "0.4", "0.4", "0.4", "5.e-5", "0.", "0.004", "0.85"],
+                [ "0.400", "0.4", "0.4", "0.4", "5.e-5", "0.", "0.004", "0.85"],
+                [ "0.400", "0.4", "0.4", "0.4", "5.e-5", "0.", "0.004", "0.85"],
+                [ "0.400", "0.4", "0.4", "0.4", "5.e-5", "0.", "0.004", "0.85"],
+                [ "0.400", "0.4", "0.4", "0.4", "5.e-5", "0.", "0.004", "0.85"],
+                [ "0.400", "0.4", "0.4", "0.4", "5.e-5", "0.", "0.004", "0.85"],
+                [ "0.400", "0.4", "0.4", "0.4", "5.e-5", "0.", "0.004", "0.85"],
+                [ "0.400", "0.4", "0.4", "0.4", "5.e-5", "0.", "0.004", "0.85"]
+            ]
+        }
     },
     "hf-jpsi-toee-candidate-selector": {
         "d_pTCandMin": "0.",
