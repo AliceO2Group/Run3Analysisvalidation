@@ -191,4 +191,4 @@ workflows:
     activate: false
 
   o2-analysis-weak-decay-indices:
-    activate: false
+    activate: false 
