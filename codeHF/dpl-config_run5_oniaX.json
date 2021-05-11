@@ -7,7 +7,6 @@
         "aod-file": "@list_o2.txt"
     },
     "hf-produce-sel-collision": {
-        "doValPlots": "true",
         "triggerClassName": "kINT7"
     },
     "hf-produce-sel-track": {
