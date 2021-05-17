@@ -33,8 +33,8 @@ DOO2_QA_EFF=0       # qa-efficiency
 DOO2_QA_SIM=0       # qa-simple
 DOO2_MC_VALID=0     # hf-mc-validation
 # PID
-DOO2_PID_TPC=0      # pid-tpc
-DOO2_PID_TOF=0      # pid-tof
+DOO2_PID_TPC=0      # pid-tpc-full
+DOO2_PID_TOF=0      # pid-tof-full
 DOO2_PID_TOF_QA=0   # pid-tof-qa-mc
 # Vertexing
 DOO2_SKIM=0         # hf-track-index-skims-creator
@@ -135,8 +135,8 @@ function MakeScriptO2 {
   [ $DOO2_SKIM -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-track-index-skims-creator"
   [ $DOO2_CAND_2PRONG -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-2prong"
   [ $DOO2_CAND_3PRONG -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-3prong"
-  [ $DOO2_PID_TPC -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tpc"
-  [ $DOO2_PID_TOF -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tof"
+  [ $DOO2_PID_TPC -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tpc-full"
+  [ $DOO2_PID_TOF -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tof-full"
   [ $DOO2_PID_TOF_QA -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tof-qa-mc"
   [ $DOO2_SEL_D0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-d0-candidate-selector"
   [ $DOO2_SEL_JPSI -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-jpsi-toee-candidate-selector"
