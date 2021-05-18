@@ -1,11 +1,10 @@
-from ROOT import TCanvas, TFile, TGaxis, TLegend, gStyle
+from ROOT import TCanvas, TFile, TGaxis, TLegend,gStyle
 
 
 def printCanvas(canvas, title):
     format_list = [".png", ".pdf", ".root"]
     for fileFormat in format_list:
         canvas.SaveAs(title + fileFormat)
-
 
 def count_HFquarks_perColl(file, var):
     cquark = TCanvas("cquark", "%s per collision" % var)
@@ -21,7 +20,7 @@ def count_HFquarks_perColl(file, var):
 def count_Particle_perColl(file, var):
     cparticle = TCanvas("cparticle", "%s per collision" % var)
     cparticle.SetCanvasSize(900, 700)
-    cparticle.Divide(2, 1)
+    cparticle.Divide(2,1)
     hp = file.Get("hf-mc-validation-gen/hCouterPerCollision%s" % var)
     hp.Draw("")
     printCanvas(cparticle, "%sPerCollision" % var)
