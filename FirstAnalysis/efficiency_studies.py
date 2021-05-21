@@ -1,13 +1,5 @@
 #!/usr/bin/env python
-from ROOT import (
-    TH1F,
-    TCanvas,
-    TEfficiency,
-    TFile,
-    TLegend,
-    gPad,
-    gStyle,
-)
+from ROOT import TH1F, TCanvas, TEfficiency, TFile, TLegend, gPad, gStyle
 
 
 def saveCanvas(canvas, title):

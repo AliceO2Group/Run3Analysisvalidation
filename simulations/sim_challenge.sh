@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck disable=SC1090 # Ignore non-constant source.
+# shellcheck disable=SC1091 # Ignore not following.
 
 . "${O2_ROOT}"/share/scripts/jobutils.sh
 
