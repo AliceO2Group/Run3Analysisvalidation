@@ -273,6 +273,6 @@ clang-format -style=file -i <file>
 ```bash
 black . && flake8 . && isort .
 ```
-aaa 
-bbb	ccc 
+aaa
+bbb ccc
 ddd
