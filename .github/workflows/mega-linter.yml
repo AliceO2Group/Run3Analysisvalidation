@@ -35,7 +35,7 @@ jobs:
         with:
           token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
           fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.sha }}
+          #ref: ${{ github.event.pull_request.head.sha }}
 
       # Mega-Linter
       - name: Mega-Linter
