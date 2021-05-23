@@ -35,6 +35,7 @@ jobs:
         with:
           token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
 
       # Mega-Linter
       - name: Mega-Linter
@@ -63,10 +64,10 @@ jobs:
       - name: Print PR condition
         run: |
           # Print the condition
-          echo "${{ steps.ml.outputs.has_updated_sources }} == 1 && (${{ env.APPLY_FIXES_EVENT }} == 'all' || ${{ env.APPLY_FIXES_EVENT }} == ${{ github.event_name }}) && ${{ env.APPLY_FIXES_MODE }} == 'pull_request' && (${{ github.event_name }} == 'push' || ${{ github.event.pull_request.head.repo.full_name }} == ${{ github.repository }}) && !contains(${{ github.event.head_commit.message }}, 'skip fix')"
+          echo "${{ steps.ml.outputs.has_updated_sources }} == 1 && (${{ env.APPLY_FIXES_EVENT }} == 'all' || ${{ env.APPLY_FIXES_EVENT }} == ${{ github.event_name }}) && ${{ env.APPLY_FIXES_MODE }} == 'pull_request' && !contains(${{ github.event.head_commit.message }}, 'skip fix')"
       - name: Create Pull Request with applied fixes
         id: cpr
-        if: steps.ml.outputs.has_updated_sources == 1 && (env.APPLY_FIXES_EVENT == 'all' || env.APPLY_FIXES_EVENT == github.event_name) && env.APPLY_FIXES_MODE == 'pull_request' && (github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository) && !contains(github.event.head_commit.message, 'skip fix')
+        if: steps.ml.outputs.has_updated_sources == 1 && (env.APPLY_FIXES_EVENT == 'all' || env.APPLY_FIXES_EVENT == github.event_name) && env.APPLY_FIXES_MODE == 'pull_request' && !contains(github.event.head_commit.message, 'skip fix')
         uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
@@ -74,7 +75,7 @@ jobs:
           title: "[Mega-Linter] Apply linters automatic fixes"
           labels: bot
       - name: Create PR output
-        if: steps.ml.outputs.has_updated_sources == 1 && (env.APPLY_FIXES_EVENT == 'all' || env.APPLY_FIXES_EVENT == github.event_name) && env.APPLY_FIXES_MODE == 'pull_request' && (github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository) && !contains(github.event.head_commit.message, 'skip fix')
+        if: steps.ml.outputs.has_updated_sources == 1 && (env.APPLY_FIXES_EVENT == 'all' || env.APPLY_FIXES_EVENT == github.event_name) && env.APPLY_FIXES_MODE == 'pull_request' && !contains(github.event.head_commit.message, 'skip fix')
         run: |
           echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
           echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
@@ -83,12 +84,12 @@ jobs:
       - name: Print commit condition
         run: |
           # Print the condition
-          echo "${{ steps.ml.outputs.has_updated_sources }} == 1 && (${{ env.APPLY_FIXES_EVENT }} == 'all' || ${{ env.APPLY_FIXES_EVENT }} == ${{ github.event_name }}) && ${{ env.APPLY_FIXES_MODE }} == 'commit' && ${{ github.ref }} != 'refs/heads/master' && (${{ github.event_name }} == 'push' || ${{ github.event.pull_request.head.repo.full_name }} == ${{ github.repository }}) && !contains(${{ github.event.head_commit.message }}, 'skip fix')"
+          echo "${{ steps.ml.outputs.has_updated_sources }} == 1 && (${{ env.APPLY_FIXES_EVENT }} == 'all' || ${{ env.APPLY_FIXES_EVENT }} == ${{ github.event_name }}) && ${{ env.APPLY_FIXES_MODE }} == 'commit' && ${{ github.ref }} != 'refs/heads/master' && !contains(${{ github.event.head_commit.message }}, 'skip fix')"
       - name: Prepare commit
-        if: steps.ml.outputs.has_updated_sources == 1 && (env.APPLY_FIXES_EVENT == 'all' || env.APPLY_FIXES_EVENT == github.event_name) && env.APPLY_FIXES_MODE == 'commit' && github.ref != 'refs/heads/master' && (github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository) && !contains(github.event.head_commit.message, 'skip fix')
+        if: steps.ml.outputs.has_updated_sources == 1 && (env.APPLY_FIXES_EVENT == 'all' || env.APPLY_FIXES_EVENT == github.event_name) && env.APPLY_FIXES_MODE == 'commit' && github.ref != 'refs/heads/master' && !contains(github.event.head_commit.message, 'skip fix')
         run: sudo chown -Rc $UID .git/
       - name: Commit and push applied linter fixes
-        if: steps.ml.outputs.has_updated_sources == 1 && (env.APPLY_FIXES_EVENT == 'all' || env.APPLY_FIXES_EVENT == github.event_name) && env.APPLY_FIXES_MODE == 'commit' && github.ref != 'refs/heads/master' && (github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository) && !contains(github.event.head_commit.message, 'skip fix')
+        if: steps.ml.outputs.has_updated_sources == 1 && (env.APPLY_FIXES_EVENT == 'all' || env.APPLY_FIXES_EVENT == github.event_name) && env.APPLY_FIXES_MODE == 'commit' && github.ref != 'refs/heads/master' && !contains(github.event.head_commit.message, 'skip fix')
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           branch: ${{ github.event.pull_request.head.ref || github.head_ref || github.ref }}
