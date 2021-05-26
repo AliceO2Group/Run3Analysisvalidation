@@ -184,7 +184,7 @@ function MakeScriptO2 {
   [ $SAVETREES -eq 1 ] && OPT_MAKECMD+=" -t"
   [ $MAKE_GRAPH -eq 1 ] && OPT_MAKECMD+=" -g"
   [ $DOO2_EVSEL -eq 1 ] && OPT_MAKECMD+=" --doevsel"
-  
+
   # Generate the O2 command.
   MAKECMD="python3 $DIR_EXEC/make_command_o2.py $DATABASE_O2 $OPT_MAKECMD"
   O2EXEC=$($MAKECMD -w "$WORKFLOWS")
