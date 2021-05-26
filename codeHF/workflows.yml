@@ -5,7 +5,7 @@ options:
 
 workflows:
 
-  # Event selection
+# Event selection
 
   o2-analysis-timestamp:
     activate: no
@@ -23,7 +23,8 @@ workflows:
     activate: false
     executable: o2-analysis-hf-track-index-skims-creator
     tables: [HFSELTRACK, HFTRACKIDXP2, HFTRACKIDXP3]
-    dependencies: [o2-analysis-timestamp, o2-analysis-event-selection]
+    options:
+      evsel: "--doEvSel"
 
   o2-analysis-hf-track-index-skims-creator_v0:
     <<: *skim_creator
