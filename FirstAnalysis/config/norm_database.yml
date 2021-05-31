@@ -1,0 +1,68 @@
+BR: # PDG 2020
+  D0toKpi:
+    value: 0.03950
+    unc: 0.00011
+  DplustoKpipi:
+    value: 0.0938
+    unc: 0.0016
+  DstoKKpi:
+    value: 0.0224
+    unc: 0.0008
+  LctopKpi:
+    value: 0.0628
+    unc: 0.0032
+  LctopK0S:
+    value: 0.0159
+    unc: 0.0008
+    
+sigma: # MB cross section in pb
+  Run2:
+    pp:
+      5TeV: 50.87e+9
+      13TeV: 57.8e+9
+
+taa:
+  Run2:
+    PbPb:
+      5TeV:
+        V0:
+          Cent010:
+            value: 23.07
+            unc: 0.44
+          Cent3050:
+            value: 3.897
+            unc: 0.11
+          Cent6080:
+            value: 0.4173
+            unc: 0.014
+    pPb:
+      5TeV:
+        V0A:
+          Cent020:
+            value: 0.183
+            unc: 0.006245
+          Cent2040:
+            value: 0.134
+            unc: 0.004899
+          Cent4060:
+            value: 0.092
+            unc: 0.004796
+          Cent60100:
+            value: 0.041
+            unc: 0.008832
+        ZNA:
+          Cent010:
+            value: 0.172
+            unc: 0.012
+          Cent1020:
+            value: 0.158
+            unc: 0.006
+          Cent2040:
+            value: 0.137
+            unc: 0.003
+          Cent4060:
+            value: 0.102
+            unc: 0.005
+          Cent60100:
+            value: 0.0459
+            unc: 0.0024
