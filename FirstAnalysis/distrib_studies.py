@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 import os
 from math import ceil, sqrt
-import yaml
 
-from ROOT import TCanvas, TFile, TLegend, gStyle, gPad, gROOT, TH2F, TLatex
+import yaml
+from ROOT import TH2F, TCanvas, TFile, TLatex, TLegend, gPad, gROOT, gStyle
 
 
 def createCanvas(nplots, name, sizeX=1500, sizeY=900):
