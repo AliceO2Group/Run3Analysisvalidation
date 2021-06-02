@@ -60,6 +60,11 @@ workflows:
     <<: *selector_3prong
     activate: no
 
+  o2-analysis-hf-xicc-topkpipi-candidate-selector:
+    <<: *selector_2prong
+    activate: no
+    dependencies: [o2-analysis-hf-candidate-creator-xicc]
+
   # Analysis tasks
 
   o2-analysis-hf-task-d0: &task
@@ -91,7 +96,7 @@ workflows:
   o2-analysis-hf-task-xicc:
     <<: *task
     activate: no
-    dependencies: o2-analysis-hf-candidate-creator-xicc
+    dependencies: o2-analysis-hf-xicc-topkpipi-candidate-selector
 
   o2-analysis-hf-task-bplus:
     <<: *task
