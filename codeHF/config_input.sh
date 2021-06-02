@@ -4,14 +4,14 @@
 # Input specification for runtest.sh
 # (Modifies input parameters.)
 
-INPUT_CASE=2            # Input case
+INPUT_CASE=8            # Input case
 
-NFILESMAX=1             # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
+NFILESMAX=-0             # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
 
 # Number of input files per job (Automatic optimisation on if < 1.)
 NFILESPERJOB_CONVERT=0  # Conversion
 NFILESPERJOB_ALI=0      # AliPhysics
-NFILESPERJOB_O2=1       # O2
+NFILESPERJOB_O2=0       # O2
 
 # Maximum number of simultaneously running O2 jobs
 NJOBSPARALLEL_O2=$(python3 -c "print(min(10, round($(nproc) / 2)))")
@@ -59,15 +59,15 @@ case $INPUT_CASE in
     ISINPUTO2=1
     ISMC=1;;
   8)
-    INPUT_LABEL="Run 5, p-p MC 14 TeV Inel, Scenario 3, onia analysis"
-    INPUT_DIR="/data/Run5/MC/pp_14TeV/Inel_v1"
+    INPUT_LABEL="Run 5, p-p MC 14 TeV Inel, Scenario 3, mb for bkg study"
+    INPUT_DIR="/home/mmazzill/pp14TeV_inel_20M_sc2_07052021"
     INPUT_FILES="AODRun5.*.root"
     JSON="$JSONRUN5_ONIAX"
     ISINPUTO2=1
     ISMC=1;;
   9)
     INPUT_LABEL="Run 5, p-p MC 14 TeV OniaX-enriched, Scenario 3, oniaX analysis"
-    INPUT_DIR="/home/mmazzill/pp14TeV_oniaX_10M_sc3_werner_26042021"
+    INPUT_DIR="/home/mmazzill/pp14TeV_oniaX_10M_v1_eta4_12052021"
     INPUT_FILES="AODRun5.*.root"
     JSON="$JSONRUN5_ONIAX"
     ISINPUTO2=1
