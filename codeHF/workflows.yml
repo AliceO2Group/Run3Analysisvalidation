@@ -32,8 +32,6 @@ workflows:
     <<: *cand_creator
     activate: no
     dependencies: [o2-analysis-hf-xic-topkpi-candidate-selector]
-    options:
-      mc: "--doMC"
     tables:
       default: [HFCANDXICCBASE, HFCANDXICCEXT]
       mc: [HFCANDXICCMCREC, HFCANDXICCMCGEN]
@@ -61,7 +59,6 @@ workflows:
     activate: no
 
   o2-analysis-hf-xicc-topkpipi-candidate-selector:
-    <<: *selector_2prong
     activate: no
     dependencies: [o2-analysis-hf-candidate-creator-xicc]
 
