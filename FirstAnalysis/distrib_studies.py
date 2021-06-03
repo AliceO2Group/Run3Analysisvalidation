@@ -84,16 +84,19 @@ def distr_studies(hadron="Xi_cc", collision="pp14p0", yrange="absy1p44"):
         lhistobkg.append(lhistobkgvar)
 
     for index, var in enumerate(lvarlist):
+        print(f"===== {var} ======")
         # sort out required number of columns and rows for a squared grid and create a figure
         n_cols_rows = ceil(sqrt(nPtBins))
-        figure = ROOTFigure(n_cols_rows, n_cols_rows, row_margin=0.05, column_margin=0.05, size=(1500, 900))
+        column_margin = [(0.05, 0.01)] * n_cols_rows
+        row_margin = [(0.05, 0.01)] * n_cols_rows
+        figure = ROOTFigure(n_cols_rows, n_cols_rows, row_margin=row_margin, column_margin=column_margin, size=(1500, 900))
         # can adjust some axis properties globally
         figure.axes(label_size=0.02, title_size=0.02)
         # here we use the feature to only apply to certain axes
-        figure.axes("x", title=lvarlatex[index])
-        figure.axes("y", title="Entries")
+        figure.axes("x", title=lvarlatex[index], title_offset=1)
+        figure.axes("y", title="Entries", title_offset=1.08)
         # legend positioning, default would be "top right", so just put left (top will be added by default)
-        figure.legend(position="left")
+        figure.legend(position=(0.05, 0.6, 0.7, 0.8))
 
         rebin = lrebin[index]
 
@@ -126,7 +129,7 @@ def distr_studies(hadron="Xi_cc", collision="pp14p0", yrange="absy1p44"):
             figure.define_plot(x_log=ldologx[index], y_log=ldolog[index])
             figure.add_object(hist_sig, style=style_sig, label=f"Sig before norm ({int(nSigEntries)} entries)")
             figure.add_object(hist_bkg, style=style_bkg, label=f"Bkg before norm ({int(nBkgEntries)} entries)")
-            figure.add_text(f"{lptMin[iptBin]:.1f} GeV < p_{{T}} ({latexcand}) < {lptMax[iptBin]:.1f} GeV", 0.1, 0.1)
+            figure.add_text(f"{lptMin[iptBin]:.1f} GeV < p_{{T}} ({latexcand}) < {lptMax[iptBin]:.1f} GeV", 0., 0.8)
 
         figure.create()
         for save_paths in makeSavePaths(f"distribution_{var}", *formats, outputdir=f"output_{hadron}"):
