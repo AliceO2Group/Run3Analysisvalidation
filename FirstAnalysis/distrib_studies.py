@@ -3,10 +3,10 @@ import os
 from math import ceil, sqrt
 
 import yaml
-from ROOT import TFile
-
 from hfplot.plot_spec_root import ROOTFigure
 from hfplot.style import ROOTStyle1D
+from ROOT import TFile
+
 
 def makeSavePaths(title, *fileFormats, outputdir="outputPlots"):
     """
@@ -57,7 +57,6 @@ def distr_studies(hadron="Xi_cc", collision="pp14p0", yrange="absy1p44"):
     style_bkg.markersize = 1
     style_bkg.draw_options = "P"
 
-
     for index, var in enumerate(lvarlist):
 
         lhistosigvar = []
@@ -68,10 +67,12 @@ def distr_studies(hadron="Xi_cc", collision="pp14p0", yrange="absy1p44"):
         nPtBins = hsig.GetNbinsY()
         for iptBin in range(nPtBins):
             # Collect the histogram projections in bins of pT for each variable
-            hsig_px = hsig.ProjectionX(f"hsig_px_var{var}_pt{iptBin}",
-                                       iptBin + 1, iptBin + 1)
-            hbkg_px = hbkg.ProjectionX(f"hbkg_px_var{var}_pt{iptBin}",
-                                       iptBin + 1, iptBin + 1)
+            hsig_px = hsig.ProjectionX(
+                f"hsig_px_var{var}_pt{iptBin}", iptBin + 1, iptBin + 1
+            )
+            hbkg_px = hbkg.ProjectionX(
+                f"hbkg_px_var{var}_pt{iptBin}", iptBin + 1, iptBin + 1
+            )
             lhistosigvar.append(hsig_px)
             lhistobkgvar.append(hbkg_px)
             if index == 0:
@@ -86,7 +87,13 @@ def distr_studies(hadron="Xi_cc", collision="pp14p0", yrange="absy1p44"):
     for index, var in enumerate(lvarlist):
         # sort out required number of columns and rows for a squared grid and create a figure
         n_cols_rows = ceil(sqrt(nPtBins))
-        figure = ROOTFigure(n_cols_rows, n_cols_rows, row_margin=0.05, column_margin=0.05, size=(1500, 900))
+        figure = ROOTFigure(
+            n_cols_rows,
+            n_cols_rows,
+            row_margin=0.05,
+            column_margin=0.05,
+            size=(1500, 900),
+        )
         # can adjust some axis properties globally
         figure.axes(label_size=0.02, title_size=0.02)
         # here we use the feature to only apply to certain axes
@@ -109,7 +116,9 @@ def distr_studies(hadron="Xi_cc", collision="pp14p0", yrange="absy1p44"):
             nBkgEntries = hist_bkg.Integral()
 
             if not nSigEntries or not nBkgEntries:
-                print(f"ERROR: Found empty signal or background distribution for variable={var} in pT bin={iptBin}")
+                print(
+                    f"ERROR: Found empty signal or background distribution for variable={var} in pT bin={iptBin}"
+                )
                 continue
 
             if normalized:
@@ -124,12 +133,27 @@ def distr_studies(hadron="Xi_cc", collision="pp14p0", yrange="absy1p44"):
                     hist_bkg.SetBinError(ibin + 1, 0.0)
 
             figure.define_plot(x_log=ldologx[index], y_log=ldolog[index])
-            figure.add_object(hist_sig, style=style_sig, label=f"Sig before norm ({int(nSigEntries)} entries)")
-            figure.add_object(hist_bkg, style=style_bkg, label=f"Bkg before norm ({int(nBkgEntries)} entries)")
-            figure.add_text(f"{lptMin[iptBin]:.1f} GeV < p_{{T}} ({latexcand}) < {lptMax[iptBin]:.1f} GeV", 0.1, 0.1)
+            figure.add_object(
+                hist_sig,
+                style=style_sig,
+                label=f"Sig before norm ({int(nSigEntries)} entries)",
+            )
+            figure.add_object(
+                hist_bkg,
+                style=style_bkg,
+                label=f"Bkg before norm ({int(nBkgEntries)} entries)",
+            )
+            figure.add_text(
+                f"{lptMin[iptBin]:.1f} GeV < p_{{T}} ({latexcand}) < {lptMax[iptBin]:.1f} GeV",
+                0.1,
+                0.1,
+            )
 
         figure.create()
-        for save_paths in makeSavePaths(f"distribution_{var}", *formats, outputdir=f"output_{hadron}"):
+        for save_paths in makeSavePaths(
+            f"distribution_{var}", *formats, outputdir=f"output_{hadron}"
+        ):
             figure.save(save_paths)
+
 
 distr_studies()
