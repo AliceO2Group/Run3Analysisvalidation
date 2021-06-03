@@ -11,7 +11,7 @@
         "d_bz": "5.",
         "doCutQuality": "false",
         "d_tpcnclsfound": "-999999",
-        "ptmintrack_2prong": "1.0",
+        "ptmintrack_2prong": "0.7",
         "ptbins_singletrack": {
             "values": [
                 "0.",
@@ -23,7 +23,7 @@
                 "100."
             ]
         },
-        "etamax_2prong": "1.44",
+        "etamax_2prong": "2.0",
         "cuts_singletrack_2prong": {
             "values": [
                 ["0.000", "10."],
@@ -254,8 +254,8 @@
         "d_pidTPCMinpT": "1000.",
         "d_pidTPCMaxpT": "2000.",
         "d_pidTOFMinpT": "0.15",
-        "d_pidTOFMaxpT": "15.",
-        "d_pidRICHMinpT": "0.15",
+        "d_pidTOFMaxpT": "1.",
+        "d_pidRICHMinpT": "0.5",
         "d_pidRICHMaxpT": "15.",
         "d_TPCNClsFindablePIDCut": "-9999",
         "d_nSigmaTPC": "1000.",
@@ -277,15 +277,15 @@
         },
         "Jpsi_to_ee_cuts": {
             "values": [
-                ["0.5", "0.2", "0.4", "1"],
-                ["0.5", "0.2", "0.4", "1"],
-                ["0.5", "0.2", "0.4", "1"],
-                ["0.5", "0.2", "0.4", "1"],
-                ["0.5", "0.2", "0.4", "1"],
-                ["0.5", "0.2", "0.4", "1"],
-                ["0.5", "0.2", "0.4", "1"],
-                ["0.5", "0.2", "0.4", "1"],
-                ["0.5", "0.2", "0.4", "1"]
+                ["0.5", "0.2", "0.4", "0.7"],
+                ["0.5", "0.2", "0.4", "0.7"],
+                ["0.5", "0.2", "0.4", "0.7"],
+                ["0.5", "0.2", "0.4", "0.7"],
+                ["0.5", "0.2", "0.4", "0.7"],
+                ["0.5", "0.2", "0.4", "0.7"],
+                ["0.5", "0.2", "0.4", "0.7"],
+                ["0.5", "0.2", "0.4", "0.7"],
+                ["0.5", "0.2", "0.4", "0.7"]
             ]
         }
     },
@@ -294,7 +294,7 @@
         "d_pTCandMax": "50.",
         "d_pidTPCMinpT": "1000.",
         "d_pidTPCMaxpT": "2000.",
-        "d_pidTOFMinpT": "0.",
+        "d_pidTOFMinpT": "0.15",
         "d_pidTOFMaxpT": "10.",
         "d_TPCNClsFindablePIDCut": "-9999",
         "d_nSigmaTPC": "1000.",
