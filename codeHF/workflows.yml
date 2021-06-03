@@ -50,6 +50,23 @@ workflows:
     <<: *selector_3prong
     activate: no
 
+  # Cascade candidate creators
+
+  o2-analysis-hf-candidate-creator-x: &cand_creator_casc
+    activate: no
+    dependencies: [o2-analysis-hf-jpsi-toee-candidate-selector]
+    options:
+      mc: "--doMC"
+    tables:
+      default: [HFCANDXBASE, HFCANDXEXT]
+      mc: [HFCANDXMCREC, HFCANDXMCGEN]
+
+  # Cascade candidate selectors
+
+  o2-analysis-hf-x-tojpsipipi-candidate-selector: &selector_casc
+    activate: no
+    dependencies: [o2-analysis-hf-candidate-creator-x, o2-analysis-pid-tpc-full, o2-analysis-pid-tof-full]
+
   # Analysis tasks
 
   o2-analysis-hf-task-d0: &task
@@ -86,7 +103,7 @@ workflows:
   o2-analysis-hf-task-x:
     <<: *task
     activate: no
-    dependencies: o2-analysis-hf-jpsi-toee-candidate-selector
+    dependencies: o2-analysis-hf-x-tojpsipipi-candidate-selector
 
   # Tree creators
 
