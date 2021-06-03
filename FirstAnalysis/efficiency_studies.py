@@ -11,13 +11,7 @@ def saveCanvas(canvas, title):
 def efficiencytracking(var):
     # plots the efficiency vs pT, eta and phi for all the species(it extracts the
     # Efficiency from qa - tracking - efficiency if you have ran with-- make - eff)
-    hadron_list = [
-        "pion",
-        "proton",
-        "kaon",
-        "electron",
-        "muon",
-    ]
+    hadron_list = ["pion", "proton", "kaon", "electron", "muon"]
     color_list = [1, 2, 4, 6, 8]
     marker_list = [20, 21, 22, 34, 45]
     fileo2 = TFile("../codeHF/AnalysisResults_O2.root")
