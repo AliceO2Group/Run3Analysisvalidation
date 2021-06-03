@@ -17,3 +17,6 @@ also for performing Run5 analysis.
 * D2H KrKr production (X events):
   * AOD O2 tables: `/data/Run5data/EMBEDDING_KrKr_CCBARLc_scenario3/TEST`
   * Analysis result: `/data/Run5data_samples/EMBEDDING_KrKr_CCBARLc_scenario3_20210224/AnalysisResults_O2.root`
+
+## Plotting
+The analyses validation is supposed to use the [HFPlot tool](https://github.com/benedikt-voelkel/HFPlot) for plotting purposes in the future. It is basically a *pythonic* wrapper around `ROOT` with some automated features. As a first use case it is implemented in [distrib_studies.py](distrib_studies.py). A more extensive README can be found [here](https://github.com/benedikt-voelkel/HFPlot) and there are also some examples provided.
