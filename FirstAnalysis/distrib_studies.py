@@ -3,10 +3,9 @@ import os
 from math import ceil, sqrt
 
 import yaml
-from ROOT import TFile
-
 from hfplot.plot_spec_root import ROOTFigure
 from hfplot.style import ROOTStyle1D
+from ROOT import TFile
 
 
 def makeSavePaths(title, *fileFormats, outputdir="outputPlots"):
