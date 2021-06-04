@@ -109,7 +109,7 @@ workflows:
     requires_mc: yes
     options: "--eff-el 1 --eff-mu 1 --eff-pi 1 --eff-ka 1 --eff-pr 1"
 
-  o2-analysis-qa-simple:
+  o2-analysis-qa-event-track:
     activate: no
     requires_mc: yes
 
