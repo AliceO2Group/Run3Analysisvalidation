@@ -23,8 +23,8 @@ X3872:
   pp14p0:
     absy1p44:
       latexcand: "X(3872)"
-      inputBkg: /home/ginnocen/Run3Analysisvalidation/codeHF/AnalysisResults_O2.root
-      inputSig: /home/ginnocen/Run3Analysisvalidation/codeHF/AnalysisResults_O2.root
+      inputBkg: /data/Run5/results/Xanalysis_0p7pt_RICHTOF/AnalysisResults_O2_MB.root
+      inputSig: /data/Run5/results/Xanalysis_0p7pt_RICHTOF/AnalysisResults_O2_enriched.root
       dirname: hf-task-x-mc
       normalized: 1
       varlist: ["mass", "d0Prong0", "d0Prong1", "CPA", "Y", "DecLength", "Ct", "Eta", "chi2PCA"]
@@ -44,8 +44,8 @@ Jpsi:
   pp14p0:
     absy1p44:
       latexcand: "Jpsi"
-      inputBkg: /home/ginnocen/Run3Analysisvalidation/codeHF/AnalysisResults_O2.root
-      inputSig: /home/ginnocen/Run3Analysisvalidation/codeHF/AnalysisResults_O2.root
+      inputBkg: /data/Run5/results/Xanalysis_0p7pt_RICHTOF/AnalysisResults_O2_MB.root
+      inputSig: /data/Run5/results/Xanalysis_0p7pt_RICHTOF/AnalysisResults_O2_enriched.root
       dirname: hf-task-jpsi-mc
       normalized: 1
       varlist: ["mass", "d0Prong0", "d0Prong1", "Y", "DecLength", "Ct", "d0xd0", "chi2PCA"]
