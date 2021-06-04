@@ -30,7 +30,7 @@ MAKE_GRAPH=0        # Make topology graph.
 # Activation of O2 workflows
 # QA
 DOO2_QA_EFF=0       # qa-efficiency
-DOO2_QA_SIM=0       # qa-simple
+DOO2_QA_EVTRK=0     # qa-event-track
 DOO2_MC_VALID=0     # hf-mc-validation
 # PID
 DOO2_PID_TPC=0      # pid-tpc-full
@@ -131,7 +131,7 @@ function AdjustJson {
 function MakeScriptO2 {
   WORKFLOWS=""
   [ $DOO2_QA_EFF -eq 1 ] && WORKFLOWS+=" o2-analysis-qa-efficiency"
-  [ $DOO2_QA_SIM -eq 1 ] && WORKFLOWS+=" o2-analysis-qa-simple"
+  [ $DOO2_QA_EVTRK -eq 1 ] && WORKFLOWS+=" o2-analysis-qa-event-track"
   [ $DOO2_SKIM -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-track-index-skims-creator"
   [ $DOO2_CAND_2PRONG -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-2prong"
   [ $DOO2_CAND_3PRONG -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-3prong"
