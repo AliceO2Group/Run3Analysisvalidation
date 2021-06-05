@@ -17,7 +17,7 @@ def makeSavePaths(title, *fileFormats, outputdir="outputPlots"):
     return [outputdir + "/" + title + fileFormat for fileFormat in fileFormats]
 
 
-def distr_studies(hadron="Xi_cc", collision="pp14p0", yrange="absy1p44"):
+def distr_studies(hadron="X3872", collision="pp14p0", yrange="absy1p44"):
     """
     Make distribution comparisons
     """
@@ -50,11 +50,11 @@ def distr_studies(hadron="Xi_cc", collision="pp14p0", yrange="absy1p44"):
     style_sig = ROOTStyle1D()
     style_sig.markercolor = 2
     style_sig.markerstyle = 21
-    style_sig.markersize = 1
+    style_sig.markersize = 2
     style_sig.draw_options = "P"
     style_bkg = ROOTStyle1D()
     style_bkg.markerstyle = 23
-    style_bkg.markersize = 1
+    style_bkg.markersize = 2
     style_bkg.draw_options = "P"
 
     for index, var in enumerate(lvarlist):
@@ -65,6 +65,7 @@ def distr_studies(hadron="Xi_cc", collision="pp14p0", yrange="absy1p44"):
         hbkg = fileBkg.Get(f"{dirname}/{lhistonamebkg[index]}")
 
         nPtBins = hsig.GetNbinsY()
+        print(var)
         for iptBin in range(nPtBins):
             # Collect the histogram projections in bins of pT for each variable
             hsig_px = hsig.ProjectionX(
@@ -90,12 +91,12 @@ def distr_studies(hadron="Xi_cc", collision="pp14p0", yrange="absy1p44"):
         figure = ROOTFigure(
             n_cols_rows,
             n_cols_rows,
-            row_margin=0.05,
-            column_margin=0.05,
-            size=(1500, 900),
+            row_margin=0.04,
+            column_margin=0.04,
+            size=(1500, 1100),
         )
         # can adjust some axis properties globally
-        figure.axes(label_size=0.02, title_size=0.02)
+        figure.axes(label_size=0.015, title_size=0.015)
         # here we use the feature to only apply to certain axes
         figure.axes("x", title=lvarlatex[index])
         figure.axes("y", title="Entries")
@@ -147,6 +148,7 @@ def distr_studies(hadron="Xi_cc", collision="pp14p0", yrange="absy1p44"):
                 f"{lptMin[iptBin]:.1f} GeV < p_{{T}} ({latexcand}) < {lptMax[iptBin]:.1f} GeV",
                 0.1,
                 0.1,
+                0.85,
             )
 
         figure.create()
