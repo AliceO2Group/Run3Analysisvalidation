@@ -18,8 +18,9 @@ def makeSavePaths(title, *fileFormats, outputdir="outputPlots"):
     return [outputdir + "/" + title + fileFormat for fileFormat in fileFormats]
 
 
-def singlevar(hadron="Xi_cc", collision="pp14p0", yrange="absy1p44",
-              varindex=1, iptBin=5):
+def singlevar(
+    hadron="Xi_cc", collision="pp14p0", yrange="absy1p44", varindex=1, iptBin=5
+):
     """
     Make distribution comparisons
     """
@@ -70,12 +71,8 @@ def singlevar(hadron="Xi_cc", collision="pp14p0", yrange="absy1p44",
     hbkg = fileBkg.Get(f"{dirname}/{lhistonamebkg[varindex]}")
 
     nPtBins = hsig.GetNbinsY()
-    hsig_px = hsig.ProjectionX(
-        f"hsig_px_var{var}_pt{iptBin}", iptBin, iptBin + 1
-    )
-    hbkg_px = hbkg.ProjectionX(
-        f"hbkg_px_var{var}_pt{iptBin}", iptBin + 1, iptBin + 1
-    )
+    hsig_px = hsig.ProjectionX(f"hsig_px_var{var}_pt{iptBin}", iptBin, iptBin + 1)
+    hbkg_px = hbkg.ProjectionX(f"hbkg_px_var{var}_pt{iptBin}", iptBin + 1, iptBin + 1)
     ptMin = hsig.GetYaxis().GetBinLowEdge(iptBin + 1)
     ptMax = ptMin + hsig.GetYaxis().GetBinWidth(iptBin + 1)
     figure = ROOTFigure(1, 1, size=(700, 600), row_margin=0.05, column_margin=0.1)
@@ -92,7 +89,7 @@ def singlevar(hadron="Xi_cc", collision="pp14p0", yrange="absy1p44",
     if not nSigEntries or not nBkgEntries:
         print(
             f"ERROR: Found empty signal or background distribution for variable={var} in pT bin={iptBin}"
-            )
+        )
     if normalized:
         for ibin in range(hsig_px.GetNbinsX()):
             bincontent = hsig_px.GetBinContent(ibin + 1)
@@ -104,19 +101,13 @@ def singlevar(hadron="Xi_cc", collision="pp14p0", yrange="absy1p44",
             hbkg_px.SetBinContent(ibin + 1, bincontent / nBkgEntries)
             hbkg_px.SetBinError(ibin + 1, 0.0)
     figure.add_object(
-        hsig_px,
-        style=style_sig,
-        label=f"Sig before norm ({int(nSigEntries)} entries)",
+        hsig_px, style=style_sig, label=f"Sig before norm ({int(nSigEntries)} entries)"
     )
     figure.add_object(
-        hbkg_px,
-        style=style_bkg,
-        label=f"Bkg before norm ({int(nBkgEntries)} entries)",
+        hbkg_px, style=style_bkg, label=f"Bkg before norm ({int(nBkgEntries)} entries)"
     )
     figure.add_text(
-        f"{ptMin:.1f} GeV < p_{{T}} ({latexcand}) < {ptMax:.1f} GeV",
-        0.1,
-        0.85,
+        f"{ptMin:.1f} GeV < p_{{T}} ({latexcand}) < {ptMax:.1f} GeV", 0.1, 0.85
     )
 
     style_bkg.linecolor = 1
@@ -127,7 +118,7 @@ def singlevar(hadron="Xi_cc", collision="pp14p0", yrange="absy1p44",
     for save_paths in makeSavePaths(
         f"distribution_{var}", *formats, outputdir=f"output_{hadron}"
     ):
-     figure.save(save_paths)
+        figure.save(save_paths)
 
 
 singlevar()
