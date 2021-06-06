@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os
-from ROOT import TH2F, TCanvas, TLatex, TFile, TF1
-from ROOT import gROOT, gStyle, yaml
+
+from ROOT import TF1, TH2F, TCanvas, TFile, TLatex, gROOT, gStyle, yaml
 
 
 def makeSavePaths(title, *fileFormats, outputdir="outputPlots"):

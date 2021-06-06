@@ -97,7 +97,7 @@ def mcdatacomparison_singlevar(
         f"{ptMin:.1f} GeV < p_{{T}} ({latexcand}) < {ptMax:.1f} GeV", 0.1, 0.85
     )
     #    style_bkg.linecolor = 1
-    #plot = figure.change_plot()
+    # plot = figure.change_plot()
     # Set y axis limits explicitly
     figure.create()
     for save_paths in makeSavePaths(
