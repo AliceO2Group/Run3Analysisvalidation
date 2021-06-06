@@ -31,7 +31,7 @@ def saveCanvas(canvas, title, *fileFormats, outputdir="outputPlots"):
         canvas.SaveAs(outputdir + "/" + title + fileFormat)
 
 
-def distr_studies(hadron="Xi_cc", collision="pp14p0", yrange="absy1p44"):
+def mcdatacomparison_multivar(hadron="Xi_cc", collision="pp14p0", yrange="absy1p44"):
     gROOT.SetBatch(1)
     """
     Make distribution comparisons
@@ -185,4 +185,4 @@ def distr_studies(hadron="Xi_cc", collision="pp14p0", yrange="absy1p44"):
         saveCanvas(cpt, f"distribution_{var}", *formats, outputdir=f"output_{hadron}")
 
 
-distr_studies()
+mcdatacomparison_multivar()
