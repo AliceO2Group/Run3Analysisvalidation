@@ -19,7 +19,7 @@ def makeSavePaths(title, *fileFormats, outputdir="outputPlots"):
 
 
 def singlevar(
-    hadron="Xi_cc", collision="pp14p0", yrange="absy1p44", varindex=1, iptBin=5
+    hadron="Xi_c", collision="pp14p0", yrange="absy1p44", varindex=0, iptBin=3
 ):
     """
     Make distribution comparisons
@@ -56,13 +56,13 @@ def singlevar(
     style_sig.markercolor = 2
     style_sig.markerstyle = 22
     style_sig.markersize = 1
-    style_sig.draw_options = "L"
+    style_sig.draw_options = "PE"
     style_bkg = ROOTStyle1D()
     style_bkg.markercolor = 1
     style_bkg.linecolor = 1
     style_bkg.markerstyle = 24
     style_bkg.markersize = 1
-    style_bkg.draw_options = "L"
+    style_bkg.draw_options = "PE"
 
     var = lvarlist[varindex]
     latexvar = lvarlatex[varindex]
@@ -76,7 +76,6 @@ def singlevar(
     ptMin = hsig.GetYaxis().GetBinLowEdge(iptBin + 1)
     ptMax = ptMin + hsig.GetYaxis().GetBinWidth(iptBin + 1)
     figure = ROOTFigure(1, 1, size=(700, 600), row_margin=0.05, column_margin=0.1)
-    figure.define_plot(1, 1, 2, 2, y_log=True)
     figure.axes("x", title=lvarlatex[varindex])
     figure.axes("y", "Entries")
     rebin = lrebin[varindex]
@@ -103,14 +102,14 @@ def singlevar(
     figure.add_object(
         hsig_px, style=style_sig, label=f"Sig before norm ({int(nSigEntries)} entries)"
     )
-    figure.add_object(
-        hbkg_px, style=style_bkg, label=f"Bkg before norm ({int(nBkgEntries)} entries)"
-    )
-    figure.add_text(
-        f"{ptMin:.1f} GeV < p_{{T}} ({latexcand}) < {ptMax:.1f} GeV", 0.1, 0.85
-    )
+#    figure.add_object(
+#        hbkg_px, style=style_bkg, label=f"Bkg before norm ({int(nBkgEntries)} entries)"
+#    )
+#    figure.add_text(
+#        f"{ptMin:.1f} GeV < p_{{T}} ({latexcand}) < {ptMax:.1f} GeV", 0.1, 0.85
+#    )
 
-    style_bkg.linecolor = 1
+#    style_bkg.linecolor = 1
     plot = figure.change_plot()
     # Set y axis limits explicitly
 
