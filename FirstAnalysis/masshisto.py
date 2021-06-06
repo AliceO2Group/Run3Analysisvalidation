@@ -1,10 +1,7 @@
 #!/usr/bin/env python
 import os
-from math import ceil, sqrt
-
-import yaml
-from ROOT import TH1F, TH2F, TCanvas, TGraph, TLatex, gPad, TFile, TF1
-from ROOT import gStyle, gROOT, TStyle, TLegendEntry, TLegend
+from ROOT import TH2F, TCanvas, TLatex, TFile, TF1
+from ROOT import gROOT, gStyle, yaml
 
 
 def makeSavePaths(title, *fileFormats, outputdir="outputPlots"):
@@ -27,17 +24,17 @@ def masshisto(
     with open(r"database.yaml") as database:
         param = yaml.load(database, Loader=yaml.FullLoader)
     latexcand = param[hadron][collision][yrange]["latexcand"]
-    inputBkg = param[hadron][collision][yrange]["inputBkg"]
+    # inputBkg = param[hadron][collision][yrange]["inputBkg"]
     inputSig = param[hadron][collision][yrange]["inputSig"]
     dirname = param[hadron][collision][yrange]["dirname"]
     lhistonamesig = param[hadron][collision][yrange]["histonamesig"]
-    lhistonamebkg = param[hadron][collision][yrange]["histonamebkg"]
+    # lhistonamebkg = param[hadron][collision][yrange]["histonamebkg"]
     lxmin = param[hadron][collision][yrange]["xmin"]
     lxmax = param[hadron][collision][yrange]["xmax"]
     histonmasssig = lhistonamesig[0]
-    histonmassbkg = lhistonamebkg[0]
+    # histonmassbkg = lhistonamebkg[0]
 
-    fileBkg = TFile(inputBkg)
+    # fileBkg = TFile(inputBkg)
     fileSig = TFile(inputSig)
     histo2d = fileSig.Get("%s/%s" % (dirname, histonmasssig))
     hmass = histo2d.ProjectionX("hmass", iptBin + 1, iptBin + 1)
@@ -46,10 +43,18 @@ def masshisto(
     ptMin = histo2d.GetYaxis().GetBinLowEdge(iptBin + 1)
     ptMax = ptMin + histo2d.GetYaxis().GetBinWidth(iptBin + 1)
     print(ptMin, ptMax)
-    yminhisto = hmass.GetMinimum();
-    ymaxhisto = hmass.GetMaximum()*1.5;
-    hempty = TH2F("hempty", ";Invariant mass (GeV/c^{2}); Entries",
-                  100, lxmin[0], lxmax[0], 100, yminhisto, ymaxhisto)
+    yminhisto = hmass.GetMinimum()
+    ymaxhisto = hmass.GetMaximum() * 1.5
+    hempty = TH2F(
+        "hempty",
+        ";Invariant mass (GeV/c^{2}); Entries",
+        100,
+        lxmin[0],
+        lxmax[0],
+        100,
+        yminhisto,
+        ymaxhisto,
+    )
     hempty.GetXaxis().SetLabelFont(42)
     hempty.GetXaxis().SetTitleOffset(1)
     hempty.GetXaxis().SetTitleFont(42)
@@ -73,16 +78,17 @@ def masshisto(
     hempty.Draw("")
     hmass.Draw("PEsame")
 
-    f = TF1("f","gaus")
-    hmass.Fit("f","R","",lxmin[0], lxmax[0])
+    f = TF1("f", "gaus")
+    hmass.Fit("f", "R", "", lxmin[0], lxmax[0])
     xave = lxmin[0] + (lxmax[0] - lxmin[0]) / 4.0
     latexa = TLatex()
     latexa.SetTextSize(0.04)
     latexa.SetTextFont(42)
     latexa.SetTextAlign(3)
-    latexa.DrawLatex(xave, ymaxhisto*0.8, \
-        "%.1f < p_{T} (%s) < %.1f GeV" \
-         % (ptMin, latexcand, ptMax),
+    latexa.DrawLatex(
+        xave,
+        ymaxhisto * 0.8,
+        "%.1f < p_{T} (%s) < %.1f GeV" % (ptMin, latexcand, ptMax),
     )
     latexb = TLatex()
     latexb.SetTextSize(0.04)
@@ -90,11 +96,12 @@ def masshisto(
     latexb.SetTextAlign(3)
     mean = f.GetParameter(1)
     sigma = f.GetParameter(2)
-    latexb.DrawLatex(xave, ymaxhisto*0.87, \
-        "#mu = %.1f, #sigma = %.1f GeV/c^2" \
-         % (1000.*mean, 1000.*sigma),
+    latexb.DrawLatex(
+        xave,
+        ymaxhisto * 0.87,
+        "#mu = %.1f, #sigma = %.1f GeV/c^2" % (1000.0 * mean, 1000.0 * sigma),
     )
     canvas.SaveAs("masshistotest.pdf")
 
-masshisto()
 
+masshisto()

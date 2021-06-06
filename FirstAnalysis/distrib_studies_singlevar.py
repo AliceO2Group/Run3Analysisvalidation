@@ -1,10 +1,7 @@
 #!/usr/bin/env python
 import os
-from math import ceil, sqrt
-
-import yaml
-from ROOT import TH1F, TH2F, TCanvas, TGraph, TLatex, gPad, TFile, TF1
-from ROOT import gStyle, gROOT, TStyle, TLegendEntry, TLegend
+from ROOT import TH2F, TCanvas, TLatex, TFile
+from ROOT import gStyle, gROOT
 
 
 def makeSavePaths(title, *fileFormats, outputdir="outputPlots"):
@@ -16,25 +13,34 @@ def makeSavePaths(title, *fileFormats, outputdir="outputPlots"):
     return [outputdir + "/" + title + fileFormat for fileFormat in fileFormats]
 
 
-def plotsinglevar(
-    filename ="../codeHF/AnalysisResults_O2.root",
-    dirname="hf-task-xicc-mc",hadron="Xi_cc", iptBin=5, histonmasssig="hXSecVtxPosDiff",
-    xmin=0.0002, xmax=0.01, ymin=0.01, ymax=1.e4, rebin=4, logx=1, logy=1
+def distrib_studies_singlevar(
+    filename="../codeHF/AnalysisResults_O2.root",
+    dirname="hf-task-xicc-mc",
+    latexcand="Xi_cc",
+    iptBin=5,
+    histonmasssig="hXSecVtxPosDiff",
+    xmin=0.0002,
+    xmax=0.01,
+    ymin=0.01,
+    ymax=1.0e4,
+    rebin=4,
+    logx=1,
+    logy=1,
 ):
     gStyle.SetOptStat(0)
     gROOT.SetBatch(1)
 
-    fileSig = TFile(inputSig)
+    fileSig = TFile(filename)
     histo2d = fileSig.Get("%s/%s" % (dirname, histonmasssig))
     hvar = histo2d.ProjectionX("hvar", iptBin + 1, iptBin + 1)
     hvar.GetXaxis().SetRangeUser(xmin, xmax)
     hvar.Draw()
     ptMin = histo2d.GetYaxis().GetBinLowEdge(iptBin + 1)
     ptMax = ptMin + histo2d.GetYaxis().GetBinWidth(iptBin + 1)
-    yminhisto = hvar.GetMinimum();
-    ymaxhisto = hvar.GetMaximum()*1.5;
-    hempty = TH2F("hempty", ";%s; Entries" % histonmasssig,
-                  100, xmin, xmax, 100, ymin, ymax)
+    ymaxhisto = hvar.GetMaximum() * 1.5
+    hempty = TH2F(
+        "hempty", ";%s; Entries" % histonmasssig, 100, xmin, xmax, 100, ymin, ymax
+    )
     hempty.GetXaxis().SetLabelFont(42)
     hempty.GetXaxis().SetTitleOffset(1)
     hempty.GetXaxis().SetTitleFont(42)
@@ -54,9 +60,9 @@ def plotsinglevar(
     canvas.SetBorderSize(2)
     canvas.SetFrameBorderMode(0)
     canvas.SetFrameBorderMode(0)
-    if (logx == 1):
+    if logx == 1:
         canvas.SetLogy()
-    if (logy == 1):
+    if logy == 1:
         canvas.SetLogy()
     canvas.cd()
     hempty.Draw("")
@@ -66,11 +72,13 @@ def plotsinglevar(
     latexa.SetTextSize(0.04)
     latexa.SetTextFont(42)
     latexa.SetTextAlign(3)
-    latexa.DrawLatex(xave, ymaxhisto*0.8, \
-        "%.1f < p_{T} (%s) < %.1f GeV" \
-         % (ptMin, latexcand, ptMax),
+    xave = xmin + (xmax - xmin) / 4.0
+    latexa.DrawLatex(
+        xave,
+        ymaxhisto * 0.8,
+        "%.1f < p_{T} (%s) < %.1f GeV" % (ptMin, latexcand, ptMax),
     )
     canvas.SaveAs("%s.pdf" % histonmasssig)
 
-plotsinglevar()
 
+distrib_studies_singlevar()
