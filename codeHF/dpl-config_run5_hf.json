@@ -11,7 +11,7 @@
         "d_bz": "5.",
         "doCutQuality": "false",
         "d_tpcnclsfound": "-999999",
-        "ptmintrack_2prong": ".15",
+        "ptmintrack_2prong": ".2",
         "ptbins_singletrack": {
             "values": [
                 "0.",
@@ -34,7 +34,7 @@
                 ["0.000", "10."]
             ]
         },
-        "ptmintrack_3prong": ".15",
+        "ptmintrack_3prong": ".2",
         "etamax_3prong": "2.0",
         "cuts_singletrack_3prong": {
             "values": [
@@ -86,7 +86,7 @@
             "mPtXicToPKPiMin": "0.5",
             "mInvMassXicToPKPiMin": "2.17",
             "mInvMassXicToPKPiMax": "2.77",
-            "mCPAXicToPKPiMin": "0.8",
+            "mCPAXicToPKPiMin": "0.3",
             "mDecLenXicToPKPiMin": "0.004"
         }
     },
@@ -117,7 +117,7 @@
         "d_minrelchi2change": "0.9",
         "b_dovalplots": "true",
         "d_selectionFlagXic": "1",
-        "cutPtPionMin": "0.15"
+        "cutPtPionMin": "0.2"
     },
     "hf-d0-candidate-selector": {
         "d_pTCandMin": "0.",

@@ -4,8 +4,8 @@ Xi_cc:
       latexcand: "#Xi_{cc}"
       #inputBkg: ../codeHF/AnalysisResults_O2_0p5.root
       #inputSig: ../codeHF/AnalysisResults_O2_0p5.root
-      inputBkg: ../codeHF/AnalysisResults_O2.root
-      inputSig: ../codeHF/AnalysisResults_O2.root
+      inputBkg: /data/Run5/results/Xicc/20200607_Xicc/AnalysisResults_O2_MB.root
+      inputSig: /data/Run5/results/Xicc/20200607_Xicc/AnalysisResults_O2_enriched.root
       dirname: hf-task-xicc-mc
       normalized: 1
       varlist: ["mass", "d0Prong0", "d0Prong1", "CPA", "Y", "DecLength", "Ct", "Eta", "chi2PCA"]
@@ -24,8 +24,8 @@ Xi_c:
   pp14p0:
     absy1p44:
       latexcand: "#Xi_{c}"
-      inputBkg: ../codeHF/AnalysisResults_O2_0p5.root
-      inputSig: ../codeHF/AnalysisResults_O2_0p5.root
+      inputBkg: /data/Run5/results/Xicc/20200607_Xicc/AnalysisResults_O2_MB.root
+      inputSig: /data/Run5/results/Xicc/20200607_Xicc/AnalysisResults_O2_enriched.root
       dirname: hf-task-xic-mc
       normalized: 0
       varlist: ["mass", "d0Prong0", "d0Prong1", "CPA", "DecLength", "Ct", "Eta"]

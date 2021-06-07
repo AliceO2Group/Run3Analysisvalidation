@@ -30,7 +30,7 @@ MAKE_GRAPH=0        # Make topology graph.
 # Activation of O2 workflows
 # QA
 DOO2_QA_EFF=0       # qa-efficiency
-DOO2_QA_SIM=0       # qa-simple
+DOO2_QA_SIM=1       # qa-simple
 DOO2_MC_VALID=0     # hf-mc-validation
 # PID
 DOO2_PID_TPC=0      # pid-tpc-full
@@ -45,16 +45,16 @@ DOO2_CAND_XICC=0    # hf-candidate-creator-xicc
 DOO2_SEL_D0=0       # hf-d0-candidate-selector
 DOO2_SEL_DPLUS=0    # hf-dplus-topikpi-candidate-selector
 DOO2_SEL_LC=0       # hf-lc-candidate-selector
-DOO2_SEL_XIC=0      # hf-xic-topkpi-candidate-selector
-DOO2_SEL_XICC=0     # hf-xicc-topkpipi-candidate-selector
+DOO2_SEL_XIC=1      # hf-xic-topkpi-candidate-selector
+DOO2_SEL_XICC=1     # hf-xicc-topkpipi-candidate-selector
 DOO2_SEL_JPSI=0     # hf-jpsi-toee-candidate-selector
 
 # User tasks
 DOO2_TASK_D0=1      # hf-task-d0
 DOO2_TASK_DPLUS=0   # hf-task-dplus
 DOO2_TASK_LC=0      # hf-task-lc
-DOO2_TASK_XIC=0     # hf-task-xic
-DOO2_TASK_XICC=0    # hf-task-xicc
+DOO2_TASK_XIC=1     # hf-task-xic
+DOO2_TASK_XICC=1    # hf-task-xicc
 DOO2_TASK_JPSI=0    # hf-task-jpsi
 DOO2_TASK_BPLUS=0   # hf-task-bplus
 DOO2_TASK_X=0       # hf-task-x
@@ -65,9 +65,9 @@ DOO2_TREE_LC=0      # hf-tree-creator-lc-topkpi
 # Selection cuts
 APPLYCUTS_D0=0      # Apply D0 selection cuts.
 APPLYCUTS_DPLUS=0   # Apply D+ selection cuts.
-APPLYCUTS_LC=0      # Apply Λc selection cuts.
-APPLYCUTS_XIC=0     # Apply Ξc selection cuts.
-APPLYCUTS_XICC=0    # Apply Ξcc selection cuts.
+APPLYCUTS_LC=1      # Apply Λc selection cuts.
+APPLYCUTS_XIC=1     # Apply Ξc selection cuts.
+APPLYCUTS_XICC=1    # Apply Ξcc selection cuts.
 APPLYCUTS_JPSI=0    # Apply J/ψ selection cuts.
 
 SAVETREES=0         # Save O2 tables to trees.
