@@ -4,9 +4,9 @@
 # Input specification for runtest.sh
 # (Modifies input parameters.)
 
-INPUT_CASE=2            # Input case
+INPUT_CASE=12            # Input case
 
-NFILESMAX=1             # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
+NFILESMAX=1000             # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
 
 # Number of input files per job (Automatic optimisation on if < 1.)
 NFILESPERJOB_CONVERT=0  # Conversion
@@ -98,6 +98,14 @@ case $INPUT_CASE in
     INPUT_LABEL="Run 5, p-p MC 14 TeV Multicharm GunBox, Scenario 3, HF analysis setup using dpl-config_run5_hf.json"
     #INPUT_DIR="/home/ginnocen/alice/DelphesO2/examples/scripts"
     INPUT_DIR="/data/Run5/MC/pp_14TeV/MultiCharm_S3_20210607_GunBox_0p5T"
+    INPUT_FILES="AODRun5.*.root"
+    JSON="$JSONRUN5_HF"
+    ISINPUTO2=1
+    ISMC=1;;
+  14)
+    INPUT_LABEL="Run 5, p-p MC 14 TeV Multicharm GunBox, Scenario 3, HF analysis setup using dpl-config_run5_hf.json"
+    #INPUT_DIR="/home/ginnocen/alice/DelphesO2/examples/scripts"
+    INPUT_DIR="/data/Run5/MC/pp_14TeV/MultiCharm_S3_20210607_GunBox_2p0T"
     INPUT_FILES="AODRun5.*.root"
     JSON="$JSONRUN5_HF"
     ISINPUTO2=1
