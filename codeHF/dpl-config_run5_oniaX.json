@@ -249,6 +249,7 @@
         "d_nSigmaTOFCombined": "5."
     },
     "hf-jpsi-toee-candidate-selector": {
+        "isALICE3": "true",
         "d_pTCandMin": "0.",
         "d_pTCandMax": "50.",
         "d_pidTPCMinpT": "1000.",
