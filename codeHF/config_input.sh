@@ -88,7 +88,7 @@ case $INPUT_CASE in
     ISMC=1;;
   12)
     INPUT_LABEL="Run 5, p-p MC 14 TeV OniaX-enriched, Scenario 3, oniaX analysis MUON ID"
-    INPUT_DIR="/home/auras/simulations/delphes/ONIA_X"
+    INPUT_DIR="/home/auras/simulations/delphes/ONIA_X/run_002"
     INPUT_FILES="AODRun5.*.root"
     JSON="$JSONRUN5_ONIAX"
     ISINPUTO2=1
