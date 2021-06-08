@@ -46,7 +46,7 @@ DOO2_SEL_D0=0       # hf-d0-candidate-selector
 DOO2_SEL_DPLUS=0    # hf-dplus-topikpi-candidate-selector
 DOO2_SEL_LC=0       # hf-lc-candidate-selector
 DOO2_SEL_XIC=0      # hf-xic-topkpi-candidate-selector
-DOO2_SEL_JPSI=0     # hf-jpsi-toee-candidate-selector
+DOO2_SEL_JPSI=0     # hf-jpsi-candidate-selector
 DOO2_SEL_X=0        # hf-xic-topkpi-candidate-selector
 # User tasks
 DOO2_TASK_D0=1      # hf-task-d0
@@ -149,7 +149,7 @@ function MakeScriptO2 {
   [ $DOO2_PID_TOF -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tof-full"
   [ $DOO2_PID_TOF_QA -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tof-qa-mc"
   [ $DOO2_SEL_D0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-d0-candidate-selector"
-  [ $DOO2_SEL_JPSI -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-jpsi-toee-candidate-selector"
+  [ $DOO2_SEL_JPSI -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-jpsi-candidate-selector"
   [ $DOO2_SEL_DPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-dplus-topikpi-candidate-selector"
   [ $DOO2_SEL_LC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-lc-candidate-selector"
   [ $DOO2_SEL_XIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-xic-topkpi-candidate-selector"

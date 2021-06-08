@@ -34,9 +34,10 @@ workflows:
     activate: no
     dependencies: [o2-analysis-hf-candidate-creator-2prong, o2-analysis-pid-tpc-full, o2-analysis-pid-tof-full]
 
-  o2-analysis-hf-jpsi-toee-candidate-selector:
+  o2-analysis-hf-jpsi-candidate-selector:
     <<: *selector_2prong
     activate: no
+    tables: HFSELJPSICAND
 
   o2-analysis-hf-dplus-topikpi-candidate-selector: &selector_3prong
     activate: no
@@ -54,7 +55,7 @@ workflows:
 
   o2-analysis-hf-candidate-creator-x: &cand_creator_casc
     activate: no
-    dependencies: [o2-analysis-hf-jpsi-toee-candidate-selector]
+    dependencies: [o2-analysis-hf-jpsi-candidate-selector]
     options:
       mc: "--doMC"
     tables:
@@ -78,7 +79,7 @@ workflows:
   o2-analysis-hf-task-jpsi:
     <<: *task
     activate: no
-    dependencies: o2-analysis-hf-jpsi-toee-candidate-selector
+    dependencies: o2-analysis-hf-jpsi-candidate-selector
 
   o2-analysis-hf-task-dplus:
     <<: *task
