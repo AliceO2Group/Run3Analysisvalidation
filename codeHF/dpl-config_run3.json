@@ -6,10 +6,15 @@
         "step-value-enumeration": "1",
         "aod-file": "@list_o2.txt"
     },
+<<<<<<< HEAD
     "hf-produce-sel-collision": {
+=======
+    "hf-tag-sel-collisions": {
+        "doValPlots": "true",
+>>>>>>> fix workflow names
         "triggerClassName": "kINT7"
     },
-    "hf-produce-sel-track": {
+    "hf-tag-sel-track": {
         "b_dovalplots": "true",
         "d_bz": "5.",
         "doCutQuality": "true",
