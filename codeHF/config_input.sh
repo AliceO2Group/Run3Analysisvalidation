@@ -4,17 +4,17 @@
 # Input specification for runtest.sh
 # (Modifies input parameters.)
 
-INPUT_CASE=12            # Input case
+INPUT_CASE=2            # Input case
 
-NFILESMAX=1000             # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
+NFILESMAX=1             # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
 
 # Number of input files per job (Automatic optimisation on if < 1.)
 NFILESPERJOB_CONVERT=0  # Conversion
 NFILESPERJOB_ALI=0      # AliPhysics
-NFILESPERJOB_O2=2       # O2
+NFILESPERJOB_O2=1       # O2
 
 # Maximum number of simultaneously running O2 jobs
-NJOBSPARALLEL_O2=$(python3 -c "print(min(20, round($(nproc) / 2)))")
+NJOBSPARALLEL_O2=$(python3 -c "print(min(10, round($(nproc) / 2)))")
 
 JSONRUN3="dpl-config_run3.json"  # Run 3 tasks parameters
 # Run 5 tasks parameters for open HF study
@@ -82,30 +82,6 @@ case $INPUT_CASE in
   11)
     INPUT_LABEL="Run 5, Kr-Kr MC 6.460 TeV Inel, Scenario 3, HF analysis"
     INPUT_DIR="/data/Run5/MC/KrKr_6p460TeV/Inel_v1"
-    INPUT_FILES="AODRun5.*.root"
-    JSON="$JSONRUN5_HF"
-    ISINPUTO2=1
-    ISMC=1;;
-  12)
-    INPUT_LABEL="Run 5, p-p MC 14 TeV Multicharm enriched, Scenario 3, HF analysis setup using dpl-config_run5_hf.json"
-    #INPUT_DIR="/home/ginnocen/alice/DelphesO2/examples/scripts"
-    INPUT_DIR="/home/mmazzill/pp14TeV_XiccGun_ccbarv1_20M__01062021"
-    INPUT_FILES="AODRun5.*.root"
-    JSON="$JSONRUN5_HF"
-    ISINPUTO2=1
-    ISMC=1;;
-  13)
-    INPUT_LABEL="Run 5, p-p MC 14 TeV Multicharm GunBox, Scenario 3, HF analysis setup using dpl-config_run5_hf.json"
-    #INPUT_DIR="/home/ginnocen/alice/DelphesO2/examples/scripts"
-    INPUT_DIR="/data/Run5/MC/pp_14TeV/MultiCharm_S3_20210607_GunBox_0p5T"
-    INPUT_FILES="AODRun5.*.root"
-    JSON="$JSONRUN5_HF"
-    ISINPUTO2=1
-    ISMC=1;;
-  14)
-    INPUT_LABEL="Run 5, p-p MC 14 TeV Multicharm GunBox, Scenario 3, HF analysis setup using dpl-config_run5_hf.json"
-    #INPUT_DIR="/home/ginnocen/alice/DelphesO2/examples/scripts"
-    INPUT_DIR="/data/Run5/MC/pp_14TeV/MultiCharm_S3_20210607_GunBox_2p0T"
     INPUT_FILES="AODRun5.*.root"
     JSON="$JSONRUN5_HF"
     ISINPUTO2=1

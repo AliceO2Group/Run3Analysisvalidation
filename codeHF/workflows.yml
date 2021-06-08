@@ -28,14 +28,6 @@ workflows:
       default: [HFCANDP3BASE, HFCANDP3EXT]
       mc: [HFCANDP3MCREC, HFCANDP3MCGEN]
 
-  o2-analysis-hf-candidate-creator-xicc:
-    <<: *cand_creator
-    activate: no
-    dependencies: [o2-analysis-hf-xic-topkpi-candidate-selector]
-    tables:
-      default: [HFCANDXICCBASE, HFCANDXICCEXT]
-      mc: [HFCANDXICCMCREC, HFCANDXICCMCGEN]
-
   # Selectors
 
   o2-analysis-hf-d0-candidate-selector: &selector_2prong
@@ -57,10 +49,6 @@ workflows:
   o2-analysis-hf-xic-topkpi-candidate-selector:
     <<: *selector_3prong
     activate: no
-
-  o2-analysis-hf-xicc-topkpipi-candidate-selector:
-    activate: no
-    dependencies: [o2-analysis-hf-candidate-creator-xicc]
 
   # Analysis tasks
 
@@ -89,11 +77,6 @@ workflows:
     <<: *task
     activate: no
     dependencies: o2-analysis-hf-xic-topkpi-candidate-selector
-
-  o2-analysis-hf-task-xicc:
-    <<: *task
-    activate: no
-    dependencies: o2-analysis-hf-xicc-topkpipi-candidate-selector
 
   o2-analysis-hf-task-bplus:
     <<: *task
