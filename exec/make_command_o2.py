@@ -233,6 +233,8 @@ def main():
             elif isinstance(tab_wf, dict):
                 if "default" in tab_wf:
                     join_to_list(tab_wf["default"], tables)
+                if not mc_mode and "real" in tab_wf:
+                    join_to_list(tab_wf["real"], tables)
                 if mc_mode and "mc" in tab_wf:
                     join_to_list(tab_wf["mc"], tables)
             else:
@@ -254,8 +256,20 @@ def main():
         if not dic_wf_single["activate"]:
             continue
         msg_bold("  " + wf)
-        string_wf = wf
-        # Process options
+        # Determine the workflow executable.
+        if "executable" in dic_wf_single:
+            exec_wf = dic_wf_single["executable"]
+            if not isinstance(exec_wf, str):
+                msg_err('"executable" in %s must be str, is %s' % (wf, type(exec_wf)))
+                sys.exit(1)
+            string_wf = exec_wf
+        else:
+            string_wf = wf
+        # Detect duplicate workflows.
+        if string_wf in command:
+            msg_err("Workflow %s is already present." % string_wf)
+            sys.exit(1)
+        # Process options.
         if "options" in dic_wf_single:
             opt_wf = dic_wf_single["options"]
             if isinstance(opt_wf, (str, list)):
@@ -263,6 +277,8 @@ def main():
             elif isinstance(opt_wf, dict):
                 if "default" in opt_wf:
                     string_wf += " " + join_strings(opt_wf["default"])
+                if not mc_mode and "real" in opt_wf:
+                    string_wf += " " + join_strings(opt_wf["real"])
                 if mc_mode and "mc" in opt_wf:
                     string_wf += " " + join_strings(opt_wf["mc"])
             else:
@@ -273,7 +289,7 @@ def main():
                 sys.exit(1)
         if opt_local:
             string_wf += " " + opt_local
-        command += " | " + string_wf
+        command += " | \\\n" + string_wf
     if not command:
         msg_err("Nothing to do!")
         sys.exit(1)

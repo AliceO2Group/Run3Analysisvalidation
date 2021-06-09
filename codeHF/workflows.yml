@@ -14,7 +14,7 @@ workflows:
 
   o2-analysis-hf-candidate-creator-2prong: &cand_creator
     activate: no
-    dependencies: [o2-analysis-hf-track-index-skims-creator]
+    dependencies: o2-analysis-hf-track-index-skims-creator
     options:
       mc: "--doMC"
     tables:
@@ -33,22 +33,27 @@ workflows:
   o2-analysis-hf-d0-candidate-selector: &selector_2prong
     activate: no
     dependencies: [o2-analysis-hf-candidate-creator-2prong, o2-analysis-pid-tpc-full, o2-analysis-pid-tof-full]
+    tables: HFSELD0CAND
 
   o2-analysis-hf-jpsi-toee-candidate-selector:
     <<: *selector_2prong
     activate: no
+    tables: HFSELJPSICAND
 
   o2-analysis-hf-dplus-topikpi-candidate-selector: &selector_3prong
     activate: no
     dependencies: [o2-analysis-hf-candidate-creator-3prong, o2-analysis-pid-tpc-full, o2-analysis-pid-tof-full]
+    tables: HFSELDPLUSCAND
 
   o2-analysis-hf-lc-candidate-selector:
     <<: *selector_3prong
     activate: no
+    tables: HFSELLCCAND
 
   o2-analysis-hf-xic-topkpi-candidate-selector:
     <<: *selector_3prong
     activate: no
+    tables: HFSELXICCAND
 
   # Analysis tasks
 
