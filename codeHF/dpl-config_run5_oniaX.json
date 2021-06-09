@@ -417,6 +417,7 @@
     "hf-task-jpsi": {
         "cutYCandMax": "1.44",
         "d_selectionFlagJpsi": "0",
+        "d_modeJpsiToMuMu": true,
         "pTBins": {
             "values": [
                 "0",
@@ -434,7 +435,8 @@
     },
     "hf-task-jpsi-mc": {
         "cutYCandMax": "1.44",
-        "d_selectionFlagJpsi": "0"
+        "d_selectionFlagJpsi": "0",
+        "d_modeJpsiToMuMu": true
     },
     "hf-candidate-creator-x": {
         "cutYCandMax": "1.44",
