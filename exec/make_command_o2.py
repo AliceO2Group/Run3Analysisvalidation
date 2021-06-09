@@ -285,7 +285,7 @@ def main():
                 sys.exit(1)
         if opt_local:
             string_wf += " " + opt_local
-        command += " | " + string_wf
+        command += " | \\\n" + string_wf
     if not command:
         msg_err("Nothing to do!")
         sys.exit(1)

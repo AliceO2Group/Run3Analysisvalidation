@@ -173,7 +173,7 @@ function MakeScriptO2 {
 FileIn="\$1"
 JSON="\$2"
 mkdir sockets && \
-$O2EXEC && \
+$O2EXEC && \\
 rm -r sockets
 EOF
 }
