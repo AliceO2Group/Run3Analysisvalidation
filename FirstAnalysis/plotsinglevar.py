@@ -31,7 +31,7 @@ def plotsinglevar(
     xmaxfit=2.0,
     title="",
     xaxis="Xi_{cc} X vertex reco - gen (cm)",
-    dofit = 0
+    dofit=0,
 ):
     gStyle.SetOptStat(0)
     gROOT.SetBatch(1)
@@ -43,8 +43,8 @@ def plotsinglevar(
     hvar.Draw()
     ptMin = histo2d.GetYaxis().GetBinLowEdge(iptBin + 1)
     ptMax = ptMin + histo2d.GetYaxis().GetBinWidth(iptBin + 1)
-    #ymax = hvar.GetMaximum() * 10
-    #ymin = hvar.GetMinimum()
+    # ymax = hvar.GetMaximum() * 10
+    # ymin = hvar.GetMinimum()
     hempty = TH2F("hempty", ";%s; Entries" % xaxis, 100, xmin, xmax, 100, ymin, ymax)
     hempty.GetXaxis().SetLabelFont(42)
     hempty.GetXaxis().SetTitleOffset(1)
@@ -78,7 +78,9 @@ def plotsinglevar(
     latexa.SetTextFont(42)
     latexa.SetTextAlign(3)
     xave = xmin + (xmax - xmin) / 4.0
-    latexa.DrawLatex(xave, ymax * 0.2, "%.1f < p_{T} (%s) < %.1f GeV" % (ptMin, latex, ptMax))
+    latexa.DrawLatex(
+        xave, ymax * 0.2, "%.1f < p_{T} (%s) < %.1f GeV" % (ptMin, latex, ptMax)
+    )
     if dofit:
         f = TF1("f", "gaus")
         hvar.Fit("f", "R", "", xminfit, xmaxfit)
@@ -106,11 +108,11 @@ plotsinglevar(
     4,
     0,
     1,
-    2.,
-    4.,
+    2.0,
+    4.0,
     "",
     "Xi_{cc} reco - gen p_{T}",
-    0
+    0,
 )
 plotsinglevar(
     "EE",
@@ -126,9 +128,9 @@ plotsinglevar(
     4,
     0,
     1,
-    2.,
-    4.,
+    2.0,
+    4.0,
     "",
     "Xi_{cc} reco - gen p_{T}",
-    0
+    0,
 )
