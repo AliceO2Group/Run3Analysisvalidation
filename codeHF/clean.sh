@@ -17,6 +17,7 @@ MC_dplus_eff.pdf MC_dplus_pT.pdf \
 MC_lc_eff.pdf MC_lc_pT.pdf \
 MC_xic_eff.pdf MC_xic_pT.pdf \
 MC_jpsi_eff.pdf MC_jpsi_pT.pdf \
+MC_lc-tok0sP_eff.pdf MC_lc-tok0sP_pT.pdf \
 ./*.log \
 output_* \
 || { echo "Error: Failed to delete files."; exit 1; }
