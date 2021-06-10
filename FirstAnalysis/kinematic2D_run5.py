@@ -47,7 +47,7 @@ def kinematic_plots(var1):
     ceff.cd()
     eff = sig.Clone("eff")
     den = gen.Clone("den")
-    eff.Divide(gen)
+    eff.Divide(den)
     eff.Draw("COLZ")
     eff.SetTitle("%s Jpsi reco and sel. efficiency (Reco pt / Gen pt)" % var1)
     saveCanvas(ceff, "efficiencyYpt")
