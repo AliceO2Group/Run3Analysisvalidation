@@ -7,11 +7,11 @@
         "aod-file": "@list_o2.txt"
     },
     "hf-tag-sel-collisions": {
-        "doValPlots": "true",
+        "fillHistograms": "true",
         "triggerClassName": ""
     },
-    "hf-tag-sel-track": {
-        "b_dovalplots": "true",
+    "hf-tag-sel-tracks": {
+        "fillHistograms": "true",
         "d_bz": "5.",
         "doCutQuality": "false",
         "d_tpcnclsfound": "-999999",
@@ -52,7 +52,7 @@
         }
     },
     "hf-track-index-skims-creator": {
-        "b_dovalplots": "true",
+        "fillHistograms": "true",
         "do3prong": "0",
         "triggerindex": "-1",
         "d_bz": "5.",

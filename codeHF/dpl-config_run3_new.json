@@ -4,7 +4,7 @@
         "start-value-enumeration": "0",
         "end-value-enumeration": "-1",
         "step-value-enumeration": "1",
-        "aod-file": "@list_o2.txt"
+        "aod-file": "@list_o2.txt" 
     },
     "hf-tag-sel-collisions": {
         "fillHistograms": "true",
