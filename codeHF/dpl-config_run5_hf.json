@@ -394,6 +394,56 @@
         "cutYCandMax": "0.8",
         "d_selectionFlagJpsi": "0"
     },
+    "hf-track-index-skims-cascades-creator": {
+        "doValPlots": "true",
+        "bZ": "5",
+        "propDCA": "true",
+        "maxR": "200",
+        "maxDZIni": "4",
+        "minParamChange": "0.001",
+        "minRelChi2Change": "0.9",
+        "UseAbsDCA": "true",
+        "doCutQuality": "true",
+        "TPCRefit": "true",
+        "i_minCrossedRows": "50",
+        "etaMax": "1.1",
+        "ptMin": "0.05",
+        "cosPAV0": "0.995",
+        "dcaXYNegToPV": "0.1",
+        "dcaXYPosToPVS": "0.1",
+        "cutInvMassV0": "0.05",
+        "cutCascPtCandMin": "-1",
+        "cutCascInvMassLc": "1"
+    },
+    "hf-cand-creator-cascade": {
+        "bZ": "5",
+        "propDCA": "true",
+        "maxR": "200",
+        "maxDZIni": "4",
+        "minParamChange": "0.001",
+        "minRelChi2Change": "0.9",
+        "doValPlots": "true"
+    },
+    "hf-lc-tok0sp-candidate-selector": {
+        "pTCandMin": "0",
+        "pTCandMax": "50",
+        "applyPidTPCMinPt": "4",
+        "pidTPCMinPt": "0",
+        "pidTPCMaxPt": "100",
+        "pidCombMaxP": "4",
+        "nSigmaTPC": "3",
+        "TPCNClsFindablePIDCut": "50",
+        "requireTPC": "true"
+    },
+    "hf-task-lc-tok0sP": {
+        "selectionFlagLcK0sp": "0",
+        "cutEtaCandMax": "-1"
+    },
+    "hf-task-lc-tok0sP-mc": {
+        "selectionFlagLc": "0",
+        "selectionFlagLcbar": "0",
+        "cutEtaCandMax": "-1"
+    },
     "qa-tracking-efficiency-electron": {
         "eta-min": "-3",
         "eta-max": "3",
