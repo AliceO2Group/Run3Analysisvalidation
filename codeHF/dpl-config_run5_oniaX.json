@@ -264,7 +264,7 @@
         "d_nSigmaTOFCombined": "0.",
         "d_pidRICHMinpT": "0.5",
         "d_pidRICHMaxpT": "15.",
-        "d_nSigmaRICHTOFCombined": "0.",
+        "d_nSigmaRICHCombinedTOF": "0.",
         "d_TPCNClsFindablePIDCut": "-9999",
         "d_nSigmaTPC": "1000.",
         "d_nSigmaTOF": "3.",
