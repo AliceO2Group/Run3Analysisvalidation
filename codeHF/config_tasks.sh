@@ -214,7 +214,7 @@ function MakeScriptPostprocess {
   # Compare AliPhysics and O2 histograms.
   [[ $DOALI -eq 1 && $DOO2 -eq 1 ]] && {
     OPT_COMPARE=""
-    [ $DOO2_SKIM -eq 1 ] && OPT_COMPARE+=" tracks-skim "
+    [ $DOO2_SKIM -eq 1 ] && OPT_COMPARE+=" tracks skim "
     [ $DOO2_CAND_2PRONG -eq 1 ] && OPT_COMPARE+=" cand2 "
     [ $DOO2_CAND_3PRONG -eq 1 ] && OPT_COMPARE+=" cand3 "
     [ $DOO2_TASK_D0 -eq 1 ] && OPT_COMPARE+=" d0 "
