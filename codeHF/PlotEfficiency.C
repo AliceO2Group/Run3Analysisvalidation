@@ -89,13 +89,13 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
     // efficiency
     auto padR = canEff->cd();
     TH1F* hEff = (TH1F*)hPtRec->Clone("hEff");
-    hEff->Divide(hPtGen);
+    hEff->Divide(hEff, hPtGen, 1., 1., "B");
     hEff->SetTitle(Form("Entries ratio: %g;#it{p}_{T} (GeV/#it{c});efficiency", (double)nRec / (double)nGen));
     yMin = hEff->GetMinimum(0);
     yMax = hEff->GetMaximum();
     SetHistogram(hEff, yMin, yMax, marginRLow, marginRHigh, logScaleR);
     SetPad(padR, logScaleR);
-    hEff->Draw();
+    hEff->Draw("PE");
 
     canPt->SaveAs(Form("MC_%s_pT.pdf", particle.Data()));
     canEff->SaveAs(Form("MC_%s_eff.pdf", particle.Data()));
