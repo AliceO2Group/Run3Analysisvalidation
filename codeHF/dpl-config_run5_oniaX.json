@@ -23,7 +23,7 @@
                 "100."
             ]
         },
-        "etamax_2prong": "2.0",
+        "etamax_2prong": "1.44",
         "cuts_singletrack_2prong": {
             "values": [
                 ["0.000", "10."],
