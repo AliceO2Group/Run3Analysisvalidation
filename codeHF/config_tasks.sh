@@ -29,6 +29,7 @@ MAKE_GRAPH=0        # Make topology graph.
 
 # Activation of O2 workflows
 # QA
+DOO2_REJ_ALICE3=1   # qa-rejection
 DOO2_QA_EFF=0       # qa-efficiency
 DOO2_QA_SIM=0       # qa-simple
 DOO2_MC_VALID=0     # hf-mc-validation
@@ -139,6 +140,7 @@ function AdjustJson {
 # Generate the O2 script containing the full workflow specification.
 function MakeScriptO2 {
   WORKFLOWS=""
+  [ $DOO2_REJ_ALICE3 -eq 1 ] && WORKFLOWS+=" o2-analysis-qa-rejection"
   [ $DOO2_QA_EFF -eq 1 ] && WORKFLOWS+=" o2-analysis-qa-efficiency"
   [ $DOO2_QA_SIM -eq 1 ] && WORKFLOWS+=" o2-analysis-qa-simple"
   [ $DOO2_SKIM -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-track-index-skims-creator"

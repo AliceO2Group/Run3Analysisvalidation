@@ -4,7 +4,7 @@
 # Input specification for runtest.sh
 # (Modifies input parameters.)
 
-INPUT_CASE=12            # Input case
+INPUT_CASE=8            # Input case
 
 NFILESMAX=1             # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
 
@@ -60,7 +60,7 @@ case $INPUT_CASE in
     ISMC=1;;
   8)
     INPUT_LABEL="Run 5, p-p MC 14 TeV Inel, Scenario 3, onia analysis"
-    INPUT_DIR="/data/Run5/MC/pp_14TeV/Inel_v1"
+    INPUT_DIR="/home/auras/simulations/delphes/pp_MB_2021_06_10/run_001"
     INPUT_FILES="AODRun5.*.root"
     JSON="$JSONRUN5_ONIAX"
     ISINPUTO2=1
