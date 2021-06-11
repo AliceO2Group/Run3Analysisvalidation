@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from ROOT import TCanvas, TFile, gPad, gStyle
+from ROOT import TCanvas, TFile, gStyle
 
 gStyle.SetOptStat(0)
 gStyle.SetErrorX(0)
