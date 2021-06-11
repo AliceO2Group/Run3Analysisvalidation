@@ -21,13 +21,14 @@ source "$DIR_THIS/utilities.sh" || { echo "Error: Failed to load utilities."; ex
 
 LogFile="log_convert.log"
 ListIn="list_convert.txt"
-DirBase="$PWD"
 IndexFile=0
-ListRunScripts="$DirBase/ListRunScriptsConversion.txt"
+IndexJob=0
 DirOutMain="output_conversion"
 
+CMDPARALLEL="cd \"$DirOutMain/{}\" && bash \"$DIR_THIS/run_convert.sh\" \"$ListIn\" $ISMC \"$LogFile\""
+
 # Clean before running.
-rm -rf "$ListRunScripts" "$LISTOUTPUT" "$DirOutMain" || ErrExit "Failed to delete output files."
+rm -rf "$LISTOUTPUT" "$DirOutMain" || ErrExit "Failed to delete output files."
 
 CheckFile "$LISTINPUT"
 echo "Output directory: $DirOutMain (logfiles: $LogFile)"
@@ -40,29 +41,24 @@ while read -r FileIn; do
   # New job
   if [ $((IndexFile % NFILESPERJOB)) -eq 0 ]; then
     mkdir -p $DirOut || ErrExit "Failed to mkdir $DirOut."
-    FileOut="$DirOut/$FILEOUT"
-    echo "$DirBase/$FileOut" >> "$DirBase/$LISTOUTPUT" || ErrExit "Failed to echo to $DirBase/$LISTOUTPUT."
-    # Add this job in the list of commands.
-    echo "cd \"$DirOut\" && bash \"$DIR_THIS/run_convert.sh\" \"$ListIn\" $ISMC \"$LogFile\"" >> "$ListRunScripts" || ErrExit "Failed to echo to $ListRunScripts."
+    echo "$DirOut/$FILEOUT" >> "$LISTOUTPUT" || ErrExit "Failed to echo to $LISTOUTPUT."
   fi
   echo "$FileIn" >> "$DirOut/$ListIn" || ErrExit "Failed to echo to $DirOut/$ListIn."
   [ "$DEBUG" -eq 1 ] && echo "Input file ($IndexFile, job $IndexJob): $FileIn"
-  ((IndexFile+=1))
+  ((IndexFile++))
 done < "$LISTINPUT"
 
-CheckFile "$ListRunScripts"
-echo "Running conversion jobs... ($(wc -l < "$ListRunScripts") jobs, $NFILESPERJOB files/job)"
+echo "Running conversion jobs... ($((IndexJob+1)) jobs, $NFILESPERJOB files/job)"
 OPT_PARALLEL="--halt soon,fail=100%"
 if [ "$DEBUG" -eq 0 ]; then
   # shellcheck disable=SC2086 # Ignore unquoted options.
-  parallel $OPT_PARALLEL < "$ListRunScripts" > $LogFile 2>&1
+  parallel $OPT_PARALLEL "$CMDPARALLEL" ::: $(seq 0 $IndexJob) > $LogFile 2>&1
 else
   # shellcheck disable=SC2086 # Ignore unquoted options.
-  parallel $OPT_PARALLEL --will-cite --progress < "$ListRunScripts" > $LogFile
+  parallel $OPT_PARALLEL --will-cite --progress "$CMDPARALLEL" ::: $(seq 0 $IndexJob) > $LogFile
 fi || ErrExit "\nCheck $(realpath $LogFile)"
 grep -q -e '^'"W-" -e '^'"Warning" "$LogFile" && MsgWarn "There were warnings!\nCheck $(realpath $LogFile)"
 grep -q -e '^'"E-" -e '^'"Error" "$LogFile" && MsgErr "There were errors!\nCheck $(realpath $LogFile)"
 grep -q -e '^'"F-" -e '^'"Fatal" -e "segmentation" "$LogFile" && ErrExit "There were fatal errors!\nCheck $(realpath $LogFile)"
-rm -f "$ListRunScripts" || ErrExit "Failed to rm $ListRunScripts."
 
 exit 0
