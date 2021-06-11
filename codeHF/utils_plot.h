@@ -34,3 +34,12 @@ void SetHistogram(TH1* his, Float_t yMin, Float_t yMax, Float_t marginLow, Float
     his->GetYaxis()->SetRangeUser(yMin - marginLow / k * yRange, yMax + marginHigh / k * yRange);
   }
 }
+
+void SetHistogramStyle(TH1* his, Int_t colour = 1, Int_t markerStyle = 1, Float_t markerSize = 1, Float_t lineWidth = 1)
+{
+  his->SetLineColor(colour);
+  his->SetLineWidth(lineWidth);
+  his->SetMarkerColor(colour);
+  his->SetMarkerStyle(markerStyle);
+  his->SetMarkerSize(markerSize);
+}
