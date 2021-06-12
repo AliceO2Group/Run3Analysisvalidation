@@ -131,6 +131,11 @@ workflows:
     activate: no
     requires_mc: yes
 
+  o2-analysis-qa-rejection:
+    activate: no
+    requires_mc: yes
+    dependencies: [o2-analysis-hf-track-index-skims-creator, o2-analysis-pid-tpc-full, o2-analysis-pid-tof-full]
+
   o2-analysis-pid-tof-qa-mc:
     activate: no
     requires_mc: yes
