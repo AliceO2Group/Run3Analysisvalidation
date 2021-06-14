@@ -188,7 +188,7 @@ function MakeScriptO2 {
   # Adjust workflow database in case of event selection enabled
   if [ $DOO2_EVSEL -eq 1 ]; then
     MsgWarn "\nApply event selection"
-    ReplaceString "dependencies: o2-analysis-hf-track-index-skims-creator" "dependencies: o2-analysis-hf-track-index-skims-creator-evsel" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
+    ReplaceString "- o2-analysis-hf-track-index-skims-creator" "- o2-analysis-hf-track-index-skims-creator-evsel" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
   fi
 
   # Generate the O2 command.
@@ -199,7 +199,7 @@ function MakeScriptO2 {
 
   # Restore modified workflow database in case of event selection enabled
   if [ $DOO2_EVSEL -eq 1 ]; then
-    ReplaceString "dependencies: o2-analysis-hf-track-index-skims-creator-evsel" "dependencies: o2-analysis-hf-track-index-skims-creator" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
+    ReplaceString "- o2-analysis-hf-track-index-skims-creator-evsel" "- o2-analysis-hf-track-index-skims-creator" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
   fi
 
   # Create the script with the full O2 command.

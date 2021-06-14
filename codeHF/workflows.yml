@@ -49,7 +49,8 @@ workflows:
 
   o2-analysis-hf-candidate-creator-2prong: &cand_creator
     activate: false
-    dependencies: o2-analysis-hf-track-index-skims-creator
+    dependencies:
+      - o2-analysis-hf-track-index-skims-creator
     options:
       mc: "--doMC"
     tables:
@@ -65,7 +66,8 @@ workflows:
 
   o2-analysis-hf-candidate-creator-cascade:
     activate: false
-    dependencies: o2-analysis-hf-track-index-skims-creator_v0
+    dependencies:
+      - o2-analysis-hf-track-index-skims-creator_v0
     options:
       mc: "--doMC"
     tables:
