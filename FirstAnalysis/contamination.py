@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 from ROOT import TCanvas, TFile, gROOT, gStyle
 
 gStyle.SetOptStat(0)
@@ -14,9 +15,11 @@ gStyle.SetTickLength(-0.02, "y")
 gStyle.SetTitleOffset(1.1, "x")
 gStyle.SetTitleOffset(1.0, "y")
 
+gROOT.SetBatch(True)
+
 
 def saveCanvas(canvas, title):
-    format_list = [".pdf"]
+    format_list = [".pdf", ".png"]
     for fileFormat in format_list:
         canvas.SaveAs(title + fileFormat)
 
@@ -55,8 +58,6 @@ def ratioparticle(
     cres.SetCanvasSize(1600, 1000)
     cres.cd()
     # cres.SetLogy()
-    gStyle.SetOptStat(0)
-    gROOT.SetBatch(1)
 
     num2d = fileo2.Get("qa-rejection-general/h%s%s/%seta" % (numname, selnum, var))
     den2d = fileo2.Get("qa-rejection-general/h%s%s/%seta" % (denname, selden, var))
@@ -66,14 +67,41 @@ def ratioparticle(
     num.Draw("coltz")
     num.GetYaxis().SetTitle(label)
     num.GetXaxis().SetTitle("p_{T}")
-    num.SetMinimum(0.001)
-    num.SetMaximum(2.0)
+    # num.SetMinimum(0.001)
+    # num.SetMaximum(2.0)
     num.GetYaxis().SetTitleOffset(1.0)
     # num.GetZaxis().SetRangeUser(0.01, 1)
     # nameresult = "Fraction of %s selected by %s over %s selected by %s" % (num,selnum,den,selden)
     canvas = "Fractionof%s%sOver%s%s" % (numname, selnum, denname, selden)
     # num.SetTitle(nameresult)
     saveCanvas(cres, "rejection/%s" % (canvas))
+
+
+def is_e_not_pi_plots(particle):
+    fileo2 = TFile("../codeHF/AnalysisResults_O2.root")
+    task = "qa-rejection-general"
+    folder_gm = "h%sRICHSelHpElTight" % particle
+    folder_alt = "h%sRICHSelHpElTightAlt" % particle
+    folder_diff = "h%sRICHSelHpElTightAltDiff" % particle
+    hist = "pteta"
+    hist_gm = fileo2.Get("%s/%s/%s" % (task, folder_gm, hist))
+    hist_gm.SetTitle("%s isRICHElTight" % particle)
+    hist_alt = fileo2.Get("%s/%s/%s" % (task, folder_alt, hist))
+    hist_alt.SetTitle("%s isElectronAndNotPion" % particle)
+    hist_diff = fileo2.Get("%s/%s/%s" % (task, folder_diff, hist))
+    hist_diff.SetTitle("%s isRICHElTight != isElectronAndNotPion" % particle)
+    cepi = TCanvas("cepi", "e not pi selection")
+    cepi.SetCanvasSize(1600, 1000)
+    cepi.Divide(2, 2)
+    cepi.cd(1)
+    hist_gm.Draw("colz")
+    cepi.cd(2)
+    hist_alt.Draw("colz")
+    cepi.cd(3)
+    hist_diff.Draw("colz")
+    # num.GetYaxis().SetTitleOffset(1.0)
+    # num.GetZaxis().SetRangeUser(0.01, 1)
+    saveCanvas(cepi, "contamination/is_e_not_pi_%s" % particle)
 
 
 # kinematic_plots("p", "pion", "MID", "Muon")
@@ -85,6 +113,7 @@ def ratioparticle(
 # kinematic_plots("pt", "kaon", "RICH", "Electron")
 # kinematic_plots("p", "pion", "TOF", "Kaon")
 # kinematic_plots("p", "pion", "RICH", "Kaon")
+
 ratioparticle(
     "pt", "Electron", "RICHSelHpElTight", "Electron", "NoSel", "e/e RICHSelHpElTight"
 )
@@ -95,3 +124,24 @@ ratioparticle(
 ratioparticle("pt", "Muon", "MID", "Pion", "MID", "MIDSel")
 ratioparticle("pt", "Pion", "RICHSelHpElTight", "Pion", "NoSel", "Contamination")
 ratioparticle("pt", "Pion", "MID", "Pion", "NoSel", "Contamination MID")
+
+ratioparticle(
+    "pt",
+    "Electron",
+    "RICHSelHpElTightAlt",
+    "Electron",
+    "RICHSelHpElTight",
+    "e isElectronAndNotPion/RICHSelHpElTight",
+)
+ratioparticle(
+    "pt",
+    "Electron",
+    "RICHSelHpElTightAlt",
+    "Pion",
+    "RICHSelHpElTightAlt",
+    "isElectronAndNotPion e/#pi",
+)
+
+
+for p in ("Electron", "Pion", "Kaon", "Muon"):
+    is_e_not_pi_plots(p)
