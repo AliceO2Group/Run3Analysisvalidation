@@ -40,7 +40,6 @@ DOO2_PID_TOF=0      # pid-tof-full
 DOO2_PID_TOF_QA=0   # pid-tof-qa-mc
 # Vertexing
 DOO2_SKIM=0         # hf-track-index-skims-creator
-DOO2_SKIM_V0=0      # hf-track-index-skims-creator_v0
 DOO2_CAND_2PRONG=0  # hf-candidate-creator-2prong
 DOO2_CAND_3PRONG=0  # hf-candidate-creator-3prong
 DOO2_CAND_CASC=0    # hf-candidate-creator-cascade
@@ -76,6 +75,12 @@ SAVETREES=0         # Save O2 tables to trees.
 USEO2VERTEXER=0     # Use the O2 vertexer in AliPhysics.
 DORATIO=0           # Plot histogram ratios in comparison.
 
+# enable cascade reconstruction by default in case of Λc → K0S p tasks
+DOO2_CASC=0
+if [[ $DOO2_CAND_CASC -eq 1 || $DOO2_SEL_LCK0SP -eq 1 || $DOO2_TASK_LCK0SP -eq 1 || $APPLYCUTS_LCK0SP -eq 1 ]]; then
+  DOO2_CASC=1
+fi
+
 ####################################################################################################
 
 # Clean before (argument=1) and after (argument=2) running.
@@ -87,6 +92,7 @@ function Clean {
   [ "$1" -eq 2 ] && {
     rm -f "$LISTFILES_ALI" "$LISTFILES_O2" "$SCRIPT_ALI" "$SCRIPT_O2" "$SCRIPT_POSTPROCESS" || ErrExit "Failed to rm created files."
     [ "$JSON_EDIT" ] && { rm "$JSON_EDIT" || ErrExit "Failed to rm $JSON_EDIT."; }
+    [ "$DATABASE_O2_EDIT" ] && { rm "$DATABASE_O2_EDIT" || ErrExit "Failed to rm $DATABASE_O2_EDIT."; }
   }
 
   return 0
@@ -143,8 +149,13 @@ function AdjustJson {
 # Generate the O2 script containing the full workflow specification.
 function MakeScriptO2 {
   WORKFLOWS=""
+  # Cascade reconstruction
+  CASCADESUFFIX=""
+  [ $DOO2_CASC -eq 1 ] && CASCADESUFFIX+="_v0"
+  # Event selection
   EVSELSUFFIX=""
   [ $DOO2_EVSEL -eq 1 ] && WORKFLOWS+=" o2-analysis-timestamp o2-analysis-event-selection" && EVSELSUFFIX+="-evsel"
+  # QA
   [ $DOO2_QA_EFF -eq 1 ] && WORKFLOWS+=" o2-analysis-qa-efficiency"
   [ $DOO2_QA_EVTRK -eq 1 ] && WORKFLOWS+=" o2-analysis-qa-event-track"
   [ $DOO2_MC_VALID -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-mc-validation"
@@ -153,8 +164,7 @@ function MakeScriptO2 {
   [ $DOO2_PID_TOF -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tof-full"
   [ $DOO2_PID_TOF_QA -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tof-qa-mc"
   # Vertexing
-  [ $DOO2_SKIM -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-track-index-skims-creator${EVSELSUFFIX}"
-  [ $DOO2_SKIM_V0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-track-index-skims-creator${EVSELSUFFIX}_v0"
+  [ $DOO2_SKIM -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-track-index-skims-creator${EVSELSUFFIX}${CASCADESUFFIX}"
   [ $DOO2_CAND_2PRONG -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-2prong"
   [ $DOO2_CAND_3PRONG -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-3prong"
   [ $DOO2_CAND_CASC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-cascade"
@@ -185,10 +195,15 @@ function MakeScriptO2 {
   [ $SAVETREES -eq 1 ] && OPT_MAKECMD+=" -t"
   [ $MAKE_GRAPH -eq 1 ] && OPT_MAKECMD+=" -g"
 
-  # Adjust workflow database in case of event selection enabled
-  if [ $DOO2_EVSEL -eq 1 ]; then
-    MsgWarn "\nApply event selection"
-    ReplaceString "- o2-analysis-hf-track-index-skims-creator" "- o2-analysis-hf-track-index-skims-creator-evsel" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
+  # Make a copy of the default workflow database file before modifying it
+  if [[ $DOO2_EVSEL -eq 1 || $DOO2_CASC -eq 1 ]]; then
+    DATABASE_O2_EDIT=".${DATABASE_O2}"
+
+    cp "$DATABASE_O2" "$DATABASE_O2_EDIT" || ErrExit "Failed to cp $DATABASE_O2 $DATABASE_O2_EDIT."
+    DATABASE_O2="$DATABASE_O2_EDIT"
+
+    # Adjust workflow database in case of event selection enabled
+    ReplaceString "- o2-analysis-hf-track-index-skims-creator" "- o2-analysis-hf-track-index-skims-creator${EVSELSUFFIX}${CASCADESUFFIX}" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
   fi
 
   # Generate the O2 command.
@@ -196,11 +211,6 @@ function MakeScriptO2 {
   O2EXEC=$($MAKECMD -w "$WORKFLOWS")
   $MAKECMD -w "$WORKFLOWS" 1> /dev/null 2> /dev/null || ErrExit "Generating of O2 command failed."
   [ "$O2EXEC" ] || ErrExit "Nothing to do!"
-
-  # Restore modified workflow database in case of event selection enabled
-  if [ $DOO2_EVSEL -eq 1 ]; then
-    ReplaceString "- o2-analysis-hf-track-index-skims-creator-evsel" "- o2-analysis-hf-track-index-skims-creator" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
-  fi
 
   # Create the script with the full O2 command.
   cat << EOF > "$SCRIPT_O2"
