@@ -29,7 +29,7 @@ MAKE_GRAPH=0        # Make topology graph.
 
 # Activation of O2 workflows
 # Event selection
-DOO2_EVSEL=1        # event-selection and timestamp
+DOO2_EVSEL=0        # event-selection and timestamp
 # QA
 DOO2_QA_EFF=0       # qa-efficiency
 DOO2_QA_EVTRK=0     # qa-event-track
@@ -143,7 +143,8 @@ function AdjustJson {
 # Generate the O2 script containing the full workflow specification.
 function MakeScriptO2 {
   WORKFLOWS=""
-  [ $DOO2_EVSEL -eq 1 ] && WORKFLOWS+=" o2-analysis-timestamp o2-analysis-event-selection"
+  EVSELSUFFIX=""
+  [ $DOO2_EVSEL -eq 1 ] && WORKFLOWS+=" o2-analysis-timestamp o2-analysis-event-selection" && EVSELSUFFIX+="-evsel"
   [ $DOO2_QA_EFF -eq 1 ] && WORKFLOWS+=" o2-analysis-qa-efficiency"
   [ $DOO2_QA_EVTRK -eq 1 ] && WORKFLOWS+=" o2-analysis-qa-event-track"
   [ $DOO2_MC_VALID -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-mc-validation"
@@ -152,8 +153,8 @@ function MakeScriptO2 {
   [ $DOO2_PID_TOF -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tof-full"
   [ $DOO2_PID_TOF_QA -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tof-qa-mc"
   # Vertexing
-  [ $DOO2_SKIM -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-track-index-skims-creator"
-  [ $DOO2_SKIM_V0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-track-index-skims-creator_v0"
+  [ $DOO2_SKIM -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-track-index-skims-creator${EVSELSUFFIX}"
+  [ $DOO2_SKIM_V0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-track-index-skims-creator${EVSELSUFFIX}_v0"
   [ $DOO2_CAND_2PRONG -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-2prong"
   [ $DOO2_CAND_3PRONG -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-3prong"
   [ $DOO2_CAND_CASC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-cascade"
@@ -183,13 +184,23 @@ function MakeScriptO2 {
   [ "$DEBUG" -eq 1 ] && OPT_MAKECMD+=" -d"
   [ $SAVETREES -eq 1 ] && OPT_MAKECMD+=" -t"
   [ $MAKE_GRAPH -eq 1 ] && OPT_MAKECMD+=" -g"
-  [ $DOO2_EVSEL -eq 1 ] && OPT_MAKECMD+=" --doevsel"
+
+  # Adjust workflow database in case of event selection enabled
+  if [ $DOO2_EVSEL -eq 1 ]; then
+    MsgWarn "\nApply event selection"
+    ReplaceString "dependencies: o2-analysis-hf-track-index-skims-creator" "dependencies: o2-analysis-hf-track-index-skims-creator-evsel" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
+  fi
 
   # Generate the O2 command.
   MAKECMD="python3 $DIR_EXEC/make_command_o2.py $DATABASE_O2 $OPT_MAKECMD"
   O2EXEC=$($MAKECMD -w "$WORKFLOWS")
   $MAKECMD -w "$WORKFLOWS" 1> /dev/null 2> /dev/null || ErrExit "Generating of O2 command failed."
   [ "$O2EXEC" ] || ErrExit "Nothing to do!"
+
+  # Restore modified workflow database in case of event selection enabled
+  if [ $DOO2_EVSEL -eq 1 ]; then
+    ReplaceString "dependencies: o2-analysis-hf-track-index-skims-creator-evsel" "dependencies: o2-analysis-hf-track-index-skims-creator" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
+  fi
 
   # Create the script with the full O2 command.
   cat << EOF > "$SCRIPT_O2"

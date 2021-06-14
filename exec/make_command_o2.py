@@ -157,7 +157,6 @@ def main():
     parser.add_argument(
         "-d", "--debug", action="store_true", help="print debugging info"
     )
-    parser.add_argument("--doevsel", action="store_true", help="Enable event selection")
     args = parser.parse_args()
     path_file_database = args.database
     debug = args.debug
@@ -165,7 +164,6 @@ def main():
     mc_mode = args.mc
     save_tables = args.tables
     make_graph = args.graph
-    ev_sel = args.doevsel
 
     # Open database input file.
     if debug:
@@ -186,10 +184,6 @@ def main():
         msg_warn("MC mode is on.")
     if save_tables:
         msg_warn("Tables will be saved in trees.")
-    if ev_sel:
-        msg_warn("Event-selection is enabled")
-    else:
-        msg_warn("Event-selection not enabled")
 
     # Get workflow-independent options.
     dic_opt = dic_in["options"]
@@ -287,8 +281,6 @@ def main():
                     string_wf += " " + join_strings(opt_wf["real"])
                 if mc_mode and "mc" in opt_wf:
                     string_wf += " " + join_strings(opt_wf["mc"])
-                if ev_sel and "evsel" in opt_wf:
-                    string_wf += " " + join_strings(opt_wf["evsel"])
             else:
                 msg_err(
                     '"options" in %s must be str, list or dict, is %s'

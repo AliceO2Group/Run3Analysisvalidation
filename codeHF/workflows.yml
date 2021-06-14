@@ -23,8 +23,13 @@ workflows:
     activate: false
     executable: o2-analysis-hf-track-index-skims-creator
     tables: [HFSELTRACK, HFTRACKIDXP2, HFTRACKIDXP3]
-    options:
-      evsel: "--doEvSel"
+
+  o2-analysis-hf-track-index-skims-creator-evsel: &skim_creator_evsel
+    <<: *skim_creator
+    activate: false
+    dependencies: [o2-analysis-timestamp, o2-analysis-event-selection]
+    options: "--doEvSel"
+    tables: [HFSELCOL, HFSELTRACK, HFTRACKIDXP2, HFTRACKIDXP3]
 
   o2-analysis-hf-track-index-skims-creator_v0:
     <<: *skim_creator
@@ -32,6 +37,13 @@ workflows:
     dependencies: o2-analysis-lambdakzerobuilder
     options: "--do-LcK0Sp"
     tables: [HFSELTRACK, HFTRACKIDXCASC]
+
+  o2-analysis-hf-track-index-skims-creator-evsel_v0:
+    <<: *skim_creator_evsel
+    activate: false
+    dependencies: [o2-analysis-timestamp, o2-analysis-event-selection, o2-analysis-lambdakzerobuilder]
+    options: ["--doEvSel", "--do-LcK0Sp"]
+    tables: [HFSELCOL, HFSELTRACK, HFTRACKIDXCASC]
 
   # Candidate creators
 
