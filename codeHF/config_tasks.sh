@@ -29,7 +29,7 @@ MAKE_GRAPH=0        # Make topology graph.
 
 # Activation of O2 workflows
 # Event selection
-DOO2_EVSEL=1        # event-selection and timestamp
+DOO2_EVSEL=0        # event-selection and timestamp
 # QA
 DOO2_QA_EFF=0       # qa-efficiency
 DOO2_QA_EVTRK=0     # qa-event-track
@@ -58,7 +58,7 @@ DOO2_TASK_XIC=0     # hf-task-xic
 DOO2_TASK_JPSI=0    # hf-task-jpsi
 DOO2_TASK_BPLUS=0   # hf-task-bplus
 DOO2_TASK_X=0       # hf-task-x
-DOO2_TASK_LCK0SP=1  # hf-task-lc-tok0sp
+DOO2_TASK_LCK0SP=0  # hf-task-lc-tok0sp
 # Tree creators
 DOO2_TREE_D0=0      # hf-tree-creator-d0-tokpi
 DOO2_TREE_LC=0      # hf-tree-creator-lc-topkpi
@@ -75,11 +75,8 @@ SAVETREES=0         # Save O2 tables to trees.
 USEO2VERTEXER=0     # Use the O2 vertexer in AliPhysics.
 DORATIO=0           # Plot histogram ratios in comparison.
 
-# enable cascade reconstruction by default in case of Λc → K0S p tasks
-DOO2_CASC=0
-if [[ $DOO2_CAND_CASC -eq 1 || $DOO2_SEL_LCK0SP -eq 1 || $DOO2_TASK_LCK0SP -eq 1 ]]; then
-  DOO2_CASC=1
-fi
+# Enable cascade reconstruction in case of Λc → K0S p tasks
+[[ $DOO2_CAND_CASC -eq 1 || $DOO2_SEL_LCK0SP -eq 1 || $DOO2_TASK_LCK0SP -eq 1 ]] && DOO2_CASC=1 || DOO2_CASC=0
 
 ####################################################################################################
 
@@ -150,7 +147,8 @@ function AdjustJson {
 function MakeScriptO2 {
   WORKFLOWS=""
   # Cascade reconstruction
-  [ $DOO2_CASC -eq 1 ] && SUFFIX_CASC="-v0" || SUFFIX_CASC=""  # Event selection
+  [ $DOO2_CASC -eq 1 ] && SUFFIX_CASC="-v0" || SUFFIX_CASC=""
+  # Event selection
   [ $DOO2_EVSEL -eq 1 ] && { WORKFLOWS+=" o2-analysis-timestamp o2-analysis-event-selection"; SUFFIX_EVSEL="-evsel"; } || SUFFIX_EVSEL=""
   # QA
   [ $DOO2_QA_EFF -eq 1 ] && WORKFLOWS+=" o2-analysis-qa-efficiency"
@@ -201,7 +199,7 @@ function MakeScriptO2 {
     cp "$DATABASE_O2" "$DATABASE_O2_EDIT" || ErrExit "Failed to cp $DATABASE_O2 $DATABASE_O2_EDIT."
     DATABASE_O2="$DATABASE_O2_EDIT"
 
-    # Adjust workflow database in case of event selection enabled
+    # Adjust workflow database in case of event selection or cascades enabled
     ReplaceString "- o2-analysis-hf-track-index-skims-creator" "- ${WF_SKIM}" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
   fi
 
