@@ -2,6 +2,8 @@
 
 from ROOT import TCanvas, TFile, gROOT, gStyle
 
+path_file = "../codeHF/AnalysisResults_O2.root"
+
 gStyle.SetOptStat(0)
 gStyle.SetErrorX(0)
 gStyle.SetFrameLineWidth(1)
@@ -25,7 +27,7 @@ def saveCanvas(canvas, title):
 
 
 def kinematic_plots(var, particle, detector, hp):
-    fileo2 = TFile("../codeHF/AnalysisResults_O2.root")
+    fileo2 = TFile(path_file)
     cres = TCanvas("cres", "resolution distribution")
     cres.SetCanvasSize(1600, 1000)
     cres.cd()
@@ -53,11 +55,11 @@ def ratioparticle(
     selden="RICHSelHpElLoose",
     label="e/#pi",
 ):
-    fileo2 = TFile("../codeHF/AnalysisResults_O2.root")
+    fileo2 = TFile(path_file)
     cres = TCanvas("cres", "resolution distribution")
     cres.SetCanvasSize(1600, 1000)
     cres.cd()
-    # cres.SetLogy()
+    cres.SetLogy()
 
     num2d = fileo2.Get("qa-rejection-general/h%s%s/%seta" % (numname, selnum, var))
     den2d = fileo2.Get("qa-rejection-general/h%s%s/%seta" % (denname, selden, var))
@@ -78,7 +80,7 @@ def ratioparticle(
 
 
 def is_e_not_pi_plots(particle):
-    fileo2 = TFile("../codeHF/AnalysisResults_O2.root")
+    fileo2 = TFile(path_file)
     task = "qa-rejection-general"
     folder_gm = "h%sRICHSelHpElTight" % particle
     folder_alt = "h%sRICHSelHpElTightAlt" % particle
