@@ -28,6 +28,8 @@ DATABASE_O2="workflows.yml"
 MAKE_GRAPH=0        # Make topology graph.
 
 # Activation of O2 workflows
+# Event selection
+DOO2_EVSEL=0        # event-selection and timestamp
 # QA
 DOO2_QA_EFF=0       # qa-efficiency
 DOO2_QA_EVTRK=0     # qa-event-track
@@ -38,7 +40,6 @@ DOO2_PID_TOF=0      # pid-tof-full
 DOO2_PID_TOF_QA=0   # pid-tof-qa-mc
 # Vertexing
 DOO2_SKIM=0         # hf-track-index-skims-creator
-DOO2_SKIM_V0=0      # hf-track-index-skims-creator_v0
 DOO2_CAND_2PRONG=0  # hf-candidate-creator-2prong
 DOO2_CAND_3PRONG=0  # hf-candidate-creator-3prong
 DOO2_CAND_CASC=0    # hf-candidate-creator-cascade
@@ -74,6 +75,9 @@ SAVETREES=0         # Save O2 tables to trees.
 USEO2VERTEXER=0     # Use the O2 vertexer in AliPhysics.
 DORATIO=0           # Plot histogram ratios in comparison.
 
+# Enable cascade reconstruction in case of Λc → K0S p tasks
+[[ $DOO2_CAND_CASC -eq 1 || $DOO2_SEL_LCK0SP -eq 1 || $DOO2_TASK_LCK0SP -eq 1 ]] && DOO2_CASC=1 || DOO2_CASC=0
+
 ####################################################################################################
 
 # Clean before (argument=1) and after (argument=2) running.
@@ -85,6 +89,7 @@ function Clean {
   [ "$1" -eq 2 ] && {
     rm -f "$LISTFILES_ALI" "$LISTFILES_O2" "$SCRIPT_ALI" "$SCRIPT_O2" "$SCRIPT_POSTPROCESS" || ErrExit "Failed to rm created files."
     [ "$JSON_EDIT" ] && { rm "$JSON_EDIT" || ErrExit "Failed to rm $JSON_EDIT."; }
+    [ "$DATABASE_O2_EDIT" ] && { rm "$DATABASE_O2_EDIT" || ErrExit "Failed to rm $DATABASE_O2_EDIT."; }
   }
 
   return 0
@@ -141,6 +146,10 @@ function AdjustJson {
 # Generate the O2 script containing the full workflow specification.
 function MakeScriptO2 {
   WORKFLOWS=""
+  # Cascade reconstruction
+  [ $DOO2_CASC -eq 1 ] && SUFFIX_CASC="-v0" || SUFFIX_CASC=""
+  # Event selection
+  [ $DOO2_EVSEL -eq 1 ] && SUFFIX_EVSEL="-evsel" || SUFFIX_EVSEL=""
   # QA
   [ $DOO2_QA_EFF -eq 1 ] && WORKFLOWS+=" o2-analysis-qa-efficiency"
   [ $DOO2_QA_EVTRK -eq 1 ] && WORKFLOWS+=" o2-analysis-qa-event-track"
@@ -150,8 +159,8 @@ function MakeScriptO2 {
   [ $DOO2_PID_TOF -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tof-full"
   [ $DOO2_PID_TOF_QA -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tof-qa-mc"
   # Vertexing
-  [ $DOO2_SKIM -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-track-index-skims-creator"
-  [ $DOO2_SKIM_V0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-track-index-skims-creator_v0"
+  WF_SKIM="o2-analysis-hf-track-index-skims-creator${SUFFIX_EVSEL}${SUFFIX_CASC}"
+  [ $DOO2_SKIM -eq 1 ] && WORKFLOWS+=" ${WF_SKIM}"
   [ $DOO2_CAND_2PRONG -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-2prong"
   [ $DOO2_CAND_3PRONG -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-3prong"
   [ $DOO2_CAND_CASC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-cascade"
@@ -181,6 +190,18 @@ function MakeScriptO2 {
   [ "$DEBUG" -eq 1 ] && OPT_MAKECMD+=" -d"
   [ $SAVETREES -eq 1 ] && OPT_MAKECMD+=" -t"
   [ $MAKE_GRAPH -eq 1 ] && OPT_MAKECMD+=" -g"
+
+  # Make a copy of the default workflow database file before modifying it
+  DATABASE_O2_EDIT=""
+  if [[ $DOO2_EVSEL -eq 1 || $DOO2_CASC -eq 1 ]]; then
+    DATABASE_O2_EDIT="${DATABASE_O2/.yml/_edit.yml}"
+
+    cp "$DATABASE_O2" "$DATABASE_O2_EDIT" || ErrExit "Failed to cp $DATABASE_O2 $DATABASE_O2_EDIT."
+    DATABASE_O2="$DATABASE_O2_EDIT"
+
+    # Adjust workflow database in case of event selection or cascades enabled
+    ReplaceString "- o2-analysis-hf-track-index-skims-creator" "- ${WF_SKIM}" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
+  fi
 
   # Generate the O2 command.
   MAKECMD="python3 $DIR_EXEC/make_command_o2.py $DATABASE_O2 $OPT_MAKECMD"

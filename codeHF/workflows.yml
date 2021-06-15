@@ -5,6 +5,18 @@ options:
 
 workflows:
 
+# Event selection
+
+  o2-analysis-timestamp:
+    activate: no
+    options:
+      mc: "--isMC 1"
+
+  o2-analysis-event-selection:
+    activate: no
+    options:
+      mc: "--isMC 1"
+
   # Skimming
 
   o2-analysis-hf-track-index-skims-creator: &skim_creator
@@ -12,18 +24,33 @@ workflows:
     executable: o2-analysis-hf-track-index-skims-creator
     tables: [HFSELTRACK, HFTRACKIDXP2, HFTRACKIDXP3]
 
-  o2-analysis-hf-track-index-skims-creator_v0:
+  o2-analysis-hf-track-index-skims-creator-evsel:
+    <<: *skim_creator
+    activate: false
+    dependencies: [o2-analysis-timestamp, o2-analysis-event-selection]
+    options: "--doEvSel"
+    tables: [HFSELCOL, HFSELTRACK, HFTRACKIDXP2, HFTRACKIDXP3]
+
+  o2-analysis-hf-track-index-skims-creator-v0:
     <<: *skim_creator
     activate: false
     dependencies: o2-analysis-lambdakzerobuilder
     options: "--do-LcK0Sp"
-    tables: [HFSELTRACK, HFTRACKIDXCASC]
+    tables: [HFSELTRACK, HFTRACKIDXCASC, HFTRACKIDXP2, HFTRACKIDXP3]
+
+  o2-analysis-hf-track-index-skims-creator-evsel-v0:
+    <<: *skim_creator
+    activate: false
+    dependencies: [o2-analysis-timestamp, o2-analysis-event-selection, o2-analysis-lambdakzerobuilder]
+    options: ["--doEvSel", "--do-LcK0Sp"]
+    tables: [HFSELCOL, HFSELTRACK, HFTRACKIDXCASC, HFTRACKIDXP2, HFTRACKIDXP3]
 
   # Candidate creators
 
   o2-analysis-hf-candidate-creator-2prong: &cand_creator
     activate: false
-    dependencies: o2-analysis-hf-track-index-skims-creator
+    dependencies:
+      - o2-analysis-hf-track-index-skims-creator
     options:
       mc: "--doMC"
     tables:
@@ -39,7 +66,8 @@ workflows:
 
   o2-analysis-hf-candidate-creator-cascade:
     activate: false
-    dependencies: o2-analysis-hf-track-index-skims-creator_v0
+    dependencies:
+      - o2-analysis-hf-track-index-skims-creator
     options:
       mc: "--doMC"
     tables:

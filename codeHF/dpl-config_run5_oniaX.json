@@ -6,12 +6,15 @@
         "step-value-enumeration": "1",
         "aod-file": "@list_o2.txt"
     },
-    "hf-produce-sel-track": {
-        "b_dovalplots": "true",
+    "hf-tag-sel-collisions": {
+        "fillHistograms": "true",
+        "triggerClassName": ""
+    },
+    "hf-tag-sel-tracks": {
+        "fillHistograms": "true",
         "d_bz": "5.",
         "doCutQuality": "false",
         "d_tpcnclsfound": "-999999",
-        "ptmintrack_2prong": "1.0",
         "ptbins_singletrack": {
             "values": [
                 "0.",
@@ -23,6 +26,7 @@
                 "100."
             ]
         },
+        "ptmintrack_2prong": "1.0",
         "etamax_2prong": "1.44",
         "cuts_singletrack_2prong": {
             "values": [
@@ -48,7 +52,7 @@
         }
     },
     "hf-track-index-skims-creator": {
-        "b_dovalplots": "true",
+        "fillHistograms": "true",
         "do3prong": "0",
         "triggerindex": "-1",
         "d_bz": "5.",

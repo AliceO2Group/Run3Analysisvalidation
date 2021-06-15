@@ -6,8 +6,12 @@
         "step-value-enumeration": "1",
         "aod-file": "@list_o2.txt"
     },
-    "hf-produce-sel-track": {
-        "b_dovalplots": "true",
+    "hf-tag-sel-collisions": {
+        "fillHistograms": "true",
+        "triggerClassName": "kINT7"
+    },
+    "hf-tag-sel-tracks": {
+        "fillHistograms": "true",
         "d_bz": "5.",
         "doCutQuality": "true",
         "d_tpcnclsfound": "71",
@@ -48,7 +52,7 @@
         }
     },
     "hf-track-index-skims-creator": {
-        "b_dovalplots": "true",
+        "fillHistograms": "true",
         "do3prong": "1",
         "triggerindex": "-1",
         "d_bz": "5.",
