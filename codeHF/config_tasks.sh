@@ -149,7 +149,7 @@ function MakeScriptO2 {
   # Cascade reconstruction
   [ $DOO2_CASC -eq 1 ] && SUFFIX_CASC="-v0" || SUFFIX_CASC=""
   # Event selection
-  [ $DOO2_EVSEL -eq 1 ] && { WORKFLOWS+=" o2-analysis-timestamp o2-analysis-event-selection"; SUFFIX_EVSEL="-evsel"; } || SUFFIX_EVSEL=""
+  [ $DOO2_EVSEL -eq 1 ] && SUFFIX_EVSEL="-evsel" || SUFFIX_EVSEL=""
   # QA
   [ $DOO2_QA_EFF -eq 1 ] && WORKFLOWS+=" o2-analysis-qa-efficiency"
   [ $DOO2_QA_EVTRK -eq 1 ] && WORKFLOWS+=" o2-analysis-qa-event-track"
