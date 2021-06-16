@@ -5,15 +5,15 @@ options:
 
 workflows:
 
-# Event selection
+  # Event selection
 
   o2-analysis-timestamp:
-    activate: no
+    activate: false
     options:
       mc: "--isMC 1"
 
   o2-analysis-event-selection:
-    activate: no
+    activate: false
     options:
       mc: "--isMC 1"
 
@@ -65,11 +65,8 @@ workflows:
       mc: [HFCANDP3MCREC, HFCANDP3MCGEN]
 
   o2-analysis-hf-candidate-creator-cascade:
+    <<: *cand_creator
     activate: false
-    dependencies:
-      - o2-analysis-hf-track-index-skims-creator
-    options:
-      mc: "--doMC"
     tables:
       default: [HFCANDCASCBASE, HFCANDCASCEXT]
       mc: [HFCANDCASCMCREC, HFCANDCASCMCGEN]
