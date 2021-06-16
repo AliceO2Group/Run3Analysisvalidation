@@ -75,9 +75,6 @@ SAVETREES=0         # Save O2 tables to trees.
 USEO2VERTEXER=0     # Use the O2 vertexer in AliPhysics.
 DORATIO=0           # Plot histogram ratios in comparison.
 
-# Enable cascade reconstruction in case of Λc → K0S p tasks
-[[ $DOO2_CAND_CASC -eq 1 || $DOO2_SEL_LCK0SP -eq 1 || $DOO2_TASK_LCK0SP -eq 1 ]] && DOO2_CASC=1 || DOO2_CASC=0
-
 ####################################################################################################
 
 # Clean before (argument=1) and after (argument=2) running.
@@ -145,11 +142,14 @@ function AdjustJson {
 
 # Generate the O2 script containing the full workflow specification.
 function MakeScriptO2 {
-  WORKFLOWS=""
+  # Enable cascade reconstruction in case of Λc → K0S p tasks
+  [[ $DOO2_CAND_CASC -eq 1 || $DOO2_SEL_LCK0SP -eq 1 || $DOO2_TASK_LCK0SP -eq 1 ]] && DOO2_CASC=1 || DOO2_CASC=0
   # Cascade reconstruction
   [ $DOO2_CASC -eq 1 ] && SUFFIX_CASC="-v0" || SUFFIX_CASC=""
   # Event selection
   [ $DOO2_EVSEL -eq 1 ] && SUFFIX_EVSEL="-evsel" || SUFFIX_EVSEL=""
+
+  WORKFLOWS=""
   # QA
   [ $DOO2_QA_EFF -eq 1 ] && WORKFLOWS+=" o2-analysis-qa-efficiency"
   [ $DOO2_QA_EVTRK -eq 1 ] && WORKFLOWS+=" o2-analysis-qa-event-track"
@@ -160,7 +160,7 @@ function MakeScriptO2 {
   [ $DOO2_PID_TOF_QA -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tof-qa-mc"
   # Vertexing
   WF_SKIM="o2-analysis-hf-track-index-skims-creator${SUFFIX_EVSEL}${SUFFIX_CASC}"
-  [ $DOO2_SKIM -eq 1 ] && WORKFLOWS+=" ${WF_SKIM}"
+  [ $DOO2_SKIM -eq 1 ] && WORKFLOWS+=" $WF_SKIM"
   [ $DOO2_CAND_2PRONG -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-2prong"
   [ $DOO2_CAND_3PRONG -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-3prong"
   [ $DOO2_CAND_CASC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-cascade"
