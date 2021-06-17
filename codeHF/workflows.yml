@@ -1,7 +1,12 @@
 ---
 options:
   global: "--fairmq-ipc-prefix sockets"
-  local: ["--aod-memory-rate-limit 2000000000", "--shm-segment-size 16000000000", "--configuration json://$JSON", "-b"]
+  local:
+    - "-b"
+    - "--configuration json://$JSON"
+    - "--aod-memory-rate-limit 2000000000"
+    - "--shm-segment-size 16000000000"
+    - "--min-failure-level error"
 
 workflows:
 
