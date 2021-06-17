@@ -94,7 +94,9 @@ def healthy_structure(dic_full: dict):
         if not isinstance(dic_wf_single, dict):
             msg_err("%s is not a dictionary." % wf)
             return False
-        if "activate" in dic_wf_single and not isinstance(dic_wf_single["activate"], bool):
+        if "activate" in dic_wf_single and not isinstance(
+            dic_wf_single["activate"], bool
+        ):
             msg_err('"activate" in workflow %s is not a boolean.' % wf)
             return False
     return True
@@ -190,7 +192,9 @@ def main():
 
     # Get list of primary workflows to run.
     # already activated in the database
-    list_wf_activated = [wf for wf in dic_wf if "activate" in dic_wf[wf] and dic_wf[wf]["activate"]]
+    list_wf_activated = [
+        wf for wf in dic_wf if "activate" in dic_wf[wf] and dic_wf[wf]["activate"]
+    ]
     if debug and list_wf_activated:
         eprint("\nWorkflows activated in the database:")
         eprint("\n".join("  " + wf for wf in list_wf_activated))
