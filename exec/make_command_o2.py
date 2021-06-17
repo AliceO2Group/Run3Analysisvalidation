@@ -266,7 +266,7 @@ def main():
         else:
             string_wf = wf
         # Detect duplicate workflows.
-        if string_wf in command:
+        if string_wf + " " in command:
             msg_err("Workflow %s is already present." % string_wf)
             sys.exit(1)
         # Process options.
@@ -289,12 +289,12 @@ def main():
                 sys.exit(1)
         if opt_local:
             string_wf += " " + opt_local
-        command += " | \\\n" + string_wf
+        command += "| \\\n" + string_wf + " "
     if not command:
         msg_err("Nothing to do!")
         sys.exit(1)
-    # Remove the leading " | ".
-    command = command[3:]
+    # Remove the leading "| \\\n".
+    command = command[4:]
     # Append global options.
     if opt_global:
         command += " " + opt_global
