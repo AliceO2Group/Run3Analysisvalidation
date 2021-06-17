@@ -8,39 +8,33 @@ workflows:
   # Event selection
 
   o2-analysis-timestamp:
-    activate: false
     options:
       mc: "--isMC 1"
 
   o2-analysis-event-selection:
-    activate: false
     options:
       mc: "--isMC 1"
 
   # Skimming
 
   o2-analysis-hf-track-index-skims-creator: &skim_creator
-    activate: false
     executable: o2-analysis-hf-track-index-skims-creator
     tables: [HFSELTRACK, HFTRACKIDXP2, HFTRACKIDXP3]
 
   o2-analysis-hf-track-index-skims-creator-evsel:
     <<: *skim_creator
-    activate: false
     dependencies: [o2-analysis-timestamp, o2-analysis-event-selection]
     options: "--doEvSel"
     tables: [HFSELCOL, HFSELTRACK, HFTRACKIDXP2, HFTRACKIDXP3]
 
   o2-analysis-hf-track-index-skims-creator-v0:
     <<: *skim_creator
-    activate: false
     dependencies: o2-analysis-lambdakzerobuilder
     options: "--do-LcK0Sp"
     tables: [HFSELTRACK, HFTRACKIDXCASC, HFTRACKIDXP2, HFTRACKIDXP3]
 
   o2-analysis-hf-track-index-skims-creator-evsel-v0:
     <<: *skim_creator
-    activate: false
     dependencies: [o2-analysis-timestamp, o2-analysis-event-selection, o2-analysis-lambdakzerobuilder]
     options: ["--doEvSel", "--do-LcK0Sp"]
     tables: [HFSELCOL, HFSELTRACK, HFTRACKIDXCASC, HFTRACKIDXP2, HFTRACKIDXP3]
@@ -48,7 +42,6 @@ workflows:
   # Candidate creators
 
   o2-analysis-hf-candidate-creator-2prong: &cand_creator
-    activate: false
     dependencies:
       - o2-analysis-hf-track-index-skims-creator
     options:
@@ -59,14 +52,12 @@ workflows:
 
   o2-analysis-hf-candidate-creator-3prong:
     <<: *cand_creator
-    activate: false
     tables:
       default: [HFCANDP3BASE, HFCANDP3EXT]
       mc: [HFCANDP3MCREC, HFCANDP3MCGEN]
 
   o2-analysis-hf-candidate-creator-cascade:
     <<: *cand_creator
-    activate: false
     tables:
       default: [HFCANDCASCBASE, HFCANDCASCEXT]
       mc: [HFCANDCASCMCREC, HFCANDCASCMCGEN]
@@ -74,88 +65,72 @@ workflows:
   # Selectors
 
   o2-analysis-hf-d0-candidate-selector: &selector_2prong
-    activate: false
     dependencies: [o2-analysis-hf-candidate-creator-2prong, o2-analysis-pid-tpc-full, o2-analysis-pid-tof-full]
     tables: HFSELD0CAND
 
   o2-analysis-hf-jpsi-toee-candidate-selector:
     <<: *selector_2prong
-    activate: false
     tables: HFSELJPSICAND
 
   o2-analysis-hf-dplus-topikpi-candidate-selector: &selector_3prong
-    activate: false
     dependencies: [o2-analysis-hf-candidate-creator-3prong, o2-analysis-pid-tpc-full, o2-analysis-pid-tof-full]
     tables: HFSELDPLUSCAND
 
   o2-analysis-hf-lc-candidate-selector:
     <<: *selector_3prong
-    activate: false
     tables: HFSELLCCAND
 
   o2-analysis-hf-xic-topkpi-candidate-selector:
     <<: *selector_3prong
-    activate: false
     tables: HFSELXICCAND
 
   o2-analysis-hf-lc-tok0sp-candidate-selector:
-    activate: false
     dependencies: [o2-analysis-hf-candidate-creator-cascade, o2-analysis-pid-tpc-full, o2-analysis-pid-tof-full]
     tables: HFSELLCK0SPCAND
 
   # Analysis tasks
 
   o2-analysis-hf-task-d0: &task
-    activate: false
     dependencies: o2-analysis-hf-d0-candidate-selector
     options:
       mc: "--doMC"
 
   o2-analysis-hf-task-jpsi:
     <<: *task
-    activate: false
     dependencies: o2-analysis-hf-jpsi-toee-candidate-selector
 
   o2-analysis-hf-task-dplus:
     <<: *task
-    activate: false
     dependencies: o2-analysis-hf-dplus-topikpi-candidate-selector
 
   o2-analysis-hf-task-lc:
     <<: *task
-    activate: false
     dependencies: o2-analysis-hf-lc-candidate-selector
 
   o2-analysis-hf-task-xic:
     <<: *task
-    activate: false
     dependencies: o2-analysis-hf-xic-topkpi-candidate-selector
 
   o2-analysis-hf-task-bplus:
     <<: *task
-    activate: false
     dependencies: o2-analysis-hf-d0-candidate-selector
 
   o2-analysis-hf-task-x:
     <<: *task
-    activate: false
     dependencies: o2-analysis-hf-jpsi-toee-candidate-selector
 
   o2-analysis-hf-task-lc-tok0sp:
     <<: *task
-    activate: false
     dependencies: o2-analysis-hf-lc-tok0sp-candidate-selector
 
   # Tree creators
 
   o2-analysis-hf-tree-creator-d0-tokpi:
-    activate: false
     requires_mc: yes
     dependencies: o2-analysis-hf-d0-candidate-selector
     tables: [HFCANDP2Full, HFCANDP2FullE, HFCANDP2FullP]
 
   o2-analysis-hf-tree-creator-lc-topkpi:
-    activate: false
     requires_mc: yes
     dependencies: o2-analysis-hf-lc-candidate-selector
     tables: [HFCANDP3Full, HFCANDP3FullE, HFCANDP3FullP]
@@ -163,44 +138,34 @@ workflows:
   # QA
 
   o2-analysis-qa-efficiency:
-    activate: false
     requires_mc: yes
     options: "--eff-el 1 --eff-mu 1 --eff-pi 1 --eff-ka 1 --eff-pr 1"
 
   o2-analysis-qa-event-track:
-    activate: false
     requires_mc: yes
 
   o2-analysis-pid-tof-qa-mc:
-    activate: false
     requires_mc: yes
     dependencies: [o2-analysis-pid-tof-full, o2-analysis-pid-tof-beta]
 
   o2-analysis-hf-mc-validation:
-    activate: false
     requires_mc: yes
     dependencies: o2-analysis-hf-d0-candidate-selector
 
   # PID
 
-  o2-analysis-pid-tpc-full:
-    activate: false
+  o2-analysis-pid-tpc-full: {}
 
-  o2-analysis-pid-tof-full:
-    activate: false
+  o2-analysis-pid-tof-full: {}
 
-  o2-analysis-pid-tof-beta:
-    activate: false
+  o2-analysis-pid-tof-beta: {}
 
   # LF
 
   o2-analysis-lambdakzerobuilder:
-    activate: false
     dependencies: [o2-analysis-trackextension, o2-analysis-weak-decay-indices]
     options: "--v0radius 0.9"
 
-  o2-analysis-trackextension:
-    activate: false
+  o2-analysis-trackextension: {}
 
-  o2-analysis-weak-decay-indices:
-    activate: false
+  o2-analysis-weak-decay-indices: {}

@@ -88,20 +88,13 @@ def healthy_structure(dic_full: dict):
     if not isinstance(dic_wf, dict):
         msg_err('"workflows" is not a dictionary.')
         return False
-    # Check mandatory workflow keys.
+    # Check workflow keys.
     for wf in dic_wf:
         dic_wf_single = dic_wf[wf]
         if not isinstance(dic_wf_single, dict):
             msg_err("%s is not a dictionary." % wf)
             return False
-        good = True
-        for key in ["activate"]:
-            if key not in dic_wf_single:
-                msg_err('Key "%s" not found in workflow %s.' % (key, wf))
-                good = False
-        if not good:
-            return False
-        if not isinstance(dic_wf_single["activate"], bool):
+        if "activate" in dic_wf_single and not isinstance(dic_wf_single["activate"], bool):
             msg_err('"activate" in workflow %s is not a boolean.' % wf)
             return False
     return True
@@ -123,7 +116,7 @@ def activate_workflow(wf: str, dic_wf: dict, mc=False, level=0, debug=False):
             dic_wf_single["activate"] = False
             return
         # Activate.
-        if not dic_wf_single["activate"]:
+        if "activate" not in dic_wf_single or not dic_wf_single["activate"]:
             dic_wf_single["activate"] = True
         # Activate dependencies recursively.
         if "dependencies" in dic_wf_single:
@@ -197,11 +190,11 @@ def main():
 
     # Get list of primary workflows to run.
     # already activated in the database
-    list_wf_activated = [wf for wf in dic_wf if dic_wf[wf]["activate"]]
+    list_wf_activated = [wf for wf in dic_wf if "activate" in dic_wf[wf] and dic_wf[wf]["activate"]]
     if debug and list_wf_activated:
         eprint("\nWorkflows activated in the database:")
         eprint("\n".join("  " + wf for wf in list_wf_activated))
-    # requested at command line
+    # requested on command line
     if workflows_add:
         if debug:
             eprint("\nWorkflows specified on command line:")
@@ -223,7 +216,7 @@ def main():
     if save_tables:
         tables = []  # list of all tables of activated workflows
         for wf, dic_wf_single in dic_wf.items():
-            if not dic_wf_single["activate"]:
+            if "activate" not in dic_wf_single or not dic_wf_single["activate"]:
                 continue
             if "tables" not in dic_wf_single:
                 continue
@@ -253,7 +246,7 @@ def main():
     command = ""
     eprint("\nActivated workflows:")
     for wf, dic_wf_single in dic_wf.items():
-        if not dic_wf_single["activate"]:
+        if "activate" not in dic_wf_single or not dic_wf_single["activate"]:
             continue
         msg_bold("  " + wf)
         # Determine the workflow executable.
@@ -315,11 +308,11 @@ def main():
         dot += "  ranksep=2 // vertical node separation\n"
         dot += '  node [shape=box, style="filled,rounded", fillcolor=papayawhip, fontname=Courier, fontsize=20]\n'
         for wf, dic_wf_single in dic_wf.items():
-            if not dic_wf_single["activate"]:
+            if "activate" not in dic_wf_single or not dic_wf_single["activate"]:
                 continue
-            # hyphens are not allowed in node names
+            # Hyphens are not allowed in node names.
             node_wf = wf.replace("-", "_")
-            # replace hyphens with line breaks to save horizontal space
+            # Replace hyphens with line breaks to save horizontal space.
             label_wf = wf.replace("-", "\\n")
             dot += '  %s [label="%s"]\n' % (node_wf, label_wf)
             if "dependencies" in dic_wf_single:
