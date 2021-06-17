@@ -59,8 +59,7 @@ FILEOUT_TREES_O2="AnalysisResults_trees_O2.root"
 # Steering commands
 ENVALI="alienv setenv AliPhysics/latest -c"
 ENVO2="alienv setenv O2/latest -c"
-#ENVALIO2="alienv setenv AliPhysics/latest,O2/latest -c"
-ENVPOST="$ENVALI"
+ENVPOST="alienv setenv ROOT/latest -c"
 
 # Step scripts
 SCRIPT_O2="script_o2.sh"
@@ -158,8 +157,6 @@ if [ $DOALI -eq 1 ]; then
   [ "$O2_ROOT" ] && { MsgWarn "O2 environment is loaded - expect errors!"; }
   [ "$ALICE_PHYSICS" ] && { MsgWarn "AliPhysics environment is already loaded."; ENVALI=""; }
   $ENVALI bash "$DIR_EXEC/batch_ali.sh" "$LISTFILES_ALI" "$JSON" "$SCRIPT_ALI" $DEBUG "$NFILESPERJOB_ALI" || exit 1
-  # Run the batch script in the ALI+O2 environment.
-  #$ENVALIO2 bash "$DIR_EXEC/batch_ali.sh" $LISTFILES_ALI $JSON $SCRIPT_ALI $DEBUG || exit 1
   mv "$FILEOUT" "$FILEOUT_ALI" || ErrExit "Failed to mv $FILEOUT $FILEOUT_ALI."
 fi
 
