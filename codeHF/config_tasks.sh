@@ -191,16 +191,15 @@ function MakeScriptO2 {
   [ $SAVETREES -eq 1 ] && OPT_MAKECMD+=" -t"
   [ $MAKE_GRAPH -eq 1 ] && OPT_MAKECMD+=" -g"
 
-  # Make a copy of the default workflow database file before modifying it
+  # Make a copy of the default workflow database file before modifying it.
   DATABASE_O2_EDIT=""
   if [[ $DOO2_EVSEL -eq 1 || $DOO2_CASC -eq 1 ]]; then
     DATABASE_O2_EDIT="${DATABASE_O2/.yml/_edit.yml}"
-
     cp "$DATABASE_O2" "$DATABASE_O2_EDIT" || ErrExit "Failed to cp $DATABASE_O2 $DATABASE_O2_EDIT."
     DATABASE_O2="$DATABASE_O2_EDIT"
 
-    # Adjust workflow database in case of event selection or cascades enabled
-    ReplaceString "- o2-analysis-hf-track-index-skims-creator" "- ${WF_SKIM}" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
+    # Adjust workflow database in case of event selection or cascades enabled.
+    ReplaceString "- o2-analysis-hf-track-index-skims-creator" "- $WF_SKIM" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
   fi
 
   # Generate the O2 command.
@@ -214,7 +213,7 @@ function MakeScriptO2 {
 #!/bin/bash
 FileIn="\$1"
 JSON="\$2"
-mkdir sockets && \
+mkdir sockets && \\
 $O2EXEC && \\
 rm -r sockets
 EOF
