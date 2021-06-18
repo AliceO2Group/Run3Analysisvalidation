@@ -186,10 +186,9 @@ if [ $DOPOSTPROCESS -eq 1 ]; then
   MsgStep "Postprocessing... (logfile: $LogFile)"
   MakeScriptPostprocess || ErrExit "MakeScriptPostprocess failed."
   CheckFile "$SCRIPT_POSTPROCESS"
-  [ $DEBUG -eq 1 ] && echo "Loading AliPhysics..."
+  [ $DEBUG -eq 1 ] && echo "Loading ROOT..."
   # Run the batch script in the postprocessing environment.
-  [ "$O2_ROOT" ] && { MsgWarn "O2 environment is loaded - expect errors!"; }
-  [ "$ALICE_PHYSICS" ] && { MsgWarn "AliPhysics environment is already loaded."; ENVALI=""; }
+  [ "$ROOTSYS" ] && { MsgWarn "ROOT environment is already loaded."; ENVPOST=""; }
   $ENVPOST bash "$SCRIPT_POSTPROCESS" "$FILEOUT_O2" "$FILEOUT_ALI" > $LogFile 2>&1 || ErrExit "\nCheck $(realpath $LogFile)"
   grep -q -e '^'"W-" -e '^'"Warning" -e "warning" "$LogFile" && MsgWarn "There were warnings!\nCheck $(realpath $LogFile)"
   grep -q -e '^'"E-" -e '^'"Error" "$LogFile" && MsgErr "There were errors!\nCheck $(realpath $LogFile)"
