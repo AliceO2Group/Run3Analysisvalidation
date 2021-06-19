@@ -78,7 +78,7 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
   AddHistogram(vecHisD0, "decay length XY (cm)", "hDecLenXYD0", "hf-task-d0/hdeclengthxy", 2, 1, 0);
   AddHistogram(vecHisD0, "decay length error (cm)", "hDecLenErrD0", "hf-task-d0/hDecLenErr", 1, 1, 0);
   AddHistogram(vecHisD0, "decay length XY error (cm)", "hDecLenXYErrD0", "hf-task-d0/hDecLenXYErr", 1, 1, 0);
-  AddHistogram(vecHisD0, "cos. pointing angle", "hCosPointD0", "hf-task-d0/hCPA", 2, 1, 0);
+  AddHistogram(vecHisD0, "cos pointing angle", "hCosPointD0", "hf-task-d0/hCPA", 2, 1, 0);
 
   labelParticle = "D^{0} #rightarrow #pi K";
   VecSpecHis vecHisD0MC;
@@ -97,8 +97,8 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
   AddHistogram(vecHisDPlus, "decay length (cm)", "hDecLenDplus", "hf-task-dplus/hDecayLength", 4, 1, 0);
   AddHistogram(vecHisDPlus, "decay length XY (cm)", "hDecLenXYDplus", "hf-task-dplus/hDecayLengthXY", 4, 1, 0);
   AddHistogram(vecHisDPlus, "norm. decay length XY", "hNormDecLenXYDplus", "hf-task-dplus/hNormalisedDecayLengthXY", 2, 1, 0);
-  AddHistogram(vecHisDPlus, "cos. pointing angle", "hCosPointDplus", "hf-task-dplus/hCPA", 2, 1, 0);
-  AddHistogram(vecHisDPlus, "cos. pointing angle XY", "hCosPointXYDplus", "hf-task-dplus/hCPAxy", 2, 1, 0);
+  AddHistogram(vecHisDPlus, "cos pointing angle", "hCosPointDplus", "hf-task-dplus/hCPA", 2, 1, 0);
+  AddHistogram(vecHisDPlus, "cos pointing angle XY", "hCosPointXYDplus", "hf-task-dplus/hCPAxy", 2, 1, 0);
   AddHistogram(vecHisDPlus, "norm. IP", "hNormIPDplus", "hf-task-dplus/hMaxNormalisedDeltaIP", 4, 1, 0);
   AddHistogram(vecHisDPlus, "decay length error (cm)", "hDecLenErrDplus", "hf-task-dplus/hDecayLengthError", 2, 1, 0);
   AddHistogram(vecHisDPlus, "decay length XY error (cm)", "hDecLenXYErrDplus", "hf-task-dplus/hDecayLengthXYError", 2, 1, 0);
@@ -114,7 +114,7 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
   AddHistogram(vecHisLc, "#it{p}_{T} #Lambda_{c}^{#plus} (GeV/#it{c})", "hPtLc", "hf-task-lc/hptcand", 2, 1, 0);
   AddHistogram(vecHisLc, "3-prong mass (p K #pi) (GeV/#it{c}^{2})", "hInvMassLc", "hf-task-lc/hmass", 2, 0, 0);
   AddHistogram(vecHisLc, "decay length (cm)", "hDecLenLc", "hf-task-lc/hdeclength", 2, 1, 0);
-  AddHistogram(vecHisLc, "cos. pointing angle", "hCosPointLc", "hf-task-lc/hCPA", 2, 1, 0);
+  AddHistogram(vecHisLc, "cos pointing angle", "hCosPointLc", "hf-task-lc/hCPA", 2, 1, 0);
 
   labelParticle = "#Lambda_{c}^{#plus} #rightarrow p K #pi";
   VecSpecHis vecHisLcMC;
@@ -133,7 +133,7 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
   AddHistogram(vecHisJpsi, "d0 prong 1 (cm)", "hImpParJpsiDau1", "hf-task-jpsi/hd0Prong1", 2, 1, 0);
   AddHistogram(vecHisJpsi, "decay length (cm)", "hDecLenJpsi", "hf-task-jpsi/hdeclength", 2, 1, 0);
   AddHistogram(vecHisJpsi, "decay length XY (cm)", "hDecLenXYJpsi", "hf-task-jpsi/hdeclengthxy", 2, 1, 0);
-  AddHistogram(vecHisJpsi, "cos. pointing angle", "hCosPointJpsi", "hf-task-jpsi/hCPA", 2, 1, 0);
+  AddHistogram(vecHisJpsi, "cos pointing angle", "hCosPointJpsi", "hf-task-jpsi/hCPA", 2, 1, 0);
   AddHistogram(vecHisJpsi, "decay length error (cm)", "hDecLenErrJpsi", "hf-task-jpsi/hDecLenErr", 1, 1, 0);
   AddHistogram(vecHisJpsi, "decay length XY error (cm)", "hDecLenXYErrJpsi", "hf-task-jpsi/hDecLenXYErr", 1, 1, 0);
 
