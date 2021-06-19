@@ -3,24 +3,6 @@
 [![GitHub Mega-Linter](https://github.com/AliceO2Group/Run3Analysisvalidation/workflows/Mega-Linter/badge.svg?branch=master)](https://github.com/marketplace/actions/mega-linter)
 [![GitHub Clang Format Linter](https://github.com/AliceO2Group/Run3Analysisvalidation/workflows/Clang%20Format%20Linter/badge.svg)](https://github.com/marketplace/actions/clang-format-lint)
 
-## Table of contents
-
-* [Introduction](#introduction)
-* [Overview](#overview)
-  * [Execution](#execution)
-  * [Configuration](#configuration)
-* [Preparation](#preparation)
-  * [Build AliPhysics and O<sup>2</sup>](#build-aliphysics-and-o2)
-  * [Download the validation framework](#download-the-validation-framework)
-  * [Install parallelisation software](#install-parallelisation-software)
-* [Run the framework](#run-the-framework)
-* [Job debugging](#job-debugging)
-* [Heavy-flavour analyses](#heavy-flavour-analyses)
-* [Keep your repositories and installations up to date and clean](#keep-your-repositories-and-installations-up-to-date-and-clean)
-* [Continuous integration tests](#continuous-integration-tests)
-  * [C++](#c)
-  * [Python](#python)
-
 ## Introduction
 
 The main purpose of the Run 3 validation framework is to provide a compact and flexible tool for validation of the
