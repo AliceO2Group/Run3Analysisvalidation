@@ -104,6 +104,7 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
   AddHistogram(vecHisDPlus, "decay length XY error (cm)", "hDecLenXYErrDplus", "hf-task-dplus/hDecayLengthXYError", 2, 1, 0);
   AddHistogram(vecHisDPlus, "prong 0 impact parameter (cm)", "hImpParDplusDau0", "hf-task-dplus/hd0Prong0", 2, 1, 0);
   AddHistogram(vecHisDPlus, "prong 1 impact parameter (cm)", "hImpParDplusDau1", "hf-task-dplus/hd0Prong1", 2, 1, 0);
+  AddHistogram(vecHisDPlus, "prong 2 impact parameter (cm)", "hImpParDplusDau2", "hf-task-dplus/hd0Prong2", 2, 1, 0);
   AddHistogram(vecHisDPlus, "prong impact parameter error (cm)", "hImpParErrDplusDau", "hf-task-dplus/hImpactParameterError", 2, 1, 0);
   AddHistogram(vecHisDPlus, "sq. sum of prong imp. par. (cm^{2})", "hSumSqImpParDplusDau", "hf-task-dplus/hImpactParameterProngSqSum", 2, 1, 0);
 
@@ -154,7 +155,7 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
   if (options.Contains(" d0-mc "))
     vecSpecVecSpec.push_back(std::make_tuple("d0-mc", vecHisD0MC, 2, 2));
   if (options.Contains(" dplus "))
-    vecSpecVecSpec.push_back(std::make_tuple("dplus", vecHisDPlus, 6, 3));
+    vecSpecVecSpec.push_back(std::make_tuple("dplus", vecHisDPlus, 5, 4));
   if (options.Contains(" lc "))
     vecSpecVecSpec.push_back(std::make_tuple("lc", vecHisLc, 5, 3));
   if (options.Contains(" lc-mc "))
