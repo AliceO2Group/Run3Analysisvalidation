@@ -237,9 +237,9 @@ function MakeScriptPostprocess {
     [ $DOO2_SKIM -eq 1 ] && OPT_COMPARE+=" tracks skim "
     [ $DOO2_CAND_2PRONG -eq 1 ] && OPT_COMPARE+=" cand2 "
     [ $DOO2_CAND_3PRONG -eq 1 ] && OPT_COMPARE+=" cand3 "
-    [ $DOO2_TASK_D0 -eq 1 ] && OPT_COMPARE+=" d0 "
+    [ $DOO2_TASK_D0 -eq 1 ] && { OPT_COMPARE+=" d0 "; [ "$ISMC" -eq 1 ] && OPT_COMPARE+=" d0-mc "; }
     [ $DOO2_TASK_DPLUS -eq 1 ] && OPT_COMPARE+=" dplus "
-    [ $DOO2_TASK_LC -eq 1 ] && OPT_COMPARE+=" lc "
+    [ $DOO2_TASK_LC -eq 1 ] && { OPT_COMPARE+=" lc "; [ "$ISMC" -eq 1 ] && OPT_COMPARE+=" lc-mc "; }
     [ $DOO2_TASK_XIC -eq 1 ] && OPT_COMPARE+=" xic "
     [ $DOO2_TASK_JPSI -eq 1 ] && OPT_COMPARE+=" jpsi "
     [ "$OPT_COMPARE" ] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/Compare.C(\\\"\$FileO2\\\", \\\"\$FileAli\\\", \\\"$OPT_COMPARE\\\", $DORATIO)\""
