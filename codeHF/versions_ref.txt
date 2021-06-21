@@ -1,4 +1,4 @@
-alidist: master 2021-02-03 22:10:18 +0100 c9b6c5a bump infologger (#2808)
-AliPhysics: master 2021-02-03 23:01:26 +0100 64ee243e1d Merge pull request #16821 from fjonasALICE/master
-O2: dev 2021-02-03 23:37:25 +0100 64d56ea416 Digits labels should be read via ConstMCTruthContainer
-Run 3 validation: master 2021-02-04 00:54:48 +0100 3938aed Update input cases.
+alidist: master 2021-06-19 20:37:59 +0200 a1f6ba0 Auto-update defaults-generators.sh and aligenerators.sh (#3116)
+AliPhysics: master 2021-06-20 14:53:55 +0200 58e2b8e609c8 Merge pull request #17961 from jokonig/master
+O2: dev 2021-06-21 00:54:13 +0200 e095f7dd17 Fix typo in PVertexer debris cleanup
+Run 3 validation: master 2021-06-20 23:38:45 +0200 bd90f03 Catch more O2 errors
