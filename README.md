@@ -3,24 +3,6 @@
 [![GitHub Mega-Linter](https://github.com/AliceO2Group/Run3Analysisvalidation/workflows/Mega-Linter/badge.svg?branch=master)](https://github.com/marketplace/actions/mega-linter)
 [![GitHub Clang Format Linter](https://github.com/AliceO2Group/Run3Analysisvalidation/workflows/Clang%20Format%20Linter/badge.svg)](https://github.com/marketplace/actions/clang-format-lint)
 
-## Table of contents
-
-* [Introduction](#introduction)
-* [Overview](#overview)
-  * [Execution](#execution)
-  * [Configuration](#configuration)
-* [Preparation](#preparation)
-  * [Build AliPhysics and O<sup>2</sup>](#build-aliphysics-and-o2)
-  * [Download the validation framework](#download-the-validation-framework)
-  * [Install parallelisation software](#install-parallelisation-software)
-* [Run the framework](#run-the-framework)
-* [Job debugging](#job-debugging)
-* [Heavy-flavour analyses](#heavy-flavour-analyses)
-* [Keep your repositories and installations up to date and clean](#keep-your-repositories-and-installations-up-to-date-and-clean)
-* [Continuous integration tests](#continuous-integration-tests)
-  * [C++](#c)
-  * [Python](#python)
-
 ## Introduction
 
 The main purpose of the Run 3 validation framework is to provide a compact and flexible tool for validation of the
@@ -251,25 +233,25 @@ You can easily extend the script to include any other local Git repository and a
 ## Continuous integration tests
 
 Validity and quality of the code in the repository are checked on GitHub by several tools (linters) that support many coding languages.
-Linters run automatically for every push or pull request.
+Linters run automatically for every push or pull request event.
 **Please make sure that your code passes all the tests before making a pull request.**
 
-Here are some tips how to check your code locally with the linters that usually complain the most.
+It is possible to check your code locally (before even committing or pushing):
 
-### C++
+### Space checker
 
-* [ClangFormat](https://clang.llvm.org/docs/ClangFormat.html) - automatic reformatting of C++ sources files according to configurable style guides
+```bash
+bash <path to the Run3Analysisvalidation directory>/exec/check_spaces.sh
+```
+
+### [ClangFormat](https://clang.llvm.org/docs/ClangFormat.html)
 
 ```bash
 clang-format -style=file -i <file>
 ```
 
-### Python
-
-* [Black](https://github.com/psf/black) - “uncompromising Python code formatter”
-* [flake8](https://gitlab.com/pycqa/flake8) - “tool that glues together pep8, pyflakes, mccabe, and third-party plugins to check the style and quality of some python code”
-* [isort](https://github.com/PyCQA/isort) - “utility to sort imports alphabetically, and automatically separated into sections and by type”
+### [Mega-Linter](https://nvuillam.github.io/mega-linter/mega-linter-runner/)
 
 ```bash
-black . && flake8 . && isort .
+mega-linter-runner
 ```
