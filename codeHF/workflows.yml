@@ -161,7 +161,10 @@ workflows:
 
   o2-analysis-qa-rejection:
     requires_mc: yes
-    dependencies: [o2-analysis-hf-track-index-skims-creator, o2-analysis-pid-tpc-full, o2-analysis-pid-tof-full]
+    dependencies:
+      - o2-analysis-hf-track-index-skims-creator
+      - o2-analysis-pid-tpc-full
+      - o2-analysis-pid-tof-full
 
   o2-analysis-pid-tof-qa-mc:
     requires_mc: yes
