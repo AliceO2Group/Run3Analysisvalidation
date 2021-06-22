@@ -96,27 +96,7 @@ def plotsinglevar(
 
 plotsinglevar(
     "MuMu",
-    "../codeHF/AnalysisResults_O2.root",
-    "hf-task-x",
-    "J/#psi",
-    5,
-    "hMass",
-    2.7,
-    4.2,
-    0.1,
-    5e3,
-    4,
-    0,
-    1,
-    2.0,
-    4.0,
-    "",
-    "Xi_{cc} reco - gen p_{T}",
-    0,
-)
-plotsinglevar(
-    "EE",
-    "../codeHF/AnalysisResults_O2_EE.root",
+    "/home/auras/analysis/AnalysisResults_O2_Signal_PID_mumu.root",
     "hf-task-jpsi-mc",
     "J/#psi",
     2,
@@ -131,6 +111,6 @@ plotsinglevar(
     2.0,
     4.0,
     "",
-    "Xi_{cc} reco - gen p_{T}",
+    "Inv. Mass (GeV/c2)",
     0,
 )
