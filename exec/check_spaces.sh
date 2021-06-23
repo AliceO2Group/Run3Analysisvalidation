@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Find tabs in text files
+# Find tabs and trailing whitespaces in text files
 
 # This directory
 DIR_THIS="$(dirname "$(realpath "$0")")"

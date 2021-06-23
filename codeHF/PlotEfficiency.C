@@ -10,17 +10,22 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
   gStyle->SetFrameFillColor(0);
 
   // vertical margins of the pT spectra plot
-  Float_t marginHigh = 0.05;
-  Float_t marginLow = 0.05;
+  float marginHigh = 0.05;
+  float marginLow = 0.05;
   bool logScaleH = true;
   // vertical margins of the efficiency plot
-  Float_t marginRHigh = 0.05;
-  Float_t marginRLow = 0.05;
+  float marginRHigh = 0.05;
+  float marginRLow = 0.05;
   bool logScaleR = false;
-  Float_t yMin, yMax;
-  Int_t nRec, nGen;
+  double yMin, yMax;
+  int nRec, nGen;
+  int colours[] = {1, 2, 4};
+  int markers[] = {24, 25, 46};
+
   // binning
   Int_t iNRebin = 4;
+  //Double_t* dRebin = nullptr;
+  //const Int_t NRebin = 1;
   Double_t dRebin[] = {0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 5, 6, 8, 10};
   const Int_t NRebin = sizeof(dRebin) / sizeof(dRebin[0]) - 1;
 
@@ -30,8 +35,9 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
     return 1;
   }
 
+  // get list of particles
   TObjArray* arrayParticle = 0;
-  arrayParticle = particles.Tokenize("-");
+  arrayParticle = particles.Tokenize(" ");
   TString particle = "";
 
   // loop over particles
@@ -43,59 +49,166 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
     }
     Printf("\nPlotting efficiency for: %s", particle.Data());
 
-    TString histonameRec = Form("hf-task-%s-mc/hPtGenSig", particle.Data()); // Use hPtRecSig for reconstruction level pT.
-    TH1F* hPtRec = (TH1F*)file->Get(histonameRec.Data());
-    if (!hPtRec) {
-      Printf("Error: Failed to load %s from %s", histonameRec.Data(), pathFile.Data());
+    TString outputDir = Form("hf-task-%s-mc", particle.Data()); // analysis output directory with histograms
+
+    // inclusive candidates
+    TString nameHistRec = outputDir + "/hPtRecSig"; // reconstruction level pT of matched candidates
+    //nameHistRec = outputDir + "/hPtGenSig"; // generator level pT of matched candidates (no pT smearing)
+    TString nameHistgen = outputDir + "/hPtGen"; // generator level pT of generated particles
+    TH1F* hPtRecIncl = (TH1F*)file->Get(nameHistRec.Data());
+    if (!hPtRecIncl) {
+      Printf("Error: Failed to load %s from %s", nameHistRec.Data(), pathFile.Data());
+      return 1;
+    }
+    TH1F* hPtGenIncl = (TH1F*)file->Get(nameHistgen.Data());
+    if (!hPtGenIncl) {
+      Printf("Error: Failed to load %s from %s", nameHistgen.Data(), pathFile.Data());
       return 1;
     }
 
-    TString histonameGen = Form("hf-task-%s-mc/hPtGen", particle.Data());
-    TH1F* hPtGen = (TH1F*)file->Get(histonameGen.Data());
-    if (!hPtGen) {
-      Printf("Error: Failed to load %s from %s", histonameGen.Data(), pathFile.Data());
-      return 1;
+    // prompt candidates
+    bool okPrompt = true;
+    nameHistRec = outputDir + "/hPtRecSigPrompt";
+    TH1F* hPtRecPrompt = (TH1F*)file->Get(nameHistRec.Data());
+    if (!hPtRecPrompt) {
+      Printf("Warning: Failed to load %s from %s", nameHistRec.Data(), pathFile.Data());
+      okPrompt = false;
+    }
+    nameHistgen = outputDir + "/hPtGenPrompt";
+    TH1F* hPtGenPrompt = (TH1F*)file->Get(nameHistgen.Data());
+    if (!hPtGenPrompt) {
+      Printf("Warning: Failed to load %s from %s", nameHistgen.Data(), pathFile.Data());
+      okPrompt = false;
+    }
+
+    // non-prompt candidates
+    bool okNonPrompt = true;
+    nameHistRec = outputDir + "/hPtRecSigNonPrompt";
+    TH1F* hPtRecNonPrompt = (TH1F*)file->Get(nameHistRec.Data());
+    if (!hPtRecNonPrompt) {
+      Printf("Warning: Failed to load %s from %s", nameHistRec.Data(), pathFile.Data());
+      okNonPrompt = false;
+    }
+    nameHistgen = outputDir + "/hPtGenNonPrompt";
+    TH1F* hPtGenNonPrompt = (TH1F*)file->Get(nameHistgen.Data());
+    if (!hPtGenNonPrompt) {
+      Printf("Warning: Failed to load %s from %s", nameHistgen.Data(), pathFile.Data());
+      okNonPrompt = false;
     }
 
     TCanvas* canPt = new TCanvas(Form("canPt_%s", particle.Data()), "Pt", 1200, 1000);
+    TLegend* legendPt = new TLegend(0.72, 0.72, 0.92, 0.92);
     TCanvas* canEff = new TCanvas(Form("canEff_%s", particle.Data()), "Eff", 1200, 1000);
+    TLegend* legendEff = new TLegend(0.1, 0.72, 0.3, 0.92);
 
-    nGen = hPtGen->GetEntries();
-    nRec = hPtRec->GetEntries();
+    nGen = hPtGenIncl->GetEntries();
+    nRec = hPtRecIncl->GetEntries();
 
     // pT spectra
-    auto padH = canPt->cd();
-    hPtGen->Rebin(iNRebin);
-    hPtRec->Rebin(iNRebin);
-    //hPtRec = (TH1F*)hPtRec->Rebin(NRebin, "hPtRecR", dRebin);
-    //hPtGen = (TH1F*)hPtGen->Rebin(NRebin, "hPtGenR", dRebin);
-    hPtGen->SetLineColor(1);
-    hPtGen->SetLineWidth(2);
-    hPtRec->SetLineColor(2);
-    hPtRec->SetLineWidth(1);
-    hPtGen->SetTitle(Form("Entries: Rec: %d, Gen: %d;#it{p}_{T} (GeV/#it{c});entries", nRec, nGen));
-    hPtGen->GetYaxis()->SetMaxDigits(3);
-    yMin = TMath::Min(hPtRec->GetMinimum(0), hPtGen->GetMinimum(0));
-    yMax = TMath::Max(hPtRec->GetMaximum(), hPtGen->GetMaximum());
-    SetHistogram(hPtGen, yMin, yMax, marginLow, marginHigh, logScaleH);
-    SetPad(padH, logScaleH);
-    hPtGen->Draw();
-    hPtRec->Draw("same");
-    TLegend* legend = new TLegend(0.72, 0.72, 0.92, 0.92);
-    legend->AddEntry(hPtRec, "Rec", "L");
-    legend->AddEntry(hPtGen, "Gen", "L");
-    legend->Draw();
+    auto padPt = canPt->cd();
+    // inclusive
+    if (iNRebin > 1) {
+      hPtGenIncl->Rebin(iNRebin);
+      hPtRecIncl->Rebin(iNRebin);
+    } else if (NRebin > 1) {
+      hPtGenIncl = (TH1F*)hPtGenIncl->Rebin(NRebin, "hPtGenInclR", dRebin);
+      hPtRecIncl = (TH1F*)hPtRecIncl->Rebin(NRebin, "hPtRecInclR", dRebin);
+    }
+    yMin = std::min(hPtRecIncl->GetMinimum(0), hPtGenIncl->GetMinimum(0));
+    yMax = std::max(hPtRecIncl->GetMaximum(), hPtGenIncl->GetMaximum());
+    SetHistogramStyle(hPtGenIncl, colours[0], markers[0], 1.5, 2);
+    SetHistogramStyle(hPtRecIncl, colours[0], markers[0], 1.5, 2);
+    hPtGenIncl->SetTitle(Form("Entries: Rec: %d, Gen: %d;#it{p}_{T} (GeV/#it{c});entries", nRec, nGen));
+    hPtGenIncl->GetYaxis()->SetMaxDigits(3);
+    // prompt
+    if (okPrompt) {
+      if (iNRebin > 1) {
+        hPtGenPrompt->Rebin(iNRebin);
+        hPtRecPrompt->Rebin(iNRebin);
+      } else if (NRebin > 1) {
+        hPtGenPrompt = (TH1F*)hPtGenPrompt->Rebin(NRebin, "hPtGenPromptR", dRebin);
+        hPtRecPrompt = (TH1F*)hPtRecPrompt->Rebin(NRebin, "hPtRecPromptR", dRebin);
+      }
+      yMin = std::min({yMin, hPtRecPrompt->GetMinimum(0), hPtGenPrompt->GetMinimum(0)});
+      yMax = std::max({yMax, hPtRecPrompt->GetMaximum(), hPtGenPrompt->GetMaximum()});
+      SetHistogramStyle(hPtGenPrompt, colours[1], markers[1], 1.5, 2);
+      SetHistogramStyle(hPtRecPrompt, colours[1], markers[1], 1.5, 2);
+    }
+    // non-prompt
+    if (okNonPrompt) {
+      if (iNRebin > 1) {
+        hPtGenNonPrompt->Rebin(iNRebin);
+        hPtRecNonPrompt->Rebin(iNRebin);
+      } else if (NRebin > 1) {
+        hPtGenNonPrompt = (TH1F*)hPtGenNonPrompt->Rebin(NRebin, "hPtGenNonPromptR", dRebin);
+        hPtRecNonPrompt = (TH1F*)hPtRecNonPrompt->Rebin(NRebin, "hPtRecNonPromptR", dRebin);
+      }
+      yMin = std::min({yMin, hPtRecNonPrompt->GetMinimum(0), hPtGenNonPrompt->GetMinimum(0)});
+      yMax = std::max({yMax, hPtRecNonPrompt->GetMaximum(), hPtGenNonPrompt->GetMaximum()});
+      SetHistogramStyle(hPtGenNonPrompt, colours[2], markers[2], 1.5, 2);
+      SetHistogramStyle(hPtRecNonPrompt, colours[2], markers[2], 1.5, 2);
+    }
+    SetHistogram(hPtGenIncl, yMin, yMax, marginLow, marginHigh, logScaleH);
+    SetPad(padPt, logScaleH);
+    hPtGenIncl->Draw();
+    hPtRecIncl->Draw("same EP");
+    legendPt->AddEntry(hPtRecIncl, "inclusive rec", "P");
+    legendPt->AddEntry(hPtGenIncl, "inclusive gen", "L");
+    if (okPrompt) {
+      hPtGenPrompt->Draw("same");
+      hPtRecPrompt->Draw("same EP");
+      legendPt->AddEntry(hPtRecPrompt, "prompt rec", "P");
+      legendPt->AddEntry(hPtGenPrompt, "prompt gen", "L");
+    }
+    if (okNonPrompt) {
+      hPtGenNonPrompt->Draw("same");
+      hPtRecNonPrompt->Draw("same EP");
+      legendPt->AddEntry(hPtRecNonPrompt, "non-prompt rec", "P");
+      legendPt->AddEntry(hPtGenNonPrompt, "non-prompt gen", "L");
+    }
+    legendPt->Draw();
 
     // efficiency
-    auto padR = canEff->cd();
-    TH1F* hEff = (TH1F*)hPtRec->Clone("hEff");
-    hEff->Divide(hEff, hPtGen, 1., 1., "B");
-    hEff->SetTitle(Form("Entries ratio: %g;#it{p}_{T} (GeV/#it{c});efficiency", (double)nRec / (double)nGen));
-    yMin = hEff->GetMinimum(0);
-    yMax = hEff->GetMaximum();
-    SetHistogram(hEff, yMin, yMax, marginRLow, marginRHigh, logScaleR);
-    SetPad(padR, logScaleR);
-    hEff->Draw("PE");
+    auto padEff = canEff->cd();
+    TH1F* hEffIncl = nullptr;
+    TH1F* hEffPrompt = nullptr;
+    TH1F* hEffNonPrompt = nullptr;
+    // inclusive
+    hEffIncl = (TH1F*)hPtRecIncl->Clone("hEffIncl");
+    hEffIncl->Divide(hEffIncl, hPtGenIncl, 1., 1., "B");
+    yMin = hEffIncl->GetMinimum(0);
+    yMax = hEffIncl->GetMaximum();
+    SetHistogramStyle(hEffIncl, colours[0], markers[0], 1.5, 2);
+    hEffIncl->SetTitle(Form("Entries ratio: %g;#it{p}_{T} (GeV/#it{c});reconstruction efficiency", (double)nRec / (double)nGen));
+    // prompt
+    if (okPrompt) {
+      hEffPrompt = (TH1F*)hPtRecPrompt->Clone("hEffPrompt");
+      hEffPrompt->Divide(hPtRecPrompt, hPtGenPrompt, 1., 1., "B");
+      yMin = std::min(yMin, hEffPrompt->GetMinimum(0));
+      yMax = std::max(yMax, hEffPrompt->GetMaximum());
+      SetHistogramStyle(hEffPrompt, colours[1], markers[1], 1.5, 2);
+    }
+    // non-prompt
+    if (okNonPrompt) {
+      hEffNonPrompt = (TH1F*)hPtRecNonPrompt->Clone("hEffNonPrompt");
+      hEffNonPrompt->Divide(hPtRecNonPrompt, hPtGenNonPrompt, 1., 1., "B");
+      yMin = std::min(yMin, hEffNonPrompt->GetMinimum(0));
+      yMax = std::max(yMax, hEffNonPrompt->GetMaximum());
+      SetHistogramStyle(hEffNonPrompt, colours[2], markers[2], 1.5, 2);
+    }
+    SetHistogram(hEffIncl, yMin, yMax, marginRLow, marginRHigh, logScaleR);
+    SetPad(padEff, logScaleR);
+    hEffIncl->Draw("EP");
+    legendEff->AddEntry(hEffIncl, "inclusive", "P");
+    if (okPrompt) {
+      hEffPrompt->Draw("same EP");
+      legendEff->AddEntry(hEffPrompt, "prompt", "P");
+    }
+    if (okNonPrompt) {
+      hEffNonPrompt->Draw("same EP");
+      legendEff->AddEntry(hEffNonPrompt, "non-prompt", "P");
+    }
+    legendEff->Draw();
 
     canPt->SaveAs(Form("MC_%s_pT.pdf", particle.Data()));
     canEff->SaveAs(Form("MC_%s_eff.pdf", particle.Data()));

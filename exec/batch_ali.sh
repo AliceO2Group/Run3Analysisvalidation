@@ -27,13 +27,14 @@ JSON="$(realpath "$JSON")"
 LogFile="log_ali.log"
 ListIn="list_ali.txt"
 FilesToMerge="ListOutToMergeAli.txt"
-DirBase="$PWD"
 IndexFile=0
-ListRunScripts="$DirBase/ListRunScriptsAli.txt"
+IndexJob=0
 DirOutMain="output_ali"
 
+CMDPARALLEL="cd \"$DirOutMain/{}\" && bash \"$DIR_THIS/run_ali.sh\" \"$SCRIPT\" \"$ListIn\" \"$JSON\" \"$LogFile\""
+
 # Clean before running.
-rm -rf "$ListRunScripts" "$FilesToMerge" "$FILEOUT" "$DirOutMain" || ErrExit "Failed to delete output files."
+rm -rf "$FilesToMerge" "$FILEOUT" "$DirOutMain" || ErrExit "Failed to delete output files."
 
 CheckFile "$LISTINPUT"
 echo "Output directory: $DirOutMain (logfiles: $LogFile)"
@@ -46,30 +47,25 @@ while read -r FileIn; do
   # New job
   if [ $((IndexFile % NFILESPERJOB)) -eq 0 ]; then
     mkdir -p $DirOut || ErrExit "Failed to mkdir $DirOut."
-    FileOut="$DirOut/$FILEOUT"
-    echo "$FileOut" >> "$DirBase/$FilesToMerge" || ErrExit "Failed to echo to $DirBase/$FilesToMerge."
-    # Add this job in the list of commands.
-    echo "cd \"$DirOut\" && bash \"$DIR_THIS/run_ali.sh\" \"$SCRIPT\" \"$ListIn\" \"$JSON\" \"$LogFile\"" >> "$ListRunScripts" || ErrExit "Failed to echo to $ListRunScripts."
+    echo "$DirOut/$FILEOUT" >> "$FilesToMerge" || ErrExit "Failed to echo to $FilesToMerge."
   fi
   echo "$FileIn" >> "$DirOut/$ListIn" || ErrExit "Failed to echo to $DirOut/$ListIn."
   [ "$DEBUG" -eq 1 ] && echo "Input file ($IndexFile, job $IndexJob): $FileIn"
-  ((IndexFile+=1))
+  ((IndexFile++))
 done < "$LISTINPUT"
 
-CheckFile "$ListRunScripts"
-echo "Running AliPhysics jobs... ($(wc -l < "$ListRunScripts") jobs, $NFILESPERJOB files/job)"
+echo "Running AliPhysics jobs... ($((IndexJob+1)) jobs, $NFILESPERJOB files/job)"
 OPT_PARALLEL="--halt soon,fail=100%"
 if [ "$DEBUG" -eq 0 ]; then
   # shellcheck disable=SC2086 # Ignore unquoted options.
-  parallel $OPT_PARALLEL < "$ListRunScripts" > $LogFile 2>&1
+  parallel $OPT_PARALLEL "$CMDPARALLEL" ::: $(seq 0 $IndexJob) > $LogFile 2>&1
 else
   # shellcheck disable=SC2086 # Ignore unquoted options.
-  parallel $OPT_PARALLEL --will-cite --progress < "$ListRunScripts" > $LogFile
+  parallel $OPT_PARALLEL --will-cite --progress "$CMDPARALLEL" ::: $(seq 0 $IndexJob) > $LogFile
 fi || ErrExit "\nCheck $(realpath $LogFile)"
 grep -q -e '^'"W-" -e '^'"Warning" "$LogFile" && MsgWarn "There were warnings!\nCheck $(realpath $LogFile)"
 grep -q -e '^'"E-" -e '^'"Error" "$LogFile" && MsgErr "There were errors!\nCheck $(realpath $LogFile)"
 grep -q -e '^'"F-" -e '^'"Fatal" -e "segmentation" "$LogFile" && ErrExit "There were fatal errors!\nCheck $(realpath $LogFile)"
-rm -f "$ListRunScripts" || ErrExit "Failed to rm $ListRunScripts."
 
 echo "Merging output files... (output file: $FILEOUT, logfile: $LogFile)"
 hadd "$FILEOUT" @"$FilesToMerge" >> $LogFile 2>&1 || \
