@@ -4,7 +4,7 @@ from math import ceil, sqrt
 
 import yaml
 from hfplot.plot_spec_root import ROOTFigure
-from hfplot.style import ROOTStyle1D
+from hfplot.style import StyleObject1D
 from ROOT import TFile
 
 
@@ -47,12 +47,12 @@ def distr_studies(hadron="X3872", collision="pp14p0", yrange="absy1p44"):
     lptMax = []
 
     # Define some styles
-    style_sig = ROOTStyle1D()
+    style_sig = StyleObject1D()
     style_sig.markercolor = 2
     style_sig.markerstyle = 21
     style_sig.markersize = 2
     style_sig.draw_options = "P"
-    style_bkg = ROOTStyle1D()
+    style_bkg = StyleObject1D()
     style_bkg.markerstyle = 23
     style_bkg.markersize = 2
     style_bkg.draw_options = "P"
