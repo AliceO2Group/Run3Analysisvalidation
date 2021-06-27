@@ -69,7 +69,8 @@ workflows:
 
   o2-analysis-hf-candidate-creator-x:
     <<: *cand_creator
-    dependencies: o2-analysis-hf-jpsi-candidate-selector
+    dependencies:
+      - o2-analysis-hf-jpsi-candidate-selector
     tables:
       default: [HFCANDXBASE, HFCANDXEXT]
       mc: [HFCANDXMCREC, HFCANDXMCGEN]
@@ -80,9 +81,14 @@ workflows:
     dependencies: [o2-analysis-hf-candidate-creator-2prong, o2-analysis-pid-tpc-full, o2-analysis-pid-tof-full]
     tables: HFSELD0CAND
 
-  o2-analysis-hf-jpsi-candidate-selector:
+  o2-analysis-hf-jpsi-candidate-selector: &selector_jpsi
     <<: *selector_2prong
+    executable: o2-analysis-hf-jpsi-candidate-selector
     tables: HFSELJPSICAND
+
+  o2-analysis-hf-jpsi-candidate-selector-alice3:
+    <<: *selector_jpsi
+    options: --isAlice3
 
   o2-analysis-hf-dplus-topikpi-candidate-selector: &selector_3prong
     dependencies: [o2-analysis-hf-candidate-creator-3prong, o2-analysis-pid-tpc-full, o2-analysis-pid-tof-full]
@@ -112,7 +118,8 @@ workflows:
 
   o2-analysis-hf-task-jpsi:
     <<: *task
-    dependencies: o2-analysis-hf-jpsi-candidate-selector
+    dependencies:
+      - o2-analysis-hf-jpsi-candidate-selector
 
   o2-analysis-hf-task-dplus:
     <<: *task

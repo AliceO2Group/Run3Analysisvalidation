@@ -157,6 +157,8 @@ function MakeScriptO2 {
   [ $DOO2_CASC -eq 1 ] && SUFFIX_CASC="-v0" || SUFFIX_CASC=""
   # Event selection
   [ $DOO2_EVSEL -eq 1 ] && SUFFIX_EVSEL="-evsel" || SUFFIX_EVSEL=""
+  # ALICE 3 input
+  [ "$ISALICE3" -eq 1 ] && SUFFIX_ALICE3="-alice3" || SUFFIX_ALICE3=""
 
   WORKFLOWS=""
   # QA
@@ -169,15 +171,16 @@ function MakeScriptO2 {
   [ $DOO2_PID_TOF -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tof-full"
   [ $DOO2_PID_TOF_QA -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tof-qa-mc"
   # Vertexing
-  WF_SKIM="o2-analysis-hf-track-index-skims-creator${SUFFIX_EVSEL}${SUFFIX_CASC}"
-  [ $DOO2_SKIM -eq 1 ] && WORKFLOWS+=" $WF_SKIM"
+  WF_SKIM="o2-analysis-hf-track-index-skims-creator"
+  [ $DOO2_SKIM -eq 1 ] && WORKFLOWS+=" ${WF_SKIM}${SUFFIX_EVSEL}${SUFFIX_CASC}"
   [ $DOO2_CAND_2PRONG -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-2prong"
   [ $DOO2_CAND_3PRONG -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-3prong"
   [ $DOO2_CAND_X -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-x"
   [ $DOO2_CAND_CASC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-cascade"
   # Selectors
   [ $DOO2_SEL_D0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-d0-candidate-selector"
-  [ $DOO2_SEL_JPSI -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-jpsi-candidate-selector"
+  WF_SEL_JPSI="o2-analysis-hf-jpsi-candidate-selector"
+  [ $DOO2_SEL_JPSI -eq 1 ] && WORKFLOWS+=" ${WF_SEL_JPSI}${SUFFIX_ALICE3}"
   [ $DOO2_SEL_DPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-dplus-topikpi-candidate-selector"
   [ $DOO2_SEL_LC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-lc-candidate-selector"
   [ $DOO2_SEL_XIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-xic-topkpi-candidate-selector"
@@ -205,13 +208,20 @@ function MakeScriptO2 {
 
   # Make a copy of the default workflow database file before modifying it.
   DATABASE_O2_EDIT=""
-  if [[ $DOO2_EVSEL -eq 1 || $DOO2_CASC -eq 1 ]]; then
+  if [[ $DOO2_EVSEL -eq 1 || $DOO2_CASC -eq 1 || "$ISALICE3" -eq 1 ]]; then
     DATABASE_O2_EDIT="${DATABASE_O2/.yml/_edit.yml}"
     cp "$DATABASE_O2" "$DATABASE_O2_EDIT" || ErrExit "Failed to cp $DATABASE_O2 $DATABASE_O2_EDIT."
     DATABASE_O2="$DATABASE_O2_EDIT"
 
+    # Adjust workflow database in case of ALICE 3 input.
+    [ "$ISALICE3" -eq 1 ] && {
+      ReplaceString "- $WF_SEL_JPSI" "- ${WF_SEL_JPSI}${SUFFIX_ALICE3}" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
+    }
+
     # Adjust workflow database in case of event selection or cascades enabled.
-    ReplaceString "- o2-analysis-hf-track-index-skims-creator" "- $WF_SKIM" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
+    [[ $DOO2_EVSEL -eq 1 || $DOO2_CASC -eq 1 ]] && {
+      ReplaceString "- $WF_SKIM" "- ${WF_SKIM}${SUFFIX_EVSEL}${SUFFIX_CASC}" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
+    }
   fi
 
   # Generate the O2 command.
