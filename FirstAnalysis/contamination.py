@@ -257,8 +257,8 @@ def leptonvshadron(
 ):
     fileo2 = TFile(path_file)
     cres = TCanvas("cres", "resolution distribution")
-    cres.SetCanvasSize(2600, 1200)
-
+    cres.SetCanvasSize(3500, 1000)
+    cres.Divide(3, 1)
     leg = TLegend(0.55, 0.7, 0.89, 0.89)
     leg.SetFillColor(0)
     leg.SetBorderSize(0)
@@ -268,6 +268,11 @@ def leptonvshadron(
     leg1.SetFillColor(0)
     leg1.SetBorderSize(0)
     leg1.SetNColumns(2)
+
+    leg2 = TLegend(0.5, 0.75, 0.89, 0.89)
+    leg2.SetFillColor(0)
+    leg2.SetBorderSize(0)
+    leg2.SetNColumns(2)
 
     total2d = fileo2.Get("qa-rejection-general/h%s%s/%seta" % (all, pid1, var))
     num2d = fileo2.Get("qa-rejection-general/h%s%s/%seta" % (lep, pid1, var))
@@ -284,7 +289,7 @@ def leptonvshadron(
     den1 = den2d1.ProjectionX("den1", 1, den2d1.GetXaxis().GetNbins())
     den2 = den2d2.ProjectionX("den2", 1, den2d2.GetXaxis().GetNbins())
     den3 = den2d3.ProjectionX("den3", 1, den2d3.GetXaxis().GetNbins())
-    cres.Divide(2, 1)
+
     cres.cd(1)
     gPad.SetLogy()
     gPad.SetLogx()
@@ -324,30 +329,30 @@ def leptonvshadron(
     if pid2 == "RICHSelHpElLoose":
         leg.AddEntry(num, "e")
         leg.AddEntry(num2, "e (3#sigma_{e}^{RICH} PID)")
-        leg.AddEntry(den1, "K")
-        leg.AddEntry(den3, "K (3#sigma_{e}^{RICH} PID)")
         leg.AddEntry(den, "#pi")
-        leg.AddEntry(den2, "#pi (3#sigma_{e}^{RICH} PID)")
+        leg.AddEntry(den1, "#pi  (3#sigma_{e}^{RICH} PID)")
+        leg.AddEntry(den2, "K")
+        leg.AddEntry(den3, "K (3#sigma_{e}^{RICH} PID)")
 
     if pid2 == "RICHSelHpElTightAlt":
         leg.AddEntry(num, "e")
         leg.AddEntry(num2, "e (TOF + RICH(3#sigma_{#pi}^{RICH} rej) PID)")
-        leg.AddEntry(den1, "K")
-        leg.AddEntry(den3, "K (TOF + RICH(3#sigma_{#pi}^{RICH} rej) PID)")
         leg.AddEntry(den, "#pi")
-        leg.AddEntry(den2, "#pi (TOF + RICH(3#sigma_{#pi}^{RICH} rej) PID)")
+        leg.AddEntry(den1, "#pi (TOF + RICH(3#sigma_{#pi}^{RICH} rej) PID)")
+        leg.AddEntry(den2, "K")
+        leg.AddEntry(den3, "K (TOF + RICH(3#sigma_{#pi}^{RICH} rej) PID)")
 
     if pid2 == "MID":
         leg.AddEntry(num, "#mu")
         leg.AddEntry(num2, "#mu (MID PID)")
-        leg.AddEntry(den1, "K")
-        leg.AddEntry(den3, "K (MID PID)")
         leg.AddEntry(den, "#pi")
-        leg.AddEntry(den2, "#pi (MID PID)")
+        leg.AddEntry(den1, "#pi (MID PID)")
+        leg.AddEntry(den2, "K")
+        leg.AddEntry(den3, "K (MID PID)")
         den.GetXaxis().SetRangeUser(0.7, 20.0)
 
     leg.Draw()
-    cres.cd(2)
+
     ptbins_el = array.array(
         "d", [0.15, 0.25, 0.3, 0.5, 0.7, 1.0, 1.5, 2.0, 2.5, 3.0, 4.0, 6.0, 8.0, 10.0]
     )
@@ -361,50 +366,79 @@ def leptonvshadron(
     den2_new = den2.Rebin(13, "den2_new", ptbins_el)
     den3_new = den3.Rebin(13, "den3_new", ptbins_el)
 
+    cres.cd(2)
+    gPad.SetLogx()
+    gPad.SetLogy()
     num_new.Sumw2()
     num_new.Sumw2()
     num_new.Divide(den_new)
     num_new.Draw("e")
     num_new.SetLineWidth(2)
-    num_new.SetLineColor(2)
+    num_new.SetLineColor(3)
     num_new.SetMarkerStyle(25)
     num_new.SetMarkerSize(1.5)
-    num_new.SetMarkerColor(2)
-
-    num1_new.Sumw2()
-    num1_new.Sumw2()
-    num1_new.Divide(den1_new)
-    num1_new.Draw("e same")
-    num1_new.SetLineWidth(2)
-    num1_new.SetLineColor(1)
-    num1_new.SetMarkerStyle(26)
-    num1_new.SetMarkerSize(1.5)
-    num1_new.SetMarkerColor(1)
+    num_new.SetMarkerColor(3)
 
     num2_new.Sumw2()
     num2_new.Sumw2()
-    num2_new.Divide(den2_new)
-    num2_new.Draw(" e  same")
+    num2_new.Divide(den1_new)
+    num2_new.Draw("e same")
     num2_new.SetLineWidth(2)
-    num2_new.SetLineColor(6)
-    num2_new.SetMarkerStyle(25)
+    num2_new.SetLineColor(4)
+    num2_new.SetMarkerStyle(26)
     num2_new.SetMarkerSize(1.5)
-    num2_new.SetMarkerColor(6)
+    num2_new.SetMarkerColor(4)
+
+    num_new.GetYaxis().SetRangeUser(2e-4, 10e3)
+    num_new.SetTitle("")
+    num_new.GetXaxis().SetRangeUser(0.15, 10.0)
+    num_new.GetXaxis().SetTitleOffset(1.2)
+
+    if pid2 == "RICHSelHpElTightAlt":
+
+        leg2.AddEntry(num_new, "e/#pi")
+        leg2.AddEntry(num2_new, "e/#pi(TOF + RICH(3#sigma_{#pi}^{RICH} rej) PID)")
+
+    if pid2 == "RICHSelHpElLoose":
+
+        leg2.AddEntry(num_new, "e/#pi")
+        leg2.AddEntry(num2_new, "e/#pi(3#sigma_{e}^{RICH} PID)")
+
+    if pid2 == "MID":
+
+        leg2.AddEntry(num_new, "#mu/#pi")
+        leg2.AddEntry(num2_new, "#mu/#pi(MID PID)")
+        num_new.GetXaxis().SetRangeUser(0.7, 20)
+
+    leg2.Draw()
+
+    cres.cd(3)
+    gPad.SetLogx()
+    gPad.SetLogy()
+    num1_new.Sumw2()
+    num1_new.Sumw2()
+    num1_new.Divide(den2_new)
+    num1_new.Draw(" e  ")
+    num1_new.SetLineWidth(2)
+    num1_new.SetLineColor(6)
+    num1_new.SetMarkerStyle(25)
+    num1_new.SetMarkerSize(1.5)
+    num1_new.SetMarkerColor(6)
 
     num3_new.Sumw2()
     num3_new.Sumw2()
     num3_new.Divide(den3_new)
     num3_new.Draw(" e  same")
     num3_new.SetLineWidth(2)
-    num3_new.SetLineColor(4)
+    num3_new.SetLineColor(1)
     num3_new.SetMarkerStyle(26)
     num3_new.SetMarkerSize(1.5)
-    num3_new.SetMarkerColor(4)
+    num3_new.SetMarkerColor(1)
 
-    num_new.GetYaxis().SetRangeUser(2e-4, 10e3)
-    num_new.SetTitle("")
-    num_new.GetXaxis().SetRangeUser(0.15, 10.0)
-    num_new.GetXaxis().SetTitleOffset(1.2)
+    num1_new.GetYaxis().SetRangeUser(2e-4, 10e3)
+    num1_new.SetTitle("")
+    num1_new.GetXaxis().SetRangeUser(0.15, 10.0)
+    num1_new.GetXaxis().SetTitleOffset(1.2)
 
     t = TLatex(8, 8, "ALICE3 O2 Performance")
     t.SetNDC()
@@ -418,29 +452,24 @@ def leptonvshadron(
     t.DrawLatex(0.15, 0.7, "Layout v1, |#eta|< 1.1, B = 0.5T ")
 
     if pid2 == "RICHSelHpElTightAlt":
-        leg1.AddEntry(num_new, "e/#pi")
-        leg1.AddEntry(num2_new, "e/#pi(TOF + RICH(4#sigma_{#pi}^{RICH} rej) PID)")
         leg1.AddEntry(num1_new, "e/K")
-        leg1.AddEntry(num3_new, "e/K(TOF + RICH(3#sigma_{#pi}^{RICH} rej) PID)")
+        leg1.AddEntry(num3_new, "e/K(TOF + RICH(4#sigma_{#pi}^{RICH} rej) PID)")
+
         t.DrawLatex(0.15, 0.75, "TOF + RICH(3#sigma_{#pi}^{RICH} rej) PID ")
 
     if pid2 == "RICHSelHpElLoose":
-        leg1.AddEntry(num_new, "e/#pi")
-        leg1.AddEntry(num2_new, "e/#pi(3#sigma_{e}^{RICH} PID)")
         leg1.AddEntry(num1_new, "e/K")
-        leg1.AddEntry(num3_new, "e/#pi(3#sigma_{e}^{RICH} PID)")
+        leg1.AddEntry(num3_new, "e/K(3#sigma_{e}^{RICH} PID)")
+
         t.DrawLatex(0.15, 0.75, "3#sigma_{e}^{RICH} PID ")
 
     if pid2 == "MID":
-        leg1.AddEntry(num_new, "#mu/#pi")
-        leg1.AddEntry(num2_new, "#mu/#pi(MID PID)")
         leg1.AddEntry(num1_new, "#mu/K")
-        leg1.AddEntry(num3_new, "MID PID")
-        t.DrawLatex(0.15, 0.75, "MID PID ")
-        num_new.GetXaxis().SetRangeUser(0.7, 20)
+        leg1.AddEntry(num3_new, "#mu/K(MID PID)")
 
-    gPad.SetLogx()
-    gPad.SetLogy()
+        t.DrawLatex(0.15, 0.75, "MID PID ")
+        num1_new.GetXaxis().SetRangeUser(0.7, 20)
+
     leg1.Draw()
     canvas = "distru_ratio_%s" % (pid2)
     saveCanvas(cres, "%s" % (canvas))  # num.SetTitle(nameresult)
