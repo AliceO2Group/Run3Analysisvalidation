@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
-from ROOT import TCanvas, TFile, gROOT, gStyle, TLegend, TLatex, gPad
 import array
+
+from ROOT import TCanvas, TFile, TLatex, TLegend, gPad, gROOT, gStyle
 
 path_file = "../codeHF/AnalysisResults_O2.root"
 
