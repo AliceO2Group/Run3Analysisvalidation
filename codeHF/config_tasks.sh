@@ -15,7 +15,7 @@
 
 # Steps
 DOCLEAN=1           # Delete created files (before and after running tasks).
-DOCONVERT=1         # Convert AliESDs.root to AO2D.root.
+DOCONVERT=0         # Convert AliESDs.root to AO2D.root.
 DOALI=0             # Run AliPhysics tasks.
 DOO2=1              # Run O2 tasks.
 DOPOSTPROCESS=0     # Run output postprocessing. (Compare AliPhysics and O2 output.)
@@ -61,7 +61,7 @@ DOO2_TASK_X=0       # hf-task-x
 DOO2_TASK_LCK0SP=1  # hf-task-lc-tok0sp
 # Tree creators
 DOO2_TREE_D0=0      # hf-tree-creator-d0-tokpi
-DOO2_TREE_LC=1      # hf-tree-creator-lc-topkpi
+DOO2_TREE_LC=0      # hf-tree-creator-lc-topkpi
 
 # Selection cuts
 APPLYCUTS_D0=0      # Apply D0 selection cuts.
