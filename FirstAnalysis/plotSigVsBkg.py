@@ -1,9 +1,19 @@
 #!/usr/bin/env python
+
+"""
+Produce plots of signal vs. background distributions.
+
+Input: file with histograms produced by o2-analysis-hf-task-... in MC mode
+Contact: Vít Kučera <vit.kucera@cern.ch>
+"""
+
 import os
+import sys
 from math import ceil, sqrt
 
-from ROOT import TCanvas, TFile, TLegend, gStyle
+from ROOT import TCanvas, TFile, TLegend, gStyle, gROOT
 
+gROOT.SetBatch(True)
 
 def createCanvas(nplots, name, sizeX=1500, sizeY=700):
     """
@@ -34,7 +44,7 @@ def makePlots(
     filePathSig="AnalysisResults_O2.root",
     filePathBkg="AnalysisResults_O2.root",
     *vars,
-    hadron="x",
+    hadron="d0",
     normalized=True,
     rebin=1,
 ):
@@ -46,13 +56,28 @@ def makePlots(
     User can also manually set the options to normalize or rebin the histograms,
     defaults are True and 1 (no rebin) respectively.
     """
-    formats = [".pdf", ".root"]  # fileformats
+    formats = [".pdf", ".root"]  # file formats
     fileSig = TFile(filePathSig)
+    if fileSig.IsZombie():
+        print(f"Error: Failed to open file {filePathSig}")
+        sys.exit(1)
     fileBkg = TFile(filePathBkg)
+    if fileBkg.IsZombie():
+        print(f"Error: Failed to open file {filePathBkg}")
+        sys.exit(1)
     gStyle.SetOptStat(0)
     for var in vars:
-        hsig = fileSig.Get(f"hf-task-{hadron}-mc/h{var}RecSig")
-        hbkg = fileBkg.Get(f"hf-task-{hadron}-mc/h{var}RecBg")
+        print(var)
+        hsig_name = f"hf-task-{hadron}-mc/h{var}RecSig"
+        hsig = fileSig.Get(hsig_name)
+        if not hsig:
+            print(f"Error: Failed to get histogram {hsig_name}")
+            sys.exit(1)
+        hbkg_name = f"hf-task-{hadron}-mc/h{var}RecBg"
+        hbkg = fileBkg.Get(hbkg_name)
+        if not hbkg:
+            print(f"Error: Failed to get histogram {hbkg_name}")
+            sys.exit(1)
         if type(hsig) != type(hbkg):
             print(
                 f"Error: histograms are not of the same type! Skipping variable {var}..."
@@ -82,10 +107,17 @@ def makePlots(
             i = ptBin - 1  # iterator starting at 0 for legends
             cpt.cd(ptBin)
             # create a 1D histogram per pT bin
-            hsig_px = hsig.ProjectionX("hsig_px", ptBin, ptBin)
-            hbkg_px = hbkg.ProjectionX("hbkg_px", ptBin, ptBin)
+            if hsig.InheritsFrom("TH2"):
+                hsig_px = hsig.ProjectionX("hsig_px", ptBin, ptBin)
+                hbkg_px = hbkg.ProjectionX("hbkg_px", ptBin, ptBin)
+            elif hsig.InheritsFrom("TH1"):
+                hsig_px = hsig
+                hbkg_px = hbkg
+            else:
+                print(f"Error: Unsupported histogram type: {type(hsig)}")
+                sys.exit(1)
             ptMin = hsig.GetYaxis().GetBinLowEdge(ptBin)
-            ptMax = ptMin + hsig.GetYaxis().GetBinWidth(ptBin)
+            ptMax = hsig.GetYaxis().GetBinLowEdge(ptBin + 1)
             hbkg_px.SetTitle(
                 f"{var} signal vs background, {ptMin} < pT {hadron} < {ptMax} (pT bin {ptBin})"
             )
@@ -127,5 +159,5 @@ def makePlots(
 variables = ["CPA"]
 
 makePlots(
-    "AnalysisResults_O2_Signal.root", "AnalysisResults_O2_Background.root", *variables
+    "../codeHF/AnalysisResults_O2.root", "../codeHF/AnalysisResults_O2.root", *variables
 )
