@@ -15,10 +15,10 @@
 
 # Steps
 DOCLEAN=1           # Delete created files (before and after running tasks).
-DOCONVERT=0         # Convert AliESDs.root to AO2D.root.
-DOALI=0             # Run AliPhysics tasks.
+DOCONVERT=1         # Convert AliESDs.root to AO2D.root.
+DOALI=1             # Run AliPhysics tasks.
 DOO2=1              # Run O2 tasks.
-DOPOSTPROCESS=0     # Run output postprocessing. (Compare AliPhysics and O2 output.)
+DOPOSTPROCESS=1     # Run output postprocessing. (Compare AliPhysics and O2 output.)
 
 # Disable incompatible steps.
 [ "$ISINPUTO2" -eq 1 ] && { DOCONVERT=0; DOALI=0; }
@@ -58,7 +58,7 @@ DOO2_TASK_XIC=0     # hf-task-xic
 DOO2_TASK_JPSI=0    # hf-task-jpsi
 DOO2_TASK_BPLUS=0   # hf-task-bplus
 DOO2_TASK_X=0       # hf-task-x
-DOO2_TASK_LCK0SP=0  # hf-task-lc-tok0sp
+DOO2_TASK_LCK0SP=1  # hf-task-lc-tok0sp
 # Tree creators
 DOO2_TREE_D0=0      # hf-tree-creator-d0-tokpi
 DOO2_TREE_LC=0      # hf-tree-creator-lc-topkpi
