@@ -71,7 +71,7 @@ APPLYCUTS_XIC=0     # Apply Ξc selection cuts.
 APPLYCUTS_JPSI=0    # Apply J/ψ selection cuts.
 APPLYCUTS_LCK0SP=0  # Apply Λc → K0S p selection cuts.
 
-SAVETREES=0         # Save O2 tables to trees.
+SAVETREES=1         # Save O2 tables to trees.
 USEO2VERTEXER=0     # Use the O2 vertexer in AliPhysics.
 DORATIO=0           # Plot histogram ratios in comparison.
 
