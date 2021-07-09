@@ -61,7 +61,7 @@ DOO2_TASK_X=0       # hf-task-x
 DOO2_TASK_LCK0SP=0  # hf-task-lc-tok0sp
 # Tree creators
 DOO2_TREE_D0=0      # hf-tree-creator-d0-tokpi
-DOO2_TREE_LC=0      # hf-tree-creator-lc-topkpi
+DOO2_TREE_LC=1      # hf-tree-creator-lc-topkpi
 
 # Selection cuts
 APPLYCUTS_D0=0      # Apply D0 selection cuts.
