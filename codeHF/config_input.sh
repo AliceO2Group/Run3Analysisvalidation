@@ -92,5 +92,5 @@ case $INPUT_CASE in
     INPUT_FILES="AODRun5.*.root"
     JSON="$JSONRUN5_HF"
     ISINPUTO2=1
-    ISMC=1;;
+    ISMC=0;;
 esac
