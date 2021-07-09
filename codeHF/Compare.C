@@ -3,12 +3,12 @@
 #include "utils_plot.h"
 
 // vectors of histogram specifications
-using VecSpecHis = std::vector<std::tuple<TString, TString, TString, int, bool, bool>>;
+using VecSpecHis = std::vector<std::tuple<TString, TString, TString, int, bool, bool, TString>>;
 
 // Add histogram specification in the vector.
-void AddHistogram(VecSpecHis& vec, TString label, TString nameRun1, TString nameRun3, int rebin, bool logH, bool logR)
+void AddHistogram(VecSpecHis& vec, TString label, TString nameRun1, TString nameRun3, int rebin, bool logH, bool logR, TString proj="x")
 {
-  vec.push_back(std::make_tuple(label, nameRun1, nameRun3, rebin, logH, logR));
+  vec.push_back(std::make_tuple(label, nameRun1, nameRun3, rebin, logH, logR, proj));
 }
 
 Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "AnalysisResults_ALI.root", TString options = "", bool doRatio = false)
@@ -42,20 +42,20 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
   // Histogram specification: axis label, Run 1 name, Run 3 path/name, rebin, log scale histogram, log scale ratio
 
   VecSpecHis vecHisTracks;
-  AddHistogram(vecHisTracks, "#it{p}_{T} before selections (GeV/#it{c})", "hPtAllTracks", "hf-tag-sel-tracks/hpt_nocuts", 2, 1, 0);
-  AddHistogram(vecHisTracks, "#it{p}_{T} after selections (GeV/#it{c})", "hPtSelTracks", "hf-tag-sel-tracks/hpt_cuts_2prong", 2, 1, 0);
-  AddHistogram(vecHisTracks, "DCA XY to prim. vtx. (2-prong sel.) (cm)", "hImpParSelTracks2prong", "hf-tag-sel-tracks/hdcatoprimxy_cuts_2prong", 2, 1, 0);
-  AddHistogram(vecHisTracks, "DCA XY to prim. vtx. (3-prong sel.) (cm)", "hImpParSelTracks3prong", "hf-tag-sel-tracks/hdcatoprimxy_cuts_3prong", 2, 1, 0);
-  AddHistogram(vecHisTracks, "#it{#eta} (2-prong sel.)", "hEtaSelTracks2prong", "hf-tag-sel-tracks/heta_cuts_2prong", 2, 0, 0);
-  AddHistogram(vecHisTracks, "#it{#eta} (3-prong sel.)", "hEtaSelTracks3prong", "hf-tag-sel-tracks/heta_cuts_3prong", 2, 0, 0);
+  AddHistogram(vecHisTracks, "#it{p}_{T} before selections (GeV/#it{c})", "hPtAllTracks", "hf-tag-sel-tracks/hPtNoCuts", 2, 1, 0);
+  AddHistogram(vecHisTracks, "#it{p}_{T} after selections (GeV/#it{c})", "hPtSelTracks", "hf-tag-sel-tracks/hPtCuts2Prong", 2, 1, 0);
+  AddHistogram(vecHisTracks, "DCA XY to prim. vtx. (2-prong sel.) (cm)", "hImpParSelTracks2prong", "hf-tag-sel-tracks/hDCAToPrimXYVsPtCuts2Prong", 2, 1, 0, "y");
+  AddHistogram(vecHisTracks, "DCA XY to prim. vtx. (3-prong sel.) (cm)", "hImpParSelTracks3prong", "hf-tag-sel-tracks/hDCAToPrimXYVsPtCuts3Prong", 2, 1, 0, "y");
+  AddHistogram(vecHisTracks, "#it{#eta} (2-prong sel.)", "hEtaSelTracks2prong", "hf-tag-sel-tracks/hEtaCuts2Prong", 2, 0, 0);
+  AddHistogram(vecHisTracks, "#it{#eta} (3-prong sel.)", "hEtaSelTracks3prong", "hf-tag-sel-tracks/hEtaCuts3Prong", 2, 0, 0);
 
   VecSpecHis vecHisSkim;
-  AddHistogram(vecHisSkim, "secondary vtx x - 2prong (cm)", "h2ProngVertX", "hf-track-index-skims-creator/hvtx2_x", 5, 1, 0);
-  AddHistogram(vecHisSkim, "secondary vtx y - 2prong (cm)", "h2ProngVertY", "hf-track-index-skims-creator/hvtx2_y", 5, 1, 0);
-  AddHistogram(vecHisSkim, "secondary vtx z - 2prong (cm)", "h2ProngVertZ", "hf-track-index-skims-creator/hvtx2_z", 5, 1, 0);
-  AddHistogram(vecHisSkim, "secondary vtx x - 3prong (cm)", "h3ProngVertX", "hf-track-index-skims-creator/hvtx3_x", 5, 1, 0);
-  AddHistogram(vecHisSkim, "secondary vtx y - 3prong (cm)", "h3ProngVertY", "hf-track-index-skims-creator/hvtx3_y", 5, 1, 0);
-  AddHistogram(vecHisSkim, "secondary vtx z - 3prong (cm)", "h3ProngVertZ", "hf-track-index-skims-creator/hvtx3_z", 5, 1, 0);
+  AddHistogram(vecHisSkim, "secondary vtx x - 2prong (cm)", "h2ProngVertX", "hf-track-index-skims-creator/hVtx2ProngX", 5, 1, 0);
+  AddHistogram(vecHisSkim, "secondary vtx y - 2prong (cm)", "h2ProngVertY", "hf-track-index-skims-creator/hVtx2ProngY", 5, 1, 0);
+  AddHistogram(vecHisSkim, "secondary vtx z - 2prong (cm)", "h2ProngVertZ", "hf-track-index-skims-creator/hVtx2ProngZ", 5, 1, 0);
+  AddHistogram(vecHisSkim, "secondary vtx x - 3prong (cm)", "h3ProngVertX", "hf-track-index-skims-creator/hVtx3ProngX", 5, 1, 0);
+  AddHistogram(vecHisSkim, "secondary vtx y - 3prong (cm)", "h3ProngVertY", "hf-track-index-skims-creator/hVtx3ProngY", 5, 1, 0);
+  AddHistogram(vecHisSkim, "secondary vtx z - 3prong (cm)", "h3ProngVertZ", "hf-track-index-skims-creator/hVtx3ProngZ", 5, 1, 0);
 
   VecSpecHis vecHisCand2;
   AddHistogram(vecHisCand2, "XX element of PV cov. matrix (cm^{2})", "hCovMatPrimVXX2Prong", "hf-cand-creator-2prong/hCovPVXX", 1, 1, 0);
@@ -180,6 +180,7 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
   TString labelAxis = "";
   TString nameHisRun1 = "";
   TString nameHisRun3 = "";
+  TString projAx = "";
   TCanvas* canHis = nullptr;
   TCanvas* canRat = nullptr;
 
@@ -211,6 +212,7 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
       rebin = std::get<3>(spec);
       logScaleH = std::get<4>(spec);
       logScaleR = std::get<5>(spec);
+      projAx = std::get<6>(spec);
 
       // Get AliPhysics histogram.
       hRun1 = (TH1F*)lRun1->FindObject(nameHisRun1.Data());
@@ -227,7 +229,12 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
       }
 
       if (oRun3->InheritsFrom("TH2")) {
-        hRun3 = ((TH2D*)oRun3)->ProjectionX();
+        if(projAx == "x") {
+          hRun3 = ((TH2D*)oRun3)->ProjectionX();
+        }
+        else if(projAx == "y") {
+          hRun3 = ((TH2D*)oRun3)->ProjectionY();
+        }
       } else {
         hRun3 = (TH1D*)oRun3;
       }
