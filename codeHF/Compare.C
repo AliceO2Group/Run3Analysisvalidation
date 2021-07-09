@@ -6,7 +6,7 @@
 using VecSpecHis = std::vector<std::tuple<TString, TString, TString, int, bool, bool, TString>>;
 
 // Add histogram specification in the vector.
-void AddHistogram(VecSpecHis& vec, TString label, TString nameRun1, TString nameRun3, int rebin, bool logH, bool logR, TString proj="x")
+void AddHistogram(VecSpecHis& vec, TString label, TString nameRun1, TString nameRun3, int rebin, bool logH, bool logR, TString proj = "x")
 {
   vec.push_back(std::make_tuple(label, nameRun1, nameRun3, rebin, logH, logR, proj));
 }
@@ -229,10 +229,9 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
       }
 
       if (oRun3->InheritsFrom("TH2")) {
-        if(projAx == "x") {
+        if (projAx == "x") {
           hRun3 = ((TH2D*)oRun3)->ProjectionX();
-        }
-        else if(projAx == "y") {
+        } else if (projAx == "y") {
           hRun3 = ((TH2D*)oRun3)->ProjectionY();
         }
       } else {
