@@ -11,9 +11,29 @@ import os
 import sys
 from math import ceil, sqrt
 
-from ROOT import TCanvas, TFile, TLegend, gStyle, gROOT
+from ROOT import TCanvas, TFile, TLegend, gStyle, gROOT, kRed, kBlue
+
+textfont = 42
+textsize = 0.042
+labelsize = 0.042
 
 gStyle.SetOptStat(0)
+gStyle.SetPalette(0)
+gStyle.SetCanvasColor(0)
+gStyle.SetFrameFillColor(0)
+gStyle.SetLegendBorderSize(0)
+gStyle.SetLegendFont(textfont)
+gStyle.SetLegendTextSize(textsize)
+
+#bottommargin=0.12
+#leftmargin=0.12
+#rightmargin=0.1
+#topmargin=0.05
+#gStyle.SetPadBottomMargin(bottommargin)
+#gStyle.SetPadLeftMargin(leftmargin)
+#gStyle.SetPadRightMargin(rightmargin)
+#gStyle.SetPadTopMargin(topmargin)
+
 gROOT.SetBatch(True)
 
 def create_canvas(n_plots, name, size_x=1500, size_y=700):
@@ -119,17 +139,17 @@ def make_plots(
             pt_min = h_sig.GetYaxis().GetBinLowEdge(bin_pt)
             pt_max = h_sig.GetYaxis().GetBinLowEdge(bin_pt + 1)
             h_bkg_px.SetTitle(
-                f"{var} signal vs background, {pt_min} < pT {hadron} < {pt_max} (pT bin {bin_pt})"
+                f"{hadron}, {pt_min} < #it{{p}}_{{T}}/(GeV/#it{{c}}) < {pt_max} (bin {bin_pt})"
             )
             if normalise:
                 n_entries_sig = h_sig_px.GetEntries()
                 n_entries_bkg = h_bkg_px.GetEntries()
-                list_leg[i].AddEntry(h_sig_px, f"Signal ({int(n_entries_sig)} entries)")
-                list_leg[i].AddEntry(h_bkg_px, f"Background ({int(n_entries_bkg)} entries)")
-                if n_entries_sig != 0:
+                list_leg[i].AddEntry(h_sig_px, f"Signal ({int(n_entries_sig)} entries)", "L")
+                list_leg[i].AddEntry(h_bkg_px, f"Background ({int(n_entries_bkg)} entries)", "L")
+                if n_entries_sig > 0:
                     # make sure we don't divide by zero
                     h_sig_px.Scale(1.0 / n_entries_sig, "nosw2")
-                elif n_entries_sig == 0:
+                else:
                     print(
                         f"Warning: signal histogram has no entries, so cannot be normalised! (ptbin = {bin_pt})"
                     )
@@ -145,8 +165,46 @@ def make_plots(
             h_bkg_px.GetYaxis().SetRangeUser(0.0, 1.3 * y_max)
 
             # draw the histograms and legend
-            h_bkg_px.DrawCopy()
-            h_sig_px.DrawCopy("same")
+            h_bkg_px.SetLineColor(4)
+            h_bkg_px.SetLineWidth(2)
+            h_sig_px.SetLineColor(2)
+            h_sig_px.SetLineWidth(2)
+            #h_bkg_px.SetTitle("")
+            h_bkg_px.GetYaxis().SetMaxDigits(3)
+            #yMin = min(h_sig_px.GetMinimum(0), h_bkg_px.GetMinimum(0))
+            #yMax = max(h_sig_px.GetMaximum(), h_bkg_px.GetMaximum())+0.2
+            #SetHistogram(h_bkg_px, yMin, yMax, marginLow, marginHigh, logScaleH)
+            #SetPad(padH, logScaleH)
+
+            h_bkg_px.GetXaxis().SetTitleFont(textfont)
+            h_bkg_px.GetXaxis().SetTitleSize(textsize)
+            #h_bkg_px.GetXaxis().SetTitle("CPA(#Lambda_{c})")
+            #h_bkg_px.GetYaxis().SetTitle("Counts")
+            h_bkg_px.GetXaxis().SetTitleOffset(1.0)
+            h_bkg_px.GetYaxis().SetTitleOffset(1.15)
+            h_bkg_px.GetYaxis().SetTitleFont(textfont)
+            h_bkg_px.GetYaxis().SetTitleSize(textsize)
+            h_bkg_px.GetXaxis().SetLabelFont(textfont)
+            h_bkg_px.GetXaxis().SetLabelSize(labelsize)
+            h_bkg_px.GetYaxis().SetLabelFont(textfont)
+            h_bkg_px.GetYaxis().SetLabelSize(labelsize)
+
+            # h_bkg_px.GetYaxis().SetRangeUser(0,0.7)
+            h_bkg_px.SetFillColorAlpha(kBlue, 0.35)
+            h_bkg_px.SetFillStyle(3002)
+            h_sig_px.SetFillColorAlpha(kRed+1, 0.35)
+            h_sig_px.SetFillStyle(3003)
+
+            h_bkg_px.Draw("histo")
+            h_sig_px.Draw("histo same")
+
+            #lat.DrawLatex(0.17,0.88,"ALICE 3 Study, layout v1")
+            #lat3.DrawLatex(0.17,0.83,"PYTHIA 8.2, #sqrt{#it{s}} = 14 TeV")
+            #lat2.DrawLatex(0.17,0.78,"#Xi^{++}_{cc} #rightarrow #Xi_{c}^{+} #pi^{+}  and charge conj.")
+            #lat2.DrawLatex(0.17,0.73,"|#it{y}_{#Xi_{cc}}| #leq 1.44,  4 < #it{p}_{T} < 6 GeV/#it{c}")
+
+            #h_bkg_px.DrawCopy()
+            #h_sig_px.DrawCopy("same")
             list_leg[i].Draw()
 
         save_canvas(canvas, f"distribution_{var}", *formats, dir_output=f"output_{hadron}")
