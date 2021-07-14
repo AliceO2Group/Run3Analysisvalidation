@@ -14,7 +14,8 @@ import os
 import sys
 from math import ceil, sqrt
 
-from ROOT import TCanvas, TFile, TLegend, gStyle, gROOT, kRed, kBlue
+from ROOT import TCanvas, TFile, TLegend, gROOT, gStyle, kBlue, kRed
+
 
 def create_canvas(n_plots, name, size_x=1500, size_y=800):
     """
@@ -48,14 +49,18 @@ def set_histogram(his, y_min, y_max, margin_low, margin_high, logscale):
         ax.SetTitleOffset(1.0)
         ax.SetLabelFont(textfont)
         ax.SetLabelSize(labelsize)
-    k = 1. - margin_high - margin_low
+    k = 1.0 - margin_high - margin_low
     if logscale and y_min > 0 and y_max > 0:
         y_range = y_max / y_min
-        his.GetYaxis().SetRangeUser(y_min / pow(y_range, margin_low / k), y_max * pow(y_range, margin_high / k))
+        his.GetYaxis().SetRangeUser(
+            y_min / pow(y_range, margin_low / k), y_max * pow(y_range, margin_high / k)
+        )
     else:
         logscale = False
         y_range = y_max - y_min
-        his.GetYaxis().SetRangeUser(y_min - margin_low / k * y_range, y_max + margin_high / k * y_range)
+        his.GetYaxis().SetRangeUser(
+            y_min - margin_low / k * y_range, y_max + margin_high / k * y_range
+        )
     return logscale
 
 
@@ -113,7 +118,7 @@ def make_plots(
             h_bkg.RebinX(rebin)
         # create canvas and legend
         canvas = create_canvas(n_bins_pt, f"{var}_canvas")
-        list_leg = [] # one legend for each pT bin
+        list_leg = []  # one legend for each pT bin
 
         for i in range(n_bins_pt):
             bin_pt = i + 1
@@ -135,7 +140,7 @@ def make_plots(
                 f"{hadron}, {pt_min:g} < #it{{p}}_{{T}}/(GeV/#it{{c}}) < {pt_max:g} (bin {bin_pt})"
             )
             # create legend and entries
-            list_leg.append(TLegend(0.5, 0.8, 0.95, 0.9))  # put the legend in the top right
+            list_leg.append(TLegend(0.5, 0.8, 0.95, 0.9))
             list_leg[i].SetNColumns(2)
             n_entries_sig = h_sig_px.GetEntries()
             n_entries_bkg = h_bkg_px.GetEntries()
@@ -147,17 +152,19 @@ def make_plots(
                     h_sig_px.Scale(1.0 / n_entries_sig, "nosw2")
                     h_bkg_px.Scale(1.0 / n_entries_bkg, "nosw2")
                 else:
-                    print(f"Warning: Signal or backgound histogram has no entries, so cannot be normalised! (ptbin = {bin_pt})")
+                    print(
+                        f"Warning: Signal or backgound histogram has no entries, "
+                        f"so cannot be normalised! (ptbin = {bin_pt})"
+                    )
             # determine y range
             y_max = max(
                 h_bkg_px.GetBinContent(h_bkg_px.GetMaximumBin()),
-                h_sig_px.GetBinContent(h_sig_px.GetMaximumBin())
+                h_sig_px.GetBinContent(h_sig_px.GetMaximumBin()),
             )
-            y_min = min(
-                h_bkg_px.GetMinimum(0),
-                h_sig_px.GetMinimum(0)
+            y_min = min(h_bkg_px.GetMinimum(0), h_sig_px.GetMinimum(0))
+            logscale = set_histogram(
+                h_bkg_px, y_min, y_max, margin_low, margin_high, True
             )
-            logscale = set_histogram(h_bkg_px, y_min, y_max, margin_low, margin_high, True)
             if logscale:
                 pad.SetLogy()
 
@@ -171,20 +178,22 @@ def make_plots(
 
             h_sig_px.SetLineColor(2)
             h_sig_px.SetLineWidth(2)
-            h_sig_px.SetFillColorAlpha(kRed+1, 0.35)
+            h_sig_px.SetFillColorAlpha(kRed + 1, 0.35)
             h_sig_px.SetFillStyle(3354)
             h_sig_px.DrawCopy("hist same")
 
-            #lat.DrawLatex(0.17,0.88,"ALICE 3 Study, layout v1")
-            #lat3.DrawLatex(0.17,0.83,"PYTHIA 8.2, #sqrt{#it{s}} = 14 TeV")
-            #lat2.DrawLatex(0.17,0.78,"#Xi^{++}_{cc} #rightarrow #Xi_{c}^{+} #pi^{+}  and charge conj.")
-            #lat2.DrawLatex(0.17,0.73,"|#it{y}_{#Xi_{cc}}| #leq 1.44,  4 < #it{p}_{T} < 6 GeV/#it{c}")
+            # lat.DrawLatex(0.17,0.88,"ALICE 3 Study, layout v1")
+            # lat3.DrawLatex(0.17,0.83,"PYTHIA 8.2, #sqrt{#it{s}} = 14 TeV")
+            # lat2.DrawLatex(0.17,0.78,"#Xi^{++}_{cc} #rightarrow #Xi_{c}^{+} #pi^{+}  and charge conj.")
+            # lat2.DrawLatex(0.17,0.73,"|#it{y}_{#Xi_{cc}}| #leq 1.44,  4 < #it{p}_{T} < 6 GeV/#it{c}")
 
             list_leg[i].Draw()
 
             pad.RedrawAxis()
 
-        save_canvas(canvas, f"distribution_{var}", *formats, dir_output=f"output_{hadron}")
+        save_canvas(
+            canvas, f"distribution_{var}", *formats, dir_output=f"output_{hadron}"
+        )
 
 
 # general settings
@@ -211,12 +220,12 @@ gStyle.SetPadTopMargin(0.1)
 
 # legend settings
 gStyle.SetLegendFillColor(0)
-#gStyle.SetLegendBorderSize(0)
+# gStyle.SetLegendBorderSize(0)
 gStyle.SetLegendFont(textfont)
 gStyle.SetLegendTextSize(textsize)
 
-#variables = ["d0Prong0", "d0Prong1", "d0Prong2", "PtProng0", "PtProng1", "PtProng2", "CPA", "Eta", "Declength"]
-#variables = ["CPA"]
+# variables = ["d0Prong0", "d0Prong1", "d0Prong2", "PtProng0", "PtProng1", "PtProng2", "CPA", "Eta", "Declength"]
+# variables = ["CPA"]
 variables = ["CPA", "Pt", "Eta"]
 
 formats = ["pdf", "root"]  # output file formats
@@ -225,5 +234,5 @@ make_plots(
     path_file_sig="../codeHF/AnalysisResults_O2.root",
     path_file_bkg="../codeHF/AnalysisResults_O2.root",
     hadron="d0",
-    vars=variables
+    vars=variables,
 )
