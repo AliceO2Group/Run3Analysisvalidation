@@ -12,7 +12,8 @@ granted to it by virtue of its status as an Intergovernmental Organization
 or submit itself to any jurisdiction.
 
 file: HfPtSpectrum.py
-brief: script for computation of pT-differential yields
+brief: script for computation of pT-differential yields (cross sections)
+usage: python3 HfPtSpectrum.py CONFIG
 author: Fabrizio Grosa <fabrizio.grosa@cern.ch>, CERN
 '''
 
@@ -130,11 +131,12 @@ def LoadInputs(inputCfg):
 def Main():
   '''
   Main function
-  run: python3 configFileName
   '''
 
   parser = argparse.ArgumentParser(description='Arguments to pass')
-  parser.add_argument('configFileName', metavar='text', default='config_Dplus_pp5TeV.yml')
+  parser.add_argument('configFileName', metavar='text',
+                      default='config_Dplus_pp5TeV.yml',
+                      help='input yaml config file')
   args = parser.parse_args()
 
   # load info from config file
