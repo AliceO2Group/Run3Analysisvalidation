@@ -58,7 +58,7 @@ FILEOUT_TREES_O2="AnalysisResults_trees_O2.root"
 
 # Steering commands
 ENVALI="alienv setenv AliPhysics/latest -c"
-ENVO2="alienv setenv O2/latest -c"
+ENVO2="alienv setenv O2/latest-o2 -c"
 ENVPOST="alienv setenv ROOT/latest -c"
 
 # Step scripts
