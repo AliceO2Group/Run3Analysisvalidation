@@ -103,14 +103,14 @@
             ]
         },
 
-        "pTBinsDSToPiKK": {
+        "pTBinsDsToPiKK": {
             "values": [
                 "1.5",
                 "5.",
                 "1000."
             ]
         },
-        "cutsDSToPiKK": {
+        "cutsDsToPiKK": {
             "values": [
                 ["1.74", "2.18", "0.94", "0.02"],
                 ["1.74", "2.18", "0.94", "0.02"]
