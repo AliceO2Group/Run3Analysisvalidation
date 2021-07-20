@@ -161,7 +161,7 @@ def Main():
     for histo in ['rawyields', 'acceffp', 'acceffnp']:
         ptLims[histo] = GetHistoBinLimits(histos[histo])
         if histo != 'rawyields' and not np.equal(ptLims[histo], ptLims['rawyields']).all():
-            print(f'\033[91mERROR: histo binning not consistent. Exit\033[0m')
+            print('\033[91mERROR: histo binning not consistent. Exit\033[0m')
             sys.exit()
 
     # compute cross section
