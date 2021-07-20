@@ -12,10 +12,10 @@
     },
     "hf-tag-sel-tracks": {
         "fillHistograms": "true",
-        "d_bz": "5.",
+        "bz": "5.",
         "doCutQuality": "true",
-        "d_tpcnclsfound": "71",
-        "ptbins_singletrack": {
+        "tpcNClsFound": "71",
+        "pTBinsTrack": {
             "values": [
                 "0.",
                 "0.5",
@@ -26,9 +26,9 @@
                 "100."
             ]
         },
-        "ptmintrack_2prong": "0.4",
-        "etamax_2prong": "0.8",
-        "cuts_singletrack_2prong": {
+        "pTMinTrack2Prong": "0.4",
+        "etaMax2Prong": "0.8",
+        "cutsTrack2Prong": {
             "values": [
                 ["0.03", "1.0"],
                 ["0.03", "1.0"],
@@ -38,9 +38,9 @@
                 ["0.00", "10."]
             ]
         },
-        "ptmintrack_3prong": "0.4",
-        "etamax_3prong": "0.8",
-        "cuts_singletrack_3prong": {
+        "pTMinTrack3Prong": "0.4",
+        "etaMax3Prong": "0.8",
+        "cutsTrack3Prong": {
             "values": [
                 ["0.03", "1.0"],
                 ["0.03", "1.0"],
@@ -54,44 +54,95 @@
     "hf-track-index-skims-creator": {
         "fillHistograms": "true",
         "do3prong": "1",
-        "triggerindex": "-1",
-        "d_bz": "5.",
-        "b_propdca": "true",
-        "d_maxr": "5.",
-        "d_maxdzini": "999.",
-        "d_minparamchange": "0.001",
-        "d_minrelchi2change": "0.9",
-        "configs": {
-            "mPtD0ToPiKMin": "0.",
-            "mInvMassD0ToPiKMin": "1.61",
-            "mInvMassD0ToPiKMax": "2.12",
-            "mCPAD0ToPiKMin": "0.5",
-            "mImpParProductD0ToPiKMax": "0.00",
-            "mPtJpsiToEEMin": "0.",
-            "mInvMassJpsiToEEMin": "2.5",
-            "mInvMassJpsiToEEMax": "4.1",
-            "mCPAJpsiToEEMin": "-2",
-            "mImpParProductJpsiToEEMax": "1000.00",
-            "mPtDPlusToPiKPiMin": "1.",
-            "mInvMassDPlusToPiKPiMin": "1.67",
-            "mInvMassDPlusToPiKPiMax": "2.07",
-            "mCPADPlusToPiKPiMin": "0.7",
-            "mDecLenDPlusToPiKPiMin": "0.03",
-            "mPtLcToPKPiMin": "4.",
-            "mInvMassLcToPKPiMin": "1.98",
-            "mInvMassLcToPKPiMax": "2.58",
-            "mCPALcToPKPiMin": "-2.",
-            "mDecLenLcToPKPiMin": "0.",
-            "mPtDsToPiKKMin": "1.5",
-            "mInvMassDsToPiKKMin": "1.74",
-            "mInvMassDsToPiKKMax": "2.18",
-            "mCPADsToPiKKMin": "0.94",
-            "mDecLenDsToPiKKMin": "0.02",
-            "mPtXicToPKPiMin": "4.",
-            "mInvMassXicToPKPiMin": "2.10",
-            "mInvMassXicToPKPiMax": "2.80",
-            "mCPAXicToPKPiMin": "-2.",
-            "mDecLenXicToPKPiMin": "0."
+        "bz": "5.",
+        "propToDCA": "true",
+        "maxRad": "5.",
+        "maxDZIni": "999.",
+        "minParamChange": "0.001",
+        "minRelChi2Change": "0.9",
+
+        "pTBinsD0ToPiK": {
+            "values": [
+                "0.",
+                "5.",
+                "1000."
+            ]
+        },
+        "cutsD0ToPiK": {
+            "values": [
+                ["1.61", "2.12", "0.5", "0.00"],
+                ["1.61", "2.12", "0.5", "0.00"]
+            ]
+        },
+
+        "pTBinsJpsiToEE": {
+            "values": [
+                "0.",
+                "5.",
+                "1000."
+            ]
+        },
+        "cutsJpsiToEE": {
+            "values": [
+                ["2.5", "4.1", "-2.", "1000.00"],
+                ["2.5", "4.1", "-2.", "1000.00"]
+            ]
+        },
+
+        "pTBinsDPlusToPiKPi": {
+            "values": [
+                "1.",
+                "5.",
+                "1000."
+            ]
+        },
+        "cutsDPlusToPiKPi": {
+            "values": [
+                ["1.67", "2.07", "0.7", "0.03"],
+                ["1.67", "2.07", "0.7", "0.03"]
+            ]
+        },
+
+        "pTBinsDsToPiKK": {
+            "values": [
+                "1.5",
+                "5.",
+                "1000."
+            ]
+        },
+        "cutsDsToPiKK": {
+            "values": [
+                ["1.74", "2.18", "0.94", "0.02"],
+                ["1.74", "2.18", "0.94", "0.02"]
+            ]
+        },
+
+        "pTBinsLcToPKPi": {
+            "values": [
+                "4.",
+                "5.",
+                "1000."
+            ]
+        },
+        "cutsLcToPKPi": {
+            "values": [
+                ["1.98", "2.58", "-2.", "0.0"],
+                ["1.98", "2.58", "-2.", "0.0"]
+            ]
+        },
+
+        "pTBinsXicToPKPi": {
+            "values": [
+                "4.",
+                "5.",
+                "1000."
+            ]
+        },
+        "cutsXicToPKPi": {
+            "values": [
+                ["2.10", "2.80", "-2.", "0.0"],
+                ["2.10", "2.80", "-2.", "0.0"]
+            ]
         }
     },
     "hf-cand-creator-2prong": {
