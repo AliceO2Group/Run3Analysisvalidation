@@ -50,7 +50,7 @@ def ComputeCrossSection(rawY, uncRawY, frac, effTimesAcc,
   else:
     crossSecUnc = uncRawY / rawY * crossSection
 
-  return crossSection, crossSecUnc  
+  return crossSection, crossSecUnc
 
 
 # pylint: disable=too-many-branches
@@ -187,7 +187,7 @@ def ComputeFractionNb(rawYield, accEffSame, accEffOther, crossSec, deltaPt, delt
 
 def GetHistoBinLimits(histo):
   '''
-  Method to retrieve bin limits of ROOT.TH1 
+  Method to retrieve bin limits of ROOT.TH1
 
   Parameters
   ----------
