@@ -17,7 +17,7 @@ def makeSavePaths(title, *fileFormats, outputdir="outputPlots"):
     return [outputdir + "/" + title + fileFormat for fileFormat in fileFormats]
 
 
-def distr_studies(hadron="X3872", collision="pp14p0", yrange="absy1p44"):
+def distr_studies(hadron="Xi_cc", collision="pp14p0", yrange="absy1p44"):
     """
     Make distribution comparisons
     """
@@ -88,20 +88,22 @@ def distr_studies(hadron="X3872", collision="pp14p0", yrange="absy1p44"):
     for index, var in enumerate(lvarlist):
         # sort out required number of columns and rows for a squared grid and create a figure
         n_cols_rows = ceil(sqrt(nPtBins))
+        column_margin = [(0.05, 0.01)] * n_cols_rows
+        row_margin = [(0.05, 0.01)] * n_cols_rows
         figure = ROOTFigure(
             n_cols_rows,
             n_cols_rows,
-            row_margin=0.04,
-            column_margin=0.04,
-            size=(1500, 1100),
+            row_margin=row_margin,
+            column_margin=column_margin,
+            size=(1500, 900),
         )
         # can adjust some axis properties globally
-        figure.axes(label_size=0.015, title_size=0.015)
+        figure.axes(label_size=0.02, title_size=0.02)
         # here we use the feature to only apply to certain axes
-        figure.axes("x", title=lvarlatex[index])
-        figure.axes("y", title="Entries")
+        figure.axes("x", title=lvarlatex[index], title_offset=1)
+        figure.axes("y", title="Entries", title_offset=1.08)
         # legend positioning, default would be "top right", so just put left (top will be added by default)
-        figure.legend(position="left")
+        figure.legend(position=(0.05, 0.6, 0.7, 0.8))
 
         rebin = lrebin[index]
 
@@ -146,8 +148,8 @@ def distr_studies(hadron="X3872", collision="pp14p0", yrange="absy1p44"):
             )
             figure.add_text(
                 f"{lptMin[iptBin]:.1f} GeV < p_{{T}} ({latexcand}) < {lptMax[iptBin]:.1f} GeV",
-                0.1,
-                0.85,
+                0.0,
+                0.8,
             )
 
         figure.create()
