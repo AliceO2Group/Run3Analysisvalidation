@@ -120,12 +120,17 @@ def main():
                 h_sig.RebinX(rebin)
                 h_bkg.RebinX(rebin)
             # create canvas and legend
-            canvas = create_canvas(n_bins_pt, f"{var}_canvas")
+            if not singlepad:
+                canvas_all = create_canvas(n_bins_pt, f"{var}_canvas")
             list_leg = []  # one legend for each pT bin
 
             for i in range(n_bins_pt):
                 bin_pt = i + 1
-                pad = canvas.cd(bin_pt)
+                if singlepad:
+                    canvas_single = create_canvas(1, f"{var}_canvas_{bin_pt}")
+                    pad = canvas_single.cd(1)
+                else:
+                    pad = canvas_all.cd(bin_pt)
                 # create a 1D histogram per pT bin
                 if h_sig.InheritsFrom("TH2"):
                     h_sig_px = h_sig.ProjectionX("h_sig_px", bin_pt, bin_pt)
@@ -140,8 +145,10 @@ def main():
                 pt_min = h_sig.GetYaxis().GetBinLowEdge(bin_pt)
                 pt_max = h_sig.GetYaxis().GetBinLowEdge(bin_pt + 1)
                 h_bkg_px.SetTitle(
-                    f"{decay}, {pt_min:g} < #it{{p}}_{{T}}/(GeV/#it{{c}}) < {pt_max:g} (bin {bin_pt})"
+                    #f"{decay}, {pt_min:g} #leq #it{{p}}_{{T}}/(GeV/#it{{c}}) < {pt_max:g} (bin {bin_pt})"
+                    f"{labels[decay]}, {pt_min:g} #leq #it{{p}}_{{T}}/(GeV/#it{{c}}) < {pt_max:g} (bin {bin_pt})"
                 )
+                h_bkg_px.SetYTitle("entries")
                 # create legend and entries
                 list_leg.append(TLegend(0.5, 0.8, 0.95, 0.9))
                 list_leg[i].SetNColumns(2)
@@ -154,6 +161,7 @@ def main():
                     if n_entries_sig > 0 and n_entries_bkg > 0:
                         h_sig_px.Scale(1.0 / n_entries_sig, "nosw2")
                         h_bkg_px.Scale(1.0 / n_entries_bkg, "nosw2")
+                        h_bkg_px.SetYTitle("normalised entries")
                     else:
                         print(
                             f"Warning: Signal or backgound histogram has no entries, "
@@ -194,10 +202,20 @@ def main():
 
                 pad.RedrawAxis()
 
-            save_canvas(
-                canvas, f"sig_vs_bkg_{var}", *formats, dir_output=f"output_{decay}"
-            )
+                if singlepad:
+                    save_canvas(
+                        canvas_single, f"sig_vs_bkg_{var}_{bin_pt}", *formats, dir_output=f"output_{decay}"
+                    )
 
+            if not singlepad:
+                save_canvas(
+                    canvas_all, f"sig_vs_bkg_{var}", *formats, dir_output=f"output_{decay}"
+                )
+
+# labels
+labels = {
+"d0": "D^{0} #rightarrow #pi K"
+}
 
 # general settings
 gROOT.SetBatch(True)
@@ -220,6 +238,7 @@ gStyle.SetPadLeftMargin(0.1)
 gStyle.SetPadBottomMargin(0.12)
 gStyle.SetPadRightMargin(0.05)
 gStyle.SetPadTopMargin(0.1)
+singlepad = False #True # make one plot per pT bin
 
 # legend settings
 gStyle.SetLegendFillColor(0)
@@ -227,7 +246,7 @@ gStyle.SetLegendFillColor(0)
 gStyle.SetLegendFont(textfont)
 gStyle.SetLegendTextSize(textsize)
 
-formats = ["pdf", "root"]  # output file formats
+formats = ["pdf", "png", "root"]  # output file formats
 normalise = True
 rebin = 1
 
@@ -237,6 +256,7 @@ path_file_bkg = "../codeHF/AnalysisResults_O2.root"
 # variables = ["d0Prong0", "d0Prong1", "d0Prong2", "PtProng0", "PtProng1", "PtProng2", "CPA", "Eta", "Declength"]
 variables = ["CPA", "Pt", "Eta"]
 
-decays = ["d0", "lc"]
+#decays = ["d0", "lc"]
+decays = ["d0"]
 
 main()
