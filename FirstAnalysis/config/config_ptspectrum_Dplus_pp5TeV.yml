@@ -1,3 +1,5 @@
+# example config for cross section calculation of D+ mesons
+
 observable: dsigmadpt # options: dsigmadpt, dNdpt
 channel: DplustoKpipi # options: D0toKpi, DplustoKpipi, DstoKKpi, DstartoD0pi, LctopKpi, LctopK0S
 system: pp # options: pp, pPb, PbPb
@@ -6,7 +8,7 @@ period: Run2 # options: Run2
 
 fraction: Nb # options: Nb, fc
 
-FONLL: test/DmesonLcPredictions_502TeV_y05_FFee_BRpythia8_SepContr_PDG2020.root
+FONLL: FONLLpred/DmesonLcPredictions_502TeV_y05_FFee_BRpythia8_SepContr_PDG2020.root
 
 rawyield:
   filename: test/RawYields_Dplus_pp5TeV_prompt_central.root
@@ -19,4 +21,5 @@ acceff:
   nonprompthist: hAccEffFD
 
 output:
-  filename: CrossSectionDplus_pp_5TeV.root
+  directory: '.'
+  filename: CrossSectionDplus_pp_5TeV # without extension

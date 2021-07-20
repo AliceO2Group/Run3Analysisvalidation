@@ -1,3 +1,5 @@
+# database with normalisation constants for cross section and RAA calculation
+
 BR: # PDG 2020
   D0toKpi:
     value: 0.03950
@@ -14,7 +16,7 @@ BR: # PDG 2020
   LctopK0S:
     value: 0.0159
     unc: 0.0008
-    
+
 sigma: # MB cross section in pb
   Run2:
     pp:
