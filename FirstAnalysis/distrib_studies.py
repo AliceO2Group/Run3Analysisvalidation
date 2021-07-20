@@ -22,7 +22,7 @@ def distr_studies(hadron="Xi_cc", collision="pp14p0", yrange="absy1p44"):
     Make distribution comparisons
     """
     with open(r"database.yaml") as database:
-        param = yaml.load(database, Loader=yaml.FullLoader)
+        param = yaml.safe_load(database)
     latexcand = param[hadron][collision][yrange]["latexcand"]
     inputBkg = param[hadron][collision][yrange]["inputBkg"]
     inputSig = param[hadron][collision][yrange]["inputSig"]

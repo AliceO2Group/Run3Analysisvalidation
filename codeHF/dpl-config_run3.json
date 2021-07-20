@@ -409,7 +409,6 @@
             ]
         }
     },
-
     "hf-task-d0": {
         "cutYCandMax": "0.8",
         "d_selectionFlagD0": "0",
