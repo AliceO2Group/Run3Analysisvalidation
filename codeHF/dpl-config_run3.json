@@ -89,6 +89,20 @@
             ]
         },
 
+        "pTBinsJpsiToMuMu": {
+            "values": [
+                "0.",
+                "5.",
+                "1000."
+            ]
+        },
+        "cutsJpsiToMuMu": {
+            "values": [
+                ["2.5", "4.1", "-2.", "1000.00"],
+                ["2.5", "4.1", "-2.", "1000.00"]
+            ]
+        },
+
         "pTBinsDPlusToPiKPi": {
             "values": [
                 "1.",
