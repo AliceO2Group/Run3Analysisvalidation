@@ -1,18 +1,28 @@
 #!/usr/bin/env python3
 
-'''
+"""
 file: hf_analysis_utils.py
 brief: script with miscellanea utils methods for the HF analyses
 author: Fabrizio Grosa <fabrizio.grosa@cern.ch>, CERN
-'''
+"""
 
 import numpy as np
 
 
 # pylint: disable=too-many-arguments
-def compute_crosssection(rawy, rawy_unc, frac, eff_times_acc,
-                         delta_pt, delta_y, sigma_mb, n_events, br, method_frac='Nb'):
-    '''
+def compute_crosssection(
+    rawy,
+    rawy_unc,
+    frac,
+    eff_times_acc,
+    delta_pt,
+    delta_y,
+    sigma_mb,
+    n_events,
+    br,
+    method_frac="Nb",
+):
+    """
     Method to compute cross section and its statistical uncertainty
     Only the statistical uncertainty on the raw yield and prompt (non-prompt)
     fraction are considered (the others are systematics)
@@ -34,10 +44,15 @@ def compute_crosssection(rawy, rawy_unc, frac, eff_times_acc,
     ----------
     - crosssection: cross section
     - crosssec_unc: cross-section statistical uncertainty
-    '''
+    """
 
-    crosssection = rawy * frac * sigma_mb / (2 * delta_pt * delta_y * eff_times_acc * n_events * br)
-    if method_frac == 'Nb':
+    crosssection = (
+        rawy
+        * frac
+        * sigma_mb
+        / (2 * delta_pt * delta_y * eff_times_acc * n_events * br)
+    )
+    if method_frac == "Nb":
         crosssec_unc = rawy_unc / (rawy * frac) * crosssection
     else:
         crosssec_unc = rawy_unc / rawy * crosssection
@@ -46,9 +61,15 @@ def compute_crosssection(rawy, rawy_unc, frac, eff_times_acc,
 
 
 # pylint: disable=too-many-branches,too-many-arguments,too-many-locals
-def compute_fraction_fc(acc_eff_prompt, acc_eff_fd, cross_sec_prompt,
-                        cross_sec_fd, raa_prompt=1., raa_fd=1.):
-    '''
+def compute_fraction_fc(
+    acc_eff_prompt,
+    acc_eff_fd,
+    cross_sec_prompt,
+    cross_sec_fd,
+    raa_prompt=1.0,
+    raa_fd=1.0,
+):
+    """
     Method to get fraction of prompt / FD fraction with fc method
 
     Parameters
@@ -66,7 +87,7 @@ def compute_fraction_fc(acc_eff_prompt, acc_eff_fd, cross_sec_prompt,
     ----------
     - frac_prompt: list of fraction of prompt D (central, min, max)
     - frac_fd: list of fraction of non-prompt D (central, min, max)
-    '''
+    """
 
     if not isinstance(cross_sec_prompt, list) and isinstance(cross_sec_prompt, float):
         cross_sec_prompt = [cross_sec_prompt]
@@ -79,14 +100,14 @@ def compute_fraction_fc(acc_eff_prompt, acc_eff_fd, cross_sec_prompt,
 
     frac_prompt, frac_fd = [], []
     if acc_eff_prompt == 0:
-        frac_fd_cent = 1.
-        frac_prompt_cent = 0.
+        frac_fd_cent = 1.0
+        frac_prompt_cent = 0.0
         frac_prompt = [frac_prompt_cent, frac_prompt_cent, frac_prompt_cent]
         frac_fd = [frac_fd_cent, frac_fd_cent, frac_fd_cent]
         return frac_prompt, frac_fd
     if acc_eff_fd == 0:
-        frac_fd_cent = 0.
-        frac_prompt_cent = 1.
+        frac_fd_cent = 0.0
+        frac_prompt_cent = 1.0
         frac_prompt = [frac_prompt_cent, frac_prompt_cent, frac_prompt_cent]
         frac_fd = [frac_fd_cent, frac_fd_cent, frac_fd_cent]
         return frac_prompt, frac_fd
@@ -94,22 +115,36 @@ def compute_fraction_fc(acc_eff_prompt, acc_eff_fd, cross_sec_prompt,
     for i_sigma, (sigma_p, sigma_f) in enumerate(zip(cross_sec_prompt, cross_sec_fd)):
         for i_raa, (raa_p, raa_f) in enumerate(zip(raa_prompt, raa_fd)):
             if i_sigma == 0 and i_raa == 0:
-                frac_prompt_cent = (
-                    1.
-                    / (1 + acc_eff_fd / acc_eff_prompt * sigma_f / sigma_p * raa_f / raa_p)
+                frac_prompt_cent = 1.0 / (
+                    1 + acc_eff_fd / acc_eff_prompt * sigma_f / sigma_p * raa_f / raa_p
                 )
-                frac_fd_cent = (
-                    1.
-                    / (1 + acc_eff_prompt / acc_eff_fd * sigma_p / sigma_f * raa_p / raa_f)
+                frac_fd_cent = 1.0 / (
+                    1 + acc_eff_prompt / acc_eff_fd * sigma_p / sigma_f * raa_p / raa_f
                 )
             else:
                 frac_prompt.append(
-                    1.
-                    / (1 + acc_eff_fd / acc_eff_prompt * sigma_f / sigma_p * raa_f / raa_p)
+                    1.0
+                    / (
+                        1
+                        + acc_eff_fd
+                        / acc_eff_prompt
+                        * sigma_f
+                        / sigma_p
+                        * raa_f
+                        / raa_p
+                    )
                 )
                 frac_fd.append(
-                    1.
-                    / (1 + acc_eff_prompt / acc_eff_fd * sigma_p / sigma_f * raa_p / raa_f)
+                    1.0
+                    / (
+                        1
+                        + acc_eff_prompt
+                        / acc_eff_fd
+                        * sigma_p
+                        / sigma_f
+                        * raa_p
+                        / raa_f
+                    )
                 )
 
     if frac_prompt and frac_fd:
@@ -125,9 +160,20 @@ def compute_fraction_fc(acc_eff_prompt, acc_eff_fd, cross_sec_prompt,
 
 
 # pylint: disable=too-many-branches,too-many-arguments,too-many-locals,invalid-name
-def compute_fraction_nb(rawy, acc_eff_same, acc_eff_other, crosssection, delta_pt, delta_y,
-                        br, n_events, sigma_mb, raa_ratio=1., taa=1.):
-    '''
+def compute_fraction_nb(
+    rawy,
+    acc_eff_same,
+    acc_eff_other,
+    crosssection,
+    delta_pt,
+    delta_y,
+    br,
+    n_events,
+    sigma_mb,
+    raa_ratio=1.0,
+    taa=1.0,
+):
+    """
     Method to get fraction of prompt / FD fraction with Nb method
 
     Parameters
@@ -148,7 +194,7 @@ def compute_fraction_nb(rawy, acc_eff_same, acc_eff_other, crosssection, delta_p
     Returns
     ----------
     - frac: list of fraction of prompt (non-prompt) D (central, min, max)
-    '''
+    """
 
     if not isinstance(crosssection, list) and isinstance(crosssection, float):
         crosssection = [crosssection]
@@ -159,9 +205,9 @@ def compute_fraction_nb(rawy, acc_eff_same, acc_eff_other, crosssection, delta_p
     frac = []
     for i_sigma, sigma in enumerate(crosssection):
         for i_raa_ratio, raa_rat in enumerate(raa_ratio):
-            raa_other = 1.
+            raa_other = 1.0
             if i_sigma == 0 and i_raa_ratio == 0:
-                if raa_rat == 1. and taa == 1.:  # pp
+                if raa_rat == 1.0 and taa == 1.0:  # pp
                     frac_cent = (
                         1
                         - sigma
@@ -175,8 +221,8 @@ def compute_fraction_nb(rawy, acc_eff_same, acc_eff_other, crosssection, delta_p
                         / sigma_mb
                     )
                 else:  # p-Pb or Pb-Pb: iterative evaluation of Raa needed
-                    delta_raa = 1.
-                    while delta_raa > 1.e-3:
+                    delta_raa = 1.0
+                    while delta_raa > 1.0e-3:
                         raw_fd = (
                             taa
                             * raa_rat
@@ -202,9 +248,9 @@ def compute_fraction_nb(rawy, acc_eff_same, acc_eff_other, crosssection, delta_p
                             / br
                             / n_events
                         )
-                        delta_raa = abs((raa_other-raa_other_old) / raa_other)
+                        delta_raa = abs((raa_other - raa_other_old) / raa_other)
             else:
-                if raa_rat == 1. and taa == 1.:  # pp
+                if raa_rat == 1.0 and taa == 1.0:  # pp
                     frac.append(
                         1
                         - sigma
@@ -218,9 +264,9 @@ def compute_fraction_nb(rawy, acc_eff_same, acc_eff_other, crosssection, delta_p
                         / sigma_mb
                     )
                 else:  # p-Pb or Pb-Pb: iterative evaluation of Raa needed
-                    delta_raa = 1.
-                    frac_tmp = 1.
-                    while delta_raa > 1.e-3:
+                    delta_raa = 1.0
+                    frac_tmp = 1.0
+                    while delta_raa > 1.0e-3:
                         raw_fd = (
                             taa
                             * raa_rat
@@ -246,7 +292,7 @@ def compute_fraction_nb(rawy, acc_eff_same, acc_eff_other, crosssection, delta_p
                             / br
                             / n_events
                         )
-                        delta_raa = abs((raa_other-raa_other_old) / raa_other)
+                        delta_raa = abs((raa_other - raa_other_old) / raa_other)
                     frac.append(frac_tmp)
 
     if frac:
@@ -259,7 +305,7 @@ def compute_fraction_nb(rawy, acc_eff_same, acc_eff_other, crosssection, delta_p
 
 
 def get_hist_binlimits(histo):
-    '''
+    """
     Method to retrieve bin limits of ROOT.TH1
 
     Parameters
@@ -269,14 +315,16 @@ def get_hist_binlimits(histo):
     Returns
     ----------
     - bin_limits: numpy array of bin limits
-    '''
+    """
 
-    if np.array(histo.GetXaxis().GetXbins(), 'd').any():  # variable binning
-        bin_limits = np.array(histo.GetXaxis().GetXbins(), 'd')
+    if np.array(histo.GetXaxis().GetXbins(), "d").any():  # variable binning
+        bin_limits = np.array(histo.GetXaxis().GetXbins(), "d")
     else:  # constant binning
         n_limits = histo.GetNbinsX() + 1
         low_edge = histo.GetBinLowEdge(1)
         bin_width = histo.GetBinWidth(1)
-        bin_limits = np.array([low_edge + i_bin * bin_width for i_bin in range(n_limits)], 'd')
+        bin_limits = np.array(
+            [low_edge + i_bin * bin_width for i_bin in range(n_limits)], "d"
+        )
 
     return bin_limits
