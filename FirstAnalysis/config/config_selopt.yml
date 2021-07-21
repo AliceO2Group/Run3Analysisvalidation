@@ -1,0 +1,23 @@
+# input files
+inputs:
+    signal: ../../AnalysisResults_O2_ALICE3_ccbar.root
+    background: ../../AnalysisResults_O2_ALICE3_gen_purp.root
+
+# labels for histograms corresponding to the cuts tested in the task, null if you don't want labels
+labels:
+    Cosp: [0.70, 0.75, 0.80, 0.85, 0.88, 0.90, 0.92, 0.93, 0.94, 0.95, 0.96, 0.97, 0.98, 0.99, 0.995]
+    DecLen: [0., 0.005, 0.01, 0.015, 0.02, 0.025, 0.03, 0.04, 0.05, 0.075, 0.1]
+    MinDCAxy: [0., 0.0005, 0.001, 0.0015, 0.0020, 0.0025, 0.0030, 0.0040, 0.0050]
+    ImpParProd: [-0.00005, -0.00004, -0.00003, -0.00002, -0.00001, 0., 0.00001, 0.00002, 0.00003, 0.00004, 0.00005]
+    MinTrackPt: [0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60]
+
+# list of 2-prong candidates enabled, options: D0ToPiK, JpsiToEE
+cands2Prong: [D0ToPiK, JpsiToEE]
+# list of variables to test for 2-prong candidates, options: Cosp, DecLen, ImpParProd, MinDCAxy, MinTrackPt
+vars2Prong: [Cosp, DecLen, ImpParProd, MinDCAxy, MinTrackPt]
+
+# list of 3-prong candidates enabled, options: DPlusToPiKPi, DsToPiKK, LcToPKPi, XicToPKPi
+cands3Prong: [DPlusToPiKPi, DsToPiKK, LcToPKPi, XicToPKPi]
+# list of variables to test for 3-prong candidates, options: Cosp, DecLen, MinDCAxy, MinTrackPt
+vars3Prong: [Cosp, DecLen, MinDCAxy, MinTrackPt]
+
