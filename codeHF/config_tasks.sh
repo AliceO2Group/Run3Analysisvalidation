@@ -62,6 +62,13 @@ DOO2_TASK_LCK0SP=0  # hf-task-lc-tok0sp
 # Tree creators
 DOO2_TREE_D0=0      # hf-tree-creator-d0-tokpi
 DOO2_TREE_LC=0      # hf-tree-creator-lc-topkpi
+# Correlations
+DOO2_D0D0BAR_DATA=0      # hf-correlator-d0d0bar
+DOO2_D0D0BAR_MCREC=0     # hf-correlator-d0d0bar-mc-rec
+DOO2_D0D0BAR_MCGEN=0     # hf-correlator-d0d0bar-mc-gen
+DOO2_DPLUSDMINUS_DATA=0  # hf-correlator-dplusdminus
+DOO2_DPLUSDMINUS_MCREC=0 # hf-correlator-dplusdminus-mc-rec
+DOO2_DPLUSDMINUS_MCGEN=0 # hf-correlator-dplusdminus-mc-gen
 
 # Selection cuts
 APPLYCUTS_D0=0      # Apply D0 selection cuts.
@@ -180,6 +187,12 @@ function MakeScriptO2 {
   [ $DOO2_TASK_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-bplus"
   [ $DOO2_TASK_X -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-x"
   [ $DOO2_TASK_LCK0SP -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-lc-tok0sp"
+  [ $DOO2_D0D0BAR_DATA -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-correlator-d0d0bar o2-analysis-hf-task-correlation-ddbar"
+  [ $DOO2_D0D0BAR_MCREC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-correlator-d0d0bar-mc-rec o2-analysis-hf-task-correlation-ddbar-mc-rec"
+  [ $DOO2_D0D0BAR_MCGEN -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-correlator-d0d0bar-mc-gen o2-analysis-hf-task-correlation-ddbar-mc-gen"
+  [ $DOO2_DPLUSDMINUS_DATA -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-correlator-dplusdminus o2-analysis-hf-task-correlation-ddbar"
+  [ $DOO2_DPLUSDMINUS_MCREC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-correlator-dplusdminus-mc-rec o2-analysis-hf-task-correlation-ddbar-mc-rec"
+  [ $DOO2_DPLUSDMINUS_MCGEN -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-correlator-dplusdminus-mc-gen o2-analysis-hf-task-correlation-ddbar-mc-gen"
   # Tree creators
   [ $DOO2_TREE_D0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-d0-tokpi"
   [ $DOO2_TREE_LC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-lc-topkpi"

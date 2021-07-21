@@ -128,6 +128,16 @@ workflows:
     <<: *task
     dependencies: o2-analysis-hf-lc-tok0sp-candidate-selector
 
+  o2-analysis-hf-task-correlation-ddbar: {}
+
+  o2-analysis-hf-task-correlation-ddbar-mc-rec:
+    executable: o2-analysis-hf-task-correlation-ddbar
+    options: "--doMCRec"
+      
+  o2-analysis-hf-task-correlation-ddbar-mc-gen:
+    executable: o2-analysis-hf-task-correlation-ddbar
+    options: "--doMCGen"   
+
   # Tree creators
 
   o2-analysis-hf-tree-creator-d0-tokpi:
@@ -139,6 +149,36 @@ workflows:
     requires_mc: yes
     dependencies: o2-analysis-hf-lc-candidate-selector
     tables: [HFCANDP3Full, HFCANDP3FullE, HFCANDP3FullP]
+
+  o2-analysis-hf-correlator-d0d0bar: &d0d0barcorr
+    dependencies: o2-analysis-hf-d0-candidate-selector
+    tables: [DDBARPAIR, DDBARRECOINFO]
+
+  o2-analysis-hf-correlator-d0d0bar-mc-rec:
+    <<: *d0d0barcorr
+    executable: o2-analysis-hf-correlator-d0d0bar
+    options: "--doMCRec"
+
+  o2-analysis-hf-correlator-d0d0bar-mc-gen:
+    <<: *d0d0barcorr
+    executable: o2-analysis-hf-correlator-d0d0bar
+    options: "--doMCGen"
+    tables: DDBARPAIR
+
+  o2-analysis-hf-correlator-dplusdminus: &dplusdminus
+    dependencies: o2-analysis-hf-dplus-topikpi-candidate-selector
+    tables: [DDBARPAIR, DDBARRECOINFO]
+
+  o2-analysis-hf-correlator-dplusdminus-mc-rec:
+    <<: *dplusdminus
+    executable: o2-analysis-hf-correlator-dplusdminus
+    options: "--doMCRec"
+
+  o2-analysis-hf-correlator-dplusdminus-mc-gen:
+    <<: *dplusdminus
+    executable: o2-analysis-hf-correlator-dplusdminus
+    options: "--doMCGen"
+    tables: DDBARPAIR
 
   # QA
 
