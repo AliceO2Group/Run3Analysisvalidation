@@ -79,7 +79,7 @@ def load_inputs(input_cfg):
     frac_method = input_cfg['fraction']
     if frac_method not in ['Nb', 'fc']:
         print(f'\033[91mERROR: method to subtract nonprompt'
-              ' {frac_method} not supported. Exit\033[0m')
+              f' {frac_method} not supported. Exit\033[0m')
         sys.exit()
 
     rawy_file_name = input_cfg['rawyield']['filename']
