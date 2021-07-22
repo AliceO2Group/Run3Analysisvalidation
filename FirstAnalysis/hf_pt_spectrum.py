@@ -51,7 +51,7 @@ def load_inputs(input_cfg):
     observable = input_cfg["observable"]
     if observable not in ["dsigmadpt", "dNdpt"]:
         print(f"\033[91mERROR: observable {observable} not supported. Exit\033[0m")
-        sys.exit()
+        sys.exit(1)
 
     channel = input_cfg["channel"]
     if channel not in [
@@ -63,19 +63,19 @@ def load_inputs(input_cfg):
         "LctopK0S",
     ]:
         print(f"\033[91mERROR: channel {channel} not supported. Exit\033[0m")
-        sys.exit()
+        sys.exit(2)
 
     system = input_cfg["system"]
     if system not in ["pp", "pPb", "PbPb"]:
         print(f"\033[91mERROR: channel {channel} not supported. Exit\033[0m")
-        sys.exit()
+        sys.exit(3)
     if system in ["pPb", "PbPb"] and observable == "dsigmadpt":
         print("\033[93mWARNING: switching from dsigmadpt to dNdpt\033[0m")
 
     energy = input_cfg["energy"]
     if energy not in ["5TeV", "13TeV"]:
         print(f"\033[91mERROR: energy {energy} not supported. Exit\033[0m")
-        sys.exit()
+        sys.exit(4)
 
     frac_method = input_cfg["fraction"]
     if frac_method not in ["Nb", "fc"]:
@@ -83,7 +83,7 @@ def load_inputs(input_cfg):
             f"\033[91mERROR: method to subtract nonprompt"
             f" {frac_method} not supported. Exit\033[0m"
         )
-        sys.exit()
+        sys.exit(5)
 
     rawy_file_name = input_cfg["rawyield"]["filename"]
     rawy_hist_name = input_cfg["rawyield"]["rawyieldhist"]
@@ -104,7 +104,7 @@ def load_inputs(input_cfg):
             f"\033[91mERROR: raw-yield histo {rawy_hist_name}"
             f" not found in {rawy_file_name}. Exit\033[0m"
         )
-        sys.exit()
+        sys.exit(6)
     histos["rawyields"].SetDirectory(0)
     h_events = infile_rawy.Get(norm_hist_name)
     if not h_events:
@@ -112,7 +112,7 @@ def load_inputs(input_cfg):
             f"\033[91mERROR: normalisation histo {norm_hist_name}"
             f" not found in {rawy_file_name}. Exit\033[0m"
         )
-        sys.exit()
+        sys.exit(7)
     h_events.SetDirectory(0)
     infile_rawy.Close()
 
@@ -123,7 +123,7 @@ def load_inputs(input_cfg):
             f"\033[91mERROR: prompt (acc x eff) histo {effprompt_hist_name}"
             f" not found in {eff_file_name}. Exit\033[0m"
         )
-        sys.exit()
+        sys.exit(8)
     histos["acceffp"].SetDirectory(0)
     histos["acceffnp"] = infile_eff.Get(effnonprompt_hist_name)
     if not histos["acceffnp"]:
@@ -131,7 +131,7 @@ def load_inputs(input_cfg):
             f"\033[91mERROR: nonprompt (acc x eff) histo {effprompt_hist_name}"
             f"not found in {eff_file_name}. Exit\033[0m"
         )
-        sys.exit()
+        sys.exit(9)
     histos["acceffnp"].SetDirectory(0)
     infile_eff.Close()
 
@@ -206,7 +206,7 @@ def main():
             and not np.equal(ptlims[histo], ptlims["rawyields"]).all()
         ):
             print("\033[91mERROR: histo binning not consistent. Exit\033[0m")
-            sys.exit()
+            sys.exit(10)
 
     # compute cross section
     axistit_cross = "d#sigma/d#it{p}_{T} (pb GeV^{-1} #it{c})"
