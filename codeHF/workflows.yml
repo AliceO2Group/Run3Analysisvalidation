@@ -153,6 +153,8 @@ workflows:
     dependencies: o2-analysis-hf-lc-candidate-selector
     tables: [HFCANDP3Full, HFCANDP3FullE, HFCANDP3FullP]
 
+  # D meson correlations
+
   o2-analysis-hf-correlator-d0d0bar: &d0d0barcorr
     executable: o2-analysis-hf-correlator-d0d0bar
     dependencies: o2-analysis-hf-d0-candidate-selector
