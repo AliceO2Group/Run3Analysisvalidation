@@ -12,7 +12,7 @@ defaults are True and 1 (no rebin), respectively.
 
 Input: file with histograms produced by o2-analysis-hf-task-... in MC mode
 
-Usage: python3 plotSigVsBkg.py
+Usage: python3 sig_vs_bkg.py
 
 Parameters:
 - path_file_sig: path to file with signal distributions
