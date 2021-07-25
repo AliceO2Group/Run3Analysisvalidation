@@ -158,7 +158,6 @@ def main():
                 pt_min = h_sig.GetYaxis().GetBinLowEdge(bin_pt)
                 pt_max = h_sig.GetYaxis().GetBinLowEdge(bin_pt + 1)
                 h_bkg_px.SetTitle(
-                    # f"{decay}, {pt_min:g} #leq #it{{p}}_{{T}}/(GeV/#it{{c}}) < {pt_max:g} (bin {bin_pt})"
                     f"{labels[decay]}, {pt_min:g} #leq #it{{p}}_{{T}}/(GeV/#it{{c}}) < {pt_max:g} (bin {bin_pt})"
                 )
                 h_bkg_px.SetYTitle("entries")
