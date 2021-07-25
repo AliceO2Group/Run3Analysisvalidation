@@ -158,7 +158,7 @@ def main():
                 pt_min = h_sig.GetYaxis().GetBinLowEdge(bin_pt)
                 pt_max = h_sig.GetYaxis().GetBinLowEdge(bin_pt + 1)
                 h_bkg_px.SetTitle(
-                    #f"{decay}, {pt_min:g} #leq #it{{p}}_{{T}}/(GeV/#it{{c}}) < {pt_max:g} (bin {bin_pt})"
+                    # f"{decay}, {pt_min:g} #leq #it{{p}}_{{T}}/(GeV/#it{{c}}) < {pt_max:g} (bin {bin_pt})"
                     f"{labels[decay]}, {pt_min:g} #leq #it{{p}}_{{T}}/(GeV/#it{{c}}) < {pt_max:g} (bin {bin_pt})"
                 )
                 h_bkg_px.SetYTitle("entries")
@@ -217,19 +217,23 @@ def main():
 
                 if singlepad:
                     save_canvas(
-                        canvas_single, f"sig_vs_bkg_{var}_{bin_pt}", *formats, dir_output=f"output_{decay}"
+                        canvas_single,
+                        f"sig_vs_bkg_{var}_{bin_pt}",
+                        *formats,
+                        dir_output=f"output_{decay}",
                     )
 
             if not singlepad:
                 save_canvas(
-                    canvas_all, f"sig_vs_bkg_{var}", *formats, dir_output=f"output_{decay}"
+                    canvas_all,
+                    f"sig_vs_bkg_{var}",
+                    *formats,
+                    dir_output=f"output_{decay}",
                 )
 
+
 # TLatex labels of decay channels
-labels = {
-"d0": "D^{0} #rightarrow #pi K",
-"lc": "#Lambda^{+}_{c} #rightarrow p K #pi"
-}
+labels = {"d0": "D^{0} #rightarrow #pi K", "lc": "#Lambda^{+}_{c} #rightarrow p K #pi"}
 
 # general settings
 gROOT.SetBatch(True)
@@ -252,7 +256,7 @@ gStyle.SetPadLeftMargin(0.1)
 gStyle.SetPadBottomMargin(0.12)
 gStyle.SetPadRightMargin(0.05)
 gStyle.SetPadTopMargin(0.1)
-singlepad = False # make one canvas per pT bin
+singlepad = False  # make one canvas per pT bin
 
 # legend settings
 gStyle.SetLegendFillColor(0)
