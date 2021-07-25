@@ -1,15 +1,24 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 """
 Produce plots of signal vs background distributions.
 
-Makes and saves signal vs background plots for each decay channel and each variable.
-Creates one plot per pT bin and saves them all to one canvas per variable.
 Takes a signal file and background file and any number of variables.
+Makes and saves signal vs background plots for each decay channel and each variable.
+Creates one plot per pT bin and saves them all to one canvas per variable
+or optionally in separate canvases (singlepad = True).
 User can also manually set the options to normalise or rebin the histograms,
 defaults are True and 1 (no rebin), respectively.
 
 Input: file with histograms produced by o2-analysis-hf-task-... in MC mode
+
+Usage: python3 plotSigVsBkg.py
+
+Parameters:
+- path_file_sig: path to file with signal distributions
+- path_file_bkg: path to file with background distributions
+- variables: list of variable strings
+- decays: list of decay channel strings (appearing in hf-task-{decay}...)
 
 Contributors:
     Rik Spijkers <r.spijkers@students.uu.nl>
@@ -41,7 +50,7 @@ def create_canvas(n_plots, name, size_x=1500, size_y=800):
 
 def save_canvas(canvas, name, *file_formats, dir_output="outputPlots"):
     """
-    Saves the canvas as the desired output format in an output directory (default = outputPlots)
+    Saves the canvas as the desired output format in an output directory.
     """
     if not os.path.exists(dir_output):
         os.makedirs(dir_output)
@@ -51,6 +60,9 @@ def save_canvas(canvas, name, *file_formats, dir_output="outputPlots"):
 
 
 def set_histogram(his, y_min, y_max, margin_low, margin_high, logscale):
+    """
+    Sets histogram axes labels and range.
+    """
     for ax in his.GetXaxis(), his.GetYaxis():
         ax.SetTitleFont(textfont)
         ax.SetTitleSize(textsize)
@@ -75,6 +87,7 @@ def set_histogram(his, y_min, y_max, margin_low, margin_high, logscale):
 def main():
     """
     Main plotting function
+
     Loops over decays, variables and pT bins.
     """
     file_sig = TFile(path_file_sig)
@@ -212,9 +225,10 @@ def main():
                     canvas_all, f"sig_vs_bkg_{var}", *formats, dir_output=f"output_{decay}"
                 )
 
-# labels
+# TLatex labels of decay channels
 labels = {
-"d0": "D^{0} #rightarrow #pi K"
+"d0": "D^{0} #rightarrow #pi K",
+"lc": "#Lambda^{+}_{c} #rightarrow p K #pi"
 }
 
 # general settings
@@ -238,7 +252,7 @@ gStyle.SetPadLeftMargin(0.1)
 gStyle.SetPadBottomMargin(0.12)
 gStyle.SetPadRightMargin(0.05)
 gStyle.SetPadTopMargin(0.1)
-singlepad = False #True # make one plot per pT bin
+singlepad = False # make one canvas per pT bin
 
 # legend settings
 gStyle.SetLegendFillColor(0)
@@ -256,7 +270,6 @@ path_file_bkg = "../codeHF/AnalysisResults_O2.root"
 # variables = ["d0Prong0", "d0Prong1", "d0Prong2", "PtProng0", "PtProng1", "PtProng2", "CPA", "Eta", "Declength"]
 variables = ["CPA", "Pt", "Eta"]
 
-#decays = ["d0", "lc"]
 decays = ["d0"]
 
 main()
