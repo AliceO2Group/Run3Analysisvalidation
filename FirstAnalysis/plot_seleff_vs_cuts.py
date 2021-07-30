@@ -8,6 +8,7 @@ author: Fabrizio Grosa <fabrizio.grosa@cern.ch>, CERN
 """
 
 import argparse
+from typing import Dict
 import yaml
 from ROOT import (  # pylint: disable=import-error,no-name-in-module
     TFile,
@@ -91,7 +92,11 @@ vars_to_plot = {"2Prong": cfg["vars2Prong"], "3Prong": cfg["vars3Prong"]}
 if args.batch:
     gROOT.SetBatch(True)
 
-hvar_vs_pt, hvar, hvar_perevent, hvar_fracs, hnorm_vs_pt = ({} for _ in range(5))  # type: Dict[str, TH1F]
+hvar_vs_pt = {}  # type: Dict[str, Dict]
+hvar = {}  # type: Dict[str, Dict]
+hvar_perevent = {}  # type: Dict[str, Dict]
+hvar_fracs = {}  # type: Dict[str, Dict]
+hnorm_vs_pt = {}  # type: Dict[str, Dict]
 for cand_type in cand_types:
     for cand in cands[cand_type]:
         hvar_vs_pt[cand], hvar[cand], hvar_perevent[cand], hvar_fracs[cand], hnorm_vs_pt[cand] \
@@ -178,7 +183,9 @@ leg_orig.SetFillStyle(0)
 
 leg_channels = {}  # type: Dict[str, TLegend]
 
-ceff, ccand_perevent, cfracs = ({} for _ in range(3))  # type: Dict[str, TCanvas]
+ceff = {} # type: Dict[str, TCanvas]
+ccand_perevent = {} # type: Dict[str, TCanvas]
+cfracs = {} # type: Dict[str, TCanvas]
 for cand_type in cand_types:
     leg_channels[cand_type] = TLegend(0.35, 0.2, 0.7, 0.45)
     leg_channels[cand_type].SetTextSize(0.045)
