@@ -70,12 +70,12 @@ leg_channel_names = {
 }
 
 parser = argparse.ArgumentParser(description="Arguments")
-parser.add_argument("cfgFileName", metavar="text", default="config.yml", help="input yaml config file")
+parser.add_argument("cfgfilename", metavar="text", default="config.yml", help="input yaml config file")
 parser.add_argument("--batch", action="store_true", help="suppress video output")
 args = parser.parse_args()
 
-with open(args.cfgFileName, "r") as ymlFile:
-    cfg = yaml.load(ymlFile, yaml.FullLoader)
+with open(args.cfgfilename, "r") as yml_file:
+    cfg = yaml.safe_load(yml_file)
 
 infile_names = {
     "Prompt": cfg["inputs"]["signal"],
