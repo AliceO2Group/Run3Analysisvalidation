@@ -45,9 +45,9 @@ PrintWarnings() {
 # Print errors in the log.
 PrintErrors() {
   if [ "$TYPE" == "o2" ]; then
-    grep -q -e "\\[ERROR\\]" -e "segmentation" "$LOG" && {
+    grep -q -e "\\[ERROR\\]" -e "\\[FATAL\\]" -e "segmentation" -e "command not found" -e "Error:" "$LOG" && {
       [ "$PRINTDIR" -eq 1 ] || { echo -e "\n$DIRJOB"; PRINTDIR=1; }
-      grep -e "\\[ERROR\\]" -e "segmentation" "$LOG" | sort -u
+      grep -e "\\[ERROR\\]" -e "\\[FATAL\\]" -e "segmentation" -e "command not found" -e "Error:" "$LOG" | sort -u
     }
   elif [ "$TYPE" == "ali" ]; then
     grep -q -e '^'"E-" -e '^'"Error" -e '^'"F-" -e '^'"Fatal" -e "segmentation" "$LOG" && {

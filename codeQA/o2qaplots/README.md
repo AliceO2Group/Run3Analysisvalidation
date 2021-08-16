@@ -5,7 +5,7 @@
 One of the easiest way to work with qa plotting macros is to install them as a package.
 You can install it by navigating into this folder installing it using pip (or pip3 depending on your system):
 
-    pip install -e . 
+    pip install -e .
 
 In order to run the QA plotting, you can check the available commands by running
 
