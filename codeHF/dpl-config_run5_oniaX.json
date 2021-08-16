@@ -89,6 +89,20 @@
             ]
         },
 
+        "pTBinsJpsiToMuMu": {
+            "values": [
+                "0.",
+                "5.",
+                "1000."
+            ]
+        },
+        "cutsJpsiToMuMu": {
+            "values": [
+                ["2.5", "4.1", "-2.", "1000.00"],
+                ["2.5", "4.1", "-2.", "1000.00"]
+            ]
+        },
+
         "pTBinsDPlusToPiKPi": {
             "values": [
                 "2.",
@@ -336,15 +350,18 @@
         "d_nSigmaTOF": "3.",
         "d_nSigmaTOFCombined": "5."
     },
-    "hf-jpsi-toee-candidate-selector": {
+    "hf-jpsi-candidate-selector": {
+        "isALICE3": "true",
         "d_pTCandMin": "0.",
         "d_pTCandMax": "50.",
         "d_pidTPCMinpT": "1000.",
         "d_pidTPCMaxpT": "2000.",
         "d_pidTOFMinpT": "0.15",
-        "d_pidTOFMaxpT": "15.",
-        "d_pidRICHMinpT": "0.15",
+        "d_pidTOFMaxpT": "1.",
+        "d_nSigmaTOFCombined": "0.",
+        "d_pidRICHMinpT": "0.5",
         "d_pidRICHMaxpT": "15.",
+        "d_nSigmaRICHCombinedTOF": "0.",
         "d_TPCNClsFindablePIDCut": "-9999",
         "d_nSigmaTPC": "1000.",
         "d_nSigmaTOF": "3.",
@@ -365,15 +382,53 @@
         },
         "Jpsi_to_ee_cuts": {
             "values": [
-                ["0.5", "0.2", "0.4", "1"],
-                ["0.5", "0.2", "0.4", "1"],
-                ["0.5", "0.2", "0.4", "1"],
-                ["0.5", "0.2", "0.4", "1"],
-                ["0.5", "0.2", "0.4", "1"],
-                ["0.5", "0.2", "0.4", "1"],
-                ["0.5", "0.2", "0.4", "1"],
-                ["0.5", "0.2", "0.4", "1"],
-                ["0.5", "0.2", "0.4", "1"]
+                ["0.5", "0.2", "0.4", "0.5", "1."],
+                ["0.5", "0.2", "0.4", "0.5", "1."],
+                ["0.5", "0.2", "0.4", "0.5", "1."],
+                ["0.5", "0.2", "0.4", "0.5", "1."],
+                ["0.5", "0.2", "0.4", "0.5", "1."],
+                ["0.5", "0.2", "0.4", "0.5", "1."],
+                ["0.5", "0.2", "0.4", "0.5", "1."],
+                ["0.5", "0.2", "0.4", "0.5", "1."],
+                ["0.5", "0.2", "0.4", "0.5", "1."]
+            ]
+        }
+    },
+    "hf-x-tojpsipipi-candidate-selector": {
+        "d_pTCandMin": "0.",
+        "d_pTCandMax": "50.",
+        "d_pidTPCMinpT": "1000.",
+        "d_pidTPCMaxpT": "2000.",
+        "d_pidTOFMinpT": "0.15",
+        "d_pidTOFMaxpT": "10.",
+        "d_TPCNClsFindablePIDCut": "-9999",
+        "d_nSigmaTPC": "1000.",
+        "d_nSigmaTOF": "3.",
+        "pTBins": {
+            "values": [
+                "0",
+                "0.5",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "7",
+                "10",
+                "15"
+            ]
+        },
+        "X_to_jpsipipi_cuts": {
+            "values": [
+                ["0.5", "0.80", "0.001", "0.001", "0.0", "0.15", "1."],
+                ["0.5", "0.80", "0.001", "0.001", "0.0", "0.15", "1."],
+                ["0.5", "0.80", "0.001", "0.001", "0.2", "0.15", "1."],
+                ["0.5", "0.80", "0.001", "0.001", "0.9", "0.15", "1."],
+                ["0.5", "0.80", "0.001", "0.001", "1.5", "0.15", "1."],
+                ["0.5", "0.80", "0.001", "0.001", "2.3", "0.15", "1."],
+                ["0.5", "0.90", "0.001", "0.001", "3.0", "0.15", "1."],
+                ["0.5", "0.90", "0.001", "0.001", "4.2", "0.15", "1."],
+                ["0.5", "0.90", "0.001", "0.001", "6.2", "0.15", "1."]
             ]
         }
     },
@@ -476,6 +531,7 @@
     "hf-task-jpsi": {
         "cutYCandMax": "1.44",
         "d_selectionFlagJpsi": "0",
+        "d_modeJpsiToMuMu": false,
         "pTBins": {
             "values": [
                 "0",
@@ -493,11 +549,20 @@
     },
     "hf-task-jpsi-mc": {
         "cutYCandMax": "1.44",
+        "d_selectionFlagJpsi": "0",
+        "d_modeJpsiToMuMu": false
+    },
+    "hf-candidate-creator-x": {
+        "cutYCandMax": "1.44",
         "d_selectionFlagJpsi": "0"
     },
     "hf-task-x": {
-        "cutYCandMax": "0.8",
-        "d_selectionFlagJpsi": "0"
+        "cutYCandMax": "1.44",
+        "d_selectionFlagX": "0"
+    },
+    "hf-task-x-mc": {
+        "cutYCandMax": "1.44",
+        "d_selectionFlagX": "0"
     },
     "hf-track-index-skims-cascades-creator": {
         "doValPlots": "true",

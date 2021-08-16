@@ -67,15 +67,28 @@ workflows:
       default: [HFCANDCASCBASE, HFCANDCASCEXT]
       mc: [HFCANDCASCMCREC, HFCANDCASCMCGEN]
 
+  o2-analysis-hf-candidate-creator-x:
+    <<: *cand_creator
+    dependencies:
+      - o2-analysis-hf-jpsi-candidate-selector
+    tables:
+      default: [HFCANDXBASE, HFCANDXEXT]
+      mc: [HFCANDXMCREC, HFCANDXMCGEN]
+
   # Selectors
 
   o2-analysis-hf-d0-candidate-selector: &selector_2prong
     dependencies: [o2-analysis-hf-candidate-creator-2prong, o2-analysis-pid-tpc-full, o2-analysis-pid-tof-full]
     tables: HFSELD0CAND
 
-  o2-analysis-hf-jpsi-toee-candidate-selector:
+  o2-analysis-hf-jpsi-candidate-selector: &selector_jpsi
     <<: *selector_2prong
+    executable: o2-analysis-hf-jpsi-candidate-selector
     tables: HFSELJPSICAND
+
+  o2-analysis-hf-jpsi-candidate-selector-alice3:
+    <<: *selector_jpsi
+    options: --isAlice3
 
   o2-analysis-hf-dplus-topikpi-candidate-selector: &selector_3prong
     dependencies: [o2-analysis-hf-candidate-creator-3prong, o2-analysis-pid-tpc-full, o2-analysis-pid-tof-full]
@@ -93,6 +106,9 @@ workflows:
     dependencies: [o2-analysis-hf-candidate-creator-cascade, o2-analysis-pid-tpc-full, o2-analysis-pid-tof-full]
     tables: HFSELLCK0SPCAND
 
+  o2-analysis-hf-x-tojpsipipi-candidate-selector:
+    dependencies: [o2-analysis-hf-candidate-creator-x, o2-analysis-pid-tpc-full, o2-analysis-pid-tof-full]
+
   # Analysis tasks
 
   o2-analysis-hf-task-d0: &task
@@ -102,7 +118,8 @@ workflows:
 
   o2-analysis-hf-task-jpsi:
     <<: *task
-    dependencies: o2-analysis-hf-jpsi-toee-candidate-selector
+    dependencies:
+      - o2-analysis-hf-jpsi-candidate-selector
 
   o2-analysis-hf-task-dplus:
     <<: *task
@@ -122,7 +139,7 @@ workflows:
 
   o2-analysis-hf-task-x:
     <<: *task
-    dependencies: o2-analysis-hf-jpsi-toee-candidate-selector
+    dependencies: o2-analysis-hf-x-tojpsipipi-candidate-selector
 
   o2-analysis-hf-task-lc-tok0sp:
     <<: *task
@@ -148,6 +165,13 @@ workflows:
 
   o2-analysis-qa-event-track:
     requires_mc: yes
+
+  o2-analysis-qa-rejection:
+    requires_mc: yes
+    dependencies:
+      - o2-analysis-hf-track-index-skims-creator
+      - o2-analysis-pid-tpc-full
+      - o2-analysis-pid-tof-full
 
   o2-analysis-pid-tof-qa-mc:
     requires_mc: yes
