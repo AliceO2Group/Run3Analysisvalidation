@@ -84,7 +84,7 @@ with open(args.cfgfilename, "r") as yml_file:
 infile_names = {
     "Prompt": cfg["inputs"]["prompt"],
     "NonPrompt": cfg["inputs"]["nonprompt"],
-    "Bkg": cfg["inputs"]["background"]
+    "Bkg": cfg["inputs"]["background"],
 }
 
 origins = cfg["origins"]
