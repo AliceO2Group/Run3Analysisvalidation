@@ -2,8 +2,9 @@
 
 # input files
 inputs:
-    signal: ../../optimisation/run5/AnalysisResults_pp_HF_eta4_2T.root
     background: ../../optimisation/run5/AnalysisResults_pp_GP_eta4_2T.root
+    prompt: ../../optimisation/run5/AnalysisResults_pp_HF_eta4_2T.root
+    nonprompt: null
 
 # list of enabled origins to be plot
 origins: [Prompt, Bkg]

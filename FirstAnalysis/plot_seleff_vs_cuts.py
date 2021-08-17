@@ -82,9 +82,9 @@ with open(args.cfgfilename, "r") as yml_file:
     cfg = yaml.safe_load(yml_file)
 
 infile_names = {
-    "Prompt": cfg["inputs"]["signal"],
-    "NonPrompt": cfg["inputs"]["signal"],
-    "Bkg": cfg["inputs"]["background"],
+    "Prompt": cfg["inputs"]["prompt"],
+    "NonPrompt": cfg["inputs"]["nonprompt"],
+    "Bkg": cfg["inputs"]["background"]
 }
 
 origins = cfg["origins"]
