@@ -25,6 +25,7 @@ INPUT_FILES="AliESDs.root"      # Input file pattern
 JSON="dpl-config.json"          # Tasks parameters
 ISINPUTO2=0                     # Input files are in O2 format.
 ISMC=0                          # Input files are MC data.
+ISALICE3=0                      # Input data from the ALICE 3 detectors.
 TRIGGERSTRINGRUN2=""            # Run 2 trigger (not used)
 TRIGGERBITRUN3=-1               # Run 3 trigger (not used)
 NFILESMAX=1                     # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
