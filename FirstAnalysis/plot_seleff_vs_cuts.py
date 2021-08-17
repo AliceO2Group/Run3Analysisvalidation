@@ -12,7 +12,6 @@ from typing import Dict
 import yaml
 from ROOT import (  # pylint: disable=import-error,no-name-in-module
     TFile,
-    TH1F,
     TCanvas,
     TLegend,
     gROOT,
@@ -193,9 +192,9 @@ leg_orig.SetFillStyle(0)
 
 leg_channels = {}  # type: Dict[str, TLegend]
 
-ceff = {} # type: Dict[str, TCanvas]
-ccand_perevent = {} # type: Dict[str, TCanvas]
-cfracs = {} # type: Dict[str, TCanvas]
+ceff = {}  # type: Dict[str, TCanvas]
+ccand_perevent = {}  # type: Dict[str, TCanvas]
+cfracs = {}  # type: Dict[str, TCanvas]
 for cand_type in cand_types:
     leg_channels[cand_type] = TLegend(0.35, 0.2, 0.7, 0.45)
     leg_channels[cand_type].SetTextSize(0.045)
