@@ -1,8 +1,12 @@
-// Plotting of reconstruction efficiency
+// Computation and plotting of reconstruction efficiency step-by-step
+// Four steps defined: kRecoHFFlag, kRecoTopol, kRecoCand, kRecoPID
+// Macros input: AnalysisResults.root from O2 with TH2F (pt vs y) distributions for generated and reconstructed candidates
+// .L PlotEfficiency_recoStep.C
+// PlotEfficiencySbyS("InputName.root","particlename",true);
 
 #include "utils_plot.h"
 
-Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particles = "d0", bool effSbyS = true)
+Int_t PlotEfficiencySbyS(TString pathFile = "AnalysisResults.root", TString particles = "d0", bool effSbyS = true)
 {
   gStyle->SetOptStat(0);
   gStyle->SetPalette(0);
@@ -44,53 +48,37 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
   TString recostep[4] = {"RecoHFFlag", "RecoTopol", "RecoCand", "RecoPID"};
   const int NRecoStep = sizeof(recostep) / sizeof(recostep[0]);
 
+  // Generated distributions
   TCanvas* cgensbys = new TCanvas("cgensbys", "cgensbys", 800, 600);
-  if (NRecoStep == 4)
-    cgensbys->Divide(2, 2);
-
   TCanvas* cgensbys_pt = new TCanvas("cgensbys_pt", "cgensbys_pt", 800, 600);
-  if (NRecoStep == 4)
-    cgensbys_pt->Divide(2, 2);
-
   TCanvas* cgensbys_y = new TCanvas("cgensbys_y", "cgensbys_y", 800, 600);
-  if (NRecoStep == 4)
-    cgensbys_y->Divide(2, 2);
-
+  // Reconstructed distributions (inclusive)
   TCanvas* crecosbys = new TCanvas("crecosbys", "crecosbys", 800, 600);
-  if (NRecoStep == 4)
-    crecosbys->Divide(2, 2);
-
   TCanvas* crecosbys_pt = new TCanvas("crecosbys_pt", "crecosbys_pt", 800, 600);
-  if (NRecoStep == 4)
-    crecosbys_pt->Divide(2, 2);
-
   TCanvas* crecosbys_y = new TCanvas("crecosbys_y", "crecosbys_y", 800, 600);
-  if (NRecoStep == 4)
-    crecosbys_y->Divide(2, 2);
-
+  // Reconstructed distributions (prompt)
   TCanvas* crecosbys_prompt = new TCanvas("crecosbys_prompt", "crecosbys_prompt", 800, 600);
-  if (NRecoStep == 4)
-    crecosbys_prompt->Divide(2, 2);
-
   TCanvas* crecosbys_prompt_pt = new TCanvas("crecosbys_prompt_pt", "crecosbys_prompt_pt", 800, 600);
-  if (NRecoStep == 4)
-    crecosbys_prompt_pt->Divide(2, 2);
-
   TCanvas* crecosbys_prompt_y = new TCanvas("crecosbys_prompt_y", "crecosbys_prompt_y", 800, 600);
-  if (NRecoStep == 4)
-    crecosbys_prompt_y->Divide(2, 2);
-
+  // Reconstructed distributions (non-prompt)
   TCanvas* crecosbys_nonprompt = new TCanvas("crecosbys_nonprompt", "crecosbys_nonprompt", 800, 600);
-  if (NRecoStep == 4)
-    crecosbys_nonprompt->Divide(2, 2);
-
   TCanvas* crecosbys_nonprompt_pt = new TCanvas("crecosbys_nonprompt_pt", "crecosbys_nonprompt_pt", 800, 600);
-  if (NRecoStep == 4)
-    crecosbys_nonprompt_pt->Divide(2, 2);
-
   TCanvas* crecosbys_nonprompt_y = new TCanvas("crecosbys_nonprompt_y", "crecosbys_nonprompt_y", 800, 600);
-  if (NRecoStep == 4)
+
+  if (NRecoStep == 4) {
+    cgensbys->Divide(2, 2);
+    cgensbys_pt->Divide(2, 2);
+    cgensbys_y->Divide(2, 2);
+    crecosbys->Divide(2, 2);
+    crecosbys_pt->Divide(2, 2);
+    crecosbys_y->Divide(2, 2);
+    crecosbys_prompt->Divide(2, 2);
+    crecosbys_prompt_pt->Divide(2, 2);
+    crecosbys_prompt_y->Divide(2, 2);
+    crecosbys_nonprompt->Divide(2, 2);
+    crecosbys_nonprompt_pt->Divide(2, 2);
     crecosbys_nonprompt_y->Divide(2, 2);
+  }
 
   TCanvas* canEffSbyS_pt = new TCanvas(Form("canEffSbyS_pt_%s", particle.Data()), "Eff", 800, 600);
   canEffSbyS_pt->Divide(2, 2);
