@@ -2,8 +2,11 @@
 
 # input files
 inputs:
-    signal: ../../AnalysisResults_O2_ALICE3_ccbar.root
-    background: ../../AnalysisResults_O2_ALICE3_gen_purp.root
+    signal: ../../optimisation/run5/AnalysisResults_pp_HF_eta4_2T.root
+    background: ../../optimisation/run5/AnalysisResults_pp_GP_eta4_2T.root
+
+# list of enabled origins to be plot
+origins: [Prompt, Bkg]
 
 # list of 2-prong candidates enabled
 # options: D0ToPiK, JpsiToEE

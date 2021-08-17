@@ -40,15 +40,16 @@ def set_hist_style(histo, color=kBlack, marker=kFullCircle, markersize=1):
 
 gStyle.SetPadBottomMargin(0.15)
 gStyle.SetPadLeftMargin(0.14)
+gStyle.SetPadRightMargin(0.12)
 gStyle.SetPadTickX(1)
 gStyle.SetPadTickY(1)
 gStyle.SetTitleSize(0.045, "xy")
-gStyle.SetLabelSize(0.045, "xy")
+gStyle.SetLabelSize(0.045, "y")
+gStyle.SetLabelSize(0.055, "x")
 gStyle.SetTitleOffset(1.4, "x")
 gStyle.SetOptStat(0)
 
 cand_types = ["2Prong", "3Prong"]
-origins = ["Prompt", "NonPrompt", "Bkg"]
 colors = {"Prompt": kRed+1, "NonPrompt": kAzure+4, "Bkg": kBlack}
 colors_channel = {
     "D0ToPiK": kRed+1,
@@ -84,6 +85,7 @@ infile_names = {
     "Bkg": cfg["inputs"]["background"]
 }
 
+origins = cfg["origins"]
 cands = {"2Prong": cfg["cands2Prong"], "3Prong": cfg["cands3Prong"]}
 for cand_type in cand_types:
     cands[cand_type].insert(0, cand_type)
@@ -135,12 +137,20 @@ for cand_type in cand_types:
                         )
                     )
                     hvar[cand][var][orig][iPtBin-1].SetDirectory(0)
+                    hvar[cand][var][orig][iPtBin-1].GetXaxis().SetRangeUser(
+                        1.,
+                        hvar_vs_pt[cand][var][orig].GetYaxis().GetNbins()
+                    )
                     hvar_fracs[cand][var][orig].append(
                         hvar[cand][var][orig][iPtBin-1].Clone(
                             f"h{orig}{var}{cand}_Frac_pTbin{iPtBin}"
                         )
                     )
                     hvar_fracs[cand][var][orig][iPtBin-1].SetDirectory(0)
+                    hvar_fracs[cand][var][orig][iPtBin-1].GetXaxis().SetRangeUser(
+                        1.,
+                        hvar_vs_pt[cand][var][orig].GetYaxis().GetNbins()
+                    )
                     set_hist_style(
                         hvar[cand][var][orig][iPtBin-1],
                         colors[orig],
@@ -198,8 +208,8 @@ for cand_type in cand_types:
             ceff[cand][var] = TCanvas(f"c{var}{cand}", "", 1200, 400)
             ccand_perevent[cand][var] = TCanvas(f"c{var}{cand}_perEvent", "", 1200, 400)
 
-            nCutsTested = hvar[cand][var]["Prompt"][-1].GetNbinsX()
-            varTitle = hvar[cand][var]["Prompt"][-1].GetXaxis().GetTitle()
+            nCutsTested = hvar[cand][var][origins[0]][-1].GetNbinsX()
+            varTitle = hvar[cand][var][origins[0]][-1].GetXaxis().GetTitle()
             ceff[cand][var].Divide(nPtBins, 1)
             ccand_perevent[cand][var].Divide(nPtBins, 1)
 
@@ -213,53 +223,53 @@ for cand_type in cand_types:
                             "pl"
                         )
 
-                ptMin = hvar_vs_pt[cand][var]["Prompt"].GetXaxis().GetBinLowEdge(iPtBin+1)
-                ptMax = hvar_vs_pt[cand][var]["Prompt"].GetXaxis().GetBinUpEdge(iPtBin+1)
-                hFrame = TH1F(
-                    f"hFrame{var}{cand}_pTbin{iPtBin}",
-                    f"{ptMin}<#it{{p}}_{{T}}<{ptMax} GeV/#it{{c}};{varTitle};selection efficiency;",
-                    nCutsTested,
-                    0.5,
-                    0.5+nCutsTested
+                ptMin = hvar_vs_pt[cand][var][origins[0]].GetXaxis().GetBinLowEdge(iPtBin+1)
+                ptMax = hvar_vs_pt[cand][var][origins[0]].GetXaxis().GetBinUpEdge(iPtBin+1)
+                h_frame = hvar[cand][var][origins[0]][iPtBin].Clone(
+                    f"h_frame{var}{cand}_pTbin{iPtBin}"
+                )
+                h_frame.Reset()
+                h_frame.SetTitle(
+                    f"{ptMin}<#it{{p}}_{{T}}<{ptMax} GeV/#it{{c}};{varTitle};selection efficiency;"
+                )
+                h_frame.GetYaxis().SetRangeUser(
+                    hvar[cand][var]["Bkg"][iPtBin].GetMinimum() / 10,
+                    1.2
                 )
                 ceff[cand][var].cd(iPtBin+1).SetLogy()
-                hFrame.GetYaxis().SetRangeUser(1.e-3, 1.2)
-                hFrame.DrawCopy()
+                h_frame.DrawCopy()
                 for orig in origins:
                     hvar[cand][var][orig][iPtBin].DrawCopy("same")
                 leg_orig.Draw()
                 ccand_perevent[cand][var].cd(iPtBin+1).SetLogy()
-                hFrame.GetYaxis().SetRangeUser(
+                h_frame.GetYaxis().SetRangeUser(
                     hvar_perevent[cand][var]["Bkg"][iPtBin].GetMinimum() / 10,
-                    hvar_perevent[cand][var]["Bkg"][iPtBin].GetMaximum() * 5
+                    hvar_perevent[cand][var]["Bkg"][iPtBin].GetMaximum() * 20
                 )
-                hFrame.GetYaxis().SetTitle("candidates/event")
-                hFrame.DrawCopy()
+                h_frame.GetYaxis().SetTitle("candidates/event")
+                h_frame.DrawCopy()
                 hvar_perevent[cand][var]["Bkg"][iPtBin].DrawCopy("same")
             ceff[cand][var].SaveAs(f"c{var}{cand}.pdf")
             ccand_perevent[cand][var].SaveAs(f"c{var}{cand}_perEvent.pdf")
 
     for iVar, var in enumerate(vars_to_plot[cand_type]):
         cfracs[var] = {}
-        nCutsTested = hvar[cand][var]["Prompt"][-1].GetNbinsX()
-        varTitle = hvar[cand][var]["Prompt"][-1].GetXaxis().GetTitle()
+        nCutsTested = hvar[cand][var][origins[0]][-1].GetNbinsX()
+        varTitle = hvar[cand][var][origins[0]][-1].GetXaxis().GetTitle()
         for orig in origins:
             cfracs[var][orig] = TCanvas(f"c{orig}{var}{cand_type}_Fracs", "", 1200, 400)
             cfracs[var][orig].Divide(nPtBins, 1)
             for iPtBin in range(nPtBins):
                 ptMin = hvar_vs_pt[cand_type][var][orig].GetXaxis().GetBinLowEdge(iPtBin+1)
                 ptMax = hvar_vs_pt[cand_type][var][orig].GetXaxis().GetBinUpEdge(iPtBin+1)
-                hFrame = TH1F(
-                    f"hFrameFrac{orig}{var}{cand_type}_pTbin{iPtBin}",
-                    f"{ptMin}<#it{{p}}_{{T}}<{ptMax} GeV/#it{{c}};{varTitle};fraction;",
-                    nCutsTested,
-                    0.5,
-                    0.5 + nCutsTested
+                h_frame = hvar_fracs[cand][var][origins[0]][iPtBin].Clone(
+                    f"h_frame_frac{var}{cand}_pTbin{iPtBin}"
                 )
+                h_frame.Reset()
                 cfracs[var][orig].cd(iPtBin+1).SetLogy()
-                hFrame.GetYaxis().SetRangeUser(1.e-3, 1.2)
-                hFrame.GetYaxis().SetTitle("fraction")
-                hFrame.DrawCopy()
+                h_frame.GetYaxis().SetRangeUser(1.e-3, 1.2)
+                h_frame.GetYaxis().SetTitle("fraction")
+                h_frame.DrawCopy()
                 for cand in cands[cand_type]:
                     if cand != cand_type:
                         n_rows_leg = leg_channels[cand_type].GetNRows()
