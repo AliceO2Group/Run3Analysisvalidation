@@ -40,7 +40,6 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
   arrayParticle = particles.Tokenize(" ");
   TString particle = "";
 
-
   // compute efficiency at each reconstruction step
   TString recostep[4] = {"RecoHFFlag", "RecoTopol", "RecoCand", "RecoPID"};
   const int NRecoStep = sizeof(recostep) / sizeof(recostep[0]);
@@ -94,10 +93,10 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
     crecosbys_nonprompt_y->Divide(2, 2);
 
   TCanvas* canEffSbyS_pt = new TCanvas(Form("canEffSbyS_pt_%s", particle.Data()), "Eff", 800, 600);
-  canEffSbyS_pt->Divide(2,2);
+  canEffSbyS_pt->Divide(2, 2);
 
   TCanvas* canEffSbyS_y = new TCanvas(Form("canEffSbyS_y_%s", particle.Data()), "Eff", 800, 600);
-  canEffSbyS_y->Divide(2,2);
+  canEffSbyS_y->Divide(2, 2);
 
   TLegend* legendSbyS = new TLegend(0.15, 0.7, 0.45, 0.9);
   legendSbyS->SetFillColorAlpha(0, kWhite);
@@ -152,7 +151,6 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
       cgensbys->cd(2);
       hPtvsYGenPrompt->Draw("colz");
 
-
       TH1F* hGenPtPrompt = (TH1F*)hPtvsYGenPrompt->ProjectionX("hGenPrompt_Pt", 1, hPtvsYGenPrompt->GetXaxis()->GetLast(), "e");
       TH1F* hGenYPrompt = (TH1F*)hPtvsYGenPrompt->ProjectionY("hGenPrompt_Y", 1, hPtvsYGenPrompt->GetYaxis()->GetLast(), "e");
 
@@ -179,7 +177,7 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
       }
       cgensbys->cd(3);
       hPtvsYGenNonPrompt->Draw("colz");
-      
+
       TH1F* hGenPtNonPrompt = (TH1F*)hPtvsYGenNonPrompt->ProjectionX("hGenNonPrompt_Pt", 1, hPtvsYGenNonPrompt->GetXaxis()->GetLast(), "e");
       TH1F* hGenYNonPrompt = (TH1F*)hPtvsYGenNonPrompt->ProjectionY("hGenNonPrompt_Y", 1, hPtvsYGenNonPrompt->GetYaxis()->GetLast(), "e");
 
@@ -233,7 +231,7 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
         hEffPtIncl = (TH1F*)hRecoPtIncl->Clone(Form("hEffPtIncl%s", recostep[iRs].Data()));
         hEffPtIncl->Divide(hEffPtIncl, hGenPtIncl, 1., 1., "B");
         hEffPtIncl->SetTitle("inclusive ;#it{p}^{rec.}_{T} (GeV/#it{c}); efficiency");
-        yMin = hEffPtIncl->GetMinimum(0)* 0.2;
+        yMin = hEffPtIncl->GetMinimum(0) * 0.2;
         yMax = hEffPtIncl->GetMaximum() * 1.5;
         SetHistogramStyle(hEffPtIncl, colours[iRs], 20, 1.5, 2);
         legendSbyS->AddEntry(hEffPtIncl, Form("%s", recostep[iRs].Data()), "P");
@@ -262,7 +260,6 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
         } else
           hEffYIncl->Draw("pesame");
         legendSbyS->Draw("same");
-
 
         //prompt
         TString nameHistRecPrompt = outputDir + "/hPtvsYRecSigPrompt_" + recostep[iRs]; // reconstruction level pT of matched candidates
@@ -325,7 +322,6 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
         } else
           hEffYPrompt->Draw("pesame");
         legendSbyS->Draw("same");
-
 
         // non-prompt
         TString nameHistRecNonPrompt = outputDir + "/hPtvsYRecSigNonPrompt_" + recostep[iRs]; // reconstruction level pT of matched candidates
