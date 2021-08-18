@@ -76,7 +76,7 @@ case $INPUT_CASE in
     ISALICE3=1
     ISMC=1;;
   10)
-    INPUT_LABEL="Run 5, p-p MC 14 TeV LctopKpi-enriched, Layout v1, HF analysis"
+    INPUT_LABEL="Run 5, p-p MC 14 TeV ccbar-enriched, Layout v1, HF analysis"
     INPUT_DIR="/data/Run5/MC/pp_14TeV/CCBarLcPKPi_v1"
     INPUT_FILES="AODRun5.*.root"
     JSON="$JSONRUN5_HF"
@@ -85,7 +85,7 @@ case $INPUT_CASE in
     ISMC=1;;
   11)
     INPUT_LABEL="Run 5, Kr-Kr MC 6.460 TeV MB, Layout v1, HF analysis"
-    INPUT_DIR="/data/Run5/MC/KrKr_6p460TeV/MB_v1"
+    INPUT_DIR="/data/Run5/MC/KrKr_6p460TeV/MB_v1" # OBSOLETE
     INPUT_FILES="AODRun5.*.root"
     JSON="$JSONRUN5_HF"
     ISINPUTO2=1
