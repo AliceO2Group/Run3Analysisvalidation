@@ -16,6 +16,7 @@ It is currently being used also for performing Run5 analysis.
   * names of authors, contributors, maintainers (to contact in case of problems or questions).
 * Follow [PEP 8 naming conventions](https://www.python.org/dev/peps/pep-0008/#naming-conventions) in Python code.
 * Do not use hard-coded paths! A default path should point to a file directly produced by the framework (e.g. `../codeHF/AnalysisResults_O2.root`).
+* Handle errors and report them clearly.
 
 ## Available samples ALICE3
 * D2H KrKr production (X events):

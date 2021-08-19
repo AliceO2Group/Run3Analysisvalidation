@@ -52,38 +52,59 @@ case $INPUT_CASE in
     INPUT_DIR="/mnt/data/Run2/LHC19g6f3/264347"
     ISMC=1;;
   7)
-    INPUT_LABEL="Run 5, p-p MC 14 TeV Inel, Scenario 3, HF analysis"
-    INPUT_DIR="/data/Run5/MC/pp_14TeV/Inel_v1"
+    INPUT_LABEL="Run 5, p-p MC 14 TeV MB, Layout v1, HF analysis"
+    INPUT_DIR="/data/Run5/MC/pp_14TeV/MB_v1"
     INPUT_FILES="AODRun5.*.root"
     JSON="$JSONRUN5_HF"
     ISINPUTO2=1
+    ISALICE3=1
     ISMC=1;;
   8)
-    INPUT_LABEL="Run 5, p-p MC 14 TeV Inel, Scenario 3, onia analysis"
-    INPUT_DIR="/data/Run5/MC/pp_14TeV/Inel_v1"
+    INPUT_LABEL="Run 5, p-p MC 14 TeV MB, Layout v1, onia analysis"
+    INPUT_DIR="/home/auras/simulations/delphes/pp_MB_2021_06_10" # OBSOLETE
     INPUT_FILES="AODRun5.*.root"
     JSON="$JSONRUN5_ONIAX"
     ISINPUTO2=1
+    ISALICE3=1
     ISMC=1;;
   9)
-    INPUT_LABEL="Run 5, p-p MC 14 TeV OniaX-enriched, Scenario 3, oniaX analysis"
-    INPUT_DIR="/home/mmazzill/pp14TeV_oniaX_10M_sc3_werner_26042021"
+    INPUT_LABEL="Run 5, p-p MC 14 TeV OniaX-enriched, Layout v1, oniaX analysis"
+    INPUT_DIR="/data/Run5/MC/pp_14TeV/OniaX_v1"
     INPUT_FILES="AODRun5.*.root"
     JSON="$JSONRUN5_ONIAX"
     ISINPUTO2=1
+    ISALICE3=1
     ISMC=1;;
   10)
-    INPUT_LABEL="Run 5, p-p MC 14 TeV LctopKpi-enriched, Scenario 3, HF analysis"
+    INPUT_LABEL="Run 5, p-p MC 14 TeV ccbar-enriched, Layout v1, HF analysis"
     INPUT_DIR="/data/Run5/MC/pp_14TeV/CCBarLcPKPi_v1"
     INPUT_FILES="AODRun5.*.root"
     JSON="$JSONRUN5_HF"
     ISINPUTO2=1
+    ISALICE3=1
     ISMC=1;;
   11)
-    INPUT_LABEL="Run 5, Kr-Kr MC 6.460 TeV Inel, Scenario 3, HF analysis"
-    INPUT_DIR="/data/Run5/MC/KrKr_6p460TeV/Inel_v1"
+    INPUT_LABEL="Run 5, Kr-Kr MC 6.460 TeV MB, Layout v1, HF analysis"
+    INPUT_DIR="/data/Run5/MC/KrKr_6p460TeV/MB_v1" # OBSOLETE
     INPUT_FILES="AODRun5.*.root"
     JSON="$JSONRUN5_HF"
     ISINPUTO2=1
+    ISALICE3=1
+    ISMC=1;;
+  12)
+    INPUT_LABEL="Run 5, p-p MC 14 TeV OniaX-enriched, Layout v1, oniaX analysis MUON ID"
+    INPUT_DIR="/home/auras/simulations/delphes/pp_ONIA_X_2021_06_10/run_002" # OBSOLETE
+    INPUT_FILES="AODRun5.*.root"
+    JSON="$JSONRUN5_ONIAX"
+    ISINPUTO2=1
+    ISALICE3=1
+    ISMC=1;;
+  13)
+    INPUT_LABEL="Run 5, Pb-Pb MC 5.520 TeV MB, Layout v1, HF analysis"
+    INPUT_DIR="/data/Run5/MC/PbPb_5p520TeV/MB_v1"
+    INPUT_FILES="AODRun5.*.root"
+    JSON="$JSONRUN5_HF"
+    ISINPUTO2=1
+    ISALICE3=1
     ISMC=1;;
 esac

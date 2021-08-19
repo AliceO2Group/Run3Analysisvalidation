@@ -25,6 +25,7 @@ INPUT_FILES="AliESDs.root"      # Input file pattern
 JSON="dpl-config.json"          # Tasks parameters
 ISINPUTO2=0                     # Input files are in O2 format.
 ISMC=0                          # Input files are MC data.
+ISALICE3=0                      # Input data from the ALICE 3 detectors.
 TRIGGERSTRINGRUN2=""            # Run 2 trigger (not used)
 TRIGGERBITRUN3=-1               # Run 3 trigger (not used)
 NFILESMAX=1                     # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
@@ -58,7 +59,7 @@ FILEOUT_TREES_O2="AnalysisResults_trees_O2.root"
 
 # Steering commands
 ENVALI="alienv setenv AliPhysics/latest -c"
-ENVO2="alienv setenv O2/latest -c"
+ENVO2="alienv setenv O2Physics/latest -c"
 ENVPOST="alienv setenv ROOT/latest -c"
 
 # Step scripts
@@ -171,7 +172,7 @@ if [ $DOO2 -eq 1 ]; then
   MakeScriptO2 || ErrExit "MakeScriptO2 failed."
   CheckFile "$SCRIPT_O2"
   [ $SAVETREES -eq 1 ] || FILEOUT_TREES=""
-  [ $DEBUG -eq 1 ] && echo "Loading O2..."
+  [ $DEBUG -eq 1 ] && echo "Loading O2Physics..."
   # Run the batch script in the O2 environment.
   [ "$ALICE_PHYSICS" ] && { MsgWarn "AliPhysics environment is loaded - expect errors!"; }
   [ "$O2_ROOT" ] && { MsgWarn "O2 environment is already loaded."; ENVO2=""; }

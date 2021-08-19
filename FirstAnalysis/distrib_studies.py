@@ -22,7 +22,7 @@ def distr_studies(hadron="Xi_cc", collision="pp14p0", yrange="absy1p44"):
     Make distribution comparisons
     """
     with open(r"database.yaml") as database:
-        param = yaml.load(database, Loader=yaml.FullLoader)
+        param = yaml.safe_load(database)
     latexcand = param[hadron][collision][yrange]["latexcand"]
     inputBkg = param[hadron][collision][yrange]["inputBkg"]
     inputSig = param[hadron][collision][yrange]["inputSig"]
@@ -50,11 +50,11 @@ def distr_studies(hadron="Xi_cc", collision="pp14p0", yrange="absy1p44"):
     style_sig = StyleObject1D()
     style_sig.markercolor = 2
     style_sig.markerstyle = 21
-    style_sig.markersize = 1
+    style_sig.markersize = 2
     style_sig.draw_options = "P"
     style_bkg = StyleObject1D()
     style_bkg.markerstyle = 23
-    style_bkg.markersize = 1
+    style_bkg.markersize = 2
     style_bkg.draw_options = "P"
 
     for index, var in enumerate(lvarlist):
@@ -65,6 +65,7 @@ def distr_studies(hadron="Xi_cc", collision="pp14p0", yrange="absy1p44"):
         hbkg = fileBkg.Get(f"{dirname}/{lhistonamebkg[index]}")
 
         nPtBins = hsig.GetNbinsY()
+        print(var)
         for iptBin in range(nPtBins):
             # Collect the histogram projections in bins of pT for each variable
             hsig_px = hsig.ProjectionX(
@@ -85,7 +86,6 @@ def distr_studies(hadron="Xi_cc", collision="pp14p0", yrange="absy1p44"):
         lhistobkg.append(lhistobkgvar)
 
     for index, var in enumerate(lvarlist):
-        print(f"===== {var} ======")
         # sort out required number of columns and rows for a squared grid and create a figure
         n_cols_rows = ceil(sqrt(nPtBins))
         column_margin = [(0.05, 0.01)] * n_cols_rows
