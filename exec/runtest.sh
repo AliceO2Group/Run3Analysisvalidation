@@ -172,7 +172,7 @@ if [ $DOO2 -eq 1 ]; then
   MakeScriptO2 || ErrExit "MakeScriptO2 failed."
   CheckFile "$SCRIPT_O2"
   [ $SAVETREES -eq 1 ] || FILEOUT_TREES=""
-  [ $DEBUG -eq 1 ] && echo "Loading O2..."
+  [ $DEBUG -eq 1 ] && echo "Loading O2Physics..."
   # Run the batch script in the O2 environment.
   [ "$ALICE_PHYSICS" ] && { MsgWarn "AliPhysics environment is loaded - expect errors!"; }
   [ "$O2_ROOT" ] && { MsgWarn "O2 environment is already loaded."; ENVO2=""; }
