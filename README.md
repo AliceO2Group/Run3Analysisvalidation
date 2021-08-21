@@ -6,9 +6,9 @@
 ## Introduction
 
 The main purpose of the Run 3 validation framework is to provide a compact and flexible tool for validation of the
-[O<sup>2</sup>](https://github.com/AliceO2Group/AliceO2) analysis framework by comparison of its output to its
+[O<sup>2</sup>(Physics)](https://github.com/AliceO2Group/O2Physics) analysis framework by comparison of its output to its
 [AliPhysics](https://github.com/alisw/AliPhysics) counterpart.
-The general idea is to run the same analysis using AliPhysics and O<sup>2</sup> and produce comparison plots.
+The general idea is to run the same analysis using AliPhysics and O<sup>2</sup>(Physics) and produce comparison plots.
 
 ## Overview
 
@@ -95,16 +95,16 @@ Dummy examples can be found in: `config/config_input_dummy.sh`, `config/config_t
 
 ## Preparation
 
-### Build AliPhysics and O<sup>2</sup>
+### Build AliPhysics and O<sup>2</sup>(Physics)
 
-Follow [the official installation instructions](https://alice-doc.github.io/alice-analysis-tutorial/building/) to build
-AliPhysics and O<sup>2</sup> on your machine.
+Follow the official [AliPhysics installation](https://alice-doc.github.io/alice-analysis-tutorial/building/) and
+[O<sup>2</sup>(Physics) installation](https://aliceo2group.github.io/analysis-framework/docs/installing/) instructions.
 
-Make sure the AliPhysics and O<sup>2</sup> environments can be entered using the following respective commands.
+Make sure the AliPhysics and O<sup>2</sup>Physics environments can be entered using the following respective commands.
 
 ```bash
 alienv enter AliPhysics/latest
-alienv enter O2/latest
+alienv enter O2Physics/latest
 ```
 
 ### Download the validation framework
@@ -138,7 +138,7 @@ sudo apt install parallel
 Now you are ready to run the validation code.
 
 **Make sure that your bash environment is clean!
-Do not load ROOT, AliPhysics, O<sup>2</sup> or any other aliBuild package environment before running the framework!**
+Do not load ROOT, AliPhysics, O<sup>2</sup>, O<sup>2</sup>Physics or any other aliBuild package environment before running the framework!**
 
 Enter any directory and execute the steering script `runtest.sh`.
 (You can create a symlink for convenience.)
@@ -187,18 +187,19 @@ Enter the `codeHF` directory and see the `README`.
 
 ## Keep your repositories and installations up to date and clean
 
-With the ongoing fast development, it can easily happen that updating the O<sup>2</sup> part of the validation
-also requires updating the AliPhysics installation which then requires updating the alidist recipes as well.
+With the ongoing fast development, it can easily happen that updating the O<sup>2</sup>Physics part of the validation
+also requires updating the O<sup>2</sup> and the AliPhysics installations which then requires updating the alidist recipes as well.
 Also when requesting changes in the main repository via a pull request, it is strongly recommended to update one's personal fork repository first,
 apply the changes on top the main branch and rebuild the installation to make sure that the new commits can be seamlessly merged into the main repository.
 
 All these maintenance steps can be fully automated using the `update_packages.sh` bash script which takes care of keeping your (local and remote) repositories
 and installations up to date with the latest development in the respective main branches.
-This includes updating alidist, AliPhysics, O<sup>2</sup>, and this Run 3 validation code repository, as well as re-building your AliPhysics and O<sup>2</sup> installations via aliBuild and deleting obsolete builds.
+This includes updating alidist, AliPhysics, O<sup>2</sup>(Physics), and this Run 3 validation code repository,
+as well as re-building your AliPhysics and O<sup>2</sup>(Physics) installations via aliBuild and deleting obsolete builds.
 
 All you need to do is to make sure that the strings in the `config/config_update.sh` script correspond to your local setup and
 adjust the activation switches, if needed, to change the list of steps to be executed.
-By default, O<sup>2</sup> and Run3Analysisvalidation are activated for build and update.
+By default, O<sup>2</sup>, O<sup>2</sup>Physics, and Run3Analysisvalidation are activated for build and update.
 Settings for alidist and AliPhysics are also included but with deactivated build and update.
 
 You can execute the script from any directory on your system using the following syntax:
@@ -223,8 +224,8 @@ All your personal changes (committed and uncommitted) are preserved via rebasing
 Check the description of the script behaviour inside the script itself for more details.
 
 If `CLEAN=1`, obsolete builds are deleted from the `sw` directory at the end.
-If `PURGE_BUILDS=1`, a deeper purging is done by deleting all builds that are not needed to run the latest AliPhysics and O<sup>2</sup> builds.
-WARNING: Do not enable the purging if you need to keep several builds of AliPhysics or O<sup>2</sup> (e.g. for different branches or commits) or builds of other development packages not specified in your configuration!
+If `PURGE_BUILDS=1`, a deeper purging is done by deleting all builds that are not needed to run the latest AliPhysics and O<sup>2</sup>(Physics) builds.
+WARNING: Do not enable the purging if you need to keep several builds of AliPhysics or O<sup>2</sup>(Physics) (e.g. for different branches or commits) or builds of other development packages not specified in your configuration!
 
 If any error occurs during the script execution, the script will report the error and exit immediately.
 

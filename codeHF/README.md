@@ -3,20 +3,20 @@
 ## HF decay reconstruction tasks
 The prepared HF example allows you to run reconstruction of 2-prong secondary vertices and a simple analysis of D<sup>0</sup> mesons. The entire data processing procedure in O<sup>2</sup> involves several steps:
 1. Pre-selection of secondary tracks
-   * Performed by the [HFTrackIndexSkimsCreator](https://github.com/AliceO2Group/AliceO2/blob/dev/Analysis/Tasks/PWGHF/HFTrackIndexSkimsCreator.cxx) class
+   * Performed by the [HFTrackIndexSkimsCreator](https://github.com/AliceO2Group/O2Physics/blob/master/Tasks/PWGHF/HFTrackIndexSkimsCreator.cxx) class
    in the `o2-analysis-hf-track-index-skims-creator` binary.
    * Includes track selection, candidate preselection, and secondary vertex reconstruction.
 1. Reconstruction of 2-prong decay candidates
-   * Performed by the [HFCandidateCreator2Prong](https://github.com/AliceO2Group/AliceO2/blob/dev/Analysis/Tasks/PWGHF/HFCandidateCreator2Prong.cxx) class
+   * Performed by the [HFCandidateCreator2Prong](https://github.com/AliceO2Group/O2Physics/blob/master/Tasks/PWGHF/HFCandidateCreator2Prong.cxx) class
    in the `o2-analysis-hf-candidate-creator-2prong` binary.
    * Reconstructs the secondary vertices again and creates 2-prong decay candidates.
    * Performs MC matching of the reconstructed candidates and of the generated particles.
 1. Final selection of candidates
-   * Performed by the [HFD0CandidateSelector](https://github.com/AliceO2Group/AliceO2/blob/dev/Analysis/Tasks/PWGHF/HFD0CandidateSelector.cxx) class
+   * Performed by the [HFD0CandidateSelector](https://github.com/AliceO2Group/O2Physics/blob/master/Tasks/PWGHF/HFD0CandidateSelector.cxx) class
    in the `o2-analysis-hf-d0-candidate-selector` binary.
    * Appplies cuts on the parameters of the decay topology and track PID cuts.
 1. D<sup>0</sup> analysis task
-   * Performed by the [TaskD0](https://github.com/AliceO2Group/AliceO2/blob/dev/Analysis/Tasks/PWGHF/taskD0.cxx) class
+   * Performed by the [TaskD0](https://github.com/AliceO2Group/O2Physics/blob/master/Tasks/PWGHF/taskD0.cxx) class
    in the `o2-analysis-hf-task-d0` binary.
    * Fills histograms with kinematic properties of selected candidates (and matched particles).
 
