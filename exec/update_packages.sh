@@ -26,8 +26,6 @@ ALICE_DIR="$HOME/alice"
 [ "$(which aliBuild)" ] || ErrExit "aliBuild not found"
 ALIBUILD_ARCH=$(aliBuild architecture)  # system architecture (as detected by aliBuild)
 ALIBUILD_OPT="-a $ALIBUILD_ARCH"
-ALIBUILD_VERSION=$(aliBuild version | cut -d " " -f3)
-ALIBUILD_VERSION=${ALIBUILD_VERSION//./}
 
 # List of packages to update/build
 LIST_PKG_SPECS=()
@@ -261,7 +259,6 @@ if [ $CLEAN -eq 1 ]; then
   SIZE_BEFORE=$(du -sb "$ALIBUILD_WORK_DIR" | cut -f1)
 
   # Delete all symlinks to builds and recreate the latest ones to allow deleting of all other builds.
-  [[ $PURGE_BUILDS -eq 1 && "$ALIBUILD_VERSION" -lt 172 ]] && { MsgWarn "Skipping purging, unsupported version of aliBuild (< 1.7.2)"; PURGE_BUILDS=0; }
   if [ $PURGE_BUILDS -eq 1 ]; then
     MsgSubStep "- Purging builds"
     # Check existence of the build directories.
