@@ -145,6 +145,19 @@ workflows:
     <<: *task
     dependencies: o2-analysis-hf-lc-tok0sp-candidate-selector
 
+  o2-analysis-hf-task-correlation-ddbar: &taskddbar
+    executable: o2-analysis-hf-task-correlation-ddbar
+
+  o2-analysis-hf-task-correlation-ddbar-mc-rec:
+    <<: *taskddbar
+    requires_mc: yes
+    options: "--doMCRec"
+
+  o2-analysis-hf-task-correlation-ddbar-mc-gen:
+    <<: *taskddbar
+    requires_mc: yes
+    options: "--doMCGen"
+
   # Tree creators
 
   o2-analysis-hf-tree-creator-d0-tokpi:
@@ -156,6 +169,38 @@ workflows:
     requires_mc: yes
     dependencies: o2-analysis-hf-lc-candidate-selector
     tables: [HFCANDP3Full, HFCANDP3FullE, HFCANDP3FullP]
+
+  # D meson correlations
+
+  o2-analysis-hf-correlator-d0d0bar: &d0d0barcorr
+    executable: o2-analysis-hf-correlator-d0d0bar
+    dependencies: o2-analysis-hf-d0-candidate-selector
+    tables: [DDBARPAIR, DDBARRECOINFO]
+
+  o2-analysis-hf-correlator-d0d0bar-mc-rec:
+    <<: *d0d0barcorr
+    options: "--doMCRec"
+
+  o2-analysis-hf-correlator-d0d0bar-mc-gen:
+    <<: *d0d0barcorr
+    options: "--doMCGen"
+    tables: DDBARPAIR
+
+  o2-analysis-hf-correlator-dplusdminus: &dplusdminus
+    executable: o2-analysis-hf-correlator-dplusdminus
+    dependencies: o2-analysis-hf-dplus-topikpi-candidate-selector
+    tables: [DDBARPAIR, DDBARRECOINFO]
+
+  o2-analysis-hf-correlator-dplusdminus-mc-rec:
+    <<: *dplusdminus
+    requires_mc: yes
+    options: "--doMCRec"
+
+  o2-analysis-hf-correlator-dplusdminus-mc-gen:
+    <<: *dplusdminus
+    requires_mc: yes
+    options: "--doMCGen"
+    tables: DDBARPAIR
 
   # QA
 
