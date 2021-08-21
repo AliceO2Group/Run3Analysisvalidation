@@ -1,0 +1,24 @@
+# example config for optimisation of preselections
+
+# input files
+inputs:
+    background: ../../optimisation/run5/AnalysisResults_pp_GP_eta4_2T.root
+    prompt: ../../optimisation/run5/AnalysisResults_pp_HF_eta4_2T.root
+    nonprompt: null
+
+# list of enabled origins to be plot
+origins: [Prompt, Bkg]
+
+# list of 2-prong candidates enabled
+# options: D0ToPiK, JpsiToEE
+cands2Prong: [D0ToPiK, JpsiToEE]
+# list of variables to test for 2-prong candidates
+# options: Cosp, DecLen, ImpParProd, MinDCAxy, MinTrackPt
+vars2Prong: [Cosp, DecLen, ImpParProd, MinDCAxy, MinTrackPt]
+
+# list of 3-prong candidates enabled
+# options: DPlusToPiKPi, DsToPiKK, LcToPKPi, XicToPKPi
+cands3Prong: [DPlusToPiKPi, DsToPiKK, LcToPKPi, XicToPKPi]
+# list of variables to test for 3-prong candidates
+# options: Cosp, DecLen, MinDCAxy, MinTrackPt
+vars3Prong: [Cosp, DecLen, MinDCAxy, MinTrackPt]
