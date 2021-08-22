@@ -4,7 +4,7 @@
 # Input specification for runtest.sh
 # (Modifies input parameters.)
 
-INPUT_CASE=2            # Input case
+INPUT_CASE=14            # Input case
 
 NFILESMAX=1             # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
 
@@ -102,6 +102,14 @@ case $INPUT_CASE in
   13)
     INPUT_LABEL="Run 5, Pb-Pb MC 5.520 TeV MB, Layout v1, HF analysis"
     INPUT_DIR="/data/Run5/MC/PbPb_5p520TeV/MB_v1"
+    INPUT_FILES="AODRun5.*.root"
+    JSON="$JSONRUN5_HF"
+    ISINPUTO2=1
+    ISALICE3=1
+    ISMC=1;;
+   14)
+    INPUT_LABEL="Run 5, p-p MC 14 TeV Xicc-enriched, Layout v1, HF analysis"
+    INPUT_DIR="/home/mmazzill/pp14TeV_XiccGun_20M_geometry_v1_19082021"
     INPUT_FILES="AODRun5.*.root"
     JSON="$JSONRUN5_HF"
     ISINPUTO2=1
