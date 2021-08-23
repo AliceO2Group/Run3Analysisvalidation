@@ -469,7 +469,7 @@
             ]
         }
     },
-    "hf-xicc-topkpipi-candidate-selector": {
+    "hf-xicc-to-p-k-pi-pi-candidate-selector": {
         "d_pTCandMin": "0.",
         "d_pTCandMax": "36.",
         "d_FilterPID": "true",
@@ -635,7 +635,7 @@
                 "12.",
                 "16.",
                 "24.",
-		"36." 
+                "36." 
             ]
         }
     },
@@ -676,9 +676,9 @@
     "hf-task-xicc": {
         "cutYCandMax": "-1",
         "d_selectionFlagXicc": "0",
-	"pTBins": {
+        "pTBins": {
             "values": [
-		"1.",
+                "1.",
                 "2.",
                 "3.",
                 "4.",
@@ -697,7 +697,7 @@
     "hf-task-xicc-mc": {
         "cutYCandMax": "-1",
         "d_selectionFlagXicc": "0",
-	"pTBins": {
+        "pTBins": {
             "values": [
                 "1.",
                 "2.",
@@ -711,7 +711,7 @@
                 "12.",
                 "16.",
                 "24.",
-		"36."
+                "36."
             ]
         }
     },
