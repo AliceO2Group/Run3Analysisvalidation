@@ -84,7 +84,7 @@ if __name__ == "__main__":
                         help="Name of the base directory, usually `TF_` or `DF_`")
     parser.add_argument("--out_dir", "-o",
                         type=str,
-                        default="/tmp/",
+                        default="./tmp/",
                         help="Name of the output path")
     parser.add_argument("--jobs", "-j",
                         type=int,
