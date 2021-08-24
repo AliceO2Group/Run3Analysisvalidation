@@ -4,12 +4,12 @@
 Script to split the directories of a file into several ones with the same structure, useful for ML processing
 """
 
-from multiprocessing import Pool
-from ROOT import TFile
+import argparse
 import os
 import time
-import argparse
+from multiprocessing import Pool
 
+from ROOT import TFile
 
 g_verbose = False
 g_out_path = False
@@ -39,8 +39,8 @@ def split_file(input_name):
             if g_verbose:
                 print("Creating omogenized file to", fout)
             files_created += 1
-            fout.mkdir(g_base_dir+"0")
-            fout.cd(g_base_dir+"0")
+            fout.mkdir(g_base_dir + "0")
+            fout.cd(g_base_dir + "0")
             for j in obj.GetListOfKeys():
                 if g_verbose:
                     print("Writing", j.ClassName(), j)
@@ -52,8 +52,15 @@ def split_file(input_name):
             if g_verbose:
                 fout.ls()
             fout.Close()
-    print(" < Processed file", input_name,
-          "split into", files_created, "files, in", time.time() - processing_time, "seconds")
+    print(
+        " < Processed file",
+        input_name,
+        "split into",
+        files_created,
+        "files, in",
+        time.time() - processing_time,
+        "seconds",
+    )
 
 
 def main(input_files, verbose=True, base_dir="TF_", out_path="", jobs=20):
@@ -72,26 +79,20 @@ def main(input_files, verbose=True, base_dir="TF_", out_path="", jobs=20):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Omogenizer for ML processing")
-    parser.add_argument("input_files",
-                        type=str,
-                        nargs="+",
-                        help="Input files")
-    parser.add_argument("--base_dir",
-                        type=str,
-                        default="TF_",
-                        help="Name of the base directory, usually `TF_` or `DF_`")
-    parser.add_argument("--out_dir", "-o",
-                        type=str,
-                        default="./tmp/",
-                        help="Name of the output path")
-    parser.add_argument("--jobs", "-j",
-                        type=int,
-                        default=5,
-                        help="Number of parallel jobs")
-    parser.add_argument("-v",
-                        action="store_true", help="Verbose mode")
+    parser = argparse.ArgumentParser(description="Omogenizer for ML processing")
+    parser.add_argument("input_files", type=str, nargs="+", help="Input files")
+    parser.add_argument(
+        "--base_dir",
+        type=str,
+        default="TF_",
+        help="Name of the base directory, usually `TF_` or `DF_`",
+    )
+    parser.add_argument(
+        "--out_dir", "-o", type=str, default="./tmp/", help="Name of the output path"
+    )
+    parser.add_argument(
+        "--jobs", "-j", type=int, default=5, help="Number of parallel jobs"
+    )
+    parser.add_argument("-v", action="store_true", help="Verbose mode")
     args = parser.parse_args()
-    main(args.input_files, verbose=args.v,
-         base_dir=args.base_dir, jobs=args.jobs)
+    main(args.input_files, verbose=args.v, base_dir=args.base_dir, jobs=args.jobs)
