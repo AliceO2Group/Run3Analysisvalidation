@@ -88,7 +88,7 @@ case $INPUT_CASE in
     ISMC=1;;
   12)
     INPUT_LABEL="Run 5, p-p MC 14 TeV LctopKpi-enriched, Scenario 3, HF analysis"
-    INPUT_DIR="/home/mmazzill/pp14TeV_ccbarLc_20M_v1_04072021"
+    INPUT_DIR="/home/mmazzill/pp14Tev_ccbarLcpKpi_30M_geometry_v1_13082021"
     INPUT_FILES="AODRun5.*.root"
     JSON="$JSONRUN5_HF"
     ISINPUTO2=1
