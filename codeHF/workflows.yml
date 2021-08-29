@@ -77,8 +77,7 @@ workflows:
 
   o2-analysis-hf-candidate-creator-xicc:
     <<: *cand_creator
-    dependencies:
-      - o2-analysis-hf-xic-topkpi-candidate-selector
+    dependencies: o2-analysis-hf-xic-topkpi-candidate-selector
     tables:
       default: [HFCANDXICCBASE, HFCANDXICCEXT]
       mc: [HFCANDXICCMCREC, HFCANDXICCMCGEN]
@@ -118,7 +117,7 @@ workflows:
     dependencies: [o2-analysis-hf-candidate-creator-x, o2-analysis-pid-tpc-full, o2-analysis-pid-tof-full]
 
   o2-analysis-hf-xicc-topkpipi-candidate-selector:
-    dependencies: [o2-analysis-hf-candidate-creator-xicc]
+    dependencies: o2-analysis-hf-candidate-creator-xicc
 
   # Analysis tasks
 
