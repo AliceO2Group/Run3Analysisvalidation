@@ -26,8 +26,6 @@ ALICE_DIR="$HOME/alice"
 [ "$(which aliBuild)" ] || ErrExit "aliBuild not found"
 ALIBUILD_ARCH=$(aliBuild architecture)  # system architecture (as detected by aliBuild)
 ALIBUILD_OPT="-a $ALIBUILD_ARCH"
-ALIBUILD_VERSION=$(aliBuild version | cut -d " " -f3)
-ALIBUILD_VERSION=${ALIBUILD_VERSION//./}
 
 # List of packages to update/build
 LIST_PKG_SPECS=()
@@ -261,7 +259,6 @@ if [ $CLEAN -eq 1 ]; then
   SIZE_BEFORE=$(du -sb "$ALIBUILD_WORK_DIR" | cut -f1)
 
   # Delete all symlinks to builds and recreate the latest ones to allow deleting of all other builds.
-  [[ $PURGE_BUILDS -eq 1 && "$ALIBUILD_VERSION" -lt 172 ]] && { MsgWarn "Skipping purging, unsupported version of aliBuild (< 1.7.2)"; PURGE_BUILDS=0; }
   if [ $PURGE_BUILDS -eq 1 ]; then
     MsgSubStep "- Purging builds"
     # Check existence of the build directories.
@@ -287,6 +284,23 @@ if [ $CLEAN -eq 1 ]; then
   [ $CLEAN_AGGRESSIVE -eq 1 ] && { MsgWarn "Using aggressive cleanup"; CLEAN_OPT="--aggressive-cleanup"; }
   # shellcheck disable=SC2086 # Ignore unquoted options.
   cd "$ALICE_DIR" && aliBuild clean $ALIBUILD_OPT $CLEAN_OPT || ErrExit "aliBuild clean $ALIBUILD_OPT $CLEAN_OPT failed."
+
+  # Recreate symlinks to the source of development packages in sw/SOURCES.
+  if [ $CLEAN_AGGRESSIVE -eq 1 ]; then
+    mkdir "$ALIBUILD_WORK_DIR/SOURCES"
+    for ((i = 0; i < ${#LIST_PKG_DEV_SPECS[@]}; ++i)); do
+      pkg="${LIST_PKG_DEV_SPECS[i]}"
+      arr="${pkg}[@]"
+      spec=("${!arr}")
+      Name="${spec[0]}"
+      PathRepo="${spec[2]}"
+      BranchMain="${spec[5]}"
+      PathLink="$ALIBUILD_WORK_DIR/SOURCES/$Name/$BranchMain"
+      mkdir -p "$PathLink"
+      ln -s "$PathRepo" "$PathLink/0"
+      MsgSubSubStep "-- Recreating symlinks in SOURCES to $Name"
+    done
+  fi
 
   # Get the directory size after cleaning.
   SIZE_AFTER=$(du -sb "$ALIBUILD_WORK_DIR" | cut -f1)
