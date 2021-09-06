@@ -1,5 +1,10 @@
 // Computation and plotting of reconstruction efficiency step-by-step
-// Four steps defined: kRecoHFFlag, kRecoTopol, kRecoCand, kRecoPID
+// Four steps defined: RecoHFFlag, RecoTopol, RecoCand, RecoPID
+// RecoHFFlag: candidates properly flagged (e.g. in HFD0CandidateSelector --> hfflag() is D0ToPiK)
+// RecoTopol: candidates which satisfy conjugate-independent topological selection
+// RecoCand: candidates which satisfy conjugate-dependent topological selection
+// RecoPID: candidates which satisfy conjugate-dependent topological selection and track-level PID selection
+
 // Macros input: AnalysisResults.root from O2 with TH2F (pt vs y) distributions for generated and reconstructed candidates
 // .L PlotEfficiency_recoStep.C
 // PlotEfficiencySbyS("InputName.root","particlename",true);
