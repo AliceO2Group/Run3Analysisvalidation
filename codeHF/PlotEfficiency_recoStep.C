@@ -8,11 +8,11 @@
 // Macros input: AnalysisResults.root from O2 with TH2F (pt vs y) distributions for generated and reconstructed candidates
 // TString particles can contain multiple particle strings
 // .L PlotEfficiency_recoStep.C
-// PlotEfficiencySbyS("InputName.root","particlename",true);
+// PlotEfficiencyRecoStep("InputName.root","particlename",true);
 
 #include "utils_plot.h"
 
-Int_t PlotEfficiencySbyS(TString pathFile = "AnalysisResults.root", TString particles = "d0", bool effSbyS = true)
+Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults.root", TString particles = "d0", bool effSbyS = true)
 {
   gStyle->SetOptStat(0);
   gStyle->SetPalette(0);
