@@ -189,6 +189,11 @@ workflows:
     dependencies: o2-analysis-hf-x-tojpsipipi-candidate-selector
     tables: [HFCANDXFull, HFCANDXFullE, HFCANDXFullP]
 
+  o2-analysis-hf-tree-creator-xicc-topkpipi:
+    requires_mc: yes
+    dependencies: o2-analysis-hf-xicc-topkpipi-candidate-selector
+    tables: [HFCANDXiccFull, HFCANDXiccFullE, HFCANDXiccFullP]
+
   # D meson correlations
 
   o2-analysis-hf-correlator-d0d0bar: &d0d0barcorr
