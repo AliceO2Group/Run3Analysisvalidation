@@ -285,6 +285,23 @@ if [ $CLEAN -eq 1 ]; then
   # shellcheck disable=SC2086 # Ignore unquoted options.
   cd "$ALICE_DIR" && aliBuild clean $ALIBUILD_OPT $CLEAN_OPT || ErrExit "aliBuild clean $ALIBUILD_OPT $CLEAN_OPT failed."
 
+  # Recreate symlinks to the source of development packages in sw/SOURCES.
+  if [ $CLEAN_AGGRESSIVE -eq 1 ]; then
+    mkdir "$ALIBUILD_WORK_DIR/SOURCES"
+    for ((i = 0; i < ${#LIST_PKG_DEV_SPECS[@]}; ++i)); do
+      pkg="${LIST_PKG_DEV_SPECS[i]}"
+      arr="${pkg}[@]"
+      spec=("${!arr}")
+      Name="${spec[0]}"
+      PathRepo="${spec[2]}"
+      BranchMain="${spec[5]}"
+      PathLink="$ALIBUILD_WORK_DIR/SOURCES/$Name/$BranchMain"
+      mkdir -p "$PathLink"
+      ln -s "$PathRepo" "$PathLink/0"
+      MsgSubSubStep "-- Recreating symlinks in SOURCES to $Name"
+    done
+  fi
+
   # Get the directory size after cleaning.
   SIZE_AFTER=$(du -sb "$ALIBUILD_WORK_DIR" | cut -f1)
   # Report size difference.

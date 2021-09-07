@@ -147,7 +147,7 @@
 
         "pTBinsXicToPKPi": {
             "values": [
-                "4.",
+                "1.",
                 "5.",
                 "1000."
             ]
@@ -176,6 +176,17 @@
         "d_minparamchange": "0.001",
         "d_minrelchi2change": "0.9",
         "b_dovalplots": "true"
+    },
+    "hf-cand-creator-xicc": {
+        "d_bz": "20",
+        "b_propdca": "true",
+        "d_maxr": "5.",
+        "d_maxdzini": "999.",
+        "d_minparamchange": "0.001",
+        "d_minrelchi2change": "0.9",
+        "b_dovalplots": "true",
+        "d_selectionFlagXic": "1",
+        "cutPtPionMin": "0.2"
     },
     "hf-d0-candidate-selector": {
         "d_pTCandMin": "0.",
@@ -339,7 +350,7 @@
     "hf-xic-topkpi-candidate-selector": {
         "d_pTCandMin": "0.",
         "d_pTCandMax": "36.",
-        "d_FilterPID": "false",
+        "d_FilterPID": "true",
         "d_pidTPCMinpT": "0.15",
         "d_pidTPCMaxpT": "1.0",
         "d_pidTOFMinpT": "0.5",
@@ -348,7 +359,36 @@
         "d_nSigmaTPC": "3.",
         "d_nSigmaTPCCombined": "5.",
         "d_nSigmaTOF": "3.",
-        "d_nSigmaTOFCombined": "5."
+        "d_nSigmaTOFCombined": "5.",
+        "ptBins": {
+            "values": [
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "8",
+                "12",
+                "24",
+                "36"
+            ]
+        },
+        "Xic_to_p_K_pi_cuts": {
+            "values": [
+                [ "0.300", "0.4", "0.4", "0.4", "1.e-5", "0.005", "0.8"],
+                [ "0.300", "0.4", "0.4", "0.4", "1.e-5", "0.005", "0.8"],
+                [ "0.300", "0.4", "0.4", "0.4", "1.e-5", "0.005", "0.8"],
+                [ "0.300", "0.4", "0.4", "0.4", "1.e-5", "0.005", "0.8"],
+                [ "0.300", "0.4", "0.4", "0.4", "1.e-5", "0.005", "0.8"],
+                [ "0.300", "0.4", "0.4", "0.4", "1.e-5", "0.005", "0.8"],
+                [ "0.300", "0.4", "0.4", "0.4", "1.e-5", "0.005", "0.8"],
+                [ "0.300", "0.4", "0.4", "0.4", "1.e-5", "0.005", "0.8"],
+                [ "0.300", "0.4", "0.4", "0.4", "1.e-5", "0.005", "0.8"],
+                [ "0.300", "0.4", "0.4", "0.4", "1.e-5", "0.005", "0.8"]
+            ]
+        }
     },
     "hf-jpsi-candidate-selector": {
         "d_pTCandMin": "0.",
@@ -426,6 +466,46 @@
                 ["0.5", "0.90", "0.001", "0.001", "3.0", "0.15", "1."],
                 ["0.5", "0.90", "0.001", "0.001", "4.2", "0.15", "1."],
                 ["0.5", "0.90", "0.001", "0.001", "6.2", "0.15", "1."]
+            ]
+        }
+    },
+    "hf-xicc-to-p-k-pi-pi-candidate-selector": {
+        "d_pTCandMin": "0.",
+        "d_pTCandMax": "36.",
+        "d_FilterPID": "true",
+        "d_pidTPCMinpT": "9999.",
+        "d_pidTPCMaxpT": "99999.",
+        "d_pidTOFMinpT": "0.15",
+        "d_pidTOFMaxpT": "5.",
+        "d_nSigmaTPC": "9999.",
+        "d_nSigmaTPCCombined": "9999.",
+        "d_nSigmaTOF": "3.",
+        "d_nSigmaTOFCombined": "5.",
+        "ptBins": {
+            "values": [
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "8",
+                "12",
+                "24",
+                "36"
+            ]
+        },
+        "Xicc_to_p_K_pi_pi_cuts": {
+            "values": [
+                [ "0.400", "0.5", "0.2", "10.0", "10.0", "1.e-3", "0.0", "0.8"],
+                [ "0.400", "0.5", "0.2", "10.0", "10.0", "1.e-3", "0.0", "0.8"],
+                [ "0.400", "0.5", "0.2", "10.0", "10.0", "1.e-3", "0.0", "0.8"],
+                [ "0.400", "0.5", "0.2", "10.0", "10.0", "1.e-3", "0.0", "0.8"],
+                [ "0.400", "0.5", "0.2", "10.0", "10.0", "1.e-3", "0.0", "0.8"],
+                [ "0.400", "0.5", "0.2", "10.0", "10.0", "1.e-3", "0.0", "0.8"],
+                [ "0.400", "0.5", "0.2", "10.0", "10.0", "1.e-3", "0.0", "0.8"],
+                [ "0.400", "0.5", "0.2", "10.0", "10.0", "1.e-3", "0.0", "0.8"]
             ]
         }
     },
@@ -518,12 +598,46 @@
         "d_selectionFlagLc": "0"
     },
     "hf-task-xic": {
-        "cutEtaCandMax": "0.8",
-        "d_selectionFlagXic": "0"
+        "cutEtaCandMax": "-1",
+        "d_selectionFlagXic": "0",
+        "pTBins": {
+            "values": [
+                "1.",
+                "2.",
+                "3.",
+                "4.",
+                "5.",
+                "6.",
+                "7.",
+                "8.",
+                "10.",
+                "12.",
+                "16.",
+                "24.",
+                "36."
+            ]
+        }
     },
     "hf-task-xic-mc": {
-        "cutEtaCandMax": "0.8",
-        "d_selectionFlagXic": "0"
+        "cutEtaCandMax": "-1",
+        "d_selectionFlagXic": "0",
+        "pTBins": {
+            "values": [
+                "1.",
+                "2.",
+                "3.",
+                "4.",
+                "5.",
+                "6.",
+                "7.",
+                "8.",
+                "10.",
+                "12.",
+                "16.",
+                "24.",
+                "36."
+            ]
+        }
     },
     "hf-task-jpsi": {
         "cutYCandMax": "1.44",
@@ -558,6 +672,48 @@
     "hf-task-x-mc": {
         "cutYCandMax": "1.44",
         "d_selectionFlagX": "0"
+    },
+    "hf-task-xicc": {
+        "cutYCandMax": "-1",
+        "d_selectionFlagXicc": "0",
+        "pTBins": {
+            "values": [
+                "1.",
+                "2.",
+                "3.",
+                "4.",
+                "5.",
+                "6.",
+                "7.",
+                "8.",
+                "10.",
+                "12.",
+                "16.",
+                "24.",
+                "36."
+            ]
+        }
+    },
+    "hf-task-xicc-mc": {
+        "cutYCandMax": "-1",
+        "d_selectionFlagXicc": "0",
+        "pTBins": {
+            "values": [
+                "1.",
+                "2.",
+                "3.",
+                "4.",
+                "5.",
+                "6.",
+                "7.",
+                "8.",
+                "10.",
+                "12.",
+                "16.",
+                "24.",
+                "36."
+            ]
+        }
     },
     "hf-correlator-d0-d0bar": {
         "efficiencyFlagD": "1",
