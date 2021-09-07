@@ -224,8 +224,8 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults.root", TString 
       hEffPtIncl = (TH1F*)hRecoPtIncl->Clone(Form("hEffPtIncl%s", recostep[iRs].Data()));
       hEffPtIncl->Divide(hEffPtIncl, hGenPtIncl, 1., 1., "B");
       hEffPtIncl->SetTitle("inclusive ;#it{p}^{rec.}_{T} (GeV/#it{c}); efficiency");
-      yMin = hEffPtIncl->GetMinimum(0) * 0.2;
-      yMax = hEffPtIncl->GetMaximum() * 1.5;
+      yMin = hEffPtIncl->GetMinimum(0);
+      yMax = hEffPtIncl->GetMaximum();
       SetHistogramStyle(hEffPtIncl, colours[iRs], 20, 1.5, 2);
       legendSbyS->AddEntry(hEffPtIncl, Form("%s", recostep[iRs].Data()), "P");
 
