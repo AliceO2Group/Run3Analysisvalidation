@@ -55,42 +55,42 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults.root", TString 
   const int NRecoStep = sizeof(recostep) / sizeof(recostep[0]);
 
   // Generated distributions
-  TCanvas* cgensbys = new TCanvas("cgensbys", "cgensbys", 800, 600);
-  TCanvas* cgensbys_pt = new TCanvas("cgensbys_pt", "cgensbys_pt", 800, 600);
-  TCanvas* cgensbys_y = new TCanvas("cgensbys_y", "cgensbys_y", 800, 600);
+  TCanvas* canGenSbyS = new TCanvas("canGenSbyS", "canGenSbyS", 800, 600);
+  TCanvas* canGenSbySPt = new TCanvas("canGenSbySPt", "canGenSbySPt", 800, 600);
+  TCanvas* canGenSbySY = new TCanvas("canGenSbySY", "canGenSbySY", 800, 600);
   // Reconstructed distributions (inclusive)
-  TCanvas* crecosbys = new TCanvas("crecosbys", "crecosbys", 800, 600);
-  TCanvas* crecosbys_pt = new TCanvas("crecosbys_pt", "crecosbys_pt", 800, 600);
-  TCanvas* crecosbys_y = new TCanvas("crecosbys_y", "crecosbys_y", 800, 600);
+  TCanvas* canRecoSbyS = new TCanvas("canRecoSbyS", "canRecoSbyS", 800, 600);
+  TCanvas* canRecoSbySPt = new TCanvas("canRecoSbySPt", "canRecoSbySPt", 800, 600);
+  TCanvas* canRecoSbySY = new TCanvas("canRecoSbySY", "canRecoSbySY", 800, 600);
   // Reconstructed distributions (prompt)
-  TCanvas* crecosbys_prompt = new TCanvas("crecosbys_prompt", "crecosbys_prompt", 800, 600);
-  TCanvas* crecosbys_prompt_pt = new TCanvas("crecosbys_prompt_pt", "crecosbys_prompt_pt", 800, 600);
-  TCanvas* crecosbys_prompt_y = new TCanvas("crecosbys_prompt_y", "crecosbys_prompt_y", 800, 600);
+  TCanvas* canRecoSbySPrompt = new TCanvas("canRecoSbySPrompt", "canRecoSbySPrompt", 800, 600);
+  TCanvas* canRecoSbySPromptPt = new TCanvas("canRecoSbySPromptPt", "canRecoSbySPromptPt", 800, 600);
+  TCanvas* canRecoSbySPromptY = new TCanvas("canRecoSbySPromptY", "canRecoSbySPromptY", 800, 600);
   // Reconstructed distributions (non-prompt)
-  TCanvas* crecosbys_nonprompt = new TCanvas("crecosbys_nonprompt", "crecosbys_nonprompt", 800, 600);
-  TCanvas* crecosbys_nonprompt_pt = new TCanvas("crecosbys_nonprompt_pt", "crecosbys_nonprompt_pt", 800, 600);
-  TCanvas* crecosbys_nonprompt_y = new TCanvas("crecosbys_nonprompt_y", "crecosbys_nonprompt_y", 800, 600);
+  TCanvas* canRecoSbySNonPrompt = new TCanvas("canRecoSbySNonPrompt", "canRecoSbySNonPrompt", 800, 600);
+  TCanvas* canRecoSbySNonPromptPt = new TCanvas("canRecoSbySNonPromptPt", "canRecoSbySNonPromptPt", 800, 600);
+  TCanvas* canRecoSbySNonPromptY = new TCanvas("canRecoSbySNonPromptY", "canRecoSbySNonPromptY", 800, 600);
 
   if (NRecoStep == 4) {
-    cgensbys->Divide(2, 2);
-    cgensbys_pt->Divide(2, 2);
-    cgensbys_y->Divide(2, 2);
-    crecosbys->Divide(2, 2);
-    crecosbys_pt->Divide(2, 2);
-    crecosbys_y->Divide(2, 2);
-    crecosbys_prompt->Divide(2, 2);
-    crecosbys_prompt_pt->Divide(2, 2);
-    crecosbys_prompt_y->Divide(2, 2);
-    crecosbys_nonprompt->Divide(2, 2);
-    crecosbys_nonprompt_pt->Divide(2, 2);
-    crecosbys_nonprompt_y->Divide(2, 2);
+    canGenSbyS->Divide(2, 2);
+    canGenSbySPt->Divide(2, 2);
+    canGenSbySY->Divide(2, 2);
+    canRecoSbyS->Divide(2, 2);
+    canRecoSbySPt->Divide(2, 2);
+    canRecoSbySY->Divide(2, 2);
+    canRecoSbySPrompt->Divide(2, 2);
+    canRecoSbySPromptPt->Divide(2, 2);
+    canRecoSbySPromptY->Divide(2, 2);
+    canRecoSbySNonPrompt->Divide(2, 2);
+    canRecoSbySNonPromptPt->Divide(2, 2);
+    canRecoSbySNonPromptY->Divide(2, 2);
   }
 
-  TCanvas* canEffSbyS_pt = new TCanvas(Form("canEffSbyS_pt_%s", particle.Data()), "Eff", 800, 600);
-  canEffSbyS_pt->Divide(2, 2);
+  TCanvas* canEffSbySPt = new TCanvas(Form("canEffSbySPt_%s", particle.Data()), "Eff", 800, 600);
+  canEffSbySPt->Divide(2, 2);
 
-  TCanvas* canEffSbyS_y = new TCanvas(Form("canEffSbyS_y_%s", particle.Data()), "Eff", 800, 600);
-  canEffSbyS_y->Divide(2, 2);
+  TCanvas* canEffSbySY = new TCanvas(Form("canEffSbySY_%s", particle.Data()), "Eff", 800, 600);
+  canEffSbySY->Divide(2, 2);
 
   TLegend* legendSbyS = new TLegend(0.15, 0.7, 0.45, 0.9);
   legendSbyS->SetFillColorAlpha(0, kWhite);
@@ -114,7 +114,7 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults.root", TString 
       Printf("Error: Failed to load %s from %s", nameHistgen.Data(), pathFile.Data());
       return 1;
     }
-    cgensbys->cd(1);
+    canGenSbyS->cd(1);
     hPtvsYGenIncl->Draw("colz");
 
     TH1F* hGenPtIncl = (TH1F*)hPtvsYGenIncl->ProjectionX("hGen_Pt", 1, hPtvsYGenIncl->GetXaxis()->GetLast(), "e");
@@ -128,10 +128,10 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults.root", TString 
       hGenYIncl = (TH1F*)hGenYIncl->Rebin(NRebin, "hGenYInclR", dRebin);
     }
 
-    cgensbys_pt->cd(1);
+    canGenSbySPt->cd(1);
     hGenPtIncl->Draw("pe");
 
-    cgensbys_y->cd(1);
+    canGenSbySY->cd(1);
     hGenYIncl->Draw("pe");
 
     // prompt generated
@@ -141,7 +141,7 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults.root", TString 
       Printf("Error: Failed to load %s from %s", nameHistgenPrompt.Data(), pathFile.Data());
       return 1;
     }
-    cgensbys->cd(2);
+    canGenSbyS->cd(2);
     hPtvsYGenPrompt->Draw("colz");
 
     TH1F* hGenPtPrompt = (TH1F*)hPtvsYGenPrompt->ProjectionX("hGenPrompt_Pt", 1, hPtvsYGenPrompt->GetXaxis()->GetLast(), "e");
@@ -155,10 +155,10 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults.root", TString 
       hGenYPrompt = (TH1F*)hGenYPrompt->Rebin(NRebin, "hGenYPromptR", dRebin);
     }
 
-    cgensbys_pt->cd(2);
+    canGenSbySPt->cd(2);
     hGenPtPrompt->Draw("pe");
 
-    cgensbys_y->cd(2);
+    canGenSbySY->cd(2);
     hGenYPrompt->Draw("pe");
 
     // non-prompt generated
@@ -168,7 +168,7 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults.root", TString 
       Printf("Error: Failed to load %s from %s", nameHistgenNonPrompt.Data(), pathFile.Data());
       return 1;
     }
-    cgensbys->cd(3);
+    canGenSbyS->cd(3);
     hPtvsYGenNonPrompt->Draw("colz");
 
     TH1F* hGenPtNonPrompt = (TH1F*)hPtvsYGenNonPrompt->ProjectionX("hGenNonPrompt_Pt", 1, hPtvsYGenNonPrompt->GetXaxis()->GetLast(), "e");
@@ -182,10 +182,10 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults.root", TString 
       hGenYNonPrompt = (TH1F*)hGenYNonPrompt->Rebin(NRebin, "hGenYNonPromptR", dRebin);
     }
 
-    cgensbys_pt->cd(3);
+    canGenSbySPt->cd(3);
     hGenPtNonPrompt->Draw("pe");
 
-    cgensbys_y->cd(3);
+    canGenSbySY->cd(3);
     hGenYNonPrompt->Draw("pe");
 
     for (int iRs = 0; iRs < NRecoStep; iRs++) {
@@ -199,15 +199,15 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults.root", TString 
         return 1;
       }
       hPtvsYRecIncl->SetTitle(Form("k%s", recostep[iRs].Data()));
-      crecosbys->cd(iRs + 1);
+      canRecoSbyS->cd(iRs + 1);
       hPtvsYRecIncl->Draw("colz");
 
       TH1F* hRecoPtIncl = (TH1F*)hPtvsYRecIncl->ProjectionX(Form("h%s_Pt", recostep[iRs].Data()), 1, hPtvsYRecIncl->GetXaxis()->GetLast(), "e");
-      crecosbys_pt->cd(iRs + 1);
+      canRecoSbySPt->cd(iRs + 1);
       hRecoPtIncl->Draw("pe");
 
       TH1F* hRecoYIncl = (TH1F*)hPtvsYRecIncl->ProjectionY(Form("h%s_Y", recostep[iRs].Data()), 1, hPtvsYRecIncl->GetYaxis()->GetLast(), "e");
-      crecosbys_y->cd(iRs + 1);
+      canRecoSbySY->cd(iRs + 1);
       hRecoYIncl->Draw("pe");
 
       if (iNRebin > 1) {
@@ -218,7 +218,7 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults.root", TString 
         hRecoYIncl = (TH1F*)hRecoYIncl->Rebin(NRebin, "hRecoYInclR", dRebin);
       }
 
-      auto padEffSbyS_pt = canEffSbyS_pt->cd(1);
+      auto padEffSbySPt = canEffSbySPt->cd(1);
 
       TH1F* hEffPtIncl = nullptr;
       hEffPtIncl = (TH1F*)hRecoPtIncl->Clone(Form("hEffPtIncl%s", recostep[iRs].Data()));
@@ -231,13 +231,13 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults.root", TString 
 
       if (iRs == 0) {
         SetHistogram(hEffPtIncl, yMin, yMax, marginRLow, marginRHigh, logScaleH);
-        SetPad(padEffSbyS_pt, logScaleH);
+        SetPad(padEffSbySPt, logScaleH);
         hEffPtIncl->Draw("pe");
       } else
         hEffPtIncl->Draw("pesame");
       legendSbyS->Draw("same");
 
-      auto padEffSbyS_y = canEffSbyS_y->cd(1);
+      auto padEffSbySY = canEffSbySY->cd(1);
 
       TH1F* hEffYIncl = nullptr;
       hEffYIncl = (TH1F*)hRecoYIncl->Clone(Form("hEffYIncl%s", recostep[iRs].Data()));
@@ -248,7 +248,7 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults.root", TString 
       SetHistogramStyle(hEffYIncl, colours[iRs], 20, 1.5, 2);
       if (iRs == 0) {
         SetHistogram(hEffYIncl, yMin, yMax, marginRLow, marginRHigh, logScaleH);
-        SetPad(padEffSbyS_y, logScaleR);
+        SetPad(padEffSbySY, logScaleR);
         hEffYIncl->Draw("pe");
       } else
         hEffYIncl->Draw("pesame");
@@ -262,15 +262,15 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults.root", TString 
         return 1;
       }
       hPtvsYRecPrompt->SetTitle(Form("k%s prompt", recostep[iRs].Data()));
-      crecosbys_prompt->cd(iRs + 1);
+      canRecoSbySPrompt->cd(iRs + 1);
       hPtvsYRecPrompt->Draw("colz");
 
-      TH1F* hRecoPtPrompt = (TH1F*)hPtvsYRecPrompt->ProjectionX(Form("h%s_Pt_prompt", recostep[iRs].Data()), 1, hPtvsYRecPrompt->GetXaxis()->GetLast(), "e");
-      crecosbys_prompt_pt->cd(iRs + 1);
+      TH1F* hRecoPtPrompt = (TH1F*)hPtvsYRecPrompt->ProjectionX(Form("h%s_PtPrompt", recostep[iRs].Data()), 1, hPtvsYRecPrompt->GetXaxis()->GetLast(), "e");
+      canRecoSbySPromptPt->cd(iRs + 1);
       hRecoPtPrompt->Draw("pe");
 
-      TH1F* hRecoYPrompt = (TH1F*)hPtvsYRecPrompt->ProjectionY(Form("h%s_Y_prompt", recostep[iRs].Data()), 1, hPtvsYRecPrompt->GetYaxis()->GetLast(), "e");
-      crecosbys_prompt_y->cd(iRs + 1);
+      TH1F* hRecoYPrompt = (TH1F*)hPtvsYRecPrompt->ProjectionY(Form("h%s_YPrompt", recostep[iRs].Data()), 1, hPtvsYRecPrompt->GetYaxis()->GetLast(), "e");
+      canRecoSbySPromptY->cd(iRs + 1);
       hRecoYPrompt->Draw("pe");
 
       if (iNRebin > 1) {
@@ -281,7 +281,7 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults.root", TString 
         hRecoYPrompt = (TH1F*)hRecoYPrompt->Rebin(NRebin, "hRecoYPromptR", dRebin);
       }
 
-      auto padEffPromptSbyS_pt = canEffSbyS_pt->cd(2);
+      auto padEffPromptSbySPt = canEffSbySPt->cd(2);
 
       TH1F* hEffPtPrompt = nullptr;
       hEffPtPrompt = (TH1F*)hRecoPtPrompt->Clone(Form("hEffPtPrompt%s", recostep[iRs].Data()));
@@ -293,13 +293,13 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults.root", TString 
 
       if (iRs == 0) {
         SetHistogram(hEffPtPrompt, yMin, yMax, marginRLow, marginRHigh, logScaleH);
-        SetPad(padEffPromptSbyS_pt, logScaleH);
+        SetPad(padEffPromptSbySPt, logScaleH);
         hEffPtPrompt->Draw("pe");
       } else
         hEffPtPrompt->Draw("pesame");
       legendSbyS->Draw("same");
 
-      auto padEffPromptSbyS_y = canEffSbyS_y->cd(2);
+      auto padEffPromptSbySY = canEffSbySY->cd(2);
 
       TH1F* hEffYPrompt = nullptr;
       hEffYPrompt = (TH1F*)hRecoYPrompt->Clone(Form("hEffYPrompt%s", recostep[iRs].Data()));
@@ -310,7 +310,7 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults.root", TString 
       SetHistogramStyle(hEffYPrompt, colours[iRs], 20, 1.5, 2);
       if (iRs == 0) {
         SetHistogram(hEffYPrompt, yMin, yMax, marginRLow, marginRHigh, logScaleH);
-        SetPad(padEffPromptSbyS_y, logScaleR);
+        SetPad(padEffPromptSbySY, logScaleR);
         hEffYPrompt->Draw("pe");
       } else
         hEffYPrompt->Draw("pesame");
@@ -324,15 +324,15 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults.root", TString 
         return 1;
       }
       hPtvsYRecNonPrompt->SetTitle(Form("k%s non-prompt", recostep[iRs].Data()));
-      crecosbys_nonprompt->cd(iRs + 1);
+      canRecoSbySNonPrompt->cd(iRs + 1);
       hPtvsYRecNonPrompt->Draw("colz");
 
-      TH1F* hRecoPtNonPrompt = (TH1F*)hPtvsYRecNonPrompt->ProjectionX(Form("h%s_Pt_nonprompt", recostep[iRs].Data()), 1, hPtvsYRecNonPrompt->GetXaxis()->GetLast(), "e");
-      crecosbys_nonprompt_pt->cd(iRs + 1);
+      TH1F* hRecoPtNonPrompt = (TH1F*)hPtvsYRecNonPrompt->ProjectionX(Form("h%s_PtNonPrompt", recostep[iRs].Data()), 1, hPtvsYRecNonPrompt->GetXaxis()->GetLast(), "e");
+      canRecoSbySNonPromptPt->cd(iRs + 1);
       hRecoPtNonPrompt->Draw("pe");
 
-      TH1F* hRecoYNonPrompt = (TH1F*)hPtvsYRecNonPrompt->ProjectionY(Form("h%s_Y_nonprompt", recostep[iRs].Data()), 1, hPtvsYRecNonPrompt->GetYaxis()->GetLast(), "e");
-      crecosbys_nonprompt_y->cd(iRs + 1);
+      TH1F* hRecoYNonPrompt = (TH1F*)hPtvsYRecNonPrompt->ProjectionY(Form("h%s_YNonPrompt", recostep[iRs].Data()), 1, hPtvsYRecNonPrompt->GetYaxis()->GetLast(), "e");
+      canRecoSbySNonPromptY->cd(iRs + 1);
       hRecoYNonPrompt->Draw("pe");
 
       if (iNRebin > 1) {
@@ -343,7 +343,7 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults.root", TString 
         hRecoYNonPrompt = (TH1F*)hRecoYNonPrompt->Rebin(NRebin, "hRecoYNonPromptR", dRebin);
       }
 
-      auto padEffNonPromptSbyS_pt = canEffSbyS_pt->cd(3);
+      auto padEffNonPromptSbySPt = canEffSbySPt->cd(3);
 
       TH1F* hEffPtNonPrompt = nullptr;
       hEffPtNonPrompt = (TH1F*)hRecoPtNonPrompt->Clone(Form("hEffPtNonPrompt%s", recostep[iRs].Data()));
@@ -355,13 +355,13 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults.root", TString 
 
       if (iRs == 0) {
         SetHistogram(hEffPtNonPrompt, yMin, yMax, marginRLow, marginRHigh, logScaleH);
-        SetPad(padEffNonPromptSbyS_pt, logScaleH);
+        SetPad(padEffNonPromptSbySPt, logScaleH);
         hEffPtNonPrompt->Draw("pe");
       } else
         hEffPtNonPrompt->Draw("pesame");
       legendSbyS->Draw("same");
 
-      auto padEffNonPromptSbyS_y = canEffSbyS_y->cd(3);
+      auto padEffNonPromptSbySY = canEffSbySY->cd(3);
 
       TH1F* hEffYNonPrompt = nullptr;
       hEffYNonPrompt = (TH1F*)hRecoYNonPrompt->Clone(Form("hEffYNonPrompt%s", recostep[iRs].Data()));
@@ -372,15 +372,15 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults.root", TString 
       SetHistogramStyle(hEffYNonPrompt, colours[iRs], 20, 1.5, 2);
       if (iRs == 0) {
         SetHistogram(hEffYNonPrompt, yMin, yMax, marginRLow, marginRHigh, logScaleH);
-        SetPad(padEffNonPromptSbyS_y, logScaleR);
+        SetPad(padEffNonPromptSbySY, logScaleR);
         hEffYNonPrompt->Draw("pe");
       } else
         hEffYNonPrompt->Draw("pesame");
       legendSbyS->Draw("same");
     }
   }
-  canEffSbyS_pt->SaveAs(Form("MC_%s_eff_stepbystep_pT.pdf", particle.Data()));
-  canEffSbyS_y->SaveAs(Form("MC_%s_eff_stepbystep_y.pdf", particle.Data()));
+  canEffSbySPt->SaveAs(Form("MC_%s_eff_stepbystep_pT.pdf", particle.Data()));
+  canEffSbySY->SaveAs(Form("MC_%s_eff_stepbystepY.pdf", particle.Data()));
 
   delete arrayParticle;
   return 0;
