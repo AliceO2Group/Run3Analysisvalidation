@@ -107,4 +107,12 @@ case $INPUT_CASE in
     ISINPUTO2=1
     ISALICE3=1
     ISMC=1;;
+   14)
+    INPUT_LABEL="Run 5, p-p MC 14 TeV Xicc-enriched, Layout v1, HF analysis"
+    INPUT_DIR="/home/mmazzill/pp14TeV_XiccGun_20M_geometry_v1_19082021"
+    INPUT_FILES="AODRun5.*.root"
+    JSON="$JSONRUN5_HF"
+    ISINPUTO2=1
+    ISALICE3=1
+    ISMC=1;;
 esac
