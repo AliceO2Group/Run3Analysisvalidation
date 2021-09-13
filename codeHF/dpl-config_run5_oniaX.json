@@ -554,7 +554,7 @@
     },
     "hf-candidate-creator-x": {
         "cutYCandMax": "1.44",
-        "d_selectionFlagJpsi": "0"
+        "d_selectionFlagJpsi": "0",
         "ptPionMin": "0.15"
     },
     "hf-task-x": {
