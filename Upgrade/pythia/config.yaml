@@ -1,0 +1,94 @@
+x3872_ptdep_Pyhia8monash_pp14p0_absy1p44:
+  outputfile: x3872_ptdep_Pyhia8monash_pp14p0_absy1p44.root
+  myhadronname: x3872
+  myhadronlatex: X(3872)
+  pdgparticle: 100443 #this is the psi(2s)! PDG of the particle for which we want the simulation
+  maxneventsperjob: 40000 #max events per file/process
+  tune: 14 #monash
+  beamidA: 2212 #incoming hadron
+  beamidB: 2212 #incoming hadron
+  eCM: 14000
+  pythiamode: Charmonium:all = on
+  extramode: none #in case extra tuning is needed
+  nptbins: 100
+  ptmin: 0.
+  ptmax: 50.
+  ymin: -1.44
+  ymax: 1.44
+  correction: 0.84585366 #in case you are using pythia from another hadron, 0.1*0.3468/0.041 
+
+Jpsi_ptdep_Pyhia8monash_pp14p0_absy1p44:
+  outputfile: Jpsi_ptdep_Pyhia8monash_pp14p0_absy1p44.root
+  myhadronname: Jpsi
+  myhadronlatex: J/psi 
+  pdgparticle: 443 #this is the psi(2s)! PDG of the particle for which we want the simulation
+  maxneventsperjob: 10000 #max events per file/process
+  tune: 14 #monash
+  beamidA: 2212 #incoming hadron
+  beamidB: 2212 #incoming hadron
+  eCM: 14000
+  pythiamode: Charmonium:all = on
+  extramode: none #in case extra tuning is needed
+  nptbins: 100
+  ptmin: 0.
+  ptmax: 50.
+  ymin: -1.44
+  ymax: 1.44
+  correction: 1. 
+
+Lambda_c_ptdep_Pyhia8mode2_pp14p0_absy1p44:
+  outputfile: Lambda_c_ptdep_Pyhia8mode2_pp14p0_absy1p44.root
+  myhadronname: Lc
+  myhadronlatex: Lc
+  pdgparticle: 4122
+  maxneventsperjob: 10000 #max events per file/process
+  tune: 14 #monash
+  beamidA: 2212 #incoming hadron
+  beamidB: 2212 #incoming hadron
+  eCM: 14000
+  pythiamode: SoftQCD:all = on
+  extramode: mode2 #in case extra tuning is needed
+  nptbins: 100
+  ptmin: 0.
+  ptmax: 50.
+  ymin: -1.44
+  ymax: 1.44
+  correction: 1.
+
+Xicc_ptdep_Pyhia8mode2_pp14p0_absy1p44:
+  outputfile: Xicc_ptdep_Pyhia8mode2_pp14p0_absy1p44.root
+  myhadronname: Xicc
+  myhadronlatex: Xicc 
+  pdgparticle: 4424
+  maxneventsperjob: 1000 #max events per file/process
+  tune: 14 #monash
+  beamidA: 2212 #incoming hadron
+  beamidB: 2212 #incoming hadron
+  eCM: 14000
+  pythiamode: SoftQCD:all = on
+  extramode: mode2 #in case extra tuning is needed
+  nptbins: 100
+  ptmin: 0.
+  ptmax: 50.
+  ymin: -1.44
+  ymax: 1.44
+  correction: 1.
+
+Omegaccc_ptdep_Pyhia8mode2_pp14p0_absy1p44:
+  outputfile: Omegaccc_ptdep_Pyhia8mode2_pp14p0_absy1p44.root
+  myhadronname: Omegaccc
+  myhadronlatex: Omegaccc
+  pdgparticle: 4444
+  maxneventsperjob: 500000 #max events per file/process
+  tune: 14 #monash
+  beamidA: 2212 #incoming hadron
+  beamidB: 2212 #incoming hadron
+  eCM: 14000
+  pythiamode: SoftQCD:all = on
+  extramode: mode2 #in case extra tuning is needed
+  nptbins: 100
+  ptmin: 0.
+  ptmax: 50.
+  ymin: -1.44
+  ymax: 1.44
+  correction: 1.

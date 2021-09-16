@@ -1,0 +1,117 @@
+SHMC_2021:
+  PbPb5p52:
+    absy0p5:
+      Lambda_c: 1.312e+00
+      Xi_cc: 5.672e-03
+      Omega_cc: 2.663e-03
+      Omega_ccc: 1.246e-04
+      X3872: 2.807e-03
+  KrKr6p46:
+    absy0p5:
+      Lambda_c: 3.655e-01
+      Xi_cc: 9.865e-04
+      Omega_cc: 4.632e-04
+      Omega_ccc: 1.231e-05
+      X3872: 5.966e-04
+  ArAr6p3:
+    absy0p5:
+      Lambda_c: 1.270e-01
+      Xi_cc: 2.024e-04
+      Omega_cc: 9.505e-05
+      Omega_ccc: 1.287e-06
+      X3872: 1.985e-04
+  
+Stat_ChoLee_1:
+  PbPb2p76:
+    absy0p5:
+      Xi_cc: 4.90e-03
+      Omega_ccc: 5.3e-06
+  
+Stat_ChoLee_2:
+  PbPb2p76:
+    absy0p5:
+      Xi_cc: 6.70e-03
+      Omega_ccc: 5.9e-06
+  
+Stat_ChoLee_tetra:
+  PbPb2p76:
+    absy0p5:
+      X3872: 3.80e-4
+
+Stat_ChoLee_molecule:
+  PbPb2p76:
+    absy0p5:
+      X3872: 4.50e-3
+
+Stat_Becc_min:
+  PbPb5p5:
+    absy0p5:
+      Xi_cc: 1.9e-02
+      Omega_ccc: 1.0e-03
+  
+Stat_Becc_max:
+  PbPb5p5:
+    absy0p5:
+      Xi_cc: 0.38
+      Omega_ccc: 0.03
+  
+Catania:
+  PbPb5p5:
+    absy0p5:
+      Xi_cc: 1.8e-03
+      Omega_ccc: 3.5e-05
+
+Pyhia8mode2:
+  pp14p0:
+    absy1p44:
+      Lambda_c: 1
+
+Pyhia8monash:
+  pp14p0:
+    absy1p44:
+      Jpsitoee: 1
+      X3872: 1
+comparison_models_AA:
+  pt_binning:
+    Lambda_c: [0,1,2,3,4,5,6,7,8,9,10]
+    Xi_cc: [0,1,2,3,4,5,6,7,8,9,10]
+    Omega_cc: [0,1,2,3,4,5,6,7,8,9,10]
+    Omega_ccc: [0,1,2,3,4,5,6,7,8,9,10]
+    X3872: [0,1,2,3,4,5,6,7,8,9,10]
+
+  Omega_ccc:
+    models: ["SHMC_2021", "SHMC_2021", "SHMC_2021", "Stat_ChoLee_1", "Stat_ChoLee_2", "Catania", "SHMC_2021", "SHMC_2021"]
+    collisions: ["PbPb5p52", "KrKr6p46", "ArAr6p3", "PbPb2p76", "PbPb2p76", "PbPb5p5", "PbPb5p52", "PbPb5p52"]
+    yrange: ["absy0p5", "absy0p5", "absy0p5", "absy0p5", "absy0p5", "absy0p5", "absy0p5", "absy0p5"]
+    brmode: ["central", "central", "central", "central", "central", "central", "max", "min"]
+    colors: [1, 2, 4, 5, 6, 7, 9, 11]
+    useshape: "Omega_ccc_ptdep_Stat_ChoLee_2_PbPb2p76_absy0p5"
+    ymin: 1.e-5
+    ymax: 1.e+10
+  Omega_cc:
+    models: ["SHMC_2021", "SHMC_2021", "SHMC_2021", "SHMC_2021", "SHMC_2021", "SHMC_2021", "SHMC_2021"]
+    collisions: ["PbPb5p52", "KrKr6p46", "ArAr6p3", "PbPb5p52", "PbPb5p52", "KrKr6p46", "KrKr6p46"]
+    yrange: ["absy0p5", "absy0p5", "absy0p5", "absy0p5", "absy0p5", "absy0p5", "absy0p5"]
+    brmode: ["central", "central", "central", "max", "min", "max", "min"]
+    colors: [1, 2, 4, 5, 6, 7, 9]
+    useshape: "Omega_cc_ptdep_Stat_ChoLee_2_PbPb2p76_absy0p5"
+    ymin: 1.e-2
+    ymax: 1.e+10
+  Xi_cc:
+    models: ["SHMC_2021", "Stat_ChoLee_1", "Stat_ChoLee_2", "Catania", "SHMC_2021", "SHMC_2021", "SHMC_2021"]
+    collisions: ["PbPb5p52", "PbPb2p76", "PbPb2p76", "PbPb5p5", "KrKr6p46", "KrKr6p46", "KrKr6p46"]
+    yrange: ["absy0p5", "absy0p5", "absy0p5", "absy0p5", "absy0p5", "absy0p5", "absy0p5"]
+    brmode: ["central", "central", "central", "central", "central", "min", "max"]
+    colors: [1, 2, 4, 5, 7, 9, 11]
+    useshape: "Xi_cc_ptdep_Stat_ChoLee_2_PbPb2p76_absy0p5"
+    ymin: 1.e-2
+    ymax: 1.e+10
+  X3872:
+    models: ["SHMC_2021", "SHMC_2021", "SHMC_2021", "Stat_ChoLee_tetra", "Stat_ChoLee_molecule"]
+    collisions: ["PbPb5p52", "KrKr6p46", "ArAr6p3", "PbPb2p76", "PbPb2p76"]
+    yrange: ["absy0p5", "absy0p5", "absy0p5", "absy0p5", "absy0p5"]
+    brmode: ["central", "central", "central", "central", "central"]
+    colors: [1, 2, 4, 5, 7]
+    useshape: "X3872_ptdep_Stat_ChoLee_2_PbPb2p76_absy0p5"
+    ymin: 1.e-2
+    ymax: 1.e+10
