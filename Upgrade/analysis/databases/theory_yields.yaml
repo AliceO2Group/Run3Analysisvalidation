@@ -20,19 +20,19 @@ SHMC_2021:
       Omega_cc: 9.505e-05
       Omega_ccc: 1.287e-06
       X3872: 1.985e-04
-  
+
 Stat_ChoLee_1:
   PbPb2p76:
     absy0p5:
       Xi_cc: 4.90e-03
       Omega_ccc: 5.3e-06
-  
+
 Stat_ChoLee_2:
   PbPb2p76:
     absy0p5:
       Xi_cc: 6.70e-03
       Omega_ccc: 5.9e-06
-  
+
 Stat_ChoLee_tetra:
   PbPb2p76:
     absy0p5:
@@ -48,13 +48,13 @@ Stat_Becc_min:
     absy0p5:
       Xi_cc: 1.9e-02
       Omega_ccc: 1.0e-03
-  
+
 Stat_Becc_max:
   PbPb5p5:
     absy0p5:
       Xi_cc: 0.38
       Omega_ccc: 0.03
-  
+
 Catania:
   PbPb5p5:
     absy0p5:

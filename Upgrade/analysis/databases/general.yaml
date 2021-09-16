@@ -13,19 +13,19 @@ text_string:
   Pyhia8mode2: "Pythia 8, mode = 2"
   Pyhia8monash: "Pythia 8, monash tune"
 statistics:
-  PbPb2p76: 
-    sigmaAA_b: 7.8 #FIXME these are copied from 5.52 TeV 
-    lumiAA_monthi_invnb: 4.92 #FIXME these are copied from 5.52 TeV
-  PbPb5p5: 
+  PbPb2p76:
     sigmaAA_b: 7.8 #FIXME these are copied from 5.52 TeV
     lumiAA_monthi_invnb: 4.92 #FIXME these are copied from 5.52 TeV
-  PbPb5p52: 
+  PbPb5p5:
+    sigmaAA_b: 7.8 #FIXME these are copied from 5.52 TeV
+    lumiAA_monthi_invnb: 4.92 #FIXME these are copied from 5.52 TeV
+  PbPb5p52:
     sigmaAA_b: 7.8
-    lumiAA_monthi_invnb: 4.92 
-  KrKr6p46: 
+    lumiAA_monthi_invnb: 4.92
+  KrKr6p46:
     sigmaAA_b: 4.06
     lumiAA_monthi_invnb: 123.
-  ArAr6p3: 
+  ArAr6p3:
     sigmaAA_b: 2.6
     lumiAA_monthi_invnb: 1080
   pp14p0:
@@ -43,7 +43,7 @@ branchingratio:
     max: 2.2e-3
   Omega_cc:
     central: 1.08e-3
-    min: 2.16e-4 
+    min: 2.16e-4
     max: 2.16e-3
   Omega_ccc:
     central: 5.4e-05

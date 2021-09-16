@@ -43,10 +43,10 @@ Each directory trial_* contains the following files:
 	- RecoCuts/GenLimAcc --> efficiency x acceptance, which is used in the raw signal estimate
 - signif_estimate_shm_coal_omegaccc_*_*.pdf --> contains the ingredients and the estimate of the significance/sqrt{events}. In particular:
 	- Raw signal (top left) --> raw signal per event obtained as S = dN/dy x (effXacc) x BR; the dashed line refers to dN/dy from coalescence, while the solid line from SHM; the different colors refer to the different trial (i.e. we estimate the raw signal per event for each trial)
-	- Background (top right) --> background per event 
-	- Significance/sqrt{event} (bottom left) 
+	- Background (top right) --> background per event
+	- Significance/sqrt{event} (bottom left)
 	- Inputs (bottom right) --> contains the details of the background and the theoretical inputs used in the calculation
-	
+
 All what described here is referred to the studies for the Omega_ccc, but is also valid for the Omega_cc.
-	
-	
+
+

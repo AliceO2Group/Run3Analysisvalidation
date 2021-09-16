@@ -15,12 +15,12 @@ x3872_ptdep_Pyhia8monash_pp14p0_absy1p44:
   ptmax: 50.
   ymin: -1.44
   ymax: 1.44
-  correction: 0.84585366 #in case you are using pythia from another hadron, 0.1*0.3468/0.041 
+  correction: 0.84585366 #in case you are using pythia from another hadron, 0.1*0.3468/0.041
 
 Jpsi_ptdep_Pyhia8monash_pp14p0_absy1p44:
   outputfile: Jpsi_ptdep_Pyhia8monash_pp14p0_absy1p44.root
   myhadronname: Jpsi
-  myhadronlatex: J/psi 
+  myhadronlatex: J/psi
   pdgparticle: 443 #this is the psi(2s)! PDG of the particle for which we want the simulation
   maxneventsperjob: 10000 #max events per file/process
   tune: 14 #monash
@@ -34,7 +34,7 @@ Jpsi_ptdep_Pyhia8monash_pp14p0_absy1p44:
   ptmax: 50.
   ymin: -1.44
   ymax: 1.44
-  correction: 1. 
+  correction: 1.
 
 Lambda_c_ptdep_Pyhia8mode2_pp14p0_absy1p44:
   outputfile: Lambda_c_ptdep_Pyhia8mode2_pp14p0_absy1p44.root
@@ -58,7 +58,7 @@ Lambda_c_ptdep_Pyhia8mode2_pp14p0_absy1p44:
 Xicc_ptdep_Pyhia8mode2_pp14p0_absy1p44:
   outputfile: Xicc_ptdep_Pyhia8mode2_pp14p0_absy1p44.root
   myhadronname: Xicc
-  myhadronlatex: Xicc 
+  myhadronlatex: Xicc
   pdgparticle: 4424
   maxneventsperjob: 1000 #max events per file/process
   tune: 14 #monash
