@@ -1,4 +1,4 @@
-//This is a macro to compare the invariant mass distributions of Monte Carlo and data.
+//This is a macro to compare distributions of Monte Carlo and data for Xic task.
 
 void CompareMCvsData(){
 //Set Canvas
