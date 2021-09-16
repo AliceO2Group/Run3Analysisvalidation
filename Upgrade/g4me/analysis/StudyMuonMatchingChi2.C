@@ -296,7 +296,7 @@ void StudyMuonMatchingChi2(const char* inputFileName,
         if (nMeasurementsMID != 2)
           continue;
 
-        //	if (!(trackletSel->IsMIDTrackletSelected(*((TVector3*)hitsPosMID->At(0)),*((TVector3*)hitsPosMID->At(1)),fittedMomAtVtx,posAtLayerMID1,charge))) continue;
+        //  if (!(trackletSel->IsMIDTrackletSelected(*((TVector3*)hitsPosMID->At(0)),*((TVector3*)hitsPosMID->At(1)),fittedMomAtVtx,posAtLayerMID1,charge))) continue;
         if (!(trackletSel->IsMIDTrackletSelectedWithSearchSpot(*((TVector3*)hitsPosMID->At(0)), *((TVector3*)hitsPosMID->At(1)), posAtLayerMID1, kFALSE)))
           continue;
 

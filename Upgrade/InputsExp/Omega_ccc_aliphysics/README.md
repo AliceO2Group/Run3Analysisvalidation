@@ -33,19 +33,19 @@ Each directory trial_* contains the following files:
 - minv_signal_fit_*_low/mid/high.pdf --> histograms of invariant mass distribution for reconstructed signal fitted with a gaussian. The width of this gaussian is used to define the +/-3 sigma region around the expected mass value where we take the background counts
 - background_counts_*_*_high.pdf --> histograms with invariant mass distribution from background candidates. Here are reported the counts of background in the +/-3 sigma region around the mass peak, which are used to evaluate the background-per-event
 - generated_pt/rapidity_distribution.pdf --> generated distributions of mother particle (e.g. Omega_ccc). In particular:
-	- Gen (top left): distribution with all generated mother particle without any selections
-	- GenAcc (top right): distribution with all mothers inside the rapidity gap and the daughters inside the pseudorapidity gap
-	- GenLimAcc (bottom left): distribution with all mothers inside the rapidity gap
+  - Gen (top left): distribution with all generated mother particle without any selections
+  - GenAcc (top right): distribution with all mothers inside the rapidity gap and the daughters inside the pseudorapidity gap
+  - GenLimAcc (bottom left): distribution with all mothers inside the rapidity gap
 - reconstruction_*_*_withSpecialCuts.pdf --> distribution of reconstructed mother particle for the different trial. The label "withSpecialCuts" means that the set of fixed cut is applied.
 - efficiency_*_*_withSpecialCuts.pdf --> contains the efficiency and acceptance calculation. In particular:
-	- RecoCuts/GenAcc --> pure efficiency term
-	- GenAcc/GenLimAcc --> pure acceptance term
-	- RecoCuts/GenLimAcc --> efficiency x acceptance, which is used in the raw signal estimate
+  - RecoCuts/GenAcc --> pure efficiency term
+  - GenAcc/GenLimAcc --> pure acceptance term
+  - RecoCuts/GenLimAcc --> efficiency x acceptance, which is used in the raw signal estimate
 - signif_estimate_shm_coal_omegaccc_*_*.pdf --> contains the ingredients and the estimate of the significance/sqrt{events}. In particular:
-	- Raw signal (top left) --> raw signal per event obtained as S = dN/dy x (effXacc) x BR; the dashed line refers to dN/dy from coalescence, while the solid line from SHM; the different colors refer to the different trial (i.e. we estimate the raw signal per event for each trial)
-	- Background (top right) --> background per event
-	- Significance/sqrt{event} (bottom left)
-	- Inputs (bottom right) --> contains the details of the background and the theoretical inputs used in the calculation
+  - Raw signal (top left) --> raw signal per event obtained as S = dN/dy x (effXacc) x BR; the dashed line refers to dN/dy from coalescence, while the solid line from SHM; the different colors refer to the different trial (i.e. we estimate the raw signal per event for each trial)
+  - Background (top right) --> background per event
+  - Significance/sqrt{event} (bottom left)
+  - Inputs (bottom right) --> contains the details of the background and the theoretical inputs used in the calculation
 
 All what described here is referred to the studies for the Omega_ccc, but is also valid for the Omega_cc.
 

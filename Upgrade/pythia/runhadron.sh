@@ -4,7 +4,7 @@ COMPILER=compile_pythia.sh
 export CASEFILE=case.sh
 source $CASEFILE
 NJOBS=50 #WARNING: BE AWARE THAT THE FILES PRODUCED BY EACH JOB WILL HAVE
-	 #1/NJOBS AS NORMALIZATION, TO PRODUCE MERGED FILES PROPERLY NORMALIZED.
+         #1/NJOBS AS NORMALIZATION, TO PRODUCE MERGED FILES PROPERLY NORMALIZED.
 echo "----------------------------------"
 echo "----------------------------------"
 echo "----------------------------------"
