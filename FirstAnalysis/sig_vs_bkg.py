@@ -146,8 +146,12 @@ def main():
                     pad = canvas_all.cd(bin_pt)
                 # create a 1D histogram per pT bin
                 if h_sig.InheritsFrom("TH2"):
-                    h_sig_px = h_sig.ProjectionX(f"h_sig_px_{decay}_{var}_{bin_pt}", bin_pt, bin_pt)
-                    h_bkg_px = h_bkg.ProjectionX(f"h_bkg_px_{decay}_{var}_{bin_pt}", bin_pt, bin_pt)
+                    h_sig_px = h_sig.ProjectionX(
+                        f"h_sig_px_{decay}_{var}_{bin_pt}", bin_pt, bin_pt
+                    )
+                    h_bkg_px = h_bkg.ProjectionX(
+                        f"h_bkg_px_{decay}_{var}_{bin_pt}", bin_pt, bin_pt
+                    )
                 elif h_sig.InheritsFrom("TH1"):
                     h_sig_px = h_sig
                     h_bkg_px = h_bkg
@@ -271,8 +275,18 @@ rebin = 1
 path_file_sig = "../codeHF/AnalysisResults_O2.root"
 path_file_bkg = "../codeHF/AnalysisResults_O2.root"
 
-variables = ["d0Prong0", "d0Prong1", "d0Prong2", "PtProng0", "PtProng1", "PtProng2", "CPA", "Eta", "Declength"]
-#variables = ["CPA", "Pt", "Eta"]
+variables = [
+    "d0Prong0",
+    "d0Prong1",
+    "d0Prong2",
+    "PtProng0",
+    "PtProng1",
+    "PtProng2",
+    "CPA",
+    "Eta",
+    "Declength",
+]
+# variables = ["CPA", "Pt", "Eta"]
 
 decays = ["d0", "lc", "jpsi", "x"]
 
