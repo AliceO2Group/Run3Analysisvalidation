@@ -157,10 +157,10 @@ def main():
                 # get pT range
                 pt_min = h_sig.GetYaxis().GetBinLowEdge(bin_pt)
                 pt_max = h_sig.GetYaxis().GetBinLowEdge(bin_pt + 1)
-                h_bkg_px.SetTitle(
-                    f"{labels[decay] if decay in labels else decay}, {pt_min:g} "
-                    f"#leq #it{{p}}_{{T}}/(GeV/#it{{c}}) < {pt_max:g} (bin {bin_pt})"
-                )
+                title = labels[decay] if decay in labels else decay
+                if n_bins_pt > 1:
+                    title += f", {pt_min:g} #leq #it{{p}}_{{T}}/(GeV/#it{{c}}) < {pt_max:g} (bin {bin_pt})"
+                h_bkg_px.SetTitle(title)
                 h_bkg_px.SetYTitle("entries")
                 # create legend and entries
                 list_leg.append(TLegend(0.5, 0.8, 0.95, 0.9))
@@ -271,9 +271,9 @@ rebin = 1
 path_file_sig = "../codeHF/AnalysisResults_O2.root"
 path_file_bkg = "../codeHF/AnalysisResults_O2.root"
 
-# variables = ["d0Prong0", "d0Prong1", "d0Prong2", "PtProng0", "PtProng1", "PtProng2", "CPA", "Eta", "Declength"]
-variables = ["CPA", "Pt", "Eta"]
+variables = ["d0Prong0", "d0Prong1", "d0Prong2", "PtProng0", "PtProng1", "PtProng2", "CPA", "Eta", "Declength"]
+#variables = ["CPA", "Pt", "Eta"]
 
-decays = ["d0"]
+decays = ["d0", "lc", "jpsi", "x"]
 
 main()
