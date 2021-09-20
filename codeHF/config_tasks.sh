@@ -28,8 +28,8 @@ DATABASE_O2="workflows.yml"
 MAKE_GRAPH=0        # Make topology graph.
 
 # Activation of O2 workflows
-# Event selection
-DOO2_EVSEL=0        # event-selection and timestamp
+# Trigger selection
+DOO2_TRIGSEL=0        # event-selection and timestamp
 # QA
 DOO2_REJ_ALICE3=0   # qa-rejection
 DOO2_QA_EFF=0       # qa-efficiency
@@ -175,8 +175,8 @@ function MakeScriptO2 {
   [[ $DOO2_CAND_CASC -eq 1 || $DOO2_SEL_LCK0SP -eq 1 || $DOO2_TASK_LCK0SP -eq 1 ]] && DOO2_CASC=1 || DOO2_CASC=0
   # Cascade reconstruction
   [ $DOO2_CASC -eq 1 ] && SUFFIX_CASC="-v0" || SUFFIX_CASC=""
-  # Event selection
-  [ $DOO2_EVSEL -eq 1 ] && SUFFIX_EVSEL="-evsel" || SUFFIX_EVSEL=""
+  # Trigger selection
+  [ $DOO2_TRIGSEL -eq 1 ] && SUFFIX_TRIGSEL="-trigsel" || SUFFIX_TRIGSEL=""
   # ALICE 3 input
   [ "$ISALICE3" -eq 1 ] && SUFFIX_ALICE3="-alice3" || SUFFIX_ALICE3=""
 
@@ -192,7 +192,7 @@ function MakeScriptO2 {
   [ $DOO2_PID_TOF_QA -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tof-qa-mc"
   # Vertexing
   WF_SKIM="o2-analysis-hf-track-index-skims-creator"
-  [ $DOO2_SKIM -eq 1 ] && WORKFLOWS+=" ${WF_SKIM}${SUFFIX_EVSEL}${SUFFIX_CASC}"
+  [ $DOO2_SKIM -eq 1 ] && WORKFLOWS+=" ${WF_SKIM}${SUFFIX_TRIGSEL}${SUFFIX_CASC}"
   [ $DOO2_CAND_2PRONG -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-2prong"
   [ $DOO2_CAND_3PRONG -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-3prong"
   [ $DOO2_CAND_X -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-x"
@@ -241,7 +241,7 @@ function MakeScriptO2 {
 
   # Make a copy of the default workflow database file before modifying it.
   DATABASE_O2_EDIT=""
-  if [[ $DOO2_EVSEL -eq 1 || $DOO2_CASC -eq 1 || "$ISALICE3" -eq 1 ]]; then
+  if [[ $DOO2_TRIGSEL -eq 1 || $DOO2_CASC -eq 1 || "$ISALICE3" -eq 1 ]]; then
     DATABASE_O2_EDIT="${DATABASE_O2/.yml/_edit.yml}"
     cp "$DATABASE_O2" "$DATABASE_O2_EDIT" || ErrExit "Failed to cp $DATABASE_O2 $DATABASE_O2_EDIT."
     DATABASE_O2="$DATABASE_O2_EDIT"
@@ -251,9 +251,9 @@ function MakeScriptO2 {
       ReplaceString "- $WF_SEL_JPSI" "- ${WF_SEL_JPSI}${SUFFIX_ALICE3}" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
     }
 
-    # Adjust workflow database in case of event selection or cascades enabled.
-    [[ $DOO2_EVSEL -eq 1 || $DOO2_CASC -eq 1 ]] && {
-      ReplaceString "- $WF_SKIM" "- ${WF_SKIM}${SUFFIX_EVSEL}${SUFFIX_CASC}" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
+    # Adjust workflow database in case of trigger selection or cascades enabled.
+    [[ $DOO2_TRIGSEL -eq 1 || $DOO2_CASC -eq 1 ]] && {
+      ReplaceString "- $WF_SKIM" "- ${WF_SKIM}${SUFFIX_TRIGSEL}${SUFFIX_CASC}" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
     }
   fi
 
