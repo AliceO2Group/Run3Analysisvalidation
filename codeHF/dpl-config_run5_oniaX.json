@@ -539,7 +539,11 @@
     "hf-task-jpsi": {
         "cutYCandMax": "1.44",
         "d_selectionFlagJpsi": "0",
-        "d_modeJpsiToMuMu": false,
+        "d_modeJpsiToMuMu": "false",
+        "selectedRich": "false",
+        "selectedTofRich": "false",
+        "selectedTof": "false",
+        "selectedMid": "false",
         "pTBins": {
             "values": [
                 "0",
@@ -558,7 +562,11 @@
     "hf-task-jpsi-mc": {
         "cutYCandMax": "1.44",
         "d_selectionFlagJpsi": "0",
-        "d_modeJpsiToMuMu": false
+        "d_modeJpsiToMuMu": "false",
+        "selectedRich": "false",
+        "selectedTofRich": "false",
+        "selectedTof": "false",
+        "selectedMid": "false"
     },
     "hf-candidate-creator-x": {
         "cutYCandMax": "1.44",
