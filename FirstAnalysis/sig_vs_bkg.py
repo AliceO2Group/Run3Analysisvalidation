@@ -134,20 +134,24 @@ def main():
                 h_bkg.RebinX(rebin)
             # create canvas and legend
             if not singlepad:
-                canvas_all = create_canvas(n_bins_pt, f"{var}_canvas")
+                canvas_all = create_canvas(n_bins_pt, f"canvas_{decay}_{var}")
             list_leg = []  # one legend for each pT bin
 
             for i in range(n_bins_pt):
                 bin_pt = i + 1
                 if singlepad:
-                    canvas_single = create_canvas(1, f"{var}_canvas_{bin_pt}")
+                    canvas_single = create_canvas(1, f"canvas_{decay}_{var}_{bin_pt}")
                     pad = canvas_single.cd(1)
                 else:
                     pad = canvas_all.cd(bin_pt)
                 # create a 1D histogram per pT bin
                 if h_sig.InheritsFrom("TH2"):
-                    h_sig_px = h_sig.ProjectionX("h_sig_px", bin_pt, bin_pt)
-                    h_bkg_px = h_bkg.ProjectionX("h_bkg_px", bin_pt, bin_pt)
+                    h_sig_px = h_sig.ProjectionX(
+                        f"h_sig_px_{decay}_{var}_{bin_pt}", bin_pt, bin_pt
+                    )
+                    h_bkg_px = h_bkg.ProjectionX(
+                        f"h_bkg_px_{decay}_{var}_{bin_pt}", bin_pt, bin_pt
+                    )
                 elif h_sig.InheritsFrom("TH1"):
                     h_sig_px = h_sig
                     h_bkg_px = h_bkg
@@ -157,9 +161,10 @@ def main():
                 # get pT range
                 pt_min = h_sig.GetYaxis().GetBinLowEdge(bin_pt)
                 pt_max = h_sig.GetYaxis().GetBinLowEdge(bin_pt + 1)
-                h_bkg_px.SetTitle(
-                    f"{labels[decay]}, {pt_min:g} #leq #it{{p}}_{{T}}/(GeV/#it{{c}}) < {pt_max:g} (bin {bin_pt})"
-                )
+                title = labels[decay] if decay in labels else decay
+                if n_bins_pt > 1:
+                    title += f", {pt_min:g} #leq #it{{p}}_{{T}}/(GeV/#it{{c}}) < {pt_max:g} (bin {bin_pt})"
+                h_bkg_px.SetTitle(title)
                 h_bkg_px.SetYTitle("entries")
                 # create legend and entries
                 list_leg.append(TLegend(0.5, 0.8, 0.95, 0.9))

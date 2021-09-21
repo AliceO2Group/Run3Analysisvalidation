@@ -8,6 +8,14 @@
     },
     "hf-tag-sel-collisions": {
         "fillHistograms": "true",
+        "xVertexMin": "-100",
+        "xVertexMax": "100",
+        "yVertexMin": "-100",
+        "yVertexMax": "100",
+        "zVertexMin": "-100",
+        "zVertexMax": "100",
+        "nContribMin": "0",
+        "chi2Max": "0",
         "triggerClassName": "kINT7"
     },
     "hf-tag-sel-tracks": {
