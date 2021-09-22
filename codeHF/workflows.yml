@@ -26,22 +26,22 @@ workflows:
     executable: o2-analysis-hf-track-index-skims-creator
     tables: [HFSELTRACK, HFTRACKIDXP2, HFTRACKIDXP3]
 
-  o2-analysis-hf-track-index-skims-creator-evsel:
+  o2-analysis-hf-track-index-skims-creator-trigsel:
     <<: *skim_creator
     dependencies: [o2-analysis-timestamp, o2-analysis-event-selection]
-    options: "--doEvSel"
+    options: "--doTrigSel"
     tables: [HFSELCOL, HFSELTRACK, HFTRACKIDXP2, HFTRACKIDXP3]
 
   o2-analysis-hf-track-index-skims-creator-v0:
     <<: *skim_creator
     dependencies: o2-analysis-lambdakzerobuilder
-    options: "--do-LcK0Sp"
+    options: "--doCascades"
     tables: [HFSELTRACK, HFTRACKIDXCASC, HFTRACKIDXP2, HFTRACKIDXP3]
 
-  o2-analysis-hf-track-index-skims-creator-evsel-v0:
+  o2-analysis-hf-track-index-skims-creator-trigsel-v0:
     <<: *skim_creator
     dependencies: [o2-analysis-timestamp, o2-analysis-event-selection, o2-analysis-lambdakzerobuilder]
-    options: ["--doEvSel", "--do-LcK0Sp"]
+    options: ["--doTrigSel", "--doCascades"]
     tables: [HFSELCOL, HFSELTRACK, HFTRACKIDXCASC, HFTRACKIDXP2, HFTRACKIDXP3]
 
   # Candidate creators
@@ -74,6 +74,13 @@ workflows:
     tables:
       default: [HFCANDXBASE, HFCANDXEXT]
       mc: [HFCANDXMCREC, HFCANDXMCGEN]
+
+  o2-analysis-hf-candidate-creator-xicc:
+    <<: *cand_creator
+    dependencies: o2-analysis-hf-xic-topkpi-candidate-selector
+    tables:
+      default: [HFCANDXICCBASE, HFCANDXICCEXT]
+      mc: [HFCANDXICCMCREC, HFCANDXICCMCGEN]
 
   # Selectors
 
@@ -108,6 +115,9 @@ workflows:
 
   o2-analysis-hf-x-tojpsipipi-candidate-selector:
     dependencies: [o2-analysis-hf-candidate-creator-x, o2-analysis-pid-tpc-full, o2-analysis-pid-tof-full]
+
+  o2-analysis-hf-xicc-topkpipi-candidate-selector:
+    dependencies: o2-analysis-hf-candidate-creator-xicc
 
   # Analysis tasks
 
@@ -145,6 +155,10 @@ workflows:
     <<: *task
     dependencies: o2-analysis-hf-lc-tok0sp-candidate-selector
 
+  o2-analysis-hf-task-xicc:
+    <<: *task
+    dependencies: o2-analysis-hf-xicc-topkpipi-candidate-selector
+
   o2-analysis-hf-task-correlation-ddbar: &taskddbar
     executable: o2-analysis-hf-task-correlation-ddbar
 
@@ -169,6 +183,16 @@ workflows:
     requires_mc: yes
     dependencies: o2-analysis-hf-lc-candidate-selector
     tables: [HFCANDP3Full, HFCANDP3FullE, HFCANDP3FullP]
+
+  o2-analysis-hf-tree-creator-x-tojpsipipi:
+    requires_mc: yes
+    dependencies: o2-analysis-hf-x-tojpsipipi-candidate-selector
+    tables: [HFCANDXFull, HFCANDXFullE, HFCANDXFullP]
+
+  o2-analysis-hf-tree-creator-xicc-topkpipi:
+    requires_mc: yes
+    dependencies: o2-analysis-hf-xicc-topkpipi-candidate-selector
+    tables: [HFCANDXiccFull, HFCANDXiccFullE, HFCANDXiccFullP]
 
   # D meson correlations
 
