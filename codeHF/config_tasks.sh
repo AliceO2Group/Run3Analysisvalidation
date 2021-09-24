@@ -37,7 +37,7 @@ DOO2_QA_EVTRK=0     # qa-event-track
 DOO2_MC_VALID=0     # hf-mc-validation
 # PID
 DOO2_PID_TPC=0      # pid-tpc-full
-DOO2_PID_TOF=0      # pid-tof-full
+DOO2_PID_TOF=0      # pid-tof-full/alice3-pid-tof
 DOO2_PID_TOF_QA=0   # pid-tof-qa-mc
 # Vertexing
 DOO2_SKIM=0         # hf-track-index-skims-creator
@@ -188,7 +188,9 @@ function MakeScriptO2 {
   [ $DOO2_MC_VALID -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-mc-validation"
   # PID
   [ $DOO2_PID_TPC -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tpc-full"
-  [ $DOO2_PID_TOF -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tof-full"
+  WF_TOF="o2-analysis-pid-tof-full"
+  WF_TOFA3="o2-analysis-alice3-pid-tof"
+  [ $DOO2_PID_TOF -eq 1 ] && { [ "$ISALICE3" -eq 1 ] && WORKFLOWS+=" $WF_TOFA3" || WORKFLOWS+=" $WF_TOF"; }
   [ $DOO2_PID_TOF_QA -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tof-qa-mc"
   # Vertexing
   WF_SKIM="o2-analysis-hf-track-index-skims-creator"
@@ -249,6 +251,7 @@ function MakeScriptO2 {
     # Adjust workflow database in case of ALICE 3 input.
     [ "$ISALICE3" -eq 1 ] && {
       ReplaceString "- $WF_SEL_JPSI" "- ${WF_SEL_JPSI}${SUFFIX_ALICE3}" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
+      ReplaceString "- $WF_TOF" "- $WF_TOFA3" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
     }
 
     # Adjust workflow database in case of trigger selection or cascades enabled.
