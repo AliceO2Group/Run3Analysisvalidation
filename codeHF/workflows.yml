@@ -131,12 +131,15 @@ workflows:
 
   o2-analysis-hf-x-tojpsipipi-candidate-selector:
     dependencies: o2-analysis-hf-candidate-creator-x
+    tables: HFSELXCAND
 
   o2-analysis-hf-xicc-topkpipi-candidate-selector:
     dependencies: o2-analysis-hf-candidate-creator-xicc
+    tables: HFSELXICCCAND
 
   o2-analysis-hf-bplus-tod0pi-candidate-selector:
     dependencies: o2-analysis-hf-candidate-creator-bplus
+    tables: HFSELBPLUSCAND
 
   # Analysis tasks
 
