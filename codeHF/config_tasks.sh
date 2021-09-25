@@ -29,7 +29,7 @@ MAKE_GRAPH=0        # Make topology graph.
 
 # Activation of O2 workflows
 # Trigger selection
-DOO2_TRIGSEL=0        # event-selection and timestamp
+DOO2_TRIGSEL=0      # event-selection and timestamp
 # QA
 DOO2_REJ_ALICE3=0   # qa-rejection
 DOO2_QA_EFF=0       # qa-efficiency
