@@ -8,6 +8,7 @@ Author: Vít Kučera <vit.kucera@cern.ch>
 import argparse
 import os
 import sys
+from typing import List
 
 import yaml
 
@@ -122,7 +123,7 @@ def activate_workflow(wf: str, dic_wf: dict, mc=False, level=0, debug=False):
             dic_wf_single["activate"] = True
         # Activate dependencies recursively.
         if "dependencies" in dic_wf_single:
-            list_dep = []
+            list_dep: List[str] = []
             join_to_list(dic_wf_single["dependencies"], list_dep)
             for wf_dep in list_dep:
                 activate_workflow(wf_dep, dic_wf, mc, level + 1, debug)
@@ -317,7 +318,8 @@ def main():
             # Hyphens are not allowed in node names.
             node_wf = wf.replace("-", "_")
             # Replace hyphens with line breaks to save horizontal space.
-            label_wf = wf.replace("-", "\\n")
+            label_wf = wf.replace("o2-analysis-", "")
+            label_wf = label_wf.replace("-", "\\n")
             dot += '  %s [label="%s"]\n' % (node_wf, label_wf)
             if "dependencies" in dic_wf_single:
                 nodes_dep = join_strings(dic_wf_single["dependencies"]).replace(
