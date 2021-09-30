@@ -14,7 +14,7 @@
 
 void SetProperAxisRange(TH1F** histo, int NIteration, float marginHigh, float marginLow, bool logScaleH);
 
-Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults.root", TString particles = "d0")
+Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults_O2.root", TString particles = "d0")
 {
   gStyle->SetOptStat(0);
   gStyle->SetPalette(0);
@@ -33,7 +33,9 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults.root", TString 
   double yMax = -999.;
   int nRec, nGen;
   int colours[] = {1, 2, 3, 4};
-  int markers[] = {24, 25, 46};
+  int markers[] = {24, 25, 46, 28};
+  float markersize[] = {1., 1., 1., 1.};
+  int lineWidth = 1;
 
   // binning
   Int_t iNRebin = 4;
@@ -55,6 +57,7 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults.root", TString 
 
   // compute efficiency at each reconstruction step
   TString recoStep[4] = {"RecoHFFlag", "RecoTopol", "RecoCand", "RecoPID"};
+  TString labelsSteps[4] = {"skimming", "topol. gen.", "topol. conj.", "PID"};
   const int NRecoStep = sizeof(recoStep) / sizeof(recoStep[0]);
   TString partType[3] = {"Incl", "Prompt", "NonPrompt"};
   const int NPartType = sizeof(partType) / sizeof(partType[0]);
@@ -109,7 +112,7 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults.root", TString 
   TH1F** hEffPtNonPrompt = new TH1F*[NRecoStep];
   TH1F** hEffYNonPrompt = new TH1F*[NRecoStep];
 
-  TLegend* legendSbyS = new TLegend(0.15, 0.7, 0.45, 0.9);
+  TLegend* legendSbyS = new TLegend(0.15, 0.65, 0.45, 0.9);
   legendSbyS->SetFillColorAlpha(0, kWhite);
   legendSbyS->SetLineWidth(0);
 
@@ -238,13 +241,13 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults.root", TString 
       hEffPtIncl[iRs] = (TH1F*)hRecoPtIncl->Clone(Form("hEffPtIncl%s", recoStep[iRs].Data()));
       hEffPtIncl[iRs]->Divide(hEffPtIncl[iRs], hGenPtIncl, 1., 1., "B");
       hEffPtIncl[iRs]->SetTitle("inclusive ;#it{p}^{rec.}_{T} (GeV/#it{c}); efficiency");
-      SetHistogramStyle(hEffPtIncl[iRs], colours[iRs], 20, 1.5, 2);
-      legendSbyS->AddEntry(hEffPtIncl[iRs], Form("%s", recoStep[iRs].Data()), "P");
+      SetHistogramStyle(hEffPtIncl[iRs], colours[iRs], markers[iRs], markersize[iRs], lineWidth);
+      legendSbyS->AddEntry(hEffPtIncl[iRs], labelsSteps[iRs].Data(), "P");
 
       hEffYIncl[iRs] = (TH1F*)hRecoYIncl->Clone(Form("hEffYIncl%s", recoStep[iRs].Data()));
       hEffYIncl[iRs]->Divide(hEffYIncl[iRs], hGenYIncl, 1., 1., "B");
       hEffYIncl[iRs]->SetTitle("inclusive ;#it{y}; efficiency");
-      SetHistogramStyle(hEffYIncl[iRs], colours[iRs], 20, 1.5, 2);
+      SetHistogramStyle(hEffYIncl[iRs], colours[iRs], markers[iRs], markersize[iRs], lineWidth);
 
       //prompt
       TString nameHistRecPrompt = outputDir + "/hPtvsYRecSigPrompt_" + recoStep[iRs]; // reconstruction level pT of matched candidates
@@ -276,12 +279,12 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults.root", TString 
       hEffPtPrompt[iRs] = (TH1F*)hRecoPtPrompt->Clone(Form("hEffPtPrompt%s", recoStep[iRs].Data()));
       hEffPtPrompt[iRs]->Divide(hEffPtPrompt[iRs], hGenPtPrompt, 1., 1., "B");
       hEffPtPrompt[iRs]->SetTitle("prompt ;#it{p}^{rec.}_{T} (GeV/#it{c}); efficiency");
-      SetHistogramStyle(hEffPtPrompt[iRs], colours[iRs], 20, 1.5, 2);
+      SetHistogramStyle(hEffPtPrompt[iRs], colours[iRs], markers[iRs], markersize[iRs], lineWidth);
 
       hEffYPrompt[iRs] = (TH1F*)hRecoYPrompt->Clone(Form("hEffYPrompt%s", recoStep[iRs].Data()));
       hEffYPrompt[iRs]->Divide(hEffYPrompt[iRs], hGenYPrompt, 1., 1., "B");
       hEffYPrompt[iRs]->SetTitle("prompt ;#it{y}; efficiency");
-      SetHistogramStyle(hEffYPrompt[iRs], colours[iRs], 20, 1.5, 2);
+      SetHistogramStyle(hEffYPrompt[iRs], colours[iRs], markers[iRs], markersize[iRs], lineWidth);
 
       // non-prompt
       TString nameHistRecNonPrompt = outputDir + "/hPtvsYRecSigNonPrompt_" + recoStep[iRs]; // reconstruction level pT of matched candidates
@@ -313,12 +316,12 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults.root", TString 
       hEffPtNonPrompt[iRs] = (TH1F*)hRecoPtNonPrompt->Clone(Form("hEffPtNonPrompt%s", recoStep[iRs].Data()));
       hEffPtNonPrompt[iRs]->Divide(hEffPtNonPrompt[iRs], hGenPtNonPrompt, 1., 1., "B");
       hEffPtNonPrompt[iRs]->SetTitle("non-prompt ;#it{p}^{rec.}_{T} (GeV/#it{c}); efficiency");
-      SetHistogramStyle(hEffPtNonPrompt[iRs], colours[iRs], 20, 1.5, 2);
+      SetHistogramStyle(hEffPtNonPrompt[iRs], colours[iRs], markers[iRs], markersize[iRs], lineWidth);
 
       hEffYNonPrompt[iRs] = (TH1F*)hRecoYNonPrompt->Clone(Form("hEffYNonPrompt%s", recoStep[iRs].Data()));
       hEffYNonPrompt[iRs]->Divide(hEffYNonPrompt[iRs], hGenYNonPrompt, 1., 1., "B");
       hEffYNonPrompt[iRs]->SetTitle("non-prompt ;#it{y}; efficiency");
-      SetHistogramStyle(hEffYNonPrompt[iRs], colours[iRs], 20, 1.5, 2);
+      SetHistogramStyle(hEffYNonPrompt[iRs], colours[iRs], markers[iRs], markersize[iRs], lineWidth);
     }
   }
 
@@ -358,7 +361,7 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults.root", TString 
 
     auto padEffPromptSbySY = canEffSbySY->cd(2);
     if (iRs == 0) {
-      SetPad(padEffPromptSbySY, logScaleR);
+      SetPad(padEffPromptSbySY, logScaleH);
       hEffYPrompt[iRs]->Draw("pe");
     } else
       hEffYPrompt[iRs]->Draw("pesame");
@@ -374,7 +377,7 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults.root", TString 
 
     auto padEffNonPromptSbySY = canEffSbySY->cd(3);
     if (iRs == 0) {
-      SetPad(padEffNonPromptSbySY, logScaleR);
+      SetPad(padEffNonPromptSbySY, logScaleH);
       hEffYNonPrompt[iRs]->Draw("pe");
     } else
       hEffYNonPrompt[iRs]->Draw("pesame");
@@ -383,6 +386,8 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults.root", TString 
 
   canEffSbySPt->SaveAs(Form("MC_%s_eff_stepbystep_pT.pdf", particle.Data()));
   canEffSbySY->SaveAs(Form("MC_%s_eff_stepbystepY.pdf", particle.Data()));
+  canEffSbySPt->SaveAs(Form("MC_%s_eff_stepbystep_pT.png", particle.Data()));
+  canEffSbySY->SaveAs(Form("MC_%s_eff_stepbystepY.png", particle.Data()));
 
   delete arrayParticle;
   return 0;
