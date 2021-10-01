@@ -1,9 +1,4 @@
-
 # g4me analysis code
-
-## Table of contents
-
-* [Introduction](#introduction)
 
 ## Introduction
 
