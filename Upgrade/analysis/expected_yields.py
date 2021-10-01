@@ -1,9 +1,10 @@
-#pylint: disable=too-many-locals,too-many-statements, missing-docstring, pointless-string-statement
+# pylint: disable=too-many-locals,too-many-statements, missing-docstring, pointless-string-statement
 from array import array
+
 import yaml
+
 # pylint: disable=import-error, no-name-in-module, unused-import
-from ROOT import TH2F, TCanvas, gPad, TFile
-from ROOT import gStyle, TLegend
+from ROOT import TH2F, TCanvas, TFile, TLegend, gPad, gStyle
 
 """
 Perform comparison between expected yields of the different baryons based
@@ -13,9 +14,10 @@ for the moment we use the pT-shape normalized to unity from
 arXiv.1907.12786 and we just multiply for dN/dy of each model.
 """
 
+
 def analysis(hadron="Omega_ccc"):
     gStyle.SetOptStat(0)
-    with open(r'databases/theory_yields.yaml') as fileparamyields:
+    with open(r"databases/theory_yields.yaml") as fileparamyields:
         paramyields = yaml.safe_load(fileparamyields)
     models = paramyields["comparison_models_AA"][hadron]["models"]
     collisions = paramyields["comparison_models_AA"][hadron]["collisions"]
@@ -25,21 +27,20 @@ def analysis(hadron="Omega_ccc"):
     useshape = paramyields["comparison_models_AA"][hadron]["useshape"]
     ymin = paramyields["comparison_models_AA"][hadron]["ymin"]
     ymax = paramyields["comparison_models_AA"][hadron]["ymax"]
-    binanal = array('d', paramyields["comparison_models_AA"]["pt_binning"][hadron])
+    binanal = array("d", paramyields["comparison_models_AA"]["pt_binning"][hadron])
 
-    with open(r'databases/general.yaml') as fileparamgen:
+    with open(r"databases/general.yaml") as fileparamgen:
         paramgen = yaml.safe_load(fileparamgen)
 
+    histolist = [None] * len(models)
 
-    histolist = [None]*len(models)
-
-    fin = TFile("../InputsTheory/" + useshape +".root")
-    histo_norm = fin.Get("hdNdpt_norm") #this is the pT-shape normalized to unity
-
+    fin = TFile("../InputsTheory/" + useshape + ".root")
+    histo_norm = fin.Get("hdNdpt_norm")  # this is the pT-shape normalized to unity
 
     for icase, _ in enumerate(models):
-        histolist[icase] = histo_norm.Clone("dNdpt%s%s%s" % \
-                (models[icase], collisions[icase], brmodes[icase]))
+        histolist[icase] = histo_norm.Clone(
+            "dNdpt%s%s%s" % (models[icase], collisions[icase], brmodes[icase])
+        )
     canvas = TCanvas("canvas", "A Simple Graph Example", 881, 176, 668, 616)
     gStyle.SetOptStat(0)
     canvas.SetHighLightColor(2)
@@ -53,7 +54,7 @@ def analysis(hadron="Omega_ccc"):
     canvas.cd()
     gPad.SetLogy()
 
-    hempty = TH2F("hempty", ";p_{T};Yields", 100, 0., 10., 100, ymin, ymax)
+    hempty = TH2F("hempty", ";p_{T};Yields", 100, 0.0, 10.0, 100, ymin, ymax)
     hempty.GetXaxis().SetTitle("p_{T}")
     hempty.GetXaxis().SetLabelFont(42)
     hempty.GetXaxis().SetTitleOffset(1)
@@ -85,22 +86,27 @@ def analysis(hadron="Omega_ccc"):
 
         sigma_aa_b = paramgen["statistics"][collision]["sigmaAA_b"]
         lumiaa_monthi_invnb = paramgen["statistics"][collision]["lumiAA_monthi_invnb"]
-        nevt = sigma_aa_b * lumiaa_monthi_invnb * 1e9 #luminosity given in nb-1
+        nevt = sigma_aa_b * lumiaa_monthi_invnb * 1e9  # luminosity given in nb-1
         bratio = paramgen["branchingratio"][hadron][brmode]
         yieldmid = paramyields[model][collision][yrange][hadron]
-        text = '%s N_{ev}(%s) = %.1f B, BR=%.5f%%' \
-                % (model, collision, nevt/1e9, bratio*100)
+        text = "%s N_{ev}(%s) = %.1f B, BR=%.5f%%" % (
+            model,
+            collision,
+            nevt / 1e9,
+            bratio * 100,
+        )
         scalef = bratio * nevt * yieldmid
 
         # before rebinning, the dNdpT is multiplied by the binwidth,
         # branching ratios, expected dN/dy and number of events
         # so that the yields can be simplied summed in rebinning process.
         for ibin in range(histolist[icase].GetNbinsX()):
-            binwdith = histolist[icase].GetBinWidth(ibin+1)
-            yvalue = histolist[icase].GetBinContent(ibin+1)
-            histolist[icase].SetBinContent(ibin+1, binwdith*scalef*yvalue)
-        histolist[icase] = histolist[icase].Rebin(len(binanal)-1, \
-            "histo_pred%s%s%s" % (model, collision, brmode), binanal)
+            binwdith = histolist[icase].GetBinWidth(ibin + 1)
+            yvalue = histolist[icase].GetBinContent(ibin + 1)
+            histolist[icase].SetBinContent(ibin + 1, binwdith * scalef * yvalue)
+        histolist[icase] = histolist[icase].Rebin(
+            len(binanal) - 1, "histo_pred%s%s%s" % (model, collision, brmode), binanal
+        )
         histolist[icase].SetLineColor(colors[icase])
         histolist[icase].SetMarkerColor(colors[icase])
         histolist[icase].SetLineWidth(2)
@@ -108,8 +114,8 @@ def analysis(hadron="Omega_ccc"):
         text = text + " Yield(tot)=%.2f" % (histolist[icase].Integral())
         leg.AddEntry(histolist[icase], text, "pF")
     leg.Draw()
-    canvas.SaveAs(hadron+"_results.pdf")
-    canvas.SaveAs(hadron+"_results.C")
+    canvas.SaveAs(hadron + "_results.pdf")
+    canvas.SaveAs(hadron + "_results.C")
     foutput = TFile("foutput" + hadron + ".root", "recreate")
     for icase, _ in enumerate(models):
         foutput.cd()

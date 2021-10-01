@@ -1,10 +1,11 @@
-#pylint: disable=too-many-locals,too-many-statements, missing-docstring, pointless-string-statement
-from math import sqrt
+# pylint: disable=too-many-locals,too-many-statements, missing-docstring, pointless-string-statement
 from array import array
+from math import sqrt
+
 import yaml
+
 # pylint: disable=import-error, no-name-in-module, unused-import, too-many-arguments
-from ROOT import TH2F, TCanvas, TLatex, gPad, TFile
-from ROOT import gStyle
+from ROOT import TH2F, TCanvas, TFile, TLatex, gPad, gStyle
 
 """
 Macro to perform significance estimation of a given decay channel
@@ -15,15 +16,22 @@ in a given collision system. The ingredients are:
     - expected signal yield / event = dN/dpT * binwidth * BR * efficiency
 """
 
-def analysis(hadron="Lambda_c", collision="pp14p0", yrange="absy3p0", \
-        brmode="central", model="Pyhia8mode2", use_unnorm=1):
+
+def analysis(
+    hadron="Lambda_c",
+    collision="pp14p0",
+    yrange="absy3p0",
+    brmode="central",
+    model="Pyhia8mode2",
+    use_unnorm=1,
+):
     gStyle.SetOptStat(0)
-    with open(r'databases/significance.yaml') as filesignificance:
+    with open(r"databases/significance.yaml") as filesignificance:
         paramsignificance = yaml.safe_load(filesignificance)
     ymin = paramsignificance[hadron][collision][yrange]["ymin"]
     ymax = paramsignificance[hadron][collision][yrange]["ymax"]
-    #bin of the final analysis, has to be the binning of efficiency, bkg histos
-    binanal = array('d', paramsignificance[hadron][collision][yrange]["binning"])
+    # bin of the final analysis, has to be the binning of efficiency, bkg histos
+    binanal = array("d", paramsignificance[hadron][collision][yrange]["binning"])
     nfileyieldth = paramsignificance[hadron][collision][yrange]["theoryfile"]
 
     nfileeff = paramsignificance[hadron][collision][yrange]["efffile"]
@@ -33,9 +41,9 @@ def analysis(hadron="Lambda_c", collision="pp14p0", yrange="absy3p0", \
     nhistoyieldth = paramsignificance[hadron][collision][yrange]["histoyield"]
     nhistoyieldth_norm = paramsignificance[hadron][collision][yrange]["histoyield_norm"]
 
-    with open(r'databases/general.yaml') as fileparamgen:
+    with open(r"databases/general.yaml") as fileparamgen:
         paramgen = yaml.safe_load(fileparamgen)
-    with open(r'databases/theory_yields.yaml') as fileyields:
+    with open(r"databases/theory_yields.yaml") as fileyields:
         paramyields = yaml.safe_load(fileyields)
 
     textcollision = paramgen["text_string"][collision]
@@ -45,14 +53,14 @@ def analysis(hadron="Lambda_c", collision="pp14p0", yrange="absy3p0", \
     sigma_aa_b = paramgen["statistics"][collision]["sigmaAA_b"]
     lumiaa_monthi_invnb = paramgen["statistics"][collision]["lumiAA_monthi_invnb"]
     nevt = sigma_aa_b * lumiaa_monthi_invnb * 1e9
-    #nevt = 2.*1e9
+    # nevt = 2.*1e9
     bratio = paramgen["branchingratio"][hadron][brmode]
     decaychannel = paramgen["latexparticle"][hadron]
 
     yieldmid = paramyields[model][collision][yrange][hadron]
-    text = '%s, N_{ev} = %.0f 10^{12}' % (textmodel, nevt/1e12)
-    text_a = '%s, %s, BR=%.2f%%' % (decaychannel, textrapid, bratio*100)
-    text_b = 'ALICE3 projection, with IRIS, no PID, %s' % textcollision
+    text = "%s, N_{ev} = %.0f 10^{12}" % (textmodel, nevt / 1e12)
+    text_a = "%s, %s, BR=%.2f%%" % (decaychannel, textrapid, bratio * 100)
+    text_b = "ALICE3 projection, with IRIS, no PID, %s" % textcollision
     fileeff = TFile(nfileeff)
     histoeff = fileeff.Get(nhistoeff)
     filebkg = TFile(nfilebkg)
@@ -63,9 +71,9 @@ def analysis(hadron="Lambda_c", collision="pp14p0", yrange="absy3p0", \
 
     if use_unnorm == 1:
         histodndptth = fileyieldth.Get(nhistoyieldth)
-        histodndptth.Scale(1./70000.) #TEMPORARY this is a fix to account for the
-                                      #conversion from a cross-section in mub
-                                      #to yields, sigma=70000 mub
+        histodndptth.Scale(1.0 / 70000.0)  # TEMPORARY this is a fix to account for the
+        # conversion from a cross-section in mub
+        # to yields, sigma=70000 mub
     else:
         histodndptth = fileyieldth.Get(nhistoyieldth_norm)
         histodndptth.Scale(yieldmid)
@@ -73,12 +81,11 @@ def analysis(hadron="Lambda_c", collision="pp14p0", yrange="absy3p0", \
     histoyieldth = histodndptth.Clone("histoyieldth")
 
     for ibin in range(histoyieldth.GetNbinsX()):
-        binwdith = histoyieldth.GetBinWidth(ibin+1)
-        yieldperevent = histoyieldth.GetBinContent(ibin+1)*binwdith*bratio
-        histoyieldth.SetBinContent(ibin+1, yieldperevent)
-        histoyieldth.SetBinError(ibin+1, 0.)
-    histoyieldth = histoyieldth.Rebin(len(binanal)-1, \
-             "histoyieldth", binanal)
+        binwdith = histoyieldth.GetBinWidth(ibin + 1)
+        yieldperevent = histoyieldth.GetBinContent(ibin + 1) * binwdith * bratio
+        histoyieldth.SetBinContent(ibin + 1, yieldperevent)
+        histoyieldth.SetBinError(ibin + 1, 0.0)
+    histoyieldth = histoyieldth.Rebin(len(binanal) - 1, "histoyieldth", binanal)
     histosignfperevent = histoyieldth.Clone("histosignfperevent")
     histosignf = histoyieldth.Clone("histosignf")
     histosigoverbkg = histoyieldth.Clone("histosigoverbkg")
@@ -96,7 +103,16 @@ def analysis(hadron="Lambda_c", collision="pp14p0", yrange="absy3p0", \
     canvas.cd()
     gPad.SetLogy()
 
-    hempty = TH2F("hempty", ";p_{T} (GeV/c); Significance(3#sigma)", 100, 0., 10., 100, ymin, ymax)
+    hempty = TH2F(
+        "hempty",
+        ";p_{T} (GeV/c); Significance(3#sigma)",
+        100,
+        0.0,
+        10.0,
+        100,
+        ymin,
+        ymax,
+    )
     hempty.GetXaxis().SetTitle("p_{T} (GeV/c)")
     hempty.GetXaxis().SetLabelFont(42)
     hempty.GetXaxis().SetTitleOffset(1)
@@ -111,23 +127,22 @@ def analysis(hadron="Lambda_c", collision="pp14p0", yrange="absy3p0", \
 
     histosignf = histosignfperevent.Clone("histosignf")
     for ibin in range(histoyieldth.GetNbinsX()):
-        yieldperevent = histoyieldth.GetBinContent(ibin+1)
-        bkgperevent = hbkgperevent.GetBinContent(ibin+1)
-        eff = histoeff.GetBinContent(ibin+1)
-        signalperevent = eff*yieldperevent
+        yieldperevent = histoyieldth.GetBinContent(ibin + 1)
+        bkgperevent = hbkgperevent.GetBinContent(ibin + 1)
+        eff = histoeff.GetBinContent(ibin + 1)
+        signalperevent = eff * yieldperevent
         significanceperevent = 0
         if bkgperevent > 0:
-            significanceperevent = signalperevent/sqrt(signalperevent+bkgperevent)
+            significanceperevent = signalperevent / sqrt(signalperevent + bkgperevent)
         signaloverbkg = 0
         if bkgperevent > 0:
-            signaloverbkg = signalperevent/bkgperevent
-        histosignfperevent.SetBinContent(ibin+1, significanceperevent)
-        histosignfperevent.SetBinError(ibin+1, 0.)
-        histosignf.SetBinContent(ibin+1, significanceperevent*sqrt(nevt))
-        histosignf.SetBinError(ibin+1, 0.)
-        histosigoverbkg.SetBinContent(ibin+1, signaloverbkg)
-        histosigoverbkg.SetBinError(ibin+1, 0.)
-
+            signaloverbkg = signalperevent / bkgperevent
+        histosignfperevent.SetBinContent(ibin + 1, significanceperevent)
+        histosignfperevent.SetBinError(ibin + 1, 0.0)
+        histosignf.SetBinContent(ibin + 1, significanceperevent * sqrt(nevt))
+        histosignf.SetBinError(ibin + 1, 0.0)
+        histosigoverbkg.SetBinContent(ibin + 1, signaloverbkg)
+        histosigoverbkg.SetBinError(ibin + 1, 0.0)
 
     histosignfperevent.SetLineColor(1)
     histosignfperevent.SetMarkerColor(1)
@@ -157,8 +172,8 @@ def analysis(hadron="Lambda_c", collision="pp14p0", yrange="absy3p0", \
     t_a.SetTextSize(0.035)
     t_a.SetTextAlign(12)
     t_a.DrawLatex(0.2, 0.75, text_a)
-    canvas.SaveAs(hadron+"_results.pdf")
-    canvas.SaveAs(hadron+"_results.C")
+    canvas.SaveAs(hadron + "_results.pdf")
+    canvas.SaveAs(hadron + "_results.C")
 
     foutput = TFile("foutput" + hadron + ".root", "recreate")
     foutput.cd()
@@ -169,6 +184,8 @@ def analysis(hadron="Lambda_c", collision="pp14p0", yrange="absy3p0", \
     histosignf.Write()
     histodndptth.Write()
     histosigoverbkg.Write()
-#analysis("Lambda_c", "pp14p0", "absy1p44", "central", "Pyhia8mode2", 1)
+
+
+# analysis("Lambda_c", "pp14p0", "absy1p44", "central", "Pyhia8mode2", 1)
 analysis("Jpsitoee", "pp14p0", "absy1p44", "central", "Pyhia8monash", 1)
 analysis("X3872", "pp14p0", "absy1p44", "central", "Pyhia8monash", 1)
