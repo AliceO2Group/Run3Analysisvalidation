@@ -1,2 +1,4 @@
-rm *.exe
+#!/bin/bash
+
+rm ./*.exe
 rm -rf outputtest

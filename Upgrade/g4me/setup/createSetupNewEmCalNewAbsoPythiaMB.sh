@@ -1,3 +1,5 @@
+#!/bin/bash
+
 abs=$1
 seedr=$2
 nEvents=$3
@@ -22,146 +24,119 @@ nameConfigFile=pythia8_pp14_seed_${seedPythia}.cfg
 label=PythiaMB_abs_${abs}cm_seed_${seedr}
 nameSetupFile=setup$label.mac
 
-if [ -f $nameSetupFile ]
-then
-    rm $nameSetupFile
-fi
-
-touch $nameSetupFile
-
-
 ### Starting creating setup file
-echo "/random/setSeeds " $seedr " " $seedr  "   " >> $nameSetupFile
-
-echo "/process/optical/verbose 0           " >> $nameSetupFile
-
-echo "/detector/world/dimensions 6. 6. 6. m" >> $nameSetupFile
-
-echo "### beam pipe                        " >> $nameSetupFile
-echo "/detector/pipe/radius 1.6 cm         " >> $nameSetupFile
-echo "/detector/pipe/length 200. cm     " >> $nameSetupFile
-echo "/detector/pipe/thickness 500 um      " >> $nameSetupFile
-echo "#                                    " >> $nameSetupFile
-
-
-echo "/detector/enable ABSO                                                " >> $nameSetupFile
-echo "###SENSITIVE LAYERS                     " >> $nameSetupFile
-echo "#         rmin  rmax runit length  length_unit  material add_sd                        " >> $nameSetupFile
-echo "# First sensitive layer to register what comes out                                          " >> $nameSetupFile
-echo "/detector/ABSO/addCylinder " $detAfterAbs1Rmin  " "   $detAfterAbs1Rmax  "  cm    600.    cm    G4_Galactic   true  " >> $nameSetupFile
-echo "# Second sensitive layer to register what comes out                                                                      " >> $nameSetupFile
-echo "/detector/ABSO/addCylinder " $detAfterAbs2Rmin  " "   $detAfterAbs2Rmax  "  cm    600.    cm    G4_Galactic   true  " >> $nameSetupFile
-echo "#                     " >> $nameSetupFile
-echo "#                     " >> $nameSetupFile
-echo "### inner tracker           radius      length          thickness " >> $nameSetupFile
-echo "/detector/tracker/addLayer  0.5  cm    16  cm             50. um" >> $nameSetupFile
-echo "/detector/tracker/addLayer  1.2  cm    16  cm             50. um" >> $nameSetupFile
-echo "/detector/tracker/addLayer  2.5  cm    16  cm             50. um" >> $nameSetupFile
-echo "/detector/tracker/addLayer  3.75 cm    16  cm             50. um" >> $nameSetupFile
-echo "#                     " >> $nameSetupFile
-
-echo "### outer tracker           radius      length          thickness" >> $nameSetupFile
-echo "/detector/tracker/addLayer   7. cm      40   cm       500. um" >> $nameSetupFile
-echo "/detector/tracker/addLayer  12. cm      60.  cm       500. um" >> $nameSetupFile
-echo "/detector/tracker/addLayer  20. cm      80.  cm       500. um" >> $nameSetupFile
-echo "/detector/tracker/addLayer  30. cm     120.  cm       500. um" >> $nameSetupFile
-echo "/detector/tracker/addLayer  45. cm     180.  cm       500. um" >> $nameSetupFile
-echo "/detector/tracker/addLayer  60. cm     240.  cm       500. um" >> $nameSetupFile
-echo "/detector/tracker/addLayer  80. cm     320.  cm       500. um" >> $nameSetupFile
-echo "/detector/tracker/addLayer 100. cm     400.  cm       500. um" >> $nameSetupFile
-echo "#                     " >> $nameSetupFile
-echo "#                     " >> $nameSetupFile
-
-
-echo "### EMCAL                                                                                                          " >> $nameSetupFile
-
-echo "#                                                      " >> $nameSetupFile
-echo "#                                                                                                    " >> $nameSetupFile
-
-
-echo "#         rmin  rmax runit length  length_unit  material add_sd      x y z                          " >> $nameSetupFile
+if [ -f "$nameSetupFile" ]; then
+  rm "$nameSetupFile"
+fi
+{
+  echo "/random/setSeeds $seedr $seedr"
+  echo "/process/optical/verbose 0"
+  echo "/detector/world/dimensions 6. 6. 6. m"
+  echo "### beam pipe"
+  echo "/detector/pipe/radius 1.6 cm"
+  echo "/detector/pipe/length 200. cm"
+  echo "/detector/pipe/thickness 500 um"
+  echo "#"
+  echo "/detector/enable ABSO"
+  echo "###SENSITIVE LAYERS"
+  echo "#         rmin  rmax runit length  length_unit  material add_sd"
+  echo "# First sensitive layer to register what comes out"
+  echo "/detector/ABSO/addCylinder $detAfterAbs1Rmin $detAfterAbs1Rmax    cm    600.    cm    G4_Galactic   true"
+  echo "# Second sensitive layer to register what comes out"
+  echo "/detector/ABSO/addCylinder $detAfterAbs2Rmin $detAfterAbs2Rmax    cm    600.    cm    G4_Galactic   true"
+  echo "#"
+  echo "#"
+  echo "### inner tracker           radius      length          thickness"
+  echo "/detector/tracker/addLayer  0.5  cm    16  cm             50. um"
+  echo "/detector/tracker/addLayer  1.2  cm    16  cm             50. um"
+  echo "/detector/tracker/addLayer  2.5  cm    16  cm             50. um"
+  echo "/detector/tracker/addLayer  3.75 cm    16  cm             50. um"
+  echo "#"
+  echo "### outer tracker           radius      length          thickness"
+  echo "/detector/tracker/addLayer   7. cm      40   cm       500. um"
+  echo "/detector/tracker/addLayer  12. cm      60.  cm       500. um"
+  echo "/detector/tracker/addLayer  20. cm      80.  cm       500. um"
+  echo "/detector/tracker/addLayer  30. cm     120.  cm       500. um"
+  echo "/detector/tracker/addLayer  45. cm     180.  cm       500. um"
+  echo "/detector/tracker/addLayer  60. cm     240.  cm       500. um"
+  echo "/detector/tracker/addLayer  80. cm     320.  cm       500. um"
+  echo "/detector/tracker/addLayer 100. cm     400.  cm       500. um"
+  echo "#"
+  echo "#"
+  echo "### EMCAL"
+  echo "#"
+  echo "#"
+  echo "#         rmin  rmax runit length  length_unit  material add_sd      x y z"
+} >> "$nameSetupFile"
 
 if [ ! -f EmCalThicknessVsZ.txt ]; then
   root -q -b -l GetEmCalThicknessVsZ.C\($emcalRmin,${emcalThicknessEta0}\)
   echo "File EmCalThicknessVsZ.txt did not exit, I created it !"
 fi
 
-while read z emcalThickness; do
-
-    emcalRmaxVsZ=$(($emcalRmin+$emcalThickness))
-    echo "/detector/ABSO/addCylinder " $emcalRmin " " $emcalRmaxVsZ "  cm     5     cm       G4_PbWO4  false 0 0" $z " " >> $nameSetupFile
-
+while read -r z emcalThickness; do
+  emcalRmaxVsZ=$((emcalRmin + emcalThickness))
+  echo "/detector/ABSO/addCylinder $emcalRmin $emcalRmaxVsZ   cm     5     cm       G4_PbWO4  false 0 0 $z" >> "$nameSetupFile"
 done <EmCalThicknessVsZ.txt
 
-
-echo "#         rmin  rmax runit length  length_unit  material add_sd                        " >> $nameSetupFile
-echo "# ABSORBER                                                " >> $nameSetupFile
+{
+  echo "#         rmin  rmax runit length  length_unit  material add_sd"
+  echo "# ABSORBER"
+} >> "$nameSetupFile"
 
 if [ ! -f AbsoThicknessVsZ.txt ]; then
-  root -q -b -l GetAbsoThicknessVsZ.C\($absRmin,${abs}\)
+  root -q -b -l GetAbsoThicknessVsZ.C\("$absRmin","$abs"\)
   echo "File AbsoThicknessVsZ.txt did not exit, I created it !"
 fi
 
-while read zabso absoThickness halflength; do
-
-    absoRmaxVsZ=$(($absRmin+$absoThickness))
-    echo "/detector/ABSO/addCylinder " $absRmin " " $absoRmaxVsZ "  cm    " " $halflength  " "  cm       G4_Fe  false 0 0" $zabso " " >> $nameSetupFile
-
+while read -r zabso absoThickness halflength; do
+  absoRmaxVsZ=$((absRmin + absoThickness))
+  echo "/detector/ABSO/addCylinder $absRmin $absoRmaxVsZ   cm     $halflength    cm       G4_Fe  false 0 0 $zabso" >> "$nameSetupFile"
 done <AbsoThicknessVsZ.txt
 
-echo "### initialize                          " >> $nameSetupFile
-echo "/run/initialize            " >> $nameSetupFile
-echo "                " >> $nameSetupFile
-echo "### magnetic field          " >> $nameSetupFile
-echo "/globalField/verbose 1          " >> $nameSetupFile
-echo "/globalField/setValue 0. 0. 0.5 tesla   " >> $nameSetupFile
-echo "                " >> $nameSetupFile
-echo "### transport            " >> $nameSetupFile
-echo "/stacking/transport all          " >> $nameSetupFile
-echo "/tracking/verbose 0                     " >> $nameSetupFile
-
-
-echo "#######################           " >> $nameSetupFile
-echo "### generator PYTHIA8 #           " >> $nameSetupFile
-echo "/generator/select pythia8         " >> $nameSetupFile
-echo "/pythia8/config "$nameConfigFile" " >> $nameSetupFile
-echo "/pythia8/cuts/eta -1.7 1.7        " >> $nameSetupFile
-echo "/pythia8/init                     " >> $nameSetupFile
-
-echo "### io         " >> $nameSetupFile
-echo "/io/prefix " $label "     " >> $nameSetupFile
-echo "/io/saveParticles false     " >> $nameSetupFile
-echo "#######################     " >> $nameSetupFile
-echo "           " >> $nameSetupFile
-echo "### run         " >> $nameSetupFile
-echo "/run/beamOn " $nEvents "     " >> $nameSetupFile
-
-
-
-if [ -f $nameConfigFile ]
-then
-    rm $nameConfigFile
-fi
+{
+  echo "### initialize"
+  echo "/run/initialize"
+  echo ""
+  echo "### magnetic field"
+  echo "/globalField/verbose 1"
+  echo "/globalField/setValue 0. 0. 0.5 tesla"
+  echo ""
+  echo "### transport"
+  echo "/stacking/transport all"
+  echo "/tracking/verbose 0"
+  echo "#######################"
+  echo "### generator PYTHIA8 #"
+  echo "/generator/select pythia8"
+  echo "/pythia8/config $nameConfigFile"
+  echo "/pythia8/cuts/eta -1.7 1.7"
+  echo "/pythia8/init"
+  echo "### io"
+  echo "/io/prefix $label"
+  echo "/io/saveParticles false"
+  echo "#######################"
+  echo ""
+  echo "### run"
+  echo "/run/beamOn $nEvents"
+} >> "$nameSetupFile"
 
 ### Starting creating config file
-
-touch $nameConfigFile
-
-echo "### service                 " >> $nameConfigFile
-echo "Next:numberShowEvent = 0    " >> $nameConfigFile
-
-echo "### random                  " >> $nameConfigFile
-echo "Random:setSeed = on         " >> $nameConfigFile
-echo "Random:seed = "$seedPythia" " >> $nameConfigFile
-
-echo "### beams                   " >> $nameConfigFile
-echo "Beams:idA 2212  # proton    " >> $nameConfigFile
-echo "Beams:idB 2212  # proton    " >> $nameConfigFile
-echo "Beams:eCM 14000.    # GeV    " >> $nameConfigFile
-
-echo "### processes                                        " >> $nameConfigFile
-echo "SoftQCD:inelastic on   # all inelastic processes  " >> $nameConfigFile
-
-echo "### decays                    " >> $nameConfigFile
-echo "ParticleDecays:limitTau0 on   " >> $nameConfigFile
-echo "ParticleDecays:tau0Max = 10   " >> $nameConfigFile
+if [ -f "$nameConfigFile" ]; then
+  rm "$nameConfigFile"
+fi
+{
+  echo "### service"
+  echo "Next:numberShowEvent = 0"
+  echo "### random"
+  echo "Random:setSeed = on"
+  echo "Random:seed = $seedPythia"
+  echo "### beams"
+  echo "Beams:idA 2212  # proton"
+  echo "Beams:idB 2212  # proton"
+  echo "Beams:eCM 14000.    # GeV"
+  echo "### processes"
+  echo "SoftQCD:inelastic on   # all inelastic processes"
+  echo "### decays"
+  echo "ParticleDecays:limitTau0 on"
+  echo "ParticleDecays:tau0Max = 10"
+} >> "$nameConfigFile"
