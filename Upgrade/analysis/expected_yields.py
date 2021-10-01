@@ -2,8 +2,8 @@
 from array import array
 import yaml
 # pylint: disable=import-error, no-name-in-module, unused-import
-from ROOT import TH1F, TH2F, TCanvas, TGraph, TLatex, gPad, TFile, TF1
-from ROOT import gStyle, gROOT, TStyle, TLegendEntry, TLegend
+from ROOT import TH2F, TCanvas, gPad, TFile
+from ROOT import gStyle, TLegend
 
 """
 Perform comparison between expected yields of the different baryons based
@@ -16,7 +16,7 @@ arXiv.1907.12786 and we just multiply for dN/dy of each model.
 def analysis(hadron="Omega_ccc"):
     gStyle.SetOptStat(0)
     with open(r'databases/theory_yields.yaml') as fileparamyields:
-        paramyields = yaml.load(fileparamyields, Loader=yaml.FullLoader)
+        paramyields = yaml.safe_load(fileparamyields)
     models = paramyields["comparison_models_AA"][hadron]["models"]
     collisions = paramyields["comparison_models_AA"][hadron]["collisions"]
     brmodes = paramyields["comparison_models_AA"][hadron]["brmode"]
@@ -28,7 +28,7 @@ def analysis(hadron="Omega_ccc"):
     binanal = array('d', paramyields["comparison_models_AA"]["pt_binning"][hadron])
 
     with open(r'databases/general.yaml') as fileparamgen:
-        paramgen = yaml.load(fileparamgen, Loader=yaml.FullLoader)
+        paramgen = yaml.safe_load(fileparamgen)
 
 
     histolist = [None]*len(models)

@@ -3,8 +3,8 @@ from math import sqrt
 from array import array
 import yaml
 # pylint: disable=import-error, no-name-in-module, unused-import, too-many-arguments
-from ROOT import TH1F, TH2F, TCanvas, TGraph, TLatex, gPad, TFile, TF1
-from ROOT import gStyle, gROOT, TStyle, TLegendEntry, TLegend
+from ROOT import TH2F, TCanvas, TLatex, gPad, TFile
+from ROOT import gStyle
 
 """
 Macro to perform significance estimation of a given decay channel
@@ -19,7 +19,7 @@ def analysis(hadron="Lambda_c", collision="pp14p0", yrange="absy3p0", \
         brmode="central", model="Pyhia8mode2", use_unnorm=1):
     gStyle.SetOptStat(0)
     with open(r'databases/significance.yaml') as filesignificance:
-        paramsignificance = yaml.load(filesignificance, Loader=yaml.FullLoader)
+        paramsignificance = yaml.safe_load(filesignificance)
     ymin = paramsignificance[hadron][collision][yrange]["ymin"]
     ymax = paramsignificance[hadron][collision][yrange]["ymax"]
     #bin of the final analysis, has to be the binning of efficiency, bkg histos
@@ -34,9 +34,9 @@ def analysis(hadron="Lambda_c", collision="pp14p0", yrange="absy3p0", \
     nhistoyieldth_norm = paramsignificance[hadron][collision][yrange]["histoyield_norm"]
 
     with open(r'databases/general.yaml') as fileparamgen:
-        paramgen = yaml.load(fileparamgen, Loader=yaml.FullLoader)
+        paramgen = yaml.safe_load(fileparamgen)
     with open(r'databases/theory_yields.yaml') as fileyields:
-        paramyields = yaml.load(fileyields, Loader=yaml.FullLoader)
+        paramyields = yaml.safe_load(fileyields)
 
     textcollision = paramgen["text_string"][collision]
     textrapid = paramgen["text_string"][yrange]

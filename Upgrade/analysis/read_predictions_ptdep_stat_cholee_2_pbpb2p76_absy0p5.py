@@ -3,8 +3,8 @@ from array import array
 import yaml
 import pandas as pd #pylint: disable=import-error
 # pylint: disable=import-error, no-name-in-module, unused-import
-from ROOT import TH1F, TH2F, TCanvas, TGraph, TLatex, gPad, TFile, TF1
-from ROOT import gStyle, gROOT, TStyle, TLegendEntry
+from ROOT import TH1F, TH2F, TCanvas, TGraph, TLatex, gPad, TFile
+from ROOT import gStyle
 
 """
 read predictions from arXiv.1907.12786.
@@ -43,7 +43,7 @@ def read_predictions(hadron="Omega_ccc"):
         maxy = 1.e-2
 
     with open(r'databases/general.yaml') as fileparam:
-        param = yaml.load(fileparam, Loader=yaml.FullLoader)
+        param = yaml.safe_load(fileparam)
     latexname = param["latexparticle"][hadron]
 
     #the binning of the ROOT histo in which the predictions will
