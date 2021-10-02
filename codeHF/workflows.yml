@@ -295,6 +295,7 @@ workflows:
   o2-analysis-weak-decay-indices: {}
 
   # ALICE 3
+
   o2-analysis-alice3-trackextension: {}
 
   o2-analysis-alice3-centrality:
