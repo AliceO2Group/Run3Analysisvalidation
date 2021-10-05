@@ -561,7 +561,7 @@
     },
     "hf-task-dplus": {
         "cutYCandMax": "0.8",
-        "d_selectionFlagDPlus": "0",
+        "d_selectionFlagDPlus": "7",
         "pTBins": {
             "values": [
                 "1.",
