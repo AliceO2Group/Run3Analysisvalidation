@@ -45,6 +45,7 @@ DOO2_CAND_2PRONG=0  # hf-candidate-creator-2prong
 DOO2_CAND_3PRONG=0  # hf-candidate-creator-3prong
 DOO2_CAND_CASC=0    # hf-candidate-creator-cascade
 DOO2_CAND_X=0       # hf-candidate-creator-x
+DOO2_CAND_CHIC=0    # hf-candidate-creator-chic
 DOO2_CAND_XICC=0    # hf-candidate-creator-xicc
 DOO2_CAND_BPLUS=0   # hf-candidate-creator-bplus
 # Selectors
@@ -54,6 +55,7 @@ DOO2_SEL_LC=0       # hf-lc-candidate-selector
 DOO2_SEL_XIC=0      # hf-xic-topkpi-candidate-selector
 DOO2_SEL_JPSI=0     # hf-jpsi-candidate-selector
 DOO2_SEL_X=0        # hf-x-tojpsipipi-candidate-selector
+DOO2_SEL_CHIC=0     # hf-chic-tojpsigamma-candidate-selector
 DOO2_SEL_LCK0SP=0   # hf-lc-tok0sp-candidate-selector
 DOO2_SEL_XICC=0     # hf-xicc-topkpipi-candidate-selector
 DOO2_SEL_BPLUS=0    # hf-bplus-tod0pi-candidate-selector
@@ -64,6 +66,7 @@ DOO2_TASK_LC=0      # hf-task-lc
 DOO2_TASK_XIC=0     # hf-task-xic
 DOO2_TASK_JPSI=0    # hf-task-jpsi
 DOO2_TASK_X=0       # hf-task-x
+DOO2_TASK_CHIC=0    # hf-task-chic
 DOO2_TASK_LCK0SP=0  # hf-task-lc-tok0sp
 DOO2_TASK_XICC=0    # hf-task-xicc
 DOO2_TASK_BPLUS=0   # hf-task-bplus
@@ -87,6 +90,7 @@ APPLYCUTS_LC=0      # Apply Λc selection cuts.
 APPLYCUTS_XIC=0     # Apply Ξc selection cuts.
 APPLYCUTS_JPSI=0    # Apply J/ψ selection cuts.
 APPLYCUTS_X=0       # Apply X selection cuts.
+APPLYCUTS_CHIC=0    # Apply Chi_c selection cuts.
 APPLYCUTS_LCK0SP=0  # Apply Λc → K0S p selection cuts.
 APPLYCUTS_XICC=0    # Apply Ξcc selection cuts.
 
@@ -115,7 +119,7 @@ function Clean {
 function AdjustJson {
   # Make a copy of the default JSON file to modify it.
   JSON_EDIT=""
-  if [[ $APPLYCUTS_D0 -eq 1 || $APPLYCUTS_DPLUS -eq 1 || $APPLYCUTS_LC -eq 1 || $APPLYCUTS_XIC -eq 1 || $APPLYCUTS_JPSI -eq 1 || $APPLYCUTS_LCK0SP -eq 1 || $APPLYCUTS_X -eq 1 || $APPLYCUTS_XICC -eq 1 ]]; then
+  if [[ $APPLYCUTS_D0 -eq 1 || $APPLYCUTS_DPLUS -eq 1 || $APPLYCUTS_LC -eq 1 || $APPLYCUTS_XIC -eq 1 || $APPLYCUTS_JPSI -eq 1 || $APPLYCUTS_LCK0SP -eq 1 || $APPLYCUTS_X -eq 1 || $APPLYCUTS_CHIC -eq 1 || $APPLYCUTS_XICC -eq 1 ]]; then
     JSON_EDIT="${JSON/.json/_edit.json}"
     cp "$JSON" "$JSON_EDIT" || ErrExit "Failed to cp $JSON $JSON_EDIT."
     JSON="$JSON_EDIT"
@@ -157,6 +161,13 @@ function AdjustJson {
     MsgWarn "\nUsing X(3872) selection cuts"
     ReplaceString "\"d_selectionFlagX\": \"0\"" "\"d_selectionFlagX\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
+
+  # Enable chi_c1(1p) selection.
+  if [ $APPLYCUTS_CHIC -eq 1 ]; then
+    MsgWarn "\nUsing chi_c1(1p) selection cuts"
+    ReplaceString "\"d_selectionFlagChic\": \"0\"" "\"d_selectionFlagChic\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  fi
+
 
   # Enable Λc → K0S p selection.
   if [ $APPLYCUTS_LCK0SP -eq 1 ]; then
@@ -200,6 +211,7 @@ function MakeScriptO2 {
   [ $DOO2_CAND_2PRONG -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-2prong"
   [ $DOO2_CAND_3PRONG -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-3prong"
   [ $DOO2_CAND_X -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-x"
+  [ $DOO2_CAND_CHIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-chic"
   [ $DOO2_CAND_CASC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-cascade"
   [ $DOO2_CAND_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-xicc"
   [ $DOO2_CAND_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-bplus"
@@ -211,6 +223,7 @@ function MakeScriptO2 {
   [ $DOO2_SEL_LC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-lc-candidate-selector"
   [ $DOO2_SEL_XIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-xic-topkpi-candidate-selector"
   [ $DOO2_SEL_X -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-x-tojpsipipi-candidate-selector"
+  [ $DOO2_SEL_CHIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-chic-tojpsigamma-candidate-selector"
   [ $DOO2_SEL_LCK0SP -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-lc-tok0sp-candidate-selector"
   [ $DOO2_SEL_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-xicc-topkpipi-candidate-selector"
   [ $DOO2_SEL_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-bplus-tod0pi-candidate-selector"
@@ -221,6 +234,7 @@ function MakeScriptO2 {
   [ $DOO2_TASK_LC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-lc"
   [ $DOO2_TASK_XIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-xic"
   [ $DOO2_TASK_X -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-x"
+  [ $DOO2_TASK_CHIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-chic"
   [ $DOO2_TASK_LCK0SP -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-lc-tok0sp"
   [ $DOO2_TASK_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-xicc"
   [ $DOO2_TASK_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-bplus"
