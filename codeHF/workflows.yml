@@ -82,6 +82,14 @@ workflows:
       default: [HFCANDXICCBASE, HFCANDXICCEXT]
       mc: [HFCANDXICCMCREC, HFCANDXICCMCGEN]
 
+  o2-analysis-hf-candidate-creator-chic:
+    <<: *cand_creator
+    dependencies:
+      - o2-analysis-hf-jpsi-candidate-selector
+    tables:
+      default: [HFCANDCHICBASE, HFCANDCHICEXT]
+      mc: [HFCANDCHICMCREC, HFCANDCHICMCGEN]
+
   o2-analysis-hf-candidate-creator-bplus:
     <<: *cand_creator
     dependencies: o2-analysis-hf-d0-candidate-selector
@@ -137,6 +145,10 @@ workflows:
     dependencies: o2-analysis-hf-candidate-creator-xicc
     tables: HFSELXICCCAND
 
+  o2-analysis-hf-chic-tojpsigamma-candidate-selector:
+    dependencies: o2-analysis-hf-candidate-creator-chic
+    tables: HFSELCHICCAND
+
   o2-analysis-hf-bplus-tod0pi-candidate-selector:
     dependencies: o2-analysis-hf-candidate-creator-bplus
     tables: HFSELBPLUSCAND
@@ -159,7 +171,7 @@ workflows:
 
   o2-analysis-hf-task-lc:
     <<: *task
-    dependencies: o2-analysis-hf-lc-candidate-selector
+    dependencies: [o2-analysis-hf-lc-candidate-selector, o2-analysis-alice3-centrality]
 
   o2-analysis-hf-task-xic:
     <<: *task
@@ -180,6 +192,10 @@ workflows:
   o2-analysis-hf-task-xicc:
     <<: *task
     dependencies: o2-analysis-hf-xicc-topkpipi-candidate-selector
+
+  o2-analysis-hf-task-chic:
+    <<: *task
+    dependencies: o2-analysis-hf-chic-tojpsigamma-candidate-selector
 
   o2-analysis-hf-task-correlation-ddbar: &taskddbar
     executable: o2-analysis-hf-task-correlation-ddbar
@@ -293,3 +309,10 @@ workflows:
   o2-analysis-trackextension: {}
 
   o2-analysis-weak-decay-indices: {}
+
+  # ALICE 3
+
+  o2-analysis-alice3-trackextension: {}
+
+  o2-analysis-alice3-centrality:
+    dependencies: o2-analysis-alice3-trackextension
