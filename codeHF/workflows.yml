@@ -234,7 +234,7 @@ workflows:
 
   o2-analysis-hf-correlator-dplusdminus: &dplusdminus
     executable: o2-analysis-hf-correlator-dplusdminus
-    dependencies: o2-analysis-hf-dplus-topikpi-candidate-selector
+    dependencies: [o2-analysis-hf-dplus-topikpi-candidate-selector, o2-analysis-alice3-centrality]
     tables: [DDBARPAIR, DDBARRECOINFO]
 
   o2-analysis-hf-correlator-dplusdminus-mc-rec:
