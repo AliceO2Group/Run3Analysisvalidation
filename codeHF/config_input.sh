@@ -4,9 +4,9 @@
 # Input specification for runtest.sh
 # (Modifies input parameters.)
 
-INPUT_CASE=2            # Input case
+INPUT_CASE=12            # Input case
 
-NFILESMAX=1             # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
+NFILESMAX=5             # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
 
 # Number of input files per job (Automatic optimisation on if < 1.)
 NFILESPERJOB_CONVERT=0  # Conversion
@@ -14,7 +14,7 @@ NFILESPERJOB_ALI=0      # AliPhysics
 NFILESPERJOB_O2=1       # O2
 
 # Maximum number of simultaneously running O2 jobs
-NJOBSPARALLEL_O2=$(python3 -c "print(min(10, round($(nproc) / 2)))")
+NJOBSPARALLEL_O2=$(python3 -c "print(min(50, round($(nproc) / 2)))")
 
 JSONRUN3="dpl-config_run3.json"  # Run 3 tasks parameters
 # Run 5 tasks parameters for open HF study
@@ -93,7 +93,7 @@ case $INPUT_CASE in
     ISMC=1;;
   12)
     INPUT_LABEL="Run 5, p-p MC 14 TeV OniaX-enriched, Layout v1, oniaX analysis MUON ID"
-    INPUT_DIR="/home/auras/simulations/delphes/pp_ONIA_X_2021_06_10/run_002" # OBSOLETE
+    INPUT_DIR="/home/mmazzill/pp14TeV_ONIA_10M_05T_geometry_v1_05102021"
     INPUT_FILES="AODRun5.*.root"
     JSON="$JSONRUN5_ONIAX"
     ISINPUTO2=1
