@@ -276,8 +276,19 @@ path_file_sig = "../codeHF/AnalysisResults_O2.root"
 path_file_bkg = "../codeHF/AnalysisResults_O2.root"
 
 # variables = ["d0Prong0", "d0Prong1", "d0Prong2", "PtProng0", "PtProng1", "PtProng2", "CPA", "Eta", "Declength"]
-variables = ["CPA", "Pt", "Eta", "MassRec", "PtProng0", "PtProng1", "Ct",
-             "Declength", "Mass", "DeltaMass", "Chi2PCA"]
+variables = [
+    "CPA",
+    "Pt",
+    "Eta",
+    "MassRec",
+    "PtProng0",
+    "PtProng1",
+    "Ct",
+    "Declength",
+    "Mass",
+    "DeltaMass",
+    "Chi2PCA",
+]
 
 decays = ["chic"]
 
