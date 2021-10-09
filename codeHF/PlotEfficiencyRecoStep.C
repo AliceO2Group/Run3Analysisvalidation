@@ -14,7 +14,7 @@
 
 void SetProperAxisRange(TH1F** histo, int NIteration, float marginHigh, float marginLow, bool logScaleH);
 
-Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults_O2.root", TString particles = "d0")
+Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults_O2.root", TString particles = "chic")
 {
   gStyle->SetOptStat(0);
   gStyle->SetPalette(0);
