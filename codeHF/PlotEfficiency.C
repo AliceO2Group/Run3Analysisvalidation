@@ -2,7 +2,7 @@
 
 #include "utils_plot.h"
 
-Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particles = "d0")
+Int_t PlotEfficiency(TString pathFile = "AnalysisResults_O2.root", TString particles = "chic")
 {
   gStyle->SetOptStat(0);
   gStyle->SetPalette(0);
