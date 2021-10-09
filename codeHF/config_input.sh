@@ -6,12 +6,12 @@
 
 INPUT_CASE=12            # Input case
 
-NFILESMAX=5             # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
+NFILESMAX=-1             # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
 
 # Number of input files per job (Automatic optimisation on if < 1.)
 NFILESPERJOB_CONVERT=0  # Conversion
 NFILESPERJOB_ALI=0      # AliPhysics
-NFILESPERJOB_O2=1       # O2
+NFILESPERJOB_O2=10       # O2
 
 # Maximum number of simultaneously running O2 jobs
 NJOBSPARALLEL_O2=$(python3 -c "print(min(50, round($(nproc) / 2)))")
@@ -94,6 +94,7 @@ case $INPUT_CASE in
   12)
     INPUT_LABEL="Run 5, p-p MC 14 TeV OniaX-enriched, Layout v1, oniaX analysis MUON ID"
     INPUT_DIR="/home/mmazzill/pp14TeV_ONIA_10M_05T_geometry_v1_05102021"
+    #INPUT_DIR="/home/mmazzill/PbPb_50K_geometryv1_2T_03102021"
     INPUT_FILES="AODRun5.*.root"
     JSON="$JSONRUN5_ONIAX"
     ISINPUTO2=1
