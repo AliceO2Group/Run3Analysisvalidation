@@ -41,7 +41,7 @@ Chic1_ptdep_Pyhia8monash_pp14p0_absy1p44:
   outputfile: Chic1_ptdep_Pyhia8monash_pp14p0_absy1p44.root
   myhadronname: Chic1
   myhadronlatex: chic1
-  pdgparticle: 20443 # this is the psi(2s)! PDG of the particle for which we want the simulation
+  pdgparticle: 20443
   maxneventsperjob: 10000 # max events per file/process
   tune: 14 # monash
   beamidA: 2212 # incoming hadron
