@@ -37,6 +37,25 @@ Jpsi_ptdep_Pyhia8monash_pp14p0_absy1p44:
   ymax: 1.44
   correction: 1.
 
+Chic1_ptdep_Pyhia8monash_pp14p0_absy1p44:
+  outputfile: Chic1_ptdep_Pyhia8monash_pp14p0_absy1p44.root
+  myhadronname: Chic1
+  myhadronlatex: chic1
+  pdgparticle: 20443 # this is the psi(2s)! PDG of the particle for which we want the simulation
+  maxneventsperjob: 10000 # max events per file/process
+  tune: 14 # monash
+  beamidA: 2212 # incoming hadron
+  beamidB: 2212 # incoming hadron
+  eCM: 14000
+  pythiamode: Charmonium:all = on
+  extramode: none # in case extra tuning is needed
+  nptbins: 100
+  ptmin: 0.
+  ptmax: 50.
+  ymin: -1.44
+  ymax: 1.44
+  correction: 1.
+
 Lambda_c_ptdep_Pyhia8mode2_pp14p0_absy1p44:
   outputfile: Lambda_c_ptdep_Pyhia8mode2_pp14p0_absy1p44.root
   myhadronname: Lc
