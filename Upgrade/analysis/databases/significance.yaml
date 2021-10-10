@@ -27,6 +27,21 @@ Jpsitoee:
       theoryfile: ../InputsTheory/Jpsi_ptdep_Pyhia8monash_pp14p0_absy1p44.root # this is temporarely the Lc file
       histoyield: hJpsicrossvspt # to be replaced with the name of the jpsi th histogram
       histoyield_norm: hJpsicrossvspt # to be replaced with the name of the jpsi th histogram
+Chi_c:
+  pp14p0:
+    absy1p44:
+      ymin: 1
+      ymax: 100000
+      binning: [0., 0.5, 1., 2., 3., 4., 5., 7., 10., 15.]
+      efffile: ../InputsExp/Chic1_ptdep_pp14p0_absy1p44_MIDECAL/efficiency_chic.root # this is temporarily the Lc files
+      # efffile: ../InputsExp/Jpsi_ptdep_pp14p0_absy1p44_scenario3_RICH3sigma/efficiencies.root # this is temporarily the Lc files
+      histoeff: eff
+      bkgfile: ../InputsExp/Chic1_ptdep_pp14p0_absy1p44_MIDECAL/bkgPerEvents_chic.root # this is temporarily the Lc files
+      # bkgfile: ../InputsExp/Jpsi_ptdep_pp14p0_absy1p44_scenario3_RICH3sigma/BkgperEvents.root # this is temporarily the Lc files
+      histobkg: hBkgPerEvent
+      theoryfile: ../InputsTheory/Chic1_ptdep_Pyhia8monash_pp14p0_absy1p44.root # this is temporarely the Lc file
+      histoyield: hChic1crossvspt # to be replaced with the name of the jpsi th histogram
+      histoyield_norm: hChic1crossvspt # to be replaced with the name of the jpsi th histogram
 X3872:
   pp14p0:
     absy1p44:

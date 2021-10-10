@@ -188,4 +188,5 @@ def analysis(
 
 # analysis("Lambda_c", "pp14p0", "absy1p44", "central", "Pyhia8mode2", 1)
 analysis("Jpsitoee", "pp14p0", "absy1p44", "central", "Pyhia8monash", 1)
-analysis("X3872", "pp14p0", "absy1p44", "central", "Pyhia8monash", 1)
+analysis("Chi_c", "pp14p0", "absy1p44", "central", "Pyhia8monash", 1)
+#analysis("X3872", "pp14p0", "absy1p44", "central", "Pyhia8monash", 1)

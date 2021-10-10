@@ -5,6 +5,7 @@ latexparticle:
   Omega_ccc: "#Omega_{ccc}"
   X3872: "X(3872)"
   Jpsitoee: "J/#psi #rightarrow e^{+}e^{-}"
+  Chi_c: "#chi_{c}"
 text_string:
   pp14p0: "pp #sqrt{s}= 14 TeV"
   absy3p0: "|y| < 3.0"
@@ -35,6 +36,8 @@ statistics:
 branchingratio:
   Jpsitoee:
     central: 0.0594
+  Chi_c:
+    central: 0.020374200 #0.343*0.0594
   Lambda_c:
     central: 0.0628
   Xi_cc: #https://arxiv.org/abs/1703.09086

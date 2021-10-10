@@ -72,6 +72,7 @@ Pyhia8monash:
     absy1p44:
       Jpsitoee: 1
       X3872: 1
+      Chi_c: 1
 comparison_models_AA:
   pt_binning:
     Lambda_c: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
