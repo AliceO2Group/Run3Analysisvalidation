@@ -20,7 +20,7 @@
     },
     "hf-tag-sel-tracks": {
         "fillHistograms": "true",
-        "bz": "5.",
+        "bz": "20.",
         "doCutQuality": "false",
         "tpcNClsFound": "-999999",
         "pTBinsTrack": {
@@ -62,7 +62,7 @@
     "hf-track-index-skims-creator": {
         "fillHistograms": "true",
         "do3prong": "0",
-        "bz": "5.",
+        "bz": "20.",
         "propToDCA": "true",
         "maxRad": "5.",
         "maxDZIni": "999.",
@@ -168,7 +168,7 @@
         }
     },
     "hf-cand-creator-2prong": {
-        "d_bz": "5.",
+        "d_bz": "20.",
         "b_propdca": "true",
         "d_maxr": "5.",
         "d_maxdzini": "999.",
@@ -177,7 +177,7 @@
         "b_dovalplots": "true"
     },
     "hf-cand-creator-3prong": {
-        "d_bz": "5.",
+        "d_bz": "20.",
         "b_propdca": "true",
         "d_maxr": "5.",
         "d_maxdzini": "999.",
@@ -583,7 +583,7 @@
     },
     "hf-track-index-skims-cascades-creator": {
         "doValPlots": "true",
-        "bZ": "5",
+        "bZ": "20.,
         "propDCA": "true",
         "maxR": "200",
         "maxDZIni": "4",
@@ -603,7 +603,7 @@
         "cutCascInvMassLc": "1"
     },
     "hf-cand-creator-cascade": {
-        "bZ": "5",
+        "bZ": "20.,
         "propDCA": "true",
         "maxR": "200",
         "maxDZIni": "4",
