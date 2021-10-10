@@ -583,7 +583,7 @@
     },
     "hf-track-index-skims-cascades-creator": {
         "doValPlots": "true",
-        "bZ": "20.,
+        "bZ": "20.",
         "propDCA": "true",
         "maxR": "200",
         "maxDZIni": "4",
