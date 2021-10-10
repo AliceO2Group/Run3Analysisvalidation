@@ -159,7 +159,7 @@ workflows:
 
   o2-analysis-hf-task-lc:
     <<: *task
-    dependencies: [o2-analysis-hf-lc-candidate-selector, o2-analysis-alice3-centrality]
+    dependencies: [o2-analysis-hf-lc-candidate-selector, o2-analysis-alice3-trackextension]
 
   o2-analysis-hf-task-xic:
     <<: *task
@@ -220,7 +220,7 @@ workflows:
 
   o2-analysis-hf-correlator-d0d0bar: &d0d0barcorr
     executable: o2-analysis-hf-correlator-d0d0bar
-    dependencies: o2-analysis-hf-d0-candidate-selector
+    dependencies: [o2-analysis-hf-d0-candidate-selector, o2-analysis-alice3-centrality]
     tables: [DDBARPAIR, DDBARRECOINFO]
 
   o2-analysis-hf-correlator-d0d0bar-mc-rec:
@@ -234,7 +234,7 @@ workflows:
 
   o2-analysis-hf-correlator-dplusdminus: &dplusdminus
     executable: o2-analysis-hf-correlator-dplusdminus
-    dependencies: o2-analysis-hf-dplus-topikpi-candidate-selector
+    dependencies: [o2-analysis-hf-dplus-topikpi-candidate-selector, o2-analysis-alice3-centrality]
     tables: [DDBARPAIR, DDBARRECOINFO]
 
   o2-analysis-hf-correlator-dplusdminus-mc-rec:
