@@ -746,8 +746,8 @@
         "selectionFlagD0bar": "1",
         "cutYCandMax": "1.44",
         "cutPtCandMin": "-1",
-        "centMin": "0.",
-        "centMax": "100.",
+        "multMin": "0.",
+        "multMax": "100000.",
         "efficiencyDmeson": {
             "values": [
                 "0.030",
@@ -784,8 +784,8 @@
         "selectionFlagD0bar": "1",
         "cutYCandMax": "1.44",
         "cutPtCandMin": "-1",
-        "centMin": "0.",
-        "centMax": "100.",
+        "multMin": "0.",
+        "multMax": "100000.",
         "efficiencyDmeson": {
             "values": [
                 "0.030",
@@ -838,8 +838,8 @@
         "selectionFlagD0bar": "1",
         "cutYCandMax": "1.44",
         "cutPtCandMin": "-1",
-        "centMin": "0.",
-        "centMax": "100.",
+        "multMin": "0.",
+        "multMax": "100000.",
         "ptBinsForMass": {
             "values": [
                 "0",
@@ -859,8 +859,8 @@
         "selectionFlagD0bar": "1",
         "cutYCandMax": "1.44",
         "cutPtCandMin": "-1",
-        "centMin": "0.",
-        "centMax": "100.",
+        "multMin": "0.",
+        "multMax": "100000.",
         "ptBinsForMass": {
             "values": [
                 "0",
@@ -897,8 +897,8 @@
         "selectionFlagDplus": "1",
         "cutYCandMax": "1.44",
         "cutPtCandMin": "-1",
-        "centMin": "0.",
-        "centMax": "100.",
+        "multMin": "0.",
+        "multMax": "100000.",
         "efficiencyDmeson": {
             "values": [
                 "-999.",
@@ -921,8 +921,8 @@
         "selectionFlagDplus": "1",
         "cutYCandMax": "1.44",
         "cutPtCandMin": "-1",
-        "centMin": "0.",
-        "centMax": "100.",
+        "multMin": "0.",
+        "multMax": "100000.",
         "efficiencyDmeson": {
             "values": [
                 "-999.",
