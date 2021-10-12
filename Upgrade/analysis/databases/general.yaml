@@ -7,12 +7,14 @@ latexparticle:
   Jpsitoee: "J/#psi #rightarrow e^{+}e^{-}"
   Chi_c: "#chi_{c}"
 text_string:
+  PbPb5p52: "PbPb #sqrt{s_{NN}}= 5.52 TeV"
   pp14p0: "pp #sqrt{s}= 14 TeV"
   absy3p0: "|y| < 3.0"
   absy2p0: "|y| < 2.0"
   absy1p44: "|y| < 1.44"
   Pyhia8mode2: "Pythia 8, mode = 2"
   Pyhia8monash: "Pythia 8, monash tune"
+  SHMC_2021: "SHMC_2021"
 statistics:
   PbPb2p76:
     sigmaAA_b: 7.8 #FIXME these are copied from 5.52 TeV
@@ -22,7 +24,7 @@ statistics:
     lumiAA_monthi_invnb: 4.92 #FIXME these are copied from 5.52 TeV
   PbPb5p52:
     sigmaAA_b: 7.8
-    lumiAA_monthi_invnb: 4.92
+    lumiAA_monthi_invnb: 35
   KrKr6p46:
     sigmaAA_b: 4.06
     lumiAA_monthi_invnb: 123.
@@ -31,7 +33,7 @@ statistics:
     lumiAA_monthi_invnb: 1080
   pp14p0:
     sigmaAA_b: 0.070
-    lumiAA_monthi_invnb: 3000000
+    lumiAA_monthi_invnb: 18000000
 
 branchingratio:
   Jpsitoee:

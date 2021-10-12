@@ -58,7 +58,7 @@ def analysis(
     decaychannel = paramgen["latexparticle"][hadron]
 
     yieldmid = paramyields[model][collision][yrange][hadron]
-    text = "%s, N_{ev} = %.0f 10^{12}" % (textmodel, nevt / 1e12)
+    text = "%s, N_{ev} = %f 10^{9}" % (textmodel, (float)(nevt) / 1.e9)
     text_a = "%s, %s, BR=%.2f%%" % (decaychannel, textrapid, bratio * 100)
     text_b = "ALICE3 projection, with IRIS, no PID, %s" % textcollision
     fileeff = TFile(nfileeff)
@@ -187,6 +187,7 @@ def analysis(
 
 
 # analysis("Lambda_c", "pp14p0", "absy1p44", "central", "Pyhia8mode2", 1)
-analysis("Jpsitoee", "pp14p0", "absy1p44", "central", "Pyhia8monash", 1)
-analysis("Chi_c", "pp14p0", "absy1p44", "central", "Pyhia8monash", 1)
+#analysis("Jpsitoee", "pp14p0", "absy1p44", "central", "Pyhia8monash", 1)
+#analysis("Chi_c", "pp14p0", "absy1p44", "central", "Pyhia8monash", 1)
+analysis("Chi_c", "PbPb5p52", "absy1p44", "central", "SHMC_2021", 0)
 #analysis("X3872", "pp14p0", "absy1p44", "central", "Pyhia8monash", 1)

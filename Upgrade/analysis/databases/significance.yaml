@@ -33,15 +33,25 @@ Chi_c:
       ymin: 1
       ymax: 100000
       binning: [0., 0.5, 1., 2., 3., 4., 5., 7., 10., 15.]
-      efffile: ../InputsExp/Chic1_ptdep_pp14p0_absy1p44_MIDECAL/efficiency_chic.root # this is temporarily the Lc files
-      # efffile: ../InputsExp/Jpsi_ptdep_pp14p0_absy1p44_scenario3_RICH3sigma/efficiencies.root # this is temporarily the Lc files
+      efffile: ../InputsExp/Chic1_ptdep_pp14p0_absy1p44_MIDECAL/efficiency_chic.root
       histoeff: eff
-      bkgfile: ../InputsExp/Chic1_ptdep_pp14p0_absy1p44_MIDECAL/bkgPerEvents_chic.root # this is temporarily the Lc files
-      # bkgfile: ../InputsExp/Jpsi_ptdep_pp14p0_absy1p44_scenario3_RICH3sigma/BkgperEvents.root # this is temporarily the Lc files
+      bkgfile: ../InputsExp/Chic1_ptdep_pp14p0_absy1p44_MIDECAL/bkgPerEvents_chic.root
       histobkg: hBkgPerEvent
-      theoryfile: ../InputsTheory/Chic1_ptdep_Pyhia8monash_pp14p0_absy1p44.root # this is temporarely the Lc file
-      histoyield: hChic1crossvspt # to be replaced with the name of the jpsi th histogram
-      histoyield_norm: hChic1crossvspt # to be replaced with the name of the jpsi th histogram
+      theoryfile: ../InputsTheory/Chic1_ptdep_Pyhia8monash_pp14p0_absy1p44.root
+      histoyield: hChic1crossvspt
+      histoyield_norm: hChic1crossvspt
+  PbPb5p52:
+    absy1p44:
+      ymin: 1
+      ymax: 100000
+      binning: [0., 0.5, 1., 2., 3., 4., 5., 7., 10., 15.]
+      efffile: ../InputsExp/Chic1_ptdep_PbPb5p52_absy1p44_MIDECAL/efficiency_chic.root
+      histoeff: eff
+      bkgfile: ../InputsExp/Chic1_ptdep_PbPb5p52_absy1p44_MIDECAL/bkgPerEvents_chic.root
+      histobkg: hBkgPerEvent
+      theoryfile: ../InputsTheory/Chic1_ptdep_Pyhia8monash_pp14p0_absy1p44.root
+      histoyield: hChic1crossvspt
+      histoyield_norm: hChic1crossvspt
 X3872:
   pp14p0:
     absy1p44:
