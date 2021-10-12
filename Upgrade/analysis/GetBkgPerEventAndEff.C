@@ -13,15 +13,15 @@
 
 using namespace std;
 
-enum proc_t { kJpsiToEE,
-              kJpsiToMuMu,
-              kXToPiPiEE,
-              kXToPiPiMuMu,
-              kXicc,
-              kBplus,
-              kChic1,
-              kChic2,
-              kNChannels };
+enum myProc_t { kJpsiToEE,
+                kJpsiToMuMu,
+                kXToPiPiEE,
+                kXToPiPiMuMu,
+                kXicc,
+                kBplus,
+                kChic1,
+                kChic2,
+                kNChannels };
 
 const char* hfTaskLabel[kNChannels] = {"jpsi", "jpsiToMuMu", "x", "xToPiPiMuMu", "xicc", "bplus", "chic", "chic"};
 const char* histNameSig[kNChannels] = {"hmassSig", "hMassRecSig", "hMassRecSig", "hMassRecSig", "hmassSig", "hMassRecSig", "hMassRecSig", "hMassRecSig"};
@@ -78,7 +78,7 @@ Double_t fitPolSideBands(Double_t* var, Double_t* par);
 Double_t fitExpoWithThreshold(Double_t* var, Double_t* par);
 Double_t fitExpoWithThresholdSideBands(Double_t* var, Double_t* par);
 
-void info(proc_t channel);
+void info(myProc_t channel);
 void mystyle();
 
 void BookCanvas();
@@ -88,7 +88,7 @@ void BookHistos();
 
 void GetBkgPerEventAndEff(const char* signalfilename,
                           const char* bkgfilename,
-                          const proc_t channel)
+                          const myProc_t channel)
 {
 
   mystyle();
@@ -245,7 +245,7 @@ void GetBkgPerEventAndEff(const char* signalfilename,
         }
       }
 
-      hMassBkg[i]->Fit("expo", "", "", 3.6, 4.0);
+      hMassBkg[i]->Fit("expo", "Q", "", 3.6, 4.0);
 
       fitBkgSideBands[i]->SetParameters(threshold, 0.02, 0, hMassBkg[i]->GetFunction("expo")->GetParameter(0), TMath::Min(hMassBkg[i]->GetFunction("expo")->GetParameter(1), 0.));
       fitBkgSideBands[i]->SetParLimits(0, threshold - 0.2, threshold + 0.2);
@@ -336,7 +336,7 @@ Double_t fitExpoWithThresholdSideBands(Double_t* var, Double_t* par)
 
 //====================================================================================================================================================
 
-void info(proc_t channel)
+void info(myProc_t channel)
 {
 
   TLatex* t = new TLatex(8, 8, "ALICE3 O2 Performance");
