@@ -33,7 +33,7 @@ DOO2_TRIGSEL=0      # event-selection and timestamp
 # QA
 DOO2_REJ_ALICE3=0   # qa-rejection
 DOO2_QA_EFF=0       # qa-efficiency
-DOO2_QA_EVTRK=1     # qa-event-track
+DOO2_QA_EVTRK=0     # qa-event-track
 DOO2_MC_VALID=0     # hf-mc-validation
 # PID
 DOO2_PID_TPC=0      # pid-tpc-full
@@ -55,7 +55,7 @@ DOO2_SEL_LC=0       # hf-lc-candidate-selector
 DOO2_SEL_XIC=0      # hf-xic-topkpi-candidate-selector
 DOO2_SEL_JPSI=0     # hf-jpsi-candidate-selector
 DOO2_SEL_X=0        # hf-x-tojpsipipi-candidate-selector
-DOO2_SEL_CHIC=1     # hf-chic-tojpsigamma-candidate-selector
+DOO2_SEL_CHIC=0     # hf-chic-tojpsigamma-candidate-selector
 DOO2_SEL_LCK0SP=0   # hf-lc-tok0sp-candidate-selector
 DOO2_SEL_XICC=0     # hf-xicc-topkpipi-candidate-selector
 DOO2_SEL_BPLUS=0    # hf-bplus-tod0pi-candidate-selector
@@ -66,7 +66,7 @@ DOO2_TASK_LC=0      # hf-task-lc
 DOO2_TASK_XIC=0     # hf-task-xic
 DOO2_TASK_JPSI=0    # hf-task-jpsi
 DOO2_TASK_X=0       # hf-task-x
-DOO2_TASK_CHIC=1    # hf-task-chic
+DOO2_TASK_CHIC=0    # hf-task-chic
 DOO2_TASK_LCK0SP=0  # hf-task-lc-tok0sp
 DOO2_TASK_XICC=0    # hf-task-xicc
 DOO2_TASK_BPLUS=0   # hf-task-bplus
@@ -90,7 +90,7 @@ APPLYCUTS_LC=0      # Apply Λc selection cuts.
 APPLYCUTS_XIC=0     # Apply Ξc selection cuts.
 APPLYCUTS_JPSI=0    # Apply J/ψ selection cuts.
 APPLYCUTS_X=0       # Apply X selection cuts.
-APPLYCUTS_CHIC=1    # Apply Chi_c selection cuts.
+APPLYCUTS_CHIC=0    # Apply Chi_c selection cuts.
 APPLYCUTS_LCK0SP=0  # Apply Λc → K0S p selection cuts.
 APPLYCUTS_XICC=0    # Apply Ξcc selection cuts.
 
