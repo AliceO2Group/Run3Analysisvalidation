@@ -7,7 +7,6 @@ SHMC_2021:
       Omega_cc: 2.663e-03
       Omega_ccc: 1.246e-04
       X3872: 2.807e-03
-  PbPb5p52:
     absy1p44:
       Chi_c: 5.62e-03 #FIXME approximated
   KrKr6p46:
