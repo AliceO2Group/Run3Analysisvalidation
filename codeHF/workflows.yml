@@ -82,6 +82,14 @@ workflows:
       default: [HFCANDXICCBASE, HFCANDXICCEXT]
       mc: [HFCANDXICCMCREC, HFCANDXICCMCGEN]
 
+  o2-analysis-hf-candidate-creator-chic:
+    <<: *cand_creator
+    dependencies:
+      - o2-analysis-hf-jpsi-candidate-selector
+    tables:
+      default: [HFCANDCHICBASE, HFCANDCHICEXT]
+      mc: [HFCANDCHICMCREC, HFCANDCHICMCGEN]
+
   o2-analysis-hf-candidate-creator-bplus:
     <<: *cand_creator
     dependencies: o2-analysis-hf-d0-candidate-selector
@@ -137,6 +145,10 @@ workflows:
     dependencies: o2-analysis-hf-candidate-creator-xicc
     tables: HFSELXICCCAND
 
+  o2-analysis-hf-chic-tojpsigamma-candidate-selector:
+    dependencies: o2-analysis-hf-candidate-creator-chic
+    tables: HFSELCHICCAND
+
   o2-analysis-hf-bplus-tod0pi-candidate-selector:
     dependencies: o2-analysis-hf-candidate-creator-bplus
     tables: HFSELBPLUSCAND
@@ -180,6 +192,10 @@ workflows:
   o2-analysis-hf-task-xicc:
     <<: *task
     dependencies: o2-analysis-hf-xicc-topkpipi-candidate-selector
+
+  o2-analysis-hf-task-chic:
+    <<: *task
+    dependencies: o2-analysis-hf-chic-tojpsigamma-candidate-selector
 
   o2-analysis-hf-task-correlation-ddbar: &taskddbar
     executable: o2-analysis-hf-task-correlation-ddbar
@@ -254,7 +270,7 @@ workflows:
     requires_mc: yes
     options: "--eff-el 1 --eff-mu 1 --eff-pi 1 --eff-ka 1 --eff-pr 1"
 
-  o2-analysis-qa-event-track:
+  o2-analysis-pp-qa-event-track:
     requires_mc: yes
 
   o2-analysis-qa-rejection:
