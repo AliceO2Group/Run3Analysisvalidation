@@ -14,14 +14,14 @@
 using namespace std;
 
 enum myProc_t { kJpsiToEE,
-              kJpsiToMuMu,
-              kXToPiPiEE,
-              kXToPiPiMuMu,
-              kXicc,
-              kBplus,
-              kChic1,
-              kChic2,
-              kNChannels };
+                kJpsiToMuMu,
+                kXToPiPiEE,
+                kXToPiPiMuMu,
+                kXicc,
+                kBplus,
+                kChic1,
+                kChic2,
+                kNChannels };
 
 const char* hfTaskLabel[kNChannels] = {"jpsi", "jpsiToMuMu", "x", "xToPiPiMuMu", "xicc", "bplus", "chic", "chic"};
 const char* histNameSig[kNChannels] = {"hmassSig", "hMassRecSig", "hMassRecSig", "hMassRecSig", "hmassSig", "hMassRecSig", "hMassRecSig", "hMassRecSig"};
