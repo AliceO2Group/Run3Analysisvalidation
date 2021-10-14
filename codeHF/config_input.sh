@@ -115,4 +115,20 @@ case $INPUT_CASE in
     ISINPUTO2=1
     ISALICE3=1
     ISMC=1;;
+   15)
+    INPUT_LABEL="Run 5, p-p MC 14 TeV OniaX-enriched, Layout v1, oniaX analysis MUON ID and ECAL"
+    INPUT_DIR="/home/kharlov/ECAL+PCM/delphes/pp_onia_X_2021_10_10"
+    INPUT_FILES="AODRun5.*.root"
+    JSON="$JSONRUN5_ONIAX"
+    ISINPUTO2=1
+    ISALICE3=1
+    ISMC=1;;
+   16)
+    INPUT_LABEL="Run 5, PbPb 5.5 TeV, Layout v1, MB MUON ID and ECAL"
+    INPUT_DIR="/home/mmazzill/PbPb_100K_inel_2T_rmin100_11102021"
+    INPUT_FILES="AODRun5.*.root"
+    JSON="$JSONRUN5_ONIAX"
+    ISINPUTO2=1
+    ISALICE3=1
+    ISMC=1;;
 esac
