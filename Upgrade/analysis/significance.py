@@ -102,12 +102,12 @@ def analysis(
         hbkgperevent.Scale(2)   # to take approximately into account the worsening of the sig/bkg in the full rapidity range (PbWO4 and W+Sci)
         hbkgperevent.Scale(2)   # because in |y| < 1.44 we sum chi_c1 and chi_c2 (states are not resolved)
         histodndptth.Scale(3.4) # because in |y| < 1.44 we sum chi_c1 and chi_c2 (states are not resolved). Assuming chi_c2/chi_c1 (!!) from Pythia8
-        
+
     if hadron == "Chi_c" and yrange == "absy0p33":
         print("scaling signal and bkg by 0.23, from |y| < 1.44 to |y| < 0.33")
         hbkgperevent.Scale(0.23) # to take into account the reduction of the statistics from |y| < 1.44 to |y| < 0.33 (the input file for chi_c is always |y| < 1.44)
         histodndptth.Scale(0.23) # to take into account the reduction of the statistics from |y| < 1.44 to |y| < 0.33 (the input file for chi_c is always |y| < 1.44)
-            
+
     histoyieldth = histodndptth.Clone("histoyieldth")
 
     for ibin in range(histoyieldth.GetNbinsX()):
