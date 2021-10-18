@@ -4,17 +4,17 @@
 # Input specification for runtest.sh
 # (Modifies input parameters.)
 
-INPUT_CASE=2            # Input case
+INPUT_CASE=17            # Input case
 
-NFILESMAX=1             # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
+NFILESMAX=-0             # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
 
 # Number of input files per job (Automatic optimisation on if < 1.)
 NFILESPERJOB_CONVERT=0  # Conversion
 NFILESPERJOB_ALI=0      # AliPhysics
-NFILESPERJOB_O2=1       # O2
+NFILESPERJOB_O2=3       # O2
 
 # Maximum number of simultaneously running O2 jobs
-NJOBSPARALLEL_O2=$(python3 -c "print(min(10, round($(nproc) / 2)))")
+NJOBSPARALLEL_O2=$(python3 -c "print(min(30, round($(nproc) / 2)))")
 
 JSONRUN3="dpl-config_run3.json"  # Run 3 tasks parameters
 # Run 5 tasks parameters for open HF study
@@ -126,6 +126,14 @@ case $INPUT_CASE in
    16)
     INPUT_LABEL="Run 5, PbPb 5.5 TeV, Layout v1, MB MUON ID and ECAL"
     INPUT_DIR="/home/mmazzill/PbPb_100K_inel_2T_rmin100_11102021"
+    INPUT_FILES="AODRun5.*.root"
+    JSON="$JSONRUN5_ONIAX"
+    ISINPUTO2=1
+    ISALICE3=1
+    ISMC=1;;
+   17)
+    INPUT_LABEL="Run 5, pp 14 TeV, Layout v1, MB MUON ID and ECAL"
+    INPUT_DIR="/home/mmazzill/pp14TeV_inel_20M_2T_rmin100_geometry_v1_11102021"
     INPUT_FILES="AODRun5.*.root"
     JSON="$JSONRUN5_ONIAX"
     ISINPUTO2=1

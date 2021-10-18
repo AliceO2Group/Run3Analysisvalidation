@@ -33,7 +33,7 @@ DOO2_TRIGSEL=0      # event-selection and timestamp
 # QA
 DOO2_REJ_ALICE3=0   # qa-rejection
 DOO2_QA_EFF=0       # qa-efficiency
-DOO2_QA_EVTRK=0     # qa-event-track
+DOO2_QA_EVTRK=1     # qa-event-track
 DOO2_MC_VALID=0     # hf-mc-validation
 # PID
 DOO2_PID_TPC=0      # pid-tpc-full
