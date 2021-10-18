@@ -482,7 +482,7 @@
     },
     "hf-task-dplus": {
         "cutYCandMax": "0.8",
-        "d_selectionFlagDPlus": "7",
+        "d_selectionFlagDPlus": "0",
         "pTBins": {
             "values": [
                 "1.",
@@ -503,7 +503,7 @@
     },
     "hf-task-dplus-mc": {
         "cutYCandMax": "0.8",
-        "d_selectionFlagDPlus": "7",
+        "d_selectionFlagDPlus": "0",
         "pTBins": {
             "values": [
                 "1.",
