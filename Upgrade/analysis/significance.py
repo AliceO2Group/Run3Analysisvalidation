@@ -58,7 +58,7 @@ def analysis(
     decaychannel = paramgen["latexparticle"][hadron]
 
     if hadron == "Chi_c" and yrange == "absy1p44":
-        bratio *= 0.8 # chi_c1 and chi_c2 are measured together: non-weighted average of their BRs
+        bratio *= 0.8  # chi_c1 and chi_c2 are measured together: non-weighted average of their BRs
         decaychannel = "#chi_{c} #rightarrow J/#psi #gamma"
 
     yieldmid = paramyields[model][collision][yrange][hadron]
@@ -84,33 +84,43 @@ def analysis(
         for ibin in range(histodndptth.GetNbinsX()):
             binwdith = histodndptth.GetBinWidth(ibin + 1)
             integral += histodndptth.GetBinContent(ibin + 1) * binwdith
-        histodndptth.Scale(1./integral)
+        histodndptth.Scale(1.0 / integral)
         histodndptth.Scale(yieldmid)
-        print("yieldmid = %f\n",yieldmid)
+        print("yieldmid = %f\n", yieldmid)
         integral = 0
         for ibin in range(histodndptth.GetNbinsX()):
             binwdith = histodndptth.GetBinWidth(ibin + 1)
             integral += histodndptth.GetBinContent(ibin + 1) * binwdith
-        print("yieldmid = %f\n",yieldmid)
+        print("yieldmid = %f\n", yieldmid)
 
     if hadron == "Chi_c" and collision == "pp14p0":
         print("scaling signal yield by 0.1")
-        histodndptth.Scale(0.1) # because pythia8 is wrong by a factor ~10
+        histodndptth.Scale(0.1)  # because pythia8 is wrong by a factor ~10
 
     if hadron == "Chi_c" and yrange == "absy1p44":
         print("scaling bkg by 2*2, and signal by 3.4")
-        hbkgperevent.Scale(2)   # to take approximately into account the worsening of the sig/bkg in the full
-                                # rapidity range (PbWO4 and W+Sci)
-        hbkgperevent.Scale(2)   # because in |y| < 1.44 we sum chi_c1 and chi_c2 (states are not resolved)
-        histodndptth.Scale(3.4) # because in |y| < 1.44 we sum chi_c1 and chi_c2 (states are not resolved).
-                                # Assuming chi_c2/chi_c1 (!!) from Pythia8
+        hbkgperevent.Scale(
+            2
+        )  # to take approximately into account the worsening of the sig/bkg in the full
+        # rapidity range (PbWO4 and W+Sci)
+        hbkgperevent.Scale(
+            2
+        )  # because in |y| < 1.44 we sum chi_c1 and chi_c2 (states are not resolved)
+        histodndptth.Scale(
+            3.4
+        )  # because in |y| < 1.44 we sum chi_c1 and chi_c2 (states are not resolved).
+        # Assuming chi_c2/chi_c1 (!!) from Pythia8
 
     if hadron == "Chi_c" and yrange == "absy0p33":
         print("scaling signal and bkg by 0.23, from |y| < 1.44 to |y| < 0.33")
-        hbkgperevent.Scale(0.23) # to take into account the reduction of the statistics from |y| < 1.44 to |y| < 0.33
-                                 # (the input file for chi_c is always |y| < 1.44)
-        histodndptth.Scale(0.23) # to take into account the reduction of the statistics from |y| < 1.44 to |y| < 0.33
-                                 # (the input file for chi_c is always |y| < 1.44)
+        hbkgperevent.Scale(
+            0.23
+        )  # to take into account the reduction of the statistics from |y| < 1.44 to |y| < 0.33
+        # (the input file for chi_c is always |y| < 1.44)
+        histodndptth.Scale(
+            0.23
+        )  # to take into account the reduction of the statistics from |y| < 1.44 to |y| < 0.33
+        # (the input file for chi_c is always |y| < 1.44)
 
     histoyieldth = histodndptth.Clone("histoyieldth")
 
@@ -209,7 +219,9 @@ def analysis(
     canvas.SaveAs(hadron + "_" + collision + "_" + yrange + "_results.pdf")
     canvas.SaveAs(hadron + "_" + collision + "_" + yrange + "_results.C")
 
-    foutput = TFile("foutput" + hadron + "_" + collision + "_" + yrange + ".root", "recreate")
+    foutput = TFile(
+        "foutput" + hadron + "_" + collision + "_" + yrange + ".root", "recreate"
+    )
     foutput.cd()
     histoeff.Write()
     hbkgperevent.Write()
