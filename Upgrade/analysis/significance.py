@@ -1,10 +1,10 @@
-#pylint : disable = too - many - locals, too - many - statements, missing - docstring, pointless - string - statement
+# pylint: disable=too-many-locals,too-many-statements, missing-docstring, pointless-string-statement
 from array import array
 from math import sqrt
 
 import yaml
 
-#pylint : disable = import - error, no - name - in - module, unused - import, too - many - arguments
+# pylint: disable=import-error, no-name-in-module, unused-import, too-many-arguments
 from ROOT import TH2F, TCanvas, TFile, TLatex, gPad, gStyle
 
 """
@@ -30,7 +30,7 @@ def analysis(
         paramsignificance = yaml.safe_load(filesignificance)
     ymin = paramsignificance[hadron][collision][yrange]["ymin"]
     ymax = paramsignificance[hadron][collision][yrange]["ymax"]
-#bin of the final analysis, has to be the binning of efficiency, bkg histos
+    # bin of the final analysis, has to be the binning of efficiency, bkg histos
     binanal = array("d", paramsignificance[hadron][collision][yrange]["binning"])
     nfileyieldth = paramsignificance[hadron][collision][yrange]["theoryfile"]
 
@@ -53,7 +53,7 @@ def analysis(
     sigma_aa_b = paramgen["statistics"][collision]["sigmaAA_b"]
     lumiaa_monthi_invnb = paramgen["statistics"][collision]["lumiAA_monthi_invnb"]
     nevt = sigma_aa_b * lumiaa_monthi_invnb * 1e9
-#nevt = 2. * 1e9
+    # nevt = 2.*1e9
     bratio = paramgen["branchingratio"][hadron][brmode]
     decaychannel = paramgen["latexparticle"][hadron]
 
@@ -76,8 +76,8 @@ def analysis(
     if use_unnorm == 1:
         histodndptth = fileyieldth.Get(nhistoyieldth)
         histodndptth.Scale(1.0 / 70000.0)  # TEMPORARY this is a fix to account for the
-#conversion from a cross - section in mub
-#to yields, sigma = 70000 mub
+        # conversion from a cross-section in mub
+        # to yields, sigma=70000 mub
     else:
         histodndptth = fileyieldth.Get(nhistoyieldth_norm)
         integral = 0
@@ -215,10 +215,11 @@ def analysis(
     histodndptth.Write()
     histosigoverbkg.Write()
 
-#analysis("Lambda_c", "pp14p0", "absy1p44", "central", "Pyhia8mode2", 1)
-#analysis("Jpsitoee", "pp14p0", "absy1p44", "central", "Pyhia8monash", 1)
-#analysis("Chi_c", "pp14p0", "absy1p44", "central", "Pyhia8monash", 1)
-#analysis("Chi_c", "pp14p0", "absy0p33", "central", "Pyhia8monash", 1)
-#analysis("Chi_c", "PbPb5p52", "absy1p44", "central", "SHMC_2021", 0)
+
+# analysis("Lambda_c", "pp14p0", "absy1p44", "central", "Pyhia8mode2", 1)
+# analysis("Jpsitoee", "pp14p0", "absy1p44", "central", "Pyhia8monash", 1)
+# analysis("Chi_c", "pp14p0", "absy1p44", "central", "Pyhia8monash", 1)
+# analysis("Chi_c", "pp14p0", "absy0p33", "central", "Pyhia8monash", 1)
+# analysis("Chi_c", "PbPb5p52", "absy1p44", "central", "SHMC_2021", 0)
 analysis("Chi_c", "PbPb5p52", "absy0p33", "central", "SHMC_2021", 0)
-#analysis("X3872", "pp14p0", "absy1p44", "central", "Pyhia8monash", 1)
+# analysis("X3872", "pp14p0", "absy1p44", "central", "Pyhia8monash", 1)
