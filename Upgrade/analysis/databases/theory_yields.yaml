@@ -9,6 +9,8 @@ SHMC_2021:
       X3872: 2.807e-03
     absy1p44:
       Chi_c: 5.62e-03 #FIXME approximated
+    absy0p33:
+      Chi_c: 5.62e-03 #FIXME approximated
   KrKr6p46:
     absy0p5:
       Lambda_c: 3.655e-01
@@ -74,6 +76,8 @@ Pyhia8monash:
     absy1p44:
       Jpsitoee: 1
       X3872: 1
+      Chi_c: 1
+    absy0p33:
       Chi_c: 1
 comparison_models_AA:
   pt_binning:
