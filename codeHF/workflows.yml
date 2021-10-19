@@ -97,6 +97,13 @@ workflows:
       default: [HFCANDBPLUSBASE, HFCANDBPLUSEXT]
       mc: [HFCANDBPMCREC, HFCANDBPMCGEN]
 
+  o2-analysis-hf-candidate-creator-lb:
+    <<: *cand_creator
+    dependencies: o2-analysis-hf-lc-candidate-selector
+    tables:
+      default: [HFCANDLBBASE, HFCANDLBEXT]
+      mc: [HFCANDLBMCREC, HFCANDLBMCGEN]
+
   # Selectors
 
   o2-analysis-hf-d0-candidate-selector: &selector_2prong
@@ -153,6 +160,10 @@ workflows:
     dependencies: o2-analysis-hf-candidate-creator-bplus
     tables: HFSELBPLUSCAND
 
+  o2-analysis-hf-lb-tolcpi-candidate-selector:
+    dependencies: o2-analysis-hf-candidate-creator-lb
+    tables: HFSELLBCAND
+
   # Analysis tasks
 
   o2-analysis-hf-task-d0: &task
@@ -184,6 +195,11 @@ workflows:
   o2-analysis-hf-task-x:
     <<: *task
     dependencies: o2-analysis-hf-x-tojpsipipi-candidate-selector
+
+  o2-analysis-hf-task-lb:
+    <<: *task
+    dependencies: o2-analysis-hf-lb-tolcpi-candidate-selector
+#    dependencies: [o2-analysis-hf-lb-tolcpi-candidate-selector, o2-analysis-alice3-centrality]
 
   o2-analysis-hf-task-lc-tok0sp:
     <<: *task
