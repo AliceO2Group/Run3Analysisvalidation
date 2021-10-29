@@ -136,7 +136,7 @@ function AdjustJson {
   # Enable D+ selection.
   if [ $APPLYCUTS_DPLUS -eq 1 ]; then
     MsgWarn "\nUsing D+ selection cuts"
-    ReplaceString "\"d_selectionFlagDPlus\": \"0\"" "\"d_selectionFlagDPlus\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"d_selectionFlagDPlus\": \"0\"" "\"d_selectionFlagDPlus\": \"7\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable Λc selection.

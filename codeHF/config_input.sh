@@ -131,4 +131,12 @@ case $INPUT_CASE in
     ISINPUTO2=1
     ISALICE3=1
     ISMC=1;;
+   17)
+    INPUT_LABEL="Run 5, pp 14 TeV, Layout v1, MB MUON ID and ECAL"
+    INPUT_DIR="/home/mmazzill/pp14TeV_inel_20M_2T_rmin100_geometry_v1_11102021"
+    INPUT_FILES="AODRun5.*.root"
+    JSON="$JSONRUN5_ONIAX"
+    ISINPUTO2=1
+    ISALICE3=1
+    ISMC=1;;
 esac
