@@ -185,6 +185,15 @@
         "d_minrelchi2change": "0.9",
         "b_dovalplots": "true"
     },
+    "hf-candidate-creator-lb": {
+        "d_bz": "5.",
+        "b_propdca": "true",
+        "d_maxr": "5.",
+        "d_maxdzini": "999.",
+        "d_minparamchange": "0.001",
+        "d_minrelchi2change": "0.9",
+        "b_dovalplots": "true"
+    },
     "hf-cand-creator-xicc": {
         "d_bz": "20",
         "b_propdca": "true",
@@ -477,6 +486,44 @@
             ]
         }
     },
+    "hf-lb-tolcpi-candidate-selector": {
+        "d_pTCandMin": "0.",
+        "d_pTCandMax": "50.",
+        "d_pidTPCMinpT": "1000.",
+        "d_pidTPCMaxpT": "2000.",
+        "d_pidTOFMinpT": "0.",
+        "d_pidTOFMaxpT": "10.",
+        "d_TPCNClsFindablePIDCut": "-9999",
+        "d_nSigmaTPC": "1000.",
+        "d_nSigmaTOF": "3.",
+        "pTBins": {
+            "values": [
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "8",
+                "12",
+                "24",
+                "36"            ]
+        },
+        "Lb_to_Lcpi_cuts": {
+            "values": [
+                ["0.5", "0.80", "0.001", "0.001", "0.0", "0.15", "1."],
+                ["0.5", "0.80", "0.001", "0.001", "0.0", "0.15", "1."],
+                ["0.5", "0.80", "0.001", "0.001", "0.2", "0.15", "1."],
+                ["0.5", "0.80", "0.001", "0.001", "0.9", "0.15", "1."],
+                ["0.5", "0.80", "0.001", "0.001", "1.5", "0.15", "1."],
+                ["0.5", "0.80", "0.001", "0.001", "2.3", "0.15", "1."],
+                ["0.5", "0.90", "0.001", "0.001", "3.0", "0.15", "1."],
+                ["0.5", "0.90", "0.001", "0.001", "4.2", "0.15", "1."],
+                ["0.5", "0.90", "0.001", "0.001", "6.2", "0.15", "1."]
+            ]
+        }
+    },
     "hf-xicc-to-p-k-pi-pi-candidate-selector": {
         "d_pTCandMin": "0.",
         "d_pTCandMax": "36.",
@@ -623,6 +670,44 @@
     "hf-task-lc-mc": {
         "cutYCandMax": "2.0",
         "d_selectionFlagLc": "0",
+        "pTBins": {
+            "values": [
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "8",
+                "12",
+                "24",
+                "36"
+            ]
+        }
+    },
+    "hf-task-lb": {
+        "cutYCandMax": "2.0",
+        "d_selectionFlagLb": "0",
+        "pTBins": {
+            "values": [
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "8",
+                "12",
+                "24",
+                "36"
+            ]
+        }
+    },
+    "hf-task-lb-mc": {
+        "cutYCandMax": "2.0",
+        "d_selectionFlagLb": "0",
         "pTBins": {
             "values": [
                 "0",

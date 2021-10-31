@@ -16,9 +16,9 @@
 # Steps
 DOCLEAN=1           # Delete created files (before and after running tasks).
 DOCONVERT=1         # Convert AliESDs.root to AO2D.root.
-DOALI=1             # Run AliPhysics tasks.
+DOALI=0             # Run AliPhysics tasks.
 DOO2=1              # Run O2 tasks.
-DOPOSTPROCESS=1     # Run output postprocessing. (Compare AliPhysics and O2 output.)
+DOPOSTPROCESS=0     # Run output postprocessing. (Compare AliPhysics and O2 output.)
 
 # Disable incompatible steps.
 [ "$ISINPUTO2" -eq 1 ] && { DOCONVERT=0; DOALI=0; }
@@ -45,6 +45,7 @@ DOO2_CAND_2PRONG=0  # hf-candidate-creator-2prong
 DOO2_CAND_3PRONG=0  # hf-candidate-creator-3prong
 DOO2_CAND_CASC=0    # hf-candidate-creator-cascade
 DOO2_CAND_X=0       # hf-candidate-creator-x
+DOO2_CAND_LB=0      # hf-candidate-creator-lb
 DOO2_CAND_CHIC=0    # hf-candidate-creator-chic
 DOO2_CAND_XICC=0    # hf-candidate-creator-xicc
 DOO2_CAND_BPLUS=0   # hf-candidate-creator-bplus
@@ -52,6 +53,7 @@ DOO2_CAND_BPLUS=0   # hf-candidate-creator-bplus
 DOO2_SEL_D0=0       # hf-d0-candidate-selector
 DOO2_SEL_DPLUS=0    # hf-dplus-topikpi-candidate-selector
 DOO2_SEL_LC=0       # hf-lc-candidate-selector
+DOO2_SEL_LB=0       # hf-lb-tolcpi-candidate-selector
 DOO2_SEL_XIC=0      # hf-xic-topkpi-candidate-selector
 DOO2_SEL_JPSI=0     # hf-jpsi-candidate-selector
 DOO2_SEL_X=0        # hf-x-tojpsipipi-candidate-selector
@@ -63,6 +65,7 @@ DOO2_SEL_BPLUS=0    # hf-bplus-tod0pi-candidate-selector
 DOO2_TASK_D0=0      # hf-task-d0
 DOO2_TASK_DPLUS=0   # hf-task-dplus
 DOO2_TASK_LC=0      # hf-task-lc
+DOO2_TASK_LB=0      # hf-task-lb
 DOO2_TASK_XIC=0     # hf-task-xic
 DOO2_TASK_JPSI=0    # hf-task-jpsi
 DOO2_TASK_X=0       # hf-task-x
@@ -73,6 +76,7 @@ DOO2_TASK_BPLUS=0   # hf-task-bplus
 # Tree creators
 DOO2_TREE_D0=0      # hf-tree-creator-d0-tokpi
 DOO2_TREE_LC=0      # hf-tree-creator-lc-topkpi
+DOO2_TREE_LB=1      # hf-tree-creator-lb-tolcpi
 DOO2_TREE_X=0       # hf-tree-creator-x-tojpsipipi
 DOO2_TREE_XICC=0    # hf-tree-creator-xicc-topkpipi
 # Correlations
@@ -212,6 +216,7 @@ function MakeScriptO2 {
   [ $DOO2_CAND_2PRONG -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-2prong"
   [ $DOO2_CAND_3PRONG -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-3prong"
   [ $DOO2_CAND_X -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-x"
+  [ $DOO2_CAND_LB -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-lb"
   [ $DOO2_CAND_CHIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-chic"
   [ $DOO2_CAND_CASC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-cascade"
   [ $DOO2_CAND_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-xicc"
@@ -222,6 +227,7 @@ function MakeScriptO2 {
   [ $DOO2_SEL_JPSI -eq 1 ] && WORKFLOWS+=" ${WF_SEL_JPSI}${SUFFIX_ALICE3}"
   [ $DOO2_SEL_DPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-dplus-topikpi-candidate-selector"
   [ $DOO2_SEL_LC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-lc-candidate-selector"
+  [ $DOO2_SEL_LB -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-lb-tolcpi-candidate-selector"
   [ $DOO2_SEL_XIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-xic-topkpi-candidate-selector"
   [ $DOO2_SEL_X -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-x-tojpsipipi-candidate-selector"
   [ $DOO2_SEL_CHIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-chic-tojpsigamma-candidate-selector"
@@ -233,6 +239,7 @@ function MakeScriptO2 {
   [ $DOO2_TASK_JPSI -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-jpsi"
   [ $DOO2_TASK_DPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-dplus"
   [ $DOO2_TASK_LC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-lc"
+  [ $DOO2_TASK_LB -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-lb"
   [ $DOO2_TASK_XIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-xic"
   [ $DOO2_TASK_X -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-x"
   [ $DOO2_TASK_CHIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-chic"
@@ -250,6 +257,7 @@ function MakeScriptO2 {
   # Tree creators
   [ $DOO2_TREE_D0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-d0-tokpi"
   [ $DOO2_TREE_LC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-lc-topkpi"
+  [ $DOO2_TREE_LB -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-lb-tolcpi"
   [ $DOO2_TREE_X -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-x-tojpsipipi"
   [ $DOO2_TREE_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-xicc-topkpipi"
 
@@ -317,6 +325,7 @@ function MakeScriptPostprocess {
     [ $DOO2_TASK_D0 -eq 1 ] && { OPT_COMPARE+=" d0 "; [ "$ISMC" -eq 1 ] && OPT_COMPARE+=" d0-mc "; }
     [ $DOO2_TASK_DPLUS -eq 1 ] && OPT_COMPARE+=" dplus "
     [ $DOO2_TASK_LC -eq 1 ] && { OPT_COMPARE+=" lc "; [ "$ISMC" -eq 1 ] && OPT_COMPARE+=" lc-mc "; }
+    [ $DOO2_TASK_LB -eq 1 ] && { OPT_COMPARE+=" lb "; [ "$ISMC" -eq 1 ] && OPT_COMPARE+=" lb-mc "; }
     [ $DOO2_TASK_XIC -eq 1 ] && OPT_COMPARE+=" xic "
     [ $DOO2_TASK_JPSI -eq 1 ] && OPT_COMPARE+=" jpsi "
     [ "$OPT_COMPARE" ] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/Compare.C(\\\"\$FileO2\\\", \\\"\$FileAli\\\", \\\"$OPT_COMPARE\\\", $DORATIO)\""
@@ -327,6 +336,7 @@ function MakeScriptPostprocess {
     [ $DOO2_TASK_D0 -eq 1 ] && PARTICLES+=" d0 "
     [ $DOO2_TASK_DPLUS -eq 1 ] && PARTICLES+=" dplus "
     [ $DOO2_TASK_LC -eq 1 ] && PARTICLES+=" lc "
+    [ $DOO2_TASK_LB -eq 1 ] && PARTICLES+=" lb "
     [ $DOO2_TASK_XIC -eq 1 ] && PARTICLES+=" xic "
     [ $DOO2_TASK_JPSI -eq 1 ] && PARTICLES+=" jpsi "
     [ $DOO2_TASK_LCK0SP -eq 1 ] && PARTICLES+=" lc-tok0sP "
