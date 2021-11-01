@@ -125,6 +125,15 @@ function AdjustJson {
     JSON="$JSON_EDIT"
   fi
 
+  if [[ $ISMC -eq 1 ]]
+  then
+    MsgWarn "\nEnabling MC"
+    ReplaceString "\"processMC\": \"false\"" "\"processMC\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  else
+    MsgWarn "\nUsing data"
+    ReplaceString "\"processMC\": \"true\"" "\"processMC\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  fi
+
   # Enable D0 selection.
   if [ $APPLYCUTS_D0 -eq 1 ]; then
     MsgWarn "\nUsing D0 selection cuts"

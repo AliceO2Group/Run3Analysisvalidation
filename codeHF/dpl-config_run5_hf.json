@@ -176,6 +176,9 @@
         "d_minrelchi2change": "0.9",
         "b_dovalplots": "true"
     },
+    "hf-cand-creator-2prong-expressions": {
+        "processMC": "true"
+    },
     "hf-cand-creator-3prong": {
         "d_bz": "5.",
         "b_propdca": "true",
@@ -184,6 +187,9 @@
         "d_minparamchange": "0.001",
         "d_minrelchi2change": "0.9",
         "b_dovalplots": "true"
+    },
+    "hf-cand-creator-3prong-expressions": {
+        "processMC": "true"
     },
     "hf-cand-creator-xicc": {
         "d_bz": "20",
@@ -552,12 +558,8 @@
                 "50",
                 "100"
             ]
-        }
-    },
-    "hf-task-d0-mc": {
-        "cutYCandMax": "0.8",
-        "d_selectionFlagD0": "0",
-        "d_selectionFlagD0bar": "0"
+        },
+	"processMC": "true"
     },
     "hf-task-dplus": {
         "cutYCandMax": "0.8",
@@ -618,26 +620,8 @@
                 "24",
                 "36"
             ]
-        }
-    },
-    "hf-task-lc-mc": {
-        "cutYCandMax": "2.0",
-        "d_selectionFlagLc": "0",
-        "pTBins": {
-            "values": [
-                "0",
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "6",
-                "8",
-                "12",
-                "24",
-                "36"
-            ]
-        }
+        },
+	"processMC": "true"
     },
     "hf-task-xic": {
         "cutEtaCandMax": "-1",
