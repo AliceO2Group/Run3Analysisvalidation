@@ -471,7 +471,7 @@
                 "100"
             ]
         },
-	"processMC": "true"
+       "processMC": "true"
     },
     "hf-task-dplus": {
         "cutYCandMax": "0.8",
@@ -623,7 +623,7 @@
                 "10.0"
             ]
         },
-	"processMC": "true"
+       "processMC": "true"
     },
     "hf-task-xic": {
         "cutEtaCandMax": "0.8",
