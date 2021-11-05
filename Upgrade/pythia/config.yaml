@@ -112,3 +112,22 @@ Omegaccc_ptdep_Pyhia8mode2_pp14p0_absy1p44:
   ymin: -1.44
   ymax: 1.44
   correction: 1.
+
+Bplusptdep_Pyhia8mode2_pp14p0_absy1p44:
+  outputfile: Bplusptdep_Pyhia8mode2_pp14p0_absy1p44.root
+  myhadronname: Bplus
+  myhadronlatex: B^{+}
+  pdgparticle: 521
+  maxneventsperjob: 50000 # max events per file/process
+  tune: 14 # monash
+  beamidA: 2212 # incoming hadron
+  beamidB: 2212 # incoming hadron
+  eCM: 14000
+  pythiamode: SoftQCD:all = on
+  extramode: mode2 # in case extra tuning is needed
+  nptbins: 100
+  ptmin: 0.
+  ptmax: 50.
+  ymin: -1.44
+  ymax: 1.44
+  correction: 1.
