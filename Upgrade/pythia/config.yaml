@@ -113,8 +113,8 @@ Omegaccc_ptdep_Pyhia8mode2_pp14p0_absy1p44:
   ymax: 1.44
   correction: 1.
 
-Bplusptdep_Pyhia8mode2_pp14p0_absy1p44:
-  outputfile: Bplusptdep_Pyhia8mode2_pp14p0_absy1p44.root
+Bplus_ptdep_Pyhia8mode2_pp14p0_absy1p44:
+  outputfile: Bplus_ptdep_Pyhia8mode2_pp14p0_absy1p44.root
   myhadronname: Bplus
   myhadronlatex: B^{+}
   pdgparticle: 521
