@@ -125,13 +125,41 @@ function AdjustJson {
     JSON="$JSON_EDIT"
   fi
 
+  # Set Run2/3/5 and MC switches
   if [[ $ISMC -eq 1 ]]
   then
     MsgWarn "\nEnabling MC"
     ReplaceString "\"processMC\": \"false\"" "\"processMC\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"isMC\": \"false\"" "\"isMC\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    if [[ "$INPUT_RUN" = "2" ]]
+    then
+      ReplaceString "\"isRun2MC\": \"false\"" "\"isRun2MC\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    fi
   else
     MsgWarn "\nUsing data"
     ReplaceString "\"processMC\": \"true\"" "\"processMC\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"isMC\": \"true\"" "\"isMC\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    if [[ "$INPUT_RUN" = "2" ]]
+    then
+      ReplaceString "\"isRun2MC\": \"true\"" "\"isRun2MC\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    fi
+  fi
+  if [[ -n "$INPUT_SYS" ]]
+  then
+    ReplaceString "\"syst\": \"pp\"" "\"syst\": \"$INPUT_SYS\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  fi
+  if [[ -n "$INPUT_RUN" ]]
+  then
+    if [[ $INPUT_RUN -eq 2 ]]
+    then
+      ReplaceString "\"processRun2\": \"false\"" "\"processRun2\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+      ReplaceString "\"processRun3\": \"true\"" "\"processRun3\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    fi
+    if [[ $INPUT_RUN -eq 3 ]]
+    then
+      ReplaceString "\"processRun2\": \"true\"" "\"processRun2\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+      ReplaceString "\"processRun3\": \"false\"" "\"processRun3\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    fi
   fi
 
   # Enable D0 selection.

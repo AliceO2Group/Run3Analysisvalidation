@@ -6,6 +6,20 @@
         "step-value-enumeration": "1",
         "aod-file": "@list_o2.txt"
     },
+    "o2-analysis-timestamp": {
+        "isRun2MC": "true"
+    },
+    "bc-selection-task": {
+        "processRun2": "true",
+        "processRun3": "false"
+    },
+    "event-selection-task": {
+        "syst": "pp",
+        "muonSelection": "0",
+        "isMC": "true",
+        "processRun2": "true",
+        "processRun3": "false"
+    },
     "hf-tag-sel-collisions": {
         "fillHistograms": "true",
         "xVertexMin": "-100",

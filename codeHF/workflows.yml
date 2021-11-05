@@ -13,12 +13,8 @@ workflows:
   # Event selection
 
   o2-analysis-timestamp:
-    options:
-      mc: "--isMC 1"
 
   o2-analysis-event-selection:
-    options:
-      mc: "--isMC 1"
 
   # Skimming
 
