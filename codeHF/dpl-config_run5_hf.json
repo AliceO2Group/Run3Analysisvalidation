@@ -30,7 +30,9 @@
         "zVertexMax": "100",
         "nContribMin": "0",
         "chi2Max": "0",
-        "triggerClassName": ""
+        "triggerClassName": "",
+        "processTrigSel": "false",
+        "processNoTrigSel": "true"
     },
     "hf-tag-sel-tracks": {
         "fillHistograms": "true",

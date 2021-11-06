@@ -12,9 +12,9 @@ workflows:
 
   # Event selection
 
-  o2-analysis-timestamp:
+  o2-analysis-timestamp: {}
 
-  o2-analysis-event-selection:
+  o2-analysis-event-selection: {}
 
   # Skimming
 
