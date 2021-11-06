@@ -20,6 +20,10 @@
         "processRun2": "false",
         "processRun3": "true"
     },
+    "track-extension": {
+        "processRun2": "false",
+        "processRun3": "true"
+    },
     "hf-tag-sel-collisions": {
         "fillHistograms": "true",
         "xVertexMin": "-100",
