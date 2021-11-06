@@ -152,11 +152,13 @@ function AdjustJson {
   then
     if [ $INPUT_RUN -eq 2 ]
     then
+      MsgWarn "\nUsing Run 2"
       ReplaceString "\"processRun2\": \"false\"" "\"processRun2\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
       ReplaceString "\"processRun3\": \"true\"" "\"processRun3\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
     fi
     if [ $INPUT_RUN -eq 3 ]
     then
+      MsgWarn "\nUsing Run 3"
       ReplaceString "\"processRun2\": \"true\"" "\"processRun2\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
       ReplaceString "\"processRun3\": \"false\"" "\"processRun3\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
       ReplaceString "\"processTrigSel\": \"true\"" "\"processTrigSel\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
