@@ -14,7 +14,7 @@
 ####################################################################################################
 
 # Steps
-DOCLEAN=1           # Delete created files (before and after running tasks).
+DOCLEAN=0           # Delete created files (before and after running tasks).
 DOCONVERT=1         # Convert AliESDs.root to AO2D.root.
 DOALI=0             # Run AliPhysics tasks.
 DOO2=1              # Run O2 tasks.
@@ -99,7 +99,7 @@ APPLYCUTS_CHIC=0    # Apply Chi_c selection cuts.
 APPLYCUTS_LCK0SP=0  # Apply Λc → K0S p selection cuts.
 APPLYCUTS_XICC=0    # Apply Ξcc selection cuts.
 
-SAVETREES=0         # Save O2 tables to trees.
+SAVETREES=1         # Save O2 tables to trees.
 USEO2VERTEXER=0     # Use the O2 vertexer in AliPhysics.
 DORATIO=0           # Plot histogram ratios in comparison.
 
