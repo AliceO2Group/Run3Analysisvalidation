@@ -242,7 +242,7 @@ workflows:
   o2-analysis-hf-tree-creator-lb-tolcpi:
     requires_mc: yes
     dependencies: o2-analysis-hf-lb-tolcpi-candidate-selector
-    tables: [HFCANDLBFull, HFCANDLBFullE, HFCANDLBFullP]
+    tables: [HFCANDLbFull, HFCANDLbFullE, HFCANDLbFullP]
 
   o2-analysis-hf-tree-creator-x-tojpsipipi:
     requires_mc: yes
