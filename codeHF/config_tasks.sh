@@ -76,9 +76,9 @@ DOO2_TASK_BPLUS=0   # hf-task-bplus
 # Tree creators
 DOO2_TREE_D0=0      # hf-tree-creator-d0-tokpi
 DOO2_TREE_LC=0      # hf-tree-creator-lc-topkpi
-DOO2_TREE_LB=1      # hf-tree-creator-lb-tolcpi
+DOO2_TREE_LB=0      # hf-tree-creator-lb-tolcpi
 DOO2_TREE_X=0       # hf-tree-creator-x-tojpsipipi
-DOO2_TREE_XICC=0    # hf-tree-creator-xicc-topkpipi
+DOO2_TREE_XICC=1    # hf-tree-creator-xicc-topkpipi
 # Correlations
 DOO2_D0D0BAR_DATA=0      # hf-correlator-d0d0bar
 DOO2_D0D0BAR_MCREC=0     # hf-correlator-d0d0bar-mc-rec
@@ -99,7 +99,7 @@ APPLYCUTS_CHIC=0    # Apply Chi_c selection cuts.
 APPLYCUTS_LCK0SP=0  # Apply Λc → K0S p selection cuts.
 APPLYCUTS_XICC=0    # Apply Ξcc selection cuts.
 
-SAVETREES=1         # Save O2 tables to trees.
+SAVETREES=0         # Save O2 tables to trees.
 USEO2VERTEXER=0     # Use the O2 vertexer in AliPhysics.
 DORATIO=0           # Plot histogram ratios in comparison.
 
