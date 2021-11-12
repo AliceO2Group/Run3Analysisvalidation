@@ -6,7 +6,7 @@
         "step-value-enumeration": "1",
         "aod-file": "@list_o2.txt"
     },
-    "o2-analysis-timestamp": {
+    "timestamp-task": {
         "isRun2MC": "true"
     },
     "bc-selection-task": {
