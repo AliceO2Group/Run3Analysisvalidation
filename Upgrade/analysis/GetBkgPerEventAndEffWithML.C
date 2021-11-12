@@ -113,6 +113,16 @@ void GetBkgPerEventAndEffWithML(const char* signalFileName,
   hMassVsPtSig = (TH2D*) dir_sig->Get(histNameSig[channel]);
   hMassVsPtSig -> SetName("hMassVsPtSig");
 
+  Double_t nEventsBkg = -1;
+  TH1F* hCount = (TH1F*)input_bkg->Get("histonorm");
+  if (!hCount) {
+    nEventsBkg = 20e6;
+    printf("\n********* WARNING: cannot retrieve bkg number of events, using nEventsBkg = %d *********\n\n", Int_t(nEventsBkg));
+  } else {
+    nEventsBkg = hCount->GetBinContent(1);
+    printf("nEventsBkg = %d, read from qa-global-observables/eventCount\n", Int_t(nEventsBkg));
+  }
+  
   // Getting the mass histogram for the signal (pt-integrated)
   hMassSig = hMassVsPtSig->ProjectionX();
 
@@ -255,7 +265,8 @@ void GetBkgPerEventAndEffWithML(const char* signalFileName,
       fitBkg[i]->SetParameter(j, fitBkgSideBands[i]->GetParameter(j));
 
     bkg = fitBkg[i]->Integral(sidebandCount[0], sidebandCount[1]) / hMassBkg[i]->GetBinWidth(1);
-
+    bkg /= nEventsBkg; // bkg is the expected background in the +/- 3 sigma window per MB event
+    
     // Evaluating significance and filling histos
 
     hBkgPerEvent->SetBinContent(i + 1, bkg);
