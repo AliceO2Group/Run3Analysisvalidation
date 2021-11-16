@@ -237,5 +237,6 @@ def analysis(
 # analysis("Chi_c", "pp14p0", "absy1p44", "central", "Pyhia8monash", 1)
 # analysis("Chi_c", "pp14p0", "absy0p33", "central", "Pyhia8monash", 1)
 # analysis("Chi_c", "PbPb5p52", "absy1p44", "central", "SHMC_2021", 0)
-analysis("Chi_c", "PbPb5p52", "absy0p33", "central", "SHMC_2021", 0)
+#analysis("Chi_c", "PbPb5p52", "absy0p33", "central", "SHMC_2021", 0)
 # analysis("X3872", "pp14p0", "absy1p44", "central", "Pyhia8monash", 1)
+analysis("B_plus", "pp14p0", "absy1p44", "central", "Pyhia8mode2", 1)

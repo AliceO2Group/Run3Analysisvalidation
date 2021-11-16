@@ -87,3 +87,16 @@ X3872:
       theoryfile: ../InputsTheory/x3872_ptdep_Pyhia8monash_pp14p0_absy1p44.root # this is temporarely the Lc file
       histoyield: hx3872crossvspt # to be replaced with the name of the jpsi th histogram
       histoyield_norm: hx3872crossvspt # to be replaced with the name of the jpsi th histogram
+B_plus:
+  pp14p0:
+    absy1p44:
+      ymin: 0.001
+      ymax: 10000
+      binning: [0, 0.5, 1.0, 2.0, 3.0, 4.0, 5.0, 7.0, 10.0, 13.0, 16.0, 20.0, 24.0]
+      efffile: ../InputsExp/Bplus_ptdep_pp14p0_absy1p44_scenario3/efficiency_bplus.root
+      histoeff: eff
+      bkgfile: ../InputsExp/Bplus_ptdep_pp14p0_absy1p44_scenario3/bkgPerEvents_bplus.root
+      histobkg: hBkgPerEvent
+      theoryfile: ../InputsTheory/Bplus_ptdep_Pyhia8mode2_pp14p0_absy1p44.root
+      histoyield: hBpluscrossvspt # to be replaced with the name of the jpsi th histogram
+      histoyield_norm: hBpluscrossvspt # to be replaced with the name of the jpsi th histogram
