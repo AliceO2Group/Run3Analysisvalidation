@@ -626,7 +626,24 @@
   },
   "hf-task-dplus-mc": {
     "cutYCandMax": "0.8",
-    "d_selectionFlagDPlus": "0"
+    "d_selectionFlagDPlus": "0",
+    "pTBins": {
+      "values": [
+        "1.",
+        "2.",
+        "3.",
+        "4.",
+        "5.",
+        "6.",
+        "7.",
+        "8.",
+        "10.",
+        "12.",
+        "16.",
+        "24.",
+        "36."
+      ]
+    }
   },
   "hf-task-lc": {
     "cutYCandMax": "2.0",
