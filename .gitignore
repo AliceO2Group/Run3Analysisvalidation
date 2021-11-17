@@ -3,14 +3,3 @@
 *.log
 report/
 .DS_Store
-/.vs/VSWorkspaceState.json
-/.vs/slnx.sqlite
-/.vs/Run3Analysisvalidation/v16/Browse.VC.opendb
-/.vs/Run3Analysisvalidation/v16/Browse.VC.db-wal
-/.vs/Run3Analysisvalidation/v16/Browse.VC.db-shm
-/.vs/Run3Analysisvalidation/v16/Browse.VC.db
-/.vs/Run3Analysisvalidation/v16/.suo
-/.vs/ProjectSettings.json
-/.vs/Run3Analysisvalidation/v17
-/.vs/Run3Analysisvalidation/project-colors.json
-/.vs/PythonSettings.json
