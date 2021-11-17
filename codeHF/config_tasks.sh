@@ -87,7 +87,6 @@ DOO2_DPLUSDMINUS_DATA=0  # hf-correlator-dplusdminus
 DOO2_DPLUSDMINUS_MCREC=0 # hf-correlator-dplusdminus-mc-rec
 DOO2_DPLUSDMINUS_MCGEN=0 # hf-correlator-dplusdminus-mc-gen
 
-
 # Selection cuts
 APPLYCUTS_D0=0      # Apply D0 selection cuts.
 APPLYCUTS_DPLUS=0   # Apply D+ selection cuts.
