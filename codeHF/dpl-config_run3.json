@@ -35,8 +35,8 @@
         "nContribMin": "0",
         "chi2Max": "0",
         "triggerClassName": "kINT7",
-        "processTrigSel": "true",
-        "processNoTrigSel": "false"
+        "processTrigSel": "false",
+        "processNoTrigSel": "true"
     },
     "hf-tag-sel-tracks": {
         "fillHistograms": "true",
