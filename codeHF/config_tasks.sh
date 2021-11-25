@@ -94,6 +94,7 @@ APPLYCUTS_X=0       # Apply X selection cuts.
 APPLYCUTS_CHIC=0    # Apply χc(1p) selection cuts.
 APPLYCUTS_LCK0SP=0  # Apply Λc → K0S p selection cuts.
 APPLYCUTS_XICC=0    # Apply Ξcc selection cuts.
+APPLYCUTS_BPLUS=0    # Apply B+ selection cuts.
 
 SAVETREES=0         # Save O2 tables to trees.
 USEO2VERTEXER=0     # Use the O2 vertexer in AliPhysics.
@@ -223,6 +224,13 @@ function AdjustJson {
     MsgWarn "\nUsing Ξcc selection cuts"
     ReplaceString "\"d_selectionFlagXicc\": \"0\"" "\"d_selectionFlagXicc\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
+
+  # Enable B+ selection.
+  if [ $APPLYCUTS_BPLUS -eq 1 ]; then
+    MsgWarn "\nUsing B+ selection cuts"
+    ReplaceString "\"selectionFlagBPlus\": \"0\"" "\"selectionFlagBPlus\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  fi
+
 }
 
 # Generate the O2 script containing the full workflow specification.
