@@ -6,6 +6,24 @@
         "step-value-enumeration": "1",
         "aod-file": "@list_o2.txt"
     },
+    "timestamp-task": {
+        "isRun2MC": "false"
+    },
+    "bc-selection-task": {
+        "processRun2": "false",
+        "processRun3": "true"
+    },
+    "event-selection-task": {
+        "syst": "pp",
+        "muonSelection": "0",
+        "isMC": "true",
+        "processRun2": "false",
+        "processRun3": "true"
+    },
+    "track-extension": {
+        "processRun2": "false",
+        "processRun3": "true"
+    },
     "hf-tag-sel-collisions": {
         "fillHistograms": "true",
         "xVertexMin": "-100",
@@ -16,7 +34,9 @@
         "zVertexMax": "100",
         "nContribMin": "0",
         "chi2Max": "0",
-        "triggerClassName": ""
+        "triggerClassName": "",
+        "processTrigSel": "false",
+        "processNoTrigSel": "true"
     },
     "hf-tag-sel-tracks": {
         "fillHistograms": "true",
@@ -176,6 +196,9 @@
         "d_minrelchi2change": "0.9",
         "b_dovalplots": "true"
     },
+    "hf-cand-creator-2prong-expressions": {
+        "processMC": "true"
+    },
     "hf-cand-creator-3prong": {
         "d_bz": "20.",
         "b_propdca": "true",
@@ -184,6 +207,9 @@
         "d_minparamchange": "0.001",
         "d_minrelchi2change": "0.9",
         "b_dovalplots": "true"
+    },
+    "hf-cand-creator-3prong-expressions": {
+        "processMC": "true"
     },
     "hf-d0-candidate-selector": {
         "d_pTCandMin": "0.",
@@ -314,7 +340,7 @@
         "d_nSigmaTPCCombined": "500.",
         "d_nSigmaTOF": "300.",
         "d_nSigmaTOFCombined": "5000.",
-        "ptBins": {
+        "pTBins": {
             "values": [
                 "0",
                 "1",
@@ -473,12 +499,8 @@
                 "50",
                 "100"
             ]
-        }
-    },
-    "hf-task-d0-mc": {
-        "cutYCandMax": "0.8",
-        "d_selectionFlagD0": "0",
-        "d_selectionFlagD0bar": "0"
+        },
+       "processMC": "true"
     },
     "hf-task-dplus": {
         "cutYCandMax": "0.8",
@@ -525,7 +547,7 @@
     "hf-task-lc": {
         "cutYCandMax": "2.0",
         "d_selectionFlagLc": "0",
-        "ptBins": {
+        "pTBins": {
             "values": [
                 "0",
                 "1",
@@ -539,11 +561,8 @@
                 "24",
                 "36"
             ]
-        }
-    },
-    "hf-task-lc-mc": {
-        "cutYCandMax": "2.0",
-        "d_selectionFlagLc": "0"
+        },
+       "processMC": "true"
     },
     "hf-task-xic": {
         "cutEtaCandMax": "0.8",

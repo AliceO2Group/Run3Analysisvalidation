@@ -29,7 +29,7 @@ MAKE_GRAPH=0        # Make topology graph.
 
 # Activation of O2 workflows
 # Trigger selection
-DOO2_TRIGSEL=0      # event-selection and timestamp
+DOO2_TRIGSEL=0      # event-selection
 # QA
 DOO2_REJ_ALICE3=0   # hf-qa-rejection
 DOO2_QA_EFF=0       # qa-efficiency
@@ -91,7 +91,7 @@ APPLYCUTS_LC=0      # Apply Λc selection cuts.
 APPLYCUTS_XIC=0     # Apply Ξc selection cuts.
 APPLYCUTS_JPSI=0    # Apply J/ψ selection cuts.
 APPLYCUTS_X=0       # Apply X selection cuts.
-APPLYCUTS_CHIC=0    # Apply Chi_c selection cuts.
+APPLYCUTS_CHIC=0    # Apply χc(1p) selection cuts.
 APPLYCUTS_LCK0SP=0  # Apply Λc → K0S p selection cuts.
 APPLYCUTS_XICC=0    # Apply Ξcc selection cuts.
 
@@ -119,11 +119,54 @@ function Clean {
 # Modify the JSON file.
 function AdjustJson {
   # Make a copy of the default JSON file to modify it.
-  JSON_EDIT=""
-  if [[ $APPLYCUTS_D0 -eq 1 || $APPLYCUTS_DPLUS -eq 1 || $APPLYCUTS_LC -eq 1 || $APPLYCUTS_XIC -eq 1 || $APPLYCUTS_JPSI -eq 1 || $APPLYCUTS_LCK0SP -eq 1 || $APPLYCUTS_X -eq 1 || $APPLYCUTS_CHIC -eq 1 || $APPLYCUTS_XICC -eq 1 ]]; then
-    JSON_EDIT="${JSON/.json/_edit.json}"
-    cp "$JSON" "$JSON_EDIT" || ErrExit "Failed to cp $JSON $JSON_EDIT."
-    JSON="$JSON_EDIT"
+  JSON_EDIT="${JSON/.json/_edit.json}"
+  cp "$JSON" "$JSON_EDIT" || ErrExit "Failed to cp $JSON $JSON_EDIT."
+  JSON="$JSON_EDIT"
+
+  # Trigger selection
+  if [ $DOO2_TRIGSEL -eq 1 ]; then
+    ReplaceString "\"processTrigSel\": \"false\"" "\"processTrigSel\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processNoTrigSel\": \"true\"" "\"processNoTrigSel\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  fi
+
+  # MC
+  if [ "$ISMC" -eq 1 ]; then
+    MsgWarn "\nUsing MC data"
+    ReplaceString "\"processMC\": \"false\"" "\"processMC\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"isMC\": \"false\"" "\"isMC\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    if [ "$INPUT_RUN" -eq 2 ]; then
+      # timestamp
+      ReplaceString "\"isRun2MC\": \"false\"" "\"isRun2MC\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    fi
+  else
+    MsgWarn "\nUsing real data"
+    ReplaceString "\"processMC\": \"true\"" "\"processMC\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"isMC\": \"true\"" "\"isMC\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    if [ "$INPUT_RUN" -eq 2 ]; then
+      ReplaceString "\"isRun2MC\": \"true\"" "\"isRun2MC\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    fi
+  fi
+
+  # Collision system
+  if [ -n "$INPUT_SYS" ]; then
+    MsgWarn "\nSetting collision system $INPUT_SYS"
+    ReplaceString "\"syst\": \"pp\"" "\"syst\": \"$INPUT_SYS\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  fi
+
+  # Run 2/3/5
+  if [ "$INPUT_RUN" -eq 2 ]; then
+    MsgWarn "\nUsing Run 2"
+    ReplaceString "\"processRun2\": \"false\"" "\"processRun2\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processRun3\": \"true\"" "\"processRun3\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  elif [ "$INPUT_RUN" -eq 3 ]; then
+    MsgWarn "\nUsing Run 3"
+    ReplaceString "\"processRun2\": \"true\"" "\"processRun2\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processRun3\": \"false\"" "\"processRun3\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    # do not use trigger selection for Run 3
+    ReplaceString "\"processTrigSel\": \"true\"" "\"processTrigSel\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processNoTrigSel\": \"false\"" "\"processNoTrigSel\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    # do not perform track quality cuts for Run 3 until they are updated
+    ReplaceString "\"doCutQuality\": \"true\"" "\"doCutQuality\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable D0 selection.
@@ -163,9 +206,9 @@ function AdjustJson {
     ReplaceString "\"d_selectionFlagX\": \"0\"" "\"d_selectionFlagX\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
-  # Enable chi_c1(1p) selection.
+  # Enable χc(1p) selection.
   if [ $APPLYCUTS_CHIC -eq 1 ]; then
-    MsgWarn "\nUsing chi_c1(1p) selection cuts"
+    MsgWarn "\nUsing χc(1p) selection cuts"
     ReplaceString "\"d_selectionFlagChic\": \"0\"" "\"d_selectionFlagChic\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
@@ -188,12 +231,12 @@ function MakeScriptO2 {
   [[ $DOO2_CAND_CASC -eq 1 || $DOO2_SEL_LCK0SP -eq 1 || $DOO2_TASK_LCK0SP -eq 1 ]] && DOO2_CASC=1 || DOO2_CASC=0
   # Cascade reconstruction
   [ $DOO2_CASC -eq 1 ] && SUFFIX_CASC="-v0" || SUFFIX_CASC=""
-  # Trigger selection
-  [ $DOO2_TRIGSEL -eq 1 ] && SUFFIX_TRIGSEL="-trigsel" || SUFFIX_TRIGSEL=""
   # ALICE 3 input
   [ "$ISALICE3" -eq 1 ] && SUFFIX_ALICE3="-alice3" || SUFFIX_ALICE3=""
 
   WORKFLOWS=""
+  # Trigger selection
+  [ $DOO2_TRIGSEL -eq 1 ] && WORKFLOWS+=" o2-analysis-event-selection"
   # QA
   [ $DOO2_REJ_ALICE3 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-qa-rejection"
   [ $DOO2_QA_EFF -eq 1 ] && WORKFLOWS+=" o2-analysis-qa-efficiency"
@@ -202,12 +245,11 @@ function MakeScriptO2 {
   # PID
   [ $DOO2_PID_TPC -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tpc-full"
   WF_TOF="o2-analysis-pid-tof-full"
-  WF_TOFA3="o2-analysis-alice3-pid-tof"
-  [ $DOO2_PID_TOF -eq 1 ] && { [ "$ISALICE3" -eq 1 ] && WORKFLOWS+=" $WF_TOFA3" || WORKFLOWS+=" $WF_TOF"; }
+  [ $DOO2_PID_TOF -eq 1 ] && WORKFLOWS+=" ${WF_TOF}${SUFFIX_ALICE3}"
   [ $DOO2_PID_TOF_QA -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tof-qa-mc"
   # Vertexing
   WF_SKIM="o2-analysis-hf-track-index-skims-creator"
-  [ $DOO2_SKIM -eq 1 ] && WORKFLOWS+=" ${WF_SKIM}${SUFFIX_TRIGSEL}${SUFFIX_CASC}"
+  [ $DOO2_SKIM -eq 1 ] && WORKFLOWS+=" ${WF_SKIM}${SUFFIX_CASC}"
   [ $DOO2_CAND_2PRONG -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-2prong"
   [ $DOO2_CAND_3PRONG -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-3prong"
   [ $DOO2_CAND_X -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-x"
@@ -261,7 +303,7 @@ function MakeScriptO2 {
 
   # Make a copy of the default workflow database file before modifying it.
   DATABASE_O2_EDIT=""
-  if [[ $DOO2_TRIGSEL -eq 1 || $DOO2_CASC -eq 1 || "$ISALICE3" -eq 1 ]]; then
+  if [[ $DOO2_CASC -eq 1 || "$ISALICE3" -eq 1 ]]; then
     DATABASE_O2_EDIT="${DATABASE_O2/.yml/_edit.yml}"
     cp "$DATABASE_O2" "$DATABASE_O2_EDIT" || ErrExit "Failed to cp $DATABASE_O2 $DATABASE_O2_EDIT."
     DATABASE_O2="$DATABASE_O2_EDIT"
@@ -269,12 +311,14 @@ function MakeScriptO2 {
     # Adjust workflow database in case of ALICE 3 input.
     [ "$ISALICE3" -eq 1 ] && {
       ReplaceString "- $WF_SEL_JPSI" "- ${WF_SEL_JPSI}${SUFFIX_ALICE3}" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
-      ReplaceString "- $WF_TOF" "- $WF_TOFA3" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
+      ReplaceString "- $WF_TOF" "- ${WF_TOF}${SUFFIX_ALICE3}" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
+      WF_TRKEXT="o2-analysis-trackextension"
+      ReplaceString "- $WF_TRKEXT" "- ${WF_TRKEXT}${SUFFIX_ALICE3}" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
     }
 
-    # Adjust workflow database in case of trigger selection or cascades enabled.
-    [[ $DOO2_TRIGSEL -eq 1 || $DOO2_CASC -eq 1 ]] && {
-      ReplaceString "- $WF_SKIM" "- ${WF_SKIM}${SUFFIX_TRIGSEL}${SUFFIX_CASC}" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
+    # Adjust workflow database in case of cascades enabled.
+    [ $DOO2_CASC -eq 1 ] && {
+      ReplaceString "- $WF_SKIM" "- ${WF_SKIM}${SUFFIX_CASC}" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
     }
   fi
 

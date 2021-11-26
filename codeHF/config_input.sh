@@ -25,31 +25,45 @@ JSONRUN5_ONIAX="dpl-config_run5_oniaX.json"
 JSON="$JSONRUN3"
 
 INPUT_FILES="AliESDs.root"  # Input file pattern
+INPUT_SYS=""
+INPUT_RUN=0
 
 case $INPUT_CASE in
   1)
     INPUT_LABEL="Run 2, p-p real LHC17p"
-    INPUT_DIR="/mnt/data/Run2/LHC17p_pass1_CENT_woSDD/282341";;
+    INPUT_DIR="/mnt/data/Run2/LHC17p_pass1_CENT_woSDD/282341"
+    INPUT_SYS="pp"
+    INPUT_RUN=2;;
   2)
     INPUT_LABEL="Run 2, p-p MC LHC17p"
     INPUT_DIR="/mnt/data/Run2/LHC18a4a2_cent/282099"
+    INPUT_SYS="pp"
+    INPUT_RUN=2
     ISMC=1;;
   3)
     INPUT_LABEL="Run 2, p-p MC LHC17p"
     INPUT_DIR="/mnt/data/Run2/LHC18a4a2_cent/282341"
+    INPUT_SYS="pp"
+    INPUT_RUN=2
     ISMC=1;;
   4)
     INPUT_LABEL="Run 2, Pb-Pb real LHC15o"
     INPUT_DIR="/mnt/data/Run2/LHC15o/246751/pass1"
+    INPUT_SYS="PbPb"
+    INPUT_RUN=2
     TRIGGERSTRINGRUN2="CV0L7-B-NOPF-CENT"
     TRIGGERBITRUN3=5;; #FIXME
   5)
     INPUT_LABEL="Run 2, Pb-Pb MC LHC15o"
     INPUT_DIR="/mnt/data/Run2/LHC15k1a3/246391"
+    INPUT_SYS="PbPb"
+    INPUT_RUN=2
     ISMC=1;;
   6)
     INPUT_LABEL="Run 2, p-p MC LHC16p, dedicated Ξc"
     INPUT_DIR="/mnt/data/Run2/LHC19g6f3/264347"
+    INPUT_SYS="pp"
+    INPUT_RUN=2
     ISMC=1;;
   7)
     INPUT_LABEL="Run 5, p-p MC 14 TeV MB, Layout v1, HF analysis"
@@ -107,7 +121,7 @@ case $INPUT_CASE in
     ISINPUTO2=1
     ISALICE3=1
     ISMC=1;;
-   14)
+  14)
     INPUT_LABEL="Run 5, p-p MC 14 TeV Xicc-enriched, Layout v1, HF analysis"
     INPUT_DIR="/home/mmazzill/pp14TeV_XiccGun_20M_geometry_v1_19082021"
     INPUT_FILES="AODRun5.*.root"
@@ -115,7 +129,7 @@ case $INPUT_CASE in
     ISINPUTO2=1
     ISALICE3=1
     ISMC=1;;
-   15)
+  15)
     INPUT_LABEL="Run 5, p-p MC 14 TeV OniaX-enriched, Layout v1, oniaX analysis MUON ID and ECAL"
     INPUT_DIR="/home/kharlov/ECAL+PCM/delphes/pp_onia_X_2021_10_10"
     INPUT_FILES="AODRun5.*.root"
@@ -123,7 +137,7 @@ case $INPUT_CASE in
     ISINPUTO2=1
     ISALICE3=1
     ISMC=1;;
-   16)
+  16)
     INPUT_LABEL="Run 5, PbPb 5.5 TeV, Layout v1, MB MUON ID and ECAL"
     INPUT_DIR="/home/mmazzill/PbPb_100K_inel_2T_rmin100_11102021"
     INPUT_FILES="AODRun5.*.root"
@@ -131,7 +145,7 @@ case $INPUT_CASE in
     ISINPUTO2=1
     ISALICE3=1
     ISMC=1;;
-   17)
+  17)
     INPUT_LABEL="Run 5, pp 14 TeV, Layout v1, MB MUON ID and ECAL"
     INPUT_DIR="/home/mmazzill/pp14TeV_inel_20M_2T_rmin100_geometry_v1_11102021"
     INPUT_FILES="AODRun5.*.root"
