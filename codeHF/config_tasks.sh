@@ -75,6 +75,7 @@ DOO2_TREE_D0=0      # hf-tree-creator-d0-tokpi
 DOO2_TREE_LC=0      # hf-tree-creator-lc-topkpi
 DOO2_TREE_X=0       # hf-tree-creator-x-tojpsipipi
 DOO2_TREE_XICC=0    # hf-tree-creator-xicc-topkpipi
+DOO2_TREE_CHIC=0    # hf-tree-creator-chic-topkpipi
 # Correlations
 DOO2_D0D0BAR_DATA=0      # hf-correlator-d0d0bar
 DOO2_D0D0BAR_MCREC=0     # hf-correlator-d0d0bar-mc-rec
@@ -292,6 +293,7 @@ function MakeScriptO2 {
   [ $DOO2_TREE_LC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-lc-topkpi"
   [ $DOO2_TREE_X -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-x-tojpsipipi"
   [ $DOO2_TREE_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-xicc-topkpipi"
+  [ $DOO2_TREE_CHIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-chic-tojpsigamma"
 
   # Translate options into arguments of the generating script.
   OPT_MAKECMD=""
