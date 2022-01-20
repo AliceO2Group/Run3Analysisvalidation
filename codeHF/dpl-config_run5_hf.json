@@ -222,7 +222,7 @@
         "d_selectionFlagXic": "1",
         "cutPtPionMin": "0.2"
     },
-    "hf-cand-creator-bplus": {
+    "hf-candidate-creator-bplus": {
         "bz": "20.",
         "propdca": "true",
         "maxr": "5.",
