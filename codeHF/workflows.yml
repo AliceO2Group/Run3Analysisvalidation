@@ -16,12 +16,14 @@ workflows:
     executable: o2-analysis-hf-track-index-skims-creator
     dependencies:
       - o2-analysis-trackextension
+      - o2-analysis-trackselection
     tables: [HFSELCOLLISION, HFSELTRACK, HFTRACKIDXP2, HFTRACKIDXP3]
 
   o2-analysis-hf-track-index-skims-creator-v0:
     <<: *skim_creator
     dependencies:
       - o2-analysis-trackextension
+      - o2-analysis-trackselection
       - o2-analysis-lf-lambdakzerobuilder
     options: "--doCascades"
     tables: [HFSELCOLLISION, HFSELTRACK, HFTRACKIDXP2, HFTRACKIDXP3, HFTRACKIDXCASC]
@@ -283,6 +285,11 @@ workflows:
   # Helper tasks
 
   o2-analysis-timestamp: {}
+
+  o2-analysis-trackselection: {}
+
+  o2-analysis-trackselection-alice3:
+    executable: o2-analysis-alice3-trackselection
 
   o2-analysis-trackextension:
     dependencies: o2-analysis-timestamp

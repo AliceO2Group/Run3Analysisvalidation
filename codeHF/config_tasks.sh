@@ -315,6 +315,8 @@ function MakeScriptO2 {
       ReplaceString "- $WF_TOF" "- ${WF_TOF}${SUFFIX_ALICE3}" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
       WF_TRKEXT="o2-analysis-trackextension"
       ReplaceString "- $WF_TRKEXT" "- ${WF_TRKEXT}${SUFFIX_ALICE3}" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
+      WF_TRKSEL="o2-analysis-trackselection"
+      ReplaceString "- $WF_TRKSEL" "- ${WF_TRKSEL}${SUFFIX_ALICE3}" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
     }
 
     # Adjust workflow database in case of cascades enabled.
