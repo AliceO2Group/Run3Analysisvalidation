@@ -17,7 +17,7 @@ workflows:
     dependencies:
       - o2-analysis-trackextension
       - o2-analysis-trackselection
-    tables: [HFSELCOLLISION, HFSELTRACK, HFTRACKIDXP2, HFTRACKIDXP3]
+    tables: [HFSELCOLLISION, HFSELTRACK, HF2PRONG, HF3PRONG]
 
   o2-analysis-hf-track-index-skims-creator-v0:
     <<: *skim_creator
@@ -26,7 +26,7 @@ workflows:
       - o2-analysis-trackselection
       - o2-analysis-lf-lambdakzerobuilder
     options: "--doCascades"
-    tables: [HFSELCOLLISION, HFSELTRACK, HFTRACKIDXP2, HFTRACKIDXP3, HFTRACKIDXCASC]
+    tables: [HFSELCOLLISION, HFSELTRACK, HF2PRONG, HF3PRONG, HFCASCADE]
 
   # Candidate creators
 
