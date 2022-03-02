@@ -10,6 +10,6 @@ bash "$SCRIPT" "$FILEIN" "$JSON" > "$LOGFILE" 2>&1
 ExitCode=$?
 
 # Show warnings, errors and fatals in the log file.
-grep -e '^'"W-" -e '^'"Warning" -e '^'"E-" -e '^'"Error" -e '^'"F-" -e '^'"Fatal" -e "segmentation" "$LOGFILE" | sort -u
+grep -e '^'"W-" -e '^'"Warning" -e '^'"E-" -e '^'"Error" -e '^'"F-" -e '^'"Fatal" -e "segmentation" -e "Segmentation" "$LOGFILE" | sort -u
 
 exit $ExitCode
