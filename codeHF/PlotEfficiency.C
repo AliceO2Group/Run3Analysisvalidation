@@ -49,7 +49,7 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
     }
     Printf("\nPlotting efficiency for: %s", particle.Data());
 
-    TString outputDir = Form("hf-task-%s-mc", particle.Data()); // analysis output directory with histograms
+    TString outputDir = Form("hf-task-%s", particle.Data()); // analysis output directory with histograms
 
     // inclusive candidates
     TString nameHistRec = outputDir + "/hPtRecSig"; // reconstruction level pT of matched candidates

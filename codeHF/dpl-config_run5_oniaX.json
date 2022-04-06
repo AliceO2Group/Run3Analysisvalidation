@@ -340,7 +340,7 @@
         "d_nSigmaTPCCombined": "500.",
         "d_nSigmaTOF": "300.",
         "d_nSigmaTOFCombined": "5000.",
-        "ptBins": {
+        "pTBins": {
             "values": [
                 "0",
                 "1",
@@ -547,7 +547,7 @@
     "hf-task-lc": {
         "cutYCandMax": "2.0",
         "d_selectionFlagLc": "0",
-        "ptBins": {
+        "pTBins": {
             "values": [
                 "0",
                 "1",
