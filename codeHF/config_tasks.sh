@@ -28,6 +28,8 @@ DATABASE_O2="workflows.yml"
 MAKE_GRAPH=0        # Make topology graph.
 
 # Activation of O2 workflows
+# MC conversion
+DOO2_MCCONV=1       # mc-converter
 # Trigger selection
 DOO2_TRIGSEL=0      # event-selection
 # QA
@@ -92,6 +94,7 @@ DOO2_DPLUSDMINUS_MCGEN=0 # hf-correlator-dplusdminus-mc-gen
 APPLYCUTS_D0=0      # Apply D0 selection cuts.
 APPLYCUTS_DPLUS=0   # Apply D+ selection cuts.
 APPLYCUTS_LC=0      # Apply Λc selection cuts.
+APPLYCUTS_LB=0      # Apply Λb selection cuts.
 APPLYCUTS_XIC=0     # Apply Ξc selection cuts.
 APPLYCUTS_JPSI=0    # Apply J/ψ selection cuts.
 APPLYCUTS_X=0       # Apply X selection cuts.
@@ -186,6 +189,12 @@ function AdjustJson {
     ReplaceString "\"d_selectionFlagDPlus\": \"0\"" "\"d_selectionFlagDPlus\": \"7\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
+  # Enable Λb selection.
+  if [ $APPLYCUTS_LB -eq 1 ]; then
+    MsgWarn "\nUsing Λb selection cuts"
+    ReplaceString "\"d_selectionFlagLb\": \"0\"" "\"d_selectionFlagLb\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  fi
+  
   # Enable Λc selection.
   if [ $APPLYCUTS_LC -eq 1 ]; then
     MsgWarn "\nUsing Λc selection cuts"
@@ -239,6 +248,8 @@ function MakeScriptO2 {
   [ "$ISALICE3" -eq 1 ] && SUFFIX_ALICE3="-alice3" || SUFFIX_ALICE3=""
 
   WORKFLOWS=""
+  # MC converter to version 001 of mcparticles
+  [ $DOO2_MCCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-mc-converter"
   # Trigger selection
   [ $DOO2_TRIGSEL -eq 1 ] && WORKFLOWS+=" o2-analysis-event-selection"
   # QA
