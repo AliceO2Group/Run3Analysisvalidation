@@ -200,6 +200,10 @@ workflows:
     requires_mc: yes
     options: "--doMCGen"
 
+  o2-analysis-hf-task-hfcorrelations:
+    dependencies: 
+      - o2-analysis-hf-d0-candidate-selector
+
   # Tree creators
 
   o2-analysis-hf-tree-creator-d0-tokpi:
@@ -287,6 +291,8 @@ workflows:
     dependencies: [o2-analysis-hf-candidate-creator-2prong, o2-analysis-hf-candidate-creator-3prong]
 
   # Helper tasks
+
+  o2-analysis-mc-converter: {}
 
   o2-analysis-timestamp: {}
 

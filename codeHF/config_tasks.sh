@@ -15,10 +15,10 @@
 
 # Steps
 DOCLEAN=1           # Delete created files (before and after running tasks).
-DOCONVERT=1         # Convert AliESDs.root to AO2D.root.
-DOALI=1             # Run AliPhysics tasks.
+DOCONVERT=0         # Convert AliESDs.root to AO2D.root.
+DOALI=0             # Run AliPhysics tasks.
 DOO2=1              # Run O2 tasks.
-DOPOSTPROCESS=1     # Run output postprocessing. (Compare AliPhysics and O2 output.)
+DOPOSTPROCESS=0     # Run output postprocessing. (Compare AliPhysics and O2 output.)
 
 # Disable incompatible steps.
 [ "$ISINPUTO2" -eq 1 ] && { DOCONVERT=0; DOALI=0; }
@@ -28,13 +28,15 @@ DATABASE_O2="workflows.yml"
 MAKE_GRAPH=0        # Make topology graph.
 
 # Activation of O2 workflows
+# MC conversion
+DOO2_MCCONV=0       # mc-converter
 # Trigger selection
 DOO2_TRIGSEL=0      # event-selection
 # QA
 DOO2_REJ_ALICE3=0   # hf-qa-rejection
 DOO2_QA_EFF=0       # qa-efficiency
 DOO2_QA_EVTRK=0     # qa-event-track
-DOO2_MC_VALID=0     # hf-mc-validation
+DOO2_MC_VALID=1     # hf-mc-validation
 # PID
 DOO2_PID_TPC=0      # pid-tpc-full
 DOO2_PID_TOF=0      # pid-tof-full/alice3-pid-tof
@@ -62,7 +64,7 @@ DOO2_SEL_LCK0SP=0   # hf-lc-tok0sp-candidate-selector
 DOO2_SEL_XICC=0     # hf-xicc-topkpipi-candidate-selector
 DOO2_SEL_BPLUS=0    # hf-bplus-tod0pi-candidate-selector
 # User tasks
-DOO2_TASK_D0=1      # hf-task-d0
+DOO2_TASK_D0=0      # hf-task-d0
 DOO2_TASK_DPLUS=0   # hf-task-dplus
 DOO2_TASK_LC=0      # hf-task-lc
 DOO2_TASK_XIC=0     # hf-task-xic
@@ -72,6 +74,7 @@ DOO2_TASK_CHIC=0    # hf-task-chic
 DOO2_TASK_LCK0SP=0  # hf-task-lc-tok0sp
 DOO2_TASK_XICC=0    # hf-task-xicc
 DOO2_TASK_BPLUS=0   # hf-task-bplus
+DOO2_TASK_HFCORR=1  # hf-task-hfcorrelations
 # Tree creators
 DOO2_TREE_D0=0      # hf-tree-creator-d0-tokpi
 DOO2_TREE_LC=0      # hf-tree-creator-lc-topkpi
@@ -269,6 +272,8 @@ function MakeScriptO2 {
   [ "$ISALICE3" -eq 1 ] && SUFFIX_ALICE3="-alice3" || SUFFIX_ALICE3=""
 
   WORKFLOWS=""
+  # MC converter to version 001 of mcparticles
+  [ $DOO2_MCCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-mc-converter"
   # Trigger selection
   [ $DOO2_TRIGSEL -eq 1 ] && WORKFLOWS+=" o2-analysis-event-selection"
   # QA
@@ -317,6 +322,7 @@ function MakeScriptO2 {
   [ $DOO2_TASK_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-xicc"
   [ $DOO2_TASK_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-bplus"
   # Correlations
+  [ $DOO2_TASK_HFCORR -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-hfcorrelations"
   WF_CORR=""
   [ $DOO2_D0D0BAR_DATA -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-d0d0bar o2-analysis-hf-task-correlation-ddbar"
   [ $DOO2_D0D0BAR_MCREC -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-d0d0bar-mc-rec o2-analysis-hf-task-correlation-ddbar-mc-rec"
