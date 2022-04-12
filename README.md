@@ -1,6 +1,6 @@
 # Run 3 validation framework
 
-[![GitHub Mega-Linter](https://github.com/AliceO2Group/Run3Analysisvalidation/workflows/Mega-Linter/badge.svg?branch=master)](https://github.com/marketplace/actions/mega-linter)
+[![GitHub MegaLinter](https://github.com/AliceO2Group/Run3Analysisvalidation/workflows/MegaLinter/badge.svg?branch=master)](https://github.com/marketplace/actions/megalinter)
 [![GitHub Clang Format Linter](https://github.com/AliceO2Group/Run3Analysisvalidation/workflows/Clang%20Format%20Linter/badge.svg)](https://github.com/marketplace/actions/clang-format-lint)
 
 ## Introduction
@@ -251,7 +251,7 @@ bash <path to the Run3Analysisvalidation directory>/exec/check_spaces.sh
 clang-format -style=file -i <file>
 ```
 
-### [Mega-Linter](https://nvuillam.github.io/mega-linter/mega-linter-runner/)
+### [MegaLinter](https://megalinter.github.io/latest/mega-linter-runner/)
 
 ```bash
 mega-linter-runner
