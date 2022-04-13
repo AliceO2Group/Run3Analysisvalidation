@@ -56,7 +56,7 @@ def test_root_obj_include_task_argument():
 
 
 def test_find_class_instances():
-    """ Construct simple cases to test find_class_instances."""
+    """Construct simple cases to test find_class_instances."""
 
     class Input:
         pass

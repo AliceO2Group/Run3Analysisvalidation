@@ -27,7 +27,7 @@ jobs:
           BASE_COMMIT=$(git merge-base HEAD upstream/${{ env.MAIN_BRANCH }})
           echo "Diffing against: $BASE_COMMIT"
           # loop over changed files
-          for f in $(git diff --diff-filter d --name-only $BASE_COMMIT); do
+          for f in $(git diff --diff-filter d --name-only "$BASE_COMMIT"); do
             # ignore binary files
             file -bi "$f" | grep -q "charset=binary" && continue
             echo "Scanning file: $f"
@@ -49,10 +49,11 @@ jobs:
           done
           status=$((status_tab + status_trail))
           if [ "$status" -ne 0 ]; then
+            # shellcheck disable=2028
             echo "::warning::Fix the errors in your editor (or with a command)
             Command tips:
             - Get list of files you changed: git diff --diff-filter d --name-only \$(git merge-base HEAD upstream/${{ env.MAIN_BRANCH }})
-            - Replace each tab with two spaces: sed -i 's/\t/  /g' <files>
+            - Replace each tab with two spaces: sed -i 's/\\t/  /g' <files>
             - Remove trailing whitespaces: sed -i 's/[[:space:]]*$//' <files>"
             echo "::warning::To avoid these errors, configure your editor to:
             - Emit spaces when the Tab key is pressed.
