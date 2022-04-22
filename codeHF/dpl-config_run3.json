@@ -991,6 +991,7 @@
         "cutEtaCandMax": "-1"
     },
     "task-hf-correlations": {
+        "cfgCutVertex": "7.0",
         "cfgCutEta": "0.8",
         "cfgCutPt": "0.5",
         "d_selectionFlagD0": "0",
@@ -1130,7 +1131,9 @@
         "processTPCTPChh": "true",
         "processTPCMFThh": "true",
         "processHFHadrons": "true",
-        "processSameAOD": "true"
+        "cfgNoMixedEvents": 5,
+        "processSame": "true",
+        "processMixed": "true"
     },
     "qa-tracking-efficiency-electron": {
         "eta-min": "-3",
