@@ -30,6 +30,7 @@ MAKE_GRAPH=0        # Make topology graph.
 # Activation of O2 workflows
 # MC conversion
 DOO2_MCCONV=0       # mc-converter
+DOO2_FDDCONV=1      # fdd-converter
 # Trigger selection
 DOO2_TRIGSEL=0      # event-selection
 # QA
@@ -274,6 +275,7 @@ function MakeScriptO2 {
   WORKFLOWS=""
   # MC converter to version 001 of mcparticles
   [ $DOO2_MCCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-mc-converter"
+  [ $DOO2_FDDCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-fdd-converter"
   # Trigger selection
   [ $DOO2_TRIGSEL -eq 1 ] && WORKFLOWS+=" o2-analysis-event-selection"
   # QA
