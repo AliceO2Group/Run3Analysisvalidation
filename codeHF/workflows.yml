@@ -1,6 +1,6 @@
 ---
 options:
-  global: "--fairmq-ipc-prefix sockets"
+  global: ""
   local:
     - "-b"
     - "--configuration json://$JSON"
@@ -286,7 +286,9 @@ workflows:
 
   o2-analysis-timestamp: {}
 
-  o2-analysis-trackselection: {}
+  o2-analysis-trackselection:
+    dependencies:
+      - o2-analysis-trackextension
 
   o2-analysis-trackselection-alice3:
     executable: o2-analysis-alice3-trackselection
@@ -300,12 +302,18 @@ workflows:
   o2-analysis-alice3-centrality:
     dependencies: o2-analysis-trackextension-alice3
 
-  o2-analysis-event-selection: {}
+  o2-analysis-event-selection:
+    dependencies:
+      - o2-analysis-timestamp
 
-  o2-analysis-multiplicity-table: {}
+  o2-analysis-multiplicity-table:
+    dependencies:
+      - o2-analysis-event-selection # only Run3
 
   o2-analysis-pid-tpc-full:
-    dependencies: o2-analysis-multiplicity-table
+    dependencies:
+      - o2-analysis-multiplicity-table
+      - o2-analysis-timestamp
 
   o2-analysis-pid-tof-full: {}
 
@@ -313,6 +321,8 @@ workflows:
     executable: o2-analysis-alice3-pid-tof
 
   o2-analysis-pid-tof-beta: {}
+
+  o2-analysis-fdd-converter: {}
 
   # LF
 

@@ -18,6 +18,7 @@ MC_d0_eff.pdf MC_d0_pT.pdf \
 MC_dplus_eff.pdf MC_dplus_pT.pdf \
 MC_lc_eff.pdf MC_lc_pT.pdf \
 MC_xic_eff.pdf MC_xic_pT.pdf \
+MC_xicc_eff.pdf MC_xicc_pT.pdf \
 MC_jpsi_eff.pdf MC_jpsi_pT.pdf \
 MC_lc-tok0sP_eff.pdf MC_lc-tok0sP_pT.pdf \
 ./*.log \
