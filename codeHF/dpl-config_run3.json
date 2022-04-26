@@ -20,7 +20,14 @@
         "processRun2": "true",
         "processRun3": "false"
     },
+    "track-selection": {
+        "isRun3": "false"
+    },
     "track-extension": {
+        "processRun2": "true",
+        "processRun3": "false"
+    },
+    "multiplicity-table": {
         "processRun2": "true",
         "processRun3": "false"
     },

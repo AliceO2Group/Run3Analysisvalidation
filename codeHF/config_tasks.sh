@@ -83,6 +83,8 @@ DOO2_D0D0BAR_MCGEN=0     # hf-correlator-d0d0bar-mc-gen
 DOO2_DPLUSDMINUS_DATA=0  # hf-correlator-dplusdminus
 DOO2_DPLUSDMINUS_MCREC=0 # hf-correlator-dplusdminus-mc-rec
 DOO2_DPLUSDMINUS_MCGEN=0 # hf-correlator-dplusdminus-mc-gen
+# Other
+DOO2_FDDCONV=0      # fdd-converter
 
 # Selection cuts
 APPLYCUTS_D0=0      # Apply D0 selection cuts.
@@ -123,104 +125,117 @@ function AdjustJson {
   cp "$JSON" "$JSON_EDIT" || ErrExit "Failed to cp $JSON $JSON_EDIT."
   JSON="$JSON_EDIT"
 
-  # Trigger selection
-  if [ $DOO2_TRIGSEL -eq 1 ]; then
-    ReplaceString "\"processTrigSel\": \"false\"" "\"processTrigSel\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
-    ReplaceString "\"processNoTrigSel\": \"true\"" "\"processNoTrigSel\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  # Collision system
+  MsgWarn "Setting collision system $INPUT_SYS"
+
+  # Run 2/3/5
+  MsgWarn "Using Run $INPUT_RUN"
+  if [ "$INPUT_RUN" -eq 2 ]; then
+    ReplaceString "\"processRun2\": \"false\"" "\"processRun2\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processRun3\": \"true\"" "\"processRun3\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  elif [ "$INPUT_RUN" -eq 3 ]; then
+    ReplaceString "\"processRun2\": \"true\"" "\"processRun2\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processRun3\": \"false\"" "\"processRun3\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # MC
   if [ "$ISMC" -eq 1 ]; then
-    MsgWarn "\nUsing MC data"
+    MsgWarn "Using MC data"
     ReplaceString "\"processMC\": \"false\"" "\"processMC\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"isMC\": \"false\"" "\"isMC\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
-    if [ "$INPUT_RUN" -eq 2 ]; then
-      # timestamp
-      ReplaceString "\"isRun2MC\": \"false\"" "\"isRun2MC\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
-    fi
   else
-    MsgWarn "\nUsing real data"
+    MsgWarn "Using real data"
     ReplaceString "\"processMC\": \"true\"" "\"processMC\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"isMC\": \"true\"" "\"isMC\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
-    if [ "$INPUT_RUN" -eq 2 ]; then
-      ReplaceString "\"isRun2MC\": \"true\"" "\"isRun2MC\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
-    fi
   fi
 
-  # Collision system
-  if [ -n "$INPUT_SYS" ]; then
-    MsgWarn "\nSetting collision system $INPUT_SYS"
-    ReplaceString "\"syst\": \"pp\"" "\"syst\": \"$INPUT_SYS\"" "$JSON" || ErrExit "Failed to edit $JSON."
-  fi
+  # event-selection
+  ReplaceString "\"syst\": \"pp\"" "\"syst\": \"$INPUT_SYS\"" "$JSON" || ErrExit "Failed to edit $JSON."
 
-  # Run 2/3/5
-  if [ "$INPUT_RUN" -eq 2 ]; then
-    MsgWarn "\nUsing Run 2"
-    ReplaceString "\"processRun2\": \"false\"" "\"processRun2\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
-    ReplaceString "\"processRun3\": \"true\"" "\"processRun3\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
-  elif [ "$INPUT_RUN" -eq 3 ]; then
-    MsgWarn "\nUsing Run 3"
-    ReplaceString "\"processRun2\": \"true\"" "\"processRun2\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
-    ReplaceString "\"processRun3\": \"false\"" "\"processRun3\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  # hf-tag-sel-collisions
+  if [ $DOO2_TRIGSEL -eq 1 ]; then
+    # trigger selection
+    ReplaceString "\"processTrigSel\": \"false\"" "\"processTrigSel\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processNoTrigSel\": \"true\"" "\"processNoTrigSel\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  fi
+  if [ "$INPUT_RUN" -eq 3 ]; then
     # do not use trigger selection for Run 3
     ReplaceString "\"processTrigSel\": \"true\"" "\"processTrigSel\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processNoTrigSel\": \"false\"" "\"processNoTrigSel\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  fi
+
+  # hf-tag-sel-tracks, hf-track-index-skims-cascades-creator
+  if [ "$INPUT_RUN" -eq 3 ]; then
     # do not perform track quality cuts for Run 3 until they are updated
     ReplaceString "\"doCutQuality\": \"true\"" "\"doCutQuality\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
+  # timestamp-task
+  if [[ "$ISMC" -eq 1 && "$INPUT_RUN" -eq 2 ]]; then
+    ReplaceString "\"isRun2MC\": \"false\"" "\"isRun2MC\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  else
+    ReplaceString "\"isRun2MC\": \"true\"" "\"isRun2MC\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  fi
+
+  # track-selection
+  if [ "$INPUT_RUN" -eq 3 ]; then
+    ReplaceString "\"isRun3\": \"false\"" "\"isRun3\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  else
+    ReplaceString "\"isRun3\": \"true\"" "\"isRun3\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  fi
+
   # Enable D0 selection.
   if [ $APPLYCUTS_D0 -eq 1 ]; then
-    MsgWarn "\nUsing D0 selection cuts"
+    MsgWarn "Using D0 selection cuts"
     ReplaceString "\"d_selectionFlagD0\": \"0\"" "\"d_selectionFlagD0\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"d_selectionFlagD0bar\": \"0\"" "\"d_selectionFlagD0bar\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable D+ selection.
   if [ $APPLYCUTS_DPLUS -eq 1 ]; then
-    MsgWarn "\nUsing D+ selection cuts"
+    MsgWarn "Using D+ selection cuts"
     ReplaceString "\"d_selectionFlagDPlus\": \"0\"" "\"d_selectionFlagDPlus\": \"7\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable Λc selection.
   if [ $APPLYCUTS_LC -eq 1 ]; then
-    MsgWarn "\nUsing Λc selection cuts"
+    MsgWarn "Using Λc selection cuts"
     ReplaceString "\"d_selectionFlagLc\": \"0\"" "\"d_selectionFlagLc\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable Ξc selection.
   if [ $APPLYCUTS_XIC -eq 1 ]; then
-    MsgWarn "\nUsing Ξc selection cuts"
+    MsgWarn "Using Ξc selection cuts"
     ReplaceString "\"d_selectionFlagXic\": \"0\"" "\"d_selectionFlagXic\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable J/ψ selection.
   if [ $APPLYCUTS_JPSI -eq 1 ]; then
-    MsgWarn "\nUsing J/ψ selection cuts"
+    MsgWarn "Using J/ψ selection cuts"
     ReplaceString "\"d_selectionFlagJpsi\": \"0\"" "\"d_selectionFlagJpsi\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable X(3872) selection.
   if [ $APPLYCUTS_X -eq 1 ]; then
-    MsgWarn "\nUsing X(3872) selection cuts"
+    MsgWarn "Using X(3872) selection cuts"
     ReplaceString "\"d_selectionFlagX\": \"0\"" "\"d_selectionFlagX\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable χc(1p) selection.
   if [ $APPLYCUTS_CHIC -eq 1 ]; then
-    MsgWarn "\nUsing χc(1p) selection cuts"
+    MsgWarn "Using χc(1p) selection cuts"
     ReplaceString "\"d_selectionFlagChic\": \"0\"" "\"d_selectionFlagChic\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable Λc → K0S p selection.
   if [ $APPLYCUTS_LCK0SP -eq 1 ]; then
-    MsgWarn "\nUsing Λc → K0S p selection cuts"
+    MsgWarn "Using Λc → K0S p selection cuts"
     ReplaceString "\"selectionFlagLcK0sp\": \"0\"" "\"selectionFlagLcK0sp\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable Ξcc selection.
   if [ $APPLYCUTS_XICC -eq 1 ]; then
-    MsgWarn "\nUsing Ξcc selection cuts"
+    MsgWarn "Using Ξcc selection cuts"
     ReplaceString "\"d_selectionFlagXicc\": \"0\"" "\"d_selectionFlagXicc\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 }
@@ -280,6 +295,7 @@ function MakeScriptO2 {
   [ $DOO2_TASK_LCK0SP -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-lc-tok0sp"
   [ $DOO2_TASK_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-xicc"
   [ $DOO2_TASK_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-bplus"
+  # Correlations
   WF_CORR=""
   [ $DOO2_D0D0BAR_DATA -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-d0d0bar o2-analysis-hf-task-correlation-ddbar"
   [ $DOO2_D0D0BAR_MCREC -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-d0d0bar-mc-rec o2-analysis-hf-task-correlation-ddbar-mc-rec"
@@ -287,13 +303,15 @@ function MakeScriptO2 {
   [ $DOO2_DPLUSDMINUS_DATA -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-dplusdminus o2-analysis-hf-task-correlation-ddbar"
   [ $DOO2_DPLUSDMINUS_MCREC -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-dplusdminus-mc-rec o2-analysis-hf-task-correlation-ddbar-mc-rec"
   [ $DOO2_DPLUSDMINUS_MCGEN -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-dplusdminus-mc-gen o2-analysis-hf-task-correlation-ddbar-mc-gen"
-  [[ $DOO2_D0D0BAR_DATA -eq 1 || $DOO2_D0D0BAR_MCREC -eq 1 || $DOO2_D0D0BAR_MCGEN -eq 1 || $DOO2_DPLUSDMINUS_DATA -eq 1 || $DOO2_DPLUSDMINUS_MCREC -eq 1 || $DOO2_DPLUSDMINUS_MCGEN -eq 1 ]] && WORKFLOWS+=" ${WF_CORR}"
+  [ "$WF_CORR" ] && WORKFLOWS+=" $WF_CORR"
   # Tree creators
   [ $DOO2_TREE_D0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-d0-tokpi"
   [ $DOO2_TREE_LC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-lc-topkpi"
   [ $DOO2_TREE_X -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-x-tojpsipipi"
   [ $DOO2_TREE_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-xicc-topkpipi"
   [ $DOO2_TREE_CHIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-chic-tojpsigamma"
+  # Other
+  [ $DOO2_FDDCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-fdd-converter"
 
   # Translate options into arguments of the generating script.
   OPT_MAKECMD=""
@@ -336,9 +354,7 @@ function MakeScriptO2 {
 #!/bin/bash
 FileIn="\$1"
 JSON="\$2"
-mkdir sockets && \\
-$O2EXEC && \\
-rm -r sockets
+$O2EXEC
 EOF
 }
 
