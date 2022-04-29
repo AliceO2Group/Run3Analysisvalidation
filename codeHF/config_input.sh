@@ -44,6 +44,13 @@ case $INPUT_CASE in
     INPUT_LABEL="Run 2, p-p MC LHC17p"
     INPUT_DIR="/mnt/data/Run2/LHC18a4a2_cent/282341"
     ISMC=1;;
+  20)
+    INPUT_LABEL="Run 2, Pb-Pb real LHC15o"
+    INPUT_DIR="/data2/vkucera/alice"
+    INPUT_FILES="AO2D.root"
+    INPUT_SYS="PbPb"
+    ISINPUTO2=1
+    INPUT_RUN=2;;
   4)
     INPUT_LABEL="Run 2, Pb-Pb real LHC15o"
     INPUT_DIR="/mnt/data/Run2/LHC15o/246751/pass1"

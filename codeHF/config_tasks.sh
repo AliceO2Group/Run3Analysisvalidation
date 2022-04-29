@@ -43,7 +43,7 @@ DOO2_PID_TOF_QA=0   # pid-tof-qa-mc
 DOO2_SKIM=0         # hf-track-index-skims-creator
 DOO2_CAND_2PRONG=0  # hf-candidate-creator-2prong
 DOO2_CAND_3PRONG=0  # hf-candidate-creator-3prong
-DOO2_CAND_CASC=0    # hf-candidate-creator-cascade
+DOO2_CAND_CASC=1    # hf-candidate-creator-cascade
 DOO2_CAND_X=0       # hf-candidate-creator-x
 DOO2_CAND_CHIC=0    # hf-candidate-creator-chic
 DOO2_CAND_XICC=0    # hf-candidate-creator-xicc
@@ -60,7 +60,7 @@ DOO2_SEL_LCK0SP=0   # hf-lc-tok0sp-candidate-selector
 DOO2_SEL_XICC=0     # hf-xicc-topkpipi-candidate-selector
 DOO2_SEL_BPLUS=0    # hf-bplus-tod0pi-candidate-selector
 # User tasks
-DOO2_TASK_D0=1      # hf-task-d0
+DOO2_TASK_D0=0      # hf-task-d0
 DOO2_TASK_DPLUS=0   # hf-task-dplus
 DOO2_TASK_LC=0      # hf-task-lc
 DOO2_TASK_XIC=0     # hf-task-xic
