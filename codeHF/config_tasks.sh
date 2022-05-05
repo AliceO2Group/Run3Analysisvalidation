@@ -85,6 +85,7 @@ DOO2_DPLUSDMINUS_MCREC=0 # hf-correlator-dplusdminus-mc-rec
 DOO2_DPLUSDMINUS_MCGEN=0 # hf-correlator-dplusdminus-mc-gen
 # Other
 DOO2_FDDCONV=0      # fdd-converter
+DOO2_TRKPROP=0      # track-propagation
 
 # Selection cuts
 APPLYCUTS_D0=0      # Apply D0 selection cuts.
@@ -312,6 +313,7 @@ function MakeScriptO2 {
   [ $DOO2_TREE_CHIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-chic-tojpsigamma"
   # Other
   [ $DOO2_FDDCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-fdd-converter"
+  [ $DOO2_TRKPROP -eq 1 ] && WORKFLOWS+=" o2-analysis-track-propagation"
 
   # Translate options into arguments of the generating script.
   OPT_MAKECMD=""
