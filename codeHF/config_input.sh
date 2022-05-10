@@ -148,7 +148,7 @@ case $INPUT_CASE in
     ISALICE3=1
     ISMC=1;;
   17)
-    INPUT_LABEL="Run 5, p-p 14 TeV, Layout v1, MB MUON ID and ECAL"
+    INPUT_LABEL="Run 5, p-p MC 14 TeV, Layout v1, MB MUON ID and ECAL"
     INPUT_DIR="/home/mmazzill/pp14TeV_inel_20M_2T_rmin100_geometry_v1_11102021"
     INPUT_FILES="AODRun5.*.root"
     JSON="$JSONRUN5_ONIAX"
@@ -157,7 +157,7 @@ case $INPUT_CASE in
     ISALICE3=1
     ISMC=1;;
   18)
-    INPUT_LABEL="Run 3, p-p 13.6 TeV, MB"
+    INPUT_LABEL="Run 3, p-p MC 13.6 TeV, MB"
     INPUT_DIR="/home/kgajdoso/data/Run3MC/13TeV/LHC21k6/302006" #being QAed
     #INPUT_DIR="/home/kgajdoso/data/Run3MC/13TeV/LHC21k6/302004" #obsolete, missing some MFT track information
     INPUT_FILES="AO2D.root"
