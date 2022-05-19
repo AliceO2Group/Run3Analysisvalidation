@@ -30,14 +30,14 @@ MAKE_GRAPH=0        # Make topology graph.
 # Activation of O2 workflows
 # MC conversion
 DOO2_MCCONV=0       # mc-converter
-DOO2_FDDCONV=1      # fdd-converter
+DOO2_FDDCONV=0      # fdd-converter
 # Trigger selection
 DOO2_TRIGSEL=0      # event-selection
 # QA
 DOO2_REJ_ALICE3=0   # hf-qa-rejection
 DOO2_QA_EFF=0       # qa-efficiency
 DOO2_QA_EVTRK=0     # qa-event-track
-DOO2_MC_VALID=1     # hf-mc-validation
+DOO2_MC_VALID=0     # hf-mc-validation
 # PID
 DOO2_PID_TPC=0      # pid-tpc-full
 DOO2_PID_TOF=0      # pid-tof-full/alice3-pid-tof
@@ -65,9 +65,9 @@ DOO2_SEL_LCK0SP=0   # hf-lc-tok0sp-candidate-selector
 DOO2_SEL_XICC=0     # hf-xicc-topkpipi-candidate-selector
 DOO2_SEL_BPLUS=0    # hf-bplus-tod0pi-candidate-selector
 # User tasks
-DOO2_TASK_D0=0      # hf-task-d0
+DOO2_TASK_D0=1      # hf-task-d0
 DOO2_TASK_DPLUS=0   # hf-task-dplus
-DOO2_TASK_LC=0      # hf-task-lc
+DOO2_TASK_LC=1      # hf-task-lc
 DOO2_TASK_XIC=0     # hf-task-xic
 DOO2_TASK_JPSI=0    # hf-task-jpsi
 DOO2_TASK_X=0       # hf-task-x
