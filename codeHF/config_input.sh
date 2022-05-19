@@ -17,6 +17,8 @@ NFILESPERJOB_O2=1       # O2
 NJOBSPARALLEL_O2=$(python3 -c "print(min(10, round($(nproc) / 2)))")
 
 JSONRUN3="dpl-config_run3.json"  # Run 3 tasks parameters
+# Run 3 configurations for Pilot beam data
+JSONRUN3DATA="dpl-config_data_run3.json"
 # Run 5 tasks parameters for open HF study
 JSONRUN5_HF="dpl-config_run5_hf.json"
 # Run 5 tasks parameters for onia studies:
@@ -165,4 +167,12 @@ case $INPUT_CASE in
     ISINPUTO2=1
     INPUT_RUN=3
     ISMC=1;;
+  19)
+    INPUT_LABEL="Run 3, Pilot Beam data (apass3)"
+    INPUT_DIR="/home/mattia/Documenti/cernbox/Documents/Trains/o2_validation/PilotBeam/pass3/505669"
+    INPUT_FILES="AO2D_001.root" #"PilotBeam_Data*.root"
+    ISINPUTO2=1
+    ISALICE3=0
+    ISMC=0;;
+    JSON="$JSONRUN3DATA"
   esac
