@@ -315,7 +315,10 @@ workflows:
       - o2-analysis-multiplicity-table
       - o2-analysis-timestamp
 
-  o2-analysis-pid-tof-full: {}
+  o2-analysis-pid-tof-base: {}
+
+  o2-analysis-pid-tof-full:
+    dependencies: o2-analysis-pid-tof-base
 
   o2-analysis-pid-tof-full-alice3:
     executable: o2-analysis-alice3-pid-tof
