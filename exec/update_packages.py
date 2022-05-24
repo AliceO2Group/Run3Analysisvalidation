@@ -319,7 +319,7 @@ def main():
         "-d", "--debug", action="store_true", help="print debugging info"
     )
     parser.add_argument("-l", action="store_true", help="print latest commits and exit")
-    parser.add_argument("-c", action="store_true", help="print conifguration and exit")
+    parser.add_argument("-c", action="store_true", help="print configuration and exit")
     args = parser.parse_args()
     path_file_database = args.database
     global debug
