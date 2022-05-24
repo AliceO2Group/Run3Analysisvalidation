@@ -83,7 +83,9 @@ def exec_cmd(cmd: str, msg=None, silent=False, safe=False):
         msg_fatal("Command contains forbidden characters!")
     try:
         if silent:
-            sp.run(cmd, shell=True, check=True, stdout=sp.DEVNULL, stderr=sp.DEVNULL) # nosec B602
+            sp.run(
+                cmd, shell=True, check=True, stdout=sp.DEVNULL, stderr=sp.DEVNULL # nosec B602
+            )
         else:
             sp.run(cmd, shell=True, check=True) # nosec B602
     except sp.CalledProcessError:
