@@ -18,6 +18,11 @@ import sys
 
 import yaml
 
+# global variables
+debug = False
+alibuild_arch, alibuild_opt, alibuild_dir_alice, alibuild_dir_sw = "", "", "", ""
+clean_do, clean_aggressive, clean_purge = 0, 0, 0
+
 
 def eprint(*args, **kwargs):
     """Print to stderr."""
