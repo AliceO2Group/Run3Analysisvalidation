@@ -13,7 +13,7 @@ aliBuild packages are built using the respective current branches and the specif
 
 import argparse
 import os
-import subprocess as sp # nosec B404
+import subprocess as sp  # nosec B404
 import sys
 
 import yaml
@@ -67,7 +67,7 @@ def msg_subsubstep(message: str):
 
 def is_allowed(string: str):
     """Check whether string contains only allowed characters."""
-    allowed = " $/-=':%_" # allowed non-alphanumeric characters
+    allowed = " $/-=':%_"  # allowed non-alphanumeric characters
     for c in string:
         if not c.isalnum() and c not in allowed:
             return False
@@ -83,11 +83,11 @@ def exec_cmd(cmd: str, msg=None, silent=False, safe=False):
         msg_fatal("Command contains forbidden characters!")
     try:
         if silent:
-            sp.run( # nosec B602
+            sp.run(  # nosec B602
                 cmd, shell=True, check=True, stdout=sp.DEVNULL, stderr=sp.DEVNULL
             )
         else:
-            sp.run(cmd, shell=True, check=True) # nosec B602
+            sp.run(cmd, shell=True, check=True)  # nosec B602
     except sp.CalledProcessError:
         msg_fatal(msg if msg else f"executing: {cmd}")
 
@@ -100,7 +100,7 @@ def get_cmd(cmd: str, msg=None, safe=False):
     if not safe and not is_allowed(cmd):
         msg_fatal("Command contains forbidden characters!")
     try:
-        out = sp.check_output(cmd, shell=True, text=True) # nosec B602
+        out = sp.check_output(cmd, shell=True, text=True)  # nosec B602
         return out.strip()
     except sp.CalledProcessError:
         msg_fatal(msg if msg else f"executing: {cmd}")
@@ -148,7 +148,9 @@ def healthy_structure(dic_full: dict):
             msg_err('"aliBuild" is not a dictionary.')
             return False
         for key, val in template_alibuild.items():
-            dic_alibuild[key] = dic_alibuild.get(key, val) # Create a default value if not set.
+            dic_alibuild[key] = dic_alibuild.get(
+                key, val
+            )  # Create a default value if not set.
     global alibuild_arch, alibuild_dir_alice, alibuild_opt, alibuild_dir_sw, clean_do, clean_aggressive, clean_purge
     alibuild_arch = dic_alibuild["architecture"]
     alibuild_dir_alice = dic_alibuild["dir_alice"]
@@ -188,7 +190,7 @@ def healthy_structure(dic_full: dict):
             "branch": "master",
         }
         for key, val in template_repo.items():
-            dic_repo[key] = dic_repo.get(key, val) # Create a default value if not set.
+            dic_repo[key] = dic_repo.get(key, val)  # Create a default value if not set.
     return True
 
 
@@ -285,7 +287,10 @@ def build_package(pkg: str, dic_pkg: dict, silent=False):
     chdir(alibuild_dir_alice)
     opt_build_pkg = dic_pkg.get("build_opt", "")
     opt_arch = f"-a {alibuild_arch}" if alibuild_arch else ""
-    exec_cmd(f"aliBuild build {pkg} {' '.join((opt_arch, alibuild_opt, opt_build_pkg))}", silent=silent)
+    exec_cmd(
+        f"aliBuild build {pkg} {' '.join((opt_arch, alibuild_opt, opt_build_pkg))}",
+        silent=silent,
+    )
 
 
 def update_package(repo: str, dic_repo: dict):
@@ -313,9 +318,7 @@ def main():
     parser.add_argument(
         "-d", "--debug", action="store_true", help="print debugging info"
     )
-    parser.add_argument(
-        "-l", action="store_true", help="print latest commits and exit"
-    )
+    parser.add_argument("-l", action="store_true", help="print latest commits and exit")
     parser.add_argument("-c", action="store_true", help="show conifguration and exit")
     args = parser.parse_args()
     path_file_database = args.database
@@ -345,8 +348,12 @@ def main():
     # Dry run: Print out configuration and exit.
     if show_config:
         msg_step("Configuration")
-        print(f'aliBuild version: {get_cmd("aliBuild version", "Failed to get aliBuild version")}')
-        print(f'Architecture: {alibuild_arch if alibuild_arch else get_cmd("aliBuild architecture", "Failed to get architecture")}')
+        print(
+            f'aliBuild version: {get_cmd("aliBuild version", "Failed to get aliBuild version")}'
+        )
+        print(
+            f'Architecture: {alibuild_arch if alibuild_arch else get_cmd("aliBuild architecture", "Failed to get architecture")}'
+        )
         print(f"aliBuild work dir: {alibuild_dir_sw}")
         print(f"aliBuild build dir: {alibuild_dir_alice}")
         print(f"aliBuild options: {alibuild_opt}")
@@ -371,7 +378,11 @@ def main():
     # Cleanup
     if clean_do:
         msg_step("Cleaning aliBuild files")
-        architecture = alibuild_arch if alibuild_arch else get_cmd("aliBuild architecture", "Failed to get architecture")
+        architecture = (
+            alibuild_arch
+            if alibuild_arch
+            else get_cmd("aliBuild architecture", "Failed to get architecture")
+        )
         alibuild_dir_arch = f"{alibuild_dir_sw}/{architecture}"
         alibuild_dir_build = f"{alibuild_dir_sw}/BUILD"
 
@@ -382,7 +393,9 @@ def main():
         # Delete all symlinks to builds and recreate the latest ones to allow deleting of all other builds.
         if clean_purge:
             msg_substep("- Purging builds")
-            msg_warn("This action will run 'aliBuild build' for each development package.")
+            msg_warn(
+                "This action will run 'aliBuild build' for each development package."
+            )
             # Check existence of the build directories.
             msg_subsubstep("-- Checking existence of the build directories")
             for dir in (alibuild_dir_arch, alibuild_dir_build):
@@ -390,13 +403,19 @@ def main():
                     msg_fatal(f"Directory {dir} does not exist.")
             # Delete symlinks to all builds.
             msg_subsubstep("-- Deleting symlinks to all builds")
-            exec_cmd(f"find {alibuild_dir_arch} -mindepth 2 -maxdepth 2 -type l -delete", f"Failed to delete symlinks in {alibuild_dir_arch}.")
-            exec_cmd(f"find {alibuild_dir_build} -mindepth 1 -maxdepth 1 -type l -delete", f"Failed to delete symlinks in {alibuild_dir_build}.")
+            exec_cmd(
+                f"find {alibuild_dir_arch} -mindepth 2 -maxdepth 2 -type l -delete",
+                f"Failed to delete symlinks in {alibuild_dir_arch}.",
+            )
+            exec_cmd(
+                f"find {alibuild_dir_build} -mindepth 1 -maxdepth 1 -type l -delete",
+                f"Failed to delete symlinks in {alibuild_dir_build}.",
+            )
             # Recreate symlinks to the latest builds of development packages and their dependencies.
             for repo, dic_repo in dic_repos.items():
-                if "build" in dic_repo: # only development packages
+                if "build" in dic_repo:  # only development packages
                     msg_subsubstep(f"-- Re-building {repo} to recreate symlinks")
-                    build_package(repo, dic_repo, silent=True) # suppress output
+                    build_package(repo, dic_repo, silent=True)  # suppress output
 
         # Delete obsolete builds.
         msg_substep("- Deleting obsolete builds")
@@ -411,11 +430,13 @@ def main():
         if clean_aggressive:
             os.makedirs(f"{alibuild_dir_sw}/SOURCES")
             for repo, dic_repo in dic_repos.items():
-                if "build" in dic_repo: # only development packages
+                if "build" in dic_repo:  # only development packages
                     msg_subsubstep(f"-- Recreating symlinks in SOURCES to {repo}")
                     path_link = f"{alibuild_dir_sw}/SOURCES/{repo}/{dic_repo['branch']}"
                     os.makedirs(path_link)
-                    os.symlink(get_cmd(f"realpath {dic_repo['path']}"), f"{path_link}/0")
+                    os.symlink(
+                        get_cmd(f"realpath {dic_repo['path']}"), f"{path_link}/0"
+                    )
 
         # Get the directory size after cleaning.
         msg_substep(f"- Estimating size of {alibuild_dir_sw}")
