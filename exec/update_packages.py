@@ -286,7 +286,7 @@ def build_package(pkg: str, dic_pkg: dict, silent=False):
         msg_substep(f"Building {pkg}")
     chdir(alibuild_dir_alice)
     opt_build_pkg = dic_pkg.get("build_opt", "")
-    opt_arch = f"-a {alibuild_arch}" if alibuild_arch else ""
+    opt_arch = f"-a {alibuild_arch}"
     exec_cmd(
         f"aliBuild build {pkg} {' '.join((opt_arch, alibuild_opt, opt_build_pkg))}",
         silent=silent,
@@ -345,15 +345,15 @@ def main():
     # Check aliBuild
     get_cmd("which aliBuild", "aliBuild not found")
 
+    global alibuild_arch
+    if not alibuild_arch:
+        alibuild_arch = get_cmd("aliBuild architecture", "Failed to get architecture")
+
     # Dry run: Print out configuration and exit.
     if show_config:
         msg_step("Configuration")
-        print(
-            f'aliBuild version: {get_cmd("aliBuild version", "Failed to get aliBuild version")}'
-        )
-        print(
-            f'Architecture: {alibuild_arch if alibuild_arch else get_cmd("aliBuild architecture", "Failed to get architecture")}'
-        )
+        print(get_cmd("aliBuild version", "Failed to get aliBuild version"))
+        print(f"Architecture: {alibuild_arch}")
         print(f"aliBuild work dir: {alibuild_dir_sw}")
         print(f"aliBuild build dir: {alibuild_dir_alice}")
         print(f"aliBuild options: {alibuild_opt}")
@@ -378,12 +378,7 @@ def main():
     # Cleanup
     if clean_do:
         msg_step("Cleaning aliBuild files")
-        architecture = (
-            alibuild_arch
-            if alibuild_arch
-            else get_cmd("aliBuild architecture", "Failed to get architecture")
-        )
-        alibuild_dir_arch = f"{alibuild_dir_sw}/{architecture}"
+        alibuild_dir_arch = f"{alibuild_dir_sw}/{alibuild_arch}"
         alibuild_dir_build = f"{alibuild_dir_sw}/BUILD"
 
         # Get the directory size before cleaning.
@@ -422,7 +417,7 @@ def main():
         if clean_aggressive:
             msg_warn("Using aggressive cleanup")
         opt_clean = "--aggressive-cleanup" if clean_aggressive else ""
-        opt_arch = f"-a {alibuild_arch}" if alibuild_arch else ""
+        opt_arch = f"-a {alibuild_arch}"
         chdir(alibuild_dir_alice)
         exec_cmd(f"aliBuild clean {' '.join((opt_arch, alibuild_opt, opt_clean))}")
 
