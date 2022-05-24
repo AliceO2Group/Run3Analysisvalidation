@@ -147,29 +147,22 @@ def healthy_structure(dic_full: dict):
             return False
         for key, val in template_alibuild.items():
             dic_alibuild[key] = dic_alibuild.get(key, val) # Create a default value if not set.
-    global alibuild_arch
+    global alibuild_arch, alibuild_dir_alice, alibuild_opt, alibuild_dir_sw, clean_do, clean_aggressive, clean_purge
     alibuild_arch = dic_alibuild["architecture"]
-    global alibuild_dir_alice
     alibuild_dir_alice = dic_alibuild["dir_alice"]
     if not alibuild_dir_alice:
         msg_fatal(f"Invalid path: {alibuild_dir_alice}.")
     alibuild_dir_alice_real = get_cmd(f"realpath {alibuild_dir_alice}")
     if not os.path.isdir(alibuild_dir_alice_real):
         msg_fatal(f"{alibuild_dir_alice} does not exist.")
-    # alibuild_dir_alice = alibuild_dir_alice_real
-    global alibuild_opt
     alibuild_opt = dic_alibuild["options"]
-    global alibuild_dir_sw
     alibuild_dir_sw = os.environ["ALIBUILD_WORK_DIR"]
     if not alibuild_dir_sw:
         msg_fatal("ALIBUILD_WORK_DIR is not defined.")
     if not os.path.isdir(alibuild_dir_sw):
         msg_fatal(f"{alibuild_dir_sw} does not exist.")
-    global clean_do
     clean_do = dic_alibuild["clean"]
-    global clean_aggressive
     clean_aggressive = dic_alibuild["clean_aggressive"]
-    global clean_purge
     clean_purge = dic_alibuild["clean_purge"]
 
     # Check the repository database.
