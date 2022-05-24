@@ -13,7 +13,7 @@ aliBuild packages are built using the respective current branches and the specif
 
 import argparse
 import os
-import subprocess as sp
+import subprocess as sp # nosec B404
 import sys
 
 import yaml
@@ -83,9 +83,9 @@ def exec_cmd(cmd: str, msg=None, silent=False, safe=False):
         msg_fatal("Command contains forbidden characters!")
     try:
         if silent:
-            sp.run(cmd, shell=True, check=True, stdout=sp.DEVNULL, stderr=sp.DEVNULL)
+            sp.run(cmd, shell=True, check=True, stdout=sp.DEVNULL, stderr=sp.DEVNULL) # nosec B602
         else:
-            sp.run(cmd, shell=True, check=True)
+            sp.run(cmd, shell=True, check=True) # nosec B602
     except sp.CalledProcessError:
         msg_fatal(msg if msg else f"executing: {cmd}")
 
@@ -98,7 +98,7 @@ def get_cmd(cmd: str, msg=None, safe=False):
     if not safe and not is_allowed(cmd):
         msg_fatal("Command contains forbidden characters!")
     try:
-        out = sp.check_output(cmd, shell=True, text=True)
+        out = sp.check_output(cmd, shell=True, text=True) # nosec B602
         return out.strip()
     except sp.CalledProcessError:
         msg_fatal(msg if msg else f"executing: {cmd}")
