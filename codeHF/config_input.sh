@@ -75,4 +75,12 @@ case $INPUT_CASE in
     INPUT_FILES="AO2D.root"
     ISINPUTO2=1
     ISMC=1;;
+  19)
+    INPUT_LABEL="Run 2 converted data, pp 13.6 TeV, LHC17o period"
+    #INPUT_DIR="/home/kgajdoso/data/Run2data/LHC17o/AODs/281961"
+    INPUT_DIR="/data2/Run2samples/ConvertedData/LHC17o_date22052022/281961"
+    INPUT_FILES="AO2D.root"
+    JSON="$JSONRUN2"
+    ISINPUTO2=1;;
+    #INPUT_RUN=2;;
   esac
