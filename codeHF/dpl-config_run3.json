@@ -992,8 +992,8 @@
     },
     "task-hf-correlations": {
         "cfgCutVertex": "7.0",
-        "cfgCutEta": "0.8",
-        "cfgCutPt": "0.5",
+        "cfgCutEta": "1.1",
+        "cfgCutPt": "0.2",
         "d_selectionFlagD0": "0",
         "d_selectionFlagD0bar": "0",
         "cutYCandMax": "1.0",
@@ -1129,8 +1129,8 @@
             ]
         },
         "processTPCTPChh": "true",
-        "processTPCMFThh": "true",
-        "processHFHadrons": "true",
+        "processTPCMFThh": "false",
+        "processHFHadrons": "false",
         "cfgNoMixedEvents": 5,
         "processSame": "true",
         "processMixed": "true"
