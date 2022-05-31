@@ -48,7 +48,7 @@ DOO2_CAND_X=0       # hf-candidate-creator-x
 DOO2_CAND_CHIC=0    # hf-candidate-creator-chic
 DOO2_CAND_XICC=0    # hf-candidate-creator-xicc
 DOO2_CAND_BPLUS=0   # hf-candidate-creator-bplus
-DOO2_CAND_DSTAR=1   # hf-candidate-creator-dstar
+DOO2_CAND_DSTAR=0   # hf-candidate-creator-dstar
 # Selectors
 DOO2_SEL_D0=0       # hf-d0-candidate-selector
 DOO2_SEL_DPLUS=0    # hf-dplus-topikpi-candidate-selector
@@ -61,7 +61,7 @@ DOO2_SEL_LCK0SP=0   # hf-lc-tok0sp-candidate-selector
 DOO2_SEL_XICC=0     # hf-xicc-topkpipi-candidate-selector
 DOO2_SEL_BPLUS=0    # hf-bplus-tod0pi-candidate-selector
 # User tasks
-DOO2_TASK_D0=0      # hf-task-d0
+DOO2_TASK_D0=1      # hf-task-d0
 DOO2_TASK_DPLUS=0   # hf-task-dplus
 DOO2_TASK_LC=0      # hf-task-lc
 DOO2_TASK_XIC=0     # hf-task-xic

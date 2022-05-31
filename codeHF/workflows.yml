@@ -46,8 +46,7 @@ workflows:
   o2-analysis-hf-candidate-creator-dstar: {}
 
   o2-analysis-hf-candidate-creator-cascade:
-    # <<: *cand_creator
-    dependencies: o2-analysis-lf-lambdakzerobuilder
+    <<: *cand_creator
     options:
       mc: "--doMC"
     tables:
@@ -337,7 +336,7 @@ workflows:
   o2-analysis-lf-lambdakzerobuilder:
     dependencies:
       - o2-analysis-trackextension
-      # - o2-analysis-weak-decay-indices
+      - o2-analysis-weak-decay-indices
     options: "--v0radius 0.9"
 
   o2-analysis-weak-decay-indices: {}
