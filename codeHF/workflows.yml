@@ -43,6 +43,8 @@ workflows:
       default: [HFCANDP3BASE, HFCANDP3EXT]
       mc: [HFCANDP3MCREC, HFCANDP3MCGEN]
 
+  o2-analysis-hf-candidate-creator-dstar: {}
+
   o2-analysis-hf-candidate-creator-cascade:
     <<: *cand_creator
     options:
