@@ -91,10 +91,14 @@
         }
     },
     "hf-track-index-skims-creator": {
+        "debug": "false",
         "fillHistograms": "true",
         "do3prong": "1",
+        "doPvRefit": "false",
+        "pTTolerance": "0.1",
         "bz": "5.",
         "propToDCA": "true",
+        "useAbsDCA": "true",
         "maxRad": "5.",
         "maxDZIni": "999.",
         "minParamChange": "0.001",
@@ -195,6 +199,28 @@
             "values": [
                 ["2.10", "2.80", "-2.", "0.0"],
                 ["2.10", "2.80", "-2.", "0.0"]
+            ]
+        },
+
+        "axisPvRefitDeltaX": {
+            "values": [
+                "1000",
+                "-0.5",
+                "0.5"
+            ]
+        },
+        "axisPvRefitDeltaY": {
+            "values": [
+                "1000",
+                "-0.5",
+                "0.5"
+            ]
+        },
+        "axisPvRefitDeltaZ": {
+            "values": [
+                "1000",
+                "-0.5",
+                "0.5"
             ]
         }
     },
