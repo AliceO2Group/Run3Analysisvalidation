@@ -327,6 +327,8 @@ workflows:
 
   o2-analysis-pid-tof-beta: {}
 
+  o2-analysis-mc-converter: {}
+
   o2-analysis-fdd-converter: {}
 
   o2-analysis-track-propagation: {}
