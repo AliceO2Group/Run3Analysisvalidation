@@ -27,6 +27,10 @@
         "processRun2": "true",
         "processRun3": "false"
     },
+    "track-propagation": {
+        "processStandard": "false",
+        "processCovariance": "true"
+    },
     "multiplicity-table": {
         "processRun2": "true",
         "processRun3": "false"
