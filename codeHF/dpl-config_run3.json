@@ -1029,7 +1029,7 @@
         },
         "axisVertex": {
             "values": [
-                "7",
+                "14",
                 "-7",
                 "7"
             ]
@@ -1043,9 +1043,9 @@
         },
         "axisDeltaEta": {
             "values": [
-                "40",
-                "-2",
-                "2"
+                "48",
+                "-2.4",
+                "2.4"
             ]
         },
         "axisPtTrigger": {
@@ -1077,13 +1077,35 @@
             "values": [
                 "0",
                 "0",
-                "5",
-                "10",
-                "20",
+                "2.75",
+                "5.75",
+                "7.75",
+                "12.75",
+                "17.75",
+                "22.75",
+                "27.75",
+                "32.75",
+                "37.75",
+                "42.75",
+                "47.75",
+                "52.75",
+                "57.75",
+                "62.75",
+                "67.75",
+                "72.75",
+                "77.75",
+                "82.75",
+                "87.75",
+                "92.75",
+                "97.75",
+                "250.1"
+            ]
+        },
+        "axisMass": {
+            "values": [
                 "30",
-                "40",
-                "50",
-                "100.09999999999999"
+                "1.7",
+                "2.0"
             ]
         },
         "axisVertexEfficiency": {
@@ -1130,7 +1152,7 @@
         },
         "processTPCTPChh": "true",
         "processTPCMFThh": "false",
-        "processHFHadrons": "false",
+        "processHFHadrons": "true",
         "cfgNoMixedEvents": 5,
         "processSame": "true",
         "processMixed": "true"
