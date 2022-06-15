@@ -164,7 +164,7 @@ workflows:
   o2-analysis-hf-task-bplus:
     options:
       mc: "--doMC"
-    dependencies: o2-analysis-hf-bplus-tod0pi-candidate-selector
+    dependencies: [o2-analysis-hf-bplus-tod0pi-candidate-selector, o2-analysis-centrality-table]
 
   o2-analysis-hf-task-x:
     options:
@@ -262,10 +262,11 @@ workflows:
 
   o2-analysis-qa-efficiency:
     requires_mc: yes
-    options: "--eff-el 1 --eff-mu 1 --eff-pi 1 --eff-ka 1 --eff-pr 1"
+    dependencies: [o2-analysis-event-selection, o2-analysis-trackselection]
 
   o2-analysis-qa-event-track:
     requires_mc: yes
+    dependencies: [o2-analysis-event-selection, o2-analysis-trackselection, o2-analysis-pid-tof-base]
 
   o2-analysis-hf-qa-rejection:
     requires_mc: yes
@@ -282,7 +283,7 @@ workflows:
 
   o2-analysis-hf-mc-validation:
     requires_mc: yes
-    dependencies: o2-analysis-hf-d0-candidate-selector
+    dependencies: [o2-analysis-hf-candidate-creator-2prong, o2-analysis-hf-candidate-creator-3prong]
 
   # Helper tasks
 
@@ -312,6 +313,8 @@ workflows:
     dependencies:
       - o2-analysis-event-selection # only Run3
 
+  o2-analysis-centrality-table: {}
+
   o2-analysis-pid-tpc-full:
     dependencies:
       - o2-analysis-multiplicity-table
@@ -337,8 +340,5 @@ workflows:
 
   o2-analysis-lf-lambdakzerobuilder:
     dependencies:
+      - o2-analysis-timestamp
       - o2-analysis-trackextension
-      - o2-analysis-weak-decay-indices
-    options: "--v0radius 0.9"
-
-  o2-analysis-weak-decay-indices: {}
