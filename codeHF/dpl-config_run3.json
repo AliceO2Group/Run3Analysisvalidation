@@ -13,9 +13,9 @@
     "internal-dpl-aod-index-builder": "",
     "timestamp-task": {
         "verbose": "false",
-        "rct-path": "RCT\/RunInformation",
-        "orbit-reset-path": "CTP\/Calib\/OrbitReset",
-        "ccdb-url": "http:\/\/alice-ccdb.cern.ch",
+        "rct-path": "RCT/RunInformation",
+        "orbit-reset-path": "CTP/Calib/OrbitReset",
+        "ccdb-url": "http://alice-ccdb.cern.ch",
         "isRun2MC": "true"
     },
     "bc-selection-task": {
@@ -155,8 +155,8 @@
     "tof-event-time": {
         "param-file": "",
         "param-sigma": "TOFReso",
-        "ccdb-url": "http:\/\/alice-ccdb.cern.ch",
-        "ccdbPath": "Analysis\/PID\/TOF",
+        "ccdb-url": "http://alice-ccdb.cern.ch",
+        "ccdbPath": "Analysis/PID/TOF",
         "ccdb-timestamp": "-1",
         "processRun2": "true",
         "processNoFT0": "false",
@@ -166,8 +166,8 @@
     "tof-pid-full": {
         "param-file": "",
         "param-sigma": "TOFReso",
-        "ccdb-url": "http:\/\/alice-ccdb.cern.ch",
-        "ccdbPath": "Analysis\/PID\/TOF",
+        "ccdb-url": "http://alice-ccdb.cern.ch",
+        "ccdbPath": "Analysis/PID/TOF",
         "ccdb-timestamp": "-1",
         "enableTimeDependentResponse": "false",
         "pid-el": "-1",
@@ -182,12 +182,12 @@
     },
     "tpc-pid-full": {
         "param-file": "",
-        "ccdb-url": "http:\/\/alice-ccdb.cern.ch",
-        "ccdbPath": "Analysis\/PID\/TPC\/Response",
+        "ccdb-url": "http://alice-ccdb.cern.ch",
+        "ccdbPath": "Analysis/PID/TPC/Response",
         "ccdb-timestamp": "0",
         "useNetworkCorrection": "0",
         "downloadNetworkFromAlien": "0",
-        "networkPathAlien": "alien:\/\/\/alice\/cern.ch\/user\/c\/csonnabe\/tpc_network_testing\/net_onnx_0.onnx",
+        "networkPathAlien": "alien:///alice/cern.ch/user/c/csonnabe/tpc_network_testing/net_onnx_0.onnx",
         "networkPathLocally": "network.onnx",
         "pid-el": "-1",
         "pid-mu": "-1",
