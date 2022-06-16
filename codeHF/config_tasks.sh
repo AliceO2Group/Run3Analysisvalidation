@@ -187,6 +187,13 @@ function AdjustJson {
     ReplaceString "\"isRun3\": \"true\"" "\"isRun3\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
+  # tof-event-time
+  if [ "$INPUT_RUN" -eq 3 ]; then
+    ReplaceString "\"processNoFT0\": \"false\"" "\"processNoFT0\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  else
+    ReplaceString "\"processNoFT0\": \"true\"" "\"processNoFT0\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  fi
+
   # Enable D0 selection.
   if [ $APPLYCUTS_D0 -eq 1 ]; then
     MsgWarn "Using D0 selection cuts"
