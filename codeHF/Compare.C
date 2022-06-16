@@ -113,7 +113,7 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
   AddHistogram(vecHisLc, "#it{p}_{T} prong 1 (GeV/#it{c})", "hPtLcDau1", "hf-task-lc/hptprong1", 2, 1, 0);
   AddHistogram(vecHisLc, "#it{p}_{T} prong 2 (GeV/#it{c})", "hPtLcDau2", "hf-task-lc/hptprong2", 2, 1, 0);
   AddHistogram(vecHisLc, "#it{p}_{T} #Lambda_{c}^{#plus} (GeV/#it{c})", "hPtLc", "hf-task-lc/hptcand", 2, 1, 0);
-  AddHistogram(vecHisLc, "3-prong mass (p K #pi) (GeV/#it{c}^{2})", "hInvMassLc", "hf-task-lc/hmass", 2, 0, 0);
+  AddHistogram(vecHisLc, "3-prong mass (p K #pi) (GeV/#it{c}^{2})", "hInvMassLc", "hf-task-lc/hmass", 2, 0, 0, "x");
   AddHistogram(vecHisLc, "decay length (cm)", "hDecLenLc", "hf-task-lc/hdeclength", 2, 1, 0);
   AddHistogram(vecHisLc, "cos pointing angle", "hCosPointLc", "hf-task-lc/hCPA", 2, 1, 0);
 
@@ -228,7 +228,13 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
         return 1;
       }
 
-      if (oRun3->InheritsFrom("TH2")) {
+      if (oRun3->InheritsFrom("TH3")) {
+        if (projAx == "x") {
+          hRun3 = ((TH3D*)oRun3)->ProjectionX();
+        } else if (projAx == "y") {
+          hRun3 = ((TH3D*)oRun3)->ProjectionY();
+        }
+      } else if (oRun3->InheritsFrom("TH2")) {
         if (projAx == "x") {
           hRun3 = ((TH2D*)oRun3)->ProjectionX();
         } else if (projAx == "y") {
