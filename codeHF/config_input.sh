@@ -4,7 +4,7 @@
 # Input specification for runtest.sh
 # (Modifies input parameters.)
 
-INPUT_CASE=18            # Input case
+INPUT_CASE=10            # Input case
 
 NFILESMAX=1             # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
 
@@ -75,12 +75,11 @@ case $INPUT_CASE in
     INPUT_FILES="AO2D.root"
     ISINPUTO2=1
     ISMC=1;;
-  19)
-    INPUT_LABEL="Run 2 converted data, pp 13.6 TeV, LHC17o period"
-    #INPUT_DIR="/home/kgajdoso/data/Run2data/LHC17o/AODs/281961"
-    INPUT_DIR="/data2/Run2samples/ConvertedData/LHC17o_date20220525/281961"
+  10)
+    INPUT_LABEL="Run 2 converted data, pp 13.6 TeV, LHC17j period"
+    #INPUT_DIR="/data2/Run2samples/ConvertedData/LHC17o_date20220525/281961" # converted bad AO2Ds
+    INPUT_DIR="/data2/Run2samples/ConvertedData/LHC17j_date20220601/274671" # converted good AO2Ds
     INPUT_FILES="AO2D.root"
     JSON="$JSONRUN2"
     ISINPUTO2=1;;
-    #INPUT_RUN=2;;
   esac
