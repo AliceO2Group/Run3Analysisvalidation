@@ -1,5 +1,4 @@
-bool plotResults = true;
-bool savePlots = false;
+bool wingCorrection = false;
 
 // Note:  if a canvas is drawn with an empty pad, it is probably because 
 //        the TFile took ownership of the histogram and deleted it when 
@@ -28,7 +27,8 @@ void yieldExtraction(const char* inFileName = "dphi_corr.root", double absDeltaE
       TGraphErrors* pfarYield = new TGraphErrors(Nbins);
       TGraphErrors* pfragYield = new TGraphErrors(Nbins);
 
-      for (uint imult = 0; imult < Nbins; ++imult) {
+      for (uint imult = 4; imult < 5; ++imult) {
+      //for (uint imult = 0; imult < Nbins; ++imult) {
 
         // 2D histogram after mixed event subtraction 
         TH2D* hdphidetaRidge = (TH2D*)infile->Get(Form("dphi_%u_%u_%u", itrig, iassoc, imult));
@@ -47,16 +47,35 @@ void yieldExtraction(const char* inFileName = "dphi_corr.root", double absDeltaE
         //  projection of the away-side ridge on delta eta axis
         int ajetaway = hdphidetaJet->GetXaxis()->FindBin(TMath::Pi() - 1.5);
         int bjetaway = hdphidetaJet->GetXaxis()->FindBin(TMath::Pi() + 1.5);
-        TH1D* hdphidetaJetAway = hdphidetaJet->ProjectionY(Form("proj_deta_%u_%u_%u", itrig, iassoc, imult), ajetaway, bjetaway, "e");
+        TH1D* hdetaJetAway = hdphidetaJet->ProjectionY(Form("proj_deta_%u_%u_%u", itrig, iassoc, imult), ajetaway, bjetaway, "e");
         outfile->cd();
-        hdphidetaJetAway->Write();
+        hdetaJetAway->Write();
 
         //  projection of the near-side region (peak+ridge) on delta eta axis
         int ajetpeak = hdphidetaJet->GetXaxis()->FindBin(-1.5);
         int bjetpeak = hdphidetaJet->GetXaxis()->FindBin(+1.5);
-        TH1D* hdphidetaJetPeak = hdphidetaJet->ProjectionY(Form("proj_detaJetPeak_%u_%u_%u", itrig, iassoc, imult), ajetpeak, bjetpeak, "e");
+        TH1D* hdetaJetPeak = hdphidetaJet->ProjectionY(Form("proj_detaJetPeak_%u_%u_%u", itrig, iassoc, imult), ajetpeak, bjetpeak, "e");
         outfile->cd();
-        hdphidetaJetPeak->Write();
+        hdetaJetPeak->Write();
+
+        //  wing correction (switched off for now)
+        if (wingCorrection) {
+          //  project the away side onto delta eta, fit with polynomial, and scale the 2D histogram by the difference
+          //  between the projected histogram and the fit
+          int a = hdphidetaRidge->GetXaxis()->FindBin(TMath::Pi() - 1.5);
+          int b = hdphidetaRidge->GetXaxis()->FindBin(TMath::Pi() + 1.5);
+          TH1D* hdetaAwayProj = hdphidetaRidge->ProjectionY(Form("proj_deta_%u_%u_%u_scaler", itrig, iassoc, imult), a, b, "e");
+          hdetaAwayProj->Fit("pol0", "0QSE");
+          hdetaAwayProj->Divide(hdetaAwayProj->GetFunction("pol0"));
+          for (uint i = 1; i < hdphidetaRidge->GetNbinsX(); ++i)
+            for (uint j = 1; j < hdphidetaRidge->GetNbinsY(); ++j) {
+              double z = hdetaAwayProj->GetBinContent(j);
+              if (z <= 0.0)
+                continue;
+              hdphidetaRidge->SetBinContent(i, j, hdphidetaRidge->GetBinContent(i, j) / z);
+              hdphidetaRidge->SetBinError(i, j, hdphidetaRidge->GetBinError(i, j) / z);
+            }
+        }
 
         //  projection of near-side ridge on delta phi axis (positive side of the jet peak)
         int aridgeP = hdphidetaRidge->GetYaxis()->FindBin(absDeltaEtaMin);
@@ -85,9 +104,6 @@ void yieldExtraction(const char* inFileName = "dphi_corr.root", double absDeltaE
         fdphiRidge->SetParNames("czyam", "c", "v1", "v2", "v3");
         fdphiRidge->FixParameter(0, 0.0); // TODO: this is because otherwise it could bias the C_ZYAM extraction? the result doesn't change much
         TFitResultPtr r = hdphiRidge->Fit(fdphiRidge, "0SE", "", -TMath::Pi() / 2.0, 3.0 / 2.0 * TMath::Pi());
-        //printf("fit parameter: %.4f \n", fdphiRidge->GetParameter(0));
-        outfile->cd();
-        fdphiRidge->Write();
 
         //  get C_ZYAM: value at bin with minimum
         double phiMinX = fdphiRidge->GetMinimumX(-TMath::Pi() / 2.0, 3.0 / 2.0 * TMath::Pi());
