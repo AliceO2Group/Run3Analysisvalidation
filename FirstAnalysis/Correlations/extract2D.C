@@ -105,7 +105,7 @@ void extract2D(const char* fileName = "AnalysisResults_O2.root", const char* out
   Int_t maxAssocPt = 4;
   Float_t assocPtArr[] = {0.5, 1.0, 2.0, 3.0};
 
-  Int_t maxCentrality = 19;
+  Int_t maxCentrality = 23;
   Float_t centralityArr[] = {0.0, 2.750, 5.250, 7.750, 12.750, 17.750, 22.750, 27.750, 32.750, 37.750, 42.750, 47.750, 52.750, 57.750, 62.750, 67.750, 72.750, 77.750, 82.750, 87.750, 92.750, 97.750, 250.1};
 
   // h is the container of the same event
