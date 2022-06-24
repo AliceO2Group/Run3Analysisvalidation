@@ -93,8 +93,6 @@ void yieldExtraction(const char* inFileName = "dphi_corr.root", double absDeltaE
         //  add the projections positive + negative
         TH1D* hdphiRidge = (TH1D*)hdphiRidgeP->Clone(Form("proj_dphi_%u_%u_%u", itrig, iassoc, imult));
         hdphiRidge->Add(hdphiRidgeP, hdphiRidgeN, 0.5, 0.5);
-        outfile->cd();
-        hdphiRidge->Write();
 
         //  fit the projection to get ZYAM
         TF1* fdphiRidge = new TF1(Form("fit_%u_%u_%u", itrig, iassoc, imult), 
@@ -103,8 +101,6 @@ void yieldExtraction(const char* inFileName = "dphi_corr.root", double absDeltaE
         fdphiRidge->SetParNames("czyam", "c", "v1", "v2", "v3");
         fdphiRidge->FixParameter(0, 0.0); // TODO: this is because otherwise it could bias the C_ZYAM extraction? the result doesn't change much
         TFitResultPtr r = hdphiRidge->Fit(fdphiRidge, "0SE", "", -TMath::Pi() / 2.0, 3.0 / 2.0 * TMath::Pi());
-        outfile->cd();
-        fdphiRidge->Write();
 
         //  get C_ZYAM: value at bin with minimum
         double phiMinX = fdphiRidge->GetMinimumX(-TMath::Pi() / 2.0, 3.0 / 2.0 * TMath::Pi());
@@ -123,6 +119,14 @@ void yieldExtraction(const char* inFileName = "dphi_corr.root", double absDeltaE
         }	
 
         int phiIntShift = 0;  //  TODO: check what was the meaning of this
+
+        //  write the ZYAM-subtracted histogram and function for later plotting
+        outfile->cd();
+        hdphiRidge->Write();
+
+        fdphiRidge->SetParameter(0, fdphiRidge->GetParameter(0)-czyam);
+        outfile->cd();
+        fdphiRidge->Write();
 
         //  near-side yield integration -> Y_ridge^near
         int aridge = hdphiRidge->GetXaxis()->FindBin(-TMath::Abs(phiMinX)) + phiIntShift;
