@@ -20,15 +20,14 @@ void yieldExtraction(const char* inFileName = "dphi_corr.root", double absDeltaE
 
   const uint trigCount = 2; //4
 
-  for (uint itrig = 1; itrig < trigCount; ++itrig) {
-    for (uint iassoc = 1; iassoc <= itrig; ++iassoc) {
+  for (uint itrig = 0; itrig < trigCount; ++itrig) {
+    for (uint iassoc = 0; iassoc <= itrig; ++iassoc) {
 
       TGraphErrors* gridgeYield = new TGraphErrors(Nbins);
       TGraphErrors* pfarYield = new TGraphErrors(Nbins);
       TGraphErrors* pfragYield = new TGraphErrors(Nbins);
 
-      for (uint imult = 4; imult < 5; ++imult) {
-      //for (uint imult = 0; imult < Nbins; ++imult) {
+      for (uint imult = 0; imult < Nbins; ++imult) {
 
         // 2D histogram after mixed event subtraction 
         TH2D* hdphidetaRidge = (TH2D*)infile->Get(Form("dphi_%u_%u_%u", itrig, iassoc, imult));
@@ -104,6 +103,8 @@ void yieldExtraction(const char* inFileName = "dphi_corr.root", double absDeltaE
         fdphiRidge->SetParNames("czyam", "c", "v1", "v2", "v3");
         fdphiRidge->FixParameter(0, 0.0); // TODO: this is because otherwise it could bias the C_ZYAM extraction? the result doesn't change much
         TFitResultPtr r = hdphiRidge->Fit(fdphiRidge, "0SE", "", -TMath::Pi() / 2.0, 3.0 / 2.0 * TMath::Pi());
+        outfile->cd();
+        fdphiRidge->Write();
 
         //  get C_ZYAM: value at bin with minimum
         double phiMinX = fdphiRidge->GetMinimumX(-TMath::Pi() / 2.0, 3.0 / 2.0 * TMath::Pi());
