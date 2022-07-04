@@ -373,10 +373,8 @@ function MakeScriptO2 {
   [ $DOO2_SEL_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-bplus-to-d0-pi"
   # User tasks
   [ $DOO2_TASK_D0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-d0"
-  [[ $DOO2_TASK_D0 -eq 1 && $DOJETS -eq 1 ]] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf"
-  [[ $DOJETS -eq 1 && $DOJETMATCHINGHF -eq 1 ]] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf-mcd"
-  [[ $DOJETS -eq 1 && $DOJETMATCHINGHF -eq 1 ]] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf-mcp"
-  [[ $DOJETS -eq 1 && $DOJETMATCHINGHF -eq 1 ]] && WORKFLOWS+=" o2-analysis-je-jet-matching-hf"
+  [ $DOJETS -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf"
+  [ $DOJETMATCHINGHF -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf-mcd o2-analysis-je-jet-finder-hf-mcp o2-analysis-je-jet-matching-hf"
   [ $DOO2_TASK_JPSI -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-jpsi"
   [ $DOO2_TASK_DS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-ds"
   [ $DOO2_TASK_DPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-dplus"

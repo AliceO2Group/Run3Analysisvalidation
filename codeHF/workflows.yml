@@ -239,6 +239,7 @@ workflows:
 
   o2-analysis-je-jet-finder-hf: &jethf
     executable: o2-analysis-je-jet-finder-hf
+    dependencies: o2-analysis-hf-task-d0
 
   o2-analysis-je-jet-finder-hf-mcp:
     <<: *jethf
@@ -250,7 +251,7 @@ workflows:
     options: "--hfjetMode mcd"
     requires_mc: yes
 
-  o2-analysis-hf-jet-matching-hf:
+  o2-analysis-je-jet-matching-hf:
     requires_mc: yes
     dependencies: [o2-analysis-je-jet-finder-hf-mcd, o2-analysis-je-jet-finder-hf-mcp]
 
