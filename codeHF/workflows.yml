@@ -106,6 +106,7 @@ workflows:
       - o2-analysis-hf-candidate-creator-3prong
       - o2-analysis-pid-tpc-full
       - o2-analysis-pid-tof-full
+      - o2-analysis-pid-bayes
     tables: HFSELDPLUSCAND
 
   o2-analysis-hf-lc-candidate-selector:
@@ -327,6 +328,11 @@ workflows:
 
   o2-analysis-pid-tof-full-alice3:
     executable: o2-analysis-alice3-pid-tof
+
+  o2-analysis-pid-bayes:
+    dependencies:
+      - o2-analysis-pid-tof-full
+      - o2-analysis-pid-tpc-full
 
   o2-analysis-pid-tof-beta: {}
 
