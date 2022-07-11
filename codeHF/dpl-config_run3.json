@@ -991,7 +991,7 @@
         "cutEtaCandMax": "-1"
     },
     "task-hf-correlations": {
-        "cfgCutVertex": "7.0",
+        "cfgCutVertex": "10.0",
         "cfgCutEta": "1.1",
         "cfgCutPt": "0.2",
         "d_selectionFlagD0": "0",
@@ -1029,9 +1029,9 @@
         },
         "axisVertex": {
             "values": [
-                "14",
-                "-7",
-                "7"
+                "20",
+                "-10",
+                "10"
             ]
         },
         "axisDeltaPhi": {
