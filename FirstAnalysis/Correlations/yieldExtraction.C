@@ -5,10 +5,9 @@ bool wingCorrection = false;
 //        it went out of scope 
 //        To fix it, call h->SetDirectory(0) before drawing
 
-void yieldExtraction(const char* inFileName = "dphi_corr.root", double absDeltaEtaMin = 1.4, double absDeltaEtaMax = 1.8, const char* outFileName = "yield.root")
+void yieldExtraction(const char* inFileName = "dphi_corr_all.root", double absDeltaEtaMin = 1.4, double absDeltaEtaMax = 1.8, const char* outFileName = "yield.root")
 {
-  //  Nch represents the multiplicity interval of the analysis, here given in ranges of Ntracks. 
-  //  TODO: check with Jasper some reasoonable binning
+  //  Nch represents the multiplicity interval of the analysis
   static Double_t Nch[] = {0.0, 2.750, 5.250, 7.750, 12.750, 17.750, 22.750, 27.750, 32.750, 37.750, 42.750, 47.750, 52.750, 57.750, 62.750, 67.750, 72.750, 77.750, 82.750, 87.750, 92.750, 97.750, 250.1};
   //  Nbins is the number of multiplicity bins
   static const uint Nbins = 14; // tmp for the case when I had low stat.
@@ -18,18 +17,16 @@ void yieldExtraction(const char* inFileName = "dphi_corr.root", double absDeltaE
   TFile* infile = new TFile(inFileName, "read");
   TFile* outfile = new TFile(outFileName, "recreate");
 
-  const uint trigCount = 2; //4
+  const uint trigCount = 1; //4
 
   for (uint itrig = 0; itrig < trigCount; ++itrig) {
     for (uint iassoc = 0; iassoc <= itrig; ++iassoc) {
 
       TGraphErrors* gridgeYield = new TGraphErrors(Nbins);
-      TGraphErrors* pfarYield = new TGraphErrors(Nbins);
-      TGraphErrors* pfragYield = new TGraphErrors(Nbins);
 
       for (uint imult = 0; imult < Nbins; ++imult) {
 
-        // 2D histogram after mixed event subtraction 
+        // 2D histogram of two-particle correlation: same/mixed event ratio (normalised as it should be: Ntrig, B(0,0))
         TH2D* hdphidetaRidge = (TH2D*)infile->Get(Form("dphi_%u_%u_%u", itrig, iassoc, imult));
         if (!hdphidetaRidge) {
           printf("No histograms corresponding mult bin %u. (itrig=%u, iassoc=%u)\n", imult, itrig, iassoc);
@@ -37,7 +34,7 @@ void yieldExtraction(const char* inFileName = "dphi_corr.root", double absDeltaE
         } // if histogram not existing
 
         // Clone hdphidetaJet: hdphidetaRidge will be used for phi projection; hdphidetaJet for eta projection
-	      TH2D* hdphidetaJet = (TH2D*)hdphidetaRidge->Clone();
+	      TH2D* hdphidetaJet = (TH2D*)hdphidetaRidge->Clone("hdphidetaJet");
 
         //  Normalise hdphidetaRidge used for delta phi projection with the width of the long-range region
         double norm = 2.0 * (absDeltaEtaMax - absDeltaEtaMin);

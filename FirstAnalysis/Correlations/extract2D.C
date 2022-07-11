@@ -1,15 +1,16 @@
 Float_t gpTMin = 0.21;
 Float_t gpTMax = 2.99;
-Float_t gEtaMin = -2.41;
-Float_t gEtaMax = 2.39;
-Float_t gZVtxMin = -7.01;
-Float_t gZVtxMax = 6.99;
+Float_t gEtaMin = -1.1;
+Float_t gEtaMax = 1.1;
+Float_t gZVtxMin = -10;
+Float_t gZVtxMax = 10;
 
 void SetupRanges(CorrelationContainer* obj)
 {
-  obj->setEtaRange(gEtaMin, gEtaMax);
+  obj->setEtaRange(0,0);
+  //obj->setEtaRange(gEtaMin, gEtaMax);
   obj->setPtRange(gpTMin, gpTMax);
-  obj->setZVtxRange(gZVtxMin, gZVtxMax);
+  obj->setZVtxRange(gZVtxMin+0.01, gZVtxMax-0.01);
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -23,8 +24,8 @@ void GetSumOfRatios(CorrelationContainer* h, CorrelationContainer* hMixed, TH1**
 {
   Printf("GetSumOfRatios | step %d | %.1f-%.1f%% | %.1f - %.1f GeV/c | %.1f - %.1f GeV/c", step, centralityBegin, centralityEnd, gpTMin, gpTMax, ptBegin, ptEnd);
 
-  h->setCentralityRange(centralityBegin, centralityEnd);
-  hMixed->setCentralityRange(centralityBegin, centralityEnd);
+  h->setCentralityRange(0.01 + centralityBegin, -0.01 + centralityEnd);
+  hMixed->setCentralityRange(0.01 + centralityBegin, -0.01 + centralityEnd);
   *hist = h->getSumOfRatios(hMixed, step, ptBegin, ptEnd, normalizePerTrigger);
 
   TString str;
@@ -43,13 +44,13 @@ void GetSumOfRatios(CorrelationContainer* h, CorrelationContainer* hMixed, TH1**
 //  Function to plot same-event 2D correlations in a particular Vz bin  
 //  It is also divided by the number of trigger particles and dphi bin width.
 ///////////////////////////////////////////////////////////////////////////
-void GetSameEventCorrelation(CorrelationContainer* h, TH2** hist, CorrelationContainer::CFStep step, Float_t centralityBegin, Float_t centralityEnd, Float_t ptBegin, Float_t ptEnd)
+void GetSameEventCorrelation(CorrelationContainer* h, TH2** hist, CorrelationContainer::CFStep step, Float_t centralityBegin, Float_t centralityEnd, Float_t ptBegin, Float_t ptEnd, Bool_t normalizePerTrigger = kTRUE)
 {
   Printf("GetSameEventCorrelation | step %d | %.1f < Nch < %.1f | %.1f - %.1f GeV/c | %.1f - %.1f GeV/c \n", step, centralityBegin, centralityEnd, ptBegin, ptEnd, gpTMin, gpTMax);
 
-  h->setCentralityRange(centralityBegin, centralityEnd);
+  h->setCentralityRange(0.01 + centralityBegin, -0.01 + centralityEnd);
 
-  *hist = h->getPerTriggerYield(step, ptBegin, ptEnd);
+  *hist = h->getPerTriggerYield(step, ptBegin, ptEnd, normalizePerTrigger);
 
   TString str;
   str.Form("%.1f < p_{T,trig} < %.1f", ptBegin - 0.01, ptEnd + 0.01);
@@ -68,10 +69,13 @@ void GetSameEventCorrelation(CorrelationContainer* h, TH2** hist, CorrelationCon
 //  This is a function to draw a projection of specific axis of the CorrelationContainer
 //  It is mostly meant as a quick QA of the filled distributions
 ///////////////////////////////////////////////////////////////////////////
-TH1* GetProjectionOfAxis(CorrelationContainer* h, CorrelationContainer::CFStep step, int naxis = 6)
+TH1* GetProjectionOfAxis(CorrelationContainer* h, CorrelationContainer::CFStep step, bool pairhist = false, int naxis = 6)
 {
-  THnBase *sparse = h->getPairHist()->getTHn(step);
-  printf("n bins: %.0d \n", sparse->GetAxis(naxis)->GetNbins());
+  THnBase *sparse;
+  if (pairhist) 
+    sparse = h->getPairHist()->getTHn(step);
+  else
+    sparse = h->getTriggerHist()->getTHn(step);
 
   TH1 *hprojection = (TH1*)sparse->Projection(naxis);
   return hprojection;
@@ -83,7 +87,7 @@ TH1* GetProjectionOfAxis(CorrelationContainer* h, CorrelationContainer::CFStep s
 // after mixed event subtraction with proper normalization.
 ///////////////////////////////////////////////////////////////////////////
 
-void extract2D(const char* fileName = "AnalysisResults_O2.root", const char* outputFile = "dphi_corr.root", const char* folder = "task-hf-correlations", bool saveSameEventDis = false)
+void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2.root", const char* outputFile = "dphi_corr.root", const char* folder = "task-hf-correlations", bool saveSameEventDis = false)
 {
   gStyle->SetOptStat(1111111);
 
@@ -99,11 +103,12 @@ void extract2D(const char* fileName = "AnalysisResults_O2.root", const char* out
   // combination (with the condition that the selection on the associated pt
   // has to be looser than the one on the trigger particle.
 
-  Int_t maxLeadingPt = 4;
-  Float_t leadingPtArr[] = {0.5, 1.0, 2.0, 3.0};
+  //  temporarily do only first pT bin for quick comparisons on small data sample
+  Int_t maxLeadingPt = 1;
+  Float_t leadingPtArr[] = {1.0, 2.0, 3.0, 4.0};
 
-  Int_t maxAssocPt = 4;
-  Float_t assocPtArr[] = {0.5, 1.0, 2.0, 3.0};
+  Int_t maxAssocPt = 1;
+  Float_t assocPtArr[] = {1.0, 2.0, 3.0, 4.0};
 
   Int_t maxCentrality = 23;
   Float_t centralityArr[] = {0.0, 2.750, 5.250, 7.750, 12.750, 17.750, 22.750, 27.750, 32.750, 37.750, 42.750, 47.750, 52.750, 57.750, 62.750, 67.750, 72.750, 77.750, 82.750, 87.750, 92.750, 97.750, 250.1};
@@ -114,6 +119,11 @@ void extract2D(const char* fileName = "AnalysisResults_O2.root", const char* out
   auto h = (CorrelationContainer*)inputFile->Get(Form("%s/sameEventTPCTPCChHadrons", folder));
   auto hMixed = (CorrelationContainer*)inputFile->Get(Form("%s/mixedEventTPCTPCChHadrons", folder));
 
+  //  auto proj = GetProjectionOfAxis(h, step, false, 1);
+  //  proj->Draw();
+  //  printf("entires proj: %g \n", proj->GetEntries());
+  //  return;
+
   // the number of events for each multiplicity/centrality class is calculated and printed.
   auto eventHist = h->getEventCount();
   Printf("Events with centrality: %d", (int)eventHist->Integral(eventHist->GetXaxis()->FindBin(6.), eventHist->GetXaxis()->FindBin(6.), eventHist->GetYaxis()->FindBin(0.), eventHist->GetYaxis()->FindBin(99.9)));
@@ -121,19 +131,29 @@ void extract2D(const char* fileName = "AnalysisResults_O2.root", const char* out
   //   eventHist->ProjectionX()->Draw();
   //   return;
 
+  //  low multiplicity illustrative histograms
   h->setPtRange(gpTMin, gpTMax);
-  h->setCentralityRange(0, 49.9);
-  h->setZVtxRange(-7.01, 6.99);
+  h->setCentralityRange(10, 20);
+  h->setZVtxRange(-10, 10);
+  hMixed->setPtRange(gpTMin, gpTMax);
+  hMixed->setCentralityRange(10, 20);
+  hMixed->setZVtxRange(-10, 10);
 
-  TH2* sameTwoD = (TH2*)h->getPerTriggerYield(step, 0.2, 2.99);
+  TH2* sameTwoD = (TH2*)h->getPerTriggerYield(step, 0.2, 2.99, true);
   auto c1 = new TCanvas;
   sameTwoD->Draw("SURF1");
+  sameTwoD->SetStats(0);
+  sameTwoD->SetTitle("");
+  sameTwoD->GetXaxis()->SetTitleOffset(1.5);
   c1->SaveAs("sameCorr.png");
 
-  //  Note: this is not normalised for the bin (0,0)
-  TH2* mixedTwoD = (TH2*)hMixed->getPerTriggerYield(step, 0.2, 2.99);
+  //  Note: this is not normalised for the bin (0,0),
+  TH2* mixedTwoD = (TH2*)hMixed->getPerTriggerYield(step, 0.2, 2.99, false);
   auto c2 = new TCanvas;
   mixedTwoD->Draw("SURF1");
+  mixedTwoD->SetStats(0);
+  mixedTwoD->SetTitle("");
+  mixedTwoD->GetXaxis()->SetTitleOffset(1.5);
   c2->SaveAs("mixedCorr.png");
 
   auto ratio = (TH2*)sameTwoD->Clone("ratio");
@@ -141,8 +161,57 @@ void extract2D(const char* fileName = "AnalysisResults_O2.root", const char* out
 
   auto c3 = new TCanvas;
   ratio->GetYaxis()->SetRangeUser(-1.59, 1.59);
+  ratio->GetXaxis()->SetTitleOffset(1.5);
+  ratio->SetStats(0);
+  ratio->SetTitle("");
   ratio->Draw("SURF1");
   c3->SaveAs("pertriggeryield.png");
+
+  auto c4 = new TCanvas;
+  ratio->SetMaximum(1.35);
+  ratio->Draw("SURF1");
+  c4->SaveAs("pertriggeryield_zoomin.png");
+
+  //  high multiplicity illustrative histograms
+  h->setPtRange(gpTMin, gpTMax);
+  h->setCentralityRange(40, 100);
+  h->setZVtxRange(-10, 10);
+  hMixed->setPtRange(gpTMin, gpTMax);
+  hMixed->setCentralityRange(40, 100);
+  hMixed->setZVtxRange(-10, 10);
+
+  TH2* sameTwoDHM = (TH2*)h->getPerTriggerYield(step, 0.2, 2.99, true);
+  auto c1HM = new TCanvas;
+  sameTwoDHM->Draw("SURF1");
+  sameTwoDHM->SetStats(0);
+  sameTwoDHM->SetTitle("");
+  sameTwoDHM->GetXaxis()->SetTitleOffset(1.5);
+  c1HM->SaveAs("sameCorr_HM.png");
+
+  //  Note: this is not normalised for the bin (0,0)
+  TH2* mixedTwoDHM = (TH2*)hMixed->getPerTriggerYield(step, 0.2, 2.99, false);
+  auto c2HM = new TCanvas;
+  mixedTwoDHM->Draw("SURF1");
+  mixedTwoDHM->SetStats(0);
+  mixedTwoDHM->SetTitle("");
+  mixedTwoDHM->GetXaxis()->SetTitleOffset(1.5);
+  c2HM->SaveAs("mixedCorr_HM.png");
+
+  auto ratioHM = (TH2*)sameTwoDHM->Clone("ratioHM");
+  ratioHM->Divide(mixedTwoDHM);
+
+  auto c3HM = new TCanvas;
+  ratioHM->GetYaxis()->SetRangeUser(-1.59, 1.59);
+  ratioHM->GetXaxis()->SetTitleOffset(1.5);
+  ratioHM->SetStats(0);
+  ratioHM->SetTitle("");
+  ratioHM->Draw("SURF1");
+  c3HM->SaveAs("pertriggeryield_HM.png");
+
+  auto c4HM = new TCanvas;
+  ratioHM->SetMaximum(1.35);
+  ratioHM->Draw("SURF1");
+  c4HM->SaveAs("pertriggeryield_HM_zoomin.png");
 
   //  TODO: when doing HF correlations, make sure to project/integrate the correct inv. mass range/axis
 
@@ -157,8 +226,8 @@ void extract2D(const char* fileName = "AnalysisResults_O2.root", const char* out
 
       gpTMin = assocPtArr[j] + 0.01;
       gpTMax = assocPtArr[j + 1] - 0.01;
-      gZVtxMin = -7.01;
-      gZVtxMax = 6.99;
+      gZVtxMin = -10;
+      gZVtxMax = 10;
 
       SetupRanges(h);
       SetupRanges(hMixed);
@@ -166,7 +235,7 @@ void extract2D(const char* fileName = "AnalysisResults_O2.root", const char* out
       for (Int_t mult = 0; mult < maxCentrality; mult++) {
 
         TH1* hist1 = 0;
-        GetSumOfRatios(h, hMixed, &hist1, step, centralityArr[mult], centralityArr[mult + 1] - 1, leadingPtArr[i] + 0.01, leadingPtArr[i + 1] - 0.01, normalizePerTrigger);
+        GetSumOfRatios(h, hMixed, &hist1, step, centralityArr[mult], centralityArr[mult+1], leadingPtArr[i] + 0.01, leadingPtArr[i + 1] - 0.01, normalizePerTrigger);
 
         file = TFile::Open(outputFile, "UPDATE");
 
@@ -182,19 +251,15 @@ void extract2D(const char* fileName = "AnalysisResults_O2.root", const char* out
       
       //  Below, get same-event 2D distributions to compare with Jasper
       //  for each pT trig and pT passoc and each multiplicity bin
-      //  in a particular 0 < Vz < 1 bin
       if (!saveSameEventDis)
         continue;
-
-      gZVtxMin = -0.01;
-      gZVtxMax = 0.99;
 
       SetupRanges(h);
 
       for (Int_t mult = 0; mult < maxCentrality; mult++) {
 
         TH2* histSame2D = 0;
-        GetSameEventCorrelation(h, &histSame2D, step, centralityArr[mult], centralityArr[mult + 1] - 0.01, leadingPtArr[i] + 0.01, leadingPtArr[i + 1] - 0.01);
+        GetSameEventCorrelation(h, &histSame2D, step, centralityArr[mult], centralityArr[mult+1], leadingPtArr[i] + 0.01, leadingPtArr[i + 1] - 0.01, normalizePerTrigger);
 
         file = TFile::Open(outputFile, "UPDATE");
 
@@ -213,13 +278,8 @@ void extract2D(const char* fileName = "AnalysisResults_O2.root", const char* out
     // triggers contain the information about the number of trigger particles
     // in each interval of multiplicity (used for the result normalization)
 
-    if (saveSameEventDis) {
-      gZVtxMin = 0.01;
-      gZVtxMax = 0.99;
-    } else {
-      gZVtxMin = -7.01;
-      gZVtxMax = 6.99;
-    }
+    gZVtxMin = -10;
+    gZVtxMax = 10;
 
     SetupRanges(h);
 
