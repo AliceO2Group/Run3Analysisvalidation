@@ -76,7 +76,7 @@ workflows:
       default: [HFCANDCHICBASE, HFCANDCHICEXT]
       mc: [HFCANDCHICMCREC, HFCANDCHICMCGEN]
 
-    o2-analysis-hf-candidate-creator-bplus:
+  o2-analysis-hf-candidate-creator-bplus:
     <<: *cand_creator
     dependencies: o2-analysis-hf-d0-candidate-selector
     tables:
@@ -154,7 +154,7 @@ workflows:
   o2-analysis-hf-bplus-tod0pi-candidate-selector:
     dependencies: o2-analysis-hf-candidate-creator-bplus
     tables: HFSELBPLUSCAND
-    
+
   # Analysis tasks
 
   o2-analysis-hf-task-d0:
