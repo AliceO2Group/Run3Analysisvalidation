@@ -201,7 +201,7 @@ workflows:
     options: "--doMCGen"
 
   o2-analysis-hf-task-hfcorrelations:
-    dependencies: 
+    dependencies:
       - o2-analysis-hf-d0-candidate-selector
 
   # Tree creators

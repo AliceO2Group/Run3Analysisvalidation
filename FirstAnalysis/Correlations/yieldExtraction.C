@@ -1,8 +1,8 @@
 bool wingCorrection = false;
 
-// Note:  if a canvas is drawn with an empty pad, it is probably because 
-//        the TFile took ownership of the histogram and deleted it when 
-//        it went out of scope 
+// Note:  if a canvas is drawn with an empty pad, it is probably because
+//        the TFile took ownership of the histogram and deleted it when
+//        it went out of scope
 //        To fix it, call h->SetDirectory(0) before drawing
 
 void yieldExtraction(const char* inFileName = "dphi_corr_all.root", double absDeltaEtaMin = 1.4, double absDeltaEtaMax = 1.8, const char* outFileName = "yield.root")
@@ -34,7 +34,7 @@ void yieldExtraction(const char* inFileName = "dphi_corr_all.root", double absDe
         } // if histogram not existing
 
         // Clone hdphidetaJet: hdphidetaRidge will be used for phi projection; hdphidetaJet for eta projection
-	      TH2D* hdphidetaJet = (TH2D*)hdphidetaRidge->Clone("hdphidetaJet");
+        TH2D* hdphidetaJet = (TH2D*)hdphidetaRidge->Clone("hdphidetaJet");
 
         //  Normalise hdphidetaRidge used for delta phi projection with the width of the long-range region
         double norm = 2.0 * (absDeltaEtaMax - absDeltaEtaMin);
@@ -92,8 +92,8 @@ void yieldExtraction(const char* inFileName = "dphi_corr_all.root", double absDe
         hdphiRidge->Add(hdphiRidgeP, hdphiRidgeN, 0.5, 0.5);
 
         //  fit the projection to get ZYAM
-        TF1* fdphiRidge = new TF1(Form("fit_%u_%u_%u", itrig, iassoc, imult), 
-                                  "[0]+[1]*(1+2*[2]*TMath::Cos(x)+2*[3]*TMath::Cos(2*x)+2*[4]*TMath::Cos(3*x))", 
+        TF1* fdphiRidge = new TF1(Form("fit_%u_%u_%u", itrig, iassoc, imult),
+                                  "[0]+[1]*(1+2*[2]*TMath::Cos(x)+2*[3]*TMath::Cos(2*x)+2*[4]*TMath::Cos(3*x))",
                                   -TMath::Pi() / 2.0, 3.0 / 2.0 * TMath::Pi());
         fdphiRidge->SetParNames("czyam", "c", "v1", "v2", "v3");
         fdphiRidge->FixParameter(0, 0.0); // TODO: this is because otherwise it could bias the C_ZYAM extraction? the result doesn't change much
@@ -113,15 +113,15 @@ void yieldExtraction(const char* inFileName = "dphi_corr_all.root", double absDe
           double yerr = hdphiRidge->GetBinError(idphi);
           hdphiRidge->SetBinContent(idphi, TMath::Max(y - czyam, 0.0));
           hdphiRidge->SetBinError(idphi, TMath::Sqrt(yerr * yerr + fitErr * fitErr));
-        }	
+        }
 
-        int phiIntShift = 0;  //  TODO: check what was the meaning of this
+        int phiIntShift = 0; //  TODO: check what was the meaning of this
 
         //  write the ZYAM-subtracted histogram and function for later plotting
         outfile->cd();
         hdphiRidge->Write();
 
-        fdphiRidge->SetParameter(0, fdphiRidge->GetParameter(0)-czyam);
+        fdphiRidge->SetParameter(0, fdphiRidge->GetParameter(0) - czyam);
         outfile->cd();
         fdphiRidge->Write();
 
@@ -130,19 +130,19 @@ void yieldExtraction(const char* inFileName = "dphi_corr_all.root", double absDe
         int bridge = hdphiRidge->GetXaxis()->FindBin(TMath::Abs(phiMinX)) + phiIntShift;
         double YridgeErr;
         double Yridge = hdphiRidge->IntegralAndError(aridge, bridge, YridgeErr, "width");
-        printf("<N> = %.1lf, C_ZYAM = %.4f, Yridge = %.4lf pm %.6lf\n", (Nch[imult+1]+Nch[imult])/2.0, czyam, Yridge, YridgeErr);
+        printf("<N> = %.1lf, C_ZYAM = %.4f, Yridge = %.4lf pm %.6lf\n", (Nch[imult + 1] + Nch[imult]) / 2.0, czyam, Yridge, YridgeErr);
 
-        gridgeYield->SetPoint(imult, (Nch[imult+1]+Nch[imult])/2.0, Yridge); // saving in the bin center (though later it should be properly corrected)
+        gridgeYield->SetPoint(imult, (Nch[imult + 1] + Nch[imult]) / 2.0, Yridge); // saving in the bin center (though later it should be properly corrected)
         gridgeYield->SetPointError(imult, 0.0, YridgeErr);
 
       } // loop over the index of the multiplicity interval
 
       outfile->cd();
-      gridgeYield->Write(Form("ridgeYield_%u_%u", itrig, iassoc)); 
+      gridgeYield->Write(Form("ridgeYield_%u_%u", itrig, iassoc));
 
     } // loop over the index of the associated particle
-  } // loop over the index of the trigger particle
+  }   // loop over the index of the trigger particle
 
   outfile->Close();
 
-}// end of processYield
+} // end of processYield

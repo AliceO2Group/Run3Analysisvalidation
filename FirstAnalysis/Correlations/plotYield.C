@@ -9,9 +9,9 @@ void plotYield(const char* inFileName = "yield.root", bool savePlots = false)
 
   gStyle->SetLegendBorderSize(-1);
 
-  TFile *infile = new TFile(inFileName, "read");
-  TFile *infileAll = new TFile("yieldAll.root", "read");
- 
+  TFile* infile = new TFile(inFileName, "read");
+  TFile* infileAll = new TFile("yieldAll.root", "read");
+
   //  plot deltaphi projections in bins of Nch
   const uint ntrig = 1;
   const uint nassoc = 1;
@@ -28,9 +28,9 @@ void plotYield(const char* inFileName = "yield.root", bool savePlots = false)
 
       //  since we have a lot mult bins, we define 2 canvases with 4x2 pads
       cdphiRidge[itrig][iassoc] = new TCanvas(Form("cdphiRidge_%u_%u", itrig, iassoc), "", 1200, 600);
-      cdphiRidge[itrig][iassoc]->Divide(4,2);
+      cdphiRidge[itrig][iassoc]->Divide(4, 2);
       cdphiRidge2[itrig][iassoc] = new TCanvas(Form("cdphiRidge2_%u_%u", itrig, iassoc), "", 1200, 600);
-      cdphiRidge2[itrig][iassoc]->Divide(4,2);
+      cdphiRidge2[itrig][iassoc]->Divide(4, 2);
 
       for (uint imult = 0; imult < nmult; imult++) {
 
@@ -40,18 +40,18 @@ void plotYield(const char* inFileName = "yield.root", bool savePlots = false)
 
         //  draw a line that shows 0 baseline
         double xbinlowedge = hdphiRidge[itrig][iassoc][imult]->GetBinLowEdge(1);
-        double xbinupperedge = hdphiRidge[itrig][iassoc][imult]->GetBinLowEdge(hdphiRidge[itrig][iassoc][imult]->GetNbinsX()+1);
-        TLine *line = new TLine(xbinlowedge, 0, xbinupperedge, 0);
+        double xbinupperedge = hdphiRidge[itrig][iassoc][imult]->GetBinLowEdge(hdphiRidge[itrig][iassoc][imult]->GetNbinsX() + 1);
+        TLine* line = new TLine(xbinlowedge, 0, xbinupperedge, 0);
         line->SetLineStyle(2);
-        line->SetLineColor(kGray+2);
+        line->SetLineColor(kGray + 2);
 
         //  first pad of the first canvas will be emtpy, used for legend only
         if (imult == 0) {
-          cdphiRidge[itrig][iassoc]->cd(imult+1);
-          DrawText(0.2, 0.8, 0.06, Form("%.1f < p_{T,trig} < %.1f", ptTrig[itrig], ptTrig[itrig+1]));
-          DrawText(0.2, 0.7, 0.06, Form("%.1f < p_{T,assoc} < %.1f", ptAssoc[iassoc], ptAssoc[iassoc+1]));
+          cdphiRidge[itrig][iassoc]->cd(imult + 1);
+          DrawText(0.2, 0.8, 0.06, Form("%.1f < p_{T,trig} < %.1f", ptTrig[itrig], ptTrig[itrig + 1]));
+          DrawText(0.2, 0.7, 0.06, Form("%.1f < p_{T,assoc} < %.1f", ptAssoc[iassoc], ptAssoc[iassoc + 1]));
 
-          TLegend *leg = new TLegend(0.2, 0.4, 0.6, 0.65);
+          TLegend* leg = new TLegend(0.2, 0.4, 0.6, 0.65);
           leg->SetTextSize(0.06);
           leg->AddEntry(hdphiRidge[itrig][iassoc][imult], "Data", "lp");
           leg->AddEntry(fdphiRidge[itrig][iassoc][imult], "Fit", "l");
@@ -62,11 +62,11 @@ void plotYield(const char* inFileName = "yield.root", bool savePlots = false)
 
         // first pad of the second canvas will be empty, used for legend only
         if (imult == 8) {
-          cdphiRidge2[itrig][iassoc]->cd((imult+1)-8);
-          DrawText(0.2, 0.8, 0.06, Form("%.1f < p_{T,trig} < %.1f", ptTrig[itrig], ptTrig[itrig+1]));
-          DrawText(0.2, 0.7, 0.06, Form("%.1f < p_{T,assoc} < %.1f", ptAssoc[iassoc], ptAssoc[iassoc+1]));
+          cdphiRidge2[itrig][iassoc]->cd((imult + 1) - 8);
+          DrawText(0.2, 0.8, 0.06, Form("%.1f < p_{T,trig} < %.1f", ptTrig[itrig], ptTrig[itrig + 1]));
+          DrawText(0.2, 0.7, 0.06, Form("%.1f < p_{T,assoc} < %.1f", ptAssoc[iassoc], ptAssoc[iassoc + 1]));
 
-          TLegend *leg = new TLegend(0.2, 0.4, 0.6, 0.65);
+          TLegend* leg = new TLegend(0.2, 0.4, 0.6, 0.65);
           leg->SetTextSize(0.06);
           leg->AddEntry(hdphiRidge[itrig][iassoc][imult], "Data", "lp");
           leg->AddEntry(fdphiRidge[itrig][iassoc][imult], "Fit", "l");
@@ -75,24 +75,24 @@ void plotYield(const char* inFileName = "yield.root", bool savePlots = false)
 
         //  draw the projectionsa and fits on different pads of the same canvas
         if (imult < 8) {
-          cdphiRidge[itrig][iassoc]->cd(imult+1);
+          cdphiRidge[itrig][iassoc]->cd(imult + 1);
           hdphiRidge[itrig][iassoc][imult]->SetStats(0);
           hdphiRidge[itrig][iassoc][imult]->SetTitle("");
           hdphiRidge[itrig][iassoc][imult]->Draw();
           fdphiRidge[itrig][iassoc][imult]->Draw("same");
           line->Draw("same");
-          DrawText(0.2, 0.8, 0.06, Form("#LT N #GT = %.1f", (Nch[imult+1]+Nch[imult])/2.0));
+          DrawText(0.2, 0.8, 0.06, Form("#LT N #GT = %.1f", (Nch[imult + 1] + Nch[imult]) / 2.0));
         } else {
-          cdphiRidge2[itrig][iassoc]->cd((imult+1)-7);
+          cdphiRidge2[itrig][iassoc]->cd((imult + 1) - 7);
           hdphiRidge[itrig][iassoc][imult]->SetStats(0);
           hdphiRidge[itrig][iassoc][imult]->SetTitle("");
           hdphiRidge[itrig][iassoc][imult]->Draw();
           fdphiRidge[itrig][iassoc][imult]->Draw("same");
           line->Draw("same");
-          DrawText(0.2, 0.8, 0.06, Form("#LT N #GT = %.1f", (Nch[imult+1]+Nch[imult])/2.0));
+          DrawText(0.2, 0.8, 0.06, Form("#LT N #GT = %.1f", (Nch[imult + 1] + Nch[imult]) / 2.0));
         }
 
-      }// end of loop over multiplicity
+      } // end of loop over multiplicity
 
       if (savePlots) {
         cdphiRidge[itrig][iassoc]->SaveAs(Form("./plots/dPhiRidge_%u_%u.png", itrig, iassoc));
@@ -102,9 +102,9 @@ void plotYield(const char* inFileName = "yield.root", bool savePlots = false)
       //  plot the yield vs. multiplicity
       gRidge[itrig][iassoc] = (TGraphErrors*)infile->Get(Form("ridgeYield_%u_%u", itrig, iassoc));
 
-      cRidge[itrig][iassoc] = new TCanvas(Form("cRidge_%u_%u", itrig, iassoc), "", 700, 500);            
+      cRidge[itrig][iassoc] = new TCanvas(Form("cRidge_%u_%u", itrig, iassoc), "", 700, 500);
 
-      TH1D *histempty = new TH1D("histempty", "", 100, 0, 100);
+      TH1D* histempty = new TH1D("histempty", "", 100, 0, 100);
       histempty->GetXaxis()->SetTitle("#LT N #GT");
       histempty->GetYaxis()->SetTitle("Y_{ridge}");
       histempty->SetMaximum(0.2);
@@ -113,22 +113,21 @@ void plotYield(const char* inFileName = "yield.root", bool savePlots = false)
 
       gRidge[itrig][iassoc]->SetTitle("");
       gRidge[itrig][iassoc]->SetMarkerStyle(kFullCircle);
-      gRidge[itrig][iassoc]->SetMarkerColor(kBlue+1);
-      gRidge[itrig][iassoc]->SetLineColor(kBlue+1);
+      gRidge[itrig][iassoc]->SetMarkerColor(kBlue + 1);
+      gRidge[itrig][iassoc]->SetLineColor(kBlue + 1);
       gRidge[itrig][iassoc]->Draw("Psame");
 
-      if (savePlots) cRidge[itrig][iassoc]->SaveAs(Form("./plots/ridge_%u_%u.png", itrig, iassoc));
-      
+      if (savePlots)
+        cRidge[itrig][iassoc]->SaveAs(Form("./plots/ridge_%u_%u.png", itrig, iassoc));
     }
   }
-
 }
 //---------------------
 void DrawText(double xmin, double ymin, double textSize, TString text)
 {
-  TLatex *tl = new TLatex(xmin, ymin, Form("%s", text.Data()));
-	tl->SetNDC();
-	tl->SetTextFont(42);
-	tl->SetTextSize(textSize);
-	tl->Draw();
+  TLatex* tl = new TLatex(xmin, ymin, Form("%s", text.Data()));
+  tl->SetNDC();
+  tl->SetTextFont(42);
+  tl->SetTextSize(textSize);
+  tl->Draw();
 }

@@ -7,14 +7,14 @@ Float_t gZVtxMax = 10;
 
 void SetupRanges(CorrelationContainer* obj)
 {
-  obj->setEtaRange(0,0);
+  obj->setEtaRange(0, 0);
   //obj->setEtaRange(gEtaMin, gEtaMax);
   obj->setPtRange(gpTMin, gpTMax);
-  obj->setZVtxRange(gZVtxMin+0.01, gZVtxMax-0.01);
+  obj->setZVtxRange(gZVtxMin + 0.01, gZVtxMax - 0.01);
 }
 
 ///////////////////////////////////////////////////////////////////////////
-//  Function to average the 2D correlations over Vz bins normalised for 
+//  Function to average the 2D correlations over Vz bins normalised for
 //  the value in (0,0) bin. It is also divided by the number of trigger particles.
 //  Note: instead of just taking a value in one (0,0) bin, there is an option to
 //        do an average of values in delta eta = 0 over all delta phi bins
@@ -41,7 +41,7 @@ void GetSumOfRatios(CorrelationContainer* h, CorrelationContainer* hMixed, TH1**
 }
 
 ///////////////////////////////////////////////////////////////////////////
-//  Function to plot same-event 2D correlations in a particular Vz bin  
+//  Function to plot same-event 2D correlations in a particular Vz bin
 //  It is also divided by the number of trigger particles and dphi bin width.
 ///////////////////////////////////////////////////////////////////////////
 void GetSameEventCorrelation(CorrelationContainer* h, TH2** hist, CorrelationContainer::CFStep step, Float_t centralityBegin, Float_t centralityEnd, Float_t ptBegin, Float_t ptEnd, Bool_t normalizePerTrigger = kTRUE)
@@ -62,7 +62,6 @@ void GetSameEventCorrelation(CorrelationContainer* h, TH2** hist, CorrelationCon
   newTitle.Form("%s - %s , mult %.0f-%.0f, vz %.0f - %.0f", str.Data(), str2.Data(), centralityBegin, centralityEnd, gZVtxMin, gZVtxMax);
   if ((*hist))
     (*hist)->SetTitle(newTitle);
-
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -71,13 +70,13 @@ void GetSameEventCorrelation(CorrelationContainer* h, TH2** hist, CorrelationCon
 ///////////////////////////////////////////////////////////////////////////
 TH1* GetProjectionOfAxis(CorrelationContainer* h, CorrelationContainer::CFStep step, bool pairhist = false, int naxis = 6)
 {
-  THnBase *sparse;
-  if (pairhist) 
+  THnBase* sparse;
+  if (pairhist)
     sparse = h->getPairHist()->getTHn(step);
   else
     sparse = h->getTriggerHist()->getTHn(step);
 
-  TH1 *hprojection = (TH1*)sparse->Projection(naxis);
+  TH1* hprojection = (TH1*)sparse->Projection(naxis);
   return hprojection;
 }
 
@@ -221,7 +220,7 @@ void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2.root", co
         continue;
 
       // Below each analysis is made for each choice of pttrig, ptassoc and multiplicity.
-      // The same event correlations is divided by mixed event after normalization 
+      // The same event correlations is divided by mixed event after normalization
       // for each pTtrig, pTassoc and mult bin (will be integrated over all Vz)
 
       gpTMin = assocPtArr[j] + 0.01;
@@ -235,7 +234,7 @@ void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2.root", co
       for (Int_t mult = 0; mult < maxCentrality; mult++) {
 
         TH1* hist1 = 0;
-        GetSumOfRatios(h, hMixed, &hist1, step, centralityArr[mult], centralityArr[mult+1], leadingPtArr[i] + 0.01, leadingPtArr[i + 1] - 0.01, normalizePerTrigger);
+        GetSumOfRatios(h, hMixed, &hist1, step, centralityArr[mult], centralityArr[mult + 1], leadingPtArr[i] + 0.01, leadingPtArr[i + 1] - 0.01, normalizePerTrigger);
 
         file = TFile::Open(outputFile, "UPDATE");
 
@@ -248,7 +247,7 @@ void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2.root", co
 
         delete hist1;
       }
-      
+
       //  Below, get same-event 2D distributions to compare with Jasper
       //  for each pT trig and pT passoc and each multiplicity bin
       if (!saveSameEventDis)
@@ -259,11 +258,11 @@ void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2.root", co
       for (Int_t mult = 0; mult < maxCentrality; mult++) {
 
         TH2* histSame2D = 0;
-        GetSameEventCorrelation(h, &histSame2D, step, centralityArr[mult], centralityArr[mult+1], leadingPtArr[i] + 0.01, leadingPtArr[i + 1] - 0.01, normalizePerTrigger);
+        GetSameEventCorrelation(h, &histSame2D, step, centralityArr[mult], centralityArr[mult + 1], leadingPtArr[i] + 0.01, leadingPtArr[i + 1] - 0.01, normalizePerTrigger);
 
         file = TFile::Open(outputFile, "UPDATE");
 
-        if(histSame2D) {
+        if (histSame2D) {
           histSame2D->SetName(Form("same_%d_%d_%d", i, j, mult));
           histSame2D->Write();
         }
@@ -271,7 +270,6 @@ void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2.root", co
         file->Close();
 
         delete histSame2D;
-
       }
     }
 
