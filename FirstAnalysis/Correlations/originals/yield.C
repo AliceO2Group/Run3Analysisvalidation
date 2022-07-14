@@ -13,7 +13,7 @@ enum FLAGS {
 };
 
 #define DECL_V0MCENT static Double_t Nct[] = {5.0e-02, 5.5e-01, 3.0e+00, 7.5e+00, 1.5e+01, 2.5e+01, 3.5e+01, 4.5e+01, 5.5e+01, 8.0e+01}; // cent bins for V0M
-#define DECL_REFMULT08 static Double_t Nct[] = {2.5, 8.0, 13.0, 20.5, 30.5, 40.5, 50.5, 60.5, 70.5, 80.5, 90.5};                         //,98.0}; //bin1 is 2.5; bin0 is overflow
+#define DECL_REFMULT08 static Double_t Nct[] = {2.5, 8.0, 13.0, 20.5, 30.5, 40.5, 50.5, 60.5, 70.5, 80.5, 90.5}; //,98.0}; //bin1 is 2.5; bin0 is overflow
 #define DECL_REFMULT08FINE static Double_t Nct[] = {1.750, 4.500, 6.500, 9.000, 11.500, 14.000, 18.000, 23.000, 28.000, 33.000, 38.000, 43.000, 48.000, 53.000, 58.000, 63.000, 68.000, 73.000, 78.000, 83.000, 88.000, 93.000};
 
 #define RESULT_SET 0 // 0: default, 1: zbins, 2: pythia, 3: V0M cent

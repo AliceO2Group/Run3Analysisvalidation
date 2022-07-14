@@ -2,7 +2,7 @@
 Bool_t ComputeMinimum(TH1D* h1, Double_t& min, Double_t& minError, Bool_t Debug)
 {
   if (h1) {
-    //min[] = 0; minError = 0;
+    // min[] = 0; minError = 0;
     const Int_t Nbins = h1->GetXaxis()->GetNbins();
     Double_t min1 = 0;
     Double_t minError1 = 0;
@@ -59,4 +59,3 @@ Bool_t ComputeMinimum(TH1D* h1, Double_t& min, Double_t& minError, Bool_t Debug)
     return kFALSE;
   }
 }
-

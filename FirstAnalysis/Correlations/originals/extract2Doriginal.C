@@ -82,7 +82,7 @@ void extract2Doriginal(const char* fileNamePbPb = "AnalysisResults.root", const 
   // ((TH3*) inputFile->Get("correlation-task/yields"))->GetXaxis()->SetRangeUser(0.01, 49.99);
   // ((TH3*) inputFile->Get("correlation-task/yields"))->Project3D("zy")->Draw("COLZ");
 
-  //return;
+  // return;
 
   for (Int_t i = 0; i < maxLeadingPt; i++) {
     for (Int_t j = 0; j < maxAssocPt; j++) {
@@ -126,4 +126,3 @@ void extract2Doriginal(const char* fileNamePbPb = "AnalysisResults.root", const 
   delete h;
   delete hMixed;
 }
-
