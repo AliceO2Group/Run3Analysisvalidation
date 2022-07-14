@@ -76,12 +76,23 @@ workflows:
       default: [HFCANDCHICBASE, HFCANDCHICEXT]
       mc: [HFCANDCHICMCREC, HFCANDCHICMCGEN]
 
-  o2-analysis-hf-candidate-creator-bplus:
+    o2-analysis-hf-candidate-creator-bplus:
     <<: *cand_creator
     dependencies: o2-analysis-hf-d0-candidate-selector
     tables:
       default: [HFCANDBPLUSBASE, HFCANDBPLUSEXT]
       mc: [HFCANDBPMCREC, HFCANDBPMCGEN]
+
+  o2-analysis-hf-candidate-creator-lb:
+    <<: *cand_creator
+    options:
+      mc: "--doMC"
+    dependencies:
+      - o2-analysis-hf-lc-candidate-selector
+      - o2-analysis-alice3-centrality
+    tables:
+      default: [HFCANDLB, HFCANDLBEXT]
+      mc: [HFCANDLBMCREC, HFCANDLBMCGEN]
 
   # Selectors
 
@@ -107,6 +118,11 @@ workflows:
       - o2-analysis-pid-tpc-full
       - o2-analysis-pid-tof-full
     tables: HFSELDPLUSCAND
+
+  o2-analysis-hf-lb-tolcpi-candidate-selector:
+    <<: *selector_3prong
+    dependencies: o2-analysis-hf-candidate-creator-lb
+    tables: HFSELLBCAND
 
   o2-analysis-hf-lc-candidate-selector:
     <<: *selector_3prong
@@ -138,7 +154,7 @@ workflows:
   o2-analysis-hf-bplus-tod0pi-candidate-selector:
     dependencies: o2-analysis-hf-candidate-creator-bplus
     tables: HFSELBPLUSCAND
-
+    
   # Analysis tasks
 
   o2-analysis-hf-task-d0:
@@ -155,6 +171,11 @@ workflows:
 
   o2-analysis-hf-task-lc:
     dependencies: o2-analysis-hf-lc-candidate-selector
+
+  o2-analysis-hf-task-lb:
+    options:
+      mc: "--doMC"
+    dependencies: [o2-analysis-hf-lb-tolcpi-candidate-selector, o2-analysis-trackextension-alice3] #, o2-analysis-alice3-centrality]
 
   o2-analysis-hf-task-xic:
     options:
@@ -210,6 +231,11 @@ workflows:
     requires_mc: yes
     dependencies: o2-analysis-hf-lc-candidate-selector
     tables: [HFCANDP3Full, HFCANDP3FullE, HFCANDP3FullP]
+
+  o2-analysis-hf-tree-creator-lb-tolcpi:
+    requires_mc: yes
+    dependencies: [o2-analysis-hf-lb-tolcpi-candidate-selector, o2-analysis-trackextension-alice3]
+    tables: [HFCANDLbFull, HFCANDLbFullE, HFCANDLbFullP]
 
   o2-analysis-hf-tree-creator-x-tojpsipipi:
     requires_mc: yes
