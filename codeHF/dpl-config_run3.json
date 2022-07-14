@@ -58,8 +58,8 @@
         "estRun2SPDcls": "-1",
         "estRun2CL0": "-1",
         "estRun2CL1": "-1",
-        "ccdburl": "http:\/\/alice-ccdb.cern.ch",
-        "ccdbpath": "Centrality\/Estimators",
+        "ccdburl": "http://alice-ccdb.cern.ch",
+        "ccdbpath": "Centrality/Estimators",
         "genname": ""
     },
     "track-propagation": {
@@ -72,9 +72,8 @@
         "bz": "5",
         "doPvRefit": "false",
         "doCutQuality": "true",
-        "useIsGlobalTrack": "false",
-        "tpcNClsFound": "71",
         "useIsGlobalTrack": "true",
+        "tpcNClsFound": "71",
         "pTBinsTrack": {
             "values": [
                 "0.",
