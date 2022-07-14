@@ -1,3 +1,4 @@
+---
 # https://github.com/marketplace/actions/clang-format-lint
 name: Clang Format Linter
 on: [push, pull_request]
