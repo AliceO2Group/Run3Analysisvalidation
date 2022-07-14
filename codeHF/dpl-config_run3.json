@@ -16,16 +16,16 @@
         "rct-path": "RCT/RunInformation",
         "orbit-reset-path": "CTP/Calib/OrbitReset",
         "ccdb-url": "http://alice-ccdb.cern.ch",
-        "isRun2MC": "false"
+        "isRun2MC": "true"
     },
     "bc-selection-task": {
-        "processRun2": "false",
-        "processRun3": "true"
+        "processRun2": "true",
+        "processRun3": "false"
     },
     "tof-signal": "",
     "track-extension": {
-        "processRun2": "false",
-        "processRun3": "true"
+        "processRun2": "true",
+        "processRun3": "false"
     },
     "lambdakzero-builder": {
         "dcanegtopv": "0.1",
@@ -46,21 +46,11 @@
         "muonSelection": "0",
         "customDeltaBC": "300",
         "isMC": "true",
-        "processRun2": "false",
-        "processRun3": "true"
+        "processRun2": "true",
+        "processRun3": "false"
     },
     "track-selection": {
-        "isRun3": "true"
-    },
-    "centrality-table": {
-        "estV0M": "-1",
-        "estRun2SPDtks": "-1",
-        "estRun2SPDcls": "-1",
-        "estRun2CL0": "-1",
-        "estRun2CL1": "-1",
-        "ccdburl": "http://alice-ccdb.cern.ch",
-        "ccdbpath": "Centrality/Estimators",
-        "genname": ""
+        "isRun3": "false"
     },
     "track-propagation": {
         "processStandard": "false",
@@ -72,7 +62,7 @@
         "bz": "5",
         "doPvRefit": "false",
         "doCutQuality": "true",
-        "useIsGlobalTrack": "true",
+        "useIsGlobalTrack": "false",
         "tpcNClsFound": "71",
         "pTBinsTrack": {
             "values": [
@@ -160,8 +150,8 @@
     },
     "multiplicity-table": {
         "doVertexZeq": "1",
-        "processRun2": "false",
-        "processRun3": "true"
+        "processRun2": "true",
+        "processRun3": "false"
     },
     "tof-event-time": {
         "param-file": "",
