@@ -1,5 +1,5 @@
 *.root
 *.pdf
 *.log
-report/
+megalinter-reports/
 .DS_Store

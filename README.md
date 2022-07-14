@@ -255,8 +255,8 @@ bash <path to the Run3Analysisvalidation directory>/exec/check_spaces.sh
 clang-format -style=file -i <file>
 ```
 
-### [MegaLinter](https://megalinter.github.io/latest/mega-linter-runner/)
+### [MegaLinter](https://oxsecurity.github.io/megalinter/latest/mega-linter-runner/)
 
 ```bash
-mega-linter-runner
+npx mega-linter-runner
 ```
