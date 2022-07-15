@@ -200,7 +200,7 @@ workflows:
     requires_mc: yes
     options: "--doMCGen"
 
-  o2-analysis-hf-task-hfcorrelations:
+  o2-analysis-hf-task-correlation-d0:
     dependencies:
       - o2-analysis-hf-d0-candidate-selector
 
