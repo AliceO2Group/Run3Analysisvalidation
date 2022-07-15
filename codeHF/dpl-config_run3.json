@@ -979,8 +979,8 @@
         "selectionFlagLcbar": "0",
         "cutEtaCandMax": "-1"
     },
-    "task-hf-correlations": {
-        "cfgCutVertex": "10.0",
+    "hf-task-correlation-d0": {
+        "cfgCutVertex": "7.0",
         "cfgCutEta": "1.1",
         "cfgCutPt": "0.2",
         "d_selectionFlagD0": "0",
@@ -1018,9 +1018,9 @@
         },
         "axisVertex": {
             "values": [
-                "20",
-                "-10",
-                "10"
+                "14",
+                "-7",
+                "7"
             ]
         },
         "axisDeltaPhi": {
@@ -1067,7 +1067,7 @@
                 "0",
                 "0",
                 "2.75",
-                "5.25",
+                "5.75",
                 "7.75",
                 "12.75",
                 "17.75",
@@ -1115,10 +1115,10 @@
             "values": [
                 "0",
                 "0.5",
-                "0.59999999999999998",
-                "0.69999999999999996",
-                "0.80000000000000004",
-                "0.90000000000000002",
+                "0.6",
+                "0.7",
+                "0.8",
+                "0.9",
                 "1",
                 "1.25",
                 "1.5",
@@ -1141,10 +1141,13 @@
         },
         "processTPCTPChh": "true",
         "processTPCMFThh": "false",
-        "processHFHadrons": "true",
+        "processHFHadrons": "false",
         "cfgNoMixedEvents": 5,
-        "processSame": "true",
-        "processMixed": "true"
+        "processSameRun2": "false",
+        "processSameRun3": "true",
+        "processMixed": "true",
+        "processRun2": "false",
+        "processRun3": "true"
     },
     "qa-tracking-efficiency-electron": {
         "eta-min": "-3",
