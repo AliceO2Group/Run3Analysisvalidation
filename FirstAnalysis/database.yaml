@@ -8,8 +8,8 @@ Xi_cc:
       normalized: 1
       varlist: ["mass", "d0Prong0", "d0Prong1", "CPA", "Y", "DecLength", "Ct", "Eta", "chi2PCA"]
       varlatex: ["inv. mass (GeV)", "d_{0} prong 0 (cm)", "d_{0} prong 1 (cm)", "cos(#theta_{p})", "rapidity", "dec. length (cm)", "c#tau (cm)", "#eta", "chi^{2} decay"]
-      histonamesig: ["hmassSig", "hd0Prong0Sig", "hd0Prong1Sig", "hCPASig", "hYSig", "hDecLengthSig", "hCtSig", "hEtaSig", "hChi2PCASig"]
-      histonamebkg: ["hmassBg", "hd0Prong0Bg", "hd0Prong1Bg", "hCPABg", "hYBg", "hDecLengthBg", "hCtBg", "hEtaBg", "hChi2PCABg"]
+      histonamesig: ["hMassSig", "hd0Prong0Sig", "hd0Prong1Sig", "hCPASig", "hYSig", "hDecLengthSig", "hCtSig", "hEtaSig", "hChi2PCASig"]
+      histonamebkg: ["hMassBg", "hd0Prong0Bg", "hd0Prong1Bg", "hCPABg", "hYBg", "hDecLengthBg", "hCtBg", "hEtaBg", "hChi2PCABg"]
       ymin: [0.0001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001]
       ymax: [0.4, 5., 5., 5., 5., 5., 10., 5., 5.]
       xmin: [3.2, -0.01, -0.01, 0.5, -3., 0.00001, 0., -3., 0.]
@@ -50,8 +50,8 @@ Jpsi:
       normalized: 1
       varlist: ["mass", "d0Prong0", "d0Prong1", "Y", "DecLength", "Ct", "d0xd0", "chi2PCA"]
       varlatex: ["inv. mass (GeV)", "d_{0} prong 0 (cm)", "d_{0} prong 1 (cm)", "rapidity", "dec. length (cm)", "c#tau (cm)", "d_{0} x d_{1}", "chi^{2} decay"]
-      histonamesig: ["hmassSig", "hd0Prong0Sig", "hd0Prong1Sig", "hYSig", "hdeclengthSig", "hCtSig", "hd0d0Sig", "hChi2PCASig"]
-      histonamebkg: ["hmassBg", "hd0Prong0Bg", "hd0Prong1Bg", "hYBg", "hdeclengthBg", "hCtBg", "hd0d0Bg", "hChi2PCABg"]
+      histonamesig: ["hMassSig", "hd0Prong0Sig", "hd0Prong1Sig", "hYSig", "hDecLengthSig", "hCtSig", "hd0d0Sig", "hChi2PCASig"]
+      histonamebkg: ["hMassBg", "hd0Prong0Bg", "hd0Prong1Bg", "hYBg", "hDecLengthBg", "hCtBg", "hd0d0Bg", "hChi2PCABg"]
       ymin: [0.0001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001]
       ymax: [0.4, 5., 5., 5., 5., 10., 5., 5.]
       xmin: [3.2, -0.01, -0.01, -3., 0.00001, 0., -0.02, 1.e-6]
