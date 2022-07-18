@@ -154,11 +154,6 @@
         "processRun3": "false"
     },
     "tof-event-time": {
-        "param-file": "",
-        "param-sigma": "TOFReso",
-        "ccdb-url": "http://alice-ccdb.cern.ch",
-        "ccdbPath": "Analysis/PID/TOF",
-        "ccdb-timestamp": "-1",
         "processRun2": "true",
         "processNoFT0": "false",
         "processFT0": "false",
@@ -166,12 +161,6 @@
     },
     "lambdakzero-initializer": "",
     "tof-pid-full": {
-        "param-file": "",
-        "param-sigma": "TOFResoParams",
-        "ccdb-url": "http://alice-ccdb.cern.ch",
-        "ccdbPath": "Analysis/PID/TOF",
-        "ccdb-timestamp": "-1",
-        "enableTimeDependentResponse": "false",
         "pid-el": "-1",
         "pid-mu": "-1",
         "pid-pi": "-1",
@@ -979,7 +968,7 @@
         "selectionFlagLcbar": "0",
         "cutEtaCandMax": "-1"
     },
-    "hf-task-correlation-d0": {
+    "task-correlation-d0": {
         "cfgCutVertex": "7.0",
         "cfgCutEta": "1.1",
         "cfgCutPt": "0.2",
