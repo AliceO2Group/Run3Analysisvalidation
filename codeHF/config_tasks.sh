@@ -139,6 +139,7 @@ function AdjustJson {
   elif [ "$INPUT_RUN" -eq 3 ]; then
     ReplaceString "\"processRun2\": \"true\"" "\"processRun2\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processRun3\": \"false\"" "\"processRun3\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    DOO2_TRKPROP=1
   fi
 
   # MC
@@ -185,6 +186,13 @@ function AdjustJson {
     ReplaceString "\"isRun3\": \"false\"" "\"isRun3\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
   else
     ReplaceString "\"isRun3\": \"true\"" "\"isRun3\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  fi
+
+  # lambdakzero-builder
+  if [ "$INPUT_RUN" -eq 2 ]; then
+    ReplaceString "\"isRun2\": \"0\"" "\"isRun2\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  else
+    ReplaceString "\"isRun2\": \"1\"" "\"isRun2\": \"0\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # tof-event-time
