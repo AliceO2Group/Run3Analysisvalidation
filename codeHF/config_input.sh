@@ -31,6 +31,7 @@ JSON="$JSONRUN3"
 # ISINPUTO2=0
 # ISALICE3=0
 # ISMC=0
+# JSON="$JSONRUN3"
 
 case $INPUT_CASE in
   1)
@@ -61,7 +62,6 @@ case $INPUT_CASE in
     INPUT_LABEL="Run 3, p-p 13.6 TeV, MC LHC21k6, general purpose"
     INPUT_DIR="/data2/vkucera/alice/sim/2021/LHC21k6/302028/AOD"
     INPUT_FILES="AO2D.root"
-    JSON="$JSONRUN3"
     ISINPUTO2=1
     INPUT_RUN=3
     ISMC=1;;
