@@ -39,6 +39,7 @@ DOO2_MC_VALID=0     # hf-mc-validation
 DOO2_PID_TPC=0      # pid-tpc-full
 DOO2_PID_TOF=0      # pid-tof-full/alice3-pid-tof
 DOO2_PID_TOF_QA=0   # pid-tof-qa-mc
+DOO2_PID_BAYES=0    # pid-bayes
 # Vertexing
 DOO2_SKIM=0         # hf-track-index-skims-creator
 DOO2_CAND_2PRONG=0  # hf-candidate-creator-2prong
@@ -277,6 +278,7 @@ function MakeScriptO2 {
   [ $DOO2_MC_VALID -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-mc-validation"
   # PID
   [ $DOO2_PID_TPC -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tpc-full"
+  [ $DOO2_PID_BAYES -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-bayes"
   WF_TOF="o2-analysis-pid-tof-full"
   [ $DOO2_PID_TOF -eq 1 ] && WORKFLOWS+=" ${WF_TOF}${SUFFIX_ALICE3}"
   [ $DOO2_PID_TOF_QA -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tof-qa-mc"
