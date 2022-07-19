@@ -292,8 +292,6 @@ workflows:
 
   # Helper tasks
 
-  o2-analysis-mc-converter: {}
-
   o2-analysis-timestamp: {}
 
   o2-analysis-trackselection:
