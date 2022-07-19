@@ -149,6 +149,7 @@
         "processNoTrigSel": "true"
     },
     "multiplicity-table": {
+        "doVertexZeq": "1",
         "processRun2": "true",
         "processRun3": "false"
     },
@@ -160,7 +161,8 @@
         "ccdb-timestamp": "-1",
         "processRun2": "true",
         "processNoFT0": "false",
-        "processFT0": "false"
+        "processFT0": "false",
+        "processOnlyFT0": "false"
     },
     "lambdakzero-initializer": "",
     "tof-pid-full": {
@@ -178,17 +180,20 @@
         "pid-de": "-1",
         "pid-tr": "-1",
         "pid-he": "-1",
-        "pid-al": "-1"
+        "pid-al": "-1",
+        "processWSlice": "true",
+        "processWoSlice": "false"
     },
     "tpc-pid-full": {
         "param-file": "",
         "ccdb-url": "http://alice-ccdb.cern.ch",
         "ccdbPath": "Analysis/PID/TPC/Response",
         "ccdb-timestamp": "0",
-        "useNetworkCorrection": "0",
-        "downloadNetworkFromAlien": "0",
-        "networkPathAlien": "alien:///alice/cern.ch/user/c/csonnabe/tpc_network_testing/net_onnx_0.onnx",
+        "useNetworkCorrection": "false",
+        "autofetchNetworks": "true",
         "networkPathLocally": "network.onnx",
+        "enableNetworkOptimizations": "true",
+        "networkPathCCDB": "Analysis/PID/TPC/ML",
         "pid-el": "-1",
         "pid-mu": "-1",
         "pid-pi": "-1",
