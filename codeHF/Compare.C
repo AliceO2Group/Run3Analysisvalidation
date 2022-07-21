@@ -207,6 +207,38 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun2 = "
   AddHistogram(vecHisJpsi, "decay length error (cm)", "hDecLenErrJpsi", "hf-task-jpsi/hDecLenErr", 1, 1, 0);
   AddHistogram(vecHisJpsi, "decay length XY error (cm)", "hDecLenXYErrJpsi", "hf-task-jpsi/hDecLenXYErr", 1, 1, 0);
 
+  VecSpecHis vecHisJets;
+  AddHistogram(vecHisJets, "#it{p}_{T}^{jet} (GeV/#it{c})", "fHistJetPt", "jet-finder-hf-data/h_jet_pt", 1, 1, 0);
+  AddHistogram(vecHisJets, "#phi", "fHistJetPhi", "jet-finder-hf-data/h_jet_phi", 1, 1, 0);
+  AddHistogram(vecHisJets, "#eta", "fHistJetEta", "jet-finder-hf-data/h_jet_eta", 1, 1, 0);
+  AddHistogram(vecHisJets, "N_{tracks}", "fHistJetNConstituents", "jet-finder-hf-data/h_jet_ntracks", 1, 1, 0);
+  AddHistogram(vecHisJets, "#it{p}_{T}^{cand} (GeV/#it{c})", "fHistJetCandPt", "jet-finder-hf-data/h_D0_pt", 1, 1, 0);
+
+  VecSpecHis vecHisJetSubstructure;
+  AddHistogram(vecHisJetSubstructure, "z_{g}", "fHistJetZg", "jet-substructure-hf-data/h_jet_zg", 1, 0, 0);
+  AddHistogram(vecHisJetSubstructure, "R_{g}", "fHistJetRg", "jet-substructure-hf-data/h_jet_rg", 1, 0, 0);
+  AddHistogram(vecHisJetSubstructure, "n_{SD}", "fHistJetNsd", "jet-substructure-hf-data/h_jet_nsd", 1, 0, 0);
+
+  VecSpecHis vecHisJetsMC;
+  AddHistogram(vecHisJetsMC, "#it{p}_{T,det}^{jet} (GeV/#it{c})", "fHistJetPt", "jet-finder-hf-mcd/h_jet_pt", 1, 1, 0);
+  AddHistogram(vecHisJetsMC, "#it{p}_{T,gen}^{jet} (GeV/#it{c})", "fHistJetPt_Part", "jet-finder-hf-mcp/h_jet_pt", 1, 1, 0);
+  AddHistogram(vecHisJetsMC, "#phi_{det}", "fHistJetPhi", "jet-finder-hf-mcd/h_jet_phi", 1, 1, 0);
+  AddHistogram(vecHisJetsMC, "#phi_{gen}", "fHistJetPhi_Part", "jet-finder-hf-mcp/h_jet_phi", 1, 1, 0);
+  AddHistogram(vecHisJetsMC, "#eta_{det}", "fHistJetEta", "jet-finder-hf-mcd/h_jet_eta", 1, 1, 0);
+  AddHistogram(vecHisJetsMC, "#eta_{gen}", "fHistJetEta_Part", "jet-finder-hf-mcp/h_jet_eta", 1, 1, 0);
+  AddHistogram(vecHisJetsMC, "N_{tracks,det}", "fHistJetNConstituents", "jet-finder-hf-mcd/h_jet_ntracks", 1, 1, 0);
+  AddHistogram(vecHisJetsMC, "N_{tracks,gen}", "fHistJetNConstituents_Part", "jet-finder-hf-mcp/h_jet_ntracks", 1, 1, 0);
+  AddHistogram(vecHisJetsMC, "#it{p}_{T,det}^{cand} (GeV/#it{c})", "fHistJetCandPt", "jet-finder-hf-mcd/h_D0_pt", 1, 1, 0);
+  AddHistogram(vecHisJetsMC, "#it{p}_{T,gen}^{cand} (GeV/#it{c})", "fHistJetCandPt_Part", "jet-finder-hf-mcp/h_D0_pt", 1, 1, 0);
+
+  VecSpecHis vecHisJetSubstructureMC;
+  AddHistogram(vecHisJetSubstructureMC, "z_{g,det}", "fHistJetZg", "jet-substructure-hf-mcd/h_jet_zg", 1, 0, 0);
+  AddHistogram(vecHisJetSubstructureMC, "z_{g,gen}", "fHistJetZg_Part", "jet-substructure-hf-mcp/h_jet_zg", 1, 0, 0);
+  AddHistogram(vecHisJetSubstructureMC, "R_{g,det}", "fHistJetRg", "jet-substructure-hf-mcd/h_jet_rg", 1, 0, 0);
+  AddHistogram(vecHisJetSubstructureMC, "R_{g,gen}", "fHistJetRg_Part", "jet-substructure-hf-mcp/h_jet_rg", 1, 0, 0);
+  AddHistogram(vecHisJetSubstructureMC, "n_{SD,det}", "fHistJetNsd", "jet-substructure-hf-mcd/h_jet_nsd", 1, 0, 0);
+  AddHistogram(vecHisJetSubstructureMC, "n_{SD,gen}", "fHistJetNsd_Part", "jet-substructure-hf-mcp/h_jet_nsd", 1, 0, 0);
+
   // vector of specifications of vectors: name, VecSpecHis, pads X, pads Y
   std::vector<std::tuple<TString, VecSpecHis, int, int>> vecSpecVecSpec;
 
@@ -243,6 +275,14 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun2 = "
     vecSpecVecSpec.push_back(std::make_tuple("lc-mc-nonprompt", vecHisLcMCNonPrompt, 5, 3));
   if (options.Contains(" jpsi "))
     vecSpecVecSpec.push_back(std::make_tuple("jpsi", vecHisJpsi, 5, 3));
+  if (options.Contains(" jets-data "))
+    vecSpecVecSpec.push_back(std::make_tuple("jets-data", vecHisJets, 5, 3));
+  if (options.Contains(" jets-mc "))
+    vecSpecVecSpec.push_back(std::make_tuple("jets-mc", vecHisJetsMC, 5, 3));
+  if (options.Contains(" jets-substructure-data "))
+    vecSpecVecSpec.push_back(std::make_tuple("jets-substructure-data", vecHisJetSubstructure, 5, 3));
+  if (options.Contains(" jets-substructure-mc "))
+    vecSpecVecSpec.push_back(std::make_tuple("jets-substructure-mc", vecHisJetSubstructureMC, 5, 3));
 
   // Histogram plot vertical margins
   Float_t marginHigh = 0.05;

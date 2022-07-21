@@ -81,7 +81,8 @@ DOO2_TASK_XICC=0    # hf-task-xicc
 DOO2_TASK_B0=0      # hf-task-b0
 DOO2_TASK_BPLUS=0   # hf-task-bplus
 DOJETS=1            # je-jet-finder-hf
-DOJETMATCHINGHF=1   # je-jet-matching-hf (needs jets)
+DOJETMATCHINGHF=0   # je-jet-matching-hf (needs jets)
+DOJETSUBSTRUCTURE=1   # je-jet-substructure-hf (needs jets)
 # Tree creators
 DOO2_TREE_D0=0      # hf-tree-creator-d0-to-k-pi
 DOO2_TREE_LC=0      # hf-tree-creator-lc-to-p-k-pi
@@ -373,8 +374,9 @@ function MakeScriptO2 {
   [ $DOO2_SEL_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-bplus-to-d0-pi"
   # User tasks
   [ $DOO2_TASK_D0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-d0"
-  [ $DOJETS -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf"
-  [ $DOJETMATCHINGHF -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf-mcd o2-analysis-je-jet-finder-hf-mcp o2-analysis-je-jet-matching-hf"
+  [ $DOJETS -eq 1 ] && { [ "$ISMC" -eq 0 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf-data"; [ "$ISMC" -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf-mcd o2-analysis-je-jet-finder-hf-mcp"; }
+  [ $DOJETMATCHINGHF -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf-mcd o2-analysis-je-jet-finder-hf-mcp"
+  [ $DOJETSUBSTRUCTURE -eq 1 ] && { [ "$ISMC" -eq 0 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-data"; [ "$ISMC" -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-mcd o2-analysis-je-jet-substructure-hf-mcp"; }
   [ $DOO2_TASK_JPSI -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-jpsi"
   [ $DOO2_TASK_DS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-ds"
   [ $DOO2_TASK_DPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-dplus"
@@ -444,7 +446,7 @@ EOF
 }
 
 function MakeScriptAli {
-  ALIEXEC="root -b -q -l \"$DIR_TASKS/RunHFTaskLocal.C(\\\"\$FileIn\\\", \\\"\$JSON\\\", $ISMC, $USEO2VERTEXER, $USEALIEVCUTS)\""
+  ALIEXEC="root -b -q -l \"$DIR_TASKS/RunHFTaskLocal.C(\\\"\$FileIn\\\", \\\"\$JSON\\\", $ISMC, $USEO2VERTEXER, $USEALIEVCUTS, $DOJETS, $DOJETMATCHINGHF, $DOJETSUBSTRUCTURE)\""
   cat << EOF > "$SCRIPT_ALI"
 #!/bin/bash
 FileIn="\$1"
@@ -467,6 +469,8 @@ function MakeScriptPostprocess {
     [ $DOO2_TASK_LC -eq 1 ] && { OPT_COMPARE+=" lc "; [ "$ISMC" -eq 1 ] && OPT_COMPARE+=" lc-mc-pt  lc-mc-prompt  lc-mc-nonprompt  lc-mc-eta  lc-mc-phi "; }
     [ $DOO2_TASK_XIC -eq 1 ] && OPT_COMPARE+=" xic "
     [ $DOO2_TASK_JPSI -eq 1 ] && OPT_COMPARE+=" jpsi "
+    [ $DOJETS -eq 1 ] && { [ "$ISMC" -eq 0 ] && OPT_COMPARE+=" jets-data "; [ "$ISMC" -eq 1 ] && OPT_COMPARE+=" jets-mc "; }
+    [ $DOJETSUBSTRUCTURE -eq 1 ] && { [ "$ISMC" -eq 0 ] && OPT_COMPARE+=" jets-substructure-data "; [ "$ISMC" -eq 1 ] && OPT_COMPARE+=" jets-substructure-mc "; }
     [ "$OPT_COMPARE" ] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/Compare.C(\\\"\$FileO2\\\", \\\"\$FileAli\\\", \\\"$OPT_COMPARE\\\", $DORATIO)\""
   }
   # Plot particle reconstruction efficiencies.

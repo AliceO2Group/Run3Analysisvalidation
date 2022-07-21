@@ -4,7 +4,10 @@ Long64_t RunHFTaskLocal(TString txtfile = "./list_ali.txt",
                         TString jsonfilename = "dpl-config_std.json",
                         Bool_t isMC = kFALSE,
                         Bool_t useO2Vertexer = kFALSE,
-                        Bool_t useAliEventCuts = kFALSE)
+                        Bool_t useAliEventCuts = kFALSE,
+                        Bool_t DoJets = kFALSE,
+                        Bool_t DOJETMATCHINGHF = kFALSE,
+                        Bool_t DOJETSUBSTRUCTURE = kFALSE)
 {
   // Load common libraries
   gSystem->Load("libCore.so");
@@ -47,6 +50,9 @@ Long64_t RunHFTaskLocal(TString txtfile = "./list_ali.txt",
     tasktr3->SetUseO2Vertexer();
   }
   tasktr3->SetUseCandidateAnalysisCuts();
+  tasktr3->SetDoJetFinding(DoJets);
+  tasktr3->SetJetMatching(DOJETMATCHINGHF);
+  tasktr3->SetDoJetSubstructure(DOJETSUBSTRUCTURE);
 
   mgr->InitAnalysis();
   mgr->PrintStatus();

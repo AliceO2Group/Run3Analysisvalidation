@@ -227,17 +227,14 @@ workflows:
     <<: *taskddbar
     requires_mc: yes
 
-<<<<<<< HEAD
   o2-analysis-hf-task-correlation-d0-hadrons:
     dependencies: o2-analysis-hf-correlator-d0-hadrons
-=======
->>>>>>> Add first version of HF jet finding and matching
 
   o2-analysis-hf-task-flow:
     dependencies:
       - o2-analysis-hf-candidate-selector-d0
 
-  o2-analysis-je-jet-finder-hf: &jethf
+  o2-analysis-je-jet-finder-hf-data: &jethf
     executable: o2-analysis-je-jet-finder-hf
     dependencies: o2-analysis-hf-task-d0
 
@@ -254,6 +251,22 @@ workflows:
   o2-analysis-je-jet-matching-hf:
     requires_mc: yes
     dependencies: [o2-analysis-je-jet-finder-hf-mcd, o2-analysis-je-jet-finder-hf-mcp]
+
+  o2-analysis-je-jet-substructure-hf-data:
+    executable: o2-analysis-je-jet-substructure-hf
+    dependencies: [o2-analysis-hf-task-d0, o2-analysis-je-jet-finder-hf-data]
+
+  o2-analysis-je-jet-substructure-hf-mcd:
+    executable: o2-analysis-je-jet-substructure-hf
+    dependencies: [o2-analysis-hf-task-d0, o2-analysis-je-jet-finder-hf-mcd]
+    options: "--hfjetsubstructureMode mcd"
+    requires_mc: yes
+
+  o2-analysis-je-jet-substructure-hf-mcp:
+    executable: o2-analysis-je-jet-substructure-hf
+    dependencies: [o2-analysis-hf-task-d0, o2-analysis-je-jet-finder-hf-mcp]
+    options: "--hfjetsubstructureMode mcp"
+    requires_mc: yes
 
   # Tree creators
 
