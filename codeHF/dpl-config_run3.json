@@ -929,12 +929,24 @@
         "processMC": "true"
     },
     "hf-task-xic": {
+		"d_selectionFlagXic": "0",
         "cutEtaCandMax": "0.8",
-        "d_selectionFlagXic": "0"
-    },
-    "hf-task-xic-mc": {
-        "cutEtaCandMax": "0.8",
-        "d_selectionFlagXic": "0"
+		"pTBins": {
+			"values": [
+				"0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "8",
+                "12",
+                "24",
+                "36"
+			]
+		},
+		"processMC": "true"
     },
     "hf-task-jpsi": {
         "cutYCandMax": "0.8",
