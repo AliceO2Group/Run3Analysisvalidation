@@ -979,7 +979,7 @@
         "selectionFlagLcbar": "0",
         "cutEtaCandMax": "-1"
     },
-    "hf-task-correlation-d0": {
+    "hf-task-flow": {
         "cfgCutVertex": "10.0",
         "cfgCutEta": "1.1",
         "cfgCutPt": "0.2",
