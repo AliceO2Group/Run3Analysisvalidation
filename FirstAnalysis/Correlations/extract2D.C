@@ -86,7 +86,7 @@ TH1* GetProjectionOfAxis(CorrelationContainer* h, CorrelationContainer::CFStep s
 // after mixed event subtraction with proper normalization.
 ///////////////////////////////////////////////////////////////////////////
 
-void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2.root", const char* outputFile = "dphi_corr.root", const char* folder = "task-hf-correlations", bool saveSameEventDis = false)
+void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2.root", const char* outputFile = "dphi_corr.root", const char* folder = "hf-task-correlation-d0", bool saveSameEventDis = false)
 {
   gStyle->SetOptStat(1111111);
 
