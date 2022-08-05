@@ -1047,7 +1047,7 @@
                 "3",
                 "4",
                 "6",
-                "10"
+                "8"
             ]
         },
         "axisPtAssoc": {
@@ -1143,11 +1143,11 @@
         "processTPCMFThh": "false",
         "processHFHadrons": "false",
         "cfgNoMixedEvents": 5,
-        "processSameRun2": "false",
-        "processSameRun3": "true",
+        "processSameRun2": "true",
+        "processSameRun3": "false",
         "processMixed": "true",
-        "processRun2": "false",
-        "processRun3": "true"
+        "processRun2": "true",
+        "processRun3": "false"
     },
     "qa-tracking-efficiency-electron": {
         "eta-min": "-3",
