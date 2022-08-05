@@ -334,8 +334,8 @@ function MakeScriptO2 {
   [ $DOO2_DPLUSDMINUS_DATA -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-dplusdminus o2-analysis-hf-task-correlation-ddbar"
   [ $DOO2_DPLUSDMINUS_MCREC -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-dplusdminus-mc-rec o2-analysis-hf-task-correlation-ddbar-mc-rec"
   [ $DOO2_DPLUSDMINUS_MCGEN -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-dplusdminus-mc-gen o2-analysis-hf-task-correlation-ddbar-mc-gen"
-  [ $DOO2_TASK_FLOW -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-flow"
   [ "$WF_CORR" ] && WORKFLOWS+=" $WF_CORR"
+  [ $DOO2_TASK_FLOW -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-flow"
   # Tree creators
   [ $DOO2_TREE_D0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-d0-tokpi"
   [ $DOO2_TREE_LC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-lc-topkpi"
