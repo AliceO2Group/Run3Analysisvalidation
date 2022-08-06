@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////
-//  Macro to plot deltaphi projections of two-particle correlations and yields 
+//  Macro to plot deltaphi projections of two-particle correlations and yields
 //
 //  For different bins in pT (of trigger and associated particles) plot
 //  1) the projection on deltaphi axis of the near-side ridge region (excluding the jet peak)

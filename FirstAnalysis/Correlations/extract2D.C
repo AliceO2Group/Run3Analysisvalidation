@@ -5,7 +5,7 @@
 //  for both same-event and mixed-event correlations and obtain the 2D correlation plot.
 //  1/N_trig * dN/ddeltaphi*ddeltaeta = dN_same/ddeltaphi*ddeltaeta / dN_mixed/ddeltaphi*ddeltaeta
 //  Both numerator (same-event) and denominator (mixed-event) are properly normalised.
-//  
+//
 //  Input: file with histograms produced by o2-analysis-hf-task-flow
 //
 //  Usage: root -l extract2D.C
@@ -13,7 +13,7 @@
 //  Parameters:
 //  - fileName: input file
 //  - outputFile: output file containing final 2D correlation histograms
-//  - folder: name of the folder created by the o2-analysis-hf-task-flow, 
+//  - folder: name of the folder created by the o2-analysis-hf-task-flow,
 //            contains the results stored in CorrelationContainer
 //  - saveSameEventDis: flag to save 2D histograms of only same-event correlations
 //
@@ -106,9 +106,8 @@ TH1* GetProjectionOfAxis(CorrelationContainer* h, CorrelationContainer::CFStep s
 }
 
 ///////////////////////////////////////////////////////////////////////////
-//  Main function 
+//  Main function
 ///////////////////////////////////////////////////////////////////////////
-
 void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2.root", const char* outputFile = "dphi_corr.root", const char* folder = "hf-task-flow", bool saveSameEventDis = false)
 {
   gStyle->SetOptStat(1111111);
