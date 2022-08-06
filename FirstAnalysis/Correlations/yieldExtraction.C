@@ -1,4 +1,31 @@
-bool wingCorrection = false;
+//////////////////////////////////////////////////////////////
+//  Macro to obtain projections of two-particle correlations and yield
+//
+//  For different bins in pT (of trigger and associated particles) do
+//  1) a projection on deltaeta axis of the away and near side region separately
+//  2) a projection on deltaphi axis of the near-side ridge region (excluding the jet peak)
+//  3) fit the deltaphi projection with Fourier expansion
+//  4) get ZYAM (=zero yield at minimum)
+//  5) subtract ZYAM
+//  6) integrate near-side deltaphi projection within ZYAM region to get the yield
+//
+//  Input: file with 2D correlation histograms produced by extract2D.C macro in this folder
+//
+//  Usage: root -l yieldExtraction.C
+//
+//  Parameters:
+//  - inFileName: name of the input file
+//  - absDeltaEtaMin: lower edge of deltaeta range when integrating the near-side ridge region
+//  - absDeltaEtaMax: upper edge of deltaeta range when integrating the near-side ridge region
+//  - outFileName: name of the output file with histograms/graphs of projections and yields
+//
+//  Contributors:
+//    Katarina Krizkova Gajdosova <katarina.gajdosova@cern.ch>
+//    Gian Michele Innocenti <gian.michele.innocenti@cern.ch>
+//    Jan Fiete Grosse-Oetringhaus <Jan.Fiete.Grosse-Oetringhaus@cern.ch>
+//////////////////////////////////////////////////////////////
+
+bool wingCorrection = false; // correct for increase of correlation signal at large deltaeta values
 
 // Note:  if a canvas is drawn with an empty pad, it is probably because
 //        the TFile took ownership of the histogram and deleted it when

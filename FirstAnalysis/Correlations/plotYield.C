@@ -1,9 +1,34 @@
+//////////////////////////////////////////////////////////////
+//  Macro to plot deltaphi projections of two-particle correlations and yields 
+//
+//  For different bins in pT (of trigger and associated particles) plot
+//  1) the projection on deltaphi axis of the near-side ridge region (excluding the jet peak)
+//    + the fit with Fourier expansion
+//  2) the integrated yield as a function of multiplicity
+//
+//  Input: file with projection histograms produced by yieldExtraction.C macro in this folder
+//
+//  Usage: root -l plotYield.C
+//
+//  Parameters:
+//  - inFileName: name of the input file
+//  - savePlots: flag to save the plots
+//
+//  Contributors:
+//    Katarina Krizkova Gajdosova <katarina.gajdosova@cern.ch>
+//    Gian Michele Innocenti <gian.michele.innocenti@cern.ch>
+//    Jan Fiete Grosse-Oetringhaus <Jan.Fiete.Grosse-Oetringhaus@cern.ch>
+//////////////////////////////////////////////////////////////
+
 float ptTrig[] = {1.0, 2.0, 3.0, 4.0};
 float ptAssoc[] = {1.0, 2.0, 3.0, 4.0};
 static Double_t Nch[] = {0.0, 2.750, 5.250, 7.750, 12.750, 17.750, 22.750, 27.750, 32.750, 37.750, 42.750, 47.750, 52.750, 57.750, 62.750, 67.750, 72.750, 77.750, 82.750, 87.750, 92.750, 97.750, 250.1};
 
 void DrawText(double xmin, double ymin, double textSize, TString text);
 
+//////////////////////////////////////////////////////////////
+//  main function
+//////////////////////////////////////////////////////////////
 void plotYield(const char* inFileName = "yield.root", bool savePlots = false)
 {
 
@@ -122,7 +147,7 @@ void plotYield(const char* inFileName = "yield.root", bool savePlots = false)
     }
   }
 }
-//---------------------
+//////////////////////////////////////////////////////////////
 void DrawText(double xmin, double ymin, double textSize, TString text)
 {
   TLatex* tl = new TLatex(xmin, ymin, Form("%s", text.Data()));

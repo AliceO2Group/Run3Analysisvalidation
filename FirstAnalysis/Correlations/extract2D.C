@@ -1,3 +1,28 @@
+///////////////////////////////////////////////////////////////////////////
+//  Macro to produce 2D histograms of correlations vs. deltahi and deltaeta
+//
+//  This macro allows you to process the content of the CorrelationContainer
+//  for both same-event and mixed-event correlations and obtain the 2D correlation plot.
+//  1/N_trig * dN/ddeltaphi*ddeltaeta = dN_same/ddeltaphi*ddeltaeta / dN_mixed/ddeltaphi*ddeltaeta
+//  Both numerator (same-event) and denominator (mixed-event) are properly normalised.
+//  
+//  Input: file with histograms produced by o2-analysis-hf-task-flow
+//
+//  Usage: root -l extract2D.C
+//
+//  Parameters:
+//  - fileName: input file
+//  - outputFile: output file containing final 2D correlation histograms
+//  - folder: name of the folder created by the o2-analysis-hf-task-flow, 
+//            contains the results stored in CorrelationContainer
+//  - saveSameEventDis: flag to save 2D histograms of only same-event correlations
+//
+//  Contributors:
+//    Katarina Krizkova Gajdosova <katarina.gajdosova@cern.ch>
+//    Gian Michele Innocenti <gian.michele.innocenti@cern.ch>
+//    Jan Fiete Grosse-Oetringhaus <Jan.Fiete.Grosse-Oetringhaus@cern.ch>
+///////////////////////////////////////////////////////////////////////////
+
 Float_t gpTMin = 0.21;
 Float_t gpTMax = 2.99;
 Float_t gEtaMin = -1.1;
@@ -65,7 +90,7 @@ void GetSameEventCorrelation(CorrelationContainer* h, TH2** hist, CorrelationCon
 }
 
 ///////////////////////////////////////////////////////////////////////////
-//  This is a function to draw a projection of specific axis of the CorrelationContainer
+//  Function to draw a projection of specific axis of the CorrelationContainer
 //  It is mostly meant as a quick QA of the filled distributions
 ///////////////////////////////////////////////////////////////////////////
 TH1* GetProjectionOfAxis(CorrelationContainer* h, CorrelationContainer::CFStep step, bool pairhist = false, int naxis = 6)
@@ -81,9 +106,7 @@ TH1* GetProjectionOfAxis(CorrelationContainer* h, CorrelationContainer::CFStep s
 }
 
 ///////////////////////////////////////////////////////////////////////////
-// This macro allows you to process the content of the CorrelationContainer
-// for both same event and mixed events and obtain the 2D correlation plot
-// after mixed event subtraction with proper normalization.
+//  Main function 
 ///////////////////////////////////////////////////////////////////////////
 
 void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2.root", const char* outputFile = "dphi_corr.root", const char* folder = "hf-task-flow", bool saveSameEventDis = false)
