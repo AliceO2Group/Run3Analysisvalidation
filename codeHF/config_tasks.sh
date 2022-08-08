@@ -85,7 +85,7 @@ DOO2_D0D0BAR_MCGEN=0     # hf-correlator-d0d0bar-mc-gen
 DOO2_DPLUSDMINUS_DATA=0  # hf-correlator-dplusdminus
 DOO2_DPLUSDMINUS_MCREC=0 # hf-correlator-dplusdminus-mc-rec
 DOO2_DPLUSDMINUS_MCGEN=0 # hf-correlator-dplusdminus-mc-gen
-DOO2_TASK_FLOW=0  # hf-task-correlation-d0
+DOO2_TASK_FLOW=0  # hf-task-flow
 # Other
 DOO2_MCCONV=0       # mc-converter
 DOO2_FDDCONV=0      # fdd-converter
@@ -204,7 +204,7 @@ function AdjustJson {
     ReplaceString "\"processNoFT0\": \"true\"" "\"processNoFT0\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
-  # hf-task-correlation-d0
+  # hf-task-flow
   if [ "$INPUT_RUN" -eq 3 ]; then
     ReplaceString "\"processSameRun3\": \"false\"" "\"processSameRun3\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processSameRun2\": \"true\"" "\"processSameRun2\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
