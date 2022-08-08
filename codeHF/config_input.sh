@@ -75,4 +75,9 @@ case $INPUT_CASE in
     INPUT_FILES="AO2D.root"
     ISINPUTO2=1
     ISMC=1;;
+  10)
+    INPUT_LABEL="Run 2, p-p 13 TeV, LHC17j (AO2D)"
+    INPUT_DIR="/data2/Run2samples/ConvertedData/LHC17j_date20220601/274671" # converted good AO2Ds
+    INPUT_FILES="AO2D.root"
+    ISINPUTO2=1;;
   esac

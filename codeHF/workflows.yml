@@ -200,6 +200,10 @@ workflows:
     requires_mc: yes
     options: "--doMCGen"
 
+  o2-analysis-hf-task-flow:
+    dependencies:
+      - o2-analysis-hf-d0-candidate-selector
+
   # Tree creators
 
   o2-analysis-hf-tree-creator-d0-tokpi:
