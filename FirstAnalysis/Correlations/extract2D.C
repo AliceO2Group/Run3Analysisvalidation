@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-//  Macro to produce 2D histograms of correlations vs. deltahi and deltaeta
+//  Macro to produce 2D histograms of correlations vs. delta phi and delta eta
 //
 //  This macro allows you to process the content of the CorrelationContainer
 //  for both same-event and mixed-event correlations and obtain the 2D correlation plot.
