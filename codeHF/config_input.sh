@@ -153,12 +153,4 @@ case $INPUT_CASE in
     ISINPUTO2=1
     ISALICE3=1
     ISMC=1;;
-  18)
-    INPUT_LABEL="Run 5, pp MC 14 TeV BBbar enriched, Layout v1, HF analysis"
-    INPUT_DIR="/home/mmazzill/pp14TeV_bbbar_10M_2T_13102021"
-    INPUT_FILES="AODRun5.*.root"
-    JSON="$JSONRUN5_HF"
-    ISINPUTO2=1
-    ISALICE3=1
-    ISMC=1;;
 esac
