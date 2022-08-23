@@ -1131,13 +1131,12 @@
                 "8"
             ]
         },
-        "processTPCTPChh": "true",
-        "processTPCMFThh": "false",
-        "processHFHadrons": "false",
+        "processSameTPCTPChh": "true",
+        "processSameTPCMFThh": "false",
+        "processSameHFHadrons": "true",
         "cfgNoMixedEvents": 5,
-        "processSameRun2": "true",
-        "processSameRun3": "false",
-        "processMixed": "true",
+        "processMixedTPCTPChh": "true",
+        "processMixedHFHadrons": "true",
         "processRun2": "true",
         "processRun3": "false"
     },
