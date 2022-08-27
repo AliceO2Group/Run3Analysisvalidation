@@ -38,7 +38,7 @@ double fun_template(double *x, double *par);
 ///////////////////////////////////////////////////////////////////////////
 //  Main function
 ///////////////////////////////////////////////////////////////////////////
-void doTemplate(const char* inputFileName = "./phi_proj_testflow.root", const char* outputFileName = "./templateResult.root", bool drawTemplate = true, bool savePlots = true)
+void doTemplate(const char* inputFileName = "./phi_proj_testflow.root", const char* outputFileName = "./templateResult.root", const char* outputPlotsName = "./plots", bool drawTemplate = true, bool savePlots = true)
 {
   
   TFile* inFile = TFile::Open(Form("%s", inputFileName), "read");
@@ -95,13 +95,14 @@ void doTemplate(const char* inputFileName = "./phi_proj_testflow.root", const ch
       TCanvas* cTemplate = new TCanvas("cTemplate", "", 1200, 800);
       gPad->SetMargin(0.12,0.01,0.12,0.01);
       hminuit->SetTitle("");
+      hminuit->SetStats(0);
       hminuit->GetYaxis()->SetTitleOffset(1.3);
       hminuit->Draw("");
       fTemplate->Draw("same");
       fPeripheral->Draw("same");
       fRidge->Draw("same");
 
-      TLegend* legend = new TLegend(0.48, 0.62, 0.98, 0.98);
+      TLegend* legend = new TLegend(0.15, 0.55, 0.5, 0.75);
       legend->SetFillColor(0);
       legend->SetBorderSize(0);
       legend->SetTextSize(0.035);
@@ -119,13 +120,13 @@ void doTemplate(const char* inputFileName = "./phi_proj_testflow.root", const ch
       latex->SetNDC();
 
       latex->DrawLatex(0.3, 0.93, "pp #sqrt{s} = 13 TeV");
-      latex->DrawLatex(0.3, 0.79, Form("%.1f < p_{T, trig, assoc} < %.1f", binspTref[0], binspTref[1]));
-      latex->DrawLatex(0.3, 0.7, Form("%.1f < N_{ch} < %.1f", binsMult[iMult], binsMult[iMult+1]));
+      latex->DrawLatex(0.3, 0.86, Form("%.1f < p_{T, trig, assoc} < %.1f", binspTref[0], binspTref[1]));
+      latex->DrawLatex(0.3, 0.79, Form("%.1f < N_{ch} < %.1f", binsMult[iMult], binsMult[iMult+1]));
       //latex->DrawLatex(0.3,0.72,Form("%.1f < #Delta#eta < %.1f",etaMin,etaMax));
 
-      if(savePlots) cTemplate->SaveAs(Form("./plotsTemplate/template_ref_%d.png", iMult));
+      if(savePlots) cTemplate->SaveAs(Form("%s/template_ref_%d.png", outputPlotsName, iMult));
     }
-    
+
     //  do differential flow here
     //  V_nDelta (v_2^2) for differential flow vs. pT and in bins of multiplicity
     hDifferentialV2[iMult] = new TH1D(Form("hDifferentialV2_%d", iMult), "v_{2#delta}; p_T; v_{2#Delta}", nBinspTtrig, binspTtrig);
@@ -136,7 +137,7 @@ void doTemplate(const char* inputFileName = "./phi_proj_testflow.root", const ch
       //  we need to distinguish histogram with desired (high) multiplicity
       //  from a histogram with low multiplicity used as the peripheral baseline 
       hminuit = (TH1D*)inFile->Get(Form("proj_dphi_%d_0_%d", ipTtrig, iMult))->Clone("hminuit");
-      hminuit_periph = (TH1D*)inFile->Get(Form("proj_dphi_%d_0_1", ipTtrig))->Clone("hminuit_periph");
+      hminuit_periph = (TH1D*)inFile->Get(Form("proj_dphi_%d_0_0", ipTtrig))->Clone("hminuit_periph");
 
       //  do the template fit
       double par[4], parerr[4];
@@ -177,13 +178,14 @@ void doTemplate(const char* inputFileName = "./phi_proj_testflow.root", const ch
         TCanvas* cTemplate = new TCanvas("cTemplate", "", 1200, 800);
         gPad->SetMargin(0.12,0.01,0.12,0.01);
         hminuit->SetTitle("");
+        hminuit->SetStats(0);
         hminuit->GetYaxis()->SetTitleOffset(1.3);
         hminuit->Draw("");
         fTemplate->Draw("same");
         fPeripheral->Draw("same");
         fRidge->Draw("same");
 
-        TLegend* legend = new TLegend(0.48, 0.62, 0.98, 0.98);
+        TLegend* legend = new TLegend(0.15, 0.55, 0.5, 0.75);
         legend->SetFillColor(0);
         legend->SetBorderSize(0);
         legend->SetTextSize(0.035);
@@ -201,11 +203,11 @@ void doTemplate(const char* inputFileName = "./phi_proj_testflow.root", const ch
         latex->SetNDC();
 
         latex->DrawLatex(0.3, 0.93, "pp #sqrt{s} = 13 TeV");
-        latex->DrawLatex(0.3, 0.79, Form("%.1f < p_{T, trig} < %.1f", binspTtrig[ipTtrig], binspTtrig[ipTtrig+1]));
-        latex->DrawLatex(0.3, 0.7, Form("%.1f < N_{ch} < %.1f", binsMult[iMult], binsMult[iMult+1]));
+        latex->DrawLatex(0.3, 0.86, Form("%.1f < p_{T, trig} < %.1f", binspTtrig[ipTtrig], binspTtrig[ipTtrig+1]));
+        latex->DrawLatex(0.3, 0.79, Form("%.1f < N_{ch} < %.1f", binsMult[iMult], binsMult[iMult+1]));
         //latex->DrawLatex(0.3,0.72,Form("%.1f < #Delta#eta < %.1f",etaMin,etaMax));
 
-        if(savePlots) cTemplate->SaveAs(Form("./plotsTemplate/template_%d_%d.png", ipTtrig, iMult));
+        if(savePlots) cTemplate->SaveAs(Form("%s/template_%d_%d.png", outputPlotsName, ipTtrig, iMult));
       }
     } // end of pT trig loop
   } // end of mult loop
