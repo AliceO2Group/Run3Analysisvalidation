@@ -108,7 +108,8 @@ TH1* GetProjectionOfAxis(CorrelationContainer* h, CorrelationContainer::CFStep s
 ///////////////////////////////////////////////////////////////////////////
 //  Main function
 ///////////////////////////////////////////////////////////////////////////
-void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2_flow.root", const char* outputFile = "dphi_corr_flow.root", const char* folder = "hf-task-flow", bool plotExamplePlots = false, bool saveSameEventDis = false)
+void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2_flow.root", const char* outputFile = "dphi_corr_flow.root", const char* outputPlots = "./plots", 
+              const char* folder = "hf-task-flow", bool plotExamplePlots = false, bool drawCorrelations = false, bool saveSameEventDis = false, bool hfcase = false)
 {
   gStyle->SetOptStat(1111111);
 
@@ -140,8 +141,17 @@ void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2_flow.root
   // h is the container of the same event
   // hMixed contain the data corresponding to the mixed event sample.
   auto inputFile = TFile::Open(fileName);
-  auto h = (CorrelationContainer*)inputFile->Get(Form("%s/sameEventTPCTPCChHadrons", folder));
-  auto hMixed = (CorrelationContainer*)inputFile->Get(Form("%s/mixedEventTPCTPCChHadrons", folder));
+  const char *directoryh = "";
+  const char *directoryhMixed = "";
+  if (hfcase) {
+    directoryh = Form("%s/sameEventHFHadrons", folder);
+    directoryhMixed = Form("%s/mixedEventHFHadrons", folder);
+  } else {
+    directoryh = Form("%s/sameEventTPCTPCChHadrons", folder);
+    directoryhMixed = Form("%s/mixedEventTPCTPCChHadrons", folder);
+  }
+  auto h = (CorrelationContainer*)inputFile->Get(Form("%s", directoryh));
+   auto hMixed = (CorrelationContainer*)inputFile->Get(Form("%s", directoryhMixed));
 
   //  auto proj = GetProjectionOfAxis(h, step, false, 1);
   //  proj->Draw();
@@ -170,7 +180,7 @@ void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2_flow.root
     sameTwoD->SetStats(0);
     sameTwoD->SetTitle("");
     sameTwoD->GetXaxis()->SetTitleOffset(1.5);
-    c1->SaveAs("sameCorr.png");
+    c1->SaveAs(Form("%s/sameCorr.png", outputPlots));
 
     //  Note: this is not normalised for the bin (0,0),
     TH2* mixedTwoD = (TH2*)hMixed->getPerTriggerYield(step, 0.2, 2.99, false);
@@ -179,7 +189,7 @@ void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2_flow.root
     mixedTwoD->SetStats(0);
     mixedTwoD->SetTitle("");
     mixedTwoD->GetXaxis()->SetTitleOffset(1.5);
-    c2->SaveAs("mixedCorr.png");
+    c2->SaveAs(Form("%s/mixedCorr.png", outputPlots));
 
     auto ratio = (TH2*)sameTwoD->Clone("ratio");
     ratio->Divide(mixedTwoD);
@@ -190,7 +200,7 @@ void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2_flow.root
     ratio->SetStats(0);
     ratio->SetTitle("");
     ratio->Draw("SURF1");
-    c3->SaveAs("pertriggeryield.png");
+    c3->SaveAs(Form("%s/pertriggeryield.png", outputPlots));
 
     //  high multiplicity illustrative histograms
     h->setPtRange(gpTMin, gpTMax);
@@ -206,7 +216,7 @@ void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2_flow.root
     sameTwoDHM->SetStats(0);
     sameTwoDHM->SetTitle("");
     sameTwoDHM->GetXaxis()->SetTitleOffset(1.5);
-    c1HM->SaveAs("sameCorr_HM.png");
+    c1HM->SaveAs(Form("%s/sameCorr_HM.png", outputPlots));
 
     //  Note: this is not normalised for the bin (0,0)
     TH2* mixedTwoDHM = (TH2*)hMixed->getPerTriggerYield(step, 0.2, 2.99, false);
@@ -215,7 +225,7 @@ void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2_flow.root
     mixedTwoDHM->SetStats(0);
     mixedTwoDHM->SetTitle("");
     mixedTwoDHM->GetXaxis()->SetTitleOffset(1.5);
-    c2HM->SaveAs("mixedCorr_HM.png");
+    c2HM->SaveAs(Form("%s/mixedCorr_HM.png", outputPlots));
 
     auto ratioHM = (TH2*)sameTwoDHM->Clone("ratioHM");
     ratioHM->Divide(mixedTwoDHM);
@@ -226,7 +236,7 @@ void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2_flow.root
     ratioHM->SetStats(0);
     ratioHM->SetTitle("");
     ratioHM->Draw("SURF1");
-    c3HM->SaveAs("pertriggeryield_HM.png");
+    c3HM->SaveAs(Form("%s/pertriggeryield_HM.png", outputPlots));
   }
   //  TODO: when doing HF correlations, make sure to project/integrate the correct inv. mass range/axis
 
@@ -255,11 +265,38 @@ void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2_flow.root
     delete hist1;
   }
 
+  //  Below, get same-event 2D distributions to compare with Jasper
+  //  for each pT trig and pT passoc and each multiplicity bin
+  if (saveSameEventDis) {
+    SetupRanges(h);
+
+    for (Int_t mult = 0; mult < maxCentrality; mult++) {
+
+      TH2* histSame2D = 0;
+      GetSameEventCorrelation(h, &histSame2D, step, centralityArr[mult], centralityArr[mult + 1], leadingPtReferenceFlowArr[0] + 0.01, leadingPtReferenceFlowArr[1] - 0.01, normalizePerTrigger);
+
+      file = TFile::Open(outputFile, "UPDATE");
+
+      if (histSame2D) {
+        histSame2D->SetName(Form("same_ref_%d", mult));
+        histSame2D->Write();
+        if (drawCorrelations) {
+          auto cCorr = new TCanvas;
+          histSame2D->Draw("surf1");
+          cCorr->SaveAs(Form("%s/same_ref_%d.png", outputPlots, mult));
+        }
+      }
+
+      file->Close();
+
+      delete histSame2D;
+    }
+  }
+
   //  do correlations for pT-differential flow
   for (Int_t i = 0; i < maxLeadingPt; i++) {
     for (Int_t j = 0; j < maxAssocPt; j++) {
       if (assocPtArr[j] >= leadingPtArr[i + 1]) {
-        printf("!!!!!!!! Pt assoc > pT trig, skipping \n");
         continue;
       }
 
