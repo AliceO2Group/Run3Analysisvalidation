@@ -180,7 +180,7 @@ void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2_flow.root
     sameTwoD->SetStats(0);
     sameTwoD->SetTitle("");
     sameTwoD->GetXaxis()->SetTitleOffset(1.5);
-    c1->SaveAs(Form("%s/sameCorr.png", outputPlots));
+    c1->SaveAs(Form("%s/general/sameCorr.png", outputPlots));
 
     //  Note: this is not normalised for the bin (0,0),
     TH2* mixedTwoD = (TH2*)hMixed->getPerTriggerYield(step, 0.2, 2.99, false);
@@ -189,7 +189,7 @@ void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2_flow.root
     mixedTwoD->SetStats(0);
     mixedTwoD->SetTitle("");
     mixedTwoD->GetXaxis()->SetTitleOffset(1.5);
-    c2->SaveAs(Form("%s/mixedCorr.png", outputPlots));
+    c2->SaveAs(Form("%s/general/mixedCorr.png", outputPlots));
 
     auto ratio = (TH2*)sameTwoD->Clone("ratio");
     ratio->Divide(mixedTwoD);
@@ -200,7 +200,12 @@ void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2_flow.root
     ratio->SetStats(0);
     ratio->SetTitle("");
     ratio->Draw("SURF1");
-    c3->SaveAs(Form("%s/pertriggeryield.png", outputPlots));
+    c3->SaveAs(Form("%s/general/pertriggeryield.png", outputPlots));
+
+    auto c4 = new TCanvas;
+    ratio->SetMaximum(0.46e-09);
+    ratio->Draw("SURF1");
+    c4->SaveAs(Form("%s/general/pertriggeryield_zoom.png", outputPlots));
 
     //  high multiplicity illustrative histograms
     h->setPtRange(gpTMin, gpTMax);
@@ -216,7 +221,7 @@ void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2_flow.root
     sameTwoDHM->SetStats(0);
     sameTwoDHM->SetTitle("");
     sameTwoDHM->GetXaxis()->SetTitleOffset(1.5);
-    c1HM->SaveAs(Form("%s/sameCorr_HM.png", outputPlots));
+    c1HM->SaveAs(Form("%s/general/sameCorr_HM.png", outputPlots));
 
     //  Note: this is not normalised for the bin (0,0)
     TH2* mixedTwoDHM = (TH2*)hMixed->getPerTriggerYield(step, 0.2, 2.99, false);
@@ -225,7 +230,7 @@ void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2_flow.root
     mixedTwoDHM->SetStats(0);
     mixedTwoDHM->SetTitle("");
     mixedTwoDHM->GetXaxis()->SetTitleOffset(1.5);
-    c2HM->SaveAs(Form("%s/mixedCorr_HM.png", outputPlots));
+    c2HM->SaveAs(Form("%s/general/mixedCorr_HM.png", outputPlots));
 
     auto ratioHM = (TH2*)sameTwoDHM->Clone("ratioHM");
     ratioHM->Divide(mixedTwoDHM);
@@ -236,7 +241,12 @@ void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2_flow.root
     ratioHM->SetStats(0);
     ratioHM->SetTitle("");
     ratioHM->Draw("SURF1");
-    c3HM->SaveAs(Form("%s/pertriggeryield_HM.png", outputPlots));
+    c3HM->SaveAs(Form("%s/general/pertriggeryield_HM.png", outputPlots));
+
+    auto c4HM = new TCanvas;
+    ratioHM->SetMaximum(0.1e-06);
+    ratioHM->Draw("SURF1");
+    c4HM->SaveAs(Form("%s/general/pertriggeryield_HM_zoom.png", outputPlots));
   }
   //  TODO: when doing HF correlations, make sure to project/integrate the correct inv. mass range/axis
 
