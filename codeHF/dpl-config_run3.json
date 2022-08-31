@@ -993,7 +993,7 @@
     },
     "hf-task-flow": {
         "cfgCutVertex": "10.0",
-        "cfgCutEta": "1.1",
+        "cfgCutEta": "0.8",
         "cfgCutPt": "0.2",
         "d_selectionFlagD0": "0",
         "d_selectionFlagD0bar": "0",
@@ -1052,6 +1052,7 @@
         "axisPtTrigger": {
             "values": [
                 "0",
+                "0.2",
                 "0.5",
                 "1",
                 "1.5",
@@ -1064,13 +1065,8 @@
         "axisPtAssoc": {
             "values": [
                 "0",
-                "0.5",
-                "1",
-                "1.5",
-                "2",
-                "3",
-                "4",
-                "6"
+                "0.2",
+                "3"
             ]
         },
         "axisMultiplicity": {
@@ -1134,6 +1130,7 @@
         "processSameTPCTPChh": "true",
         "processSameTPCMFThh": "false",
         "processSameHFHadrons": "true",
+        "processMC": "true",
         "cfgNoMixedEvents": 5,
         "processMixedTPCTPChh": "true",
         "processMixedHFHadrons": "true",
