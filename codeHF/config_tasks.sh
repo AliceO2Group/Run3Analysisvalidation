@@ -426,8 +426,8 @@ function MakeScriptPostprocess {
     [ $DOO2_TASK_XIC -eq 1 ] && PARTICLES+=" xic "
     [ $DOO2_TASK_JPSI -eq 1 ] && PARTICLES+=" jpsi "
     [ $DOO2_TASK_LCK0SP -eq 1 ] && PARTICLES+=" lc-tok0sP "
-    [ $DOO2_TASK_XICC -eq 1 ] && PARTICLES+=" xicc "
-    [ $DOO2_TASK_BPLUS -eq 1 ] && PARTICLES+=" bplus "
+    [ $DOO2_TASK_XICC -eq 1 ] && PARTICLES+=" xicc-mc "
+    [ $DOO2_TASK_BPLUS -eq 1 ] && PARTICLES+=" bplus-mc "
     [ "$PARTICLES" ] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/PlotEfficiency.C(\\\"\$FileO2\\\", \\\"$PARTICLES\\\")\""
   }
   cat << EOF > "$SCRIPT_POSTPROCESS"

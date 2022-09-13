@@ -47,8 +47,6 @@ workflows:
 
   o2-analysis-hf-candidate-creator-cascade:
     <<: *cand_creator
-    options:
-      mc: "--doMC"
     tables:
       default: [HFCANDCASCBASE, HFCANDCASCEXT]
       mc: [HFCANDCASCMCREC, HFCANDCASCMCGEN]
@@ -158,8 +156,6 @@ workflows:
     dependencies: o2-analysis-hf-lc-candidate-selector
 
   o2-analysis-hf-task-xic:
-    options:
-      mc: "--doMC"
     dependencies: o2-analysis-hf-xic-topkpi-candidate-selector
 
   o2-analysis-hf-task-bplus:
@@ -173,8 +169,6 @@ workflows:
     dependencies: o2-analysis-hf-x-tojpsipipi-candidate-selector
 
   o2-analysis-hf-task-lc-tok0sp:
-    options:
-      mc: "--doMC"
     dependencies: o2-analysis-hf-lc-tok0sp-candidate-selector
 
   o2-analysis-hf-task-xicc:
