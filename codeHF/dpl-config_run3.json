@@ -408,8 +408,9 @@
     "hf-cand-creator-3prong-expressions": {
         "processMC": "true"
     },
-    "hf-cand-creator-cascade-expressions": "",
-    "hf-cand-creator-cascade-mc": "",
+    "hf-cand-creator-cascade-mc": {
+        "processMC": "true"
+    },
     "hf-d0-candidate-selector": {
         "d_pTCandMin": "0",
         "d_pTCandMax": "50",
@@ -983,13 +984,10 @@
         "d_selectionFlagX": "0"
     },
     "hf-task-lc-tok0sP": {
-        "selectionFlagLcK0sp": "0",
-        "cutEtaCandMax": "-1"
-    },
-    "hf-task-lc-tok0sP-mc": {
         "selectionFlagLc": "0",
         "selectionFlagLcbar": "0",
-        "cutEtaCandMax": "-1"
+        "cutEtaCandMax": "-1",
+        "processMC": "true"
     },
     "hf-task-flow": {
         "cfgCutVertex": "10.0",

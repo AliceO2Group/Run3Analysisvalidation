@@ -11,7 +11,7 @@ void AddHistogram(VecSpecHis& vec, TString label, TString nameRun2, TString name
   vec.push_back(std::make_tuple(label, nameRun2, nameRun3, rebin, logH, logR, proj));
 }
 
-Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "AnalysisResults_ALI.root", TString options = "", bool doRatio = false)
+Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun2 = "AnalysisResults_ALI.root", TString options = "", bool doRatio = false)
 {
   gStyle->SetOptStat(0);
   gStyle->SetPalette(0);
@@ -23,9 +23,9 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
     printf("Failed to open file %s\n", filerun3.Data());
     return 1;
   }
-  TFile* fRun2 = new TFile(filerun1.Data());
+  TFile* fRun2 = new TFile(filerun2.Data());
   if (fRun2->IsZombie()) {
-    printf("Failed to open file %s\n", filerun1.Data());
+    printf("Failed to open file %s\n", filerun2.Data());
     return 1;
   }
 
@@ -33,7 +33,7 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
   TList* lRun2 = nullptr;
   fRun2->GetObject(pathListRun2.Data(), lRun2);
   if (!lRun2) {
-    printf("Failed to load list %s from %s\n", pathListRun2.Data(), filerun1.Data());
+    printf("Failed to load list %s from %s\n", pathListRun2.Data(), filerun2.Data());
     return 1;
   }
 
@@ -217,7 +217,7 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
       // Get AliPhysics histogram.
       hRun2 = (TH1F*)lRun2->FindObject(nameHisRun2.Data());
       if (!hRun2) {
-        printf("Failed to load %s from %s\n", nameHisRun2.Data(), filerun1.Data());
+        printf("Failed to load %s from %s\n", nameHisRun2.Data(), filerun2.Data());
         return 1;
       }
 
