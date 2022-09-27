@@ -1,6 +1,6 @@
 # Run 3 validation framework
 
-[![GitHub Mega-Linter](https://github.com/AliceO2Group/Run3Analysisvalidation/workflows/Mega-Linter/badge.svg?branch=master)](https://github.com/marketplace/actions/mega-linter)
+[![GitHub MegaLinter](https://github.com/AliceO2Group/Run3Analysisvalidation/workflows/MegaLinter/badge.svg?branch=master)](https://github.com/marketplace/actions/megalinter)
 [![GitHub Clang Format Linter](https://github.com/AliceO2Group/Run3Analysisvalidation/workflows/Clang%20Format%20Linter/badge.svg)](https://github.com/marketplace/actions/clang-format-lint)
 
 ## Introduction
@@ -16,7 +16,7 @@ The validation framework is a general configurable platform that gives user the 
 Its flexibility is enabled by strict separation of its specialised components into a system of bash scripts.
 Configuration is separate from execution code, input configuration is separate from task configuration, execution steps are separate from the main steering code.
 
-* The steering script `runtest.sh` provides control parameters and interface to the machinery for task execution.
+* The steering script [`runtest.sh`](exec/runtest.sh) provides control parameters and interface to the machinery for task execution.
 * User provides configuration bash scripts which:
   * modify control parameters,
   * produce modified configuration files,
@@ -24,9 +24,9 @@ Configuration is separate from execution code, input configuration is separate f
 
 ### Execution
 
-Execution code can be found in the `exec` directory.
+Execution code can be found in the [`exec`](exec) directory.
 
-The steering script `runtest.sh` performs the following execution steps:
+The steering script [`runtest.sh`](exec/runtest.sh) performs the following execution steps:
 * Load input specification.
 * Load tasks configuration.
 * Print out input description.
@@ -60,7 +60,7 @@ All steps are activated by default and some can be disabled individually by sett
 
 ### Configuration
 
-The steering script `runtest.sh` can be executed with the following optional arguments:
+The steering script [`runtest.sh`](exec/runtest.sh) can be executed with the following optional arguments:
 
 ```bash
 bash [<path>/]runtest.sh [-h] [-i <input config>] [-t <task config>] [-d]
@@ -91,7 +91,7 @@ bash [<path>/]runtest.sh [-h] [-i <input config>] [-t <task config>] [-d]
 
 Implementation of these configuration scripts is fully up to the user.
 
-Dummy examples can be found in: `config/config_input_dummy.sh`, `config/config_tasks_dummy.sh`.
+Dummy examples can be found in: [`config/config_input_dummy.sh`](config/config_input_dummy.sh), [`config/config_tasks_dummy.sh`](config/config_tasks_dummy.sh).
 
 ## Preparation
 
@@ -159,7 +159,7 @@ If the main log file of a validation step mentions "parallel: This job failed:",
 
 ## Job debugging
 
-If you run many parallelised jobs and some of them don't finish successfully, you can make use of the debugging script `debug.sh` in the `exec` directory
+If you run many parallelised jobs and some of them don't finish successfully, you can make use of the debugging script [`debug.sh`](exec/debug.sh) in the [`exec`](exec) directory
 which can help you figure out what went wrong, where and why.
 
 You can execute the script from the current working directory using the following syntax (options can be combined):
@@ -183,7 +183,7 @@ bash [<path>/]debug.sh [-h] [-t TYPE] [-b [-u]] [-f] [-w] [-e]
 
 ## Heavy-flavour analyses
 
-Enter the `codeHF` directory and see the `README`.
+Enter the [`codeHF`](codeHF) directory and see the [`README`](codeHF/README.md).
 
 ## Keep your repositories and installations up to date and clean
 
@@ -192,27 +192,31 @@ also requires updating the O<sup>2</sup> and the AliPhysics installations which 
 Also when requesting changes in the main repository via a pull request, it is strongly recommended to update one's personal fork repository first,
 apply the changes on top the main branch and rebuild the installation to make sure that the new commits can be seamlessly merged into the main repository.
 
-All these maintenance steps can be fully automated using the `update_packages.sh` bash script which takes care of keeping your (local and remote) repositories
+All these maintenance steps can be fully automated using the [`update_packages.py`](exec/update_packages.py) Python script which takes care of keeping your (local and remote) repositories
 and installations up to date with the latest development in the respective main branches.
 This includes updating alidist, AliPhysics, O<sup>2</sup>(Physics), and this Run 3 validation code repository,
 as well as re-building your AliPhysics and O<sup>2</sup>(Physics) installations via aliBuild and deleting obsolete builds.
 
-All you need to do is to make sure that the strings in the `config/config_update.sh` script correspond to your local setup and
-adjust the activation switches, if needed, to change the list of steps to be executed.
-By default, O<sup>2</sup>, O<sup>2</sup>Physics, and Run3Analysisvalidation are activated for build and update.
-Settings for alidist and AliPhysics are also included but with deactivated build and update.
-
 You can execute the script from any directory on your system using the following syntax:
 ```bash
-bash <path to the Run3Analysisvalidation directory>/exec/update_packages.sh [-h] [-c <config>] [-d]
+python <path to the Run3Analysisvalidation directory>/exec/update_packages.py [-h] [-d] [-l] [-c] database
 ```
 
-`-h` (Help) Prints out the usage specification above.
+optional arguments:
 
-`<config>` Configuration script including the package specification
-* Defaults to `config/config_update.sh` (in the Run3Analysisvalidation repository).
+  `-h`, `--help`   show the help message and exit
 
-`-d` (Dry run) Displays configuration without doing anything.
+  `-d`, `--debug`  print debugging info
+
+  `-l`           print latest commits and exit
+
+  `-c`           print configuration and exit
+
+The positional argument `database` is a YAML database with configuration and options.
+The Run3Analysisvalidation repository provides a read-to-use configuration file with a full list of options at [`config/packages.yml`](config/packages.yml).
+All you need to do is to make sure that the settings in the database correspond to your local setup and
+adjust the activation switches, if needed, to change the list of steps to be executed.
+By default, all packages are activated for build and update.
 
 If you are happy with the configuration, you can then start the script and it will take care of the full update of your code and installations for all the activated packages.
 
@@ -223,8 +227,8 @@ This allows for synchronisation across machines where commits pushed to the fork
 All your personal changes (committed and uncommitted) are preserved via rebasing and stashing.
 Check the description of the script behaviour inside the script itself for more details.
 
-If `CLEAN=1`, obsolete builds are deleted from the `sw` directory at the end.
-If `PURGE_BUILDS=1`, a deeper purging is done by deleting all builds that are not needed to run the latest AliPhysics and O<sup>2</sup>(Physics) builds.
+If `clean: 1`, obsolete builds are deleted from the `sw` directory at the end.
+If `clean_purge: 1`, a deeper purging is done by deleting all builds that are not needed to run the latest AliPhysics and O<sup>2</sup>(Physics) builds.
 WARNING: Do not enable the purging if you need to keep several builds of AliPhysics or O<sup>2</sup>(Physics) (e.g. for different branches or commits) or builds of other development packages not specified in your configuration!
 
 If any error occurs during the script execution, the script will report the error and exit immediately.
@@ -251,7 +255,7 @@ bash <path to the Run3Analysisvalidation directory>/exec/check_spaces.sh
 clang-format -style=file -i <file>
 ```
 
-### [Mega-Linter](https://nvuillam.github.io/mega-linter/mega-linter-runner/)
+### [MegaLinter](https://megalinter.github.io/latest/mega-linter-runner/)
 
 ```bash
 mega-linter-runner

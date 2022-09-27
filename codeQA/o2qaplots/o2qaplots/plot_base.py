@@ -288,7 +288,7 @@ class PlottingTask:
         return self.output_objects[0].keys()
 
     def _get_results_from_all_files(self, output_ojt):
-        """Returns a list will a particular output object """
+        """Returns a list will a particular output object"""
         return [output[output_ojt] for output in self.output_objects]
 
     def process(self):
@@ -316,7 +316,7 @@ class PlottingTask:
             self.output_objects.append(self.process())
 
     def save_figures(self):
-        """Save the output figures to PDF files. """
+        """Save the output figures to PDF files."""
         cls = self.__class__
         plotted_canvas = []
 
@@ -360,7 +360,7 @@ class PlottingTask:
 
     @classmethod
     def add_parser_options(cls, parser):
-        """Add the configurables from this task to parser. """
+        """Add the configurables from this task to parser."""
         for arg in cls.configurables():
             getattr(cls, arg).add_argument(parser)
 

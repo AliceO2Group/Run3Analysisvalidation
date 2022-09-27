@@ -24,8 +24,8 @@ enum myProc_t { kJpsiToEE,
                 kNChannels };
 
 const char* hfTaskLabel[kNChannels] = {"jpsi", "jpsiToMuMu", "x", "xToPiPiMuMu", "xicc", "bplus", "chic", "chic"};
-const char* histNameSig[kNChannels] = {"hmassSig", "hMassRecSig", "hMassRecSig", "hMassRecSig", "hmassSig", "hMassRecSig", "hMassRecSig", "hMassRecSig"};
-const char* histNameBkg[kNChannels] = {"hmass", "hMassRecBkg", "hMass", "hMassRecBkg", "hmass", "hMass", "hMass", "hMass"};
+const char* histNameSig[kNChannels] = {"hMassSig", "hMassRecSig", "hMassRecSig", "hMassRecSig", "hMassSig", "hMassRecSig", "hMassRecSig", "hMassRecSig"};
+const char* histNameBkg[kNChannels] = {"hMass", "hMassRecBkg", "hMass", "hMassRecBkg", "hMass", "hMass", "hMass", "hMass"};
 
 const char* label[kNChannels] = {
   "J/#psi #rightarrow ee",

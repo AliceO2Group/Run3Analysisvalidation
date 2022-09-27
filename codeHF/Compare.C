@@ -6,12 +6,12 @@
 using VecSpecHis = std::vector<std::tuple<TString, TString, TString, int, bool, bool, TString>>;
 
 // Add histogram specification in the vector.
-void AddHistogram(VecSpecHis& vec, TString label, TString nameRun1, TString nameRun3, int rebin, bool logH, bool logR, TString proj = "x")
+void AddHistogram(VecSpecHis& vec, TString label, TString nameRun2, TString nameRun3, int rebin, bool logH, bool logR, TString proj = "x")
 {
-  vec.push_back(std::make_tuple(label, nameRun1, nameRun3, rebin, logH, logR, proj));
+  vec.push_back(std::make_tuple(label, nameRun2, nameRun3, rebin, logH, logR, proj));
 }
 
-Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "AnalysisResults_ALI.root", TString options = "", bool doRatio = false)
+Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun2 = "AnalysisResults_ALI.root", TString options = "", bool doRatio = false)
 {
   gStyle->SetOptStat(0);
   gStyle->SetPalette(0);
@@ -23,17 +23,17 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
     printf("Failed to open file %s\n", filerun3.Data());
     return 1;
   }
-  TFile* fRun1 = new TFile(filerun1.Data());
-  if (fRun1->IsZombie()) {
-    printf("Failed to open file %s\n", filerun1.Data());
+  TFile* fRun2 = new TFile(filerun2.Data());
+  if (fRun2->IsZombie()) {
+    printf("Failed to open file %s\n", filerun2.Data());
     return 1;
   }
 
-  TString pathListRun1 = "HFVertices/clistHFVertices";
-  TList* lRun1 = nullptr;
-  fRun1->GetObject(pathListRun1.Data(), lRun1);
-  if (!lRun1) {
-    printf("Failed to load list %s from %s\n", pathListRun1.Data(), filerun1.Data());
+  TString pathListRun2 = "HFVertices/clistHFVertices";
+  TList* lRun2 = nullptr;
+  fRun2->GetObject(pathListRun2.Data(), lRun2);
+  if (!lRun2) {
+    printf("Failed to load list %s from %s\n", pathListRun2.Data(), filerun2.Data());
     return 1;
   }
 
@@ -66,16 +66,16 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
   AddHistogram(vecHisCand3, "XX element of SV cov. matrix (cm^{2})", "hCovMatSecVXX3Prong", "hf-cand-creator-3prong/hCovSVXX", 1, 1, 0);
 
   VecSpecHis vecHisD0;
-  AddHistogram(vecHisD0, "#it{p}_{T} prong 0 (GeV/#it{c})", "hPtD0Dau0", "hf-task-d0/hptprong0", 2, 1, 0);
-  AddHistogram(vecHisD0, "#it{p}_{T} prong 1 (GeV/#it{c})", "hPtD0Dau1", "hf-task-d0/hptprong1", 2, 1, 0);
-  AddHistogram(vecHisD0, "#it{p}_{T} D^{0} (GeV/#it{c})", "hPtD0", "hf-task-d0/hptcand", 2, 1, 0);
-  AddHistogram(vecHisD0, "2-prong mass (#pi K) (GeV/#it{c}^{2})", "hInvMassD0", "hf-task-d0/hmass", 2, 0, 0);
+  AddHistogram(vecHisD0, "#it{p}_{T} prong 0 (GeV/#it{c})", "hPtD0Dau0", "hf-task-d0/hPtProng0", 2, 1, 0);
+  AddHistogram(vecHisD0, "#it{p}_{T} prong 1 (GeV/#it{c})", "hPtD0Dau1", "hf-task-d0/hPtProng1", 2, 1, 0);
+  AddHistogram(vecHisD0, "#it{p}_{T} D^{0} (GeV/#it{c})", "hPtD0", "hf-task-d0/hPtCand", 2, 1, 0);
+  AddHistogram(vecHisD0, "2-prong mass (#pi K) (GeV/#it{c}^{2})", "hInvMassD0", "hf-task-d0/hMass", 2, 0, 0);
   AddHistogram(vecHisD0, "d0d0 (cm^{2})", "hd0Timesd0", "hf-task-d0/hd0d0", 2, 1, 0);
   AddHistogram(vecHisD0, "d0 prong 0 (cm)", "hImpParD0Dau0", "hf-task-d0/hd0Prong0", 2, 1, 0);
   AddHistogram(vecHisD0, "d0 prong 1 (cm)", "hImpParD0Dau1", "hf-task-d0/hd0Prong1", 2, 1, 0);
   AddHistogram(vecHisD0, "impact parameter error (cm)", "hImpParErrD0Dau", "hf-task-d0/hImpParErr", 1, 1, 0);
-  AddHistogram(vecHisD0, "decay length (cm)", "hDecLenD0", "hf-task-d0/hdeclength", 2, 1, 0);
-  AddHistogram(vecHisD0, "decay length XY (cm)", "hDecLenXYD0", "hf-task-d0/hdeclengthxy", 2, 1, 0);
+  AddHistogram(vecHisD0, "decay length (cm)", "hDecLenD0", "hf-task-d0/hDecLength", 2, 1, 0);
+  AddHistogram(vecHisD0, "decay length XY (cm)", "hDecLenXYD0", "hf-task-d0/hDecLengthxy", 2, 1, 0);
   AddHistogram(vecHisD0, "decay length error (cm)", "hDecLenErrD0", "hf-task-d0/hDecLenErr", 1, 1, 0);
   AddHistogram(vecHisD0, "decay length XY error (cm)", "hDecLenXYErrD0", "hf-task-d0/hDecLenXYErr", 1, 1, 0);
   AddHistogram(vecHisD0, "cos pointing angle", "hCosPointD0", "hf-task-d0/hCPA", 2, 1, 0);
@@ -83,9 +83,9 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
   labelParticle = "D^{0} #rightarrow #pi K";
   VecSpecHis vecHisD0MC;
   AddHistogram(vecHisD0MC, labelParticle + ", matched prompt: #it{p}_{T}^{rec} (GeV/#it{c})", "hPtRecoPromptD0Kpi", "hf-task-d0/hPtRecSigPrompt", 2, 1, 0);
-  AddHistogram(vecHisD0MC, labelParticle + ", gen. prompt: #it{p}_{T}^{gen} (GeV/#it{c})", "hPtGenPromptD0Kpi", "hf-task-d0/hPtGenPrompt", 2, 1, 0);
+  AddHistogram(vecHisD0MC, labelParticle + ", gen. prompt: #it{p}_{T}^{gen} (GeV/#it{c})", "hPtGenLimAccPromptD0Kpi", "hf-task-d0/hPtGenPrompt", 2, 1, 0);
   AddHistogram(vecHisD0MC, labelParticle + ", matched non-prompt: #it{p}_{T}^{rec} (GeV/#it{c})", "hPtRecoFeeddwD0Kpi", "hf-task-d0/hPtRecSigNonPrompt", 2, 1, 0);
-  AddHistogram(vecHisD0MC, labelParticle + ", gen. non-prompt: #it{p}_{T}^{gen} (GeV/#it{c})", "hPtGenFeeddwD0Kpi", "hf-task-d0/hPtGenNonPrompt", 2, 1, 0);
+  AddHistogram(vecHisD0MC, labelParticle + ", gen. non-prompt: #it{p}_{T}^{gen} (GeV/#it{c})", "hPtGenLimAccFeeddwD0Kpi", "hf-task-d0/hPtGenNonPrompt", 2, 1, 0);
 
   VecSpecHis vecHisDPlus;
   AddHistogram(vecHisDPlus, "#it{p}_{T} prong 0 (GeV/#it{c})", "hPtDplusDau0", "hf-task-dplus/hPtProng0", 2, 1, 0);
@@ -109,31 +109,31 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
   AddHistogram(vecHisDPlus, "sq. sum of prong imp. par. (cm^{2})", "hSumSqImpParDplusDau", "hf-task-dplus/hImpactParameterProngSqSum", 2, 1, 0);
 
   VecSpecHis vecHisLc;
-  AddHistogram(vecHisLc, "#it{p}_{T} prong 0 (GeV/#it{c})", "hPtLcDau0", "hf-task-lc/hptprong0", 2, 1, 0);
-  AddHistogram(vecHisLc, "#it{p}_{T} prong 1 (GeV/#it{c})", "hPtLcDau1", "hf-task-lc/hptprong1", 2, 1, 0);
-  AddHistogram(vecHisLc, "#it{p}_{T} prong 2 (GeV/#it{c})", "hPtLcDau2", "hf-task-lc/hptprong2", 2, 1, 0);
-  AddHistogram(vecHisLc, "#it{p}_{T} #Lambda_{c}^{#plus} (GeV/#it{c})", "hPtLc", "hf-task-lc/hptcand", 2, 1, 0);
-  AddHistogram(vecHisLc, "3-prong mass (p K #pi) (GeV/#it{c}^{2})", "hInvMassLc", "hf-task-lc/hmass", 2, 0, 0);
-  AddHistogram(vecHisLc, "decay length (cm)", "hDecLenLc", "hf-task-lc/hdeclength", 2, 1, 0);
+  AddHistogram(vecHisLc, "#it{p}_{T} prong 0 (GeV/#it{c})", "hPtLcDau0", "hf-task-lc/hPtProng0", 2, 1, 0);
+  AddHistogram(vecHisLc, "#it{p}_{T} prong 1 (GeV/#it{c})", "hPtLcDau1", "hf-task-lc/hPtProng1", 2, 1, 0);
+  AddHistogram(vecHisLc, "#it{p}_{T} prong 2 (GeV/#it{c})", "hPtLcDau2", "hf-task-lc/hPtProng2", 2, 1, 0);
+  AddHistogram(vecHisLc, "#it{p}_{T} #Lambda_{c}^{#plus} (GeV/#it{c})", "hPtLc", "hf-task-lc/hPtCand", 2, 1, 0);
+  AddHistogram(vecHisLc, "3-prong mass (p K #pi) (GeV/#it{c}^{2})", "hInvMassLc", "hf-task-lc/hMass", 2, 0, 0, "x");
+  AddHistogram(vecHisLc, "decay length (cm)", "hDecLenLc", "hf-task-lc/hDecLength", 2, 1, 0);
   AddHistogram(vecHisLc, "cos pointing angle", "hCosPointLc", "hf-task-lc/hCPA", 2, 1, 0);
 
   labelParticle = "#Lambda_{c}^{#plus} #rightarrow p K #pi";
   VecSpecHis vecHisLcMC;
   AddHistogram(vecHisLcMC, labelParticle + ", matched prompt: #it{p}_{T}^{rec} (GeV/#it{c})", "hPtRecoPromptLcpKpi", "hf-task-lc/hPtRecSigPrompt", 2, 1, 0);
-  AddHistogram(vecHisLcMC, labelParticle + ", gen. prompt: #it{p}_{T}^{gen} (GeV/#it{c})", "hPtGenPromptLcpKpi", "hf-task-lc/hPtGenPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMC, labelParticle + ", gen. prompt: #it{p}_{T}^{gen} (GeV/#it{c})", "hPtGenLimAccPromptLcpKpi", "hf-task-lc/hPtGenPrompt", 2, 1, 0);
   AddHistogram(vecHisLcMC, labelParticle + ", matched non-prompt: #it{p}_{T}^{rec} (GeV/#it{c})", "hPtRecoFeeddwLcpKpi", "hf-task-lc/hPtRecSigNonPrompt", 2, 1, 0);
-  AddHistogram(vecHisLcMC, labelParticle + ", gen. non-prompt: #it{p}_{T}^{gen} (GeV/#it{c})", "hPtGenFeeddwLcpKpi", "hf-task-lc/hPtGenNonPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMC, labelParticle + ", gen. non-prompt: #it{p}_{T}^{gen} (GeV/#it{c})", "hPtGenLimAccFeeddwLcpKpi", "hf-task-lc/hPtGenNonPrompt", 2, 1, 0);
 
   VecSpecHis vecHisJpsi;
-  AddHistogram(vecHisJpsi, "#it{p}_{T} prong 0 (GeV/#it{c})", "hPtJpsiDau0", "hf-task-jpsi/hptprong0", 2, 1, 0);
-  AddHistogram(vecHisJpsi, "#it{p}_{T} prong 1 (GeV/#it{c})", "hPtJpsiDau1", "hf-task-jpsi/hptprong1", 2, 1, 0);
-  AddHistogram(vecHisJpsi, "#it{p}_{T} J/#psi (GeV/#it{c})", "hPtJpsi", "hf-task-jpsi/hptcand", 2, 1, 0);
-  AddHistogram(vecHisJpsi, "2-prong mass (e^{#plus} e^{#minus}) (GeV/#it{c}^{2})", "hInvMassJpsi", "hf-task-jpsi/hmass", 2, 0, 0);
+  AddHistogram(vecHisJpsi, "#it{p}_{T} prong 0 (GeV/#it{c})", "hPtJpsiDau0", "hf-task-jpsi/hPtProng0", 2, 1, 0);
+  AddHistogram(vecHisJpsi, "#it{p}_{T} prong 1 (GeV/#it{c})", "hPtJpsiDau1", "hf-task-jpsi/hPtProng1", 2, 1, 0);
+  AddHistogram(vecHisJpsi, "#it{p}_{T} J/#psi (GeV/#it{c})", "hPtJpsi", "hf-task-jpsi/hPtCand", 2, 1, 0);
+  AddHistogram(vecHisJpsi, "2-prong mass (e^{#plus} e^{#minus}) (GeV/#it{c}^{2})", "hInvMassJpsi", "hf-task-jpsi/hMass", 2, 0, 0);
   AddHistogram(vecHisJpsi, "d0d0 (cm^{2})", "hd0Timesd0Jpsi", "hf-task-jpsi/hd0d0", 2, 1, 0);
   AddHistogram(vecHisJpsi, "d0 prong 0 (cm)", "hImpParJpsiDau0", "hf-task-jpsi/hd0Prong0", 2, 1, 0);
   AddHistogram(vecHisJpsi, "d0 prong 1 (cm)", "hImpParJpsiDau1", "hf-task-jpsi/hd0Prong1", 2, 1, 0);
-  AddHistogram(vecHisJpsi, "decay length (cm)", "hDecLenJpsi", "hf-task-jpsi/hdeclength", 2, 1, 0);
-  AddHistogram(vecHisJpsi, "decay length XY (cm)", "hDecLenXYJpsi", "hf-task-jpsi/hdeclengthxy", 2, 1, 0);
+  AddHistogram(vecHisJpsi, "decay length (cm)", "hDecLenJpsi", "hf-task-jpsi/hDecLength", 2, 1, 0);
+  AddHistogram(vecHisJpsi, "decay length XY (cm)", "hDecLenXYJpsi", "hf-task-jpsi/hDecLengthxy", 2, 1, 0);
   AddHistogram(vecHisJpsi, "cos pointing angle", "hCosPointJpsi", "hf-task-jpsi/hCPA", 2, 1, 0);
   AddHistogram(vecHisJpsi, "decay length error (cm)", "hDecLenErrJpsi", "hf-task-jpsi/hDecLenErr", 1, 1, 0);
   AddHistogram(vecHisJpsi, "decay length XY error (cm)", "hDecLenXYErrJpsi", "hf-task-jpsi/hDecLenXYErr", 1, 1, 0);
@@ -172,13 +172,13 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
   Float_t marginRLow = 0.05;
   bool logScaleR = false;
   Float_t yMin, yMax;
-  Int_t nRun1, nRun3, rebin;
+  Int_t nRun2, nRun3, rebin;
 
-  TH1F* hRun1 = nullptr;
+  TH1F* hRun2 = nullptr;
   TH1D* hRun3 = nullptr;
   TH1F* hRatio = nullptr;
   TString labelAxis = "";
-  TString nameHisRun1 = "";
+  TString nameHisRun2 = "";
   TString nameHisRun3 = "";
   TString projAx = "";
   TCanvas* canHis = nullptr;
@@ -207,7 +207,7 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
     for (int index = 0; index < vecSpec.size(); index++) {
       auto spec = vecSpec[index];
       labelAxis = std::get<0>(spec);
-      nameHisRun1 = std::get<1>(spec);
+      nameHisRun2 = std::get<1>(spec);
       nameHisRun3 = std::get<2>(spec);
       rebin = std::get<3>(spec);
       logScaleH = std::get<4>(spec);
@@ -215,9 +215,9 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
       projAx = std::get<6>(spec);
 
       // Get AliPhysics histogram.
-      hRun1 = (TH1F*)lRun1->FindObject(nameHisRun1.Data());
-      if (!hRun1) {
-        printf("Failed to load %s from %s\n", nameHisRun1.Data(), filerun1.Data());
+      hRun2 = (TH1F*)lRun2->FindObject(nameHisRun2.Data());
+      if (!hRun2) {
+        printf("Failed to load %s from %s\n", nameHisRun2.Data(), filerun2.Data());
         return 1;
       }
 
@@ -228,7 +228,13 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
         return 1;
       }
 
-      if (oRun3->InheritsFrom("TH2")) {
+      if (oRun3->InheritsFrom("TH3")) {
+        if (projAx == "x") {
+          hRun3 = ((TH3D*)oRun3)->ProjectionX();
+        } else if (projAx == "y") {
+          hRun3 = ((TH3D*)oRun3)->ProjectionY();
+        }
+      } else if (oRun3->InheritsFrom("TH2")) {
         if (projAx == "x") {
           hRun3 = ((TH2D*)oRun3)->ProjectionX();
         } else if (projAx == "y") {
@@ -239,32 +245,32 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
       }
 
       Printf("%d (%s, %s): bins: %d, %d, ranges: %g-%g, %g-%g",
-             index, nameHisRun1.Data(), nameHisRun3.Data(),
-             hRun1->GetNbinsX(), hRun3->GetNbinsX(),
-             hRun1->GetXaxis()->GetBinLowEdge(1), hRun1->GetXaxis()->GetBinUpEdge(hRun1->GetNbinsX()),
+             index, nameHisRun2.Data(), nameHisRun3.Data(),
+             hRun2->GetNbinsX(), hRun3->GetNbinsX(),
+             hRun2->GetXaxis()->GetBinLowEdge(1), hRun2->GetXaxis()->GetBinUpEdge(hRun2->GetNbinsX()),
              hRun3->GetXaxis()->GetBinLowEdge(1), hRun3->GetXaxis()->GetBinUpEdge(hRun3->GetNbinsX()));
 
-      nRun1 = hRun1->GetEntries();
+      nRun2 = hRun2->GetEntries();
       nRun3 = hRun3->GetEntries();
 
       // Histograms
       auto padH = canHis->cd(index + 1);
-      hRun1->Rebin(rebin);
+      hRun2->Rebin(rebin);
       hRun3->Rebin(rebin);
-      hRun1->SetLineColor(1);
-      hRun1->SetLineWidth(2);
+      hRun2->SetLineColor(1);
+      hRun2->SetLineWidth(2);
       hRun3->SetLineColor(2);
       hRun3->SetLineWidth(1);
-      hRun1->SetTitle(Form("Entries: Run1: %d, Run3: %d;%s;Entries", nRun1, nRun3, labelAxis.Data()));
-      hRun1->GetYaxis()->SetMaxDigits(3);
-      yMin = TMath::Min(hRun3->GetMinimum(0), hRun1->GetMinimum(0));
-      yMax = TMath::Max(hRun3->GetMaximum(), hRun1->GetMaximum());
-      SetHistogram(hRun1, yMin, yMax, marginLow, marginHigh, logScaleH);
+      hRun2->SetTitle(Form("Entries: Run2: %d, Run3: %d;%s;Entries", nRun2, nRun3, labelAxis.Data()));
+      hRun2->GetYaxis()->SetMaxDigits(3);
+      yMin = TMath::Min(hRun3->GetMinimum(0), hRun2->GetMinimum(0));
+      yMax = TMath::Max(hRun3->GetMaximum(), hRun2->GetMaximum());
+      SetHistogram(hRun2, yMin, yMax, marginLow, marginHigh, logScaleH);
       SetPad(padH, logScaleH);
-      hRun1->Draw();
+      hRun2->Draw();
       hRun3->Draw("same");
       TLegend* legend = new TLegend(0.8, 0.72, 1., 0.92);
-      legend->AddEntry(hRun1, "Run1", "L");
+      legend->AddEntry(hRun2, "Run2", "L");
       legend->AddEntry(hRun3, "Run3", "L");
       legend->Draw();
 
@@ -272,8 +278,8 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
       if (doRatio) {
         auto padR = canRat->cd(index + 1);
         hRatio = (TH1F*)hRun3->Clone(Form("hRatio%d", index));
-        hRatio->Divide(hRun1);
-        hRatio->SetTitle(Form("Entries ratio: %g;%s;Run3/Run1", (double)nRun3 / (double)nRun1, labelAxis.Data()));
+        hRatio->Divide(hRun2);
+        hRatio->SetTitle(Form("Entries ratio: %g;%s;Run3/Run2", (double)nRun3 / (double)nRun2, labelAxis.Data()));
         yMin = hRatio->GetMinimum(0);
         yMax = hRatio->GetMaximum();
         SetHistogram(hRatio, yMin, yMax, marginRLow, marginRHigh, logScaleR);
@@ -281,9 +287,9 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun1 = "
         hRatio->Draw();
       }
     }
-    canHis->SaveAs(Form("comparison_histos_%s.pdf", nameSpec.Data()));
+    canHis->SaveAs(Form("comparison_histos_%s.png", nameSpec.Data()));
     if (doRatio) {
-      canRat->SaveAs(Form("comparison_ratios_%s.pdf", nameSpec.Data()));
+      canRat->SaveAs(Form("comparison_ratios_%s.png", nameSpec.Data()));
     }
     delete canHis;
     delete canRat;
