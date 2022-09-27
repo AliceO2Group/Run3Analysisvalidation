@@ -842,28 +842,8 @@
                 "20.0",
                 "24.0"
             ]
-        }
-    },
-    "hf-task-bplus-mc": {
-        "cutYCandMax": "1.44",
-        "selectionFlagBPlus": "1",
-        "pTBins": {
-            "values": [
-                "0",
-                "0.5",
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "7",
-                "10",
-                "13.0",
-                "16.0",
-                "20.0",
-                "24.0"
-            ]
-        }
+        },
+        "processMC": "true"
     },
     "hf-correlator-d0-d0bar": {
         "efficiencyFlagD": "1",

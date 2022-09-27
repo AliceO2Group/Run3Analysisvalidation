@@ -159,9 +159,7 @@ workflows:
     dependencies: o2-analysis-hf-xic-topkpi-candidate-selector
 
   o2-analysis-hf-task-bplus:
-    options:
-      mc: "--doMC"
-    dependencies: [o2-analysis-hf-bplus-tod0pi-candidate-selector, o2-analysis-centrality-table]
+    dependencies: o2-analysis-hf-bplus-tod0pi-candidate-selector
 
   o2-analysis-hf-task-x:
     options:
@@ -209,6 +207,11 @@ workflows:
     requires_mc: yes
     dependencies: o2-analysis-hf-lc-candidate-selector
     tables: [HFCANDP3Full, HFCANDP3FullE, HFCANDP3FullP]
+
+  o2-analysis-hf-tree-creator-bplus-tod0pi:
+    requires_mc: yes
+    dependencies: o2-analysis-hf-bplus-candidate-selector
+    tables: [HFCANDBPFull, HFCANDBPFullE, HFCANDBPFullP]
 
   o2-analysis-hf-tree-creator-x-tojpsipipi:
     requires_mc: yes
