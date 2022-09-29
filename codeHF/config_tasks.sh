@@ -78,7 +78,7 @@ DOO2_TREE_LC=0      # hf-tree-creator-lc-topkpi
 DOO2_TREE_X=0       # hf-tree-creator-x-tojpsipipi
 DOO2_TREE_XICC=0    # hf-tree-creator-xicc-topkpipi
 DOO2_TREE_CHIC=0    # hf-tree-creator-chic-tojpsigamma
-DOO2_TREE_BPLUS=0
+DOO2_TREE_BPLUS=0   # hf-tree-creator-bplus-tod0pi
 # Correlations
 DOO2_D0D0BAR_DATA=0      # hf-correlator-d0d0bar
 DOO2_D0D0BAR_MCREC=0     # hf-correlator-d0d0bar-mc-rec
@@ -102,7 +102,7 @@ APPLYCUTS_X=0       # Apply X selection cuts.
 APPLYCUTS_CHIC=0    # Apply χc(1p) selection cuts.
 APPLYCUTS_LCK0SP=0  # Apply Λc → K0S p selection cuts.
 APPLYCUTS_XICC=0    # Apply Ξcc selection cuts.
-APPLYCUTS_BPLUS=0    # Apply B+ selection cuts.
+APPLYCUTS_BPLUS=0   # Apply B+ selection cuts.
 
 SAVETREES=0         # Save O2 tables to trees.
 USEO2VERTEXER=0     # Use the O2 vertexer in AliPhysics.
