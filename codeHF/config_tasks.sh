@@ -78,6 +78,7 @@ DOO2_TREE_LC=0      # hf-tree-creator-lc-topkpi
 DOO2_TREE_X=0       # hf-tree-creator-x-tojpsipipi
 DOO2_TREE_XICC=0    # hf-tree-creator-xicc-topkpipi
 DOO2_TREE_CHIC=0    # hf-tree-creator-chic-tojpsigamma
+DOO2_TREE_BPLUS=0   # hf-tree-creator-bplus-tod0pi
 # Correlations
 DOO2_D0D0BAR_DATA=0      # hf-correlator-d0d0bar
 DOO2_D0D0BAR_MCREC=0     # hf-correlator-d0d0bar-mc-rec
@@ -101,6 +102,7 @@ APPLYCUTS_X=0       # Apply X selection cuts.
 APPLYCUTS_CHIC=0    # Apply χc(1p) selection cuts.
 APPLYCUTS_LCK0SP=0  # Apply Λc → K0S p selection cuts.
 APPLYCUTS_XICC=0    # Apply Ξcc selection cuts.
+APPLYCUTS_BPLUS=0   # Apply B+ selection cuts.
 
 SAVETREES=0         # Save O2 tables to trees.
 USEO2VERTEXER=0     # Use the O2 vertexer in AliPhysics.
@@ -267,6 +269,13 @@ function AdjustJson {
     MsgWarn "Using Ξcc selection cuts"
     ReplaceString "\"d_selectionFlagXicc\": \"0\"" "\"d_selectionFlagXicc\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
+
+  # Enable B+ selection.
+  if [ $APPLYCUTS_BPLUS -eq 1 ]; then
+    MsgWarn "\nUsing B+ selection cuts"
+    ReplaceString "\"selectionFlagBPlus\": \"0\"" "\"selectionFlagBPlus\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  fi
+
 }
 
 # Generate the O2 script containing the full workflow specification.
@@ -342,6 +351,7 @@ function MakeScriptO2 {
   [ $DOO2_TREE_X -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-x-tojpsipipi"
   [ $DOO2_TREE_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-xicc-topkpipi"
   [ $DOO2_TREE_CHIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-chic-tojpsigamma"
+  [ $DOO2_TREE_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-bplus-tod0pi"
   # Other
   [ $DOO2_MCCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-mc-converter"
   [ $DOO2_FDDCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-fdd-converter"
@@ -427,7 +437,7 @@ function MakeScriptPostprocess {
     [ $DOO2_TASK_JPSI -eq 1 ] && PARTICLES+=" jpsi "
     [ $DOO2_TASK_LCK0SP -eq 1 ] && PARTICLES+=" lc-tok0sP "
     [ $DOO2_TASK_XICC -eq 1 ] && PARTICLES+=" xicc-mc "
-    [ $DOO2_TASK_BPLUS -eq 1 ] && PARTICLES+=" bplus-mc "
+    [ $DOO2_TASK_BPLUS -eq 1 ] && PARTICLES+=" bplus "
     [ "$PARTICLES" ] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/PlotEfficiency.C(\\\"\$FileO2\\\", \\\"$PARTICLES\\\")\""
   }
   cat << EOF > "$SCRIPT_POSTPROCESS"
