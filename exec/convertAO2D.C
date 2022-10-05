@@ -10,7 +10,7 @@ R__ADD_INCLUDE_PATH($ALICE_PHYSICS)
 
 TChain* CreateLocalChain(const char* txtfile, const char* type, int nfiles);
 
-Long64_t convertAO2D(TString listoffiles, bool isMC = 1, bool isESD = 1, int nmaxevents = -1)
+Long64_t convertAO2D(TString listoffiles, bool isMC = 1, bool useAliEvCuts = false, bool isESD = 1, int nmaxevents = -1)
 {
   const char* anatype = isESD ? "ESD" : "AOD";
   if (isMC) {
@@ -44,6 +44,8 @@ Long64_t convertAO2D(TString listoffiles, bool isMC = 1, bool isESD = 1, int nma
     AliMCEventHandler* handlerMC = AddMCHandler();
   AliAnalysisTaskAO2Dconverter* converter = AddTaskAO2Dconverter("");
   //converter->SelectCollisionCandidates(AliVEvent::kAny);
+  if (useAliEvCuts)
+    converter->SetUseEventCuts(kTRUE);
   if (isMC)
     converter->SetMCMode();
   if (!mgr->InitAnalysis())
