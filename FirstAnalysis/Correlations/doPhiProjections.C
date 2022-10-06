@@ -14,6 +14,9 @@
 //  - absDeltaEtaMin: lower edge of deltaeta range when integrating the near-side ridge region
 //  - absDeltaEtaMax: upper edge of deltaeta range when integrating the near-side ridge region
 //  - outFileName: name of the output file with histograms of projections
+//  - outputPlotsName: name of the folder to store plots
+//  - drawPlots: flag to draw the projections
+//  - savePlots: flag to save the drawn projections
 //
 //  Contributors:
 //    Katarina Krizkova Gajdosova <katarina.gajdosova@cern.ch>
@@ -28,7 +31,20 @@ bool wingCorrection = false; // correct for increase of correlation signal at la
 //        it went out of scope
 //        To fix it, call h->SetDirectory(0) before drawing
 
-void doPhiProjections(const char* inFileName = "dphi_corr.root", double absDeltaEtaMin = 1.4, double absDeltaEtaMax = 1.8, const char* outFileName = "phi_proj.root")
+int nBinspTtrig = 6;
+double binspTtrig[] = {0.2, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0};
+
+int nBinspTref = 1;
+double binspTref[] = {0.2, 3.0};
+
+void doPhiProjections(
+  const char* inFileName = "dphi_corr.root", 
+  double absDeltaEtaMin = 1.4, 
+  double absDeltaEtaMax = 1.8, 
+  const char* outFileName = "phi_proj.root", 
+  const char* outputPlotsName = "./plots", 
+  bool drawPlots = false, 
+  bool savePlots = false)
 {
   //  Nch represents the multiplicity interval of the analysis
   static Double_t Nch[] = {0, 10, 20, 30, 40, 50, 60, 80, 100, 200}; 
@@ -74,6 +90,36 @@ void doPhiProjections(const char* inFileName = "dphi_corr.root", double absDelta
 
     outfile->cd();
     hdphiRidge_ref->Write();
+
+    if (drawPlots) {
+
+      TCanvas* cTemplate = new TCanvas("cTemplate", "", 1200, 800);
+      gPad->SetMargin(0.12,0.01,0.12,0.01);
+      hdphiRidge_ref->SetTitle("");
+      hdphiRidge_ref->SetStats(0);
+      hdphiRidge_ref->GetYaxis()->SetTitleOffset(1.1);
+      hdphiRidge_ref->GetXaxis()->SetTitleSize(0.05);
+      hdphiRidge_ref->GetYaxis()->SetTitle("Y(#Delta#varphi)");
+      hdphiRidge_ref->GetYaxis()->SetTitleSize(0.05);
+      hdphiRidge_ref->SetLineColor(kBlue+1);
+      hdphiRidge_ref->SetMarkerStyle(kFullCircle);
+      hdphiRidge_ref->SetMarkerColor(kBlue+1);
+      hdphiRidge_ref->SetMarkerSize(1.3);
+      hdphiRidge_ref->Draw("");
+
+      TLatex* latex = 0;
+      latex = new TLatex();
+      latex->SetTextSize(0.038);
+      latex->SetTextFont(42);
+      latex->SetTextAlign(21);
+      latex->SetNDC();
+
+      latex->DrawLatex(0.3, 0.93, "pp #sqrt{s} = 13 TeV");
+      latex->DrawLatex(0.3, 0.86, Form("%.1f < p_{T, trig, assoc} < %.1f", binspTref[0], binspTref[1]));
+      latex->DrawLatex(0.3, 0.79, Form("%.1f < N_{ch} < %.1f", Nch[imult], Nch[imult+1]));
+
+      if(savePlots) cTemplate->SaveAs(Form("%s/dphiRidge_ref_%d.png", outputPlotsName, imult));
+    }
 
     //  do pT-differential flow
     for (uint itrig = 0; itrig < trigCount; ++itrig) {
@@ -146,6 +192,35 @@ void doPhiProjections(const char* inFileName = "dphi_corr.root", double absDelta
 
         outfile->cd();
         hdphiRidge->Write();
+
+        if (drawPlots) {
+          TCanvas* cTemplate = new TCanvas("cTemplate", "", 1200, 800);
+          gPad->SetMargin(0.12,0.01,0.12,0.01);
+          hdphiRidge->SetTitle("");
+          hdphiRidge->SetStats(0);
+          hdphiRidge->GetYaxis()->SetTitleOffset(1.1);
+          hdphiRidge->GetXaxis()->SetTitleSize(0.05);
+          hdphiRidge->GetYaxis()->SetTitle("Y(#Delta#varphi)");
+          hdphiRidge->GetYaxis()->SetTitleSize(0.05);
+          hdphiRidge->SetLineColor(kBlue+1);
+          hdphiRidge->SetMarkerStyle(kFullCircle);
+          hdphiRidge->SetMarkerColor(kBlue+1);
+          hdphiRidge->SetMarkerSize(1.3);
+          hdphiRidge->Draw("");
+
+          TLatex* latex = 0;
+          latex = new TLatex();
+          latex->SetTextSize(0.038);
+          latex->SetTextFont(42);
+          latex->SetTextAlign(21);
+          latex->SetNDC();
+
+          latex->DrawLatex(0.3, 0.93, "pp #sqrt{s} = 13 TeV");
+          latex->DrawLatex(0.3, 0.86, Form("%.1f < p_{T, trig} < %.1f", binspTtrig[itrig], binspTtrig[itrig+1]));
+          latex->DrawLatex(0.3, 0.79, Form("%.1f < N_{ch} < %.1f", Nch[imult], Nch[imult+1]));
+
+          if(savePlots) cTemplate->SaveAs(Form("%s/dphiRidge_%d_%d.png", outputPlotsName, itrig, imult));
+        }
 
       } // loop over the index of the associated particle
     } // loop over the index of the trigger particle

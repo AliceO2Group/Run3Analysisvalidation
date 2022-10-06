@@ -12,10 +12,13 @@
 //
 //  Parameters:
 //  - fileName: input file
-//  - outputFile: output file containing final 2D correlation histograms
 //  - folder: name of the folder created by the o2-analysis-hf-task-flow,
 //            contains the results stored in CorrelationContainer
-//  - saveSameEventDis: flag to save 2D histograms of only same-event correlations
+//  - outputFile: output file containing final 2D correlation histograms in delta phi, delta eta
+//  - outputPlots: folder to store produced plots
+//  - plotExamplePlots: flag to draw correlation plots in "surf" mode in selected (wide) ranges of multiplicity and pT
+//  - saveSameEventDis: flag to also save 2D histograms of same-event correlations
+//  - hfcase: flag to perform these calculations for HF-h correlations
 //
 //  Contributors:
 //    Katarina Krizkova Gajdosova <katarina.gajdosova@cern.ch>
@@ -108,8 +111,14 @@ TH1* GetProjectionOfAxis(CorrelationContainer* h, CorrelationContainer::CFStep s
 ///////////////////////////////////////////////////////////////////////////
 //  Main function
 ///////////////////////////////////////////////////////////////////////////
-void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2_flow.root", const char* outputFile = "dphi_corr_flow.root", const char* outputPlots = "./plots", 
-              const char* folder = "hf-task-flow", bool plotExamplePlots = false, bool drawCorrelations = false, bool saveSameEventDis = false, bool hfcase = false)
+void extract2D(
+  const char* fileName = "AnalysisResults.root", 
+  const char* folder = "hf-task-flow", 
+  const char* outputFile = "dphi_corr.root",
+  const char* outputPlots = "./plots", 
+  bool plotExamplePlots = false, 
+  bool saveSameEventDis = false, 
+  bool hfcase = false)
 {
   gStyle->SetOptStat(1111111);
 
@@ -121,25 +130,24 @@ void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2_flow.root
 
   // the interval below defines the pttrig, ptass and multiplicity (or
   // centrality in which the analysis will be performed. One "ridge" plot
-  // with the correct normalization will be obtained for each of this
-  // combination (with the condition that the selection on the associated pt
+  // with the correct normalization will be obtained for each of these
+  // combinations (with the condition that the selection on the associated pt
   // has to be looser than the one on the trigger particle.
 
-  //  temporarily do only first pT bin for quick comparisons on small data sample
+  Int_t maxLeadingPtReferenceFlow = 1;
+  Float_t leadingPtReferenceFlowArr[] = {0.2, 3.0}; // reference flow is done in one wide pT bin
+
   Int_t maxLeadingPt = 6;
   Float_t leadingPtArr[] = {0.2, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0};
 
   Int_t maxAssocPt = 1;
   Float_t assocPtArr[] = {0.2, 3.0};
 
-  Int_t maxLeadingPtReferenceFlow = 1;
-  Float_t leadingPtReferenceFlowArr[] = {0.2, 3.0};
-
   Int_t maxCentrality = 9;
   Float_t centralityArr[] = {0, 10, 20, 30, 40, 50, 60, 80, 100, 200}; 
 
   // h is the container of the same event
-  // hMixed contain the data corresponding to the mixed event sample.
+  // hMixed is the container of the mixed event
   auto inputFile = TFile::Open(fileName);
   const char *directoryh = "";
   const char *directoryhMixed = "";
@@ -151,9 +159,9 @@ void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2_flow.root
     directoryhMixed = Form("%s/mixedEventTPCTPCChHadrons", folder);
   }
   auto h = (CorrelationContainer*)inputFile->Get(Form("%s", directoryh));
-   auto hMixed = (CorrelationContainer*)inputFile->Get(Form("%s", directoryhMixed));
+  auto hMixed = (CorrelationContainer*)inputFile->Get(Form("%s", directoryhMixed));
 
-  //  auto proj = GetProjectionOfAxis(h, step, false, 1);
+  //  auto proj = GetProjectionOfAxis(h, step, false, 0);
   //  proj->Draw();
   //  printf("entires proj: %g \n", proj->GetEntries());
   //  return;
@@ -251,6 +259,9 @@ void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2_flow.root
   //  TODO: when doing HF correlations, make sure to project/integrate the correct inv. mass range/axis
 
   //  do correlations for reference flow
+  //  Correlation is made for each choice of multiplicity.
+  //  The same event correlations is divided by mixed event after normalization
+  //  for each mult bin (will be integrated over all Vz)
   gpTMin = assocPtArr[0] + 0.01;
   gpTMax = assocPtArr[1] - 0.01;
   gZVtxMin = -10;
@@ -275,8 +286,7 @@ void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2_flow.root
     delete hist1;
   }
 
-  //  Below, get same-event 2D distributions to compare with Jasper
-  //  for each pT trig and pT passoc and each multiplicity bin
+  //  Get same-event 2D distributions (may be useful for some checks)
   if (saveSameEventDis) {
     SetupRanges(h);
 
@@ -290,11 +300,6 @@ void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2_flow.root
       if (histSame2D) {
         histSame2D->SetName(Form("same_ref_%d", mult));
         histSame2D->Write();
-        if (drawCorrelations) {
-          auto cCorr = new TCanvas;
-          histSame2D->Draw("surf1");
-          cCorr->SaveAs(Form("%s/same_ref_%d.png", outputPlots, mult));
-        }
       }
 
       file->Close();
@@ -304,15 +309,14 @@ void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2_flow.root
   }
 
   //  do correlations for pT-differential flow
+  //  Correlation is made for each choice of pttrig, ptassoc and multiplicity.
+  //  The same event correlations is divided by mixed event after normalization
+  //  for each pTtrig, pTassoc and mult bin (will be integrated over all Vz)
   for (Int_t i = 0; i < maxLeadingPt; i++) {
     for (Int_t j = 0; j < maxAssocPt; j++) {
       if (assocPtArr[j] >= leadingPtArr[i + 1]) {
         continue;
       }
-
-      // Below each analysis is made for each choice of pttrig, ptassoc and multiplicity.
-      // The same event correlations is divided by mixed event after normalization
-      // for each pTtrig, pTassoc and mult bin (will be integrated over all Vz)
 
       gpTMin = assocPtArr[j] + 0.01;
       gpTMax = assocPtArr[j + 1] - 0.01;
@@ -339,8 +343,7 @@ void extract2D(const char* fileName = "../../codeHF/AnalysisResults_O2_flow.root
         delete hist1;
       }
 
-      //  Below, get same-event 2D distributions to compare with Jasper
-      //  for each pT trig and pT passoc and each multiplicity bin
+      //  Below, get same-event 2D distributions (may be useful for some checks)
       if (!saveSameEventDis)
         continue;
 

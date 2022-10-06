@@ -1,7 +1,9 @@
 ///////////////////////////////////////////////////////////////////////////
 //  Macro to perform a template fit on 1D histograms of projected correlations on delta phi
 //
-//  This macro allows you to ...
+//  This macro allows you to fit the correlation vs. delta phi and extract V_nDelta coefficients
+//  for both reference and differential flow.
+//  v_n = sqrt{V_nDelta} -> this is done in the final macro getFlow.C
 //
 //  Input: file with histograms produced by doPhiProjections.C
 //
@@ -9,9 +11,11 @@
 //
 //  Parameters:
 //  - inputFileName: input file
-//  - outputFileName: output file containing final 2D correlation histograms
-//  - drawTemplate: flag to draw the template result
-//  - savePlots: flag to save plots
+//  - outputFileName: output file containing V_nDelta results
+//  - outputPlotsName: name of the folder to store plots
+//  - drawSeparatevn: flag to draw the template fit result for v2 and v3 separately instead of sum of vn
+//  - drawTemplate: flag to draw the result of the template fit with the correlation
+//  - savePlots: flag to save drawn plots
 //
 //  Contributors:
 //    Katarina Krizkova Gajdosova <katarina.gajdosova@cern.ch>
@@ -20,8 +24,10 @@
 
 int nBinspTtrig = 6;
 double binspTtrig[] = {0.2, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0};
+
 int nBinspTref = 1;
 double binspTref[] = {0.2, 3.0};
+
 const int nBinsMult = 7;
 double binsMult[] = {0, 10, 20, 30, 40, 50, 60, 80, 100, 200};
 
@@ -38,7 +44,13 @@ double fun_template(double *x, double *par);
 ///////////////////////////////////////////////////////////////////////////
 //  Main function
 ///////////////////////////////////////////////////////////////////////////
-void doTemplate(const char* inputFileName = "./phi_proj_testflow.root", const char* outputFileName = "./templateResult.root", const char* outputPlotsName = "./plots", bool drawTemplate = true, bool savePlots = true)
+void doTemplate(
+  const char* inputFileName = "./phi_proj.root",
+  const char* outputFileName = "./templateResult.root", 
+  const char* outputPlotsName = "./plots", 
+  bool drawSeparatevn = false,
+  bool drawTemplate = true, 
+  bool savePlots = true)
 {
   
   TFile* inFile = TFile::Open(Form("%s", inputFileName), "read");
@@ -70,18 +82,45 @@ void doTemplate(const char* inputFileName = "./phi_proj_testflow.root", const ch
       //  F*Y_peripheral(deltaphi) + Y_ridge = template fit
       TF1 *fTemplate = new TF1("fTemplate", fun_template, -0.5*TMath::Pi()+1e-6, 1.5*TMath::Pi()-1e-6, 4);
       fTemplate->SetParameters(par); //  set the parameters obtained from template fit above using tempminuit()
-      fTemplate->SetLineStyle(kSolid);       
-      fTemplate->SetLineColor(kRed);
+      //fTemplate->SetLineStyle(kSolid);       
+      //fTemplate->SetLineColor(kBlue+1);
 
-      // F*Y_peripheral(0) + Y_ridge
-      TF1* fRidge = new TF1("fRidge", "[0]*[4] + [1]*(1 + 2*[2]*cos(2*x) + 2*[3]*cos(3*x))", -5, 5);
+      TH1F *hTemplate = (TH1F*)hminuit->Clone();
+      hTemplate->Reset();
+      for (int iBin = 1; iBin < hTemplate->GetNbinsX()+1; iBin++) {
+        hTemplate->SetBinContent(iBin, fTemplate->Eval(hTemplate->GetBinCenter(iBin)));
+      }
+      hTemplate->SetLineColor(kBlue+1);
+      hTemplate->SetLineWidth(3);
+      hTemplate->SetLineStyle(kSolid);
+
+      // F*Y_peripheral(0) + Y_ridge  v2
+      TF1* fRidge;
+      if (drawSeparatevn) {
+        fRidge = new TF1("fRidge", "[0]*[3] + [1]*(1 + 2*[2]*cos(2*x))", -5, 5);
+      } else {
+        fRidge = new TF1("fRidge", "[0]*[4] + [1]*(1 + 2*[2]*cos(2*x) + 2*[3]*cos(3*x))", -5, 5);
+      }
       fRidge->SetParameter(0, par[0]); // F
       fRidge->SetParameter(1, par[1]); // G
       fRidge->SetParameter(2, par[2]); // v_2^2
       fRidge->SetParameter(3, par[3]); // v_3^2
       fRidge->SetParameter(4, hminuit_periph->GetBinContent(hminuit_periph->FindFixBin(0))); // Y_peripheral(0)
       fRidge->SetLineStyle(kSolid);      
-      fRidge->SetLineColor(kBlue);
+      fRidge->SetLineWidth(3);
+      fRidge->SetLineColor(kRed+1);
+
+      if (drawSeparatevn) {
+        // F*Y_peripheral(0) + Y_ridge  v3
+        TF1* fRidgev3 = new TF1("fRidgev3", "[0]*[3] + [1]*(1 + 2*[2]*cos(3*x))", -5, 5);
+        fRidgev3->SetParameter(0, par[0]); // F
+        fRidgev3->SetParameter(1, par[1]); // G
+        fRidgev3->SetParameter(2, par[3]); // v_3^2
+        fRidgev3->SetParameter(3, hminuit_periph->GetBinContent(hminuit_periph->FindFixBin(0))); // Y_peripheral(0)
+        fRidgev3->SetLineStyle(kDashed);      
+        fRidgev3->SetLineWidth(3);
+        fRidgev3->SetLineColor(kRed+1);
+      }
 
       //  F*Y_peripheral(deltaphi) + G
       TF1 *fPeripheral = new TF1("fPeripheral", fun_template, -0.5*TMath::Pi()+1e-6, 1.5*TMath::Pi()-1e-6, 5);
@@ -89,26 +128,49 @@ void doTemplate(const char* inputFileName = "./phi_proj_testflow.root", const ch
       par[3] = 0;  // v3^2 = 0
       fPeripheral->SetParameters(par);
       fPeripheral->SetLineStyle(kSolid);       
-      fPeripheral->SetLineColor(kMagenta);
+      fPeripheral->SetLineWidth(3);
+      fPeripheral->SetLineColor(kGreen+2);
+
+      TH1F *hPeripheral = (TH1F*)hminuit->Clone();
+      hPeripheral->Reset();
+      for (int iBin = 1; iBin < hPeripheral->GetNbinsX()+1; iBin++) {
+        hPeripheral->SetBinContent(iBin, fPeripheral->Eval(hPeripheral->GetBinCenter(iBin)));
+      }
+      hPeripheral->SetLineColor(kGreen+2);
+      hPeripheral->SetLineWidth(2);
+      hPeripheral->SetLineStyle(kSolid);
+      hPeripheral->SetMarkerStyle(kOpenSquare);
+      hPeripheral->SetMarkerColor(kGreen+2);
+      hPeripheral->SetMarkerSize(1.2);
 
       //  draw the HM projection with the template fits together
       TCanvas* cTemplate = new TCanvas("cTemplate", "", 1200, 800);
       gPad->SetMargin(0.12,0.01,0.12,0.01);
       hminuit->SetTitle("");
       hminuit->SetStats(0);
-      hminuit->GetYaxis()->SetTitleOffset(1.3);
+      hminuit->GetYaxis()->SetTitleOffset(1.1);
+      hminuit->GetXaxis()->SetTitleSize(0.05);
+      hminuit->GetYaxis()->SetTitle("Y(#Delta#varphi)");
+      hminuit->GetYaxis()->SetTitleSize(0.05);
+      hminuit->SetLineColor(kBlack);
+      hminuit->SetMarkerStyle(kFullCircle);
+      hminuit->SetMarkerColor(kBlack);
+      hminuit->SetMarkerSize(1.4);
       hminuit->Draw("");
-      fTemplate->Draw("same");
-      fPeripheral->Draw("same");
+      hTemplate->Draw("hist same");
+      hPeripheral->Draw("hist same");
       fRidge->Draw("same");
+      if (drawSeparatevn) {
+        fRidgev3->Draw("same");
+      }
 
       TLegend* legend = new TLegend(0.15, 0.55, 0.5, 0.75);
       legend->SetFillColor(0);
       legend->SetBorderSize(0);
       legend->SetTextSize(0.035);
 
-      legend->AddEntry(fTemplate, "FY(#Delta#varphi)^{peri} + G(1 + #Sigma_{n=2}^{3} 2V_{n#Delta} cos(n#Delta#varphi))", "L");
-      legend->AddEntry(fPeripheral, "FY(#Delta#varphi)^{peri} + G", "L");
+      legend->AddEntry(hTemplate, "FY(#Delta#varphi)^{peri} + G(1 + #Sigma_{n=2}^{3} 2V_{n#Delta} cos(n#Delta#varphi))", "L");
+      legend->AddEntry(hPeripheral, "FY(#Delta#varphi)^{peri} + G", "L");
       legend->AddEntry(fRidge, "FY(0)^{peri} + G(1 + #Sigma_{n=2}^{3} 2V_{n#Delta} cos(n#Delta#varphi))", "L");
       legend->Draw("same");
 
@@ -156,6 +218,15 @@ void doTemplate(const char* inputFileName = "./phi_proj_testflow.root", const ch
         fTemplate->SetLineStyle(kSolid);       
         fTemplate->SetLineColor(kRed);
 
+        TH1F *hTemplate = (TH1F*)hminuit->Clone();
+        hTemplate->Reset();
+        for (int iBin = 1; iBin < hTemplate->GetNbinsX()+1; iBin++) {
+          hTemplate->SetBinContent(iBin, fTemplate->Eval(hTemplate->GetBinCenter(iBin)));
+        }
+        hTemplate->SetLineColor(kBlue+1);
+        hTemplate->SetLineWidth(3);
+        hTemplate->SetLineStyle(kSolid);
+
         // F*Y_peripheral(0) + Y_ridge
         TF1* fRidge = new TF1("fRidge", "[0]*[4] + [1]*(1 + 2*[2]*cos(2*x) + 2*[3]*cos(3*x))", -5, 5);
         fRidge->SetParameter(0, par[0]); // F
@@ -164,7 +235,8 @@ void doTemplate(const char* inputFileName = "./phi_proj_testflow.root", const ch
         fRidge->SetParameter(3, par[3]); // v_3^2
         fRidge->SetParameter(4, hminuit_periph->GetBinContent(hminuit_periph->FindFixBin(0))); // Y_peripheral(0)
         fRidge->SetLineStyle(kSolid);      
-        fRidge->SetLineColor(kBlue);
+        fRidge->SetLineWidth(3);
+        fRidge->SetLineColor(kRed+1);
 
         //  F*Y_peripheral(deltaphi) + G
         TF1 *fPeripheral = new TF1("fPeripheral", fun_template, -0.5*TMath::Pi()+1e-6, 1.5*TMath::Pi()-1e-6, 5);
@@ -174,15 +246,34 @@ void doTemplate(const char* inputFileName = "./phi_proj_testflow.root", const ch
         fPeripheral->SetLineStyle(kSolid);       
         fPeripheral->SetLineColor(kMagenta);
 
+        TH1F *hPeripheral = (TH1F*)hminuit->Clone();
+        hPeripheral->Reset();
+        for (int iBin = 1; iBin < hPeripheral->GetNbinsX()+1; iBin++) {
+          hPeripheral->SetBinContent(iBin, fPeripheral->Eval(hPeripheral->GetBinCenter(iBin)));
+        }
+        hPeripheral->SetLineColor(kGreen+2);
+        hPeripheral->SetLineWidth(2);
+        hPeripheral->SetLineStyle(kSolid);
+        hPeripheral->SetMarkerStyle(kOpenSquare);
+        hPeripheral->SetMarkerColor(kGreen+2);
+        hPeripheral->SetMarkerSize(1.2);
+
         //  draw the HM projection with the template fits together
         TCanvas* cTemplate = new TCanvas("cTemplate", "", 1200, 800);
         gPad->SetMargin(0.12,0.01,0.12,0.01);
         hminuit->SetTitle("");
         hminuit->SetStats(0);
-        hminuit->GetYaxis()->SetTitleOffset(1.3);
+        hminuit->GetYaxis()->SetTitleOffset(1.1);
+        hminuit->GetXaxis()->SetTitleSize(0.05);
+        hminuit->GetYaxis()->SetTitle("Y(#Delta#varphi)");
+        hminuit->GetYaxis()->SetTitleSize(0.05);
+        hminuit->SetLineColor(kBlack);
+        hminuit->SetMarkerStyle(kFullCircle);
+        hminuit->SetMarkerColor(kBlack);
+        hminuit->SetMarkerSize(1.4);
         hminuit->Draw("");
-        fTemplate->Draw("same");
-        fPeripheral->Draw("same");
+        hTemplate->Draw("hist same");
+        hPeripheral->Draw("hist same");
         fRidge->Draw("same");
 
         TLegend* legend = new TLegend(0.15, 0.55, 0.5, 0.75);
@@ -190,8 +281,8 @@ void doTemplate(const char* inputFileName = "./phi_proj_testflow.root", const ch
         legend->SetBorderSize(0);
         legend->SetTextSize(0.035);
 
-        legend->AddEntry(fTemplate, "FY(#Delta#varphi)^{peri} + G(1 + #Sigma_{n=2}^{3} 2V_{n#Delta} cos(n#Delta#varphi))", "L");
-        legend->AddEntry(fPeripheral, "FY(#Delta#varphi)^{peri} + G", "L");
+        legend->AddEntry(hTemplate, "FY(#Delta#varphi)^{peri} + G(1 + #Sigma_{n=2}^{3} 2V_{n#Delta} cos(n#Delta#varphi))", "L");
+        legend->AddEntry(hPeripheral, "FY(#Delta#varphi)^{peri} + G", "L");
         legend->AddEntry(fRidge, "FY(0)^{peri} + G(1 + #Sigma_{n=2}^{3} 2V_{n#Delta} cos(n#Delta#varphi))", "L");
         legend->Draw("same");
 
