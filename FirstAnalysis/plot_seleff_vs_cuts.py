@@ -56,7 +56,7 @@ colors_channel = {
     "JpsiToEE": kMagenta + 1,
     "2Prong": kBlack,
     "DPlusToPiKPi": kGreen + 2,
-    "DsToPiKK": kOrange + 7,
+    "DsToKKPi": kOrange + 7,
     "LcToPKPi": kAzure + 4,
     "XicToPKPi": kBlue + 3,
     "3Prong": kBlack,
@@ -66,7 +66,7 @@ leg_channel_names = {
     "D0ToPiK": "D^{0} #rightarrow K^{#minus}#pi^{#plus}",
     "JpsiToEE": "J/#psi #rightarrow e^{#minus}e^{#plus}",
     "DPlusToPiKPi": "D^{#plus} #rightarrow K^{#minus}#pi^{#plus}#pi^{#plus}",
-    "DsToPiKK": "D_{s}^{#plus} #rightarrow K^{#plus}K^{#minus}#pi^{#plus}",
+    "DsToKKPi": "D_{s}^{#plus} #rightarrow K^{#plus}K^{#minus}#pi^{#plus}",
     "LcToPKPi": "#Lambda_{c}^{#plus} #rightarrow pK^{#minus}#pi^{#plus}",
     "XicToPKPi": "#Xi_{c}^{#plus} #rightarrow pK^{#minus}#pi^{#plus}",
 }
