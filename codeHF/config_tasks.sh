@@ -18,7 +18,7 @@ DOCLEAN=1           # Delete created files (before and after running tasks).
 DOCONVERT=1         # Convert AliESDs.root to AO2D.root.
 DOALI=1             # Run AliPhysics tasks.
 DOO2=1              # Run O2 tasks.
-DOPOSTPROCESS=1     # Run output postprocessing. (Compare AliPhysics and O2 output.)
+DOPOSTPROCESS=1     # Run output postprocessing. (Comparison plots. Requires DOALI=1 and/or DOO2=1)
 
 # Disable incompatible steps.
 [ "$ISINPUTO2" -eq 1 ] && { DOCONVERT=0; DOALI=0; }
@@ -109,6 +109,7 @@ APPLYCUTS_BPLUS=0   # Apply B+ selection cuts.
 
 SAVETREES=0         # Save O2 tables to trees.
 USEO2VERTEXER=0     # Use the O2 vertexer in AliPhysics.
+USEALIEVCUTS=0      # Use AliEventCuts in AliPhysics (as used by conversion task)
 DORATIO=0           # Plot histogram ratios in comparison.
 
 ####################################################################################################
@@ -414,7 +415,7 @@ EOF
 }
 
 function MakeScriptAli {
-  ALIEXEC="root -b -q -l \"$DIR_TASKS/RunHFTaskLocal.C(\\\"\$FileIn\\\", \\\"\$JSON\\\", $ISMC, $USEO2VERTEXER)\""
+  ALIEXEC="root -b -q -l \"$DIR_TASKS/RunHFTaskLocal.C(\\\"\$FileIn\\\", \\\"\$JSON\\\", $ISMC, $USEO2VERTEXER, $USEALIEVCUTS)\""
   cat << EOF > "$SCRIPT_ALI"
 #!/bin/bash
 FileIn="\$1"
@@ -428,7 +429,7 @@ function MakeScriptPostprocess {
   # Compare AliPhysics and O2 histograms.
   [[ $DOALI -eq 1 && $DOO2 -eq 1 ]] && {
     OPT_COMPARE=""
-    [ $DOO2_SKIM -eq 1 ] && OPT_COMPARE+=" tracks skim "
+    [ $DOO2_SKIM -eq 1 ] && OPT_COMPARE+=" events tracks skim "
     [ $DOO2_CAND_2PRONG -eq 1 ] && OPT_COMPARE+=" cand2 "
     [ $DOO2_CAND_3PRONG -eq 1 ] && OPT_COMPARE+=" cand3 "
     [ $DOO2_TASK_D0 -eq 1 ] && { OPT_COMPARE+=" d0 "; [ "$ISMC" -eq 1 ] && OPT_COMPARE+=" d0-mc "; }

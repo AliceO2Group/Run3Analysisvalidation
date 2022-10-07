@@ -36,6 +36,7 @@ NFILESPERJOB_O2=1               # Number of input files per O2 job
 # Other options
 SAVETREES=0                     # Save O2 tables to trees.
 DEBUG=0                         # Print out more information.
+USEALIEVCUTS=0                  # Use AliEventCuts in AliPhysics (as used by conversion task)
 
 # Performance
 NCORES=$(nproc)                 # Ideal number of used cores
@@ -140,7 +141,7 @@ if [ $DOCONVERT -eq 1 ]; then
   # Run the batch script in the ALI environment.
   [ "$O2_ROOT" ] && { MsgWarn "O2 environment is loaded - expect errors!"; }
   [ "$ALICE_PHYSICS" ] && { MsgWarn "AliPhysics environment is already loaded."; ENVALI=""; }
-  $ENVALI bash "$DIR_EXEC/batch_convert.sh" "$LISTFILES_ALI" "$LISTFILES_O2" $ISMC $DEBUG "$NFILESPERJOB_CONVERT" || exit 1
+  $ENVALI bash "$DIR_EXEC/batch_convert.sh" "$LISTFILES_ALI" "$LISTFILES_O2" $ISMC $USEALIEVCUTS $DEBUG "$NFILESPERJOB_CONVERT" || exit 1
 fi
 
 # Run AliPhysics tasks.
