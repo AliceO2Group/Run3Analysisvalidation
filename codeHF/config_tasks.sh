@@ -18,7 +18,7 @@ DOCLEAN=1           # Delete created files (before and after running tasks).
 DOCONVERT=1         # Convert AliESDs.root to AO2D.root.
 DOALI=1             # Run AliPhysics tasks.
 DOO2=1              # Run O2 tasks.
-DOPOSTPROCESS=1     # Run output postprocessing. (Compare AliPhysics and O2 output.)
+DOPOSTPROCESS=1     # Run output postprocessing. (Comparison plots. Requires DOALI=1 and/or DOO2=1)
 
 # Disable incompatible steps.
 [ "$ISINPUTO2" -eq 1 ] && { DOCONVERT=0; DOALI=0; }
@@ -416,7 +416,7 @@ EOF
 function MakeScriptPostprocess {
   POSTEXEC="echo Postprocessing"
   # Compare AliPhysics and O2 histograms.
-  [[ $DOPOSTPROCESS -eq 1 ]] && {
+  [[ $DOALI -eq 1 && $DOO2 -eq 1 ]] && {
     OPT_COMPARE=""
     [ $DOO2_SKIM -eq 1 ] && OPT_COMPARE+=" events tracks skim "
     [ $DOO2_CAND_2PRONG -eq 1 ] && OPT_COMPARE+=" cand2 "
