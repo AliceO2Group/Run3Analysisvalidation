@@ -87,6 +87,12 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun2 = "
   AddHistogram(vecHisD0MC, labelParticle + ", matched non-prompt: #it{p}_{T}^{rec} (GeV/#it{c})", "hPtRecoFeeddwD0Kpi", "hf-task-d0/hPtRecSigNonPrompt", 2, 1, 0);
   AddHistogram(vecHisD0MC, labelParticle + ", gen. non-prompt: #it{p}_{T}^{gen} (GeV/#it{c})", "hPtGenLimAccFeeddwD0Kpi", "hf-task-d0/hPtGenNonPrompt", 2, 1, 0);
 
+  VecSpecHis vecHisDs;
+  AddHistogram(vecHisDs, "#it{p}_{T} D_{s}^{#pm} (GeV/#it{c})", "hPtDs", "hf-task-ds/hPt", 2, 1, 0);
+  AddHistogram(vecHisDs, "3-prong mass (K K #pi) (GeV/#it{c}^{2})", "hInvMassDs", "hf-task-ds/hInvMass", 5, 0, 0);
+  AddHistogram(vecHisDs, "decay length (cm)", "hDecLenDs", "hf-task-ds/hDecayLength", 4, 1, 0);
+  AddHistogram(vecHisDs, "cos pointing angle", "hCosPointDs", "hf-task-ds/hCPA", 2, 1, 0);
+
   VecSpecHis vecHisDPlus;
   AddHistogram(vecHisDPlus, "#it{p}_{T} prong 0 (GeV/#it{c})", "hPtDplusDau0", "hf-task-dplus/hPtProng0", 2, 1, 0);
   AddHistogram(vecHisDPlus, "#it{p}_{T} prong 1 (GeV/#it{c})", "hPtDplusDau1", "hf-task-dplus/hPtProng1", 2, 1, 0);
@@ -154,6 +160,8 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun2 = "
     vecSpecVecSpec.push_back(std::make_tuple("d0", vecHisD0, 5, 3));
   if (options.Contains(" d0-mc "))
     vecSpecVecSpec.push_back(std::make_tuple("d0-mc", vecHisD0MC, 2, 2));
+  if (options.Contains(" ds "))
+    vecSpecVecSpec.push_back(std::make_tuple("ds", vecHisDs, 2, 2));
   if (options.Contains(" dplus "))
     vecSpecVecSpec.push_back(std::make_tuple("dplus", vecHisDPlus, 5, 4));
   if (options.Contains(" lc "))

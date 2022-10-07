@@ -107,6 +107,10 @@ workflows:
       - o2-analysis-pid-bayes
     tables: HFSELDPLUSCAND
 
+  o2-analysis-hf-ds-tokkpi-candidate-selector:
+    <<: *selector_3prong
+    tables: HFSELDSCAND
+
   o2-analysis-hf-lc-candidate-selector:
     <<: *selector_3prong
     tables: HFSELLCCAND
@@ -151,6 +155,9 @@ workflows:
 
   o2-analysis-hf-task-dplus:
     dependencies: o2-analysis-hf-dplus-topikpi-candidate-selector
+
+  o2-analysis-hf-task-ds:
+    dependencies: o2-analysis-hf-ds-tokkpi-candidate-selector
 
   o2-analysis-hf-task-lc:
     dependencies: o2-analysis-hf-lc-candidate-selector
