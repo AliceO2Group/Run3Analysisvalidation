@@ -443,7 +443,7 @@ function MakeScriptPostprocess {
   [[ $DOO2 -eq 1 && $ISMC -eq 1 ]] && {
     PARTICLES=""
     [ $DOO2_TASK_D0 -eq 1 ] && PARTICLES+=" d0 "
-    [ $DOO2_TASK_Ds -eq 1 ] && PARTICLES+=" ds "
+    [ $DOO2_TASK_DS -eq 1 ] && PARTICLES+=" ds "
     [ $DOO2_TASK_DPLUS -eq 1 ] && PARTICLES+=" dplus "
     [ $DOO2_TASK_LC -eq 1 ] && PARTICLES+=" lc "
     [ $DOO2_TASK_XIC -eq 1 ] && PARTICLES+=" xic "
