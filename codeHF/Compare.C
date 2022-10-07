@@ -89,7 +89,7 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun2 = "
 
   VecSpecHis vecHisDs;
   AddHistogram(vecHisDs, "#it{p}_{T} D_{s}^{#pm} (GeV/#it{c})", "hPtDs", "hf-task-ds/hPt", 2, 1, 0);
-  AddHistogram(vecHisDs, "3-prong mass (K K #pi) (GeV/#it{c}^{2})", "hInvMassDs", "hf-task-ds/hInvMass", 5, 0, 0);
+  AddHistogram(vecHisDs, "3-prong mass (K K #pi) (GeV/#it{c}^{2})", "hInvMassDs", "hf-task-ds/hMass", 5, 0, 0);
   AddHistogram(vecHisDs, "decay length (cm)", "hDecLenDs", "hf-task-ds/hDecayLength", 4, 1, 0);
   AddHistogram(vecHisDs, "cos pointing angle", "hCosPointDs", "hf-task-ds/hCPA", 2, 1, 0);
 
