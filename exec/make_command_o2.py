@@ -23,6 +23,12 @@ def msg_err(message: str):
     eprint("\x1b[1;31mError: %s\x1b[0m" % message)
 
 
+def msg_fatal(message: str):
+    """Print an error message and exit."""
+    msg_err(message)
+    sys.exit(1)
+
+
 def msg_warn(message: str):
     """Print a warning message."""
     eprint("\x1b[1;36mWarning:\x1b[0m %s" % message)
@@ -40,8 +46,7 @@ def join_strings(obj):
     elif isinstance(obj, list):
         return " ".join(obj)
     else:
-        msg_err("Cannot convert %s into a string" % type(obj))
-        sys.exit(1)
+        msg_fatal("Cannot convert %s into a string" % type(obj))
 
 
 def join_to_list(obj, list_out: list):
@@ -51,8 +56,7 @@ def join_to_list(obj, list_out: list):
     elif isinstance(obj, list):
         list_out += obj
     else:
-        msg_err("Cannot convert %s into a string" % type(obj))
-        sys.exit(1)
+        msg_fatal("Cannot convert %s into a string" % type(obj))
 
 
 def healthy_structure(dic_full: dict):
@@ -114,8 +118,7 @@ def activate_workflow(wf: str, dic_wf: dict, mc=False, level=0, debug=False):
             msg_warn("Deactivated %s because of non-MC input" % wf)
             # Throw error if this is a dependency.
             if level > 0:
-                msg_err("Workflows requiring this dependency would fail!")
-                sys.exit(1)
+                msg_fatal("Workflows requiring this dependency would fail!")
             dic_wf_single["activate"] = False
             return
         # Activate.
@@ -168,13 +171,11 @@ def main():
         with open(path_file_database, "r") as file_database:
             dic_in = yaml.safe_load(file_database)
     except IOError:
-        msg_err("Failed to open file " + path_file_database)
-        sys.exit(1)
+        msg_fatal("Failed to open file " + path_file_database)
 
     # Check valid structure of the input database.
     if not healthy_structure(dic_in):
-        msg_err("Bad structure!")
-        sys.exit(1)
+        msg_fatal("Bad structure!")
 
     if mc_mode:
         msg_warn("MC mode is on.")
@@ -236,11 +237,10 @@ def main():
                 if mc_mode and "mc" in tab_wf:
                     join_to_list(tab_wf["mc"], tables)
             else:
-                msg_err(
+                msg_fatal(
                     '"tables" in %s must be str, list or dict, is %s'
                     % (wf, type(tab_wf))
                 )
-                sys.exit(1)
         str_before = "AOD/"
         str_after = "/0"
         string_tables = ",".join(str_before + t + str_after for t in tables)
@@ -258,15 +258,13 @@ def main():
         if "executable" in dic_wf_single:
             exec_wf = dic_wf_single["executable"]
             if not isinstance(exec_wf, str):
-                msg_err('"executable" in %s must be str, is %s' % (wf, type(exec_wf)))
-                sys.exit(1)
+                msg_fatal('"executable" in %s must be str, is %s' % (wf, type(exec_wf)))
             string_wf = exec_wf
         else:
             string_wf = wf
         # Detect duplicate workflows.
         if string_wf + " " in command:
-            msg_err("Workflow %s is already present." % string_wf)
-            sys.exit(1)
+            msg_fatal("Workflow %s is already present." % string_wf)
         # Process options.
         if "options" in dic_wf_single:
             opt_wf = dic_wf_single["options"]
@@ -280,17 +278,15 @@ def main():
                 if mc_mode and "mc" in opt_wf:
                     string_wf += " " + join_strings(opt_wf["mc"])
             else:
-                msg_err(
+                msg_fatal(
                     '"options" in %s must be str, list or dict, is %s'
                     % (wf, type(opt_wf))
                 )
-                sys.exit(1)
         if opt_local:
             string_wf += " " + opt_local
         command += "| \\\n" + string_wf + " "
     if not command:
-        msg_err("Nothing to do!")
-        sys.exit(1)
+        msg_fatal("Nothing to do!")
     # Remove the leading "| \\\n".
     command = command[4:]
     # Append global options.
@@ -331,8 +327,7 @@ def main():
             with open(path_file_dot, "w") as file_dot:
                 file_dot.write(dot)
         except IOError:
-            msg_err("Failed to open file " + path_file_dot)
-            sys.exit(1)
+            msg_fatal("Failed to open file " + path_file_dot)
         eprint(
             "Produce graph with Graphviz: dot -T%s %s -o %s"
             % (ext_graph, path_file_dot, path_file_graph)
