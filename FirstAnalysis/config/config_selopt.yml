@@ -17,8 +17,8 @@ cands2Prong: [D0ToPiK, JpsiToEE]
 vars2Prong: [Cosp, DecLen, ImpParProd, MinDCAxy, MinTrackPt]
 
 # list of 3-prong candidates enabled
-# options: DPlusToPiKPi, DsToPiKK, LcToPKPi, XicToPKPi
-cands3Prong: [DPlusToPiKPi, DsToPiKK, LcToPKPi, XicToPKPi]
+# options: DPlusToPiKPi, DsToKKPi, LcToPKPi, XicToPKPi
+cands3Prong: [DPlusToPiKPi, DsToKKPi, LcToPKPi, XicToPKPi]
 # list of variables to test for 3-prong candidates
 # options: Cosp, DecLen, MinDCAxy, MinTrackPt
 vars3Prong: [Cosp, DecLen, MinDCAxy, MinTrackPt]

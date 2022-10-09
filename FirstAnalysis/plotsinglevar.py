@@ -100,7 +100,7 @@ plotsinglevar(
     "hf-task-jpsi-mc",
     "J/#psi",
     2,
-    "hmassBg",
+    "hMassBg",
     2.7,
     3.4,
     0.1,

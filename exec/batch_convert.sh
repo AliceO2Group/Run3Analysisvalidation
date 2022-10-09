@@ -5,8 +5,9 @@
 LISTINPUT="$1"
 LISTOUTPUT="$2"
 ISMC=$3
-DEBUG=$4
-NFILESPERJOB=$5
+USEALIEVCUTS=$4
+DEBUG=$5
+NFILESPERJOB=$6
 FILEOUT="AO2D.root"
 
 [ "$DEBUG" -eq 1 ] && echo "Running $0"
@@ -25,7 +26,7 @@ IndexFile=0
 IndexJob=0
 DirOutMain="output_conversion"
 
-CMDPARALLEL="cd \"$DirOutMain/{}\" && bash \"$DIR_THIS/run_convert.sh\" \"$ListIn\" $ISMC \"$LogFile\""
+CMDPARALLEL="cd \"$DirOutMain/{}\" && bash \"$DIR_THIS/run_convert.sh\" \"$ListIn\" $ISMC $USEALIEVCUTS \"$LogFile\""
 
 # Clean before running.
 rm -rf "$LISTOUTPUT" "$DirOutMain" || ErrExit "Failed to delete output files."

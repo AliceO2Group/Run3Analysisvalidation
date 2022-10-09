@@ -128,17 +128,17 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults_O2.root", TStri
     TString outputDir = Form("hf-task-%s-mc", particle.Data()); // analysis output directory with histograms
 
     // inclusive generated
-    TString nameHistgen = outputDir + "/hPtvsYGen"; // generator level pT of generated particles
-    TH2F* hPtvsYGenIncl = (TH2F*)file->Get(nameHistgen.Data());
-    if (!hPtvsYGenIncl) {
+    TString nameHistgen = outputDir + "/hPtVsYGen"; // generator level pT of generated particles
+    TH2F* hPtVsYGenIncl = (TH2F*)file->Get(nameHistgen.Data());
+    if (!hPtVsYGenIncl) {
       Printf("Error: Failed to load %s from %s", nameHistgen.Data(), pathFile.Data());
       return 1;
     }
     canGenSbyS->cd(1);
-    hPtvsYGenIncl->Draw("colz");
+    hPtVsYGenIncl->Draw("colz");
 
-    TH1F* hGenPtIncl = (TH1F*)hPtvsYGenIncl->ProjectionX("hGen_Pt", 1, hPtvsYGenIncl->GetXaxis()->GetLast(), "e");
-    TH1F* hGenYIncl = (TH1F*)hPtvsYGenIncl->ProjectionY("hGen_Y", 1, hPtvsYGenIncl->GetYaxis()->GetLast(), "e");
+    TH1F* hGenPtIncl = (TH1F*)hPtVsYGenIncl->ProjectionX("hGen_Pt", 1, hPtVsYGenIncl->GetXaxis()->GetLast(), "e");
+    TH1F* hGenYIncl = (TH1F*)hPtVsYGenIncl->ProjectionY("hGen_Y", 1, hPtVsYGenIncl->GetYaxis()->GetLast(), "e");
 
     if (iNRebin > 1) {
       hGenPtIncl->Rebin(iNRebin);
@@ -155,17 +155,17 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults_O2.root", TStri
     hGenYIncl->Draw("pe");
 
     // prompt generated
-    TString nameHistgenPrompt = outputDir + "/hPtvsYGenPrompt"; // generator level pT of generated particles
-    TH2F* hPtvsYGenPrompt = (TH2F*)file->Get(nameHistgenPrompt.Data());
-    if (!hPtvsYGenPrompt) {
+    TString nameHistgenPrompt = outputDir + "/hPtVsYGenPrompt"; // generator level pT of generated particles
+    TH2F* hPtVsYGenPrompt = (TH2F*)file->Get(nameHistgenPrompt.Data());
+    if (!hPtVsYGenPrompt) {
       Printf("Error: Failed to load %s from %s", nameHistgenPrompt.Data(), pathFile.Data());
       return 1;
     }
     canGenSbyS->cd(2);
-    hPtvsYGenPrompt->Draw("colz");
+    hPtVsYGenPrompt->Draw("colz");
 
-    TH1F* hGenPtPrompt = (TH1F*)hPtvsYGenPrompt->ProjectionX("hGenPrompt_Pt", 1, hPtvsYGenPrompt->GetXaxis()->GetLast(), "e");
-    TH1F* hGenYPrompt = (TH1F*)hPtvsYGenPrompt->ProjectionY("hGenPrompt_Y", 1, hPtvsYGenPrompt->GetYaxis()->GetLast(), "e");
+    TH1F* hGenPtPrompt = (TH1F*)hPtVsYGenPrompt->ProjectionX("hGenPrompt_Pt", 1, hPtVsYGenPrompt->GetXaxis()->GetLast(), "e");
+    TH1F* hGenYPrompt = (TH1F*)hPtVsYGenPrompt->ProjectionY("hGenPrompt_Y", 1, hPtVsYGenPrompt->GetYaxis()->GetLast(), "e");
 
     if (iNRebin > 1) {
       hGenPtPrompt->Rebin(iNRebin);
@@ -182,17 +182,17 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults_O2.root", TStri
     hGenYPrompt->Draw("pe");
 
     // non-prompt generated
-    TString nameHistgenNonPrompt = outputDir + "/hPtvsYGenNonPrompt"; // generator level pT of generated particles
-    TH2F* hPtvsYGenNonPrompt = (TH2F*)file->Get(nameHistgenNonPrompt.Data());
-    if (!hPtvsYGenNonPrompt) {
+    TString nameHistgenNonPrompt = outputDir + "/hPtVsYGenNonPrompt"; // generator level pT of generated particles
+    TH2F* hPtVsYGenNonPrompt = (TH2F*)file->Get(nameHistgenNonPrompt.Data());
+    if (!hPtVsYGenNonPrompt) {
       Printf("Error: Failed to load %s from %s", nameHistgenNonPrompt.Data(), pathFile.Data());
       return 1;
     }
     canGenSbyS->cd(3);
-    hPtvsYGenNonPrompt->Draw("colz");
+    hPtVsYGenNonPrompt->Draw("colz");
 
-    TH1F* hGenPtNonPrompt = (TH1F*)hPtvsYGenNonPrompt->ProjectionX("hGenNonPrompt_Pt", 1, hPtvsYGenNonPrompt->GetXaxis()->GetLast(), "e");
-    TH1F* hGenYNonPrompt = (TH1F*)hPtvsYGenNonPrompt->ProjectionY("hGenNonPrompt_Y", 1, hPtvsYGenNonPrompt->GetYaxis()->GetLast(), "e");
+    TH1F* hGenPtNonPrompt = (TH1F*)hPtVsYGenNonPrompt->ProjectionX("hGenNonPrompt_Pt", 1, hPtVsYGenNonPrompt->GetXaxis()->GetLast(), "e");
+    TH1F* hGenYNonPrompt = (TH1F*)hPtVsYGenNonPrompt->ProjectionY("hGenNonPrompt_Y", 1, hPtVsYGenNonPrompt->GetYaxis()->GetLast(), "e");
 
     if (iNRebin > 1) {
       hGenPtNonPrompt->Rebin(iNRebin);
@@ -210,23 +210,23 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults_O2.root", TStri
 
     for (int iRs = 0; iRs < NRecoStep; iRs++) {
       //inclusive
-      TString nameHistRec = outputDir + "/hPtvsYRecSig_" + recoStep[iRs]; // reconstruction level pT of matched candidates
+      TString nameHistRec = outputDir + "/hPtVsYRecSig" + recoStep[iRs]; // reconstruction level pT of matched candidates
       cout << nameHistRec.Data() << endl;
 
-      TH2F* hPtvsYRecIncl = (TH2F*)file->Get(nameHistRec.Data());
-      if (!hPtvsYRecIncl) {
+      TH2F* hPtVsYRecIncl = (TH2F*)file->Get(nameHistRec.Data());
+      if (!hPtVsYRecIncl) {
         Printf("Error: Failed to load %s from %s", nameHistRec.Data(), pathFile.Data());
         return 1;
       }
-      hPtvsYRecIncl->SetTitle(Form("k%s", recoStep[iRs].Data()));
+      hPtVsYRecIncl->SetTitle(Form("k%s", recoStep[iRs].Data()));
       canRecoSbyS->cd(iRs + 1);
-      hPtvsYRecIncl->Draw("colz");
+      hPtVsYRecIncl->Draw("colz");
 
-      TH1F* hRecoPtIncl = (TH1F*)hPtvsYRecIncl->ProjectionX(Form("h%s_Pt", recoStep[iRs].Data()), 1, hPtvsYRecIncl->GetXaxis()->GetLast(), "e");
+      TH1F* hRecoPtIncl = (TH1F*)hPtVsYRecIncl->ProjectionX(Form("h%s_Pt", recoStep[iRs].Data()), 1, hPtVsYRecIncl->GetXaxis()->GetLast(), "e");
       canRecoSbySPt->cd(iRs + 1);
       hRecoPtIncl->Draw("pe");
 
-      TH1F* hRecoYIncl = (TH1F*)hPtvsYRecIncl->ProjectionY(Form("h%s_Y", recoStep[iRs].Data()), 1, hPtvsYRecIncl->GetYaxis()->GetLast(), "e");
+      TH1F* hRecoYIncl = (TH1F*)hPtVsYRecIncl->ProjectionY(Form("h%s_Y", recoStep[iRs].Data()), 1, hPtVsYRecIncl->GetYaxis()->GetLast(), "e");
       canRecoSbySY->cd(iRs + 1);
       hRecoYIncl->Draw("pe");
 
@@ -250,21 +250,21 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults_O2.root", TStri
       SetHistogramStyle(hEffYIncl[iRs], colours[iRs], markers[iRs], markersize[iRs], lineWidth);
 
       //prompt
-      TString nameHistRecPrompt = outputDir + "/hPtvsYRecSigPrompt_" + recoStep[iRs]; // reconstruction level pT of matched candidates
-      TH2F* hPtvsYRecPrompt = (TH2F*)file->Get(nameHistRecPrompt.Data());
-      if (!hPtvsYRecPrompt) {
+      TString nameHistRecPrompt = outputDir + "/hPtVsYRecSigPrompt" + recoStep[iRs]; // reconstruction level pT of matched candidates
+      TH2F* hPtVsYRecPrompt = (TH2F*)file->Get(nameHistRecPrompt.Data());
+      if (!hPtVsYRecPrompt) {
         Printf("Error: Failed to load %s from %s", nameHistRecPrompt.Data(), pathFile.Data());
         return 1;
       }
-      hPtvsYRecPrompt->SetTitle(Form("k%s prompt", recoStep[iRs].Data()));
+      hPtVsYRecPrompt->SetTitle(Form("k%s prompt", recoStep[iRs].Data()));
       canRecoSbySPrompt->cd(iRs + 1);
-      hPtvsYRecPrompt->Draw("colz");
+      hPtVsYRecPrompt->Draw("colz");
 
-      TH1F* hRecoPtPrompt = (TH1F*)hPtvsYRecPrompt->ProjectionX(Form("h%s_PtPrompt", recoStep[iRs].Data()), 1, hPtvsYRecPrompt->GetXaxis()->GetLast(), "e");
+      TH1F* hRecoPtPrompt = (TH1F*)hPtVsYRecPrompt->ProjectionX(Form("h%s_PtPrompt", recoStep[iRs].Data()), 1, hPtVsYRecPrompt->GetXaxis()->GetLast(), "e");
       canRecoSbySPromptPt->cd(iRs + 1);
       hRecoPtPrompt->Draw("pe");
 
-      TH1F* hRecoYPrompt = (TH1F*)hPtvsYRecPrompt->ProjectionY(Form("h%s_YPrompt", recoStep[iRs].Data()), 1, hPtvsYRecPrompt->GetYaxis()->GetLast(), "e");
+      TH1F* hRecoYPrompt = (TH1F*)hPtVsYRecPrompt->ProjectionY(Form("h%s_YPrompt", recoStep[iRs].Data()), 1, hPtVsYRecPrompt->GetYaxis()->GetLast(), "e");
       canRecoSbySPromptY->cd(iRs + 1);
       hRecoYPrompt->Draw("pe");
 
@@ -287,21 +287,21 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults_O2.root", TStri
       SetHistogramStyle(hEffYPrompt[iRs], colours[iRs], markers[iRs], markersize[iRs], lineWidth);
 
       // non-prompt
-      TString nameHistRecNonPrompt = outputDir + "/hPtvsYRecSigNonPrompt_" + recoStep[iRs]; // reconstruction level pT of matched candidates
-      TH2F* hPtvsYRecNonPrompt = (TH2F*)file->Get(nameHistRecNonPrompt.Data());
-      if (!hPtvsYRecNonPrompt) {
+      TString nameHistRecNonPrompt = outputDir + "/hPtVsYRecSigNonPrompt" + recoStep[iRs]; // reconstruction level pT of matched candidates
+      TH2F* hPtVsYRecNonPrompt = (TH2F*)file->Get(nameHistRecNonPrompt.Data());
+      if (!hPtVsYRecNonPrompt) {
         Printf("Error: Failed to load %s from %s", nameHistRecNonPrompt.Data(), pathFile.Data());
         return 1;
       }
-      hPtvsYRecNonPrompt->SetTitle(Form("k%s non-prompt", recoStep[iRs].Data()));
+      hPtVsYRecNonPrompt->SetTitle(Form("k%s non-prompt", recoStep[iRs].Data()));
       canRecoSbySNonPrompt->cd(iRs + 1);
-      hPtvsYRecNonPrompt->Draw("colz");
+      hPtVsYRecNonPrompt->Draw("colz");
 
-      TH1F* hRecoPtNonPrompt = (TH1F*)hPtvsYRecNonPrompt->ProjectionX(Form("h%s_PtNonPrompt", recoStep[iRs].Data()), 1, hPtvsYRecNonPrompt->GetXaxis()->GetLast(), "e");
+      TH1F* hRecoPtNonPrompt = (TH1F*)hPtVsYRecNonPrompt->ProjectionX(Form("h%s_PtNonPrompt", recoStep[iRs].Data()), 1, hPtVsYRecNonPrompt->GetXaxis()->GetLast(), "e");
       canRecoSbySNonPromptPt->cd(iRs + 1);
       hRecoPtNonPrompt->Draw("pe");
 
-      TH1F* hRecoYNonPrompt = (TH1F*)hPtvsYRecNonPrompt->ProjectionY(Form("h%s_YNonPrompt", recoStep[iRs].Data()), 1, hPtvsYRecNonPrompt->GetYaxis()->GetLast(), "e");
+      TH1F* hRecoYNonPrompt = (TH1F*)hPtVsYRecNonPrompt->ProjectionY(Form("h%s_YNonPrompt", recoStep[iRs].Data()), 1, hPtVsYRecNonPrompt->GetYaxis()->GetLast(), "e");
       canRecoSbySNonPromptY->cd(iRs + 1);
       hRecoYNonPrompt->Draw("pe");
 
