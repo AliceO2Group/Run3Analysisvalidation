@@ -27,20 +27,17 @@ repositories:
     update: 1
     build: 1
     origin: "origin"
-    build_opt: "--defaults o2"
 
   O2:
     update: 1
     build: 1
     origin: "origin"
     branch: "dev"
-    build_opt: "--defaults o2"
 
   O2Physics:
     update: 1
     build: 1
     origin: "origin"
-    build_opt: "--defaults o2"
 
   Run3Analysisvalidation:
     update: 1
