@@ -675,7 +675,7 @@
     },
     "hf-lc-candidate-selector": {
         "d_pTCandMin": "0",
-        "d_pTCandMax": "36",
+        "d_pTCandMax": "24",
         "d_FilterPID": "false",
         "d_pidTPCMinpT": "0.1",
         "d_pidTPCMaxpT": "1",
@@ -685,7 +685,7 @@
         "d_pidTOFMaxpT": "2",
         "d_nSigmaTOF": "3",
         "d_nSigmaTOFCombined": "5",
-        "d_BayesianPID": "false",
+        "d_BayesPID": "false",
         "d_pidBayesMinpT": "0.1",
         "d_pidBayesMaxpT": "5.",
         "pTBins": {
