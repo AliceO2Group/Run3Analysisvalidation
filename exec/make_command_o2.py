@@ -10,7 +10,7 @@ import os
 import sys
 from typing import List
 
-import yaml
+import yaml  # pylint: disable=import-error
 
 
 def eprint(*args, **kwargs):

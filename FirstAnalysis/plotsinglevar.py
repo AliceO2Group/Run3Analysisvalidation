@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os
 
-from ROOT import TF1, TH2F, TCanvas, TFile, TLatex, gROOT, gStyle
+from ROOT import TF1, TH2F, TCanvas, TFile, TLatex, gROOT, gStyle  # pylint: disable=import-error
 
 
 def makeSavePaths(title, *fileFormats, outputdir="outputPlots"):
