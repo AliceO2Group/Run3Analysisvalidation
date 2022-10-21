@@ -16,7 +16,7 @@ import os
 import subprocess as sp  # nosec B404
 import sys
 
-import yaml
+import yaml  # pylint: disable=import-error
 
 # global variables
 debug = False

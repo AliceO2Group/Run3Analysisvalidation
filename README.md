@@ -98,7 +98,7 @@ Dummy examples can be found in: [`config/config_input_dummy.sh`](config/config_i
 ### Build AliPhysics and O<sup>2</sup>(Physics)
 
 Follow the official [AliPhysics installation](https://alice-doc.github.io/alice-analysis-tutorial/building/) and
-[O<sup>2</sup>(Physics) installation](https://aliceo2group.github.io/analysis-framework/docs/installing/) instructions.
+[O<sup>2</sup>(Physics) installation](https://aliceo2group.github.io/analysis-framework/docs/gettingstarted/installing.html) instructions.
 
 Make sure the AliPhysics and O<sup>2</sup>Physics environments can be entered using the following respective commands.
 
@@ -255,8 +255,8 @@ bash <path to the Run3Analysisvalidation directory>/exec/check_spaces.sh
 clang-format -style=file -i <file>
 ```
 
-### [MegaLinter](https://megalinter.github.io/latest/mega-linter-runner/)
+### [MegaLinter](https://oxsecurity.github.io/megalinter/latest/mega-linter-runner/)
 
 ```bash
-mega-linter-runner
+npx mega-linter-runner
 ```

@@ -10,7 +10,7 @@ author: Fabrizio Grosa <fabrizio.grosa@cern.ch>, CERN
 import argparse
 from typing import Dict
 
-import yaml
+import yaml  # pylint: disable=import-error
 from ROOT import (  # pylint: disable=import-error,no-name-in-module
     TCanvas,
     TFile,
@@ -28,7 +28,7 @@ from ROOT import (  # pylint: disable=import-error,no-name-in-module
 )
 
 
-def set_hist_style(histo, color=kBlack, marker=kFullCircle, markersize=1):
+def set_hist_style(histo, color=kBlack, marker=kFullCircle, markersize=1.0):
     """
     Helper method to set histo graphic style
     """

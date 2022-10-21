@@ -12,6 +12,6 @@
     "**/*cache*/**",
     "**/.github/**",
     "**/.idea/**",
-    "**/report/**"
+    "**/megalinter-reports/**"
   ]
 }
