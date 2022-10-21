@@ -17,6 +17,10 @@ DISABLE_LINTERS:
   - JSON_PRETTIER
   - YAML_V8R
   - YAML_PRETTIER
+DISABLE_ERRORS_LINTERS: # If errors are found by these linters, they will be considered as non blocking.
+  - PYTHON_BANDIT
+  - REPOSITORY_DEVSKIM
+FILTER_REGEX_EXCLUDE: (codeQA/)
 SHOW_ELAPSED_TIME: true
 FILEIO_REPORTER: false
 GITHUB_COMMENT_REPORTER: false
