@@ -28,7 +28,7 @@ from ROOT import (  # pylint: disable=import-error,no-name-in-module
 )
 
 
-def set_hist_style(histo, color=kBlack, marker=kFullCircle, markersize=1.):
+def set_hist_style(histo, color=kBlack, marker=kFullCircle, markersize=1.0):
     """
     Helper method to set histo graphic style
     """
