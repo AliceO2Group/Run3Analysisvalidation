@@ -1275,7 +1275,7 @@
     },
     "hf-task-b0": {
         "selectionFlagB0": "0",
-        "cutYCandMax": "1.44",
+        "cutYCandMax": "0.8",
         "pTBins": {
             "values": [
                 "0",
@@ -1296,7 +1296,7 @@
     },
     "hf-task-b0-mc": {
         "selectionFlagB0": "0",
-        "cutYCandMax": "0.80",
+        "cutYCandMax": "0.8",
         "pTBins": {
             "values": [
                 "0",
