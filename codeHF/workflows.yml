@@ -83,8 +83,6 @@ workflows:
 
   o2-analysis-hf-candidate-creator-lb:
     <<: *cand_creator
-    options:
-      mc: "--doMC"
     dependencies:
       - o2-analysis-hf-lc-candidate-selector
       - o2-analysis-alice3-centrality
@@ -123,7 +121,6 @@ workflows:
     tables: HFSELDSCAND
 
   o2-analysis-hf-lb-tolcpi-candidate-selector:
-    <<: *selector_3prong
     dependencies: o2-analysis-hf-candidate-creator-lb
     tables: HFSELLBCAND
 
@@ -181,7 +178,7 @@ workflows:
   o2-analysis-hf-task-lb:
     options:
       mc: "--doMC"
-    dependencies: [o2-analysis-hf-lb-tolcpi-candidate-selector, o2-analysis-trackextension-alice3] #, o2-analysis-alice3-centrality]
+    dependencies: [o2-analysis-hf-lb-tolcpi-candidate-selector, o2-analysis-trackextension-alice3]
 
   o2-analysis-hf-task-xic:
     dependencies: o2-analysis-hf-xic-topkpi-candidate-selector
