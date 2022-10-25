@@ -252,7 +252,7 @@ function AdjustJson {
   # Enable Λb selection.
   if [ $APPLYCUTS_LB -eq 1 ]; then
     MsgWarn "\nUsing Λb selection cuts"
-    ReplaceString "\"d_selectionFlagLb\": \"0\"" "\"d_selectionFlagLb\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"selectionFlagLb\": \"0\"" "\"selectionFlagLb\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable Ξc selection.

@@ -176,8 +176,6 @@ workflows:
     dependencies: o2-analysis-hf-lc-candidate-selector
 
   o2-analysis-hf-task-lb:
-    options:
-      mc: "--doMC"
     dependencies: [o2-analysis-hf-lb-tolcpi-candidate-selector, o2-analysis-trackextension-alice3]
 
   o2-analysis-hf-task-xic:

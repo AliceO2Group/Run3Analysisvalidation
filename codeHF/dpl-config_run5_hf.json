@@ -816,7 +816,7 @@
     },
     "hf-task-lb": {
         "cutYCandMax": "2.0",
-        "d_selectionFlagLb": "0",
+        "selectionFlagLb": "0",
         "pTBins": {
             "values": [
                 "0",
