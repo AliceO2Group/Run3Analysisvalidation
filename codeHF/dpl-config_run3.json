@@ -57,6 +57,7 @@
         "processCovariance": "true"
     },
     "hf-tag-sel-tracks": {
+        "isRun2": "true",
         "fillHistograms": "true",
         "debug": "true",
         "bz": "5",
@@ -225,6 +226,7 @@
         "pid-al": "1"
     },
     "hf-track-index-skims-creator": {
+        "isRun2": "true",
         "debug": "false",
         "fillHistograms": "true",
         "do3prong": "1",
@@ -351,6 +353,7 @@
         }
     },
     "hf-track-index-skims-creator-cascades": {
+        "isRun2": "true",
         "doValPlots": "true",
         "bZ": "5",
         "propDCA": "true",
@@ -374,6 +377,7 @@
         "cutCascInvMassLc": "1"
     },
     "hf-cand-creator-2prong": {
+        "isRun2": "true",
         "doPvRefit": "false",
         "d_bz": "5",
         "b_propdca": "true",
@@ -384,6 +388,7 @@
         "b_dovalplots": "true"
     },
     "hf-cand-creator-3prong": {
+        "isRun2": "true",
         "doPvRefit": "false",
         "d_bz": "5",
         "b_propdca": "true",
