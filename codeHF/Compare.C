@@ -42,9 +42,9 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun2 = "
   // Histogram specification: axis label, AliPhysics name, O2Physics path/name, rebin, log scale histogram, log scale ratio, projection axis
 
   VecSpecHis vecHisEvents;
-  // AddHistogram(vecHisEvents, "primary vtx x (cm)", "hPrimVertX", "hf-tag-sel-collisions/hPrimVtxX", 1, 1, 0);
-  // AddHistogram(vecHisEvents, "primary vtx y (cm)", "hPrimVertY", "hf-tag-sel-collisions/hPrimVtxY", 1, 1, 0);
-  // AddHistogram(vecHisEvents, "primary vtx z (cm)", "hPrimVertZ", "hf-tag-sel-collisions/hPrimVtxZ", 1, 1, 0);
+  AddHistogram(vecHisEvents, "primary vtx x (cm)", "hPrimVertX", "hf-tag-sel-collisions/hPrimVtxX", 1, 1, 0);
+  AddHistogram(vecHisEvents, "primary vtx y (cm)", "hPrimVertY", "hf-tag-sel-collisions/hPrimVtxY", 1, 1, 0);
+  AddHistogram(vecHisEvents, "primary vtx z (cm)", "hPrimVertZ", "hf-tag-sel-collisions/hPrimVtxZ", 1, 1, 0);
   AddHistogram(vecHisEvents, "primary vtx N contributors", "fHistPrimVertContr", "hf-tag-sel-collisions/hNContributors", 1, 1, 0);
 
   VecSpecHis vecHisTracks;
@@ -74,6 +74,10 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun2 = "
   VecSpecHis vecHisCand3;
   AddHistogram(vecHisCand3, "XX element of PV cov. matrix (cm^{2})", "hCovMatPrimVXX3Prong", "hf-cand-creator-3prong/hCovPVXX", 1, 1, 0);
   AddHistogram(vecHisCand3, "XX element of SV cov. matrix (cm^{2})", "hCovMatSecVXX3Prong", "hf-cand-creator-3prong/hCovSVXX", 1, 1, 0);
+  AddHistogram(vecHisCand3, "YY element of PV cov. matrix (cm^{2})", "hCovMatPrimVYY3Prong", "hf-cand-creator-3prong/hCovPVYY", 1, 1, 0);
+  AddHistogram(vecHisCand3, "YY element of SV cov. matrix (cm^{2})", "hCovMatSecVYY3Prong", "hf-cand-creator-3prong/hCovSVYY", 1, 1, 0);
+  AddHistogram(vecHisCand3, "ZZ element of PV cov. matrix (cm^{2})", "hCovMatPrimVZZ3Prong", "hf-cand-creator-3prong/hCovPVZZ", 1, 1, 0);
+  AddHistogram(vecHisCand3, "ZZ element of SV cov. matrix (cm^{2})", "hCovMatSecVZZ3Prong", "hf-cand-creator-3prong/hCovSVZZ", 1, 1, 0);
 
   VecSpecHis vecHisD0;
   AddHistogram(vecHisD0, "#it{p}_{T} prong 0 (GeV/#it{c})", "hPtD0Dau0", "hf-task-d0/hPtProng0", 2, 1, 0);
@@ -125,20 +129,68 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun2 = "
   AddHistogram(vecHisDPlus, "sq. sum of prong imp. par. (cm^{2})", "hSumSqImpParDplusDau", "hf-task-dplus/hImpactParameterProngSqSum", 2, 1, 0);
 
   VecSpecHis vecHisLc;
-  AddHistogram(vecHisLc, "#it{p}_{T} prong 0 (GeV/#it{c})", "hPtLcDau0", "hf-task-lc/hPtProng0", 2, 1, 0);
-  AddHistogram(vecHisLc, "#it{p}_{T} prong 1 (GeV/#it{c})", "hPtLcDau1", "hf-task-lc/hPtProng1", 2, 1, 0);
-  AddHistogram(vecHisLc, "#it{p}_{T} prong 2 (GeV/#it{c})", "hPtLcDau2", "hf-task-lc/hPtProng2", 2, 1, 0);
-  AddHistogram(vecHisLc, "#it{p}_{T} #Lambda_{c}^{#plus} (GeV/#it{c})", "hPtLc", "hf-task-lc/hPtCand", 2, 1, 0);
-  AddHistogram(vecHisLc, "3-prong mass (p K #pi) (GeV/#it{c}^{2})", "hInvMassLc", "hf-task-lc/hMass", 2, 0, 0, "x");
-  AddHistogram(vecHisLc, "decay length (cm)", "hDecLenLc", "hf-task-lc/hDecLength", 2, 1, 0);
-  AddHistogram(vecHisLc, "cos pointing angle", "hCosPointLc", "hf-task-lc/hCPA", 2, 1, 0);
+  AddHistogram(vecHisLc, "#it{p}_{T} prong 0 (GeV/#it{c})", "hPtLcDau0", "hf-task-lc/Data/hPtProng0", 2, 1, 0);
+  AddHistogram(vecHisLc, "#it{p}_{T} prong 1 (GeV/#it{c})", "hPtLcDau1", "hf-task-lc/Data/hPtProng1", 2, 1, 0);
+  AddHistogram(vecHisLc, "#it{p}_{T} prong 2 (GeV/#it{c})", "hPtLcDau2", "hf-task-lc/Data/hPtProng2", 2, 1, 0);
+  AddHistogram(vecHisLc, "#it{p}_{T} #Lambda_{c}^{#plus} (GeV/#it{c})", "hPtLc", "hf-task-lc/Data/hPt", 2, 1, 0);
+  AddHistogram(vecHisLc, "3-prong mass (p K #pi) (GeV/#it{c}^{2})", "hInvMassLc", "hf-task-lc/Data/hMass", 2, 0, 0, "x");
+  AddHistogram(vecHisLc, "prong 0 DCAxy to prim. vertex (cm)", "hImpParLcDau0", "hf-task-lc/Data/hd0Prong0", 2, 1, 0);
+  AddHistogram(vecHisLc, "prong 1 DCAxy to prim. vertex (cm)", "hImpParLcDau1", "hf-task-lc/Data/hd0Prong1", 2, 1, 0);
+  AddHistogram(vecHisLc, "prong 2 DCAxy to prim. vertex (cm)", "hImpParLcDau2", "hf-task-lc/Data/hd0Prong2", 2, 1, 0);
+  AddHistogram(vecHisLc, "decay length (cm)", "hDecLenLc", "hf-task-lc/Data/hDecLength", 2, 1, 0);
+  AddHistogram(vecHisLc, "decay length xy (cm)", "hDecLenLcXY", "hf-task-lc/Data/hDecLengthxy", 2, 1, 0);
+  AddHistogram(vecHisLc, "proper lifetime (#Lambda_{c}) * #it{c} (cm)", "hCt", "hf-task-lc/Data/hCt", 2, 1, 0);
+  AddHistogram(vecHisLc, "cos pointing angle", "hCosPointLc", "hf-task-lc/Data/hCPA", 2, 1, 0);
+  AddHistogram(vecHisLc, "cos pointing angle xy", "hCosPointXYLc", "hf-task-lc/Data/hCPAxy", 2, 1, 0);
+  AddHistogram(vecHisLc, "#it{#eta}", "hEtaLc", "hf-task-lc/Data/hEta", 2, 1, 0);
+  AddHistogram(vecHisLc, "#it{#Phi}", "hPhiLc", "hf-task-lc/Data/hPhi", 2, 1, 0);
 
   labelParticle = "#Lambda_{c}^{#plus} #rightarrow p K #pi";
-  VecSpecHis vecHisLcMC;
-  AddHistogram(vecHisLcMC, labelParticle + ", matched prompt: #it{p}_{T}^{rec} (GeV/#it{c})", "hPtRecoPromptLcpKpi", "hf-task-lc/hPtRecSigPrompt", 2, 1, 0);
-  AddHistogram(vecHisLcMC, labelParticle + ", gen. prompt: #it{p}_{T}^{gen} (GeV/#it{c})", "hPtGenLimAccPromptLcpKpi", "hf-task-lc/hPtGenPrompt", 2, 1, 0);
-  AddHistogram(vecHisLcMC, labelParticle + ", matched non-prompt: #it{p}_{T}^{rec} (GeV/#it{c})", "hPtRecoFeeddwLcpKpi", "hf-task-lc/hPtRecSigNonPrompt", 2, 1, 0);
-  AddHistogram(vecHisLcMC, labelParticle + ", gen. non-prompt: #it{p}_{T}^{gen} (GeV/#it{c})", "hPtGenLimAccFeeddwLcpKpi", "hf-task-lc/hPtGenNonPrompt", 2, 1, 0);
+  VecSpecHis vecHisLcMCPt;
+  AddHistogram(vecHisLcMCPt, labelParticle + ", matched prompt: #it{p}_{T}^{rec} (GeV/#it{c})", "hPtRecoPromptLcpKpi", "hf-task-lc/MC/reconstructed/prompt/hPtRecSigPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCPt, labelParticle + ", gen. prompt: #it{p}_{T}^{gen} (GeV/#it{c})", "hPtGenLimAccPromptLcpKpi", "hf-task-lc/MC/generated/prompt/hPtGenPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCPt, labelParticle + ", matched non-prompt: #it{p}_{T}^{rec} (GeV/#it{c})", "hPtRecoFeeddwLcpKpi", "hf-task-lc/MC/reconstructed/nonprompt/hPtRecSigNonPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCPt, labelParticle + ", gen. non-prompt: #it{p}_{T}^{gen} (GeV/#it{c})", "hPtGenLimAccFeeddwLcpKpi", "hf-task-lc/MC/generated/nonprompt/hPtGenNonPrompt", 2, 1, 0);
+
+  VecSpecHis vecHisLcMCEta;
+  AddHistogram(vecHisLcMCEta, labelParticle + ", matched prompt: #it{#eta}", "hEtaLcPrompt", "hf-task-lc/MC/reconstructed/prompt/hEtaRecSigPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCEta, labelParticle + ", gen. prompt:#it{#eta}", "hEtaGenLimAccPromptLcpKpi", "hf-task-lc/MC/generated/prompt/hEtaGenPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCEta, labelParticle + ", matched non-prompt: #it{#eta}", "hEtaLcNonPrompt", "hf-task-lc/MC/reconstructed/nonprompt/hEtaRecSigNonPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCEta, labelParticle + ", gen. non-prompt: #it{#eta}", "hEtaGenLimAccFeeddwLcpKpi", "hf-task-lc/MC/generated/nonprompt/hEtaGenNonPrompt", 2, 1, 0);
+
+  VecSpecHis vecHisLcMCPhi;
+  AddHistogram(vecHisLcMCPhi, labelParticle + ", matched prompt: #it{#Phi}", "hPhiLcPrompt", "hf-task-lc/MC/reconstructed/prompt/hPhiRecSigPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCPhi, labelParticle + ", gen. prompt:#it{#Phi}", "hPhiGenLimAccPromptLcpKpi", "hf-task-lc/MC/generated/prompt/hPhiGenPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCPhi, labelParticle + ", matched non-prompt: #it{#Phi}", "hPhiLcNonPrompt", "hf-task-lc/MC/reconstructed/nonprompt/hPhiRecSigNonPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCPhi, labelParticle + ", gen. non-prompt: #it{#Phi}", "hPhiGenLimAccFeeddwLcpKpi", "hf-task-lc/MC/generated/nonprompt/hPhiGenNonPrompt", 2, 1, 0);
+
+  VecSpecHis vecHisLcMCPrompt;
+  AddHistogram(vecHisLcMCPrompt, "#it{p}_{T} prong 0 (GeV/#it{c})", "hPtLcDau0Prompt", "hf-task-lc/MC/reconstructed/prompt/hPtRecProng0SigPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCPrompt, "#it{p}_{T} prong 1 (GeV/#it{c})", "hPtLcDau1Prompt", "hf-task-lc/MC/reconstructed/prompt/hPtRecProng1SigPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCPrompt, "#it{p}_{T} prong 2 (GeV/#it{c})", "hPtLcDau2Prompt", "hf-task-lc/MC/reconstructed/prompt/hPtRecProng2SigPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCPrompt, "3-prong mass (p K #pi) (GeV/#it{c}^{2})", "hInvMassLcPrompt", "hf-task-lc/MC/reconstructed/prompt/hMassRecSigPrompt", 2, 0, 0, "x");
+  AddHistogram(vecHisLcMCPrompt, "prong 0 DCAxy to prim. vertex (cm)", "hImpParLcDau0Prompt", "hf-task-lc/MC/reconstructed/prompt/hd0RecProng0SigPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCPrompt, "prong 1 DCAxy to prim. vertex (cm)", "hImpParLcDau1Prompt", "hf-task-lc/MC/reconstructed/prompt/hd0RecProng1SigPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCPrompt, "prong 2 DCAxy to prim. vertex (cm)", "hImpParLcDau2Prompt", "hf-task-lc/MC/reconstructed/prompt/hd0RecProng2SigPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCPrompt, "decay length (cm)", "hDecLenLcPrompt", "hf-task-lc/MC/reconstructed/prompt/hDecLengthRecSigPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCPrompt, "decay length xy (cm)", "hDecLenLcXYPrompt", "hf-task-lc/MC/reconstructed/prompt/hDecLengthxyRecSigPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCPrompt, "proper lifetime (#Lambda_{c}) * #it{c} (cm)", "hCtPrompt", "hf-task-lc/MC/reconstructed/prompt/hCtRecSigPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCPrompt, "cos pointing angle", "hCosPointLcPrompt", "hf-task-lc/MC/reconstructed/prompt/hCPARecSigPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCPrompt, "cos pointing angle xy", "hCosPointXYLcPrompt", "hf-task-lc/MC/reconstructed/prompt/hCPAxyRecSigPrompt", 2, 1, 0);
+
+  VecSpecHis vecHisLcMCNonPrompt;
+  AddHistogram(vecHisLcMCNonPrompt, "#it{p}_{T} prong 0 (GeV/#it{c})", "hPtLcDau0NonPrompt", "hf-task-lc/MC/reconstructed/nonprompt/hPtRecProng0SigNonPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCNonPrompt, "#it{p}_{T} prong 1 (GeV/#it{c})", "hPtLcDau1NonPrompt", "hf-task-lc/MC/reconstructed/nonprompt/hPtRecProng1SigNonPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCNonPrompt, "#it{p}_{T} prong 2 (GeV/#it{c})", "hPtLcDau2NonPrompt", "hf-task-lc/MC/reconstructed/nonprompt/hPtRecProng2SigNonPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCNonPrompt, "3-prong mass (p K #pi) (GeV/#it{c}^{2})", "hInvMassLcNonPrompt", "hf-task-lc/MC/reconstructed/nonprompt/hMassRecSigNonPrompt", 2, 0, 0, "x");
+  AddHistogram(vecHisLcMCNonPrompt, "prong 0 DCAxy to prim. vertex (cm)", "hImpParLcDau0NonPrompt", "hf-task-lc/MC/reconstructed/nonprompt/hd0RecProng0SigNonPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCNonPrompt, "prong 1 DCAxy to prim. vertex (cm)", "hImpParLcDau1NonPrompt", "hf-task-lc/MC/reconstructed/nonprompt/hd0RecProng1SigNonPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCNonPrompt, "prong 2 DCAxy to prim. vertex (cm)", "hImpParLcDau2NonPrompt", "hf-task-lc/MC/reconstructed/nonprompt/hd0RecProng2SigNonPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCNonPrompt, "decay length (cm)", "hDecLenLcNonPrompt", "hf-task-lc/MC/reconstructed/nonprompt/hDecLengthRecSigNonPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCNonPrompt, "decay length xy (cm)", "hDecLenLcXYNonPrompt", "hf-task-lc/MC/reconstructed/nonprompt/hDecLengthxyRecSigNonPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCNonPrompt, "proper lifetime (#Lambda_{c}) * #it{c} (cm)", "hCtNonPrompt", "hf-task-lc/MC/reconstructed/nonprompt/hCtRecSigNonPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCNonPrompt, "cos pointing angle", "hCosPointLcNonPrompt", "hf-task-lc/MC/reconstructed/nonprompt/hCPARecSigNonPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCNonPrompt, "cos pointing angle xy", "hCosPointXYLcNonPrompt", "hf-task-lc/MC/reconstructed/nonprompt/hCPAxyRecSigNonPrompt", 2, 1, 0);
 
   VecSpecHis vecHisJpsi;
   AddHistogram(vecHisJpsi, "#it{p}_{T} prong 0 (GeV/#it{c})", "hPtJpsiDau0", "hf-task-jpsi/hPtProng0", 2, 1, 0);
@@ -178,8 +230,16 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun2 = "
     vecSpecVecSpec.push_back(std::make_tuple("dplus", vecHisDPlus, 5, 4));
   if (options.Contains(" lc "))
     vecSpecVecSpec.push_back(std::make_tuple("lc", vecHisLc, 5, 3));
-  if (options.Contains(" lc-mc "))
-    vecSpecVecSpec.push_back(std::make_tuple("lc-mc", vecHisLcMC, 2, 2));
+  if (options.Contains(" lc-mc-pt "))
+    vecSpecVecSpec.push_back(std::make_tuple("lc-mc-pt", vecHisLcMCPt, 2, 2));
+  if (options.Contains(" lc-mc-eta "))
+    vecSpecVecSpec.push_back(std::make_tuple("lc-mc-eta", vecHisLcMCEta, 2, 2));
+  if (options.Contains(" lc-mc-phi "))
+    vecSpecVecSpec.push_back(std::make_tuple("lc-mc-phi", vecHisLcMCPhi, 2, 2));
+  if (options.Contains(" lc-mc-prompt "))
+    vecSpecVecSpec.push_back(std::make_tuple("lc-mc-prompt", vecHisLcMCPrompt, 5, 3));
+  if (options.Contains(" lc-mc-nonprompt "))
+    vecSpecVecSpec.push_back(std::make_tuple("lc-mc-nonprompt", vecHisLcMCNonPrompt, 5, 3));
   if (options.Contains(" jpsi "))
     vecSpecVecSpec.push_back(std::make_tuple("jpsi", vecHisJpsi, 5, 3));
 

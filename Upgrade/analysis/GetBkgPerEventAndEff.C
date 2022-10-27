@@ -102,8 +102,18 @@ void GetBkgPerEventAndEff(const char* signalfilename,
   TFile* input_sig = new TFile(signalfilename, "read");
   TFile* input_bkg = new TFile(bkgfilename, "read");
 
-  auto dir_sig = (TDirectory*)input_sig->GetDirectory(Form("hf-task-%s-mc", hfTaskLabel[channel]));
-  auto dir_bkg = (TDirectory*)input_bkg->GetDirectory(Form("hf-task-%s", hfTaskLabel[channel]));
+  TDirectory* dir_sig;
+  TDirectory* dir_bkg;
+
+  if(channel == "lc") {
+    dir_sig = (TDirectory*)input_sig->GetDirectory("hf-task-lc/MC/reconstructed/signal/");
+    dir_bkg = (TDirectory*)input_bkg->GetDirectory("hf-task-lc/MC/reconstructed/signal/");
+  } else {  
+    dir_sig = (TDirectory*)input_sig->GetDirectory(Form("hf-task-%s-mc", hfTaskLabel[channel]));
+    dir_bkg = (TDirectory*)input_bkg->GetDirectory(Form("hf-task-%s", hfTaskLabel[channel]));
+  }
+
+
 
   hMassVsPtSig = (TH2D*)dir_sig->Get(histNameSig[channel]);
   hMassVsPtSig->SetName("hMassVsPtSig");
@@ -138,7 +148,7 @@ void GetBkgPerEventAndEff(const char* signalfilename,
   }
 
   BookHistos();
-
+  
   auto hPtGenSig = (TH1F*)dir_sig->Get("hPtGen");
   auto hPtRecSig = (TH1F*)dir_sig->Get("hPtRecSig");
 

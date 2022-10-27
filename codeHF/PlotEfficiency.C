@@ -50,50 +50,93 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
     Printf("\nPlotting efficiency for: %s", particle.Data());
 
     TString outputDir = Form("hf-task-%s", particle.Data()); // analysis output directory with histograms
+    
+    TString nameHistRec;
+    TString nameHistgen;
 
     // inclusive candidates
-    TString nameHistRec = outputDir + "/hPtRecSig"; // reconstruction level pT of matched candidates
-    //nameHistRec = outputDir + "/hPtGenSig"; // generator level pT of matched candidates (no pT smearing)
-    TString nameHistgen = outputDir + "/hPtGen"; // generator level pT of generated particles
+    if (particles==" lc ") {
+      nameHistRec = "hf-task-lc/MC/reconstructed/signal/hPtRecSig"; // reconstruction level pT of matched candidates
+      nameHistgen = "hf-task-lc/MC/generated/signal/hPtGen"; // generator level pT of generated particles
+    } else {
+      nameHistRec = outputDir + "/hPtRecSig"; // reconstruction level pT of matched candidates
+      //nameHistRec = outputDir + "/hPtGenSig"; // generator level pT of matched candidates (no pT smearing)
+      nameHistgen = outputDir + "/hPtGen"; // generator level pT of generated particles
+    }
+    
+
     TH1F* hPtRecIncl = (TH1F*)file->Get(nameHistRec.Data());
     if (!hPtRecIncl) {
-      Printf("Error: Failed to load %s from %s", nameHistRec.Data(), pathFile.Data());
-      return 1;
+      hPtRecIncl = (TH1F*)file->Get("hf-task-lc/MC/reconstructed/signal/hPtRecSig");
+      if (!hPtRecIncl) {
+        Printf("Error: Failed to load %s from %s", nameHistRec.Data(), pathFile.Data());
+        return 1;
+      }
     }
     TH1F* hPtGenIncl = (TH1F*)file->Get(nameHistgen.Data());
     if (!hPtGenIncl) {
-      Printf("Error: Failed to load %s from %s", nameHistgen.Data(), pathFile.Data());
-      return 1;
+      hPtGenIncl = (TH1F*)file->Get("hf-task-lc/MC/generated/signal/hPtGen");
+      if (!hPtGenIncl) {
+        Printf("Error: Failed to load %s from %s", nameHistgen.Data(), pathFile.Data());
+        return 1;
+      }
     }
 
     // prompt candidates
     bool okPrompt = true;
-    nameHistRec = outputDir + "/hPtRecSigPrompt";
+    if (particles == "lc")
+    {
+      nameHistRec = "MC/reconstructed/prompt/hPtRecSigPrompt";
+      nameHistgen = "MC/generated/prompt/hPtGenPrompt";
+    } else {
+      nameHistRec = outputDir + "/hPtRecSigPrompt";
+      nameHistgen = outputDir + "/hPtGenPrompt";
+    }
+    
+    
     TH1F* hPtRecPrompt = (TH1F*)file->Get(nameHistRec.Data());
     if (!hPtRecPrompt) {
-      Printf("Warning: Failed to load %s from %s", nameHistRec.Data(), pathFile.Data());
-      okPrompt = false;
+      hPtRecPrompt = (TH1F*)file->Get("MC/reconstructed/prompt/hPtRecSigPrompt");
+      if (!hPtRecPrompt) {
+        Printf("Warning: Failed to load %s from %s", nameHistRec.Data(), pathFile.Data());
+        okPrompt = false;
+      }
     }
-    nameHistgen = outputDir + "/hPtGenPrompt";
     TH1F* hPtGenPrompt = (TH1F*)file->Get(nameHistgen.Data());
     if (!hPtGenPrompt) {
-      Printf("Warning: Failed to load %s from %s", nameHistgen.Data(), pathFile.Data());
-      okPrompt = false;
+      hPtGenPrompt = (TH1F*)file->Get("MC/generated/prompt/hPtGenPrompt");
+      if (!hPtGenPrompt) {
+        Printf("Warning: Failed to load %s from %s", nameHistgen.Data(), pathFile.Data());
+        okPrompt = false;
+      }
+    }
+
+    if (particles == "lc")
+    {
+      nameHistRec = "MC/reconstructed/prompt/hPtRecSigNonPrompt";
+      nameHistgen = "MC/generated/prompt/hPtGenNonPrompt";
+    } else {
+      nameHistRec = outputDir + "/hPtRecSigNonPrompt";
+      nameHistgen = outputDir + "/hPtGenNonPrompt";
     }
 
     // non-prompt candidates
     bool okNonPrompt = true;
-    nameHistRec = outputDir + "/hPtRecSigNonPrompt";
     TH1F* hPtRecNonPrompt = (TH1F*)file->Get(nameHistRec.Data());
     if (!hPtRecNonPrompt) {
-      Printf("Warning: Failed to load %s from %s", nameHistRec.Data(), pathFile.Data());
-      okNonPrompt = false;
+      hPtRecNonPrompt = (TH1F*)file->Get("MC/reconstructed/prompt/hPtRecSigNonPrompt");
+      if (!hPtRecNonPrompt) {
+        Printf("Warning: Failed to load %s from %s", nameHistRec.Data(), pathFile.Data());
+        okNonPrompt = false;
+      }
     }
-    nameHistgen = outputDir + "/hPtGenNonPrompt";
     TH1F* hPtGenNonPrompt = (TH1F*)file->Get(nameHistgen.Data());
     if (!hPtGenNonPrompt) {
-      Printf("Warning: Failed to load %s from %s", nameHistgen.Data(), pathFile.Data());
-      okNonPrompt = false;
+      hPtGenNonPrompt = (TH1F*)file->Get("MC/generated/prompt/hPtGenNonPrompt");
+      if (!hPtGenNonPrompt) {
+        Printf("Warning: Failed to load %s from %s", nameHistgen.Data(), pathFile.Data());
+        okNonPrompt = false;
+      }
     }
 
     TCanvas* canPt = new TCanvas(Form("canPt_%s", particle.Data()), "Pt", 1200, 1000);
