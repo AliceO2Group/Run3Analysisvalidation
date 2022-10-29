@@ -41,9 +41,9 @@ DOO2_PID_TOF=0      # pid-tof-full/alice3-pid-tof
 DOO2_PID_TOF_QA=0   # pid-tof-qa-mc
 DOO2_PID_BAYES=0    # pid-bayes
 # Vertexing
-DOO2_SKIM=0         # hf-track-index-skims-creator
-DOO2_CAND_2PRONG=0  # hf-candidate-creator-2prong
-DOO2_CAND_3PRONG=0  # hf-candidate-creator-3prong
+DOO2_SKIM=1         # hf-track-index-skims-creator
+DOO2_CAND_2PRONG=1  # hf-candidate-creator-2prong
+DOO2_CAND_3PRONG=1  # hf-candidate-creator-3prong
 DOO2_CAND_CASC=0    # hf-candidate-creator-cascade
 DOO2_CAND_LB=0      # hf-candidate-creator-lb
 DOO2_CAND_X=0       # hf-candidate-creator-x
@@ -68,7 +68,7 @@ DOO2_SEL_BPLUS=0    # hf-bplus-tod0pi-candidate-selector
 DOO2_TASK_D0=1      # hf-task-d0
 DOO2_TASK_DS=0      # hf-task-ds
 DOO2_TASK_DPLUS=0   # hf-task-dplus
-DOO2_TASK_LC=0      # hf-task-lc
+DOO2_TASK_LC=1      # hf-task-lc
 DOO2_TASK_LB=0      # hf-task-lb
 DOO2_TASK_XIC=0     # hf-task-xic
 DOO2_TASK_JPSI=0    # hf-task-jpsi
@@ -86,23 +86,23 @@ DOO2_TREE_XICC=0    # hf-tree-creator-xicc-topkpipi
 DOO2_TREE_CHIC=0    # hf-tree-creator-chic-tojpsigamma
 DOO2_TREE_BPLUS=0   # hf-tree-creator-bplus-tod0pi
 # Correlations
-DOO2_D0D0BAR_DATA=0      # hf-correlator-d0d0bar
-DOO2_D0D0BAR_MCREC=0     # hf-correlator-d0d0bar-mc-rec
-DOO2_D0D0BAR_MCGEN=0     # hf-correlator-d0d0bar-mc-gen
-DOO2_DPLUSDMINUS_DATA=0  # hf-correlator-dplusdminus
-DOO2_DPLUSDMINUS_MCREC=0 # hf-correlator-dplusdminus-mc-rec
-DOO2_DPLUSDMINUS_MCGEN=0 # hf-correlator-dplusdminus-mc-gen
-DOO2_TASK_FLOW=0  # hf-task-flow
+DOO2_D0D0BAR_DATA=0       # hf-correlator-d0d0bar
+DOO2_D0D0BAR_MCREC=0      # hf-correlator-d0d0bar-mc-rec
+DOO2_D0D0BAR_MCGEN=0      # hf-correlator-d0d0bar-mc-gen
+DOO2_DPLUSDMINUS_DATA=0   # hf-correlator-dplusdminus
+DOO2_DPLUSDMINUS_MCREC=0  # hf-correlator-dplusdminus-mc-rec
+DOO2_DPLUSDMINUS_MCGEN=0  # hf-correlator-dplusdminus-mc-gen
+DOO2_TASK_FLOW=0    # hf-task-flow
 # Other
 DOO2_MCCONV=0       # mc-converter
 DOO2_FDDCONV=0      # fdd-converter
 DOO2_TRKPROP=0      # track-propagation
 
 # Selection cuts
-APPLYCUTS_D0=0      # Apply D0 selection cuts.
+APPLYCUTS_D0=1      # Apply D0 selection cuts.
 APPLYCUTS_DS=0      # Apply Ds selection cuts.
 APPLYCUTS_DPLUS=0   # Apply D+ selection cuts.
-APPLYCUTS_LC=0      # Apply Λc selection cuts.
+APPLYCUTS_LC=1      # Apply Λc selection cuts.
 APPLYCUTS_LB=0      # Apply Λb selection cuts.
 APPLYCUTS_XIC=0     # Apply Ξc selection cuts.
 APPLYCUTS_JPSI=0    # Apply J/ψ selection cuts.
@@ -113,9 +113,9 @@ APPLYCUTS_XICC=0    # Apply Ξcc selection cuts.
 APPLYCUTS_BPLUS=0   # Apply B+ selection cuts.
 
 SAVETREES=0         # Save O2 tables to trees.
-USEO2VERTEXER=0     # Use the O2 vertexer in AliPhysics.
-USEALIEVCUTS=0      # Use AliEventCuts in AliPhysics (as used by conversion task)
-DORATIO=0           # Plot histogram ratios in comparison.
+USEO2VERTEXER=1     # Use the O2 vertexer in AliPhysics.
+USEALIEVCUTS=1      # Use AliEventCuts in AliPhysics (as used by conversion task)
+DORATIO=1           # Plot histogram ratios in comparison.
 
 ####################################################################################################
 

@@ -39,7 +39,7 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun2 = "
 
   TString labelParticle = "";
 
-  // Histogram specification: axis label, Run 1 name, Run 3 path/name, rebin, log scale histogram, log scale ratio
+  // Histogram specification: axis label, AliPhysics name, O2Physics path/name, rebin, log scale histogram, log scale ratio, projection axis
 
   VecSpecHis vecHisEvents;
   // AddHistogram(vecHisEvents, "primary vtx x (cm)", "hPrimVertX", "hf-tag-sel-collisions/hPrimVtxX", 1, 1, 0);
@@ -49,9 +49,9 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun2 = "
 
   VecSpecHis vecHisTracks;
   AddHistogram(vecHisTracks, "#it{p}_{T} before selections (GeV/#it{c})", "hPtAllTracks", "hf-tag-sel-tracks/hPtNoCuts", 2, 1, 0);
-  AddHistogram(vecHisTracks, "#it{p}_{T} (2-prong sel.)", "hPtSelTracks2prong", "hf-tag-sel-tracks/hPtCuts2Prong", 2, 0, 0);
-  AddHistogram(vecHisTracks, "#it{p}_{T} (3-prong sel.)", "hPtSelTracks3prong", "hf-tag-sel-tracks/hPtCuts3Prong", 2, 0, 0);
-  AddHistogram(vecHisTracks, "#it{p}_{T} (bachelor sel.)", "hPtSelTracksbachelor", "hf-tag-sel-tracks/hPtCutsV0bachelor", 2, 0, 0);
+  AddHistogram(vecHisTracks, "#it{p}_{T} (2-prong sel.)", "hPtSelTracks2prong", "hf-tag-sel-tracks/hPtCuts2Prong", 2, 1, 0);
+  AddHistogram(vecHisTracks, "#it{p}_{T} (3-prong sel.)", "hPtSelTracks3prong", "hf-tag-sel-tracks/hPtCuts3Prong", 2, 1, 0);
+  AddHistogram(vecHisTracks, "#it{p}_{T} (bachelor sel.)", "hPtSelTracksbachelor", "hf-tag-sel-tracks/hPtCutsV0bachelor", 2, 1, 0);
   AddHistogram(vecHisTracks, "DCA XY to prim. vtx. (2-prong sel.) (cm)", "hImpParSelTracks2prong", "hf-tag-sel-tracks/hDCAToPrimXYVsPtCuts2Prong", 2, 1, 0, "y");
   AddHistogram(vecHisTracks, "DCA XY to prim. vtx. (3-prong sel.) (cm)", "hImpParSelTracks3prong", "hf-tag-sel-tracks/hDCAToPrimXYVsPtCuts3Prong", 2, 1, 0, "y");
   AddHistogram(vecHisTracks, "DCA XY to prim. vtx. (bachelor sel.) (cm)", "hImpParSelTracksbachelor", "hf-tag-sel-tracks/hDCAToPrimXYVsPtCutsV0bachelor", 2, 1, 0, "y");

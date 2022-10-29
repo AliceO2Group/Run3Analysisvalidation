@@ -9,19 +9,19 @@ DIR_THIS="$(dirname "$(realpath "$0")")"
 # shellcheck disable=SC1091 # Ignore not following.
 source "$DIR_THIS/utilities.sh" || { echo "Error: Failed to load utilities."; exit 1; }
 
-# Check correct input.
-if [ -z "$2" ]; then
-  MsgErr "Error: You did not call the script correctly."
-  MsgWarn "Usage a): $0 <Grid source path> <local target path> <file names>"
-  MsgWarn "Usage b): $0 <file list> <local target path>"
-  exit 1
-fi
-
 # Check correct environment.
 if [ -z "$(which alien_find)" ]; then
   MsgErr "Error: This script requires the JAliEn tools."
   MsgWarn "Load the xjalienfs environment and run the script again:"
   MsgWarn "alienv enter xjalienfs/latest"
+  exit 1
+fi
+
+# Check correct input.
+if [ -z "$2" ]; then
+  MsgErr "Error: You did not call the script correctly."
+  MsgWarn "Usage a): $0 <Grid source path> <local target path> <file names>"
+  MsgWarn "Usage b): $0 <file list> <local target path>"
   exit 1
 fi
 

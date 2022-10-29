@@ -1,3 +1,4 @@
+---
 # Find bad spacing in modified text files
 name: Space checker
 on: [push, pull_request]
@@ -9,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0 # needed to get the full history
       - name: Fetch upstream

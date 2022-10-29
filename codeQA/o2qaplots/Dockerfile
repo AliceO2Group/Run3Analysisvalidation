@@ -2,6 +2,11 @@ FROM centos:7
 
 SHELL ["/bin/bash", "-c"]
 
+# Create a user
+RUN groupadd -r nemo && useradd --no-log-init -r -g nemo nemo
+# Set it for subsequent commands
+USER nemo
+
 # Install ROOT
 RUN yum install -y epel-release \
     && yum install -y \

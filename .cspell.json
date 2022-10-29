@@ -7,7 +7,7 @@
         "**/.git/**",
         ".vscode",
         "package-lock.json",
-        "report"
+        "megalinter-reports"
     ],
     "words": []
 }
