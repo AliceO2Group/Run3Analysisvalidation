@@ -81,6 +81,15 @@ workflows:
       default: [HFCANDBPLUSBASE, HFCANDBPLUSEXT]
       mc: [HFCANDBPMCREC, HFCANDBPMCGEN]
 
+  o2-analysis-hf-candidate-creator-lb:
+    <<: *cand_creator
+    dependencies:
+      - o2-analysis-hf-lc-candidate-selector
+      - o2-analysis-alice3-centrality
+    tables:
+      default: [HFCANDLB, HFCANDLBEXT]
+      mc: [HFCANDLBMCREC, HFCANDLBMCGEN]
+
   # Selectors
 
   o2-analysis-hf-d0-candidate-selector: &selector_2prong
@@ -110,6 +119,10 @@ workflows:
   o2-analysis-hf-ds-tokkpi-candidate-selector:
     <<: *selector_3prong
     tables: HFSELDSCAND
+
+  o2-analysis-hf-lb-tolcpi-candidate-selector:
+    dependencies: o2-analysis-hf-candidate-creator-lb
+    tables: HFSELLBCAND
 
   o2-analysis-hf-lc-candidate-selector:
     <<: *selector_3prong
@@ -161,6 +174,9 @@ workflows:
 
   o2-analysis-hf-task-lc:
     dependencies: o2-analysis-hf-lc-candidate-selector
+
+  o2-analysis-hf-task-lb:
+    dependencies: [o2-analysis-hf-lb-tolcpi-candidate-selector, o2-analysis-trackextension-alice3]
 
   o2-analysis-hf-task-xic:
     dependencies: o2-analysis-hf-xic-topkpi-candidate-selector
@@ -219,6 +235,11 @@ workflows:
     requires_mc: yes
     dependencies: o2-analysis-hf-bplus-candidate-selector
     tables: [HFCANDBPFull, HFCANDBPFullE, HFCANDBPFullP]
+
+  o2-analysis-hf-tree-creator-lb-tolcpi:
+    requires_mc: yes
+    dependencies: [o2-analysis-hf-lb-tolcpi-candidate-selector, o2-analysis-trackextension-alice3]
+    tables: [HFCANDLbFull, HFCANDLbFullE, HFCANDLbFullP]
 
   o2-analysis-hf-tree-creator-x-tojpsipipi:
     requires_mc: yes
