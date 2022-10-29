@@ -76,7 +76,7 @@ workflows:
 
   o2-analysis-hf-candidate-creator-b0:
     <<: *cand_creator
-    dependencies: o2-analysis-hf-b0-todpi-candidate-selector
+    dependencies: o2-analysis-hf-dplus-topikpi-candidate-selector
     tables:
       default: [HFCANDB0BASE, HFCANDB0EXT]
       mc: [HFCANDB0MCREC, HFCANDB0MCGEN]
