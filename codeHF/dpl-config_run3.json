@@ -407,6 +407,19 @@
         "minRelChi2Change": "0.9",
         "doValPlots": "true"
     },
+    "hf-candidate-creator-b0": {
+        "magneticField": "5.",
+        "b_propdca": "true",
+        "d_maxr": "200",
+        "d_maxdzini": "4",
+        "d_minparamchange": "0.001",
+        "d_minrelchi2change": "0.9",
+        "ptPionMin": "0.5",
+        "d_selectionFlagD": "1",
+        "cutYCandMax": "-1"
+    },
+    "hf-candidate-creator-b0-expressions": "",
+    "hf-candidate-creator-b0-mc": "",
     "hf-candidate-creator-bplus": {
         "bz": "5.",
         "propdca": "true",
@@ -887,6 +900,81 @@
             ]
         }
     },
+    "hf-b0-todpi-candidate-selector": {
+        "pTCandMin": "0",
+        "pTCandMax": "50",
+        "TPCNClsFindablePIDCut": "70",
+        "pidTPCMinpT": "0.15",
+        "pidTPCMaxpT": "10",
+        "nSigmaTPC": "5",
+        "nSigmaTPCCombined": "5",
+        "pidTOFMinpT": "0.15",
+        "pidTOFMaxpT": "10",
+        "nSigmaTOF": "5",
+        "nSigmaTOFCombined": "5",
+        "pTBins": {
+            "values": [
+                "0",
+                "0.5",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "7",
+                "10",
+                "13",
+                "16",
+                "20",
+                "24"
+            ]
+        },
+        "B0_to_dpi_cuts": {
+            "labels_rows": [
+                "pT bin 0",
+                "pT bin 1",
+                "pT bin 2",
+                "pT bin 3",
+                "pT bin 4",
+                "pT bin 5",
+                "pT bin 6",
+                "pT bin 7",
+                "pT bin 8",
+                "pT bin 9",
+                "pT bin 10",
+                "pT bin 11"
+            ],
+            "labels_cols": [
+                "m",
+                "CPA",
+                "Chi2PCA",
+                "d0 D",
+                "d0 Pi",
+                "pT D",
+                "pT Pi",
+                "B0 decLen",
+                "B0 decLenXY",
+                "Imp. Par. Product",
+                "DeltaMD",
+                "Cos ThetaStar"
+            ],
+            "values": [
+                ["1", "0.80", "1", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.10", "0.80"],
+                ["1", "0.80", "1", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.10", "0.80"],
+                ["1", "0.80", "1", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.10", "0.80"],
+                ["1", "0.80", "1", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.10", "0.80"],
+                ["1", "0.80", "1", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.10", "0.80"],
+                ["1", "0.80", "1", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.10", "0.80"],
+                ["1", "0.80", "1", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.10", "0.80"],
+                ["1", "0.80", "1", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.10", "0.80"],
+                ["1", "0.80", "1", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.10", "0.80"],
+                ["1", "0.80", "1", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.10", "0.80"],
+                ["1", "0.80", "1", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.10", "0.80"],
+                ["1", "0.80", "1", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.10", "0.80"]
+            ]
+        },
+        "selectionFlagD": "1"
+    },
     "hf-bplus-tod0pi-candidate-selector": {
         "pTCandMin": "0.",
         "pTCandMax": "50.",
@@ -1189,6 +1277,48 @@
         "selectionFlagLcbar": "0",
         "cutEtaCandMax": "-1",
         "processMC": "true"
+    },
+    "hf-task-b0": {
+        "selectionFlagB0": "0",
+        "cutYCandMax": "0.8",
+        "pTBins": {
+            "values": [
+                "0",
+                "0.5",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "7",
+                "10",
+                "13",
+                "16",
+                "20",
+                "24"
+            ]
+        }
+    },
+    "hf-task-b0-mc": {
+        "selectionFlagB0": "0",
+        "cutYCandMax": "0.8",
+        "pTBins": {
+            "values": [
+                "0",
+                "0.5",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "7",
+                "10",
+                "13",
+                "16",
+                "20",
+                "24"
+            ]
+        }
     },
     "hf-task-bplus": {
         "cutYCandMax": "0.8",

@@ -74,6 +74,13 @@ workflows:
       default: [HFCANDCHICBASE, HFCANDCHICEXT]
       mc: [HFCANDCHICMCREC, HFCANDCHICMCGEN]
 
+  o2-analysis-hf-candidate-creator-b0:
+    <<: *cand_creator
+    dependencies: o2-analysis-hf-dplus-topikpi-candidate-selector
+    tables:
+      default: [HFCANDB0BASE, HFCANDB0EXT]
+      mc: [HFCANDB0MCREC, HFCANDB0MCGEN]
+
   o2-analysis-hf-candidate-creator-bplus:
     <<: *cand_creator
     dependencies: o2-analysis-hf-d0-candidate-selector
@@ -151,6 +158,10 @@ workflows:
     dependencies: o2-analysis-hf-candidate-creator-chic
     tables: HFSELCHICCAND
 
+  o2-analysis-hf-b0-todpi-candidate-selector:
+    dependencies: o2-analysis-hf-candidate-creator-b0
+    tables: HFSELB0CAND
+
   o2-analysis-hf-bplus-tod0pi-candidate-selector:
     dependencies: o2-analysis-hf-candidate-creator-bplus
     tables: HFSELBPLUSCAND
@@ -180,6 +191,9 @@ workflows:
 
   o2-analysis-hf-task-xic:
     dependencies: o2-analysis-hf-xic-topkpi-candidate-selector
+
+  o2-analysis-hf-task-b0:
+    dependencies: o2-analysis-hf-b0-todpi-candidate-selector
 
   o2-analysis-hf-task-bplus:
     dependencies: o2-analysis-hf-bplus-tod0pi-candidate-selector
