@@ -11,7 +11,7 @@ def count_HFquarks_perColl(file, var):
     cquark = TCanvas("cquark", "%s per collision" % var)
     cquark.SetCanvasSize(900, 700)
     cquark.Divide(2, 1)
-    hq = file.Get("hf-mc-validation-gen/hCountAverage%s" % var)
+    hq = file.Get("hf-task-mc-validation-gen/hCountAverage%s" % var)
     hq.GetXaxis().SetRangeUser(0.0, 8.0)
     hq.SetTitle("Number of %s quarks per collision" % var)
     hq.Draw("")
@@ -22,7 +22,7 @@ def count_Particle_perColl(file, var):
     cparticle = TCanvas("cparticle", "%s per collision" % var)
     cparticle.SetCanvasSize(900, 700)
     cparticle.Divide(2, 1)
-    hp = file.Get("hf-mc-validation-gen/hCouterPerCollision%s" % var)
+    hp = file.Get("hf-task-mc-validation-gen/hCouterPerCollision%s" % var)
     hp.Draw("")
     printCanvas(cparticle, "%sPerCollision" % var)
 
@@ -32,10 +32,10 @@ def momentum_Conservation(file, var):
     cmomentum.SetCanvasSize(900, 700)
     cmomentum.Divide(2, 1)
     if var == "P":
-        hp = file.Get("hf-mc-validation-gen/h%sdiffMotherDaughterGen" % var)
+        hp = file.Get("hf-task-mc-validation-gen/h%sdiffMotherDaughterGen" % var)
         hp.SetTitle("Momentum Conservtion: magnitude (Gen)")
     else:
-        hp = file.Get("hf-mc-validation-gen/h%sDiffMotherDaughterGen" % var)
+        hp = file.Get("hf-task-mc-validation-gen/h%sDiffMotherDaughterGen" % var)
         hp.SetTitle("Momentum Conservation: %s component" % var)
     hp.Draw("")
     printCanvas(cmomentum, "%sconservation" % var)
@@ -44,7 +44,7 @@ def momentum_Conservation(file, var):
 def momentum_check(file):
     cMomCheck = TCanvas("cMomCheck", "Momentum Conservation Check")
     cMomCheck.SetCanvasSize(900, 700)
-    hMomCheck = file.Get("hf-mc-validation-gen/hMomentumCheck")
+    hMomCheck = file.Get("hf-task-mc-validation-gen/hMomentumCheck")
     hMomCheck.Draw()
     printCanvas(cMomCheck, "MomentumCheck")
 
@@ -60,7 +60,7 @@ def p_diff_reco_MC(file):
     leg = TLegend(0.1, 0.7, 0.4, 0.9, "")
     leg.SetFillColor(0)
     for i, comp in enumerate(components_list):
-        hp = file.Get("hf-mc-validation-rec/histP%s" % comp)
+        hp = file.Get("hf-task-mc-validation-rec/histP%s" % comp)
         hp.Rebin(2)
         hp.SetLineColor(color_list[i])
         hp.SetLineWidth(2)
@@ -89,7 +89,7 @@ def secondary_vertex_reco_MC(file):
     leg = TLegend(0.1, 0.7, 0.4, 0.9, "Sec. Vertex:")
     leg.SetFillColor(0)
     for i, comp in enumerate(components_list):
-        hsecvertex = file.Get("hf-mc-validation-rec/histSecV%s" % comp)
+        hsecvertex = file.Get("hf-task-mc-validation-rec/histSecV%s" % comp)
         hsecvertex.Rebin(1)
         hsecvertex.SetLineColor(color_list[i])
         hsecvertex.SetLineWidth(2)
@@ -108,7 +108,7 @@ def secondary_vertex_reco_MC(file):
 def decayLength_reco_MC(file):
     cDecLenRes = TCanvas("cDecLenRes", "Decay Length")
     cDecLenRes.SetCanvasSize(900, 700)
-    hDecLenRes = file.Get("hf-mc-validation-rec/histDecLen")
+    hDecLenRes = file.Get("hf-task-mc-validation-rec/histDecLen")
     hDecLenRes.Rebin(2)
     hDecLenRes.Draw()
     printCanvas(cDecLenRes, "Resolution_DecayLength")

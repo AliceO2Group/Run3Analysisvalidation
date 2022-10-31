@@ -79,7 +79,7 @@
             ]
         }
     },
-    "hf-track-index-skims-creator": {
+    "hf-track-index-skim-creator": {
         "fillHistograms": "true",
         "do3prong": "0",
         "bz": "20.",
@@ -211,7 +211,7 @@
     "hf-cand-creator-3prong-expressions": {
         "processMC": "true"
     },
-    "hf-d0-candidate-selector": {
+    "hf-candidate-selector-d0": {
         "d_pTCandMin": "0.",
         "d_pTCandMax": "50.",
         "d_pidTPCMinpT": "1000.",
@@ -283,7 +283,7 @@
             ]
         }
     },
-    "hf-dplus-topikpi-candidate-selector": {
+    "hf-candidate-selector-dplus-to-pi-k-pi": {
         "d_pTCandMin": "0.",
         "d_pTCandMax": "36.",
         "d_pidTPCMinpT": "1000.",
@@ -327,7 +327,7 @@
             ]
         }
     },
-    "hf-lc-candidate-selector": {
+    "hf-candidate-selector-lc": {
         "d_pTCandMin": "0.",
         "d_pTCandMax": "36.",
         "d_FilterPID": "false",
@@ -370,7 +370,7 @@
             ]
         }
     },
-    "hf-xic-topkpi-candidate-selector": {
+    "hf-candidate-selector-xic-to-p-k-pi": {
         "d_pTCandMin": "0.",
         "d_pTCandMax": "36.",
         "d_FilterPID": "false",
@@ -384,7 +384,7 @@
         "d_nSigmaTOF": "3.",
         "d_nSigmaTOFCombined": "5."
     },
-    "hf-jpsi-candidate-selector": {
+    "hf-candidate-selector-jpsi": {
         "isALICE3": "true",
         "d_pTCandMin": "0.",
         "d_pTCandMax": "50.",
@@ -428,7 +428,7 @@
             ]
         }
     },
-    "hf-x-tojpsipipi-candidate-selector": {
+    "hf-candidate-selector-x-to-jpsi-pi-pi": {
         "d_pTCandMin": "0.",
         "d_pTCandMax": "50.",
         "d_pidTPCMinpT": "1000.",
@@ -647,7 +647,7 @@
         "minRelChi2Change": "0.9",
         "doValPlots": "true"
     },
-    "hf-lc-tok0sp-candidate-selector": {
+    "hf-candidate-selector-lc-to-k0s-p": {
         "pTCandMin": "0",
         "pTCandMax": "50",
         "applyPidTPCMinPt": "4",
