@@ -2,7 +2,7 @@
 
 """
 file: plot_seleff_vs_cuts.py
-brief: script to plot selection efficiencies vs cut obtained with HFSelOptimisation.cxx task
+brief: script to plot selection efficiencies vs cut obtained with taskSelOptimisation.cxx task
 usage: python3 plot_seleff_vs_cuts.py CONFIG [--batch]
 author: Fabrizio Grosa <fabrizio.grosa@cern.ch>, CERN
 """
