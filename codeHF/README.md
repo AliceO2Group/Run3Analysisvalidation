@@ -16,7 +16,7 @@ The prepared HF example allows you to run reconstruction of 2-prong secondary ve
    in the `o2-analysis-hf-candidate-selector-d0` binary.
    * Appplies cuts on the parameters of the decay topology and track PID cuts.
 1. D<sup>0</sup> analysis task
-   * Performed by the [TaskD0](https://github.com/AliceO2Group/O2Physics/blob/master/PWGHF/Tasks/taskD0.cxx) class
+   * Performed by the [taskD0](https://github.com/AliceO2Group/O2Physics/blob/master/PWGHF/Tasks/taskD0.cxx) class
    in the `o2-analysis-hf-task-d0` binary.
    * Fills histograms with kinematic properties of selected candidates (and matched particles).
 
