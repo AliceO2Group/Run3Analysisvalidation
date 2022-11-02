@@ -222,12 +222,10 @@ workflows:
   o2-analysis-hf-task-correlation-ddbar-mc-rec:
     <<: *taskddbar
     requires_mc: yes
-    options: "--doMCRec"
 
   o2-analysis-hf-task-correlation-ddbar-mc-gen:
     <<: *taskddbar
     requires_mc: yes
-    options: "--doMCGen"
 
   o2-analysis-hf-task-flow:
     dependencies:
@@ -247,7 +245,7 @@ workflows:
 
   o2-analysis-hf-tree-creator-bplus-tod0pi:
     requires_mc: yes
-    dependencies: o2-analysis-hf-bplus-candidate-selector
+    dependencies: o2-analysis-hf-bplus-tod0pi-candidate-selector
     tables: [HFCANDBPFull, HFCANDBPFullE, HFCANDBPFullP]
 
   o2-analysis-hf-tree-creator-lb-tolcpi:
@@ -294,12 +292,10 @@ workflows:
   o2-analysis-hf-correlator-dplusdminus-mc-rec:
     <<: *dplusdminus
     requires_mc: yes
-    options: "--doMCRec"
 
   o2-analysis-hf-correlator-dplusdminus-mc-gen:
     <<: *dplusdminus
     requires_mc: yes
-    options: "--doMCGen"
     tables: DDBARPAIR
 
   # QA
