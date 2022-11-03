@@ -39,7 +39,7 @@ Long64_t convertAO2D(TString listoffiles, bool isMC = 1, bool useAliEvCuts = fal
 
   AddTaskMultSelection();
   AddTaskPhysicsSelection(isMC);
-  AddTaskPIDResponse();
+  AddTaskPIDResponse(isMC);
   if (isMC && isESD)
     AliMCEventHandler* handlerMC = AddMCHandler();
   AliAnalysisTaskAO2Dconverter* converter = AddTaskAO2Dconverter("");
