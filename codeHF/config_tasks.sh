@@ -45,9 +45,11 @@ DOO2_SKIM=1         # hf-track-index-skims-creator
 DOO2_CAND_2PRONG=1  # hf-candidate-creator-2prong
 DOO2_CAND_3PRONG=1  # hf-candidate-creator-3prong
 DOO2_CAND_CASC=0    # hf-candidate-creator-cascade
+DOO2_CAND_LB=0      # hf-candidate-creator-lb
 DOO2_CAND_X=0       # hf-candidate-creator-x
 DOO2_CAND_CHIC=0    # hf-candidate-creator-chic
 DOO2_CAND_XICC=0    # hf-candidate-creator-xicc
+DOO2_CAND_B0=0      # hf-candidate-creator-b0
 DOO2_CAND_BPLUS=0   # hf-candidate-creator-bplus
 DOO2_CAND_DSTAR=0   # hf-candidate-creator-dstar
 # Selectors
@@ -55,28 +57,33 @@ DOO2_SEL_D0=0       # hf-d0-candidate-selector
 DOO2_SEL_DS=0       # hf-ds-tokkpi-candidate-selector
 DOO2_SEL_DPLUS=0    # hf-dplus-topikpi-candidate-selector
 DOO2_SEL_LC=0       # hf-lc-candidate-selector
+DOO2_SEL_LB=0       # hf-lb-tolcpi-candidate-selector
 DOO2_SEL_XIC=0      # hf-xic-topkpi-candidate-selector
 DOO2_SEL_JPSI=0     # hf-jpsi-candidate-selector
 DOO2_SEL_X=0        # hf-x-tojpsipipi-candidate-selector
 DOO2_SEL_CHIC=0     # hf-chic-tojpsigamma-candidate-selector
 DOO2_SEL_LCK0SP=0   # hf-lc-tok0sp-candidate-selector
 DOO2_SEL_XICC=0     # hf-xicc-topkpipi-candidate-selector
+DOO2_SEL_B0=0       # hf-b0-todpi-candidate-selector
 DOO2_SEL_BPLUS=0    # hf-bplus-tod0pi-candidate-selector
 # User tasks
 DOO2_TASK_D0=1      # hf-task-d0
 DOO2_TASK_DS=0      # hf-task-ds
 DOO2_TASK_DPLUS=0   # hf-task-dplus
 DOO2_TASK_LC=1      # hf-task-lc
+DOO2_TASK_LB=0      # hf-task-lb
 DOO2_TASK_XIC=0     # hf-task-xic
 DOO2_TASK_JPSI=0    # hf-task-jpsi
 DOO2_TASK_X=0       # hf-task-x
 DOO2_TASK_CHIC=0    # hf-task-chic
 DOO2_TASK_LCK0SP=0  # hf-task-lc-tok0sp
 DOO2_TASK_XICC=0    # hf-task-xicc
+DOO2_TASK_B0=0      # hf-task-b0
 DOO2_TASK_BPLUS=0   # hf-task-bplus
 # Tree creators
 DOO2_TREE_D0=0      # hf-tree-creator-d0-tokpi
 DOO2_TREE_LC=0      # hf-tree-creator-lc-topkpi
+DOO2_TREE_LB=0      # hf-tree-creator-lb-tolcpi
 DOO2_TREE_X=0       # hf-tree-creator-x-tojpsipipi
 DOO2_TREE_XICC=0    # hf-tree-creator-xicc-topkpipi
 DOO2_TREE_CHIC=0    # hf-tree-creator-chic-tojpsigamma
@@ -99,12 +106,14 @@ APPLYCUTS_D0=1      # Apply D0 selection cuts.
 APPLYCUTS_DS=0      # Apply Ds selection cuts.
 APPLYCUTS_DPLUS=0   # Apply D+ selection cuts.
 APPLYCUTS_LC=1      # Apply Λc selection cuts.
+APPLYCUTS_LB=0      # Apply Λb selection cuts.
 APPLYCUTS_XIC=0     # Apply Ξc selection cuts.
 APPLYCUTS_JPSI=0    # Apply J/ψ selection cuts.
 APPLYCUTS_X=0       # Apply X selection cuts.
 APPLYCUTS_CHIC=0    # Apply χc(1p) selection cuts.
 APPLYCUTS_LCK0SP=0  # Apply Λc → K0S p selection cuts.
 APPLYCUTS_XICC=0    # Apply Ξcc selection cuts.
+APPLYCUTS_B0=0      # Apply B0 selection cuts.
 APPLYCUTS_BPLUS=0   # Apply B+ selection cuts.
 
 SAVETREES=0         # Save O2 tables to trees.
@@ -244,6 +253,12 @@ function AdjustJson {
     ReplaceString "\"d_selectionFlagLc\": \"0\"" "\"d_selectionFlagLc\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
+  # Enable Λb selection.
+  if [ $APPLYCUTS_LB -eq 1 ]; then
+    MsgWarn "\nUsing Λb selection cuts"
+    ReplaceString "\"selectionFlagLb\": \"0\"" "\"selectionFlagLb\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  fi
+
   # Enable Ξc selection.
   if [ $APPLYCUTS_XIC -eq 1 ]; then
     MsgWarn "Using Ξc selection cuts"
@@ -278,6 +293,12 @@ function AdjustJson {
   if [ $APPLYCUTS_XICC -eq 1 ]; then
     MsgWarn "Using Ξcc selection cuts"
     ReplaceString "\"d_selectionFlagXicc\": \"0\"" "\"d_selectionFlagXicc\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  fi
+
+  # Enable B0 selection.
+  if [ $APPLYCUTS_B0 -eq 1 ]; then
+    MsgWarn "\nUsing B0 selection cuts"
+    ReplaceString "\"selectionFlagB0\": \"0\"" "\"selectionFlagB0\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable B+ selection.
@@ -316,10 +337,12 @@ function MakeScriptO2 {
   [ $DOO2_SKIM -eq 1 ] && WORKFLOWS+=" ${WF_SKIM}${SUFFIX_CASC}"
   [ $DOO2_CAND_2PRONG -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-2prong"
   [ $DOO2_CAND_3PRONG -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-3prong"
+  [ $DOO2_CAND_LB -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-lb"
   [ $DOO2_CAND_X -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-x"
   [ $DOO2_CAND_CHIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-chic"
   [ $DOO2_CAND_CASC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-cascade"
   [ $DOO2_CAND_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-xicc"
+  [ $DOO2_CAND_B0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-b0"
   [ $DOO2_CAND_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-bplus"
   [ $DOO2_CAND_DSTAR -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-dstar"
   # Selectors
@@ -329,11 +352,13 @@ function MakeScriptO2 {
   [ $DOO2_SEL_DS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-ds-tokkpi-candidate-selector"
   [ $DOO2_SEL_DPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-dplus-topikpi-candidate-selector"
   [ $DOO2_SEL_LC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-lc-candidate-selector"
+  [ $DOO2_SEL_LB -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-lb-tolcpi-candidate-selector"
   [ $DOO2_SEL_XIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-xic-topkpi-candidate-selector"
   [ $DOO2_SEL_X -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-x-tojpsipipi-candidate-selector"
   [ $DOO2_SEL_CHIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-chic-tojpsigamma-candidate-selector"
   [ $DOO2_SEL_LCK0SP -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-lc-tok0sp-candidate-selector"
   [ $DOO2_SEL_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-xicc-topkpipi-candidate-selector"
+  [ $DOO2_SEL_B0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-b0-todpi-candidate-selector"
   [ $DOO2_SEL_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-bplus-tod0pi-candidate-selector"
   # User tasks
   [ $DOO2_TASK_D0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-d0"
@@ -341,11 +366,13 @@ function MakeScriptO2 {
   [ $DOO2_TASK_DS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-ds"
   [ $DOO2_TASK_DPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-dplus"
   [ $DOO2_TASK_LC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-lc"
+  [ $DOO2_TASK_LB -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-lb"
   [ $DOO2_TASK_XIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-xic"
   [ $DOO2_TASK_X -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-x"
   [ $DOO2_TASK_CHIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-chic"
   [ $DOO2_TASK_LCK0SP -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-lc-tok0sp"
   [ $DOO2_TASK_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-xicc"
+  [ $DOO2_TASK_B0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-b0"
   [ $DOO2_TASK_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-bplus"
   # Correlations
   WF_CORR=""
@@ -360,6 +387,7 @@ function MakeScriptO2 {
   # Tree creators
   [ $DOO2_TREE_D0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-d0-tokpi"
   [ $DOO2_TREE_LC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-lc-topkpi"
+  [ $DOO2_TREE_LB -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-lb-tolcpi"
   [ $DOO2_TREE_X -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-x-tojpsipipi"
   [ $DOO2_TREE_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-xicc-topkpipi"
   [ $DOO2_TREE_CHIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-chic-tojpsigamma"
@@ -447,10 +475,12 @@ function MakeScriptPostprocess {
     [ $DOO2_TASK_DS -eq 1 ] && PARTICLES+=" ds "
     [ $DOO2_TASK_DPLUS -eq 1 ] && PARTICLES+=" dplus "
     [ $DOO2_TASK_LC -eq 1 ] && PARTICLES+=" lc "
+    [ $DOO2_TASK_LB -eq 1 ] && PARTICLES+=" lb "
     [ $DOO2_TASK_XIC -eq 1 ] && PARTICLES+=" xic "
     [ $DOO2_TASK_JPSI -eq 1 ] && PARTICLES+=" jpsi "
     [ $DOO2_TASK_LCK0SP -eq 1 ] && PARTICLES+=" lc-tok0sP "
     [ $DOO2_TASK_XICC -eq 1 ] && PARTICLES+=" xicc-mc "
+    [ $DOO2_TASK_B0 -eq 1 ] && PARTICLES+=" b0-mc "
     [ $DOO2_TASK_BPLUS -eq 1 ] && PARTICLES+=" bplus "
     [ "$PARTICLES" ] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/PlotEfficiency.C(\\\"\$FileO2\\\", \\\"$PARTICLES\\\")\""
   }
