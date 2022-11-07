@@ -59,8 +59,8 @@ FILEOUT_TREES="AnalysisResults_trees.root"
 FILEOUT_TREES_O2="AnalysisResults_trees_O2.root"
 
 # Steering commands
-ENVALI="alienv setenv AliPhysics/latest-branch_hfsimplevertexer-o2 -c"
-ENVO2="alienv setenv O2Physics/latest-branch_taskLc-o2 -c"
+ENVALI="alienv setenv AliPhysics/latest -c"
+ENVO2="alienv setenv O2Physics/latest -c"
 ENVPOST="alienv setenv ROOT/latest -c"
 
 # Step scripts
