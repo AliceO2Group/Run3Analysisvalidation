@@ -24,8 +24,8 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
 
   // binning
   Int_t iNRebin = 4;
-  //Double_t* dRebin = nullptr;
-  //const Int_t NRebin = 1;
+  // Double_t* dRebin = nullptr;
+  // const Int_t NRebin = 1;
   Double_t dRebin[] = {0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 5, 6, 8, 10};
   const Int_t NRebin = sizeof(dRebin) / sizeof(dRebin[0]) - 1;
 
@@ -50,20 +50,19 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
     Printf("\nPlotting efficiency for: %s", particle.Data());
 
     TString outputDir = Form("hf-task-%s", particle.Data()); // analysis output directory with histograms
-    
+
     TString nameHistRec;
     TString nameHistgen;
 
     // inclusive candidates
-    if (particles==" lc ") {
+    if (particles == " lc ") {
       nameHistRec = "hf-task-lc/MC/reconstructed/signal/hPtRecSig"; // reconstruction level pT of matched candidates
-      nameHistgen = "hf-task-lc/MC/generated/signal/hPtGen"; // generator level pT of generated particles
+      nameHistgen = "hf-task-lc/MC/generated/signal/hPtGen";        // generator level pT of generated particles
     } else {
       nameHistRec = outputDir + "/hPtRecSig"; // reconstruction level pT of matched candidates
-      //nameHistRec = outputDir + "/hPtGenSig"; // generator level pT of matched candidates (no pT smearing)
+      // nameHistRec = outputDir + "/hPtGenSig"; // generator level pT of matched candidates (no pT smearing)
       nameHistgen = outputDir + "/hPtGen"; // generator level pT of generated particles
     }
-    
 
     TH1F* hPtRecIncl = (TH1F*)file->Get(nameHistRec.Data());
     if (!hPtRecIncl) {
@@ -84,16 +83,14 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
 
     // prompt candidates
     bool okPrompt = true;
-    if (particles == "lc")
-    {
+    if (particles == "lc") {
       nameHistRec = "MC/reconstructed/prompt/hPtRecSigPrompt";
       nameHistgen = "MC/generated/prompt/hPtGenPrompt";
     } else {
       nameHistRec = outputDir + "/hPtRecSigPrompt";
       nameHistgen = outputDir + "/hPtGenPrompt";
     }
-    
-    
+
     TH1F* hPtRecPrompt = (TH1F*)file->Get(nameHistRec.Data());
     if (!hPtRecPrompt) {
       hPtRecPrompt = (TH1F*)file->Get("MC/reconstructed/prompt/hPtRecSigPrompt");
@@ -111,8 +108,7 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
       }
     }
 
-    if (particles == "lc")
-    {
+    if (particles == "lc") {
       nameHistRec = "MC/reconstructed/prompt/hPtRecSigNonPrompt";
       nameHistgen = "MC/generated/prompt/hPtGenNonPrompt";
     } else {
