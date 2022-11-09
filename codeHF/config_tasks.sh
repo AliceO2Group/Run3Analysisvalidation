@@ -173,7 +173,7 @@ function AdjustJson {
   # event-selection
   ReplaceString "\"syst\": \"pp\"" "\"syst\": \"$INPUT_SYS\"" "$JSON" || ErrExit "Failed to edit $JSON."
 
-  # hf-tag-sel-collisions
+  # hf-track-index-skim-creator-tag-sel-collisions
   if [ $DOO2_TRIGSEL -eq 1 ]; then
     # trigger selection
     ReplaceString "\"processTrigSel\": \"false\"" "\"processTrigSel\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
@@ -185,7 +185,7 @@ function AdjustJson {
     ReplaceString "\"processNoTrigSel\": \"false\"" "\"processNoTrigSel\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
-  # hf-tag-sel-tracks, hf-track-index-skims-cascades-creator
+  # hf-track-index-skim-creator-tag-sel-tracks, hf-track-index-skim-creator-cascades
   if [ "$INPUT_RUN" -eq 3 ]; then
     # do not perform track quality cuts for Run 3 until they are updated
     ReplaceString "\"doCutQuality\": \"true\"" "\"doCutQuality\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."

@@ -24,7 +24,7 @@
         "processRun2": "false",
         "processRun3": "true"
     },
-    "hf-tag-sel-collisions": {
+    "hf-track-index-skim-creator-tag-sel-collisions": {
         "fillHistograms": "true",
         "xVertexMin": "-100",
         "xVertexMax": "100",
@@ -38,7 +38,7 @@
         "processTrigSel": "false",
         "processNoTrigSel": "true"
     },
-    "hf-tag-sel-tracks": {
+    "hf-track-index-skim-creator-tag-sel-tracks": {
         "fillHistograms": "true",
         "bz": "20.",
         "doCutQuality": "false",
@@ -187,7 +187,7 @@
             ]
         }
     },
-    "hf-cand-creator-2prong": {
+    "hf-candidate-creator-2prong": {
         "d_bz": "20.",
         "b_propdca": "true",
         "d_maxr": "5.",
@@ -196,10 +196,10 @@
         "d_minrelchi2change": "0.9",
         "b_dovalplots": "true"
     },
-    "hf-cand-creator-2prong-expressions": {
+    "hf-candidate-creator-2prong-expressions": {
         "processMC": "true"
     },
-    "hf-cand-creator-3prong": {
+    "hf-candidate-creator-3prong": {
         "d_bz": "20.",
         "b_propdca": "true",
         "d_maxr": "5.",
@@ -208,7 +208,7 @@
         "d_minrelchi2change": "0.9",
         "b_dovalplots": "true"
     },
-    "hf-cand-creator-3prong-expressions": {
+    "hf-candidate-creator-3prong-expressions": {
         "processMC": "true"
     },
     "hf-candidate-selector-d0": {
@@ -617,7 +617,7 @@
         "cutYCandMax": "1.44",
         "d_selectionFlagX": "0"
     },
-    "hf-track-index-skims-cascades-creator": {
+    "hf-track-index-skim-creator-cascades": {
         "doValPlots": "true",
         "bZ": "20.",
         "propDCA": "true",
@@ -638,7 +638,7 @@
         "cutCascPtCandMin": "-1",
         "cutCascInvMassLc": "1"
     },
-    "hf-cand-creator-cascade": {
+    "hf-candidate-creator-cascade": {
         "bZ": "20.",
         "propDCA": "true",
         "maxR": "200",
@@ -658,11 +658,11 @@
         "TPCNClsFindablePIDCut": "50",
         "requireTPC": "true"
     },
-    "hf-task-lc-tok0sP": {
+    "hf-task-lc-to-k0s-p": {
         "selectionFlagLcK0sp": "0",
         "cutEtaCandMax": "-1"
     },
-    "hf-task-lc-tok0sP-mc": {
+    "hf-task-lc-to-k0s-p-mc": {
         "selectionFlagLc": "0",
         "selectionFlagLcbar": "0",
         "cutEtaCandMax": "-1"
