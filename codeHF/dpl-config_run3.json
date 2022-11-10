@@ -364,7 +364,7 @@
         "useAbsDCA": "true",
         "doCutQuality": "true",
         "tpcRefitBach": "true",
-        "minCrossedRowsBach": "50",
+        "nCrossedRowsMinBach": "50",
         "TPCRefitV0Daugh": "true",
         "minCrossedRowsV0Daugh": "50",
         "etaMax": "1.1",
