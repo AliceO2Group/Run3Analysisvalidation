@@ -371,7 +371,7 @@
         "ptMinV0Daugh": "0.05",
         "cpaV0Min": "0.995",
         "dcaXYNegToPvMin": "0.1",
-        "dcaXYPosToPV": "0.1",
+        "dcaXYPosToPvMin": "0.1",
         "cutInvMassV0": "0.05",
         "cutCascPtCandMin": "-1",
         "cutCascInvMassLc": "1"
