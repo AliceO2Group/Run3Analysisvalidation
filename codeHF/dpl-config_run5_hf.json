@@ -232,7 +232,7 @@
         "useabsdca": "true",
         "selectionFlagD0": "1",
         "selectionFlagD0bar": "1",
-        "cutYCandMax": "1.44",
+        "yCandMax": "1.44",
         "cutEtaTrkMax": "1.44"
     },
     "hf-candidate-selector-d0": {
@@ -615,7 +615,7 @@
         "nSigmaTOFCombined": "5000.",
         "selectionFlagD0": "1",
         "selectionFlagD0bar": "1",
-        "cutYCandMax": "1.44",
+        "yCandMax": "1.44",
         "pTBins": {
             "values": [
                 "0",
@@ -695,7 +695,7 @@
         }
     },
     "hf-task-d0": {
-        "cutYCandMax": "0.8",
+        "yCandMax": "0.8",
         "d_selectionFlagD0": "0",
         "d_selectionFlagD0bar": "0",
         "pTBins": {
@@ -731,7 +731,7 @@
        "processMC": "true"
     },
     "hf-task-ds": {
-        "cutYCandMax": "0.8",
+        "yCandMax": "0.8",
         "d_selectionFlagDs": "0",
         "pTBins": {
             "values": [
@@ -753,7 +753,7 @@
         "processMC": "true"
     },
     "hf-task-dplus": {
-        "cutYCandMax": "0.8",
+        "yCandMax": "0.8",
         "d_selectionFlagDPlus": "0",
         "pTBins": {
             "values": [
@@ -774,7 +774,7 @@
         }
     },
     "hf-task-dplus-mc": {
-        "cutYCandMax": "0.8",
+        "yCandMax": "0.8",
         "d_selectionFlagDPlus": "0",
         "pTBins": {
             "values": [
@@ -795,7 +795,7 @@
         }
     },
     "hf-task-lc": {
-        "cutYCandMax": "2.0",
+        "yCandMax": "2.0",
         "d_selectionFlagLc": "0",
         "pTBins": {
             "values": [
@@ -815,7 +815,7 @@
        "processMC": "true"
     },
     "hf-task-lb": {
-        "cutYCandMax": "2.0",
+        "yCandMax": "2.0",
         "selectionFlagLb": "0",
         "pTBins": {
             "values": [
@@ -879,7 +879,7 @@
         }
     },
     "hf-task-jpsi": {
-        "cutYCandMax": "1.44",
+        "yCandMax": "1.44",
         "d_selectionFlagJpsi": "0",
         "pTBins": {
             "values": [
@@ -897,23 +897,23 @@
         }
     },
     "hf-task-jpsi-mc": {
-        "cutYCandMax": "1.44",
+        "yCandMax": "1.44",
         "d_selectionFlagJpsi": "0"
     },
     "hf-candidate-creator-x": {
-        "cutYCandMax": "1.44",
+        "yCandMax": "1.44",
         "d_selectionFlagJpsi": "0"
     },
     "hf-task-x": {
-        "cutYCandMax": "1.44",
+        "yCandMax": "1.44",
         "d_selectionFlagX": "0"
     },
     "hf-task-x-mc": {
-        "cutYCandMax": "1.44",
+        "yCandMax": "1.44",
         "d_selectionFlagX": "0"
     },
     "hf-task-xicc": {
-        "cutYCandMax": "-1",
+        "yCandMax": "-1",
         "d_selectionFlagXicc": "0",
         "pTBins": {
             "values": [
@@ -934,7 +934,7 @@
         }
     },
     "hf-task-xicc-mc": {
-        "cutYCandMax": "-1",
+        "yCandMax": "-1",
         "d_selectionFlagXicc": "0",
         "pTBins": {
             "values": [
@@ -955,7 +955,7 @@
         }
     },
     "hf-task-bplus": {
-        "cutYCandMax": "1.44",
+        "yCandMax": "1.44",
         "selectionFlagBPlus": "1",
         "pTBins": {
             "values": [
@@ -980,7 +980,7 @@
         "efficiencyFlagD": "1",
         "selectionFlagD0": "1",
         "selectionFlagD0bar": "1",
-        "cutYCandMax": "1.44",
+        "yCandMax": "1.44",
         "cutPtCandMin": "-1",
         "multMin": "0.",
         "multMax": "100000.",
@@ -1018,7 +1018,7 @@
         "efficiencyFlagD": "1",
         "selectionFlagD0": "1",
         "selectionFlagD0bar": "1",
-        "cutYCandMax": "1.44",
+        "yCandMax": "1.44",
         "cutPtCandMin": "-1",
         "multMin": "0.",
         "multMax": "100000.",
@@ -1053,7 +1053,7 @@
         }
     },
     "hf-correlator-d0-d0bar-mc-gen": {
-        "cutYCandMax": "1.44",
+        "yCandMax": "1.44",
         "cutPtCandMin": "-1",
         "ptBinsForMass": {
             "values": [
@@ -1072,7 +1072,7 @@
     "hf-correlator-d0-d0bar-ls": {
         "selectionFlagD0": "1",
         "selectionFlagD0bar": "1",
-        "cutYCandMax": "1.44",
+        "yCandMax": "1.44",
         "cutPtCandMin": "-1",
         "multMin": "0.",
         "multMax": "100000.",
@@ -1093,7 +1093,7 @@
     "hf-correlator-d0-d0bar-mc-rec-ls": {
         "selectionFlagD0": "1",
         "selectionFlagD0bar": "1",
-        "cutYCandMax": "1.44",
+        "yCandMax": "1.44",
         "cutPtCandMin": "-1",
         "multMin": "0.",
         "multMax": "100000.",
@@ -1112,7 +1112,7 @@
         }
     },
     "hf-correlator-d0-d0bar-mc-gen-ls": {
-        "cutYCandMax": "1.44",
+        "yCandMax": "1.44",
         "cutPtCandMin": "-1",
         "ptBinsForMass": {
             "values": [
@@ -1131,7 +1131,7 @@
     "hf-correlator-dplus-dminus": {
         "efficiencyFlagD": "1",
         "selectionFlagDplus": "1",
-        "cutYCandMax": "1.44",
+        "yCandMax": "1.44",
         "cutPtCandMin": "-1",
         "multMin": "0.",
         "multMax": "100000.",
@@ -1155,7 +1155,7 @@
     "hf-correlator-dplus-dminus-mc-rec": {
         "efficiencyFlagD": "1",
         "selectionFlagDplus": "1",
-        "cutYCandMax": "1.44",
+        "yCandMax": "1.44",
         "cutPtCandMin": "-1",
         "multMin": "0.",
         "multMax": "100000.",
@@ -1177,7 +1177,7 @@
         }
     },
     "hf-correlator-dplus-dminus-mc-gen": {
-        "cutYCandMax": "1.44",
+        "yCandMax": "1.44",
         "cutPtCandMin": "-1",
         "ptBinsForMass": {
             "values": [
@@ -1194,7 +1194,7 @@
         }
     },
     "hf-correlator-c-cbar-mc-gen": {
-        "cutYCandMax": "1.44",
+        "yCandMax": "1.44",
         "cutPtCandMin": "-1",
         "ptBinsForMass": {
             "values": [
@@ -1211,7 +1211,7 @@
         }
     },
     "hf-correlator-c-cbar-mc-gen-ls": {
-        "cutYCandMax": "1.44",
+        "yCandMax": "1.44",
         "cutPtCandMin": "-1",
         "ptBinsForMass": {
             "values": [

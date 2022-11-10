@@ -467,7 +467,7 @@
         }
     },
     "hf-task-d0": {
-        "cutYCandMax": "0.8",
+        "yCandMax": "0.8",
         "d_selectionFlagD0": "0",
         "d_selectionFlagD0bar": "0",
         "pTBins": {
@@ -503,7 +503,7 @@
        "processMC": "true"
     },
     "hf-task-dplus": {
-        "cutYCandMax": "0.8",
+        "yCandMax": "0.8",
         "d_selectionFlagDPlus": "0",
         "pTBins": {
             "values": [
@@ -524,7 +524,7 @@
         }
     },
     "hf-task-dplus-mc": {
-        "cutYCandMax": "0.8",
+        "yCandMax": "0.8",
         "d_selectionFlagDPlus": "0",
         "pTBins": {
             "values": [
@@ -545,7 +545,7 @@
         }
     },
     "hf-task-lc": {
-        "cutYCandMax": "2.0",
+        "yCandMax": "2.0",
         "d_selectionFlagLc": "0",
         "pTBins": {
             "values": [
@@ -573,7 +573,7 @@
         "d_selectionFlagXic": "0"
     },
     "hf-task-jpsi": {
-        "cutYCandMax": "1.44",
+        "yCandMax": "1.44",
         "d_selectionFlagJpsi": "0",
         "d_modeJpsiToMuMu": "false",
         "selectedRich": "false",
@@ -596,7 +596,7 @@
         }
     },
     "hf-task-jpsi-mc": {
-        "cutYCandMax": "1.44",
+        "yCandMax": "1.44",
         "d_selectionFlagJpsi": "0",
         "d_modeJpsiToMuMu": "false",
         "selectedRich": "false",
@@ -605,16 +605,16 @@
         "selectedMid": "false"
     },
     "hf-candidate-creator-x": {
-        "cutYCandMax": "1.44",
+        "yCandMax": "1.44",
         "d_selectionFlagJpsi": "0",
         "ptPionMin": "0.15"
     },
     "hf-task-x": {
-        "cutYCandMax": "1.44",
+        "yCandMax": "1.44",
         "d_selectionFlagX": "0"
     },
     "hf-task-x-mc": {
-        "cutYCandMax": "1.44",
+        "yCandMax": "1.44",
         "d_selectionFlagX": "0"
     },
     "hf-track-index-skim-creator-cascades": {
