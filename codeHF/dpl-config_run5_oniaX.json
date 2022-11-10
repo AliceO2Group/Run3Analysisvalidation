@@ -117,7 +117,7 @@
             ]
         },
 
-        "pTBinsJpsiToMuMu": {
+        "binsPtJpsiToMuMu": {
             "values": [
                 "0.",
                 "5.",

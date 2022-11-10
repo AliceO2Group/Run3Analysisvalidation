@@ -265,7 +265,7 @@
                 ["2.5", "4.1", "-2.", "1000.00"]
             ]
         },
-        "pTBinsJpsiToMuMu": {
+        "binsPtJpsiToMuMu": {
             "values": [
                 "0.",
                 "5.",
