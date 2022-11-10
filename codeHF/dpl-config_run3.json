@@ -361,7 +361,7 @@
         "maxDZIni": "4",
         "minParamChange": "0.001",
         "minRelChi2Change": "0.9",
-        "UseAbsDCA": "true",
+        "useAbsDCA": "true",
         "doCutQuality": "true",
         "TPCRefitBach": "true",
         "minCrossedRowsBach": "50",
