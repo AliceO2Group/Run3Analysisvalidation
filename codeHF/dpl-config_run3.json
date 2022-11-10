@@ -366,7 +366,7 @@
         "tpcRefitBach": "true",
         "nCrossedRowsMinBach": "50",
         "tpcRefitV0Daugh": "true",
-        "minCrossedRowsV0Daugh": "50",
+        "nCrossedRowsMinV0Daugh": "50",
         "etaMax": "1.1",
         "ptMin": "0.05",
         "cosPAV0": "0.995",
