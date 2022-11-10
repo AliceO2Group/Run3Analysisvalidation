@@ -317,7 +317,7 @@
                 ["1.98", "2.58", "-2.", "0.0"]
             ]
         },
-        "pTBinsXicToPKPi": {
+        "binsPtXicToPKPi": {
             "values": [
                 "4.",
                 "5.",
