@@ -99,7 +99,7 @@
                 ["0.00", "10."]
             ]
         },
-        "etaMax3Prong": "0.8",
+        "etaMaxTrack3Prong": "0.8",
         "ptMinTrackBach": "0.3",
         "cutsTrackBach": {
             "values": [
