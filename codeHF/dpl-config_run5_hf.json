@@ -42,7 +42,7 @@
         "fillHistograms": "true",
         "bz": "5.",
         "doCutQuality": "false",
-        "tpcNClsFound": "-999999",
+        "tpcNClsFoundMin": "-999999",
         "binsPtTrack": {
             "values": [
                 "0.",
