@@ -247,7 +247,7 @@
         "d_nSigmaTPCCombined": "500.",
         "d_nSigmaTOF": "300.",
         "d_nSigmaTOFCombined": "5000.",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "0.5",
@@ -316,7 +316,7 @@
         "d_pidTOFMaxpT": "20.",
         "d_nSigmaTPC": "3.",
         "d_nSigmaTOF": "3.",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "1.",
                 "2.",
@@ -360,7 +360,7 @@
         "d_TPCNClsFindablePIDCut": "-9999",
         "d_nSigmaTPC": "1000.",
         "d_nSigmaTOF": "300.",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "1.",
                 "2.",
@@ -407,7 +407,7 @@
         "d_nSigmaTPCCombined": "500.",
         "d_nSigmaTOF": "300.",
         "d_nSigmaTOFCombined": "5000.",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "1",
@@ -450,7 +450,7 @@
         "d_nSigmaTPCCombined": "5.",
         "d_nSigmaTOF": "3.",
         "d_nSigmaTOFCombined": "5.",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "1",
@@ -493,7 +493,7 @@
         "d_nSigmaTPC": "1000.",
         "d_nSigmaTOF": "3.",
         "d_nSigmaRICH": "3.",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "0.5",
@@ -531,7 +531,7 @@
         "d_TPCNClsFindablePIDCut": "-9999",
         "d_nSigmaTPC": "1000.",
         "d_nSigmaTOF": "3.",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "0.5",
@@ -571,7 +571,7 @@
         "d_nSigmaTPCCombined": "9999.",
         "d_nSigmaTOF": "3.",
         "d_nSigmaTOFCombined": "5.",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "1",
@@ -616,7 +616,7 @@
         "selectionFlagD0": "1",
         "selectionFlagD0bar": "1",
         "yCandMax": "1.44",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "0.5",
@@ -660,7 +660,7 @@
         "d_TPCNClsFindablePIDCut": "-9999",
         "d_nSigmaTPC": "1000.",
         "d_nSigmaTOF": "3.",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "0.5",
@@ -698,7 +698,7 @@
         "yCandMax": "0.8",
         "d_selectionFlagD0": "0",
         "d_selectionFlagD0bar": "0",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "0.5",
@@ -733,7 +733,7 @@
     "hf-task-ds": {
         "yCandMax": "0.8",
         "d_selectionFlagDs": "0",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "1.",
                 "2.",
@@ -755,7 +755,7 @@
     "hf-task-dplus": {
         "yCandMax": "0.8",
         "d_selectionFlagDPlus": "0",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "1.",
                 "2.",
@@ -776,7 +776,7 @@
     "hf-task-dplus-mc": {
         "yCandMax": "0.8",
         "d_selectionFlagDPlus": "0",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "1.",
                 "2.",
@@ -797,7 +797,7 @@
     "hf-task-lc": {
         "yCandMax": "2.0",
         "d_selectionFlagLc": "0",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "1",
@@ -817,7 +817,7 @@
     "hf-task-lb": {
         "yCandMax": "2.0",
         "selectionFlagLb": "0",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "0.5",
@@ -839,7 +839,7 @@
     "hf-task-xic": {
         "cutEtaCandMax": "-1",
         "d_selectionFlagXic": "0",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "1.",
                 "2.",
@@ -860,7 +860,7 @@
     "hf-task-xic-mc": {
         "cutEtaCandMax": "-1",
         "d_selectionFlagXic": "0",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "1.",
                 "2.",
@@ -881,7 +881,7 @@
     "hf-task-jpsi": {
         "yCandMax": "1.44",
         "d_selectionFlagJpsi": "0",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "0.5",
@@ -915,7 +915,7 @@
     "hf-task-xicc": {
         "yCandMax": "-1",
         "d_selectionFlagXicc": "0",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "1.",
                 "2.",
@@ -936,7 +936,7 @@
     "hf-task-xicc-mc": {
         "yCandMax": "-1",
         "d_selectionFlagXicc": "0",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "1.",
                 "2.",
@@ -957,7 +957,7 @@
     "hf-task-bplus": {
         "yCandMax": "1.44",
         "selectionFlagBPlus": "1",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "0.5",

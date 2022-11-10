@@ -223,7 +223,7 @@
         "d_nSigmaTPCCombined": "500.",
         "d_nSigmaTOF": "300.",
         "d_nSigmaTOFCombined": "5000.",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "0.5",
@@ -293,7 +293,7 @@
         "d_TPCNClsFindablePIDCut": "-9999",
         "d_nSigmaTPC": "1000.",
         "d_nSigmaTOF": "300.",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "1.",
                 "2.",
@@ -340,7 +340,7 @@
         "d_nSigmaTPCCombined": "500.",
         "d_nSigmaTOF": "300.",
         "d_nSigmaTOFCombined": "5000.",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "1",
@@ -400,7 +400,7 @@
         "d_nSigmaTPC": "1000.",
         "d_nSigmaTOF": "3.",
         "d_nSigmaRICH": "3.",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "0.5",
@@ -438,7 +438,7 @@
         "d_TPCNClsFindablePIDCut": "-9999",
         "d_nSigmaTPC": "1000.",
         "d_nSigmaTOF": "3.",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "0.5",
@@ -470,7 +470,7 @@
         "yCandMax": "0.8",
         "d_selectionFlagD0": "0",
         "d_selectionFlagD0bar": "0",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "0.5",
@@ -505,7 +505,7 @@
     "hf-task-dplus": {
         "yCandMax": "0.8",
         "d_selectionFlagDPlus": "0",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "1.",
                 "2.",
@@ -526,7 +526,7 @@
     "hf-task-dplus-mc": {
         "yCandMax": "0.8",
         "d_selectionFlagDPlus": "0",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "1.",
                 "2.",
@@ -547,7 +547,7 @@
     "hf-task-lc": {
         "yCandMax": "2.0",
         "d_selectionFlagLc": "0",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "1",
@@ -580,7 +580,7 @@
         "selectedTofRich": "false",
         "selectedTof": "false",
         "selectedMid": "false",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "0.5",

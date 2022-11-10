@@ -453,7 +453,7 @@
         "d_pidTOFMaxpT": "10",
         "d_nSigmaTOF": "3",
         "d_nSigmaTOFCombined": "5",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "0.5",
@@ -565,7 +565,7 @@
         "d_pidTOFMaxpT": "20.",
         "d_nSigmaTPC": "3.",
         "d_nSigmaTOF": "3.",
-        "pTBins": {
+        "binsPt": {
             "values": [
               "1.",
               "2.",
@@ -633,7 +633,7 @@
         "d_pidTOFMinpT": "0.15",
         "d_pidTOFMaxpT": "-1",
         "d_nSigmaTOF": "3",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "1.",
                 "2.",
@@ -706,7 +706,7 @@
         "d_BayesPID": "false",
         "d_pidBayesMinpT": "0.1",
         "d_pidBayesMaxpT": "5.",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "1",
@@ -767,7 +767,7 @@
         "nSigmaTPC": "3",
         "TPCNClsFindablePIDCut": "50",
         "requireTPC": "true",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "1",
                 "2",
@@ -834,7 +834,7 @@
         "d_pidTPCMaxpT": "5.0",
         "d_TPCNClsFindablePIDCut": "70.",
         "d_nSigmaTPC": "3.",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "0.5",
@@ -872,7 +872,7 @@
         "d_TPCNClsFindablePIDCut": "-9999",
         "d_nSigmaTPC": "1000.",
         "d_nSigmaTOF": "3.",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "0.5",
@@ -912,7 +912,7 @@
         "pidTOFMaxpT": "10",
         "nSigmaTOF": "5",
         "nSigmaTOFCombined": "5",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "0.5",
@@ -990,7 +990,7 @@
         "selectionFlagD0": "1",
         "selectionFlagD0bar": "1",
         "yCandMax": "0.8",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "0.5",
@@ -1032,7 +1032,7 @@
         "d_selectionTopol": "1",
         "d_selectionCand": "1",
         "d_selectionPID": "1",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "0.5",
@@ -1067,7 +1067,7 @@
     "hf-task-ds": {
         "d_selectionFlagDs": "0",
         "yCandMax": "0.8",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "1.",
                 "2.",
@@ -1089,7 +1089,7 @@
     "hf-task-dplus": {
         "d_selectionFlagDPlus": "0",
         "yCandMax": "0.8",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "1.",
                 "2.",
@@ -1111,7 +1111,7 @@
     "hf-task-lc": {
         "d_selectionFlagLc": "0",
         "yCandMax": "0.8",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0.0",
                 "1.0",
@@ -1132,7 +1132,7 @@
     "hf-task-xic": {
         "d_selectionFlagXic": "0",
         "cutEtaCandMax": "0.8",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "1",
@@ -1152,7 +1152,7 @@
     "hf-task-jpsi": {
         "yCandMax": "0.8",
         "d_selectionFlagJpsi": "0",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "0.5",
@@ -1192,7 +1192,7 @@
     "hf-task-b0": {
         "selectionFlagB0": "0",
         "yCandMax": "0.8",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "0.5",
@@ -1213,7 +1213,7 @@
     "hf-task-b0-mc": {
         "selectionFlagB0": "0",
         "yCandMax": "0.8",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "0.5",
@@ -1234,7 +1234,7 @@
     "hf-task-bplus": {
         "yCandMax": "0.8",
         "selectionFlagBPlus": "1",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "0.5",
@@ -1260,7 +1260,7 @@
         "d_selectionFlagD0": "0",
         "d_selectionFlagD0bar": "0",
         "yCandMax": "1.0",
-        "pTBins": {
+        "binsPt": {
             "values": [
                 "0",
                 "0.5",
