@@ -635,7 +635,7 @@
         "dcaXYNegToPvMin": "0.1",
         "dcaXYPosToPVS": "0.1",
         "cutInvMassV0": "0.05",
-        "cutCascPtCandMin": "-1",
+        "ptCascCandMin": "-1",
         "cutCascInvMassLc": "1"
     },
     "hf-candidate-creator-cascade": {
