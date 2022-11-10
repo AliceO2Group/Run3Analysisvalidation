@@ -630,7 +630,7 @@
         "TPCRefit": "true",
         "i_minCrossedRows": "50",
         "etaMaxV0Daugh": "1.1",
-        "ptMin": "0.05",
+        "ptMinV0Daugh": "0.05",
         "cosPAV0": "0.995",
         "dcaXYNegToPV": "0.1",
         "dcaXYPosToPVS": "0.1",
