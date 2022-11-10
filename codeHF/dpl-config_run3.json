@@ -291,7 +291,7 @@
                 ["1.67", "2.07", "0.7", "0.03"]
             ]
         },
-        "pTBinsDsToKKPi": {
+        "binsPtDsToKKPi": {
             "values": [
                 "1.5",
                 "5.",
