@@ -76,7 +76,7 @@
                 "100."
             ]
         },
-        "pTMinTrack2Prong": "0.4",
+        "ptMinTrack2Prong": "0.4",
         "cutsTrack2Prong": {
             "values": [
                 ["0.03", "1.0"],

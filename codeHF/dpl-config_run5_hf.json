@@ -54,7 +54,7 @@
                 "100."
             ]
         },
-        "pTMinTrack2Prong": ".3",
+        "ptMinTrack2Prong": ".3",
         "etaMax2Prong": "1.44",
         "cutsTrack2Prong": {
             "values": [
