@@ -159,7 +159,7 @@
             ]
         },
 
-        "pTBinsLcToPKPi": {
+        "binsPtLcToPKPi": {
             "values": [
                 "0.5",
                 "5.",
