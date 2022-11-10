@@ -84,7 +84,7 @@
         "do3Prong": "0",
         "bz": "20.",
         "propagateToPCA": "true",
-        "maxRad": "5.",
+        "maxR": "5.",
         "maxDZIni": "999.",
         "minParamChange": "0.001",
         "minRelChi2Change": "0.9",

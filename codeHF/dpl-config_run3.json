@@ -235,7 +235,7 @@
         "bz": "5",
         "propagateToPCA": "true",
         "useAbsDCA": "true",
-        "maxRad": "5",
+        "maxR": "5",
         "maxDZIni": "999",
         "minParamChange": "0.001",
         "minRelChi2Change": "0.9",
