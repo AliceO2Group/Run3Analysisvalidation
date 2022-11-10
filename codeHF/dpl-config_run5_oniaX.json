@@ -43,7 +43,7 @@
         "bz": "20.",
         "doCutQuality": "false",
         "tpcNClsFound": "-999999",
-        "pTBinsTrack": {
+        "binsPtTrack": {
             "values": [
                 "0.",
                 "0.5",

@@ -65,7 +65,7 @@
         "doCutQuality": "true",
         "useIsGlobalTrack": "false",
         "tpcNClsFound": "71",
-        "pTBinsTrack": {
+        "binsPtTrack": {
             "values": [
                 "0.",
                 "0.5",
