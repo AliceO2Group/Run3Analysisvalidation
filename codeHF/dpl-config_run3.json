@@ -363,7 +363,7 @@
         "minRelChi2Change": "0.9",
         "useAbsDCA": "true",
         "doCutQuality": "true",
-        "TPCRefitBach": "true",
+        "tpcRefitBach": "true",
         "minCrossedRowsBach": "50",
         "TPCRefitV0Daugh": "true",
         "minCrossedRowsV0Daugh": "50",
