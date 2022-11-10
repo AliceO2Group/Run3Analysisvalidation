@@ -233,7 +233,7 @@
         "doPvRefit": "false",
         "ptTolerance": "0.1",
         "bz": "5",
-        "propToDCA": "true",
+        "propagateToPCA": "true",
         "useAbsDCA": "true",
         "maxRad": "5",
         "maxDZIni": "999",

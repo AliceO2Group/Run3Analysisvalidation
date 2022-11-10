@@ -83,7 +83,7 @@
         "fillHistograms": "true",
         "do3Prong": "0",
         "bz": "20.",
-        "propToDCA": "true",
+        "propagateToPCA": "true",
         "maxRad": "5.",
         "maxDZIni": "999.",
         "minParamChange": "0.001",
