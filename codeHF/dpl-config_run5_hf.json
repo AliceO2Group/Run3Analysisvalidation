@@ -1490,7 +1490,7 @@
         "i_minCrossedRows": "50",
         "etaMaxV0Daugh": "1.1",
         "ptMinV0Daugh": "0.05",
-        "cosPAV0": "0.995",
+        "cpaV0Min": "0.995",
         "dcaXYNegToPV": "0.1",
         "dcaXYPosToPVS": "0.1",
         "cutInvMassV0": "0.05",
