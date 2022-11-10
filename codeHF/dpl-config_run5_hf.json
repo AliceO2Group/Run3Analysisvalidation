@@ -1488,7 +1488,7 @@
         "doCutQuality": "true",
         "TPCRefit": "true",
         "i_minCrossedRows": "50",
-        "etaMax": "1.1",
+        "etaMaxV0Daugh": "1.1",
         "ptMin": "0.05",
         "cosPAV0": "0.995",
         "dcaXYNegToPV": "0.1",
