@@ -81,7 +81,7 @@
     },
     "hf-track-index-skim-creator": {
         "fillHistograms": "true",
-        "do3prong": "1",
+        "do3Prong": "1",
         "bz": "5.",
         "propToDCA": "true",
         "maxRad": "5.",

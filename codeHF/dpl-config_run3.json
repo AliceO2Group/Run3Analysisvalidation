@@ -229,7 +229,7 @@
         "isRun2": "true",
         "debug": "false",
         "fillHistograms": "true",
-        "do3prong": "1",
+        "do3Prong": "1",
         "doPvRefit": "false",
         "pTTolerance": "0.1",
         "bz": "5",
