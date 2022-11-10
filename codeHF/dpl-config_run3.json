@@ -88,7 +88,7 @@
             ]
         },
         "etaMax2Prong": "0.8",
-        "pTMinTrack3Prong": "0.4",
+        "ptMinTrack3Prong": "0.4",
         "cutsTrack3Prong": {
             "values": [
                 ["0.03", "1.0"],
