@@ -977,14 +977,14 @@
         "processMC": "true"
     },
     "hf-correlator-d0-d0bar": {
-        "efficiencyFlagD": "1",
+        "applyEfficiency": "1",
         "selectionFlagD0": "1",
         "selectionFlagD0bar": "1",
         "yCandMax": "1.44",
         "ptCandMin": "-1",
         "multMin": "0.",
         "multMax": "100000.",
-        "efficiencyDmeson": {
+        "efficiencyD": {
             "values": [
                 "0.030",
                 "0.045",
@@ -1015,14 +1015,14 @@
         }
     },
     "hf-correlator-d0-d0bar-mc-rec": {
-        "efficiencyFlagD": "1",
+        "applyEfficiency": "1",
         "selectionFlagD0": "1",
         "selectionFlagD0bar": "1",
         "yCandMax": "1.44",
         "ptCandMin": "-1",
         "multMin": "0.",
         "multMax": "100000.",
-        "efficiencyDmeson": {
+        "efficiencyD": {
             "values": [
                 "0.030",
                 "0.045",
@@ -1129,13 +1129,13 @@
         }
     },
     "hf-correlator-dplus-dminus": {
-        "efficiencyFlagD": "1",
+        "applyEfficiency": "1",
         "selectionFlagDplus": "1",
         "yCandMax": "1.44",
         "ptCandMin": "-1",
         "multMin": "0.",
         "multMax": "100000.",
-        "efficiencyDmeson": {
+        "efficiencyD": {
             "values": [
                 "-999.",
                 "0.019",
@@ -1153,13 +1153,13 @@
         }
     },
     "hf-correlator-dplus-dminus-mc-rec": {
-        "efficiencyFlagD": "1",
+        "applyEfficiency": "1",
         "selectionFlagDplus": "1",
         "yCandMax": "1.44",
         "ptCandMin": "-1",
         "multMin": "0.",
         "multMax": "100000.",
-        "efficiencyDmeson": {
+        "efficiencyD": {
             "values": [
                 "-999.",
                 "0.019",
@@ -1228,8 +1228,8 @@
         }
     },
     "hf-task-correlation-d-dbar": {
-        "efficiencyFlagD": "1",
-        "ptBinsForCorrelations": {
+        "applyEfficiency": "1",
+        "binsPtCorrelations": {
             "values": [
                 "0",
                 "2",
@@ -1314,7 +1314,7 @@
                 "2.090"
             ]
         },
-        "efficiencyDmeson": {
+        "efficiencyD": {
             "values": [
                 "0.030",
                 "0.045",
@@ -1345,8 +1345,8 @@
         }
     },
     "hf-task-correlation-d-dbar-mc-rec": {
-        "efficiencyFlagD": "1",
-        "ptBinsForCorrelations": {
+        "applyEfficiency": "1",
+        "binsPtCorrelations": {
             "values": [
                 "0",
                 "2",
@@ -1431,7 +1431,7 @@
                 "2.090"
             ]
         },
-        "efficiencyDmeson": {
+        "efficiencyD": {
             "values": [
                 "0.030",
                 "0.045",
@@ -1462,7 +1462,7 @@
         }
     },
     "hf-task-correlation-d-dbar-mc-gen": {
-        "ptBinsForCorrelations": {
+        "binsPtCorrelations": {
             "values": [
                 "0",
                 "2",

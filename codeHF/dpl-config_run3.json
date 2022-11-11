@@ -1254,9 +1254,9 @@
         "processMC": "true"
     },
     "hf-task-flow": {
-        "cfgCutVertex": "10.0",
-        "cfgCutEta": "0.8",
-        "cfgCutPt": "0.2",
+        "zVertexMax": "10.0",
+        "etaTrackAssocMax": "0.8",
+        "ptTrackAssocMin": "0.2",
         "d_selectionFlagD0": "0",
         "d_selectionFlagD0bar": "0",
         "yCandMax": "1.0",
@@ -1393,7 +1393,7 @@
         "processSameTPCMFThh": "false",
         "processSameHFHadrons": "true",
         "processMC": "true",
-        "cfgNoMixedEvents": 5,
+        "nMixedEvents": 5,
         "processMixedTPCTPChh": "true",
         "processMixedHFHadrons": "true",
         "processRun2": "true",
