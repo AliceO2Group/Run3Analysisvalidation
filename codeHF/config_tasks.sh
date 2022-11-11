@@ -231,26 +231,26 @@ function AdjustJson {
   # Enable D0 selection.
   if [ $APPLYCUTS_D0 -eq 1 ]; then
     MsgWarn "Using D0 selection cuts"
-    ReplaceString "\"d_selectionFlagD0\": \"0\"" "\"d_selectionFlagD0\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
-    ReplaceString "\"d_selectionFlagD0bar\": \"0\"" "\"d_selectionFlagD0bar\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"selectionFlagD0\": \"0\"" "\"selectionFlagD0\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"selectionFlagD0bar\": \"0\"" "\"selectionFlagD0bar\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable Ds selection.
   if [ $APPLYCUTS_DS -eq 1 ]; then
     MsgWarn "Using Ds selection cuts"
-    ReplaceString "\"d_selectionFlagDs\": \"0\"" "\"d_selectionFlagDs\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"selectionFlagDs\": \"0\"" "\"selectionFlagDs\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable D+ selection.
   if [ $APPLYCUTS_DPLUS -eq 1 ]; then
     MsgWarn "Using D+ selection cuts"
-    ReplaceString "\"d_selectionFlagDPlus\": \"0\"" "\"d_selectionFlagDPlus\": \"7\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"selectionFlagDplus\": \"0\"" "\"selectionFlagDplus\": \"7\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable Λc selection.
   if [ $APPLYCUTS_LC -eq 1 ]; then
     MsgWarn "Using Λc selection cuts"
-    ReplaceString "\"d_selectionFlagLc\": \"0\"" "\"d_selectionFlagLc\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"selectionFlagLc\": \"0\"" "\"selectionFlagLc\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable Λb selection.
@@ -262,37 +262,38 @@ function AdjustJson {
   # Enable Ξc selection.
   if [ $APPLYCUTS_XIC -eq 1 ]; then
     MsgWarn "Using Ξc selection cuts"
-    ReplaceString "\"d_selectionFlagXic\": \"0\"" "\"d_selectionFlagXic\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"selectionFlagXic\": \"0\"" "\"selectionFlagXic\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable J/ψ selection.
   if [ $APPLYCUTS_JPSI -eq 1 ]; then
     MsgWarn "Using J/ψ selection cuts"
-    ReplaceString "\"d_selectionFlagJpsi\": \"0\"" "\"d_selectionFlagJpsi\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"selectionFlagJpsi\": \"0\"" "\"selectionFlagJpsi\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable X(3872) selection.
   if [ $APPLYCUTS_X -eq 1 ]; then
     MsgWarn "Using X(3872) selection cuts"
-    ReplaceString "\"d_selectionFlagX\": \"0\"" "\"d_selectionFlagX\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"selectionFlagX\": \"0\"" "\"selectionFlagX\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable χc(1p) selection.
   if [ $APPLYCUTS_CHIC -eq 1 ]; then
     MsgWarn "Using χc(1p) selection cuts"
-    ReplaceString "\"d_selectionFlagChic\": \"0\"" "\"d_selectionFlagChic\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"selectionFlagChic\": \"0\"" "\"selectionFlagChic\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable Λc → K0S p selection.
   if [ $APPLYCUTS_LCK0SP -eq 1 ]; then
     MsgWarn "Using Λc → K0S p selection cuts"
-    ReplaceString "\"selectionFlagLcK0sp\": \"0\"" "\"selectionFlagLcK0sp\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"selectionFlagLcToK0sP\": \"0\"" "\"selectionFlagLcToK0sP\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"selectionFlagLcbarToK0sP\": \"0\"" "\"selectionFlagLcbarToK0sP\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable Ξcc selection.
   if [ $APPLYCUTS_XICC -eq 1 ]; then
     MsgWarn "Using Ξcc selection cuts"
-    ReplaceString "\"d_selectionFlagXicc\": \"0\"" "\"d_selectionFlagXicc\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"selectionFlagXicc\": \"0\"" "\"selectionFlagXicc\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable B0 selection.
@@ -304,7 +305,7 @@ function AdjustJson {
   # Enable B+ selection.
   if [ $APPLYCUTS_BPLUS -eq 1 ]; then
     MsgWarn "Using B+ selection cuts"
-    ReplaceString "\"selectionFlagBPlus\": \"0\"" "\"selectionFlagBPlus\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"selectionFlagBplus\": \"0\"" "\"selectionFlagBplus\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 }
 

@@ -188,7 +188,7 @@
         }
     },
     "hf-candidate-creator-2prong": {
-        "d_bz": "20.",
+        "bz": "20.",
         "propagateToPCA": "true",
         "maxR": "5.",
         "maxDZIni": "999.",
@@ -200,7 +200,7 @@
         "processMC": "true"
     },
     "hf-candidate-creator-3prong": {
-        "d_bz": "20.",
+        "bz": "20.",
         "propagateToPCA": "true",
         "maxR": "5.",
         "maxDZIni": "999.",
@@ -468,8 +468,8 @@
     },
     "hf-task-d0": {
         "yCandMax": "0.8",
-        "d_selectionFlagD0": "0",
-        "d_selectionFlagD0bar": "0",
+        "selectionFlagD0": "0",
+        "selectionFlagD0bar": "0",
         "binsPt": {
             "values": [
                 "0",
@@ -504,7 +504,7 @@
     },
     "hf-task-dplus": {
         "yCandMax": "0.8",
-        "d_selectionFlagDPlus": "0",
+        "selectionFlagDplus": "0",
         "binsPt": {
             "values": [
                 "1.",
@@ -525,7 +525,7 @@
     },
     "hf-task-dplus-mc": {
         "yCandMax": "0.8",
-        "d_selectionFlagDPlus": "0",
+        "selectionFlagDplus": "0",
         "binsPt": {
             "values": [
                 "1.",
@@ -546,7 +546,7 @@
     },
     "hf-task-lc": {
         "yCandMax": "2.0",
-        "d_selectionFlagLc": "0",
+        "selectionFlagLc": "0",
         "binsPt": {
             "values": [
                 "0",
@@ -565,17 +565,17 @@
        "processMC": "true"
     },
     "hf-task-xic": {
-        "cutEtaCandMax": "0.8",
-        "d_selectionFlagXic": "0"
+        "etaCandMax": "0.8",
+        "selectionFlagXic": "0"
     },
     "hf-task-xic-mc": {
-        "cutEtaCandMax": "0.8",
-        "d_selectionFlagXic": "0"
+        "etaCandMax": "0.8",
+        "selectionFlagXic": "0"
     },
     "hf-task-jpsi": {
         "yCandMax": "1.44",
-        "d_selectionFlagJpsi": "0",
-        "d_modeJpsiToMuMu": "false",
+        "selectionFlagJpsi": "0",
+        "modeJpsiToMuMu": "false",
         "selectedRich": "false",
         "selectedTofRich": "false",
         "selectedTof": "false",
@@ -597,8 +597,8 @@
     },
     "hf-task-jpsi-mc": {
         "yCandMax": "1.44",
-        "d_selectionFlagJpsi": "0",
-        "d_modeJpsiToMuMu": "false",
+        "selectionFlagJpsi": "0",
+        "modeJpsiToMuMu": "false",
         "selectedRich": "false",
         "selectedTofRich": "false",
         "selectedTof": "false",
@@ -606,16 +606,16 @@
     },
     "hf-candidate-creator-x": {
         "yCandMax": "1.44",
-        "d_selectionFlagJpsi": "0",
+        "selectionFlagJpsi": "0",
         "ptPionMin": "0.15"
     },
     "hf-task-x": {
         "yCandMax": "1.44",
-        "d_selectionFlagX": "0"
+        "selectionFlagX": "0"
     },
     "hf-task-x-mc": {
         "yCandMax": "1.44",
-        "d_selectionFlagX": "0"
+        "selectionFlagX": "0"
     },
     "hf-track-index-skim-creator-cascades": {
         "fillHistograms": "true",
@@ -627,8 +627,8 @@
         "minRelChi2Change": "0.9",
         "useAbsDCA": "true",
         "doCutQuality": "true",
-        "TPCRefit": "true",
-        "i_minCrossedRows": "50",
+        "tpcRefitV0Daugh": "true",
+        "nCrossedRowsMinBach": "50",
         "etaMaxV0Daugh": "1.1",
         "ptMinV0Daugh": "0.05",
         "cpaV0Min": "0.995",
@@ -659,13 +659,13 @@
         "requireTpc": "true"
     },
     "hf-task-lc-to-k0s-p": {
-        "selectionFlagLcK0sp": "0",
-        "cutEtaCandMax": "-1"
+        "selectionFlagLcToK0sP": "0",
+        "etaCandMax": "-1"
     },
     "hf-task-lc-to-k0s-p-mc": {
-        "selectionFlagLc": "0",
-        "selectionFlagLcbar": "0",
-        "cutEtaCandMax": "-1"
+        "selectionFlagLcToK0sP": "0",
+        "selectionFlagLcbarToK0sP": "0",
+        "etaCandMax": "-1"
     },
     "qa-tracking-efficiency-electron": {
         "eta-min": "-3",

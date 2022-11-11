@@ -32,7 +32,7 @@
         "dcapostopv": "0.1",
         "mincrossedrows": "70",
         "isRun2": "1",
-        "d_bz": "-999",
+        "bz": "-999",
         "v0cospa": "0.995",
         "dcav0dau": "1",
         "v0radius": "0.9",
@@ -379,7 +379,7 @@
     "hf-candidate-creator-2prong": {
         "isRun2": "true",
         "doPvRefit": "false",
-        "d_bz": "5",
+        "bz": "5",
         "propagateToPCA": "true",
         "maxR": "5",
         "maxDZIni": "999",
@@ -390,7 +390,7 @@
     "hf-candidate-creator-3prong": {
         "isRun2": "true",
         "doPvRefit": "false",
-        "d_bz": "5",
+        "bz": "5",
         "propagateToPCA": "true",
         "maxR": "5",
         "maxDZIni": "999",
@@ -415,7 +415,7 @@
         "minParamChange": "0.001",
         "minRelChi2Change": "0.9",
         "ptPionMin": "0.5",
-        "d_selectionFlagD": "1",
+        "selectionFlagD": "1",
         "yCandMax": "-1"
     },
     "hf-candidate-creator-b0-expressions": "",
@@ -1025,13 +1025,13 @@
         }
     },
     "hf-task-d0": {
-        "d_selectionFlagD0": "0",
-        "d_selectionFlagD0bar": "0",
+        "selectionFlagD0": "0",
+        "selectionFlagD0bar": "0",
         "yCandMax": "0.8",
-        "d_selectionHFFlag": "1",
-        "d_selectionTopol": "1",
-        "d_selectionCand": "1",
-        "d_selectionPID": "1",
+        "selectionFlagHf": "1",
+        "selectionTopol": "1",
+        "selectionCand": "1",
+        "selectionPid": "1",
         "binsPt": {
             "values": [
                 "0",
@@ -1065,7 +1065,7 @@
         "processMC": "true"
     },
     "hf-task-ds": {
-        "d_selectionFlagDs": "0",
+        "selectionFlagDs": "0",
         "yCandMax": "0.8",
         "binsPt": {
             "values": [
@@ -1087,7 +1087,7 @@
         "processMC": "true"
     },
     "hf-task-dplus": {
-        "d_selectionFlagDPlus": "0",
+        "selectionFlagDplus": "0",
         "yCandMax": "0.8",
         "binsPt": {
             "values": [
@@ -1109,7 +1109,7 @@
         "processMC": "true"
     },
     "hf-task-lc": {
-        "d_selectionFlagLc": "0",
+        "selectionFlagLc": "0",
         "yCandMax": "0.8",
         "binsPt": {
             "values": [
@@ -1130,8 +1130,8 @@
         "processMC": "true"
     },
     "hf-task-xic": {
-        "d_selectionFlagXic": "0",
-        "cutEtaCandMax": "0.8",
+        "selectionFlagXic": "0",
+        "etaCandMax": "0.8",
         "binsPt": {
             "values": [
                 "0",
@@ -1151,7 +1151,7 @@
     },
     "hf-task-jpsi": {
         "yCandMax": "0.8",
-        "d_selectionFlagJpsi": "0",
+        "selectionFlagJpsi": "0",
         "binsPt": {
             "values": [
                 "0",
@@ -1169,24 +1169,24 @@
     },
     "hf-task-jpsi-mc": {
         "yCandMax": "0.8",
-        "d_selectionFlagJpsi": "0"
+        "selectionFlagJpsi": "0"
     },
     "hf-candidate-creator-x": {
         "yCandMax": "0.8",
-        "d_selectionFlagJpsi": "0"
+        "selectionFlagJpsi": "0"
     },
     "hf-task-x": {
         "yCandMax": "0.8",
-        "d_selectionFlagX": "0"
+        "selectionFlagX": "0"
     },
     "hf-task-x-mc": {
         "yCandMax": "0.8",
-        "d_selectionFlagX": "0"
+        "selectionFlagX": "0"
     },
     "hf-task-lc-to-k0s-p": {
-        "selectionFlagLc": "0",
-        "selectionFlagLcbar": "0",
-        "cutEtaCandMax": "-1",
+        "selectionFlagLcToK0sP": "0",
+        "selectionFlagLcbarToK0sP": "0",
+        "etaCandMax": "-1",
         "processMC": "true"
     },
     "hf-task-b0": {
@@ -1233,7 +1233,7 @@
     },
     "hf-task-bplus": {
         "yCandMax": "0.8",
-        "selectionFlagBPlus": "1",
+        "selectionFlagBplus": "1",
         "binsPt": {
             "values": [
                 "0",
@@ -1257,8 +1257,8 @@
         "zVertexMax": "10.0",
         "etaTrackAssocMax": "0.8",
         "ptTrackAssocMin": "0.2",
-        "d_selectionFlagD0": "0",
-        "d_selectionFlagD0bar": "0",
+        "selectionFlagD0": "0",
+        "selectionFlagD0bar": "0",
         "yCandMax": "1.0",
         "binsPt": {
             "values": [
