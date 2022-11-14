@@ -60,6 +60,6 @@ else
 fi || ErrExit "\nCheck $(realpath $LogFile)"
 grep -q -e '^'"W-" -e '^'"Warning" "$LogFile" && MsgWarn "There were warnings!\nCheck $(realpath $LogFile)"
 grep -q -e '^'"E-" -e '^'"Error" "$LogFile" && MsgErr "There were errors!\nCheck $(realpath $LogFile)"
-grep -q -e '^'"F-" -e '^'"Fatal" -e "segmentation" "$LogFile" && ErrExit "There were fatal errors!\nCheck $(realpath $LogFile)"
+grep -q -e '^'"F-" -e '^'"Fatal" -e "segmentation" -e "Segmentation" "$LogFile" && ErrExit "There were fatal errors!\nCheck $(realpath $LogFile)"
 
 exit 0
