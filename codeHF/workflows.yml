@@ -34,14 +34,14 @@ workflows:
     dependencies:
       - o2-analysis-hf-track-index-skim-creator
     tables:
-      default: [HFCANDP2BASE, HFCANDP2EXT]
-      mc: [HFCANDP2MCREC, HFCANDP2MCGEN]
+      default: [HFCAND2PBASE, HFCAND2PEXT]
+      mc: [HFCAND2PMCREC, HFCAND2PMCGEN]
 
   o2-analysis-hf-candidate-creator-3prong:
     <<: *cand_creator
     tables:
-      default: [HFCANDP3BASE, HFCANDP3EXT]
-      mc: [HFCANDP3MCREC, HFCANDP3MCGEN]
+      default: [HFCAND3PBASE, HFCAND3PEXT]
+      mc: [HFCAND3PMCREC, HFCAND3PMCGEN]
 
   o2-analysis-hf-candidate-creator-dstar: {}
 
@@ -236,12 +236,12 @@ workflows:
   o2-analysis-hf-tree-creator-d0-to-k-pi:
     requires_mc: yes
     dependencies: o2-analysis-hf-candidate-selector-d0
-    tables: [HFCANDP2Full, HFCANDP2FullE, HFCANDP2FullP]
+    tables: [HFCAND2PFull, HFCAND2PFullE, HFCAND2PFullP]
 
   o2-analysis-hf-tree-creator-lc-to-p-k-pi:
     requires_mc: yes
     dependencies: o2-analysis-hf-candidate-selector-lc
-    tables: [HFCANDP3Full, HFCANDP3FullE, HFCANDP3FullP]
+    tables: [HFCAND3PFull, HFCAND3PFullE, HFCAND3PFullP]
 
   o2-analysis-hf-tree-creator-bplus-to-d0-pi:
     requires_mc: yes
