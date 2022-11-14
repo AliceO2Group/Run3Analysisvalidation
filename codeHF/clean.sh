@@ -12,7 +12,11 @@ comparison_histos_d0.* comparison_ratios_d0.* \
 comparison_histos_d0-mc.* comparison_ratios_d0-mc.* \
 comparison_histos_dplus.* comparison_ratios_dplus.* \
 comparison_histos_lc.* comparison_ratios_lc.* \
-comparison_histos_lc-mc.* comparison_ratios_lc-mc.* \
+comparison_histos_lc-mc-pt.* comparison_ratios_lc-mc-pt.* \
+comparison_histos_lc-mc-eta.* comparison_ratios_lc-mc-eta.* \
+comparison_histos_lc-mc-phi.* comparison_ratios_lc-mc-phi.* \
+comparison_histos_lc-mc-prompt.* comparison_ratios_lc-mc-prompt.* \
+comparison_histos_lc-mc-nonprompt.* comparison_ratios_lc-mc-nonprompt.* \
 comparison_histos_jpsi.* comparison_ratios_jpsi.* \
 MC_d0_eff.* MC_d0_pT.* \
 MC_dplus_eff.* MC_dplus_pT.* \
