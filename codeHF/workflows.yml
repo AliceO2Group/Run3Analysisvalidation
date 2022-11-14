@@ -104,12 +104,12 @@ workflows:
       - o2-analysis-hf-candidate-creator-2prong
       - o2-analysis-pid-tpc-full
       - o2-analysis-pid-tof-full
-    tables: HFSELD0CAND
+    tables: HFSELD0
 
   o2-analysis-hf-candidate-selector-jpsi: &selector_jpsi
     <<: *selector_2prong
     executable: o2-analysis-hf-candidate-selector-jpsi
-    tables: HFSELJPSICAND
+    tables: HFSELJPSI
 
   o2-analysis-hf-candidate-selector-jpsi-alice3:
     <<: *selector_jpsi
@@ -121,50 +121,50 @@ workflows:
       - o2-analysis-pid-tpc-full
       - o2-analysis-pid-tof-full
       - o2-analysis-pid-bayes
-    tables: HFSELDPLUSCAND
+    tables: HFSELDPLUS
 
   o2-analysis-hf-candidate-selector-ds-to-k-k-pi:
     <<: *selector_3prong
-    tables: HFSELDSCAND
+    tables: HFSELDS
 
   o2-analysis-hf-candidate-selector-lb-to-lc-pi:
     dependencies: o2-analysis-hf-candidate-creator-lb
-    tables: HFSELLBCAND
+    tables: HFSELLB
 
   o2-analysis-hf-candidate-selector-lc:
     <<: *selector_3prong
-    tables: HFSELLCCAND
+    tables: HFSELLC
 
   o2-analysis-hf-candidate-selector-xic-to-p-k-pi:
     <<: *selector_3prong
-    tables: HFSELXICCAND
+    tables: HFSELXIC
 
   o2-analysis-hf-candidate-selector-lc-to-k0s-p:
     dependencies:
       - o2-analysis-hf-candidate-creator-cascade
       - o2-analysis-pid-tpc-full
       - o2-analysis-pid-tof-full
-    tables: HFSELLCK0SPCAND
+    tables: HFSELLCK0SP
 
   o2-analysis-hf-candidate-selector-x-to-jpsi-pi-pi:
     dependencies: o2-analysis-hf-candidate-creator-x
-    tables: HFSELXCAND
+    tables: HFSELX
 
   o2-analysis-hf-candidate-selector-xicc-to-p-k-pi-pi:
     dependencies: o2-analysis-hf-candidate-creator-xicc
-    tables: HFSELXICCCAND
+    tables: HFSELXICC
 
   o2-analysis-hf-candidate-selector-chic-to-jpsi-gamma:
     dependencies: o2-analysis-hf-candidate-creator-chic
-    tables: HFSELCHICCAND
+    tables: HFSELCHIC
 
   o2-analysis-hf-candidate-selector-b0-to-d-pi:
     dependencies: o2-analysis-hf-candidate-creator-b0
-    tables: HFSELB0CAND
+    tables: HFSELB0
 
   o2-analysis-hf-candidate-selector-bplus-to-d0-pi:
     dependencies: o2-analysis-hf-candidate-creator-bplus
-    tables: HFSELBPLUSCAND
+    tables: HFSELBPLUS
 
   # Analysis tasks
 
