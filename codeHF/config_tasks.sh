@@ -255,7 +255,7 @@ function AdjustJson {
 
   # Enable Λb selection.
   if [ $APPLYCUTS_LB -eq 1 ]; then
-    MsgWarn "\nUsing Λb selection cuts"
+    MsgWarn "Using Λb selection cuts"
     ReplaceString "\"selectionFlagLb\": \"0\"" "\"selectionFlagLb\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
@@ -297,16 +297,15 @@ function AdjustJson {
 
   # Enable B0 selection.
   if [ $APPLYCUTS_B0 -eq 1 ]; then
-    MsgWarn "\nUsing B0 selection cuts"
+    MsgWarn "Using B0 selection cuts"
     ReplaceString "\"selectionFlagB0\": \"0\"" "\"selectionFlagB0\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable B+ selection.
   if [ $APPLYCUTS_BPLUS -eq 1 ]; then
-    MsgWarn "\nUsing B+ selection cuts"
+    MsgWarn "Using B+ selection cuts"
     ReplaceString "\"selectionFlagBPlus\": \"0\"" "\"selectionFlagBPlus\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
-
 }
 
 # Generate the O2 script containing the full workflow specification.
