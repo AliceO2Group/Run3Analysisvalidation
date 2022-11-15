@@ -67,8 +67,8 @@ else
   # shellcheck disable=SC2086 # Ignore unquoted options.
   parallel $OPT_PARALLEL --will-cite --progress "$CMDPARALLEL" ::: $(seq 0 $IndexJob) > $LogFile
 fi || ErrExit "\nCheck $(realpath $LogFile)"
-grep -q "\\[WARN\\]" "$LogFile" && MsgWarn "There were warnings!\nCheck $(realpath $LogFile)"
-grep -q -e "\\[ERROR\\]" -e "\\[FATAL\\]" -e "segmentation" -e "Segmentation" -e "command not found" -e "Error:" "$LogFile" && ErrExit "There were errors!\nCheck $(realpath $LogFile)"
+grep -q -e "\\[WARN\\]" -e "Warning in " "$LogFile" && MsgWarn "There were warnings!\nCheck $(realpath $LogFile)"
+grep -q -e "\\[ERROR\\]" -e "\\[FATAL\\]" -e "segmentation" -e "Segmentation" -e "command not found" -e "Error:" -e "Error in " "$LogFile" && ErrExit "There were errors!\nCheck $(realpath $LogFile)"
 
 echo "Merging output files... (output file: $FILEOUT, logfile: $LogFile)"
 hadd $FILEOUT @"$FilesToMerge" >> $LogFile 2>&1 || \
