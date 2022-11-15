@@ -87,7 +87,8 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun2 = "
   AddHistogram(vecHisD0, "d0d0 (cm^{2})", "hd0Timesd0", "hf-task-d0/hd0d0", 2, 1, 0);
   AddHistogram(vecHisD0, "d0 prong 0 (cm)", "hImpParD0Dau0", "hf-task-d0/hd0Prong0", 2, 1, 0);
   AddHistogram(vecHisD0, "d0 prong 1 (cm)", "hImpParD0Dau1", "hf-task-d0/hd0Prong1", 2, 1, 0);
-  AddHistogram(vecHisD0, "impact parameter error (cm)", "hImpParErrD0Dau", "hf-task-d0/hImpParErr", 1, 1, 0);
+  AddHistogram(vecHisD0, "impact parameter error (cm)", "hImpParErrD0Dau0", "hf-task-d0/hd0ErrProng0", 1, 1, 0);
+  AddHistogram(vecHisD0, "impact parameter error (cm)", "hImpParErrD0Dau1", "hf-task-d0/hd0ErrProng1", 1, 1, 0);
   AddHistogram(vecHisD0, "decay length (cm)", "hDecLenD0", "hf-task-d0/hDecLength", 2, 1, 0);
   AddHistogram(vecHisD0, "decay length XY (cm)", "hDecLenXYD0", "hf-task-d0/hDecLengthxy", 2, 1, 0);
   AddHistogram(vecHisD0, "decay length error (cm)", "hDecLenErrD0", "hf-task-d0/hDecLenErr", 1, 1, 0);

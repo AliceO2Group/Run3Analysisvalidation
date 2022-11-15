@@ -56,7 +56,7 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
     TString nameHistgen;
 
     // inclusive candidates
-    if (particles == " lc ") {
+    if (particle == "lc") {
       nameHistRec = outputDirLc + "reconstructed/signal/hPtRecSig"; // reconstruction level pT of matched candidates
       nameHistgen = outputDirLc + "generated/signal/hPtGen";        // generator level pT of generated particles
     } else {
@@ -77,8 +77,7 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
     }
 
     // prompt candidates
-    bool okPrompt = true;
-    if (particles == "lc") {
+    if (particle == "lc") {
       nameHistRec = outputDirLc + "reconstructed/prompt/hPtRecSigPrompt";
       nameHistgen = outputDirLc + "generated/prompt/hPtGenPrompt";
     } else {
@@ -86,6 +85,7 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
       nameHistgen = outputDir + "/hPtGenPrompt";
     }
 
+    bool okPrompt = true;
     TH1F* hPtRecPrompt = (TH1F*)file->Get(nameHistRec.Data());
     if (!hPtRecPrompt) {
       Printf("Warning: Failed to load %s from %s", nameHistRec.Data(), pathFile.Data());
@@ -97,15 +97,15 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
       okPrompt = false;
     }
 
-    if (particles == "lc") {
-      nameHistRec = outputDirLc + "reconstructed/prompt/hPtRecSigNonPrompt";
-      nameHistgen = outputDirLc + "generated/prompt/hPtGenNonPrompt";
+    // non-prompt candidates
+    if (particle == "lc") {
+      nameHistRec = outputDirLc + "reconstructed/nonprompt/hPtRecSigNonPrompt";
+      nameHistgen = outputDirLc + "generated/nonprompt/hPtGenNonPrompt";
     } else {
       nameHistRec = outputDir + "/hPtRecSigNonPrompt";
       nameHistgen = outputDir + "/hPtGenNonPrompt";
     }
 
-    // non-prompt candidates
     bool okNonPrompt = true;
     TH1F* hPtRecNonPrompt = (TH1F*)file->Get(nameHistRec.Data());
     if (!hPtRecNonPrompt) {
