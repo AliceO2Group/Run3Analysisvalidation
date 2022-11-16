@@ -23,13 +23,17 @@ DOPOSTPROCESS=1     # Run output postprocessing. (Comparison plots. Requires DOA
 # Disable incompatible steps.
 [ "$ISINPUTO2" -eq 1 ] && { DOCONVERT=0; DOALI=0; }
 
+# Steering commands
+ENVALI="alienv setenv AliPhysics/latest-rename-o2 -c"
+ENVO2="alienv setenv O2Physics/latest-rename-o2 -c"
+
 # O2 database
 DATABASE_O2="workflows.yml"
 MAKE_GRAPH=0        # Make topology graph.
 
 # Activation of O2 workflows
 # Trigger selection
-DOO2_TRIGSEL=0      # event-selection
+DOO2_TRIGSEL=1      # event-selection
 # QA
 DOO2_REJ_ALICE3=0   # hf-task-qa-pid-rejection
 DOO2_QA_EFF=0       # qa-efficiency
@@ -103,20 +107,20 @@ DOO2_TRKPROP=0      # track-propagation
 
 # Selection cuts
 APPLYCUTS_D0=1      # Apply D0 selection cuts.
-APPLYCUTS_DS=0      # Apply Ds selection cuts.
-APPLYCUTS_DPLUS=0   # Apply D+ selection cuts.
+APPLYCUTS_DS=1      # Apply Ds selection cuts.
+APPLYCUTS_DPLUS=1   # Apply D+ selection cuts.
 APPLYCUTS_LC=1      # Apply Λc selection cuts.
-APPLYCUTS_LB=0      # Apply Λb selection cuts.
-APPLYCUTS_XIC=0     # Apply Ξc selection cuts.
-APPLYCUTS_JPSI=0    # Apply J/ψ selection cuts.
-APPLYCUTS_X=0       # Apply X selection cuts.
-APPLYCUTS_CHIC=0    # Apply χc(1p) selection cuts.
-APPLYCUTS_LCK0SP=0  # Apply Λc → K0S p selection cuts.
-APPLYCUTS_XICC=0    # Apply Ξcc selection cuts.
-APPLYCUTS_B0=0      # Apply B0 selection cuts.
-APPLYCUTS_BPLUS=0   # Apply B+ selection cuts.
+APPLYCUTS_LB=1      # Apply Λb selection cuts.
+APPLYCUTS_XIC=1     # Apply Ξc selection cuts.
+APPLYCUTS_JPSI=1    # Apply J/ψ selection cuts.
+APPLYCUTS_X=1       # Apply X selection cuts.
+APPLYCUTS_CHIC=1    # Apply χc(1p) selection cuts.
+APPLYCUTS_LCK0SP=1  # Apply Λc → K0S p selection cuts.
+APPLYCUTS_XICC=1    # Apply Ξcc selection cuts.
+APPLYCUTS_B0=1      # Apply B0 selection cuts.
+APPLYCUTS_BPLUS=1   # Apply B+ selection cuts.
 
-SAVETREES=0         # Save O2 tables to trees.
+SAVETREES=1         # Save O2 tables to trees.
 USEO2VERTEXER=1     # Use the O2 vertexer in AliPhysics.
 USEALIEVCUTS=1      # Use AliEventCuts in AliPhysics (as used by conversion task)
 DORATIO=1           # Plot histogram ratios in comparison.
