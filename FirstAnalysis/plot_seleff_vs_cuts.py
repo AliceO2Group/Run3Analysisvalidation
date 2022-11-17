@@ -2,7 +2,7 @@
 
 """
 file: plot_seleff_vs_cuts.py
-brief: script to plot selection efficiencies vs cut obtained with HFSelOptimisation.cxx task
+brief: script to plot selection efficiencies vs cut obtained with taskSelOptimisation.cxx task
 usage: python3 plot_seleff_vs_cuts.py CONFIG [--batch]
 author: Fabrizio Grosa <fabrizio.grosa@cern.ch>, CERN
 """
@@ -122,11 +122,11 @@ for cand_type in cand_types:
             for orig in origins:
                 infile = TFile.Open(infile_names[orig])
                 hvar_vs_pt[cand][var][orig] = infile.Get(
-                    f"hf-sel-optimisation/h{orig}{var}VsPt{cand}"
+                    f"hf-task-sel-optimisation/h{orig}{var}VsPt{cand}"
                 )
                 if iVar == 0:
                     hnorm_vs_pt[cand][orig] = infile.Get(
-                        f"hf-sel-optimisation/h{orig}VsPt{cand}"
+                        f"hf-task-sel-optimisation/h{orig}VsPt{cand}"
                     )
                 hEvents = infile.Get("hf-tag-sel-collisions/hEvents")
                 hvar_vs_pt[cand][var][orig].SetDirectory(0)

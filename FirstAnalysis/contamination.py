@@ -61,8 +61,8 @@ def ratioparticle(
     cres.cd()
     cres.SetLogy()
 
-    num2d = fileo2.Get("qa-rejection-general/h%s%s/%seta" % (numname, selnum, var))
-    den2d = fileo2.Get("qa-rejection-general/h%s%s/%seta" % (denname, selden, var))
+    num2d = fileo2.Get("task-qa-pid-rejection-general/h%s%s/%seta" % (numname, selnum, var))
+    den2d = fileo2.Get("task-qa-pid-rejection-general/h%s%s/%seta" % (denname, selden, var))
     num = num2d.ProjectionX("num", 1, num2d.GetXaxis().GetNbins())
     den = den2d.ProjectionX("den", 1, den2d.GetXaxis().GetNbins())
     num.Divide(den)
@@ -81,7 +81,7 @@ def ratioparticle(
 
 def is_e_not_pi_plots(particle):
     fileo2 = TFile(path_file)
-    task = "qa-rejection-general"
+    task = "task-qa-pid-rejection-general"
     folder_gm = "h%sRICHSelHpElTight" % particle
     folder_alt = "h%sRICHSelHpElTightAlt" % particle
     folder_diff = "h%sRICHSelHpElTightAltDiff" % particle

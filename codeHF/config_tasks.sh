@@ -23,25 +23,29 @@ DOPOSTPROCESS=1     # Run output postprocessing. (Comparison plots. Requires DOA
 # Disable incompatible steps.
 [ "$ISINPUTO2" -eq 1 ] && { DOCONVERT=0; DOALI=0; }
 
+# Steering commands
+ENVALI="alienv setenv AliPhysics/latest-rename-o2 -c"
+ENVO2="alienv setenv O2Physics/latest-rename-o2 -c"
+
 # O2 database
 DATABASE_O2="workflows.yml"
 MAKE_GRAPH=0        # Make topology graph.
 
 # Activation of O2 workflows
 # Trigger selection
-DOO2_TRIGSEL=0      # event-selection
+DOO2_TRIGSEL=1      # event-selection
 # QA
-DOO2_REJ_ALICE3=0   # hf-qa-rejection
+DOO2_REJ_ALICE3=0   # hf-task-qa-pid-rejection
 DOO2_QA_EFF=0       # qa-efficiency
 DOO2_QA_EVTRK=0     # qa-event-track
-DOO2_MC_VALID=0     # hf-mc-validation
+DOO2_MC_VALID=0     # hf-task-mc-validation
 # PID
 DOO2_PID_TPC=0      # pid-tpc-full
 DOO2_PID_TOF=0      # pid-tof-full/alice3-pid-tof
 DOO2_PID_TOF_QA=0   # pid-tof-qa-mc
 DOO2_PID_BAYES=0    # pid-bayes
 # Vertexing
-DOO2_SKIM=1         # hf-track-index-skims-creator
+DOO2_SKIM=1         # hf-track-index-skim-creator
 DOO2_CAND_2PRONG=1  # hf-candidate-creator-2prong
 DOO2_CAND_3PRONG=1  # hf-candidate-creator-3prong
 DOO2_CAND_CASC=0    # hf-candidate-creator-cascade
@@ -53,19 +57,19 @@ DOO2_CAND_B0=0      # hf-candidate-creator-b0
 DOO2_CAND_BPLUS=0   # hf-candidate-creator-bplus
 DOO2_CAND_DSTAR=0   # hf-candidate-creator-dstar
 # Selectors
-DOO2_SEL_D0=0       # hf-d0-candidate-selector
-DOO2_SEL_DS=0       # hf-ds-tokkpi-candidate-selector
-DOO2_SEL_DPLUS=0    # hf-dplus-topikpi-candidate-selector
-DOO2_SEL_LC=0       # hf-lc-candidate-selector
-DOO2_SEL_LB=0       # hf-lb-tolcpi-candidate-selector
-DOO2_SEL_XIC=0      # hf-xic-topkpi-candidate-selector
-DOO2_SEL_JPSI=0     # hf-jpsi-candidate-selector
-DOO2_SEL_X=0        # hf-x-tojpsipipi-candidate-selector
-DOO2_SEL_CHIC=0     # hf-chic-tojpsigamma-candidate-selector
-DOO2_SEL_LCK0SP=0   # hf-lc-tok0sp-candidate-selector
-DOO2_SEL_XICC=0     # hf-xicc-topkpipi-candidate-selector
-DOO2_SEL_B0=0       # hf-b0-todpi-candidate-selector
-DOO2_SEL_BPLUS=0    # hf-bplus-tod0pi-candidate-selector
+DOO2_SEL_D0=0       # hf-candidate-selector-d0
+DOO2_SEL_DS=0       # hf-candidate-selector-ds-to-k-k-pi
+DOO2_SEL_DPLUS=0    # hf-candidate-selector-dplus-to-pi-k-pi
+DOO2_SEL_LC=0       # hf-candidate-selector-lc
+DOO2_SEL_LB=0       # hf-candidate-selector-lb-to-lc-pi
+DOO2_SEL_XIC=0      # hf-candidate-selector-xic-to-p-k-pi
+DOO2_SEL_JPSI=0     # hf-candidate-selector-jpsi
+DOO2_SEL_X=0        # hf-candidate-selector-x-to-jpsi-pi-pi
+DOO2_SEL_CHIC=0     # hf-candidate-selector-chic-to-jpsi-gamma
+DOO2_SEL_LCK0SP=0   # hf-candidate-selector-lc-to-k0s-p
+DOO2_SEL_XICC=0     # hf-candidate-selector-xicc-to-p-k-pi-pi
+DOO2_SEL_B0=0       # hf-candidate-selector-b0-to-d-pi
+DOO2_SEL_BPLUS=0    # hf-candidate-selector-bplus-to-d0-pi
 # User tasks
 DOO2_TASK_D0=1      # hf-task-d0
 DOO2_TASK_DS=0      # hf-task-ds
@@ -76,25 +80,25 @@ DOO2_TASK_XIC=0     # hf-task-xic
 DOO2_TASK_JPSI=0    # hf-task-jpsi
 DOO2_TASK_X=0       # hf-task-x
 DOO2_TASK_CHIC=0    # hf-task-chic
-DOO2_TASK_LCK0SP=0  # hf-task-lc-tok0sp
+DOO2_TASK_LCK0SP=0  # hf-task-lc-to-k0s-p
 DOO2_TASK_XICC=0    # hf-task-xicc
 DOO2_TASK_B0=0      # hf-task-b0
 DOO2_TASK_BPLUS=0   # hf-task-bplus
 # Tree creators
-DOO2_TREE_D0=0      # hf-tree-creator-d0-tokpi
-DOO2_TREE_LC=0      # hf-tree-creator-lc-topkpi
-DOO2_TREE_LB=0      # hf-tree-creator-lb-tolcpi
-DOO2_TREE_X=0       # hf-tree-creator-x-tojpsipipi
-DOO2_TREE_XICC=0    # hf-tree-creator-xicc-topkpipi
-DOO2_TREE_CHIC=0    # hf-tree-creator-chic-tojpsigamma
-DOO2_TREE_BPLUS=0   # hf-tree-creator-bplus-tod0pi
+DOO2_TREE_D0=0      # hf-tree-creator-d0-to-k-pi
+DOO2_TREE_LC=0      # hf-tree-creator-lc-to-p-k-pi
+DOO2_TREE_LB=0      # hf-tree-creator-lb-to-lc-pi
+DOO2_TREE_X=0       # hf-tree-creator-x-to-jpsi-pi-pi
+DOO2_TREE_XICC=0    # hf-tree-creator-xicc-to-p-k-pi-pi
+DOO2_TREE_CHIC=0    # hf-tree-creator-chic-to-jpsi-gamma
+DOO2_TREE_BPLUS=0   # hf-tree-creator-bplus-to-d0-pi
 # Correlations
-DOO2_D0D0BAR_DATA=0       # hf-correlator-d0d0bar
-DOO2_D0D0BAR_MCREC=0      # hf-correlator-d0d0bar-mc-rec
-DOO2_D0D0BAR_MCGEN=0      # hf-correlator-d0d0bar-mc-gen
-DOO2_DPLUSDMINUS_DATA=0   # hf-correlator-dplusdminus
-DOO2_DPLUSDMINUS_MCREC=0  # hf-correlator-dplusdminus-mc-rec
-DOO2_DPLUSDMINUS_MCGEN=0  # hf-correlator-dplusdminus-mc-gen
+DOO2_D0D0BAR_DATA=0       # hf-correlator-d0-d0bar
+DOO2_D0D0BAR_MCREC=0      # hf-correlator-d0-d0bar-mc-rec
+DOO2_D0D0BAR_MCGEN=0      # hf-correlator-d0-d0bar-mc-gen
+DOO2_DPLUSDMINUS_DATA=0   # hf-correlator-dplus-dminus
+DOO2_DPLUSDMINUS_MCREC=0  # hf-correlator-dplus-dminus-mc-rec
+DOO2_DPLUSDMINUS_MCGEN=0  # hf-correlator-dplus-dminus-mc-gen
 DOO2_TASK_FLOW=0    # hf-task-flow
 # Other
 DOO2_MCCONV=0       # mc-converter
@@ -103,20 +107,20 @@ DOO2_TRKPROP=0      # track-propagation
 
 # Selection cuts
 APPLYCUTS_D0=1      # Apply D0 selection cuts.
-APPLYCUTS_DS=0      # Apply Ds selection cuts.
-APPLYCUTS_DPLUS=0   # Apply D+ selection cuts.
+APPLYCUTS_DS=1      # Apply Ds selection cuts.
+APPLYCUTS_DPLUS=1   # Apply D+ selection cuts.
 APPLYCUTS_LC=1      # Apply Λc selection cuts.
-APPLYCUTS_LB=0      # Apply Λb selection cuts.
-APPLYCUTS_XIC=0     # Apply Ξc selection cuts.
-APPLYCUTS_JPSI=0    # Apply J/ψ selection cuts.
-APPLYCUTS_X=0       # Apply X selection cuts.
-APPLYCUTS_CHIC=0    # Apply χc(1p) selection cuts.
-APPLYCUTS_LCK0SP=0  # Apply Λc → K0S p selection cuts.
-APPLYCUTS_XICC=0    # Apply Ξcc selection cuts.
-APPLYCUTS_B0=0      # Apply B0 selection cuts.
-APPLYCUTS_BPLUS=0   # Apply B+ selection cuts.
+APPLYCUTS_LB=1      # Apply Λb selection cuts.
+APPLYCUTS_XIC=1     # Apply Ξc selection cuts.
+APPLYCUTS_JPSI=1    # Apply J/ψ selection cuts.
+APPLYCUTS_X=1       # Apply X selection cuts.
+APPLYCUTS_CHIC=1    # Apply χc(1p) selection cuts.
+APPLYCUTS_LCK0SP=1  # Apply Λc → K0S p selection cuts.
+APPLYCUTS_XICC=1    # Apply Ξcc selection cuts.
+APPLYCUTS_B0=1      # Apply B0 selection cuts.
+APPLYCUTS_BPLUS=1   # Apply B+ selection cuts.
 
-SAVETREES=0         # Save O2 tables to trees.
+SAVETREES=1         # Save O2 tables to trees.
 USEO2VERTEXER=1     # Use the O2 vertexer in AliPhysics.
 USEALIEVCUTS=1      # Use AliEventCuts in AliPhysics (as used by conversion task)
 DORATIO=1           # Plot histogram ratios in comparison.
@@ -162,18 +166,18 @@ function AdjustJson {
   # MC
   if [ "$ISMC" -eq 1 ]; then
     MsgWarn "Using MC data"
-    ReplaceString "\"processMC\": \"false\"" "\"processMC\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processMc\": \"false\"" "\"processMc\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"isMC\": \"false\"" "\"isMC\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
   else
     MsgWarn "Using real data"
-    ReplaceString "\"processMC\": \"true\"" "\"processMC\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processMc\": \"true\"" "\"processMc\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"isMC\": \"true\"" "\"isMC\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # event-selection
   ReplaceString "\"syst\": \"pp\"" "\"syst\": \"$INPUT_SYS\"" "$JSON" || ErrExit "Failed to edit $JSON."
 
-  # hf-tag-sel-collisions
+  # hf-track-index-skim-creator-tag-sel-collisions
   if [ $DOO2_TRIGSEL -eq 1 ]; then
     # trigger selection
     ReplaceString "\"processTrigSel\": \"false\"" "\"processTrigSel\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
@@ -185,7 +189,7 @@ function AdjustJson {
     ReplaceString "\"processNoTrigSel\": \"false\"" "\"processNoTrigSel\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
-  # hf-tag-sel-tracks, hf-track-index-skims-cascades-creator
+  # hf-track-index-skim-creator-tag-sel-tracks, hf-track-index-skim-creator-cascades
   if [ "$INPUT_RUN" -eq 3 ]; then
     # do not perform track quality cuts for Run 3 until they are updated
     ReplaceString "\"doCutQuality\": \"true\"" "\"doCutQuality\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
@@ -231,26 +235,26 @@ function AdjustJson {
   # Enable D0 selection.
   if [ $APPLYCUTS_D0 -eq 1 ]; then
     MsgWarn "Using D0 selection cuts"
-    ReplaceString "\"d_selectionFlagD0\": \"0\"" "\"d_selectionFlagD0\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
-    ReplaceString "\"d_selectionFlagD0bar\": \"0\"" "\"d_selectionFlagD0bar\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"selectionFlagD0\": \"0\"" "\"selectionFlagD0\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"selectionFlagD0bar\": \"0\"" "\"selectionFlagD0bar\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable Ds selection.
   if [ $APPLYCUTS_DS -eq 1 ]; then
     MsgWarn "Using Ds selection cuts"
-    ReplaceString "\"d_selectionFlagDs\": \"0\"" "\"d_selectionFlagDs\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"selectionFlagDs\": \"0\"" "\"selectionFlagDs\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable D+ selection.
   if [ $APPLYCUTS_DPLUS -eq 1 ]; then
     MsgWarn "Using D+ selection cuts"
-    ReplaceString "\"d_selectionFlagDPlus\": \"0\"" "\"d_selectionFlagDPlus\": \"7\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"selectionFlagDplus\": \"0\"" "\"selectionFlagDplus\": \"7\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable Λc selection.
   if [ $APPLYCUTS_LC -eq 1 ]; then
     MsgWarn "Using Λc selection cuts"
-    ReplaceString "\"d_selectionFlagLc\": \"0\"" "\"d_selectionFlagLc\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"selectionFlagLc\": \"0\"" "\"selectionFlagLc\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable Λb selection.
@@ -262,37 +266,38 @@ function AdjustJson {
   # Enable Ξc selection.
   if [ $APPLYCUTS_XIC -eq 1 ]; then
     MsgWarn "Using Ξc selection cuts"
-    ReplaceString "\"d_selectionFlagXic\": \"0\"" "\"d_selectionFlagXic\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"selectionFlagXic\": \"0\"" "\"selectionFlagXic\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable J/ψ selection.
   if [ $APPLYCUTS_JPSI -eq 1 ]; then
     MsgWarn "Using J/ψ selection cuts"
-    ReplaceString "\"d_selectionFlagJpsi\": \"0\"" "\"d_selectionFlagJpsi\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"selectionFlagJpsi\": \"0\"" "\"selectionFlagJpsi\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable X(3872) selection.
   if [ $APPLYCUTS_X -eq 1 ]; then
     MsgWarn "Using X(3872) selection cuts"
-    ReplaceString "\"d_selectionFlagX\": \"0\"" "\"d_selectionFlagX\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"selectionFlagX\": \"0\"" "\"selectionFlagX\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable χc(1p) selection.
   if [ $APPLYCUTS_CHIC -eq 1 ]; then
     MsgWarn "Using χc(1p) selection cuts"
-    ReplaceString "\"d_selectionFlagChic\": \"0\"" "\"d_selectionFlagChic\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"selectionFlagChic\": \"0\"" "\"selectionFlagChic\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable Λc → K0S p selection.
   if [ $APPLYCUTS_LCK0SP -eq 1 ]; then
     MsgWarn "Using Λc → K0S p selection cuts"
-    ReplaceString "\"selectionFlagLcK0sp\": \"0\"" "\"selectionFlagLcK0sp\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"selectionFlagLcToK0sP\": \"0\"" "\"selectionFlagLcToK0sP\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"selectionFlagLcbarToK0sP\": \"0\"" "\"selectionFlagLcbarToK0sP\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable Ξcc selection.
   if [ $APPLYCUTS_XICC -eq 1 ]; then
     MsgWarn "Using Ξcc selection cuts"
-    ReplaceString "\"d_selectionFlagXicc\": \"0\"" "\"d_selectionFlagXicc\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"selectionFlagXicc\": \"0\"" "\"selectionFlagXicc\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable B0 selection.
@@ -304,7 +309,7 @@ function AdjustJson {
   # Enable B+ selection.
   if [ $APPLYCUTS_BPLUS -eq 1 ]; then
     MsgWarn "Using B+ selection cuts"
-    ReplaceString "\"selectionFlagBPlus\": \"0\"" "\"selectionFlagBPlus\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"selectionFlagBplus\": \"0\"" "\"selectionFlagBplus\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 }
 
@@ -321,10 +326,10 @@ function MakeScriptO2 {
   # Trigger selection
   [ $DOO2_TRIGSEL -eq 1 ] && WORKFLOWS+=" o2-analysis-event-selection"
   # QA
-  [ $DOO2_REJ_ALICE3 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-qa-rejection"
+  [ $DOO2_REJ_ALICE3 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-qa-pid-rejection"
   [ $DOO2_QA_EFF -eq 1 ] && WORKFLOWS+=" o2-analysis-qa-efficiency"
   [ $DOO2_QA_EVTRK -eq 1 ] && WORKFLOWS+=" o2-analysis-qa-event-track"
-  [ $DOO2_MC_VALID -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-mc-validation"
+  [ $DOO2_MC_VALID -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-mc-validation"
   # PID
   [ $DOO2_PID_TPC -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tpc-full"
   [ $DOO2_PID_BAYES -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-bayes"
@@ -332,7 +337,7 @@ function MakeScriptO2 {
   [ $DOO2_PID_TOF -eq 1 ] && WORKFLOWS+=" ${WF_TOF}${SUFFIX_ALICE3}"
   [ $DOO2_PID_TOF_QA -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tof-qa-mc"
   # Vertexing
-  WF_SKIM="o2-analysis-hf-track-index-skims-creator"
+  WF_SKIM="o2-analysis-hf-track-index-skim-creator"
   [ $DOO2_SKIM -eq 1 ] && WORKFLOWS+=" ${WF_SKIM}${SUFFIX_CASC}"
   [ $DOO2_CAND_2PRONG -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-2prong"
   [ $DOO2_CAND_3PRONG -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-3prong"
@@ -345,20 +350,20 @@ function MakeScriptO2 {
   [ $DOO2_CAND_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-bplus"
   [ $DOO2_CAND_DSTAR -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-dstar"
   # Selectors
-  [ $DOO2_SEL_D0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-d0-candidate-selector"
-  WF_SEL_JPSI="o2-analysis-hf-jpsi-candidate-selector"
+  [ $DOO2_SEL_D0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-d0"
+  WF_SEL_JPSI="o2-analysis-hf-candidate-selector-jpsi"
   [ $DOO2_SEL_JPSI -eq 1 ] && WORKFLOWS+=" ${WF_SEL_JPSI}${SUFFIX_ALICE3}"
-  [ $DOO2_SEL_DS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-ds-tokkpi-candidate-selector"
-  [ $DOO2_SEL_DPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-dplus-topikpi-candidate-selector"
-  [ $DOO2_SEL_LC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-lc-candidate-selector"
-  [ $DOO2_SEL_LB -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-lb-tolcpi-candidate-selector"
-  [ $DOO2_SEL_XIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-xic-topkpi-candidate-selector"
-  [ $DOO2_SEL_X -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-x-tojpsipipi-candidate-selector"
-  [ $DOO2_SEL_CHIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-chic-tojpsigamma-candidate-selector"
-  [ $DOO2_SEL_LCK0SP -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-lc-tok0sp-candidate-selector"
-  [ $DOO2_SEL_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-xicc-topkpipi-candidate-selector"
-  [ $DOO2_SEL_B0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-b0-todpi-candidate-selector"
-  [ $DOO2_SEL_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-bplus-tod0pi-candidate-selector"
+  [ $DOO2_SEL_DS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-ds-to-k-k-pi"
+  [ $DOO2_SEL_DPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-dplus-to-pi-k-pi"
+  [ $DOO2_SEL_LC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-lc"
+  [ $DOO2_SEL_LB -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-lb-to-lc-pi"
+  [ $DOO2_SEL_XIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-xic-to-p-k-pi"
+  [ $DOO2_SEL_X -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-x-to-jpsi-pi-pi"
+  [ $DOO2_SEL_CHIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-chic-to-jpsi-gamma"
+  [ $DOO2_SEL_LCK0SP -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-lc-to-k0s-p"
+  [ $DOO2_SEL_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-xicc-to-p-k-pi-pi"
+  [ $DOO2_SEL_B0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-b0-to-d-pi"
+  [ $DOO2_SEL_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-bplus-to-d0-pi"
   # User tasks
   [ $DOO2_TASK_D0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-d0"
   [ $DOO2_TASK_JPSI -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-jpsi"
@@ -369,28 +374,28 @@ function MakeScriptO2 {
   [ $DOO2_TASK_XIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-xic"
   [ $DOO2_TASK_X -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-x"
   [ $DOO2_TASK_CHIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-chic"
-  [ $DOO2_TASK_LCK0SP -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-lc-tok0sp"
+  [ $DOO2_TASK_LCK0SP -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-lc-to-k0s-p"
   [ $DOO2_TASK_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-xicc"
   [ $DOO2_TASK_B0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-b0"
   [ $DOO2_TASK_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-bplus"
   # Correlations
   WF_CORR=""
-  [ $DOO2_D0D0BAR_DATA -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-d0d0bar o2-analysis-hf-task-correlation-ddbar"
-  [ $DOO2_D0D0BAR_MCREC -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-d0d0bar-mc-rec o2-analysis-hf-task-correlation-ddbar-mc-rec"
-  [ $DOO2_D0D0BAR_MCGEN -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-d0d0bar-mc-gen o2-analysis-hf-task-correlation-ddbar-mc-gen"
-  [ $DOO2_DPLUSDMINUS_DATA -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-dplusdminus o2-analysis-hf-task-correlation-ddbar"
-  [ $DOO2_DPLUSDMINUS_MCREC -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-dplusdminus-mc-rec o2-analysis-hf-task-correlation-ddbar-mc-rec"
-  [ $DOO2_DPLUSDMINUS_MCGEN -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-dplusdminus-mc-gen o2-analysis-hf-task-correlation-ddbar-mc-gen"
+  [ $DOO2_D0D0BAR_DATA -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-d0-d0bar o2-analysis-hf-task-correlation-d-dbar"
+  [ $DOO2_D0D0BAR_MCREC -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-d0-d0bar-mc-rec o2-analysis-hf-task-correlation-d-dbar-mc-rec"
+  [ $DOO2_D0D0BAR_MCGEN -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-d0-d0bar-mc-gen o2-analysis-hf-task-correlation-d-dbar-mc-gen"
+  [ $DOO2_DPLUSDMINUS_DATA -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-dplus-dminus o2-analysis-hf-task-correlation-d-dbar"
+  [ $DOO2_DPLUSDMINUS_MCREC -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-dplus-dminus-mc-rec o2-analysis-hf-task-correlation-d-dbar-mc-rec"
+  [ $DOO2_DPLUSDMINUS_MCGEN -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-dplus-dminus-mc-gen o2-analysis-hf-task-correlation-d-dbar-mc-gen"
   [ "$WF_CORR" ] && WORKFLOWS+=" $WF_CORR"
   [ $DOO2_TASK_FLOW -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-flow"
   # Tree creators
-  [ $DOO2_TREE_D0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-d0-tokpi"
-  [ $DOO2_TREE_LC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-lc-topkpi"
-  [ $DOO2_TREE_LB -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-lb-tolcpi"
-  [ $DOO2_TREE_X -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-x-tojpsipipi"
-  [ $DOO2_TREE_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-xicc-topkpipi"
-  [ $DOO2_TREE_CHIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-chic-tojpsigamma"
-  [ $DOO2_TREE_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-bplus-tod0pi"
+  [ $DOO2_TREE_D0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-d0-to-k-pi"
+  [ $DOO2_TREE_LC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-lc-to-p-k-pi"
+  [ $DOO2_TREE_LB -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-lb-to-lc-pi"
+  [ $DOO2_TREE_X -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-x-to-jpsi-pi-pi"
+  [ $DOO2_TREE_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-xicc-to-p-k-pi-pi"
+  [ $DOO2_TREE_CHIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-chic-to-jpsi-gamma"
+  [ $DOO2_TREE_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-bplus-to-d0-pi"
   # Other
   [ $DOO2_MCCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-mc-converter"
   [ $DOO2_FDDCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-fdd-converter"

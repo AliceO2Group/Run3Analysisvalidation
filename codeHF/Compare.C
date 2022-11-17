@@ -42,42 +42,42 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun2 = "
   // Histogram specification: axis label, AliPhysics name, O2Physics path/name, rebin, log scale histogram, log scale ratio, projection axis
 
   VecSpecHis vecHisEvents;
-  AddHistogram(vecHisEvents, "primary vtx x (cm)", "hPrimVertX", "hf-tag-sel-collisions/hPrimVtxX", 1, 1, 0);
-  AddHistogram(vecHisEvents, "primary vtx y (cm)", "hPrimVertY", "hf-tag-sel-collisions/hPrimVtxY", 1, 1, 0);
-  AddHistogram(vecHisEvents, "primary vtx z (cm)", "hPrimVertZ", "hf-tag-sel-collisions/hPrimVtxZ", 1, 1, 0);
-  AddHistogram(vecHisEvents, "primary vtx N contributors", "fHistPrimVertContr", "hf-tag-sel-collisions/hNContributors", 1, 1, 0);
+  AddHistogram(vecHisEvents, "primary vtx x (cm)", "hPrimVertX", "hf-track-index-skim-creator-tag-sel-collisions/hPrimVtxX", 1, 1, 0);
+  AddHistogram(vecHisEvents, "primary vtx y (cm)", "hPrimVertY", "hf-track-index-skim-creator-tag-sel-collisions/hPrimVtxY", 1, 1, 0);
+  AddHistogram(vecHisEvents, "primary vtx z (cm)", "hPrimVertZ", "hf-track-index-skim-creator-tag-sel-collisions/hPrimVtxZ", 1, 1, 0);
+  AddHistogram(vecHisEvents, "primary vtx N contributors", "fHistPrimVertContr", "hf-track-index-skim-creator-tag-sel-collisions/hNContributors", 1, 1, 0);
 
   VecSpecHis vecHisTracks;
-  AddHistogram(vecHisTracks, "#it{p}_{T} before selections (GeV/#it{c})", "hPtAllTracks", "hf-tag-sel-tracks/hPtNoCuts", 2, 1, 0);
-  AddHistogram(vecHisTracks, "#it{p}_{T} (2-prong sel.)", "hPtSelTracks2prong", "hf-tag-sel-tracks/hPtCuts2Prong", 2, 1, 0);
-  AddHistogram(vecHisTracks, "#it{p}_{T} (3-prong sel.)", "hPtSelTracks3prong", "hf-tag-sel-tracks/hPtCuts3Prong", 2, 1, 0);
-  AddHistogram(vecHisTracks, "#it{p}_{T} (bachelor sel.)", "hPtSelTracksbachelor", "hf-tag-sel-tracks/hPtCutsV0bachelor", 2, 1, 0);
-  AddHistogram(vecHisTracks, "DCA XY to prim. vtx. (2-prong sel.) (cm)", "hImpParSelTracks2prong", "hf-tag-sel-tracks/hDCAToPrimXYVsPtCuts2Prong", 2, 1, 0, "y");
-  AddHistogram(vecHisTracks, "DCA XY to prim. vtx. (3-prong sel.) (cm)", "hImpParSelTracks3prong", "hf-tag-sel-tracks/hDCAToPrimXYVsPtCuts3Prong", 2, 1, 0, "y");
-  AddHistogram(vecHisTracks, "DCA XY to prim. vtx. (bachelor sel.) (cm)", "hImpParSelTracksbachelor", "hf-tag-sel-tracks/hDCAToPrimXYVsPtCutsV0bachelor", 2, 1, 0, "y");
-  AddHistogram(vecHisTracks, "#it{#eta} (2-prong sel.)", "hEtaSelTracks2prong", "hf-tag-sel-tracks/hEtaCuts2Prong", 2, 0, 0);
-  AddHistogram(vecHisTracks, "#it{#eta} (3-prong sel.)", "hEtaSelTracks3prong", "hf-tag-sel-tracks/hEtaCuts3Prong", 2, 0, 0);
-  AddHistogram(vecHisTracks, "#it{#eta} (bachelor sel.)", "hEtaSelTracksbachelor", "hf-tag-sel-tracks/hEtaCutsV0bachelor", 2, 0, 0);
+  AddHistogram(vecHisTracks, "#it{p}_{T} before selections (GeV/#it{c})", "hPtAllTracks", "hf-track-index-skim-creator-tag-sel-tracks/hPtNoCuts", 2, 1, 0);
+  AddHistogram(vecHisTracks, "#it{p}_{T} (2-prong sel.)", "hPtSelTracks2prong", "hf-track-index-skim-creator-tag-sel-tracks/hPtCuts2Prong", 2, 1, 0);
+  AddHistogram(vecHisTracks, "#it{p}_{T} (3-prong sel.)", "hPtSelTracks3prong", "hf-track-index-skim-creator-tag-sel-tracks/hPtCuts3Prong", 2, 1, 0);
+  AddHistogram(vecHisTracks, "#it{p}_{T} (bachelor sel.)", "hPtSelTracksbachelor", "hf-track-index-skim-creator-tag-sel-tracks/hPtCutsV0bachelor", 2, 1, 0);
+  AddHistogram(vecHisTracks, "DCA XY to prim. vtx. (2-prong sel.) (cm)", "hImpParSelTracks2prong", "hf-track-index-skim-creator-tag-sel-tracks/hDCAToPrimXYVsPtCuts2Prong", 2, 1, 0, "y");
+  AddHistogram(vecHisTracks, "DCA XY to prim. vtx. (3-prong sel.) (cm)", "hImpParSelTracks3prong", "hf-track-index-skim-creator-tag-sel-tracks/hDCAToPrimXYVsPtCuts3Prong", 2, 1, 0, "y");
+  AddHistogram(vecHisTracks, "DCA XY to prim. vtx. (bachelor sel.) (cm)", "hImpParSelTracksbachelor", "hf-track-index-skim-creator-tag-sel-tracks/hDCAToPrimXYVsPtCutsV0bachelor", 2, 1, 0, "y");
+  AddHistogram(vecHisTracks, "#it{#eta} (2-prong sel.)", "hEtaSelTracks2prong", "hf-track-index-skim-creator-tag-sel-tracks/hEtaCuts2Prong", 2, 0, 0);
+  AddHistogram(vecHisTracks, "#it{#eta} (3-prong sel.)", "hEtaSelTracks3prong", "hf-track-index-skim-creator-tag-sel-tracks/hEtaCuts3Prong", 2, 0, 0);
+  AddHistogram(vecHisTracks, "#it{#eta} (bachelor sel.)", "hEtaSelTracksbachelor", "hf-track-index-skim-creator-tag-sel-tracks/hEtaCutsV0bachelor", 2, 0, 0);
 
   VecSpecHis vecHisSkim;
-  AddHistogram(vecHisSkim, "secondary vtx x - 2prong (cm)", "h2ProngVertX", "hf-track-index-skims-creator/hVtx2ProngX", 5, 1, 0);
-  AddHistogram(vecHisSkim, "secondary vtx y - 2prong (cm)", "h2ProngVertY", "hf-track-index-skims-creator/hVtx2ProngY", 5, 1, 0);
-  AddHistogram(vecHisSkim, "secondary vtx z - 2prong (cm)", "h2ProngVertZ", "hf-track-index-skims-creator/hVtx2ProngZ", 5, 1, 0);
-  AddHistogram(vecHisSkim, "secondary vtx x - 3prong (cm)", "h3ProngVertX", "hf-track-index-skims-creator/hVtx3ProngX", 5, 1, 0);
-  AddHistogram(vecHisSkim, "secondary vtx y - 3prong (cm)", "h3ProngVertY", "hf-track-index-skims-creator/hVtx3ProngY", 5, 1, 0);
-  AddHistogram(vecHisSkim, "secondary vtx z - 3prong (cm)", "h3ProngVertZ", "hf-track-index-skims-creator/hVtx3ProngZ", 5, 1, 0);
+  AddHistogram(vecHisSkim, "secondary vtx x - 2prong (cm)", "h2ProngVertX", "hf-track-index-skim-creator/hVtx2ProngX", 5, 1, 0);
+  AddHistogram(vecHisSkim, "secondary vtx y - 2prong (cm)", "h2ProngVertY", "hf-track-index-skim-creator/hVtx2ProngY", 5, 1, 0);
+  AddHistogram(vecHisSkim, "secondary vtx z - 2prong (cm)", "h2ProngVertZ", "hf-track-index-skim-creator/hVtx2ProngZ", 5, 1, 0);
+  AddHistogram(vecHisSkim, "secondary vtx x - 3prong (cm)", "h3ProngVertX", "hf-track-index-skim-creator/hVtx3ProngX", 5, 1, 0);
+  AddHistogram(vecHisSkim, "secondary vtx y - 3prong (cm)", "h3ProngVertY", "hf-track-index-skim-creator/hVtx3ProngY", 5, 1, 0);
+  AddHistogram(vecHisSkim, "secondary vtx z - 3prong (cm)", "h3ProngVertZ", "hf-track-index-skim-creator/hVtx3ProngZ", 5, 1, 0);
 
   VecSpecHis vecHisCand2;
-  AddHistogram(vecHisCand2, "XX element of PV cov. matrix (cm^{2})", "hCovMatPrimVXX2Prong", "hf-cand-creator-2prong/hCovPVXX", 1, 1, 0);
-  AddHistogram(vecHisCand2, "XX element of SV cov. matrix (cm^{2})", "hCovMatSecVXX2Prong", "hf-cand-creator-2prong/hCovSVXX", 1, 1, 0);
+  AddHistogram(vecHisCand2, "XX element of PV cov. matrix (cm^{2})", "hCovMatPrimVXX2Prong", "hf-candidate-creator-2prong/hCovPVXX", 1, 1, 0);
+  AddHistogram(vecHisCand2, "XX element of SV cov. matrix (cm^{2})", "hCovMatSecVXX2Prong", "hf-candidate-creator-2prong/hCovSVXX", 1, 1, 0);
 
   VecSpecHis vecHisCand3;
-  AddHistogram(vecHisCand3, "XX element of PV cov. matrix (cm^{2})", "hCovMatPrimVXX3Prong", "hf-cand-creator-3prong/hCovPVXX", 1, 1, 0);
-  AddHistogram(vecHisCand3, "XX element of SV cov. matrix (cm^{2})", "hCovMatSecVXX3Prong", "hf-cand-creator-3prong/hCovSVXX", 1, 1, 0);
-  AddHistogram(vecHisCand3, "YY element of PV cov. matrix (cm^{2})", "hCovMatPrimVYY3Prong", "hf-cand-creator-3prong/hCovPVYY", 1, 1, 0);
-  AddHistogram(vecHisCand3, "YY element of SV cov. matrix (cm^{2})", "hCovMatSecVYY3Prong", "hf-cand-creator-3prong/hCovSVYY", 1, 1, 0);
-  AddHistogram(vecHisCand3, "ZZ element of PV cov. matrix (cm^{2})", "hCovMatPrimVZZ3Prong", "hf-cand-creator-3prong/hCovPVZZ", 1, 1, 0);
-  AddHistogram(vecHisCand3, "ZZ element of SV cov. matrix (cm^{2})", "hCovMatSecVZZ3Prong", "hf-cand-creator-3prong/hCovSVZZ", 1, 1, 0);
+  AddHistogram(vecHisCand3, "XX element of PV cov. matrix (cm^{2})", "hCovMatPrimVXX3Prong", "hf-candidate-creator-3prong/hCovPVXX", 1, 1, 0);
+  AddHistogram(vecHisCand3, "XX element of SV cov. matrix (cm^{2})", "hCovMatSecVXX3Prong", "hf-candidate-creator-3prong/hCovSVXX", 1, 1, 0);
+  AddHistogram(vecHisCand3, "YY element of PV cov. matrix (cm^{2})", "hCovMatPrimVYY3Prong", "hf-candidate-creator-3prong/hCovPVYY", 1, 1, 0);
+  AddHistogram(vecHisCand3, "YY element of SV cov. matrix (cm^{2})", "hCovMatSecVYY3Prong", "hf-candidate-creator-3prong/hCovSVYY", 1, 1, 0);
+  AddHistogram(vecHisCand3, "ZZ element of PV cov. matrix (cm^{2})", "hCovMatPrimVZZ3Prong", "hf-candidate-creator-3prong/hCovPVZZ", 1, 1, 0);
+  AddHistogram(vecHisCand3, "ZZ element of SV cov. matrix (cm^{2})", "hCovMatSecVZZ3Prong", "hf-candidate-creator-3prong/hCovSVZZ", 1, 1, 0);
 
   VecSpecHis vecHisD0;
   AddHistogram(vecHisD0, "#it{p}_{T} prong 0 (GeV/#it{c})", "hPtD0Dau0", "hf-task-d0/hPtProng0", 2, 1, 0);
