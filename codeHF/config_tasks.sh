@@ -24,8 +24,8 @@ DOPOSTPROCESS=1     # Run output postprocessing. (Comparison plots. Requires DOA
 [ "$ISINPUTO2" -eq 1 ] && { DOCONVERT=0; DOALI=0; }
 
 # Steering commands
-ENVALI="alienv setenv AliPhysics/latest-rename-o2 -c"
-ENVO2="alienv setenv O2Physics/latest-rename-o2 -c"
+ENVALI="alienv setenv AliPhysics/latest -c"
+ENVO2="alienv setenv O2Physics/latest -c"
 
 # O2 database
 DATABASE_O2="workflows.yml"
