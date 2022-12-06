@@ -227,6 +227,9 @@ workflows:
     <<: *taskddbar
     requires_mc: yes
 
+  o2-analysis-hf-task-correlation-d0-hadrons: &taskdhadron
+    executable: o2-analysis-hf-task-correlation-d0-hadrons
+
   o2-analysis-hf-task-flow:
     dependencies:
       - o2-analysis-hf-candidate-selector-d0
@@ -297,6 +300,11 @@ workflows:
     <<: *dplusdminus
     requires_mc: yes
     tables: DDBARPAIR
+
+  o2-analysis-hf-correlator-d0-hadrons: &d0hadroncorr
+    executable: o2-analysis-hf-correlator-d0-hadrons
+    dependencies: o2-analysis-hf-candidate-selector-d0
+    tables: [DHADRONPAIR, DHADRONRECOINFO]
 
   # QA
 

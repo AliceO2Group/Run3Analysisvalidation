@@ -95,6 +95,7 @@ DOO2_D0D0BAR_MCGEN=0      # hf-correlator-d0-d0bar-mc-gen
 DOO2_DPLUSDMINUS_DATA=0   # hf-correlator-dplus-dminus
 DOO2_DPLUSDMINUS_MCREC=0  # hf-correlator-dplus-dminus-mc-rec
 DOO2_DPLUSDMINUS_MCGEN=0  # hf-correlator-dplus-dminus-mc-gen
+DOO2_D0HADRON=0           # hf-correlator-d0-hadrons
 DOO2_TASK_FLOW=0    # hf-task-flow
 # Other
 DOO2_MCCONV=0       # mc-converter
@@ -382,6 +383,7 @@ function MakeScriptO2 {
   [ $DOO2_DPLUSDMINUS_DATA -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-dplus-dminus o2-analysis-hf-task-correlation-d-dbar"
   [ $DOO2_DPLUSDMINUS_MCREC -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-dplus-dminus-mc-rec o2-analysis-hf-task-correlation-d-dbar-mc-rec"
   [ $DOO2_DPLUSDMINUS_MCGEN -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-dplus-dminus-mc-gen o2-analysis-hf-task-correlation-d-dbar-mc-gen"
+  [ $DOO2_D0HADRON -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-d0-hadrons o2-analysis-hf-task-correlation-d0-hadrons"
   [ "$WF_CORR" ] && WORKFLOWS+=" $WF_CORR"
   [ $DOO2_TASK_FLOW -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-flow"
   # Tree creators

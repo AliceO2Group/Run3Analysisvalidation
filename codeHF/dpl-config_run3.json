@@ -1253,6 +1253,131 @@
         },
         "processMc": "true"
     },
+    "hf-correlator-d0-hadrons": {
+    "selectionFlagD0": "1",
+    "yCandMax": "-1",
+    "etaTrackMax": "4.0",
+    "dcaXYTrackMax": "0.0025",
+    "dcaZTrackMax": "0.0025",
+    "ptCandMin": "-1.",
+    "ptTrackMin": "-1.",
+    "ptBinsForMassAndEfficiency": {
+            "values": [
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "8",
+                "12",
+                "24",
+                "36"
+            ]
+         },
+    "efficiencyFlagD": "0",
+    "multMin": "0.",
+    "multMax": "1000.",
+    "ptSoftPionMax": "0.0024",
+    "selectionFlagD0bar": "1",
+    "efficiencyFlagD": "0",
+    "multMin": "0.",
+    "multMax": "1000.",
+    "processData": "true",
+    "processMcRec": "false",
+    "processMcGen": "false"
+    },
+    "hf-task-correlation-d0-hadrons": {
+    "ptBinsForCorrelations": {
+            "values": [
+                "0",
+                "2",
+                "4",
+                "6",
+                "8",
+                "12",
+                "16",
+                "24"                
+            ]
+         },
+    "signalRegionInner": {
+            "values": [
+                "1.810",
+                "1.810",
+                "1.810",
+                "1.810",
+                "1.810",
+                "1.810",
+                "1.810",
+                "1.810"                
+            ]
+         },        
+    "signalRegionOuter": {
+            "values": [
+                "1.922",
+                "1.922",
+                "1.922",
+                "1.922",
+                "1.922",
+                "1.922",
+                "1.922",
+                "1.922"                
+            ]
+         },
+    "sidebandLeftInner": {
+            "values": [
+                "1.642",
+                "1.642",
+                "1.642",
+                "1.642",
+                "1.642",
+                "1.642",
+                "1.642",
+                "1.642"                
+            ]
+         },
+    "sidebandLeftOuter": {
+            "values": [
+                "1.754",
+                "1.754",
+                "1.754",
+                "1.754",
+                "1.754",
+                "1.754",
+                "1.754",
+                "1.754"                
+            ]
+         },
+    "sidebandRightInner": {
+            "values": [
+                "1.978",
+                "1.978",
+                "1.978",
+                "1.978",
+                "1.978",
+                "1.978",
+                "1.978",
+                "1.978"                
+            ]
+         },
+    "sidebandRightOuter": {
+            "values": [
+                "2.090",
+                "2.090",
+                "2.090",
+                "2.090",
+                "2.090",
+                "2.090",
+                "2.090",
+                "2.090"                
+            ]
+         },
+    "efficiencyFlagD": "0",
+    "processData": "true",
+    "processMcRec": "false",
+    "processMcGen": "false"
+    },
     "hf-task-flow": {
         "zVertexMax": "10.0",
         "etaTrackAssocMax": "0.8",
