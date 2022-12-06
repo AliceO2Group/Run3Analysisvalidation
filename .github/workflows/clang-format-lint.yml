@@ -1,0 +1,19 @@
+---
+# https://github.com/marketplace/actions/clang-format-lint
+name: Clang Format Linter
+on: [push, pull_request]
+jobs:
+  build:
+    name: Clang Format Linter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Clang Format
+        uses: DoozyX/clang-format-lint-action@v0.11
+        with:
+          #source: '.'
+          #exclude: './third_party ./external'
+          #extensions: 'h,cpp,cxx,C'
+          clangFormatVersion: 11
+          style: file

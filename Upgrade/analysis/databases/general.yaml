@@ -1,0 +1,64 @@
+latexparticle:
+  Lambda_c: "#Lambda_{c}"
+  Xi_cc: "#Xi_{cc}"
+  Omega_cc: "#Omega_{cc}"
+  Omega_ccc: "#Omega_{ccc}"
+  X3872: "X(3872)"
+  Jpsitoee: "J/#psi #rightarrow e^{#plus} e^{#minus}"
+  Chi_c: "#chi_{c1} #rightarrow J/#psi #gamma"
+  B_plus: "B^{#plus} #rightarrow #bar{D}^{0} #pi^{#plus}"
+text_string:
+  PbPb5p52: "PbPb #sqrt{#it{s}_{NN}} = 5.52 TeV"
+  pp14p0: "pp #sqrt{#it{s}} = 14 TeV"
+  absy3p0: "|#it{y}| < 3.0"
+  absy2p0: "|#it{y}| < 2.0"
+  absy1p44: "|#it{y}| < 1.44"
+  absy0p33: "|#it{y}| < 0.33"
+  Pyhia8mode2: "Pythia 8, mode = 2"
+  Pyhia8monash: "Pythia 8, monash tune"
+  SHMC_2021: "SHMC_2021"
+statistics:
+  PbPb2p76:
+    sigmaAA_b: 7.8 #FIXME these are copied from 5.52 TeV
+    lumiAA_monthi_invnb: 4.92 #FIXME these are copied from 5.52 TeV
+  PbPb5p5:
+    sigmaAA_b: 7.8 #FIXME these are copied from 5.52 TeV
+    lumiAA_monthi_invnb: 4.92 #FIXME these are copied from 5.52 TeV
+  PbPb5p52:
+    sigmaAA_b: 7.8
+    lumiAA_monthi_invnb: 35
+  KrKr6p46:
+    sigmaAA_b: 4.06
+    lumiAA_monthi_invnb: 123.
+  ArAr6p3:
+    sigmaAA_b: 2.6
+    lumiAA_monthi_invnb: 1080
+  pp14p0:
+    sigmaAA_b: 0.070
+    lumiAA_monthi_invnb: 18000000
+
+branchingratio:
+  Jpsitoee:
+    central: 0.0594
+  Chi_c:
+    central: 0.020374200 #0.343*0.0594
+  Lambda_c:
+    central: 0.0628
+  Xi_cc: #https://arxiv.org/abs/1703.09086
+    central: 1.1e-3
+    min: 2.2e-4
+    max: 2.2e-3
+  Omega_cc:
+    central: 1.08e-3
+    min: 2.16e-4
+    max: 2.16e-3
+  Omega_ccc:
+    central: 5.4e-05
+    min: 2.16e-6
+    max: 2.16e-4
+  X3872:
+    # https://pdg.lbl.gov/2020/tables/rpp2020-tab-mesons-c-cbar.pdf
+    # https://journals.aps.org/prd/pdf/10.1103/PhysRevD.100.094003
+    central: 0.0024440100 #0.041 * 0.05961
+  B_plus:
+    central: 0.00018467280
