@@ -32,6 +32,8 @@ jobs:
         with:
           token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
           fetch-depth: 0
+          # Try to get the merge commit.
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
 
       # MegaLinter
       - name: MegaLinter
