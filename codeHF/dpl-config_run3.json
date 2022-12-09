@@ -764,13 +764,16 @@
     "hf-candidate-selector-lc-to-k0s-p": {
         "ptCandMin": "0",
         "ptCandMax": "50",
-        "ptPidTpcApplyMin": "4",
-        "ptPidTpcMin": "0",
-        "ptPidTpcMax": "100",
-        "pPidCombMax": "4",
-        "nSigmaTpcMax": "3",
-        "TPCNClsFindablePIDCut": "50",
-        "requireTpc": "true",
+        "usePidBach": "true",
+        "pPidThreshold": "1",
+        "nSigmaTpcMaxLowP": "2",
+        "nSigmaTpcMaxHighP": "9999",
+        "nSigmaTofMaxLowP": "9999",
+        "nSigmaTofMaxHighP": "3",
+        "requireTofLowP": "false",
+        "requireTofHighP": "true",
+        "probBayesMinLowP": "-1",
+        "probBayesMinHighP": "-1",
         "binsPt": {
             "values": [
                 "1",
