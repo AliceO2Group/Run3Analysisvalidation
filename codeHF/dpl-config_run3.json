@@ -421,7 +421,7 @@
     "hf-candidate-creator-b0-expressions": "",
     "hf-candidate-creator-b0-mc": "",
     "hf-candidate-creator-bplus": {
-        "bz": "5.",
+        "isRun2": "true",
         "propagateToPCA": "true",
         "maxR": "5.",
         "maxDZIni": "999.",
@@ -430,8 +430,12 @@
         "useAbsDCA": "true",
         "selectionFlagD0": "1",
         "selectionFlagD0bar": "1",
-        "yCandMax": "1.44",
-        "etaTrackMax": "1.44"
+        "yCandMax": "-1",
+        "etaTrackMax": "0.8"
+    },
+    "hf-candidate-creator-bplus-expressions": "",
+    "hf-candidate-creator-bplus-mc": {
+        "processMc": "true"
     },
     "hf-candidate-creator-2prong-expressions": {
         "processMc": "true"
