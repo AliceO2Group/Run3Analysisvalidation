@@ -1254,14 +1254,14 @@
         "processMc": "true"
     },
     "hf-correlator-d0-hadrons": {
-    "selectionFlagD0": "1",
-    "yCandMax": "-1",
-    "etaTrackMax": "4.0",
-    "dcaXYTrackMax": "0.0025",
-    "dcaZTrackMax": "0.0025",
-    "ptCandMin": "-1.",
-    "ptTrackMin": "-1.",
-    "ptBinsForMassAndEfficiency": {
+        "selectionFlagD0": "1",
+        "yCandMax": "-1",
+        "etaTrackMax": "4.0",
+        "dcaXYTrackMax": "0.0025",
+        "dcaZTrackMax": "0.0025",
+        "ptCandMin": "-1.",
+        "ptTrackMin": "-1.",
+        "ptBinsForMassAndEfficiency": {
             "values": [
                 "0",
                 "1",
@@ -1276,20 +1276,20 @@
                 "36"
             ]
          },
-    "efficiencyFlagD": "0",
-    "multMin": "0.",
-    "multMax": "1000.",
-    "ptSoftPionMax": "0.0024",
-    "selectionFlagD0bar": "1",
-    "efficiencyFlagD": "0",
-    "multMin": "0.",
-    "multMax": "1000.",
-    "processData": "true",
-    "processMcRec": "false",
-    "processMcGen": "false"
+        "efficiencyFlagD": "0",
+        "multMin": "0.",
+        "multMax": "1000.",
+        "ptSoftPionMax": "0.0024",
+        "selectionFlagD0bar": "1",
+        "efficiencyFlagD": "0",
+        "multMin": "0.",
+        "multMax": "1000.",
+        "processData": "true",
+        "processMcRec": "false",
+        "processMcGen": "false"
     },
     "hf-task-correlation-d0-hadrons": {
-    "ptBinsForCorrelations": {
+        "ptBinsForCorrelations": {
             "values": [
                 "0",
                 "2",
@@ -1301,7 +1301,7 @@
                 "24"
             ]
          },
-    "signalRegionInner": {
+        "signalRegionInner": {
             "values": [
                 "1.810",
                 "1.810",
@@ -1313,7 +1313,7 @@
                 "1.810"
             ]
          },
-    "signalRegionOuter": {
+        "signalRegionOuter": {
             "values": [
                 "1.922",
                 "1.922",
@@ -1325,7 +1325,7 @@
                 "1.922"
             ]
          },
-    "sidebandLeftInner": {
+        "sidebandLeftInner": {
             "values": [
                 "1.642",
                 "1.642",
@@ -1337,7 +1337,7 @@
                 "1.642"
             ]
          },
-    "sidebandLeftOuter": {
+        "sidebandLeftOuter": {
             "values": [
                 "1.754",
                 "1.754",
@@ -1349,7 +1349,7 @@
                 "1.754"
             ]
          },
-    "sidebandRightInner": {
+        "sidebandRightInner": {
             "values": [
                 "1.978",
                 "1.978",
@@ -1361,7 +1361,7 @@
                 "1.978"
             ]
          },
-    "sidebandRightOuter": {
+        "sidebandRightOuter": {
             "values": [
                 "2.090",
                 "2.090",
@@ -1373,10 +1373,10 @@
                 "2.090"
             ]
          },
-    "efficiencyFlagD": "0",
-    "processData": "true",
-    "processMcRec": "false",
-    "processMcGen": "false"
+        "efficiencyFlagD": "0",
+        "processData": "true",
+        "processMcRec": "false",
+        "processMcGen": "false"
     },
     "hf-task-flow": {
         "zVertexMax": "10.0",
