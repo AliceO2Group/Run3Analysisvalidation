@@ -1255,6 +1255,7 @@
     },
     "hf-correlator-d0-hadrons": {
         "selectionFlagD0": "1",
+        "selectionFlagD0bar": "1",
         "yCandMax": "-1",
         "etaTrackMax": "4.0",
         "dcaXYTrackMax": "0.0025",
@@ -1280,10 +1281,6 @@
         "multMin": "0.",
         "multMax": "1000.",
         "ptSoftPionMax": "0.0024",
-        "selectionFlagD0bar": "1",
-        "efficiencyFlagD": "0",
-        "multMin": "0.",
-        "multMax": "1000.",
         "processData": "true",
         "processMcRec": "false",
         "processMcGen": "false"
