@@ -45,7 +45,7 @@ def efficiencytracking(fileo2, var, sign): # pylint: disable=too-many-locals
     # it extracts the efficiency from qa-efficiency
     hadron_list = ["Electron", "Muon", "Pion", "Kaon", "Proton", "All"]
     # Other hadrons: "Deuteron", "Triton", "He3", "Alpha"
-    color_list = [1, 2, 4, 6, 8, 20]
+    color_list = [1, 2, 4, 6, 8, 28]
     marker_list = [20, 21, 22, 34, 45, 47]
 
     gStyle.SetOptStat(0)
