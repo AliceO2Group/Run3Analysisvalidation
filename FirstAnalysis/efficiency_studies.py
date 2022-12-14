@@ -67,7 +67,7 @@ def prepare_canvas(var, sign, had, det): # pylint: disable=too-many-locals
 def efficiencytracking(fileo2, det, sign, var): # pylint: disable=too-many-locals
     # plots the efficiency vs pT, eta and phi for all the species
     # it extracts the efficiency from qa-efficiency
-    hadron_list = ["Electron", "Muon", "Pion", "Kaon", "Proton", "All"]
+    hadron_list = ["Pion", "Kaon", "Proton", "All"]
     # Other hadrons: "Deuteron", "Triton", "He3", "Alpha"
     color_list = [1, 2, 4, 6, 8, 28]
     marker_list = [20, 21, 22, 34, 45, 47]
@@ -95,8 +95,8 @@ def efficiencytracking(fileo2, det, sign, var): # pylint: disable=too-many-local
     for i, had in enumerate(hadron_list):
         leff = heff.FindObject(f"{sign} {had}")
         eff = leff.FindObject(eff_objs[var])
-        results = prepare_canvas(var, sign, had, det)
-        c_single = results[0]
+        results_single = prepare_canvas(var, sign, had, det)
+        c_single = results_single[0]
         c_single.cd()
         eff.Paint("p")
         graph = eff.GetPaintedGraph().Clone()
