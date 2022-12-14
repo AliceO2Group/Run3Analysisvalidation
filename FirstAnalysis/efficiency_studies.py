@@ -1,6 +1,8 @@
 #!/usr/bin/env python
-
-# pylint: disable=missing-module-docstring, missing-function-docstring
+"""
+Plotting macro for the qa-efficiency task.
+Usage: ./efficiency_studies.py AnalysisResults_O2.root
+"""
 
 import argparse
 
@@ -8,12 +10,19 @@ from ROOT import TH1F, TCanvas, TEfficiency, TFile, TLegend, TLatex # pylint: di
 from ROOT import gPad, gStyle, gROOT # pylint: disable=import-error,no-name-in-module
 
 def save_canvas(canvas, title):
+    """
+    Save canvas in png, pdf, root.
+    """
     format_list = [".png", ".pdf", ".root"]
     for file_format in format_list:
         canvas.SaveAs(title + file_format)
 
 
 def prepare_canvas(var, sign, had, det): # pylint: disable=too-many-locals
+    """
+    Initialize canvas, axes, legend.
+    `hempty` must be captured at return, otherwise ROOT crashes.
+    """
     cname = f"c_{had}_{det}_{sign}_{var}"
     hname = f"hempty_{had}_{det}_{sign}_{var}"
     ctitle = f"Efficiency for {sign} {had}, {det}"
@@ -64,9 +73,10 @@ def prepare_canvas(var, sign, had, det): # pylint: disable=too-many-locals
 
     return canv, leg, hempty
 
-def efficiencytracking(fileo2, det, sign, var): # pylint: disable=too-many-locals
-    # plots the efficiency vs pT, eta and phi for all the species
-    # it extracts the efficiency from qa-efficiency
+def efficiency_tracking(fileo2, det, sign, var): # pylint: disable=too-many-locals
+    """
+    Plot efficiency vs pT, eta and phi for all hadron species.
+    """
     hadron_list = ["Pion", "Kaon", "Proton", "All"]
     # Other hadrons: "Deuteron", "Triton", "He3", "Alpha"
     color_list = [1, 2, 4, 6, 8, 28]
@@ -119,9 +129,11 @@ def efficiencytracking(fileo2, det, sign, var): # pylint: disable=too-many-local
     save_canvas(c_all, f"efficiency_tracking_alltogether_{det}_{sign}_{var}")
 
 
-# This is not updated, it cannot be produced from QAEfficiency output
-def efficiencyhadron(had, var):
-    # extract the efficiency vs pT for single species(D0, Lc, Jpsi)
+def efficiency_hadron(had, var):
+    """
+    Extract efficiency vs pT for single species (D0, Lc, Jpsi).
+    This is not updated, it cannot be produced from QAEfficiency output.
+    """
     fileo2 = TFile("../codeHF/AnalysisResults_O2.root")
     ceffhf = TCanvas("ceffhf", "A Simple Graph Example")
     ceffhf.SetCanvasSize(1500, 700)
@@ -139,6 +151,9 @@ def efficiencyhadron(had, var):
 
 
 def main():
+    """
+    Main function.
+    """
     gROOT.SetBatch(True)
 
     parser = argparse.ArgumentParser(description="Arguments to pass")
@@ -163,13 +178,13 @@ def main():
     for var in var_list:
         for sign in sign_list:
             for det in det_list:
-                efficiencytracking(infile, det, sign, var)
+                efficiency_tracking(infile, det, sign, var)
     for sign in sign_list:
-        efficiencytracking(infile, "ITS", sign, "Pt")
+        efficiency_tracking(infile, "ITS", sign, "Pt")
 
     #hfhadron_list = ["d0", "dplus", "lc", "xic", "jpsi"]
     #for had in hfhadron_list:
-    #    efficiencyhadron(had, "Pt")
+    #    efficiency_hadron(had, "Pt")
 
 if __name__ == "__main__":
     main()
