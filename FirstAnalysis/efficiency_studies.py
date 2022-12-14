@@ -86,14 +86,17 @@ def efficiencytracking(fileo2, det, sign, var): # pylint: disable=too-many-local
     gStyle.SetTitleOffset(1.1, "x")
     gStyle.SetTitleOffset(1.0, "y")
 
-    c_all, leg_all, h_all = prepare_canvas(var, sign, "all", det) # pylint: disable=unused-variable
+    results = prepare_canvas(var, sign, "all", det)
+    c_all = results[0]
+    leg_all = results[1]
     eff_list = []
 
     heff = fileo2.Get("qa-efficiency/EfficiencyMC")
     for i, had in enumerate(hadron_list):
         leff = heff.FindObject(f"{sign} {had}")
         eff = leff.FindObject(eff_objs[var])
-        c_single, _, h_single = prepare_canvas(var, sign, had, det) # pylint: disable=unused-variable
+        results = prepare_canvas(var, sign, had, det)
+        c_single = results[0]
         c_single.cd()
         eff.Paint("p")
         graph = eff.GetPaintedGraph().Clone()
