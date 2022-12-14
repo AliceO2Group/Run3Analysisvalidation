@@ -1508,6 +1508,60 @@
         "nBinsDeltaEta": "100",
         "nBinsImpactParameter": "2000"
     },
+    "qa-efficiency": {
+        "noFakesHits": "false",
+        "doPositivePDG": "true",
+        "doNegativePDG": "true",
+        "do-un-id": "true",
+        "do-el": "true",
+        "do-mu": "true",
+        "do-pi": "true",
+        "do-ka": "true",
+        "do-pr": "true",
+        "do-de": "true",
+        "do-tr": "true",
+        "do-he": "true",
+        "do-al": "true",
+        "trackSelection": "true",
+        "globalTrackSelection": "0",
+        "nMinNumberOfContributors": "2",
+        "vertex-z-min": "-10",
+        "vertex-z-max": "10",
+        "ptBins": {
+            "values": [
+                "20",
+                "0.1",
+                "10"
+            ]
+        },
+        "log-pt": "0",
+        "etaBins": {
+            "values": [
+                "100",
+                "-0.8",
+                "0.8"
+            ]
+        },
+        "phiBins": {
+            "values": [
+                "100",
+                "0",
+                "6.2839999999999998"
+            ]
+        },
+        "yBins": {
+            "values": [
+                "100",
+                "-0.5",
+                "0.5"
+            ]
+        },
+        "make-eff": "true",
+        "doPtEta": "true",
+        "applyEvSel": "0",
+        "processMC": "true",
+        "processData": "false"
+    },
     "internal-dpl-aod-global-analysis-file-sink": "",
     "internal-dpl-aod-writer": ""
 }
