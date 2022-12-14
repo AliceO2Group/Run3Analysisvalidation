@@ -4,7 +4,7 @@
 
 import argparse
 
-from ROOT import TH1F, TCanvas, TEfficiency, TFile, TLegend # pylint: disable=import-error,no-name-in-module
+from ROOT import TH1F, TCanvas, TEfficiency, TFile, TLegend, TLatex # pylint: disable=import-error,no-name-in-module
 from ROOT import gPad, gStyle, gROOT # pylint: disable=import-error,no-name-in-module
 
 def save_canvas(canvas, title):
@@ -13,14 +13,12 @@ def save_canvas(canvas, title):
         canvas.SaveAs(title + file_format)
 
 
-def prepare_canvas(var, sign, had, det):
+def prepare_canvas(var, sign, had, det): # pylint: disable=too-many-locals
     cname = f"c_{had}_{det}_{sign}_{var}"
     hname = f"hempty_{had}_{det}_{sign}_{var}"
     ctitle = f"Efficiency for {sign} {had}, {det}"
     if var == "Pt":
         ctitle = f"{ctitle} primaries"
-    ctitle_2line = "-0.8 #geq #eta #geq 0.8; -0.5 #geq y #geq 0.5; 0.00 #geq #varphi #geq 2#pi"
-    ctitle = "#splitline{%s}{%s}" % (ctitle, ctitle_2line)
 
     def get_pt_hist():
         hempty = TH1F(hname, f"{ctitle};Transverse Momentum (GeV/c);Efficiency", 100, 0.05, 10)
@@ -46,18 +44,18 @@ def prepare_canvas(var, sign, had, det):
     hempty.GetXaxis().SetMoreLogLabels(1)
     hempty.Draw()
 
-    #xmin = hempty.GetXaxis().GetXmin()
-    #xmax = hempty.GetXaxis().GetXmax()
-    #ymin = hempty.GetYaxis().GetXmin()
-    #ymax = hempty.GetYaxis().GetXmax()
-    #latexa = TLatex()
-    #latexa.SetTextSize(0.04)
-    #latexa.SetTextFont(42)
-    #latexa.SetTextAlign(3)
-    #xave = xmin + (xmax - xmin) / 4.0
-    #latexa.DrawLatex(
-    #    xave, ymax * 0.2, "-0.8 \geq \eta \geq 0.8; -0.5 \geq y \geq 0.5; 0.00 \geq \phi \geq 2\pi"
-    #)
+    xmin = hempty.GetXaxis().GetXmin()
+    xmax = hempty.GetXaxis().GetXmax()
+    ymax = hempty.GetYaxis().GetXmax()
+    latexa = TLatex()
+    latexa.SetTextSize(0.04)
+    latexa.SetTextFont(42)
+    latexa.SetTextAlign(3)
+    xave = xmin + (xmax - xmin) / 4.0
+    latexa.DrawLatex(
+        xave, ymax * 0.2, "-0.8 #geq #eta #geq 0.8"
+    )
+    latexa.DrawLatex(xave, ymax * 0.15, "0.00 #geq #varphi #geq 2#pi")
 
     leg = TLegend(0.55, 0.15, 0.89, 0.35, "P")
     leg.SetNColumns(2)
@@ -143,7 +141,7 @@ def main():
     parser = argparse.ArgumentParser(description="Arguments to pass")
     parser.add_argument("input_file", help="input AnalysisResults.root file")
     parser.add_argument("--dump_eff", default=False, action="store_true",
-                    help="Dump efficiency tree")
+                        help="Dump efficiency tree")
     args = parser.parse_args()
 
     var_list = ["Pt", "Eta", "Phi"]
