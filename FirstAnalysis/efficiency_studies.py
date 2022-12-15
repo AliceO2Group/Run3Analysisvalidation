@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 """
-Plotting macro for the qa-efficiency task.
-Usage: ./efficiency_studies.py AnalysisResults_O2.root
+file: efficiency_studies.py
+brief: Plotting macro for the qa-efficiency task.
+usage: ./efficiency_studies.py AnalysisResults_O2.root
+author: Maja Kabus <mkabus@cern.ch>, CERN / Warsaw University of Technology
 """
 
 import argparse
