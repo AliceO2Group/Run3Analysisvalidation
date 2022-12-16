@@ -421,7 +421,7 @@
     "hf-candidate-creator-b0-expressions": "",
     "hf-candidate-creator-b0-mc": "",
     "hf-candidate-creator-bplus": {
-        "bz": "5.",
+        "isRun2": "true",
         "propagateToPCA": "true",
         "maxR": "5.",
         "maxDZIni": "999.",
@@ -430,8 +430,12 @@
         "useAbsDCA": "true",
         "selectionFlagD0": "1",
         "selectionFlagD0bar": "1",
-        "yCandMax": "1.44",
-        "etaTrackMax": "1.44"
+        "yCandMax": "-1",
+        "etaTrackMax": "0.8"
+    },
+    "hf-candidate-creator-bplus-expressions": "",
+    "hf-candidate-creator-bplus-mc": {
+        "processMc": "true"
     },
     "hf-candidate-creator-2prong-expressions": {
         "processMc": "true"
@@ -760,13 +764,16 @@
     "hf-candidate-selector-lc-to-k0s-p": {
         "ptCandMin": "0",
         "ptCandMax": "50",
-        "ptPidTpcApplyMin": "4",
-        "ptPidTpcMin": "0",
-        "ptPidTpcMax": "100",
-        "pPidCombMax": "4",
-        "nSigmaTpcMax": "3",
-        "TPCNClsFindablePIDCut": "50",
-        "requireTpc": "true",
+        "usePidBach": "true",
+        "pPidThreshold": "1",
+        "nSigmaTpcMaxLowP": "2",
+        "nSigmaTpcMaxHighP": "9999",
+        "nSigmaTofMaxLowP": "9999",
+        "nSigmaTofMaxHighP": "3",
+        "requireTofLowP": "false",
+        "requireTofHighP": "true",
+        "probBayesMinLowP": "-1",
+        "probBayesMinHighP": "-1",
         "binsPt": {
             "values": [
                 "1",
@@ -1622,6 +1629,60 @@
         "nBinsDeltaPhi": "100",
         "nBinsDeltaEta": "100",
         "nBinsImpactParameter": "2000"
+    },
+    "qa-efficiency": {
+        "noFakesHits": "false",
+        "doPositivePDG": "true",
+        "doNegativePDG": "true",
+        "do-un-id": "true",
+        "do-el": "true",
+        "do-mu": "true",
+        "do-pi": "true",
+        "do-ka": "true",
+        "do-pr": "true",
+        "do-de": "true",
+        "do-tr": "true",
+        "do-he": "true",
+        "do-al": "true",
+        "trackSelection": "true",
+        "globalTrackSelection": "0",
+        "nMinNumberOfContributors": "2",
+        "vertex-z-min": "-10",
+        "vertex-z-max": "10",
+        "ptBins": {
+            "values": [
+                "20",
+                "0.1",
+                "10"
+            ]
+        },
+        "log-pt": "0",
+        "etaBins": {
+            "values": [
+                "100",
+                "-0.8",
+                "0.8"
+            ]
+        },
+        "phiBins": {
+            "values": [
+                "100",
+                "0",
+                "6.2839999999999998"
+            ]
+        },
+        "yBins": {
+            "values": [
+                "100",
+                "-0.5",
+                "0.5"
+            ]
+        },
+        "make-eff": "true",
+        "doPtEta": "true",
+        "applyEvSel": "0",
+        "processMC": "true",
+        "processData": "false"
     },
     "internal-dpl-aod-global-analysis-file-sink": "",
     "internal-dpl-aod-writer": ""
