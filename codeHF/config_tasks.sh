@@ -96,7 +96,7 @@ DOO2_DPLUSDMINUS_DATA=0   # hf-correlator-dplus-dminus
 DOO2_DPLUSDMINUS_MCREC=0  # hf-correlator-dplus-dminus-mc-rec
 DOO2_DPLUSDMINUS_MCGEN=0  # hf-correlator-dplus-dminus-mc-gen
 DOO2_CORRELATOR_D0HADRON=0    # hf-correlator-d0-hadrons
-DOO2_TASK_D0HADRON=0          # hf-correlator-d0-hadrons
+DOO2_TASK_D0HADRON=0          # hf-task-correlation-d0-hadrons
 DOO2_TASK_FLOW=0    # hf-task-flow
 # Other
 DOO2_MCCONV=0       # mc-converter
