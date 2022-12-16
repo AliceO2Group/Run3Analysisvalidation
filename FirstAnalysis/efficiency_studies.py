@@ -1,22 +1,90 @@
 #!/usr/bin/env python
-from ROOT import TH1F, TCanvas, TEfficiency, TFile, TLegend, gPad, gStyle
+"""
+file: efficiency_studies.py
+brief: Plotting macro for the qa-efficiency task.
+usage: ./efficiency_studies.py AnalysisResults_O2.root
+author: Maja Kabus <mkabus@cern.ch>, CERN / Warsaw University of Technology
+"""
 
+import argparse
 
-def saveCanvas(canvas, title):
+from ROOT import TH1F, TCanvas, TEfficiency, TFile, TLegend, TLatex # pylint: disable=import-error,no-name-in-module
+from ROOT import gPad, gStyle, gROOT # pylint: disable=import-error,no-name-in-module
+
+def save_canvas(canvas, title):
+    """
+    Save canvas in png, pdf, root.
+    """
     format_list = [".png", ".pdf", ".root"]
-    for fileFormat in format_list:
-        canvas.SaveAs(title + fileFormat)
+    for file_format in format_list:
+        canvas.SaveAs(title + file_format)
 
 
-def efficiencytracking(var):
-    # plots the efficiency vs pT, eta and phi for all the species(it extracts the
-    # Efficiency from qa - tracking - efficiency if you have ran with-- make - eff)
-    hadron_list = ["pion", "proton", "kaon", "electron", "muon"]
-    color_list = [1, 2, 4, 6, 8]
-    marker_list = [20, 21, 22, 34, 45]
-    fileo2 = TFile("../codeHF/AnalysisResults_O2.root")
+def prepare_canvas(var, sign, had, det): # pylint: disable=too-many-locals
+    """
+    Initialize canvas, axes, legend.
+    `hempty` must be captured at return, otherwise ROOT crashes.
+    """
+    cname = f"c_{had}_{det}_{sign}_{var}"
+    hname = f"hempty_{had}_{det}_{sign}_{var}"
+    ctitle = f"Efficiency for {sign} {had}, {det}"
+    if var == "Pt":
+        ctitle = f"{ctitle} primaries"
 
-    c1 = TCanvas("c1", "Efficiency")
+    def get_pt_hist():
+        hempty = TH1F(hname, f"{ctitle};Transverse Momentum (GeV/c);Efficiency", 100, 0.05, 10)
+        gPad.SetLogx()
+        return hempty
+    def get_eta_hist():
+        return TH1F(hname, f"{ctitle};Pseudorapidity;Efficiency", 100, -1.5, 1.5)
+    def get_phi_hist():
+        return TH1F(hname, f"{ctitle};Azimuthal angle (rad);Efficiency", 100, 0.0, 6.0)
+
+    hists = {"Pt": get_pt_hist, "Eta": get_eta_hist, "Phi": get_phi_hist}
+
+    canv = TCanvas(cname, "Efficiency")
+    canv.SetCanvasSize(800, 600)
+    canv.cd()
+    canv.SetGridy()
+    canv.SetGridx()
+
+    hempty = hists[var]()
+    hempty.GetYaxis().CenterTitle()
+    hempty.GetXaxis().CenterTitle()
+    hempty.GetXaxis().SetNoExponent()
+    hempty.GetXaxis().SetMoreLogLabels(1)
+    hempty.Draw()
+
+    xmin = hempty.GetXaxis().GetXmin()
+    xmax = hempty.GetXaxis().GetXmax()
+    ymax = hempty.GetYaxis().GetXmax()
+    latexa = TLatex()
+    latexa.SetTextSize(0.04)
+    latexa.SetTextFont(42)
+    latexa.SetTextAlign(3)
+    xave = xmin + (xmax - xmin) / 4.0
+    latexa.DrawLatex(
+        xave, ymax * 0.2, "-0.8 #geq #eta #geq 0.8"
+    )
+    latexa.DrawLatex(xave, ymax * 0.15, "0.00 #geq #varphi #geq 2#pi")
+
+    leg = TLegend(0.55, 0.15, 0.89, 0.35, "P")
+    leg.SetNColumns(2)
+    leg.SetHeader("Minimum bias pp #sqrt{s} = 5.02TeV", "C")
+    leg.SetFillColor(0)
+
+    return canv, leg, hempty
+
+def efficiency_tracking(fileo2, det, sign, var): # pylint: disable=too-many-locals
+    """
+    Plot efficiency vs pT, eta and phi for all hadron species.
+    """
+    hadron_list = ["Pion", "Kaon", "Proton", "All"]
+    # Other hadrons: "Deuteron", "Triton", "He3", "Alpha"
+    color_list = [1, 2, 4, 6, 8, 28]
+    marker_list = [20, 21, 22, 34, 45, 47]
+    eff_objs = {"Pt": f"{det}_vsPt_Prm", "Eta": f"{det}_vsEta", "Phi": f"{det}_vsPhi"}
+
     gStyle.SetOptStat(0)
     gStyle.SetErrorX(0)
     gStyle.SetFrameLineWidth(2)
@@ -30,78 +98,95 @@ def efficiencytracking(var):
     gStyle.SetTitleOffset(1.1, "x")
     gStyle.SetTitleOffset(1.0, "y")
 
-    c1.SetCanvasSize(800, 600)
-    c1.cd()
-    c1.SetGridy()
-    c1.SetGridx()
+    results = prepare_canvas(var, sign, "all", det)
+    c_all = results[0]
+    leg_all = results[1]
     eff_list = []
 
-    if var == "Pt":
-        hempty = TH1F("hempty", ";Transverse Momentum(GeV/c);Efficiency", 100, 0.05, 10)
-        gPad.SetLogx()
-    elif var == "Eta":
-        hempty = TH1F("hempty", ";Pseudorapidity;Efficiency", 100, -4.0, 4.0)
-    elif var == "Phi":
-        hempty = TH1F("hempty", ";Azimuthal angle(rad);Efficiency", 100, 0.0, 6.0)
-
-    hempty.GetYaxis().CenterTitle()
-    hempty.GetXaxis().CenterTitle()
-    hempty.GetXaxis().SetNoExponent()
-    hempty.GetXaxis().SetMoreLogLabels(1)
-    hempty.Draw()
-    leg = TLegend(0.55, 0.15, 0.89, 0.35, "P")
-    leg.SetNColumns(2)
-    leg.SetHeader("Minimum bias KrKr #sqrt{s} = 6.46TeV", "C")
-    leg.SetFillColor(0)
-
+    heff = fileo2.Get("qa-efficiency/EfficiencyMC")
     for i, had in enumerate(hadron_list):
-        leff = fileo2.Get("qa-tracking-efficiency-%s/Efficiency" % had)
-        if var == "Pt":
-            eff = leff.At(0)
-        elif var == "Eta":
-            eff = leff.At(1)
-        elif var == "Phi":
-            eff = leff.At(2)
-        gPad.Update()
+        leff = heff.FindObject(f"{sign} {had}")
+        eff = leff.FindObject(eff_objs[var])
+        results_single = prepare_canvas(var, sign, had, det)
+        c_single = results_single[0]
+        c_single.cd()
         eff.Paint("p")
-        gr = eff.GetPaintedGraph().Clone()
-        for j in range(0, gr.GetN()):
-            gr.GetEXlow()[j] = 0
-            gr.GetEXhigh()[j] = 0
+        graph = eff.GetPaintedGraph().Clone()
+        c_single.GetListOfPrimitives().Remove(eff)
+        c_single.Modified()
+        for j in range(0, graph.GetN()):
+            graph.GetEXlow()[j] = 0
+            graph.GetEXhigh()[j] = 0
 
-        gr.SetLineColor(color_list[i])
-        gr.SetMarkerColor(color_list[i])
-        gr.SetMarkerStyle(marker_list[i])
-        eff_list.append(gr)
-        gr.Draw(" same p")
-        leg.AddEntry(eff_list[i], had, "p")
-    leg.Draw()
-    saveCanvas(c1, "efficiency_tracking_%s" % var)
+        graph.SetLineColor(color_list[i])
+        graph.SetMarkerColor(color_list[i])
+        graph.SetMarkerStyle(marker_list[i])
+        eff_list.append(graph)
+        graph.Draw(" same p")
+        save_canvas(c_single, f"efficiency_tracking_{det}_{sign}_{var}_{had}")
+        c_all.cd()
+        graph.Draw(" same p")
+        leg_all.AddEntry(eff_list[i], had, "p")
+    leg_all.Draw()
+    save_canvas(c_all, f"efficiency_tracking_alltogether_{det}_{sign}_{var}")
 
 
-def efficiencyhadron(had, var):
-    # extract the efficiency vs pT for single species(D0, Lc, Jpsi)
+def efficiency_hadron(had, var):
+    """
+    Extract efficiency vs pT for single species (D0, Lc, Jpsi).
+    This is not updated, it cannot be produced from QAEfficiency output.
+    """
     fileo2 = TFile("../codeHF/AnalysisResults_O2.root")
     ceffhf = TCanvas("ceffhf", "A Simple Graph Example")
     ceffhf.SetCanvasSize(1500, 700)
     ceffhf.Divide(2, 1)
     gPad.SetLogy()
     # hnum = fileo2.Get("qa-tracking-efficiency-%s/%s/num" % (had, var))
-    hnum = fileo2.Get("hf-task-%s-mc/h%sRecSig" % (had, var))
+    hnum = fileo2.Get(f"hf-task-{had}-mc/h{var}RecSig")
     # hden = fileo2.Get("qa-tracking-efficiency-%s/%s/den" % (had, var))
-    hden = fileo2.Get("hf-task-%s-mc/h%sGen" % (had, var))
+    hden = fileo2.Get(f"hf-task-{had}-mc/h{var}Gen")
     hnum.Rebin(4)
     hden.Rebin(4)
     eff = TEfficiency(hnum, hden)
     eff.Draw()
-    saveCanvas(ceffhf, "efficiency_hfcand%s%s" % (had, var))
+    save_canvas(ceffhf, f"efficiency_hfcand_{had}_{var}")
 
 
-var_list = ["Pt", "Eta", "Phi"]
-hfhadron_list = ["d0", "dplus", "lc", "xic", "jpsi"]
+def main():
+    """
+    Main function.
+    """
+    gROOT.SetBatch(True)
 
-for var in var_list:
-    efficiencytracking(var)
+    parser = argparse.ArgumentParser(description="Arguments to pass")
+    parser.add_argument("input_file", help="input AnalysisResults.root file")
+    parser.add_argument("--dump_eff", default=False, action="store_true",
+                        help="Dump efficiency tree")
+    args = parser.parse_args()
 
-for had in hfhadron_list:
-    efficiencyhadron(had, "Pt")
+    var_list = ["Pt", "Eta", "Phi"]
+    sign_list = ["Positive", "Negative"]
+    det_list = ["ITS-TPC", "ITS-TPC-TOF"]
+
+    infile = TFile(args.input_file)
+
+    if args.dump_eff:
+        heff = infile.Get("qa-efficiency/EfficiencyMC")
+        heff.Print()
+        for i in range(heff.GetEntries()):
+            teff = heff.At(i)
+            teff.Print()
+
+    for var in var_list:
+        for sign in sign_list:
+            for det in det_list:
+                efficiency_tracking(infile, det, sign, var)
+    for sign in sign_list:
+        efficiency_tracking(infile, "ITS", sign, "Pt")
+
+    #hfhadron_list = ["d0", "dplus", "lc", "xic", "jpsi"]
+    #for had in hfhadron_list:
+    #    efficiency_hadron(had, "Pt")
+
+if __name__ == "__main__":
+    main()
