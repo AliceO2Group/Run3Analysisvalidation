@@ -112,12 +112,12 @@ TH1* GetProjectionOfAxis(CorrelationContainer* h, CorrelationContainer::CFStep s
 //  Main function
 ///////////////////////////////////////////////////////////////////////////
 void extract2D(
-  const char* fileName = "AnalysisResults.root", 
-  const char* folder = "hf-task-flow", 
+  const char* fileName = "AnalysisResults.root",
+  const char* folder = "hf-task-flow",
   const char* outputFile = "dphi_corr.root",
-  const char* outputPlots = "./plots", 
-  bool plotExamplePlots = false, 
-  bool saveSameEventDis = false, 
+  const char* outputPlots = "./plots",
+  bool plotExamplePlots = false,
+  bool saveSameEventDis = false,
   bool hfcase = false)
 {
   gStyle->SetOptStat(1111111);
@@ -144,13 +144,13 @@ void extract2D(
   Float_t assocPtArr[] = {0.2, 3.0};
 
   Int_t maxCentrality = 9;
-  Float_t centralityArr[] = {0, 10, 20, 30, 40, 50, 60, 80, 100, 200}; 
+  Float_t centralityArr[] = {0, 10, 20, 30, 40, 50, 60, 80, 100, 200};
 
   // h is the container of the same event
   // hMixed is the container of the mixed event
   auto inputFile = TFile::Open(fileName);
-  const char *directoryh = "";
-  const char *directoryhMixed = "";
+  const char* directoryh = "";
+  const char* directoryhMixed = "";
   if (hfcase) {
     directoryh = Form("%s/sameEventHFHadrons", folder);
     directoryhMixed = Form("%s/mixedEventHFHadrons", folder);
@@ -277,7 +277,7 @@ void extract2D(
     file = TFile::Open(outputFile, "UPDATE");
 
     if (hist1) {
-      hist1->SetName(Form("dphi_ref_%d",  mult));
+      hist1->SetName(Form("dphi_ref_%d", mult));
       hist1->Write();
     }
 

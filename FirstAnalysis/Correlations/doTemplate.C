@@ -31,28 +31,28 @@ double binspTref[] = {0.2, 3.0};
 const int nBinsMult = 7;
 double binsMult[] = {0, 10, 20, 30, 40, 50, 60, 80, 100, 200};
 
-TFile *outputFile;
+TFile* outputFile;
 
 TH1D *hminuit, *hminuit_periph;
 
-TH1D *hDifferentialV2[nBinsMult];
+TH1D* hDifferentialV2[nBinsMult];
 
-void tempminuit(double *fParamVal, double *fParamErr);
-void minuitfcn(int &npar, double *gin, double &ff, double *par, int iflag);
-double fun_template(double *x, double *par);
+void tempminuit(double* fParamVal, double* fParamErr);
+void minuitfcn(int& npar, double* gin, double& ff, double* par, int iflag);
+double fun_template(double* x, double* par);
 
 ///////////////////////////////////////////////////////////////////////////
 //  Main function
 ///////////////////////////////////////////////////////////////////////////
 void doTemplate(
   const char* inputFileName = "./phi_proj.root",
-  const char* outputFileName = "./templateResult.root", 
-  const char* outputPlotsName = "./plots", 
+  const char* outputFileName = "./templateResult.root",
+  const char* outputPlotsName = "./plots",
   bool drawSeparatevn = false,
-  bool drawTemplate = true, 
+  bool drawTemplate = true,
   bool savePlots = true)
 {
-  
+
   TFile* inFile = TFile::Open(Form("%s", inputFileName), "read");
 
   //  V_nDelta (v_2^2) for reference flow vs. multiplicity
@@ -64,7 +64,7 @@ void doTemplate(
     //  do reference flow here
     //  get the histograms projected to delta phi,
     //  we need to distinguish histogram with desired (high) multiplicity
-    //  from a histogram with low multiplicity used as the peripheral baseline 
+    //  from a histogram with low multiplicity used as the peripheral baseline
     hminuit = (TH1D*)inFile->Get(Form("proj_dphi_ref_%d", iMult))->Clone("hminuit");
     hminuit_periph = (TH1D*)inFile->Get("proj_dphi_ref_0")->Clone("hminuit_periph");
 
@@ -73,24 +73,24 @@ void doTemplate(
     tempminuit(par, parerr);
 
     //  fill the resulting V_2delta into histogram vs. pT
-    hReferenceV2->SetBinContent(iMult+1, par[2]);
-    hReferenceV2->SetBinError(iMult+1, parerr[2]);
+    hReferenceV2->SetBinContent(iMult + 1, par[2]);
+    hReferenceV2->SetBinError(iMult + 1, parerr[2]);
 
     //  draw the result of the template fit
-    if(drawTemplate) {
+    if (drawTemplate) {
 
       //  F*Y_peripheral(deltaphi) + Y_ridge = template fit
-      TF1 *fTemplate = new TF1("fTemplate", fun_template, -0.5*TMath::Pi()+1e-6, 1.5*TMath::Pi()-1e-6, 4);
+      TF1* fTemplate = new TF1("fTemplate", fun_template, -0.5 * TMath::Pi() + 1e-6, 1.5 * TMath::Pi() - 1e-6, 4);
       fTemplate->SetParameters(par); //  set the parameters obtained from template fit above using tempminuit()
-      //fTemplate->SetLineStyle(kSolid);       
+      //fTemplate->SetLineStyle(kSolid);
       //fTemplate->SetLineColor(kBlue+1);
 
-      TH1F *hTemplate = (TH1F*)hminuit->Clone();
+      TH1F* hTemplate = (TH1F*)hminuit->Clone();
       hTemplate->Reset();
-      for (int iBin = 1; iBin < hTemplate->GetNbinsX()+1; iBin++) {
+      for (int iBin = 1; iBin < hTemplate->GetNbinsX() + 1; iBin++) {
         hTemplate->SetBinContent(iBin, fTemplate->Eval(hTemplate->GetBinCenter(iBin)));
       }
-      hTemplate->SetLineColor(kBlue+1);
+      hTemplate->SetLineColor(kBlue + 1);
       hTemplate->SetLineWidth(3);
       hTemplate->SetLineStyle(kSolid);
 
@@ -101,51 +101,51 @@ void doTemplate(
       } else {
         fRidge = new TF1("fRidge", "[0]*[4] + [1]*(1 + 2*[2]*cos(2*x) + 2*[3]*cos(3*x))", -5, 5);
       }
-      fRidge->SetParameter(0, par[0]); // F
-      fRidge->SetParameter(1, par[1]); // G
-      fRidge->SetParameter(2, par[2]); // v_2^2
-      fRidge->SetParameter(3, par[3]); // v_3^2
+      fRidge->SetParameter(0, par[0]);                                                       // F
+      fRidge->SetParameter(1, par[1]);                                                       // G
+      fRidge->SetParameter(2, par[2]);                                                       // v_2^2
+      fRidge->SetParameter(3, par[3]);                                                       // v_3^2
       fRidge->SetParameter(4, hminuit_periph->GetBinContent(hminuit_periph->FindFixBin(0))); // Y_peripheral(0)
-      fRidge->SetLineStyle(kSolid);      
+      fRidge->SetLineStyle(kSolid);
       fRidge->SetLineWidth(3);
-      fRidge->SetLineColor(kRed+1);
+      fRidge->SetLineColor(kRed + 1);
 
       if (drawSeparatevn) {
         // F*Y_peripheral(0) + Y_ridge  v3
         TF1* fRidgev3 = new TF1("fRidgev3", "[0]*[3] + [1]*(1 + 2*[2]*cos(3*x))", -5, 5);
-        fRidgev3->SetParameter(0, par[0]); // F
-        fRidgev3->SetParameter(1, par[1]); // G
-        fRidgev3->SetParameter(2, par[3]); // v_3^2
+        fRidgev3->SetParameter(0, par[0]);                                                       // F
+        fRidgev3->SetParameter(1, par[1]);                                                       // G
+        fRidgev3->SetParameter(2, par[3]);                                                       // v_3^2
         fRidgev3->SetParameter(3, hminuit_periph->GetBinContent(hminuit_periph->FindFixBin(0))); // Y_peripheral(0)
-        fRidgev3->SetLineStyle(kDashed);      
+        fRidgev3->SetLineStyle(kDashed);
         fRidgev3->SetLineWidth(3);
-        fRidgev3->SetLineColor(kRed+1);
+        fRidgev3->SetLineColor(kRed + 1);
       }
 
       //  F*Y_peripheral(deltaphi) + G
-      TF1 *fPeripheral = new TF1("fPeripheral", fun_template, -0.5*TMath::Pi()+1e-6, 1.5*TMath::Pi()-1e-6, 5);
-      par[2] = 0;  // v2^2 = 0
-      par[3] = 0;  // v3^2 = 0
+      TF1* fPeripheral = new TF1("fPeripheral", fun_template, -0.5 * TMath::Pi() + 1e-6, 1.5 * TMath::Pi() - 1e-6, 5);
+      par[2] = 0; // v2^2 = 0
+      par[3] = 0; // v3^2 = 0
       fPeripheral->SetParameters(par);
-      fPeripheral->SetLineStyle(kSolid);       
+      fPeripheral->SetLineStyle(kSolid);
       fPeripheral->SetLineWidth(3);
-      fPeripheral->SetLineColor(kGreen+2);
+      fPeripheral->SetLineColor(kGreen + 2);
 
-      TH1F *hPeripheral = (TH1F*)hminuit->Clone();
+      TH1F* hPeripheral = (TH1F*)hminuit->Clone();
       hPeripheral->Reset();
-      for (int iBin = 1; iBin < hPeripheral->GetNbinsX()+1; iBin++) {
+      for (int iBin = 1; iBin < hPeripheral->GetNbinsX() + 1; iBin++) {
         hPeripheral->SetBinContent(iBin, fPeripheral->Eval(hPeripheral->GetBinCenter(iBin)));
       }
-      hPeripheral->SetLineColor(kGreen+2);
+      hPeripheral->SetLineColor(kGreen + 2);
       hPeripheral->SetLineWidth(2);
       hPeripheral->SetLineStyle(kSolid);
       hPeripheral->SetMarkerStyle(kOpenSquare);
-      hPeripheral->SetMarkerColor(kGreen+2);
+      hPeripheral->SetMarkerColor(kGreen + 2);
       hPeripheral->SetMarkerSize(1.2);
 
       //  draw the HM projection with the template fits together
       TCanvas* cTemplate = new TCanvas("cTemplate", "", 1200, 800);
-      gPad->SetMargin(0.12,0.01,0.12,0.01);
+      gPad->SetMargin(0.12, 0.01, 0.12, 0.01);
       hminuit->SetTitle("");
       hminuit->SetStats(0);
       hminuit->GetYaxis()->SetTitleOffset(1.1);
@@ -183,10 +183,11 @@ void doTemplate(
 
       latex->DrawLatex(0.3, 0.93, "pp #sqrt{s} = 13 TeV");
       latex->DrawLatex(0.3, 0.86, Form("%.1f < p_{T, trig, assoc} < %.1f", binspTref[0], binspTref[1]));
-      latex->DrawLatex(0.3, 0.79, Form("%.1f < N_{ch} < %.1f", binsMult[iMult], binsMult[iMult+1]));
+      latex->DrawLatex(0.3, 0.79, Form("%.1f < N_{ch} < %.1f", binsMult[iMult], binsMult[iMult + 1]));
       //latex->DrawLatex(0.3,0.72,Form("%.1f < #Delta#eta < %.1f",etaMin,etaMax));
 
-      if(savePlots) cTemplate->SaveAs(Form("%s/template_ref_%d.png", outputPlotsName, iMult));
+      if (savePlots)
+        cTemplate->SaveAs(Form("%s/template_ref_%d.png", outputPlotsName, iMult));
     }
 
     //  do differential flow here
@@ -197,70 +198,70 @@ void doTemplate(
 
       //  get the histograms projected to delta phi,
       //  we need to distinguish histogram with desired (high) multiplicity
-      //  from a histogram with low multiplicity used as the peripheral baseline 
+      //  from a histogram with low multiplicity used as the peripheral baseline
       hminuit = (TH1D*)inFile->Get(Form("proj_dphi_%d_0_%d", ipTtrig, iMult))->Clone("hminuit");
       hminuit_periph = (TH1D*)inFile->Get(Form("proj_dphi_%d_0_0", ipTtrig))->Clone("hminuit_periph");
 
       //  do the template fit
       double par[4], parerr[4];
-      tempminuit(par,parerr);
+      tempminuit(par, parerr);
 
       //  fill the resulting V_2delta into histogram vs. pT
-      hDifferentialV2[iMult]->SetBinContent(ipTtrig+1, par[2]);
-      hDifferentialV2[iMult]->SetBinError(ipTtrig+1, parerr[2]);
+      hDifferentialV2[iMult]->SetBinContent(ipTtrig + 1, par[2]);
+      hDifferentialV2[iMult]->SetBinError(ipTtrig + 1, parerr[2]);
 
       //  draw the result of the template fit
-      if(drawTemplate) {
+      if (drawTemplate) {
 
         //  F*Y_peripheral(deltaphi) + Y_ridge = template fit
-        TF1 *fTemplate = new TF1("fTemplate", fun_template, -0.5*TMath::Pi()+1e-6, 1.5*TMath::Pi()-1e-6, 4);
+        TF1* fTemplate = new TF1("fTemplate", fun_template, -0.5 * TMath::Pi() + 1e-6, 1.5 * TMath::Pi() - 1e-6, 4);
         fTemplate->SetParameters(par); //  set the parameters obtained from template fit above using tempminuit()
-        fTemplate->SetLineStyle(kSolid);       
+        fTemplate->SetLineStyle(kSolid);
         fTemplate->SetLineColor(kRed);
 
-        TH1F *hTemplate = (TH1F*)hminuit->Clone();
+        TH1F* hTemplate = (TH1F*)hminuit->Clone();
         hTemplate->Reset();
-        for (int iBin = 1; iBin < hTemplate->GetNbinsX()+1; iBin++) {
+        for (int iBin = 1; iBin < hTemplate->GetNbinsX() + 1; iBin++) {
           hTemplate->SetBinContent(iBin, fTemplate->Eval(hTemplate->GetBinCenter(iBin)));
         }
-        hTemplate->SetLineColor(kBlue+1);
+        hTemplate->SetLineColor(kBlue + 1);
         hTemplate->SetLineWidth(3);
         hTemplate->SetLineStyle(kSolid);
 
         // F*Y_peripheral(0) + Y_ridge
         TF1* fRidge = new TF1("fRidge", "[0]*[4] + [1]*(1 + 2*[2]*cos(2*x) + 2*[3]*cos(3*x))", -5, 5);
-        fRidge->SetParameter(0, par[0]); // F
-        fRidge->SetParameter(1, par[1]); // G
-        fRidge->SetParameter(2, par[2]); // v_2^2
-        fRidge->SetParameter(3, par[3]); // v_3^2
+        fRidge->SetParameter(0, par[0]);                                                       // F
+        fRidge->SetParameter(1, par[1]);                                                       // G
+        fRidge->SetParameter(2, par[2]);                                                       // v_2^2
+        fRidge->SetParameter(3, par[3]);                                                       // v_3^2
         fRidge->SetParameter(4, hminuit_periph->GetBinContent(hminuit_periph->FindFixBin(0))); // Y_peripheral(0)
-        fRidge->SetLineStyle(kSolid);      
+        fRidge->SetLineStyle(kSolid);
         fRidge->SetLineWidth(3);
-        fRidge->SetLineColor(kRed+1);
+        fRidge->SetLineColor(kRed + 1);
 
         //  F*Y_peripheral(deltaphi) + G
-        TF1 *fPeripheral = new TF1("fPeripheral", fun_template, -0.5*TMath::Pi()+1e-6, 1.5*TMath::Pi()-1e-6, 5);
-        par[2] = 0;  // v2^2 = 0
-        par[3] = 0;  // v3^2 = 0
+        TF1* fPeripheral = new TF1("fPeripheral", fun_template, -0.5 * TMath::Pi() + 1e-6, 1.5 * TMath::Pi() - 1e-6, 5);
+        par[2] = 0; // v2^2 = 0
+        par[3] = 0; // v3^2 = 0
         fPeripheral->SetParameters(par);
-        fPeripheral->SetLineStyle(kSolid);       
+        fPeripheral->SetLineStyle(kSolid);
         fPeripheral->SetLineColor(kMagenta);
 
-        TH1F *hPeripheral = (TH1F*)hminuit->Clone();
+        TH1F* hPeripheral = (TH1F*)hminuit->Clone();
         hPeripheral->Reset();
-        for (int iBin = 1; iBin < hPeripheral->GetNbinsX()+1; iBin++) {
+        for (int iBin = 1; iBin < hPeripheral->GetNbinsX() + 1; iBin++) {
           hPeripheral->SetBinContent(iBin, fPeripheral->Eval(hPeripheral->GetBinCenter(iBin)));
         }
-        hPeripheral->SetLineColor(kGreen+2);
+        hPeripheral->SetLineColor(kGreen + 2);
         hPeripheral->SetLineWidth(2);
         hPeripheral->SetLineStyle(kSolid);
         hPeripheral->SetMarkerStyle(kOpenSquare);
-        hPeripheral->SetMarkerColor(kGreen+2);
+        hPeripheral->SetMarkerColor(kGreen + 2);
         hPeripheral->SetMarkerSize(1.2);
 
         //  draw the HM projection with the template fits together
         TCanvas* cTemplate = new TCanvas("cTemplate", "", 1200, 800);
-        gPad->SetMargin(0.12,0.01,0.12,0.01);
+        gPad->SetMargin(0.12, 0.01, 0.12, 0.01);
         hminuit->SetTitle("");
         hminuit->SetStats(0);
         hminuit->GetYaxis()->SetTitleOffset(1.1);
@@ -294,14 +295,15 @@ void doTemplate(
         latex->SetNDC();
 
         latex->DrawLatex(0.3, 0.93, "pp #sqrt{s} = 13 TeV");
-        latex->DrawLatex(0.3, 0.86, Form("%.1f < p_{T, trig} < %.1f", binspTtrig[ipTtrig], binspTtrig[ipTtrig+1]));
-        latex->DrawLatex(0.3, 0.79, Form("%.1f < N_{ch} < %.1f", binsMult[iMult], binsMult[iMult+1]));
+        latex->DrawLatex(0.3, 0.86, Form("%.1f < p_{T, trig} < %.1f", binspTtrig[ipTtrig], binspTtrig[ipTtrig + 1]));
+        latex->DrawLatex(0.3, 0.79, Form("%.1f < N_{ch} < %.1f", binsMult[iMult], binsMult[iMult + 1]));
         //latex->DrawLatex(0.3,0.72,Form("%.1f < #Delta#eta < %.1f",etaMin,etaMax));
 
-        if(savePlots) cTemplate->SaveAs(Form("%s/template_%d_%d.png", outputPlotsName, ipTtrig, iMult));
+        if (savePlots)
+          cTemplate->SaveAs(Form("%s/template_%d_%d.png", outputPlotsName, ipTtrig, iMult));
       }
     } // end of pT trig loop
-  } // end of mult loop
+  }   // end of mult loop
 
   //  save the results
   outputFile = new TFile(Form("%s", outputFileName), "recreate");
@@ -316,7 +318,7 @@ void doTemplate(
 ///////////////////////////////////////////////////////////////////////////
 //  template fit function used for drawing the result of the minimization
 ///////////////////////////////////////////////////////////////////////////
-double fun_template(double *x, double *par)
+double fun_template(double* x, double* par)
 {
   float xx = x[0];
 
@@ -329,19 +331,19 @@ double fun_template(double *x, double *par)
   //    par[3] = G
   //    par[1] = V_2delta = v_2,2 = v_2^2
   //    par[2] = V_3delta = v_3,3 = v_3^2
-  return par[0] * Y_periph + par[1] * (1 + 2*par[2]*cos(2*xx) + 2*par[3]*cos(3*xx));
+  return par[0] * Y_periph + par[1] * (1 + 2 * par[2] * cos(2 * xx) + 2 * par[3] * cos(3 * xx));
 }
 
 ///////////////////////////////////////////////////////////////////////////
 //  this function provides the first initial value of chi2
 //  to start the minimization procedure done in tempminuit()
 ///////////////////////////////////////////////////////////////////////////
-void minuitfcn(int &npar, double *gin, double &ff, double *par, int iflag)
+void minuitfcn(int& npar, double* gin, double& ff, double* par, int iflag)
 {
-  TH1D *h = (TH1D*)hminuit->Clone("h");
-  TH1D *hperi = (TH1D*)hminuit_periph->Clone("hperi");
+  TH1D* h = (TH1D*)hminuit->Clone("h");
+  TH1D* hperi = (TH1D*)hminuit_periph->Clone("hperi");
 
-  double f  = par[0];
+  double f = par[0];
   double gv = par[1];
   double v2 = par[2];
   double v3 = par[3];
@@ -350,11 +352,11 @@ void minuitfcn(int &npar, double *gin, double &ff, double *par, int iflag)
 
   //  get chi2 as a starting point
   for (int ibin = 1; ibin < h->GetNbinsX(); ibin++) {
-    double x      = h->GetBinCenter(ibin+1); // delta phi
-    double data = h->GetBinContent(ibin+1); // value of the correlation (high-mult)
-    double exp  = f * hperi->GetBinContent(ibin+1) + gv * (1. + 2.*v2*cos(2.*x) + 2.*v3*cos(3.*x)); // template fit prescription
-    double hoge = sqrt(hperi->GetBinError(ibin+1) * hperi->GetBinError(ibin+1) + h->GetBinError(ibin+1) * h->GetBinError(ibin+1)); // error:sqrt(sig*sig + peri*peri)
-    lnQ           += (data-exp)*(data-exp)/(hoge*hoge); // chi2
+    double x = h->GetBinCenter(ibin + 1);                                                                                                  // delta phi
+    double data = h->GetBinContent(ibin + 1);                                                                                              // value of the correlation (high-mult)
+    double exp = f * hperi->GetBinContent(ibin + 1) + gv * (1. + 2. * v2 * cos(2. * x) + 2. * v3 * cos(3. * x));                           // template fit prescription
+    double hoge = sqrt(hperi->GetBinError(ibin + 1) * hperi->GetBinError(ibin + 1) + h->GetBinError(ibin + 1) * h->GetBinError(ibin + 1)); // error:sqrt(sig*sig + peri*peri)
+    lnQ += (data - exp) * (data - exp) / (hoge * hoge);                                                                                    // chi2
   }
 
   ff = lnQ;
@@ -365,22 +367,22 @@ void minuitfcn(int &npar, double *gin, double &ff, double *par, int iflag)
 //  at the beginning it needs to be provided with initial values
 //  of parameters and a chi2 (chi2 value is provided with minuitfcn())
 ///////////////////////////////////////////////////////////////////////////
-void tempminuit(double *fParamVal, double *fParamErr)
+void tempminuit(double* fParamVal, double* fParamErr)
 {
   TFitter* minimizer = new TFitter(4);
   minimizer->SetFCN(minuitfcn); // set some initial chi2 value?
-  minimizer->SetParameter(0,"F", 0, 10, 0, 0);
-  minimizer->SetParameter(1,"G", 0, 10, 0, 0);
-  minimizer->SetParameter(2,"v2", 0, 1, 0, 0);
-  minimizer->SetParameter(3,"v3", 0, 1, 0, 0);
+  minimizer->SetParameter(0, "F", 0, 10, 0, 0);
+  minimizer->SetParameter(1, "G", 0, 10, 0, 0);
+  minimizer->SetParameter(2, "v2", 0, 1, 0, 0);
+  minimizer->SetParameter(3, "v3", 0, 1, 0, 0);
 
   //  minimizer->ExecuteCommand("SIMPLEX",0,0);
-  minimizer->ExecuteCommand("MIGRAD",0,0);
+  minimizer->ExecuteCommand("MIGRAD", 0, 0);
 
-  fParamVal[0] = minimizer->GetParameter(0);  // F
-  fParamVal[1] = minimizer->GetParameter(1);  // G
-  fParamVal[2] = minimizer->GetParameter(2);  // v2
-  fParamVal[3] = minimizer->GetParameter(3);  // v3
+  fParamVal[0] = minimizer->GetParameter(0); // F
+  fParamVal[1] = minimizer->GetParameter(1); // G
+  fParamVal[2] = minimizer->GetParameter(2); // v2
+  fParamVal[3] = minimizer->GetParameter(3); // v3
 
   fParamErr[0] = minimizer->GetParError(0);
   fParamErr[1] = minimizer->GetParError(1);
