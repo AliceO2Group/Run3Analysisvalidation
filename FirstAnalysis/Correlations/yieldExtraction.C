@@ -36,7 +36,7 @@ void yieldExtraction(const char* inFileName = "dphi_corr.root", double absDeltaE
 {
   //  Nch represents the multiplicity interval of the analysis
   //static Double_t Nch[] = {0.0, 2.750, 5.250, 7.750, 12.750, 17.750, 22.750, 27.750, 32.750, 37.750, 42.750, 47.750, 52.750, 57.750, 62.750, 67.750, 72.750, 77.750, 82.750, 87.750, 92.750, 97.750, 250.1};
-  static Double_t Nch[] = {0, 10, 20, 30, 40, 50, 60, 80, 100, 200}; 
+  static Double_t Nch[] = {0, 10, 20, 30, 40, 50, 60, 80, 100, 200};
   //  Nbins is the number of multiplicity bins
   static const uint Nbins = 9;
   //static const uint Nbins = sizeof(Nch) / sizeof(Nch[0]);
