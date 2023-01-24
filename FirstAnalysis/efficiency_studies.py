@@ -74,7 +74,7 @@ def efficiency_tracking(heff, det, sign, var): # pylint: disable=too-many-locals
     """
     Plot efficiency vs pT, eta and phi for all hadron species.
     """
-    hadron_list = ["All", "Pion", "Kaon", "Proton", "Electron"]
+    hadron_list = ["Pion", "Kaon", "Proton", "Electron"]
     # Other hadrons: "Deuteron", "Triton", "He3", "Alpha"
     color_list = [1, 2, 4, kGreen + 2, kOrange - 3]
     marker_list = [20, 21, 22, 21, 22]
