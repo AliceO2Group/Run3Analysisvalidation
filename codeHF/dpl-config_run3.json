@@ -374,7 +374,9 @@
         "dcaXYPosToPvMin": "0.1",
         "cutInvMassV0": "0.05",
         "ptCascCandMin": "-1",
-        "cutInvMassCascLc": "1"
+        "cutInvMassCascLc": "1",
+        "processNoCascades": "true",
+        "processCascades": "false"
     },
     "hf-candidate-creator-2prong": {
         "isRun2": "true",
