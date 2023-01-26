@@ -2,7 +2,7 @@
 """
 file: efficiency_studies.py
 brief: Plotting macro for the qa-efficiency task.
-usage: ./efficiency_studies.py AnalysisResults_O2.root
+usage: ./efficiency_studies.py AnalysisResults_O2.root [--plot_sel | --dump_eff]
 author: Maja Kabus <mkabus@cern.ch>, CERN / Warsaw University of Technology
 """
 
@@ -11,6 +11,7 @@ import argparse
 from ROOT import TH1F, TCanvas, TEfficiency, TFile, TLegend, TLatex # pylint: disable=import-error,no-name-in-module
 from ROOT import gPad, gStyle, gROOT # pylint: disable=import-error,no-name-in-module
 from ROOT import kGreen, kOrange # pylint: disable=import-error,no-name-in-module
+
 
 def save_canvas(canvas, title):
     """
@@ -34,11 +35,13 @@ def prepare_canvas(var, sign, had, det): # pylint: disable=too-many-locals
 
     def get_pt_hist():
         hempty = TH1F(hname, f"{ctitle};Transverse Momentum (GeV/c);Efficiency", 16, 0.00, 16)
+        #gPad.SetLogx()
         return hempty
     def get_eta_hist():
         return TH1F(hname, f"{ctitle};Pseudorapidity;Efficiency", 16, -1.5, 1.5)
     def get_phi_hist():
-        return TH1F(hname, f"{ctitle};Azimuthal angle (rad);Efficiency", 16, -2 * 3.1416 - 0.5, 2 * 3.1416 + 0.5)
+        return TH1F(hname, f"{ctitle};Azimuthal angle (rad);Efficiency",
+                    16, -2 * 3.1416 - 0.5, 2 * 3.1416 + 0.5)
 
     hists = {"Pt": get_pt_hist, "Eta": get_eta_hist, "Phi": get_phi_hist}
 
@@ -70,9 +73,11 @@ def prepare_canvas(var, sign, had, det): # pylint: disable=too-many-locals
 
     return canv, leg, hempty
 
-def efficiency_tracking(heff, det, sign, var): # pylint: disable=too-many-locals
+
+def efficiency_tracking(heff, det, sign, var, err_y): # pylint: disable=too-many-locals
     """
     Plot efficiency vs pT, eta and phi for all hadron species.
+    Pt plots are drawn for primaries.
     """
     hadron_list = ["Pion", "Kaon", "Proton", "Electron"]
     # Other hadrons: "Deuteron", "Triton", "He3", "Alpha"
@@ -105,6 +110,9 @@ def efficiency_tracking(heff, det, sign, var): # pylint: disable=too-many-locals
         for j in range(0, graph.GetN()):
             graph.GetEXlow()[j] = 0
             graph.GetEXhigh()[j] = 0
+            if err_y:
+                graph.GetEYlow()[j] = 0
+                graph.GetEYhigh()[j] = 0
 
         graph.SetLineColor(color_list[i])
         graph.SetMarkerColor(color_list[i])
@@ -112,6 +120,7 @@ def efficiency_tracking(heff, det, sign, var): # pylint: disable=too-many-locals
         eff_list.append(graph)
         graph.Draw(" same p")
         leg_all.AddEntry(eff_list[i], had, "p")
+
     leg_all.Draw()
     save_canvas(c_all, f"efficiency_tracking_{det}_{sign}_{var}")
 
@@ -166,6 +175,8 @@ def main():
 
     parser = argparse.ArgumentParser(description="Arguments to pass")
     parser.add_argument("input_file", help="input AnalysisResults.root file")
+    parser.add_argument("--plot_erry", default=False, action="store_true",
+                        help="Plot efficiency with y error bars")
     parser.add_argument("--plot_sel", default=False, action="store_true",
                         help="Plot track and particle selections")
     parser.add_argument("--dump_eff", default=False, action="store_true",
@@ -191,9 +202,9 @@ def main():
     for var in var_list:
         for sign in sign_list:
             for det in det_list:
-                efficiency_tracking(heff, det, sign, var)
+                efficiency_tracking(heff, det, sign, var, args.plot_erry)
     for sign in sign_list:
-        efficiency_tracking(heff, "ITS", sign, "Pt")
+        efficiency_tracking(heff, "ITS", sign, "Pt", args.plot_erry)
 
     #hfhadron_list = ["d0", "dplus", "lc", "xic", "jpsi"]
     #for had in hfhadron_list:
