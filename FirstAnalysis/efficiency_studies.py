@@ -22,17 +22,24 @@ def save_canvas(canvas, title):
         canvas.SaveAs(title + file_format)
 
 
-def prepare_canvas(var, sign, had, det): # pylint: disable=too-many-locals
+def get_titles(var, sign, had, det):
+    """
+    Compose titles and names for histograms and canvas.
+    """
+    hname = f"hempty_{sign}_{had}_{det}_{var}"
+    cname = f"c_{sign}_{had}_{det}_{var}"
+    ctitle = f"Efficiency for {sign} {had}, {det}"
+    if var == "Pt":
+        ctitle = f"{ctitle} primaries"
+    return hname, cname, ctitle
+
+
+def prepare_canvas(var, titles):
     """
     Initialize canvas, axes, legend.
     `hempty` must be captured at return, otherwise ROOT crashes.
     """
-    cname = f"c_{had}_{det}_{sign}_{var}"
-    hname = f"hempty_{had}_{det}_{sign}_{var}"
-    ctitle = f"Efficiency for {sign} {had}, {det}"
-    if var == "Pt":
-        ctitle = f"{ctitle} primaries"
-
+    hname, cname, ctitle = titles
     def get_pt_hist():
         hempty = TH1F(hname, f"{ctitle};Transverse Momentum (GeV/c);Efficiency", 16, 0.00, 16)
         #gPad.SetLogx()
@@ -95,7 +102,7 @@ def efficiency_tracking(heff, det, sign, var, err_y): # pylint: disable=too-many
     gStyle.SetTitleOffset(1.1, "x")
     gStyle.SetTitleOffset(1.0, "y")
 
-    results = prepare_canvas(var, sign, "all", det)
+    results = prepare_canvas(var, get_titles(var, sign, "all", det))
     c_all = results[0]
     leg_all = results[1]
     eff_list = []
