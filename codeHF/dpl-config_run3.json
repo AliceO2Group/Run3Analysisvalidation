@@ -226,6 +226,8 @@
         "pid-al": "1"
     },
     "hf-track-index-skim-creator": {
+        "processSkimCreator": "true",
+        "processNoSkimCreator": "false",
         "isRun2": "true",
         "debug": "false",
         "fillHistograms": "true",
