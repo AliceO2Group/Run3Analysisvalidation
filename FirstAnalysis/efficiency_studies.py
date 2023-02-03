@@ -117,7 +117,7 @@ def efficiency_tracking(heff, det, sign, var, err_y): # pylint: disable=too-many
         for j in range(0, graph.GetN()):
             graph.GetEXlow()[j] = 0
             graph.GetEXhigh()[j] = 0
-            if err_y:
+            if not err_y:
                 graph.GetEYlow()[j] = 0
                 graph.GetEYhigh()[j] = 0
 
