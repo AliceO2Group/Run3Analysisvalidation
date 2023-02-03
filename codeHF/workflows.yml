@@ -9,6 +9,9 @@ options:
     - "--min-failure-level error"
 
 workflows:
+  o2-analysis-hf-track-to-collision-associator:
+    executable: o2-analysis-hf-track-to-collision-associator
+    tables: HFTRACKASSOC
 
   # Skimming
 
@@ -17,6 +20,7 @@ workflows:
     dependencies:
       - o2-analysis-trackextension
       - o2-analysis-trackselection
+      - o2-analysis-hf-track-to-collision-associator
     tables: [HFSELCOLLISION, HFSELTRACK, HF2PRONG, HF3PRONG]
 
   o2-analysis-hf-track-index-skim-creator-v0:
