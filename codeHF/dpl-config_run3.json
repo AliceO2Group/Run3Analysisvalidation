@@ -63,7 +63,7 @@
         "processAssocWithAmb": "false",
         "processStandardAssoc": "true",
         "applyIsGlobalTrack": "true",
-        "applyTrackSelForRun2": "false"
+        "applyTrackSelForRun2": "true"
     },
     "hf-track-index-skim-creator-tag-sel-tracks": {
         "isRun2": "true",
