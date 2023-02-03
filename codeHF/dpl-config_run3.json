@@ -399,13 +399,19 @@
         "fillHistograms": "true"
     },
     "hf-candidate-creator-cascade": {
-        "bz": "5",
         "propagateToPCA": "true",
         "maxR": "200",
         "maxDZIni": "4",
         "minParamChange": "0.001",
         "minRelChi2Change": "0.9",
-        "fillHistograms": "true"
+        "fillHistograms": "true",
+        "silenceV0DataWarning": "false",
+        "isRun2": "false",
+        "ccdbUrl": "http://alice-ccdb.cern.ch",
+        "ccdbPathLut": "GLO/Param/MatLUT",
+        "ccdbPathGeo": "GLO/Config/GeometryAligned",
+        "ccdbPathGrp": "GLO/GRP/GRP",
+        "ccdbPathGrpMag": "GLO/Config/GRPMagField"
     },
     "hf-candidate-creator-b0": {
         "bz": "5.",
