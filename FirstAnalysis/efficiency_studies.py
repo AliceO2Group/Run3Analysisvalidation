@@ -81,12 +81,43 @@ def prepare_canvas(var, titles):
     return canv, leg, hempty
 
 
-def efficiency_tracking(heff, det, sign, var, err_y): # pylint: disable=too-many-locals
+def get_efficiency_all_charges(infile, det, var, had):
+    """
+    Calculate efficiency for positive and negative particles together.
+    """
+    det_str = det.lower().replace("-", "_")
+    prm_str = "" if var == "Phi" else "prm/"
+    num_pos = infile.Get(f"qa-efficiency/MC/{had}/pos/{var.lower()}/{prm_str}{det_str}")
+    num_neg = infile.Get(f"qa-efficiency/MC/{had}/neg/{var.lower()}/{prm_str}{det_str}")
+    den_pos = infile.Get(f"qa-efficiency/MC/{had}/pos/{var.lower()}/{prm_str}generated")
+    den_neg = infile.Get(f"qa-efficiency/MC/{had}/neg/{var.lower()}/{prm_str}generated")
+    num = num_pos.Clone()
+    num.Add(num_neg)
+    den = den_pos.Clone()
+    den.Add(den_neg)
+
+    axis = num.GetXaxis()
+    efftitle = f"Efficiency for {had}, {det} primaries;{axis.GetTitle()};Efficiency"
+    if axis.IsVariableBinSize():
+        eff = TEfficiency(f"{det}_vs{var}_Prm", efftitle, axis.GetNbins(),
+                          axis.GetXbins().GetArray())
+    else:
+        eff = TEfficiency(f"{det}_vs{var}_Prm", efftitle, axis.GetNbins(),
+                          axis.GetXmin(), axis.GetXmax())
+
+    eff.SetTotalHistogram(den, "f")
+    eff.SetPassedHistogram(num, "f")
+    return eff
+
+
+def efficiency_tracking(infile, heff, det, sign, var, err_y): # pylint: disable=too-many-locals, too-many-arguments
     """
     Plot efficiency vs pT, eta and phi for all hadron species.
     Pt plots are drawn for primaries.
+    If sign = "All", efficiency is plot for pos+neg together.
     """
-    hadron_list = ["Pion", "Kaon", "Proton", "Electron"]
+    hadron_list = ["All", "Pion", "Kaon", "Proton", "Electron"]
+    hist_hadron_list = ["all", "pi", "ka", "pr", "el"]
     # Other hadrons: "Deuteron", "Triton", "He3", "Alpha"
     color_list = [1, 2, 4, kGreen + 2, kOrange - 3]
     marker_list = [20, 21, 22, 21, 22]
@@ -107,8 +138,11 @@ def efficiency_tracking(heff, det, sign, var, err_y): # pylint: disable=too-many
     leg_all = results[1]
     eff_list = []
 
-    for i, had in enumerate(hadron_list):
-        eff = heff.FindObject(f"{sign} {had}").FindObject(eff_objs[var])
+    for i, (had, hhad) in enumerate(zip(hadron_list, hist_hadron_list)):
+        if sign == "All":
+            eff = get_efficiency_all_charges(infile, det, var, hhad)
+        else:
+            eff = heff.FindObject(f"{sign} {had}").FindObject(eff_objs[var])
         c_all.cd()
         eff.Paint("p")
         graph = eff.GetPaintedGraph().Clone()
@@ -191,7 +225,7 @@ def main():
     args = parser.parse_args()
 
     var_list = ["Pt", "Eta", "Phi"]
-    sign_list = ["Positive", "Negative"]
+    sign_list = ["Positive", "Negative", "All"]
     det_list = ["ITS-TPC", "ITS-TPC-TOF"]
 
     infile = TFile(args.input_file)
@@ -209,9 +243,9 @@ def main():
     for var in var_list:
         for sign in sign_list:
             for det in det_list:
-                efficiency_tracking(heff, det, sign, var, args.plot_erry)
+                efficiency_tracking(infile, heff, det, sign, var, args.plot_erry)
     for sign in sign_list:
-        efficiency_tracking(heff, "ITS", sign, "Pt", args.plot_erry)
+        efficiency_tracking(infile, heff, "ITS", sign, "Pt", args.plot_erry)
 
     #hfhadron_list = ["d0", "dplus", "lc", "xic", "jpsi"]
     #for had in hfhadron_list:
