@@ -24,7 +24,7 @@ float ptTrig[] = {1.0, 2.0, 3.0, 4.0};
 float ptAssoc[] = {1.0, 2.0, 3.0, 4.0};
 static Double_t Nch[] = {0.0, 2.750, 5.250, 7.750, 12.750, 17.750, 22.750, 27.750, 32.750, 37.750, 42.750, 47.750, 52.750, 57.750, 62.750, 67.750, 72.750, 77.750, 82.750, 87.750, 92.750, 97.750, 250.1};
 
-void DrawText(double xmin, double ymin, double textSize, TString text);
+void drawText(double xmin, double ymin, double textSize, TString text);
 
 //////////////////////////////////////////////////////////////
 //  main function
@@ -73,8 +73,8 @@ void plotYield(const char* inFileName = "yield.root", bool savePlots = false)
         //  first pad of the first canvas will be emtpy, used for legend only
         if (imult == 0) {
           cdphiRidge[itrig][iassoc]->cd(imult + 1);
-          DrawText(0.2, 0.8, 0.06, Form("%.1f < p_{T,trig} < %.1f", ptTrig[itrig], ptTrig[itrig + 1]));
-          DrawText(0.2, 0.7, 0.06, Form("%.1f < p_{T,assoc} < %.1f", ptAssoc[iassoc], ptAssoc[iassoc + 1]));
+          drawText(0.2, 0.8, 0.06, Form("%.1f < p_{T,trig} < %.1f", ptTrig[itrig], ptTrig[itrig + 1]));
+          drawText(0.2, 0.7, 0.06, Form("%.1f < p_{T,assoc} < %.1f", ptAssoc[iassoc], ptAssoc[iassoc + 1]));
 
           TLegend* leg = new TLegend(0.2, 0.4, 0.6, 0.65);
           leg->SetTextSize(0.06);
@@ -88,8 +88,8 @@ void plotYield(const char* inFileName = "yield.root", bool savePlots = false)
         // first pad of the second canvas will be empty, used for legend only
         if (imult == 8) {
           cdphiRidge2[itrig][iassoc]->cd((imult + 1) - 8);
-          DrawText(0.2, 0.8, 0.06, Form("%.1f < p_{T,trig} < %.1f", ptTrig[itrig], ptTrig[itrig + 1]));
-          DrawText(0.2, 0.7, 0.06, Form("%.1f < p_{T,assoc} < %.1f", ptAssoc[iassoc], ptAssoc[iassoc + 1]));
+          drawText(0.2, 0.8, 0.06, Form("%.1f < p_{T,trig} < %.1f", ptTrig[itrig], ptTrig[itrig + 1]));
+          drawText(0.2, 0.7, 0.06, Form("%.1f < p_{T,assoc} < %.1f", ptAssoc[iassoc], ptAssoc[iassoc + 1]));
 
           TLegend* leg = new TLegend(0.2, 0.4, 0.6, 0.65);
           leg->SetTextSize(0.06);
@@ -106,7 +106,7 @@ void plotYield(const char* inFileName = "yield.root", bool savePlots = false)
           hdphiRidge[itrig][iassoc][imult]->Draw();
           fdphiRidge[itrig][iassoc][imult]->Draw("same");
           line->Draw("same");
-          DrawText(0.2, 0.8, 0.06, Form("#LT N #GT = %.1f", (Nch[imult + 1] + Nch[imult]) / 2.0));
+          drawText(0.2, 0.8, 0.06, Form("#LT N #GT = %.1f", (Nch[imult + 1] + Nch[imult]) / 2.0));
         } else {
           cdphiRidge2[itrig][iassoc]->cd((imult + 1) - 7);
           hdphiRidge[itrig][iassoc][imult]->SetStats(0);
@@ -114,7 +114,7 @@ void plotYield(const char* inFileName = "yield.root", bool savePlots = false)
           hdphiRidge[itrig][iassoc][imult]->Draw();
           fdphiRidge[itrig][iassoc][imult]->Draw("same");
           line->Draw("same");
-          DrawText(0.2, 0.8, 0.06, Form("#LT N #GT = %.1f", (Nch[imult + 1] + Nch[imult]) / 2.0));
+          drawText(0.2, 0.8, 0.06, Form("#LT N #GT = %.1f", (Nch[imult + 1] + Nch[imult]) / 2.0));
         }
 
       } // end of loop over multiplicity
@@ -148,7 +148,7 @@ void plotYield(const char* inFileName = "yield.root", bool savePlots = false)
   }
 }
 //////////////////////////////////////////////////////////////
-void DrawText(double xmin, double ymin, double textSize, TString text)
+void drawText(double xmin, double ymin, double textSize, TString text)
 {
   TLatex* tl = new TLatex(xmin, ymin, Form("%s", text.Data()));
   tl->SetNDC();
