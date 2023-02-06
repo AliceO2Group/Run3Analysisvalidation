@@ -37,9 +37,9 @@ TH1D *hminuit, *hminuit_periph;
 
 TH1D* hDifferentialV2[nBinsMult];
 
-void TempMinuit(double* fParamVal, double* fParamErr);
-void MinuitFunction(int& npar, double* gin, double& ff, double* par, int iflag);
-double TemplateFitFunction(double* x, double* par);
+void tempMinuit(double* fParamVal, double* fParamErr);
+void minuitFunction(int& npar, double* gin, double& ff, double* par, int iflag);
+double templateFitFunction(double* x, double* par);
 
 ///////////////////////////////////////////////////////////////////////////
 //  Main function
@@ -70,7 +70,7 @@ void doTemplate(
 
     //  do the template fit
     double par[4], parerr[4];
-    TempMinuit(par, parerr);
+    tempMinuit(par, parerr);
 
     //  fill the resulting V_2delta into histogram vs. pT
     hReferenceV2->SetBinContent(iMult + 1, par[2]);
@@ -80,8 +80,8 @@ void doTemplate(
     if (drawTemplate) {
 
       //  F*Y_peripheral(deltaphi) + Y_ridge = template fit
-      TF1* fTemplate = new TF1("fTemplate", TemplateFitFunction, -0.5 * TMath::Pi() + 1e-6, 1.5 * TMath::Pi() - 1e-6, 4);
-      fTemplate->SetParameters(par); //  set the parameters obtained from template fit above using TempMinuit()
+      TF1* fTemplate = new TF1("fTemplate", templateFitFunction, -0.5 * TMath::Pi() + 1e-6, 1.5 * TMath::Pi() - 1e-6, 4);
+      fTemplate->SetParameters(par); //  set the parameters obtained from template fit above using tempMinuit()
       //fTemplate->SetLineStyle(kSolid);
       //fTemplate->SetLineColor(kBlue+1);
 
@@ -123,7 +123,7 @@ void doTemplate(
       }
 
       //  F*Y_peripheral(deltaphi) + G
-      TF1* fPeripheral = new TF1("fPeripheral", TemplateFitFunction, -0.5 * TMath::Pi() + 1e-6, 1.5 * TMath::Pi() - 1e-6, 5);
+      TF1* fPeripheral = new TF1("fPeripheral", templateFitFunction, -0.5 * TMath::Pi() + 1e-6, 1.5 * TMath::Pi() - 1e-6, 5);
       par[2] = 0; // v2^2 = 0
       par[3] = 0; // v3^2 = 0
       fPeripheral->SetParameters(par);
@@ -204,7 +204,7 @@ void doTemplate(
 
       //  do the template fit
       double par[4], parerr[4];
-      TempMinuit(par, parerr);
+      tempMinuit(par, parerr);
 
       //  fill the resulting V_2delta into histogram vs. pT
       hDifferentialV2[iMult]->SetBinContent(ipTtrig + 1, par[2]);
@@ -214,8 +214,8 @@ void doTemplate(
       if (drawTemplate) {
 
         //  F*Y_peripheral(deltaphi) + Y_ridge = template fit
-        TF1* fTemplate = new TF1("fTemplate", TemplateFitFunction, -0.5 * TMath::Pi() + 1e-6, 1.5 * TMath::Pi() - 1e-6, 4);
-        fTemplate->SetParameters(par); //  set the parameters obtained from template fit above using TempMinuit()
+        TF1* fTemplate = new TF1("fTemplate", templateFitFunction, -0.5 * TMath::Pi() + 1e-6, 1.5 * TMath::Pi() - 1e-6, 4);
+        fTemplate->SetParameters(par); //  set the parameters obtained from template fit above using tempMinuit()
         fTemplate->SetLineStyle(kSolid);
         fTemplate->SetLineColor(kRed);
 
@@ -240,7 +240,7 @@ void doTemplate(
         fRidge->SetLineColor(kRed + 1);
 
         //  F*Y_peripheral(deltaphi) + G
-        TF1* fPeripheral = new TF1("fPeripheral", TemplateFitFunction, -0.5 * TMath::Pi() + 1e-6, 1.5 * TMath::Pi() - 1e-6, 5);
+        TF1* fPeripheral = new TF1("fPeripheral", templateFitFunction, -0.5 * TMath::Pi() + 1e-6, 1.5 * TMath::Pi() - 1e-6, 5);
         par[2] = 0; // v2^2 = 0
         par[3] = 0; // v3^2 = 0
         fPeripheral->SetParameters(par);
@@ -318,7 +318,7 @@ void doTemplate(
 ///////////////////////////////////////////////////////////////////////////
 //  template fit function used for drawing the result of the minimization
 ///////////////////////////////////////////////////////////////////////////
-double TemplateFitFunction(double* x, double* par)
+double templateFitFunction(double* x, double* par)
 {
   float xx = x[0];
 
@@ -336,9 +336,9 @@ double TemplateFitFunction(double* x, double* par)
 
 ///////////////////////////////////////////////////////////////////////////
 //  this function provides the first initial value of chi2
-//  to start the minimization procedure done in TempMinuit()
+//  to start the minimization procedure done in tempMinuit()
 ///////////////////////////////////////////////////////////////////////////
-void MinuitFunction(int& npar, double* gin, double& ff, double* par, int iflag)
+void minuitFunction(int& npar, double* gin, double& ff, double* par, int iflag)
 {
   TH1D* h = (TH1D*)hminuit->Clone("h");
   TH1D* hperi = (TH1D*)hminuit_periph->Clone("hperi");
@@ -365,12 +365,12 @@ void MinuitFunction(int& npar, double* gin, double& ff, double* par, int iflag)
 ///////////////////////////////////////////////////////////////////////////
 //  this function performs the minimization to obtain template fit
 //  at the beginning it needs to be provided with initial values
-//  of parameters and a chi2 (chi2 value is provided with MinuitFunction())
+//  of parameters and a chi2 (chi2 value is provided with minuitFunction())
 ///////////////////////////////////////////////////////////////////////////
-void TempMinuit(double* fParamVal, double* fParamErr)
+void tempMinuit(double* fParamVal, double* fParamErr)
 {
   TFitter* minimizer = new TFitter(4);
-  minimizer->SetFCN(MinuitFunction); // set some initial chi2 value?
+  minimizer->SetFCN(minuitFunction); // set some initial chi2 value?
   minimizer->SetParameter(0, "F", 0, 10, 0, 0);
   minimizer->SetParameter(1, "G", 0, 10, 0, 0);
   minimizer->SetParameter(2, "v2", 0, 1, 0, 0);

@@ -31,7 +31,7 @@ double binsMult[] = {0, 10, 20, 30, 40, 50, 60, 80, 100, 200};
 TH1D* hDifferentialV2[nBinsMult];
 TH1D* hDiffFlow_v2[nBinsMult];
 
-void DrawHist(TH1D* h, Style_t marker, Color_t color, const char* draw);
+void drawHist(TH1D* h, Style_t marker, Color_t color, const char* draw);
 
 ///////////////////////////////////////////////////////////////////////////
 //  Main function
@@ -98,14 +98,14 @@ void getFlow(
 
     // PLOT DIFFERENTIAL FLOW
     auto canDiffFlow_v2 = new TCanvas;
-    DrawHist(hDiffFlow_v2[iMult], kFullCircle, kBlue + 1, "ep");
+    drawHist(hDiffFlow_v2[iMult], kFullCircle, kBlue + 1, "ep");
     if (savePlots)
       canDiffFlow_v2->SaveAs(Form("%s/flow/v2_mult%d.png", outputPlotsName, iMult));
   }
 
   //  PLOT REFERENCE FLOW
   auto canRefFlow_v2 = new TCanvas;
-  DrawHist(hRefFlow_v2, kFullCircle, kBlue + 1, "ep");
+  drawHist(hRefFlow_v2, kFullCircle, kBlue + 1, "ep");
   if (savePlots)
     canRefFlow_v2->SaveAs(Form("%s/flow/v2.png", outputPlotsName));
 }
@@ -113,7 +113,7 @@ void getFlow(
 ///////////////////////////////////////////////////////////////////////////
 //  this is a helper function to adjust histogram settings and draw it
 ///////////////////////////////////////////////////////////////////////////
-void DrawHist(TH1D* h, Style_t marker, Color_t color, const char* draw)
+void drawHist(TH1D* h, Style_t marker, Color_t color, const char* draw)
 {
   h->SetMarkerStyle(marker);
   h->SetMarkerColor(color);
