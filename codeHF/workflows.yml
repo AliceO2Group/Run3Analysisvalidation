@@ -29,7 +29,6 @@ workflows:
       - o2-analysis-trackextension
       - o2-analysis-trackselection
       - o2-analysis-lf-lambdakzerobuilder
-    options: "--doCascades"
     tables: [HFSELCOLLISION, HFSELTRACK, HF2PRONG, HF3PRONG, HFCASCADE]
 
   # Candidate creators
