@@ -28,9 +28,7 @@ def get_titles(var, sign, had, det):
     """
     hname = f"hempty_{sign}_{had}_{det}_{var}"
     cname = f"c_{sign}_{had}_{det}_{var}"
-    ctitle = f"Efficiency for {sign} {had}, {det}"
-    if var == "Pt":
-        ctitle = f"{ctitle} primaries"
+    ctitle = f"Efficiency for {sign} {had}, {det} primaries"
     return hname, cname, ctitle
 
 
@@ -121,7 +119,7 @@ def efficiency_tracking(infile, heff, det, sign, var, err_y): # pylint: disable=
     # Other hadrons: "Deuteron", "Triton", "He3", "Alpha"
     color_list = [1, 2, 4, kGreen + 2, kOrange - 3]
     marker_list = [20, 21, 22, 21, 22]
-    eff_objs = {"Pt": f"{det}_vsPt_Prm", "Eta": f"{det}_vsEta_Prm", "Phi": f"{det}_vsPhi"}
+    eff_objs = {"Pt": f"{det}_vsPt_Prm", "Eta": f"{det}_vsEta_Prm", "Phi": f"{det}_vsPhi_Prm"}
 
     gStyle.SetOptStat(0)
     gStyle.SetFrameLineWidth(2)
