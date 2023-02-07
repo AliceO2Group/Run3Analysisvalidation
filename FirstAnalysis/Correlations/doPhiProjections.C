@@ -1,23 +1,22 @@
 //////////////////////////////////////////////////////////////
-//  Macro to obtain projections of two-particle correlations and yield
+//  Macro to obtain projections of two-particle correlations for flow studies
 //
-//  For different bins in pT (of trigger and associated particles) do
+//  For reference and pT-differential flow do
 //  1) a projection on deltaeta axis of the away and near side region separately
 //  2) a projection on deltaphi axis of the near-side ridge region (excluding the jet peak)
-//  3) fit the deltaphi projection with Fourier expansion
-//  4) get ZYAM (=zero yield at minimum)
-//  5) subtract ZYAM
-//  6) integrate near-side deltaphi projection within ZYAM region to get the yield
 //
 //  Input: file with 2D correlation histograms produced by extract2D.C macro in this folder
 //
-//  Usage: root -l yieldExtraction.C
+//  Usage: root -l doPhiProjections.C
 //
 //  Parameters:
 //  - inFileName: name of the input file
 //  - absDeltaEtaMin: lower edge of deltaeta range when integrating the near-side ridge region
 //  - absDeltaEtaMax: upper edge of deltaeta range when integrating the near-side ridge region
-//  - outFileName: name of the output file with histograms/graphs of projections and yields
+//  - outFileName: name of the output file with histograms of projections
+//  - outputPlotsName: name of the folder to store plots
+//  - drawPlots: flag to draw the projections
+//  - savePlots: flag to save the drawn projections
 //
 //  Contributors:
 //    Katarina Krizkova Gajdosova <katarina.gajdosova@cern.ch>
@@ -32,10 +31,22 @@ bool wingCorrection = false; // correct for increase of correlation signal at la
 //        it went out of scope
 //        To fix it, call h->SetDirectory(0) before drawing
 
-void yieldExtraction(const char* inFileName = "dphi_corr.root", double absDeltaEtaMin = 1.4, double absDeltaEtaMax = 1.8, const char* outFileName = "yield.root")
+int nBinspTtrig = 6;
+double binspTtrig[] = {0.2, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0};
+
+int nBinspTref = 1;
+double binspTref[] = {0.2, 3.0};
+
+void doPhiProjections(
+  const char* inFileName = "dphi_corr.root",
+  double absDeltaEtaMin = 1.4,
+  double absDeltaEtaMax = 1.8,
+  const char* outFileName = "phi_proj.root",
+  const char* outputPlotsName = "./plots",
+  bool drawPlots = false,
+  bool savePlots = false)
 {
   //  Nch represents the multiplicity interval of the analysis
-  //static Double_t Nch[] = {0.0, 2.750, 5.250, 7.750, 12.750, 17.750, 22.750, 27.750, 32.750, 37.750, 42.750, 47.750, 52.750, 57.750, 62.750, 67.750, 72.750, 77.750, 82.750, 87.750, 92.750, 97.750, 250.1};
   static Double_t Nch[] = {0, 10, 20, 30, 40, 50, 60, 80, 100, 200};
   //  Nbins is the number of multiplicity bins
   static const uint Nbins = 9;
@@ -45,14 +56,75 @@ void yieldExtraction(const char* inFileName = "dphi_corr.root", double absDeltaE
   TFile* infile = new TFile(inFileName, "read");
   TFile* outfile = new TFile(outFileName, "recreate");
 
-  const uint trigCount = 1; //4
+  const uint assocCount = 1;
+  const uint trigCount = 6;
 
-  for (uint itrig = 0; itrig < trigCount; ++itrig) {
-    for (uint iassoc = 0; iassoc <= itrig; ++iassoc) {
+  for (uint imult = 0; imult < Nbins; ++imult) {
 
-      TGraphErrors* gridgeYield = new TGraphErrors(Nbins);
+    //  do reference flow
 
-      for (uint imult = 0; imult < Nbins; ++imult) {
+    // 2D histogram of two-particle correlation: same/mixed event ratio (normalised as it should be: Ntrig, B(0,0))
+    TH2D* hdphidetaRidge_ref = (TH2D*)infile->Get(Form("dphi_ref_%u", imult));
+    if (!hdphidetaRidge_ref) {
+      printf("No histograms corresponding mult bin %u \n", imult);
+      continue;
+    }
+
+    //  projection of near-side ridge on delta phi axis (positive side of the jet peak)
+    int aridgeP_ref = hdphidetaRidge_ref->GetYaxis()->FindBin(absDeltaEtaMin);
+    int bridgeP_ref = hdphidetaRidge_ref->GetYaxis()->FindBin(absDeltaEtaMax);
+    TH1D* hdphiRidgeP_ref = hdphidetaRidge_ref->ProjectionX(Form("proj_dphi_P_ref_%u", imult), aridgeP_ref, bridgeP_ref, "e");
+    outfile->cd();
+    hdphiRidgeP_ref->Write();
+
+    //  projection of near-side ridge on delta phi axis (negative side of the jet peak)
+    int aridgeN_ref = hdphidetaRidge_ref->GetYaxis()->FindBin(-absDeltaEtaMax);
+    int bridgeN_ref = hdphidetaRidge_ref->GetYaxis()->FindBin(-absDeltaEtaMin);
+    TH1D* hdphiRidgeN_ref = hdphidetaRidge_ref->ProjectionX(Form("proj_dphi_N_ref_%u", imult), aridgeN_ref, bridgeN_ref, "e");
+    outfile->cd();
+    hdphiRidgeN_ref->Write();
+
+    //  add the projections positive + negative
+    TH1D* hdphiRidge_ref = (TH1D*)hdphiRidgeP_ref->Clone(Form("proj_dphi_ref_%u", imult));
+    hdphiRidge_ref->Add(hdphiRidgeP_ref, hdphiRidgeN_ref, 0.5, 0.5);
+
+    outfile->cd();
+    hdphiRidge_ref->Write();
+
+    if (drawPlots) {
+
+      TCanvas* cTemplate = new TCanvas("cTemplate", "", 1200, 800);
+      gPad->SetMargin(0.12, 0.01, 0.12, 0.01);
+      hdphiRidge_ref->SetTitle("");
+      hdphiRidge_ref->SetStats(0);
+      hdphiRidge_ref->GetYaxis()->SetTitleOffset(1.1);
+      hdphiRidge_ref->GetXaxis()->SetTitleSize(0.05);
+      hdphiRidge_ref->GetYaxis()->SetTitle("Y(#Delta#varphi)");
+      hdphiRidge_ref->GetYaxis()->SetTitleSize(0.05);
+      hdphiRidge_ref->SetLineColor(kBlue + 1);
+      hdphiRidge_ref->SetMarkerStyle(kFullCircle);
+      hdphiRidge_ref->SetMarkerColor(kBlue + 1);
+      hdphiRidge_ref->SetMarkerSize(1.3);
+      hdphiRidge_ref->Draw("");
+
+      TLatex* latex = 0;
+      latex = new TLatex();
+      latex->SetTextSize(0.038);
+      latex->SetTextFont(42);
+      latex->SetTextAlign(21);
+      latex->SetNDC();
+
+      latex->DrawLatex(0.3, 0.93, "pp #sqrt{s} = 13 TeV");
+      latex->DrawLatex(0.3, 0.86, Form("%.1f < p_{T, trig, assoc} < %.1f", binspTref[0], binspTref[1]));
+      latex->DrawLatex(0.3, 0.79, Form("%.1f < N_{ch} < %.1f", Nch[imult], Nch[imult + 1]));
+
+      if (savePlots)
+        cTemplate->SaveAs(Form("%s/dphiRidge_ref_%d.png", outputPlotsName, imult));
+    }
+
+    //  do pT-differential flow
+    for (uint itrig = 0; itrig < trigCount; ++itrig) {
+      for (uint iassoc = 0; iassoc < assocCount; ++iassoc) {
 
         // 2D histogram of two-particle correlation: same/mixed event ratio (normalised as it should be: Ntrig, B(0,0))
         TH2D* hdphidetaRidge = (TH2D*)infile->Get(Form("dphi_%u_%u_%u", itrig, iassoc, imult));
@@ -119,58 +191,43 @@ void yieldExtraction(const char* inFileName = "dphi_corr.root", double absDeltaE
         TH1D* hdphiRidge = (TH1D*)hdphiRidgeP->Clone(Form("proj_dphi_%u_%u_%u", itrig, iassoc, imult));
         hdphiRidge->Add(hdphiRidgeP, hdphiRidgeN, 0.5, 0.5);
 
-        //  fit the projection to get ZYAM
-        TF1* fdphiRidge = new TF1(Form("fit_%u_%u_%u", itrig, iassoc, imult),
-                                  "[0]+[1]*(1+2*[2]*TMath::Cos(x)+2*[3]*TMath::Cos(2*x)+2*[4]*TMath::Cos(3*x))",
-                                  -TMath::Pi() / 2.0, 3.0 / 2.0 * TMath::Pi());
-        fdphiRidge->SetParNames("czyam", "c", "v1", "v2", "v3");
-        fdphiRidge->FixParameter(0, 0.0); // TODO: this is because otherwise it could bias the C_ZYAM extraction? the result doesn't change much
-        TFitResultPtr r = hdphiRidge->Fit(fdphiRidge, "0SE", "", -TMath::Pi() / 2.0, 3.0 / 2.0 * TMath::Pi());
-
-        //  get C_ZYAM: value at bin with minimum
-        double phiMinX = fdphiRidge->GetMinimumX(-TMath::Pi() / 2.0, 3.0 / 2.0 * TMath::Pi());
-        double phiMin = fdphiRidge->Eval(phiMinX);
-        double czyam = phiMin;
-
-        double fitErr;
-        r->GetConfidenceIntervals(1, 1, 1, &phiMinX, &fitErr, 0.683, false);
-
-        //  subtract the C_ZYAM
-        for (uint idphi = 1; idphi < hdphiRidge->GetXaxis()->GetNbins() + 1; ++idphi) {
-          double y = hdphiRidge->GetBinContent(idphi);
-          double yerr = hdphiRidge->GetBinError(idphi);
-          hdphiRidge->SetBinContent(idphi, TMath::Max(y - czyam, 0.0));
-          hdphiRidge->SetBinError(idphi, TMath::Sqrt(yerr * yerr + fitErr * fitErr));
-        }
-
-        int phiIntShift = 0; //  TODO: check what was the meaning of this
-
-        //  write the ZYAM-subtracted histogram and function for later plotting
         outfile->cd();
         hdphiRidge->Write();
 
-        fdphiRidge->SetParameter(0, fdphiRidge->GetParameter(0) - czyam);
-        outfile->cd();
-        fdphiRidge->Write();
+        if (drawPlots) {
+          TCanvas* cTemplate = new TCanvas("cTemplate", "", 1200, 800);
+          gPad->SetMargin(0.12, 0.01, 0.12, 0.01);
+          hdphiRidge->SetTitle("");
+          hdphiRidge->SetStats(0);
+          hdphiRidge->GetYaxis()->SetTitleOffset(1.1);
+          hdphiRidge->GetXaxis()->SetTitleSize(0.05);
+          hdphiRidge->GetYaxis()->SetTitle("Y(#Delta#varphi)");
+          hdphiRidge->GetYaxis()->SetTitleSize(0.05);
+          hdphiRidge->SetLineColor(kBlue + 1);
+          hdphiRidge->SetMarkerStyle(kFullCircle);
+          hdphiRidge->SetMarkerColor(kBlue + 1);
+          hdphiRidge->SetMarkerSize(1.3);
+          hdphiRidge->Draw("");
 
-        //  near-side yield integration -> Y_ridge^near
-        int aridge = hdphiRidge->GetXaxis()->FindBin(-TMath::Abs(phiMinX)) + phiIntShift;
-        int bridge = hdphiRidge->GetXaxis()->FindBin(TMath::Abs(phiMinX)) + phiIntShift;
-        double YridgeErr;
-        double Yridge = hdphiRidge->IntegralAndError(aridge, bridge, YridgeErr, "width");
-        printf("<N> = %.1lf, C_ZYAM = %.4f, Yridge = %.4lf pm %.6lf\n", (Nch[imult + 1] + Nch[imult]) / 2.0, czyam, Yridge, YridgeErr);
+          TLatex* latex = 0;
+          latex = new TLatex();
+          latex->SetTextSize(0.038);
+          latex->SetTextFont(42);
+          latex->SetTextAlign(21);
+          latex->SetNDC();
 
-        gridgeYield->SetPoint(imult, (Nch[imult + 1] + Nch[imult]) / 2.0, Yridge); // saving in the bin center (though later it should be properly corrected)
-        gridgeYield->SetPointError(imult, 0.0, YridgeErr);
+          latex->DrawLatex(0.3, 0.93, "pp #sqrt{s} = 13 TeV");
+          latex->DrawLatex(0.3, 0.86, Form("%.1f < p_{T, trig} < %.1f", binspTtrig[itrig], binspTtrig[itrig + 1]));
+          latex->DrawLatex(0.3, 0.79, Form("%.1f < N_{ch} < %.1f", Nch[imult], Nch[imult + 1]));
 
-      } // loop over the index of the multiplicity interval
+          if (savePlots)
+            cTemplate->SaveAs(Form("%s/dphiRidge_%d_%d.png", outputPlotsName, itrig, imult));
+        }
 
-      outfile->cd();
-      gridgeYield->Write(Form("ridgeYield_%u_%u", itrig, iassoc));
-
-    } // loop over the index of the associated particle
-  }   // loop over the index of the trigger particle
+      } // loop over the index of the associated particle
+    }   // loop over the index of the trigger particle
+  }     // loop over the index of the multiplicity interval
 
   outfile->Close();
 
-} // end of processYield
+} // end of doPhiProjections

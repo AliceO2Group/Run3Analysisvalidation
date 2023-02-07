@@ -24,6 +24,15 @@
         "processRun2": "false",
         "processRun3": "true"
     },
+    "hf-track-to-collision-association": {
+        "nSigmaForTimeCompat": "4.",
+        "timeMargin": "0.",
+        "processAssocWithTime": "false",
+        "processAssocWithAmb": "false",
+        "processStandardAssoc": "true",
+        "applyIsGlobalTrack": "true",
+        "applyTrackSelForRun2": "false"
+    },
     "hf-track-index-skim-creator-tag-sel-collisions": {
         "fillHistograms": "true",
         "xVertexMin": "-100",
