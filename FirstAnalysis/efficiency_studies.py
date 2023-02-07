@@ -8,9 +8,19 @@ author: Maja Kabus <mkabus@cern.ch>, CERN / Warsaw University of Technology
 
 import argparse
 
-from ROOT import TH1F, TCanvas, TEfficiency, TFile, TLegend, TLatex # pylint: disable=import-error,no-name-in-module
-from ROOT import gPad, gStyle, gROOT # pylint: disable=import-error,no-name-in-module
-from ROOT import kGreen, kOrange # pylint: disable=import-error,no-name-in-module
+from ROOT import (  # pylint: disable=import-error,no-name-in-module
+    TH1F,
+    TCanvas,
+    TEfficiency,
+    TFile,
+    TLatex,
+    TLegend,
+    gPad,
+    gROOT,
+    gStyle,
+    kGreen,
+    kOrange,
+)
 
 
 def save_canvas(canvas, title):
@@ -38,15 +48,25 @@ def prepare_canvas(var, titles):
     `hempty` must be captured at return, otherwise ROOT crashes.
     """
     hname, cname, ctitle = titles
+
     def get_pt_hist():
-        hempty = TH1F(hname, f"{ctitle};Transverse Momentum (GeV/c);Efficiency", 16, 0.00, 16)
-        #gPad.SetLogx()
+        hempty = TH1F(
+            hname, f"{ctitle};Transverse Momentum (GeV/c);Efficiency", 16, 0.00, 16
+        )
+        # gPad.SetLogx()
         return hempty
+
     def get_eta_hist():
         return TH1F(hname, f"{ctitle};Pseudorapidity;Efficiency", 16, -1.5, 1.5)
+
     def get_phi_hist():
-        return TH1F(hname, f"{ctitle};Azimuthal angle (rad);Efficiency",
-                    16, -2 * 3.1416 - 0.5, 2 * 3.1416 + 0.5)
+        return TH1F(
+            hname,
+            f"{ctitle};Azimuthal angle (rad);Efficiency",
+            16,
+            -2 * 3.1416 - 0.5,
+            2 * 3.1416 + 0.5,
+        )
 
     hists = {"Pt": get_pt_hist, "Eta": get_eta_hist, "Phi": get_phi_hist}
 
@@ -97,18 +117,26 @@ def get_efficiency_all_charges(infile, det, var, had):
     axis = num.GetXaxis()
     efftitle = f"Efficiency for {had}, {det} primaries;{axis.GetTitle()};Efficiency"
     if axis.IsVariableBinSize():
-        eff = TEfficiency(f"{det}_vs{var}_Prm", efftitle, axis.GetNbins(),
-                          axis.GetXbins().GetArray())
+        eff = TEfficiency(
+            f"{det}_vs{var}_Prm", efftitle, axis.GetNbins(), axis.GetXbins().GetArray()
+        )
     else:
-        eff = TEfficiency(f"{det}_vs{var}_Prm", efftitle, axis.GetNbins(),
-                          axis.GetXmin(), axis.GetXmax())
+        eff = TEfficiency(
+            f"{det}_vs{var}_Prm",
+            efftitle,
+            axis.GetNbins(),
+            axis.GetXmin(),
+            axis.GetXmax(),
+        )
 
     eff.SetTotalHistogram(den, "f")
     eff.SetPassedHistogram(num, "f")
     return eff
 
 
-def efficiency_tracking(infile, heff, det, sign, var, err_y): # pylint: disable=too-many-locals, too-many-arguments
+def efficiency_tracking(
+    infile, heff, det, sign, var, err_y
+):  # pylint: disable=too-many-locals, too-many-arguments
     """
     Plot efficiency vs pT, eta and phi for all hadron species.
     Pt plots are drawn for primaries.
@@ -119,7 +147,11 @@ def efficiency_tracking(infile, heff, det, sign, var, err_y): # pylint: disable=
     # Other hadrons: "Deuteron", "Triton", "He3", "Alpha"
     color_list = [1, 2, 4, kGreen + 2, kOrange - 3]
     marker_list = [20, 21, 22, 21, 22]
-    eff_objs = {"Pt": f"{det}_vsPt_Prm", "Eta": f"{det}_vsEta_Prm", "Phi": f"{det}_vsPhi_Prm"}
+    eff_objs = {
+        "Pt": f"{det}_vsPt_Prm",
+        "Eta": f"{det}_vsEta_Prm",
+        "Phi": f"{det}_vsPhi_Prm",
+    }
 
     gStyle.SetOptStat(0)
     gStyle.SetFrameLineWidth(2)
@@ -214,12 +246,21 @@ def main():
 
     parser = argparse.ArgumentParser(description="Arguments to pass")
     parser.add_argument("input_file", help="input AnalysisResults.root file")
-    parser.add_argument("--plot_erry", default=False, action="store_true",
-                        help="Plot efficiency with y error bars")
-    parser.add_argument("--plot_sel", default=False, action="store_true",
-                        help="Plot track and particle selections")
-    parser.add_argument("--dump_eff", default=False, action="store_true",
-                        help="Dump efficiency tree")
+    parser.add_argument(
+        "--plot_erry",
+        default=False,
+        action="store_true",
+        help="Plot efficiency with y error bars",
+    )
+    parser.add_argument(
+        "--plot_sel",
+        default=False,
+        action="store_true",
+        help="Plot track and particle selections",
+    )
+    parser.add_argument(
+        "--dump_eff", default=False, action="store_true", help="Dump efficiency tree"
+    )
     args = parser.parse_args()
 
     var_list = ["Pt", "Eta", "Phi"]
@@ -245,9 +286,10 @@ def main():
     for sign in sign_list:
         efficiency_tracking(infile, heff, "ITS", sign, "Pt", args.plot_erry)
 
-    #hfhadron_list = ["d0", "dplus", "lc", "xic", "jpsi"]
-    #for had in hfhadron_list:
+    # hfhadron_list = ["d0", "dplus", "lc", "xic", "jpsi"]
+    # for had in hfhadron_list:
     #    efficiency_hadron(had, "Pt")
+
 
 if __name__ == "__main__":
     main()
