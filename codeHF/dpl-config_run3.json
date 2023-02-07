@@ -11,6 +11,12 @@
     },
     "internal-dpl-aod-spawner": "",
     "internal-dpl-aod-index-builder": "",
+    "collision-converter": {
+        "doNotSwap": "false",
+        "debug": "false",
+        "nbins": "1",
+        "tolerance": "0.001"
+    },
     "timestamp-task": {
         "verbose": "false",
         "rct-path": "RCT/RunInformation",

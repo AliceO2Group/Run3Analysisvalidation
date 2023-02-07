@@ -390,6 +390,8 @@ workflows:
 
   o2-analysis-fdd-converter: {}
 
+  o2-analysis-collision-converter: {}
+
   o2-analysis-track-propagation: {}
 
   # LF

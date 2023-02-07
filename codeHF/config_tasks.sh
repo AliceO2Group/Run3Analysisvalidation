@@ -102,6 +102,7 @@ DOO2_TASK_FLOW=0    # hf-task-flow
 DOO2_MCCONV=0       # mc-converter
 DOO2_FDDCONV=0      # fdd-converter
 DOO2_TRKPROP=0      # track-propagation
+DOO2_COLLCONV=0     # collision-converter
 
 # Selection cuts
 APPLYCUTS_D0=1      # Apply D0 selection cuts.
@@ -318,7 +319,7 @@ function MakeScriptO2 {
   # Enable cascade reconstruction in case of Λc → K0S p tasks
   [[ $DOO2_CAND_CASC -eq 1 || $DOO2_SEL_LCK0SP -eq 1 || $DOO2_TASK_LCK0SP -eq 1 ]] && DOO2_CASC=1 || DOO2_CASC=0
   # Cascade reconstruction
-  [ $DOO2_CASC -eq 1 ] && SUFFIX_CASC="-v0" || SUFFIX_CASC=""
+  [ "$DOO2_CASC" -eq 1 ] && SUFFIX_CASC="-v0" || SUFFIX_CASC=""
   # ALICE 3 input
   [ "$ISALICE3" -eq 1 ] && SUFFIX_ALICE3="-alice3" || SUFFIX_ALICE3=""
 
@@ -402,6 +403,7 @@ function MakeScriptO2 {
   [ $DOO2_MCCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-mc-converter"
   [ $DOO2_FDDCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-fdd-converter"
   [ $DOO2_TRKPROP -eq 1 ] && WORKFLOWS+=" o2-analysis-track-propagation"
+  [ $DOO2_COLLCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-collision-converter"
 
   # Translate options into arguments of the generating script.
   OPT_MAKECMD=""
@@ -412,7 +414,7 @@ function MakeScriptO2 {
 
   # Make a copy of the default workflow database file before modifying it.
   DATABASE_O2_EDIT=""
-  if [[ $DOO2_CASC -eq 1 || "$ISALICE3" -eq 1 ]]; then
+  if [[ "$DOO2_CASC" -eq 1 || "$ISALICE3" -eq 1 ]]; then
     DATABASE_O2_EDIT="${DATABASE_O2/.yml/_edit.yml}"
     cp "$DATABASE_O2" "$DATABASE_O2_EDIT" || ErrExit "Failed to cp $DATABASE_O2 $DATABASE_O2_EDIT."
     DATABASE_O2="$DATABASE_O2_EDIT"
@@ -428,7 +430,7 @@ function MakeScriptO2 {
     }
 
     # Adjust workflow database in case of cascades enabled.
-    [ $DOO2_CASC -eq 1 ] && {
+    [ "$DOO2_CASC" -eq 1 ] && {
       ReplaceString "- $WF_SKIM" "- ${WF_SKIM}${SUFFIX_CASC}" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
     }
   fi
