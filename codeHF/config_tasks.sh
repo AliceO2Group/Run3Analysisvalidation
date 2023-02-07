@@ -102,6 +102,7 @@ DOO2_TASK_FLOW=0    # hf-task-flow
 DOO2_MCCONV=0       # mc-converter
 DOO2_FDDCONV=0      # fdd-converter
 DOO2_TRKPROP=0      # track-propagation
+DOO2_COLLCONV=0     # collision-converter
 
 # Selection cuts
 APPLYCUTS_D0=1      # Apply D0 selection cuts.
@@ -402,6 +403,7 @@ function MakeScriptO2 {
   [ $DOO2_MCCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-mc-converter"
   [ $DOO2_FDDCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-fdd-converter"
   [ $DOO2_TRKPROP -eq 1 ] && WORKFLOWS+=" o2-analysis-track-propagation"
+  [ $DOO2_COLLCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-collision-converter"
 
   # Translate options into arguments of the generating script.
   OPT_MAKECMD=""
