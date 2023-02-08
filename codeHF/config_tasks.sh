@@ -43,7 +43,7 @@ DOO2_PID_BAYES=0    # pid-bayes
 # Vertexing
 DOO2_SKIM=1         # hf-track-index-skim-creator
 DOO2_CAND_2PRONG=1  # hf-candidate-creator-2prong
-DOO2_CAND_3PRONG=1  # hf-candidate-creator-3prong
+DOO2_CAND_3PRONG=0  # hf-candidate-creator-3prong
 DOO2_CAND_CASC=0    # hf-candidate-creator-cascade
 DOO2_CAND_LB=0      # hf-candidate-creator-lb
 DOO2_CAND_X=0       # hf-candidate-creator-x
@@ -53,7 +53,7 @@ DOO2_CAND_B0=0      # hf-candidate-creator-b0
 DOO2_CAND_BPLUS=0   # hf-candidate-creator-bplus
 DOO2_CAND_DSTAR=0   # hf-candidate-creator-dstar
 # Selectors
-DOO2_SEL_D0=0       # hf-candidate-selector-d0
+DOO2_SEL_D0=1       # hf-candidate-selector-d0
 DOO2_SEL_DS=0       # hf-candidate-selector-ds-to-k-k-pi
 DOO2_SEL_DPLUS=0    # hf-candidate-selector-dplus-to-pi-k-pi
 DOO2_SEL_LC=0       # hf-candidate-selector-lc
@@ -70,7 +70,7 @@ DOO2_SEL_BPLUS=0    # hf-candidate-selector-bplus-to-d0-pi
 DOO2_TASK_D0=1      # hf-task-d0
 DOO2_TASK_DS=0      # hf-task-ds
 DOO2_TASK_DPLUS=0   # hf-task-dplus
-DOO2_TASK_LC=1      # hf-task-lc
+DOO2_TASK_LC=0      # hf-task-lc
 DOO2_TASK_LB=0      # hf-task-lb
 DOO2_TASK_XIC=0     # hf-task-xic
 DOO2_TASK_JPSI=0    # hf-task-jpsi
@@ -80,9 +80,9 @@ DOO2_TASK_LCK0SP=0  # hf-task-lc-to-k0s-p
 DOO2_TASK_XICC=0    # hf-task-xicc
 DOO2_TASK_B0=0      # hf-task-b0
 DOO2_TASK_BPLUS=0   # hf-task-bplus
-DOJETS=1            # je-jet-finder-hf
+DOJETS=0            # je-jet-finder-hf
 DOJETMATCHINGHF=0   # je-jet-matching-hf (needs jets)
-DOJETSUBSTRUCTURE=1   # je-jet-substructure-hf (needs jets)
+DOJETSUBSTRUCTURE=0   # je-jet-substructure-hf (needs jets)
 # Tree creators
 DOO2_TREE_D0=0      # hf-tree-creator-d0-to-k-pi
 DOO2_TREE_LC=0      # hf-tree-creator-lc-to-p-k-pi
@@ -91,6 +91,7 @@ DOO2_TREE_X=0       # hf-tree-creator-x-to-jpsi-pi-pi
 DOO2_TREE_XICC=0    # hf-tree-creator-xicc-to-p-k-pi-pi
 DOO2_TREE_CHIC=0    # hf-tree-creator-chic-to-jpsi-gamma
 DOO2_TREE_BPLUS=0   # hf-tree-creator-bplus-to-d0-pi
+DOO2_TREE_JETSUBSTRUCTURE=0   # jet-substructure-hf-output (needs jets and jet substructure)
 # Correlations
 DOO2_D0D0BAR_DATA=0       # hf-correlator-d0-d0bar
 DOO2_D0D0BAR_MCREC=0      # hf-correlator-d0-d0bar-mc-rec
@@ -110,7 +111,7 @@ DOO2_COLLCONV=0     # collision-converter
 APPLYCUTS_D0=1      # Apply D0 selection cuts.
 APPLYCUTS_DS=0      # Apply Ds selection cuts.
 APPLYCUTS_DPLUS=0   # Apply D+ selection cuts.
-APPLYCUTS_LC=1      # Apply Λc selection cuts.
+APPLYCUTS_LC=0      # Apply Λc selection cuts.
 APPLYCUTS_LB=0      # Apply Λb selection cuts.
 APPLYCUTS_XIC=0     # Apply Ξc selection cuts.
 APPLYCUTS_JPSI=0    # Apply J/ψ selection cuts.
@@ -374,9 +375,23 @@ function MakeScriptO2 {
   [ $DOO2_SEL_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-bplus-to-d0-pi"
   # User tasks
   [ $DOO2_TASK_D0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-d0"
-  [ $DOJETS -eq 1 ] && { [ "$ISMC" -eq 0 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf-data"; [ "$ISMC" -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf-mcd o2-analysis-je-jet-finder-hf-mcp"; }
-  [ $DOJETMATCHINGHF -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf-mcd o2-analysis-je-jet-finder-hf-mcp"
-  [ $DOJETSUBSTRUCTURE -eq 1 ] && { [ "$ISMC" -eq 0 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-data"; [ "$ISMC" -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-mcd o2-analysis-je-jet-substructure-hf-mcp"; }
+  #[ $DOJETS -eq 1 ] && { [ "$ISMC" -eq 0 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf-data"; [ "$ISMC" -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf-mcd o2-analysis-je-jet-finder-hf-mcp"; }
+  if [ $DOJETS -eq 1 ]; then
+    if [ "$ISMC" -eq 0 ]; then
+      WORKFLOWS+=" o2-analysis-je-jet-finder-hf-data"
+    else
+      WORKFLOWS+=" o2-analysis-je-jet-finder-hf-mcd o2-analysis-je-jet-finder-hf-mcp"
+    fi
+  fi
+  [ $DOJETMATCHINGHF -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf-mcd o2-analysis-je-jet-finder-hf-mcp o2-analysis-je-jet-matching-hf"
+  #[ $DOJETSUBSTRUCTURE -eq 1 ] && { [ "$ISMC" -eq 0 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-data"; [ "$ISMC" -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-mcd o2-analysis-je-jet-substructure-hf-mcp"; }
+  if [ $DOJETSUBSTRUCTURE -eq 1 ]; then
+    if [ "$ISMC" -eq 0 ]; then
+      WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-data"
+    else
+      WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-mcd o2-analysis-je-jet-substructure-hf-mcp"
+    fi
+  fi
   [ $DOO2_TASK_JPSI -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-jpsi"
   [ $DOO2_TASK_DS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-ds"
   [ $DOO2_TASK_DPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-dplus"
@@ -409,13 +424,21 @@ function MakeScriptO2 {
   [ $DOO2_TREE_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-xicc-to-p-k-pi-pi"
   [ $DOO2_TREE_CHIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-chic-to-jpsi-gamma"
   [ $DOO2_TREE_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-bplus-to-d0-pi"
+  #[ $DOO2_TREE_JETSUBSTRUCTURE -eq 1 ] && { [ "$ISMC" -eq 0 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-output-data"; [ "$ISMC" -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-output-mcd o2-analysis-je-jet-substructure-hf-output-mcp"; }
+  if [ $DOO2_TREE_JETSUBSTRUCTURE -eq 1 ]; then
+    if [ "$ISMC" -eq 0 ]; then
+      WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-output-data"
+    else
+      WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-output-mcd o2-analysis-je-jet-substructure-hf-output-mcp"
+    fi
+  fi
   # Other
   [ $DOO2_MCCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-mc-converter"
   [ $DOO2_FDDCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-fdd-converter"
   [ $DOO2_COLLCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-collision-converter"
 
   # Translate options into arguments of the generating script.
-  OPT_MAKECMD="-d"
+  OPT_MAKECMD=""
   [ "$ISMC" -eq 1 ] && OPT_MAKECMD+=" --mc"
   [ "$DEBUG" -eq 1 ] && OPT_MAKECMD+=" -d"
   [ $SAVETREES -eq 1 ] && OPT_MAKECMD+=" -t"
@@ -469,8 +492,22 @@ function MakeScriptPostprocess {
     [ $DOO2_TASK_LC -eq 1 ] && { OPT_COMPARE+=" lc "; [ "$ISMC" -eq 1 ] && OPT_COMPARE+=" lc-mc-pt  lc-mc-prompt  lc-mc-nonprompt  lc-mc-eta  lc-mc-phi "; }
     [ $DOO2_TASK_XIC -eq 1 ] && OPT_COMPARE+=" xic "
     [ $DOO2_TASK_JPSI -eq 1 ] && OPT_COMPARE+=" jpsi "
-    [ $DOJETS -eq 1 ] && { [ "$ISMC" -eq 0 ] && OPT_COMPARE+=" jets-data "; [ "$ISMC" -eq 1 ] && OPT_COMPARE+=" jets-mc "; }
-    [ $DOJETSUBSTRUCTURE -eq 1 ] && { [ "$ISMC" -eq 0 ] && OPT_COMPARE+=" jets-substructure-data "; [ "$ISMC" -eq 1 ] && OPT_COMPARE+=" jets-substructure-mc "; }
+    #[ $DOJETS -eq 1 ] && { [ "$ISMC" -eq 0 ] && OPT_COMPARE+=" jets-data "; [ "$ISMC" -eq 1 ] && OPT_COMPARE+=" jets-mc "; }
+    if [ $DOJETS -eq 1 ]; then
+      if [ "$ISMC" -eq 0 ]; then
+        OPT_COMPARE+=" jets-data "
+      else
+        OPT_COMPARE+=" jets-mc "
+      fi
+    fi
+    #[ $DOJETSUBSTRUCTURE -eq 1 ] && { [ "$ISMC" -eq 0 ] && OPT_COMPARE+=" jets-substructure-data "; [ "$ISMC" -eq 1 ] && OPT_COMPARE+=" jets-substructure-mc "; }
+    if [ $DOJETSUBSTRUCTURE -eq 1 ]; then
+      if [ "$ISMC" -eq 0 ]; then
+        OPT_COMPARE+=" jets-substructure-data "
+      else
+        OPT_COMPARE+=" jets-substructure-mc "
+      fi
+    fi
     [ "$OPT_COMPARE" ] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/Compare.C(\\\"\$FileO2\\\", \\\"\$FileAli\\\", \\\"$OPT_COMPARE\\\", $DORATIO)\""
   }
   # Plot particle reconstruction efficiencies.

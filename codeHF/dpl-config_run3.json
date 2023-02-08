@@ -1068,8 +1068,8 @@
         "candPtMax": "100",
         "candYMin": "-0.8",
         "candYMax": "0.8",
-        "d_selectionFlagD0": "0",
-        "d_selectionFlagD0bar": "0",
+        "selectionFlagD0": "0",
+        "selectionFlagD0bar": "0",
         "processData": "true",
         "processMCD": "false",
         "processMCP": "false"
@@ -1086,8 +1086,8 @@
         "candPtMax": "100.0",
         "candYMin": "-0.8",
         "candYMax": "0.8",
-        "d_selectionFlagD0": "0",
-        "d_selectionFlagD0bar": "0",
+        "selectionFlagD0": "0",
+        "selectionFlagD0bar": "0",
         "processData": "false",
         "processMCD": "true",
         "processMCP": "false"
@@ -1104,8 +1104,8 @@
         "candPtMax": "100.0",
         "candYMin": "-0.8",
         "candYMax": "0.8",
-        "d_selectionFlagD0": "0",
-        "d_selectionFlagD0bar": "0",
+        "selectionFlagD0": "0",
+        "selectionFlagD0bar": "0",
         "processData": "false",
         "processMCD": "false",
         "processMCP": "true"
