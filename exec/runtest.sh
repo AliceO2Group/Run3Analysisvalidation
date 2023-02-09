@@ -27,7 +27,6 @@ INPUT_RUN=2                     # LHC Run (2, 3, 5)
 JSON="dpl-config.json"          # Tasks parameters
 ISINPUTO2=0                     # Input files are in O2 format.
 ISMC=0                          # Input files are MC data.
-ISALICE3=0                      # Input data from the ALICE 3 detectors.
 NFILESMAX=1                     # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
 NFILESPERJOB_CONVERT=1          # Number of input files per conversion job
 NFILESPERJOB_ALI=1              # Number of input files per AliPhysics job
