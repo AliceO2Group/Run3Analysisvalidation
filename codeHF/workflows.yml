@@ -18,24 +18,23 @@ workflows:
   o2-analysis-hf-track-index-skim-creator: &skim_creator
     executable: o2-analysis-hf-track-index-skim-creator
     dependencies:
-      - o2-analysis-trackextension
-      - o2-analysis-trackselection
+      - o2-analysis-track-dca_runX
+      - o2-analysis-trackselection_runX
       - o2-analysis-hf-track-to-collision-associator
-    tables: [HFSELCOLLISION, HFSELTRACK, HF2PRONG, HF3PRONG]
+    tables: [HFSELCOLLISION, HFSELTRACK, HF2PRONG, HF3PRONG, HFCASCADE, HFCASCLF2PRONG, HFCASCLF3PRONG]
 
-  o2-analysis-hf-track-index-skim-creator-v0:
+  o2-analysis-hf-track-index-skim-creator_v0:
     <<: *skim_creator
     dependencies:
-      - o2-analysis-trackextension
-      - o2-analysis-trackselection
+      - o2-analysis-track-dca_runX
+      - o2-analysis-trackselection_runX
       - o2-analysis-lf-lambdakzerobuilder
-    tables: [HFSELCOLLISION, HFSELTRACK, HF2PRONG, HF3PRONG, HFCASCADE]
+      - o2-analysis-hf-track-to-collision-associator
 
   # Candidate creators
 
   o2-analysis-hf-candidate-creator-2prong: &cand_creator
-    dependencies:
-      - o2-analysis-hf-track-index-skim-creator
+    dependencies: o2-analysis-hf-track-index-skim-creator_skimX
     tables:
       default: [HFCAND2PBASE, HFCAND2PEXT]
       mc: [HFCAND2PMCREC, HFCAND2PMCGEN]
@@ -56,8 +55,7 @@ workflows:
 
   o2-analysis-hf-candidate-creator-x:
     <<: *cand_creator
-    dependencies:
-      - o2-analysis-hf-candidate-selector-jpsi
+    dependencies: o2-analysis-hf-candidate-selector-jpsi_runX
     tables:
       default: [HFCANDXBASE, HFCANDXEXT]
       mc: [HFCANDXMCREC, HFCANDXMCGEN]
@@ -71,8 +69,7 @@ workflows:
 
   o2-analysis-hf-candidate-creator-chic:
     <<: *cand_creator
-    dependencies:
-      - o2-analysis-hf-candidate-selector-jpsi
+    dependencies: o2-analysis-hf-candidate-selector-jpsi_runX
     tables:
       default: [HFCANDCHICBASE, HFCANDCHICEXT]
       mc: [HFCANDCHICMCREC, HFCANDCHICMCGEN]
@@ -95,7 +92,7 @@ workflows:
     <<: *cand_creator
     dependencies:
       - o2-analysis-hf-candidate-selector-lc
-      - o2-analysis-alice3-centrality
+      - o2-analysis-centrality_run5
     tables:
       default: [HFCANDLB, HFCANDLBEXT]
       mc: [HFCANDLBMCREC, HFCANDLBMCGEN]
@@ -106,15 +103,15 @@ workflows:
     dependencies:
       - o2-analysis-hf-candidate-creator-2prong
       - o2-analysis-pid-tpc-full
-      - o2-analysis-pid-tof-full
+      - o2-analysis-pid-tof-full_runX
     tables: HFSELD0
 
-  o2-analysis-hf-candidate-selector-jpsi: &selector_jpsi
+  o2-analysis-hf-candidate-selector-jpsi_run3: &selector_jpsi
     <<: *selector_2prong
     executable: o2-analysis-hf-candidate-selector-jpsi
     tables: HFSELJPSI
 
-  o2-analysis-hf-candidate-selector-jpsi-alice3:
+  o2-analysis-hf-candidate-selector-jpsi_run5:
     <<: *selector_jpsi
     options: --isAlice3
 
@@ -122,7 +119,7 @@ workflows:
     dependencies:
       - o2-analysis-hf-candidate-creator-3prong
       - o2-analysis-pid-tpc-full
-      - o2-analysis-pid-tof-full
+      - o2-analysis-pid-tof-full_runX
       - o2-analysis-pid-bayes
     tables: HFSELDPLUS
 
@@ -146,7 +143,7 @@ workflows:
     dependencies:
       - o2-analysis-hf-candidate-creator-cascade
       - o2-analysis-pid-tpc-full
-      - o2-analysis-pid-tof-full
+      - o2-analysis-pid-tof-full_runX
       - o2-analysis-pid-bayes
     tables: HFSELLCK0SP
 
@@ -178,8 +175,7 @@ workflows:
   o2-analysis-hf-task-jpsi:
     options:
       mc: "--doMC"
-    dependencies:
-      - o2-analysis-hf-candidate-selector-jpsi
+    dependencies: o2-analysis-hf-candidate-selector-jpsi_runX
 
   o2-analysis-hf-task-dplus:
     dependencies: o2-analysis-hf-candidate-selector-dplus-to-pi-k-pi
@@ -191,7 +187,7 @@ workflows:
     dependencies: o2-analysis-hf-candidate-selector-lc
 
   o2-analysis-hf-task-lb:
-    dependencies: [o2-analysis-hf-candidate-selector-lb-to-lc-pi, o2-analysis-trackextension-alice3]
+    dependencies: [o2-analysis-hf-candidate-selector-lb-to-lc-pi, o2-analysis-track-dca_run5]
 
   o2-analysis-hf-task-xic:
     dependencies: o2-analysis-hf-candidate-selector-xic-to-p-k-pi
@@ -257,7 +253,7 @@ workflows:
 
   o2-analysis-hf-tree-creator-lb-to-lc-pi:
     requires_mc: yes
-    dependencies: [o2-analysis-hf-candidate-selector-lb-to-lc-pi, o2-analysis-trackextension-alice3]
+    dependencies: [o2-analysis-hf-candidate-selector-lb-to-lc-pi, o2-analysis-track-dca_run5]
     tables: [HFCANDLbFull, HFCANDLbFullE, HFCANDLbFullP]
 
   o2-analysis-hf-tree-creator-x-to-jpsi-pi-pi:
@@ -279,7 +275,7 @@ workflows:
 
   o2-analysis-hf-correlator-d0-d0bar: &d0d0barcorr
     executable: o2-analysis-hf-correlator-d0-d0bar
-    dependencies: [o2-analysis-hf-candidate-selector-d0, o2-analysis-alice3-centrality]
+    dependencies: [o2-analysis-hf-candidate-selector-d0, o2-analysis-centrality_run5]
     tables: [DDBARPAIR, DDBARRECOINFO]
 
   o2-analysis-hf-correlator-d0-d0bar-mc-rec:
@@ -293,7 +289,7 @@ workflows:
 
   o2-analysis-hf-correlator-dplus-dminus: &dplusdminus
     executable: o2-analysis-hf-correlator-dplus-dminus
-    dependencies: [o2-analysis-hf-candidate-selector-dplus-to-pi-k-pi, o2-analysis-alice3-centrality]
+    dependencies: [o2-analysis-hf-candidate-selector-dplus-to-pi-k-pi, o2-analysis-centrality_run5]
     tables: [DDBARPAIR, DDBARRECOINFO]
 
   o2-analysis-hf-correlator-dplus-dminus-mc-rec:
@@ -313,24 +309,19 @@ workflows:
 
   o2-analysis-qa-efficiency:
     requires_mc: yes
-    dependencies: [o2-analysis-event-selection, o2-analysis-trackselection]
+    dependencies: [o2-analysis-event-selection, o2-analysis-trackselection_runX]
 
   o2-analysis-qa-event-track:
     requires_mc: yes
-    dependencies: [o2-analysis-event-selection, o2-analysis-trackselection, o2-analysis-pid-tof-base]
+    dependencies: [o2-analysis-event-selection, o2-analysis-trackselection_runX, o2-analysis-pid-tof-base]
 
   o2-analysis-hf-task-qa-pid-rejection:
     requires_mc: yes
-    dependencies:
-      - o2-analysis-hf-track-index-skim-creator
-      - o2-analysis-pid-tpc-full
-      - o2-analysis-pid-tof-full
+    dependencies: [o2-analysis-hf-track-index-skim-creator_skimX, o2-analysis-pid-tpc-full, o2-analysis-pid-tof-full_runX]
 
   o2-analysis-pid-tof-qa-mc:
     requires_mc: yes
-    dependencies:
-      - o2-analysis-pid-tof-full
-      - o2-analysis-pid-tof-beta
+    dependencies: [o2-analysis-pid-tof-full_runX, o2-analysis-pid-tof-beta]
 
   o2-analysis-hf-task-mc-validation:
     requires_mc: yes
@@ -340,49 +331,62 @@ workflows:
 
   o2-analysis-timestamp: {}
 
-  o2-analysis-trackselection:
-    dependencies:
-      - o2-analysis-trackextension
+  o2-analysis-trackselection_run2:
+    executable: o2-analysis-trackselection
+    dependencies: o2-analysis-track-dca_run2
 
-  o2-analysis-trackselection-alice3:
+  o2-analysis-trackselection_run3:
+    executable: o2-analysis-trackselection
+    dependencies: o2-analysis-track-dca_run3
+
+  o2-analysis-trackselection_run5:
     executable: o2-analysis-alice3-trackselection
 
-  o2-analysis-trackextension:
+  o2-analysis-track-dca_run2:
+    executable: o2-analysis-trackextension
     dependencies: o2-analysis-timestamp
 
-  o2-analysis-trackextension-alice3:
+  o2-analysis-track-dca_run3:
+    executable: o2-analysis-track-propagation
+
+  o2-analysis-track-dca_run5:
     executable: o2-analysis-alice3-trackextension
 
-  o2-analysis-alice3-centrality:
-    dependencies: o2-analysis-trackextension-alice3
+  o2-analysis-centrality_run5:
+    executable: o2-analysis-alice3-centrality
+    dependencies: o2-analysis-track-dca_run5
 
   o2-analysis-event-selection:
-    dependencies:
-      - o2-analysis-timestamp
+    dependencies: o2-analysis-timestamp
 
-  o2-analysis-multiplicity-table:
-    dependencies:
-      - o2-analysis-event-selection # only Run3
+  o2-analysis-multiplicity-table_run2:
+    executable: o2-analysis-multiplicity-table
+
+  o2-analysis-multiplicity-table_run3:
+    executable: o2-analysis-multiplicity-table
+    dependencies: o2-analysis-event-selection
 
   o2-analysis-centrality-table: {}
 
+  o2-analysis-pid-tpc-base: {}
+
   o2-analysis-pid-tpc-full:
-    dependencies:
-      - o2-analysis-multiplicity-table
-      - o2-analysis-timestamp
+    dependencies: [o2-analysis-pid-tpc-base, o2-analysis-timestamp]
 
   o2-analysis-pid-tof-base: {}
 
-  o2-analysis-pid-tof-full:
-    dependencies: o2-analysis-pid-tof-base
+  o2-analysis-pid-tof-full_run2: &tof_full
+    executable: o2-analysis-pid-tof-full
+    dependencies: [o2-analysis-pid-tof-base, o2-analysis-timestamp]
 
-  o2-analysis-pid-tof-full-alice3:
+  o2-analysis-pid-tof-full_run3:
+    <<: *tof_full
+
+  o2-analysis-pid-tof-full_run5:
     executable: o2-analysis-alice3-pid-tof
 
   o2-analysis-pid-bayes:
-    dependencies:
-      - o2-analysis-pid-tof-full
-      - o2-analysis-pid-tpc-full
+    dependencies: [o2-analysis-pid-tof-full_runX, o2-analysis-pid-tpc-full, o2-analysis-multiplicity-table_runX]
 
   o2-analysis-pid-tof-beta: {}
 
@@ -392,11 +396,7 @@ workflows:
 
   o2-analysis-collision-converter: {}
 
-  o2-analysis-track-propagation: {}
-
   # LF
 
   o2-analysis-lf-lambdakzerobuilder:
-    dependencies:
-      - o2-analysis-timestamp
-      - o2-analysis-trackextension
+    dependencies: [o2-analysis-timestamp, o2-analysis-track-dca_runX]

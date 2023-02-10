@@ -101,7 +101,6 @@ DOO2_TASK_FLOW=0    # hf-task-flow
 # Other
 DOO2_MCCONV=0       # mc-converter
 DOO2_FDDCONV=0      # fdd-converter
-DOO2_TRKPROP=0      # track-propagation
 DOO2_COLLCONV=0     # collision-converter
 
 # Selection cuts
@@ -135,7 +134,7 @@ function Clean {
   [ "$1" -eq 2 ] && {
     rm -f "$LISTFILES_ALI" "$LISTFILES_O2" "$SCRIPT_ALI" "$SCRIPT_O2" "$SCRIPT_POSTPROCESS" || ErrExit "Failed to rm created files."
     [ "$JSON_EDIT" ] && { rm "$JSON_EDIT" || ErrExit "Failed to rm $JSON_EDIT."; }
-    [ "$DATABASE_O2_EDIT" ] && { rm "$DATABASE_O2_EDIT" || ErrExit "Failed to rm $DATABASE_O2_EDIT."; }
+    rm "$DATABASE_O2_EDIT" || ErrExit "Failed to rm $DATABASE_O2_EDIT."
   }
 
   return 0
@@ -159,7 +158,6 @@ function AdjustJson {
   elif [ "$INPUT_RUN" -eq 3 ]; then
     ReplaceString "\"processRun2\": \"true\"" "\"processRun2\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processRun3\": \"false\"" "\"processRun3\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
-    DOO2_TRKPROP=1
   fi
 
   # MC
@@ -215,6 +213,13 @@ function AdjustJson {
     ReplaceString "\"isRun2\": \"0\"" "\"isRun2\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   else
     ReplaceString "\"isRun2\": \"1\"" "\"isRun2\": \"0\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  fi
+
+  # hf-track-index-skim-creator..., hf-candidate-creator-...
+  if [ "$INPUT_RUN" -eq 2 ]; then
+    ReplaceString "\"isRun2\": \"false\"" "\"isRun2\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  else
+    ReplaceString "\"isRun2\": \"true\"" "\"isRun2\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # tof-event-time
@@ -316,12 +321,14 @@ function AdjustJson {
 
 # Generate the O2 script containing the full workflow specification.
 function MakeScriptO2 {
-  # Enable cascade reconstruction in case of Λc → K0S p tasks
-  [[ $DOO2_CAND_CASC -eq 1 || $DOO2_SEL_LCK0SP -eq 1 || $DOO2_TASK_LCK0SP -eq 1 ]] && DOO2_CASC=1 || DOO2_CASC=0
-  # Cascade reconstruction
-  [ "$DOO2_CASC" -eq 1 ] && SUFFIX_CASC="-v0" || SUFFIX_CASC=""
-  # ALICE 3 input
-  [ "$ISALICE3" -eq 1 ] && SUFFIX_ALICE3="-alice3" || SUFFIX_ALICE3=""
+  # Suffix to distinguish versions of the track index skim creator in the workflow database
+  SUFFIX_SKIM_MASK="_skimX" # suffix mask to be replaced in the workflow names
+  SUFFIX_SKIM="" # the actual suffix to be used instead of the mask
+  # Λc → K0S p cascade reconstruction
+  [[ $DOO2_CAND_CASC -eq 1 || $DOO2_SEL_LCK0SP -eq 1 || $DOO2_TASK_LCK0SP -eq 1 ]] && SUFFIX_SKIM+="_v0"
+  # Suffix to distinguish versions of the same workflow for different runs in the workflow database
+  SUFFIX_RUN_MASK="_runX" # suffix mask to be replaced in the workflow names
+  SUFFIX_RUN="_run${INPUT_RUN}" # the actual suffix to be used instead of the mask
 
   WORKFLOWS=""
   # Trigger selection
@@ -334,12 +341,10 @@ function MakeScriptO2 {
   # PID
   [ $DOO2_PID_TPC -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tpc-full"
   [ $DOO2_PID_BAYES -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-bayes"
-  WF_TOF="o2-analysis-pid-tof-full"
-  [ $DOO2_PID_TOF -eq 1 ] && WORKFLOWS+=" ${WF_TOF}${SUFFIX_ALICE3}"
+  [ $DOO2_PID_TOF -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tof-full${SUFFIX_RUN}"
   [ $DOO2_PID_TOF_QA -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tof-qa-mc"
   # Vertexing
-  WF_SKIM="o2-analysis-hf-track-index-skim-creator"
-  [ $DOO2_SKIM -eq 1 ] && WORKFLOWS+=" ${WF_SKIM}${SUFFIX_CASC}"
+  [ $DOO2_SKIM -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-track-index-skim-creator${SUFFIX_SKIM}"
   [ $DOO2_CAND_2PRONG -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-2prong"
   [ $DOO2_CAND_3PRONG -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-3prong"
   [ $DOO2_CAND_LB -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-lb"
@@ -352,8 +357,7 @@ function MakeScriptO2 {
   [ $DOO2_CAND_DSTAR -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-dstar"
   # Selectors
   [ $DOO2_SEL_D0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-d0"
-  WF_SEL_JPSI="o2-analysis-hf-candidate-selector-jpsi"
-  [ $DOO2_SEL_JPSI -eq 1 ] && WORKFLOWS+=" ${WF_SEL_JPSI}${SUFFIX_ALICE3}"
+  [ $DOO2_SEL_JPSI -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-jpsi${SUFFIX_RUN}"
   [ $DOO2_SEL_DS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-ds-to-k-k-pi"
   [ $DOO2_SEL_DPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-dplus-to-pi-k-pi"
   [ $DOO2_SEL_LC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-lc"
@@ -402,7 +406,6 @@ function MakeScriptO2 {
   # Other
   [ $DOO2_MCCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-mc-converter"
   [ $DOO2_FDDCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-fdd-converter"
-  [ $DOO2_TRKPROP -eq 1 ] && WORKFLOWS+=" o2-analysis-track-propagation"
   [ $DOO2_COLLCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-collision-converter"
 
   # Translate options into arguments of the generating script.
@@ -413,27 +416,13 @@ function MakeScriptO2 {
   [ $MAKE_GRAPH -eq 1 ] && OPT_MAKECMD+=" -g"
 
   # Make a copy of the default workflow database file before modifying it.
-  DATABASE_O2_EDIT=""
-  if [[ "$DOO2_CASC" -eq 1 || "$ISALICE3" -eq 1 ]]; then
-    DATABASE_O2_EDIT="${DATABASE_O2/.yml/_edit.yml}"
-    cp "$DATABASE_O2" "$DATABASE_O2_EDIT" || ErrExit "Failed to cp $DATABASE_O2 $DATABASE_O2_EDIT."
-    DATABASE_O2="$DATABASE_O2_EDIT"
+  DATABASE_O2_EDIT="${DATABASE_O2/.yml/_edit.yml}"
+  cp "$DATABASE_O2" "$DATABASE_O2_EDIT" || ErrExit "Failed to cp $DATABASE_O2 $DATABASE_O2_EDIT."
+  DATABASE_O2="$DATABASE_O2_EDIT"
 
-    # Adjust workflow database in case of ALICE 3 input.
-    [ "$ISALICE3" -eq 1 ] && {
-      ReplaceString "- $WF_SEL_JPSI" "- ${WF_SEL_JPSI}${SUFFIX_ALICE3}" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
-      ReplaceString "- $WF_TOF" "- ${WF_TOF}${SUFFIX_ALICE3}" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
-      WF_TRKEXT="o2-analysis-trackextension"
-      ReplaceString "- $WF_TRKEXT" "- ${WF_TRKEXT}${SUFFIX_ALICE3}" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
-      WF_TRKSEL="o2-analysis-trackselection"
-      ReplaceString "- $WF_TRKSEL" "- ${WF_TRKSEL}${SUFFIX_ALICE3}" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
-    }
-
-    # Adjust workflow database in case of cascades enabled.
-    [ "$DOO2_CASC" -eq 1 ] && {
-      ReplaceString "- $WF_SKIM" "- ${WF_SKIM}${SUFFIX_CASC}" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
-    }
-  fi
+  # Replace the workflow version masks with the actual values in the workflow database.
+  ReplaceString "$SUFFIX_RUN_MASK" "$SUFFIX_RUN" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
+  ReplaceString "$SUFFIX_SKIM_MASK" "$SUFFIX_SKIM" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
 
   # Generate the O2 command.
   MAKECMD="python3 $DIR_EXEC/make_command_o2.py $DATABASE_O2 $OPT_MAKECMD"
