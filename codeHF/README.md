@@ -16,7 +16,7 @@ The prepared HF example allows you to run reconstruction of 2-prong secondary ve
    in the `o2-analysis-hf-candidate-selector-d0` binary.
    * Appplies cuts on the parameters of the decay topology and track PID cuts.
 1. D<sup>0</sup> analysis task
-   * Performed by the [taskD0](https://github.com/AliceO2Group/O2Physics/blob/master/PWGHF/Tasks/taskD0.cxx) class
+   * Performed by the [taskD0](https://github.com/AliceO2Group/O2Physics/blob/master/PWGHF/D2H/Tasks/taskD0.cxx) class
    in the `o2-analysis-hf-task-d0` binary.
    * Fills histograms with kinematic properties of selected candidates (and matched particles).
 
@@ -55,3 +55,13 @@ The postprocessing step produces several plots `comparison_histos_(...).pdf`, `M
 To confirm that the output of the default settings looks as expected, compare the produced plots with their reference counterparts `(...)_ref.pdf`.
 
 The complete list of commit hashes used to produce the reference plots can be found in `versions_ref.txt`.
+
+## Add a new workflow
+
+- Add the workflow in the task configuration ([`config_task.sh`](config_tasks.sh)):
+  - Add the activation switch: `DOO2_...=0         # name of the workflow (without o2-analysis)`.
+  - Add the application of the switch in the `MakeScriptO2` function: `[ $DOO2_... -eq 1 ] && WORKFLOWS+=" o2-analysis-..."`.
+  - If needed, add lines in the `AdjustJson` function to modify the JSON configuration.
+- Add the workflow specification in the workflow database ([`workflows.yml`](workflows.yml)):
+  - See the dummy example `o2-analysis-workflow` for the full list of options.
+- Add the device configuration in the default JSON file ([`dpl-config_run3.json`](dpl-config_run3.json)).
