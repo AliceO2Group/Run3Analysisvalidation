@@ -120,7 +120,7 @@ function MakeScriptO2 {
 
   # Create the script with the full O2 command.
   cat << EOF > "$SCRIPT_O2"
-!/bin/bash
+#!/bin/bash
 FileIn="\$1"
 JSON="\$2"
 $O2EXEC
