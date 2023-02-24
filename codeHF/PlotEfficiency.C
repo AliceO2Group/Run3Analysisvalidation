@@ -233,7 +233,9 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
     legendEff->Draw();
 
     canPt->SaveAs(Form("MC_%s_pT.pdf", particle.Data()));
+    canPt->SaveAs(Form("MC_%s_pT.png", particle.Data()));
     canEff->SaveAs(Form("MC_%s_eff.pdf", particle.Data()));
+    canEff->SaveAs(Form("MC_%s_eff.png", particle.Data()));
   }
   delete arrayParticle;
   return 0;

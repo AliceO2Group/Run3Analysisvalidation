@@ -368,8 +368,10 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun2 = "
         hRatio->Draw();
       }
     }
+    canHis->SaveAs(Form("comparison_histos_%s.pdf", nameSpec.Data()));
     canHis->SaveAs(Form("comparison_histos_%s.png", nameSpec.Data()));
     if (doRatio) {
+      canRat->SaveAs(Form("comparison_ratios_%s.pdf", nameSpec.Data()));
       canRat->SaveAs(Form("comparison_ratios_%s.png", nameSpec.Data()));
     }
     delete canHis;
