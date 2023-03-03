@@ -87,8 +87,8 @@ Int_t Compare(TString fileO2 = "AnalysisResults_O2.root", TString fileAli = "Ana
   AddHistogram(vecHisD0, "d0d0 (cm^{2})", "hd0Timesd0", "hf-task-d0/hd0d0", 2, 1, 0);
   AddHistogram(vecHisD0, "d0 prong 0 (cm)", "hImpParD0Dau0", "hf-task-d0/hd0Prong0", 2, 1, 0);
   AddHistogram(vecHisD0, "d0 prong 1 (cm)", "hImpParD0Dau1", "hf-task-d0/hd0Prong1", 2, 1, 0);
-  AddHistogram(vecHisD0, "impact parameter error (cm)", "hImpParErrD0Dau0", "hf-task-d0/hd0ErrProng0", 1, 1, 0);
-  AddHistogram(vecHisD0, "impact parameter error (cm)", "hImpParErrD0Dau1", "hf-task-d0/hd0ErrProng1", 1, 1, 0);
+  AddHistogram(vecHisD0, "impact parameter error prong 0 (cm)", "hImpParErrD0Dau0", "hf-task-d0/hd0ErrProng0", 1, 1, 0);
+  AddHistogram(vecHisD0, "impact parameter error prong 1 (cm)", "hImpParErrD0Dau1", "hf-task-d0/hd0ErrProng1", 1, 1, 0);
   AddHistogram(vecHisD0, "decay length (cm)", "hDecLenD0", "hf-task-d0/hDecLength", 2, 1, 0);
   AddHistogram(vecHisD0, "decay length XY (cm)", "hDecLenXYD0", "hf-task-d0/hDecLengthxy", 2, 1, 0);
   AddHistogram(vecHisD0, "decay length error (cm)", "hDecLenErrD0", "hf-task-d0/hDecLenErr", 1, 1, 0);
@@ -155,7 +155,7 @@ Int_t Compare(TString fileO2 = "AnalysisResults_O2.root", TString fileAli = "Ana
   AddHistogram(vecHisLc, "cos pointing angle", "hCosPointLc", "hf-task-lc/Data/hCPA", 2, 1, 0);
   AddHistogram(vecHisLc, "cos pointing angle xy", "hCosPointXYLc", "hf-task-lc/Data/hCPAxy", 2, 1, 0);
   AddHistogram(vecHisLc, "#it{#eta}", "hEtaLc", "hf-task-lc/Data/hEta", 2, 1, 0);
-  AddHistogram(vecHisLc, "#it{#Phi}", "hPhiLc", "hf-task-lc/Data/hPhi", 2, 1, 0);
+  AddHistogram(vecHisLc, "#it{#varphi}", "hPhiLc", "hf-task-lc/Data/hPhi", 2, 1, 0);
 
   labelParticle = "#Lambda_{c}^{#plus} #rightarrow p K #pi";
   VecSpecHis vecHisLcMCPt;
@@ -166,15 +166,15 @@ Int_t Compare(TString fileO2 = "AnalysisResults_O2.root", TString fileAli = "Ana
 
   VecSpecHis vecHisLcMCEta;
   AddHistogram(vecHisLcMCEta, labelParticle + ", matched prompt: #it{#eta}", "hEtaLcPrompt", "hf-task-lc/MC/reconstructed/prompt/hEtaRecSigPrompt", 2, 1, 0);
-  AddHistogram(vecHisLcMCEta, labelParticle + ", gen. prompt:#it{#eta}", "hEtaGenLimAccPromptLcpKpi", "hf-task-lc/MC/generated/prompt/hEtaGenPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCEta, labelParticle + ", gen. prompt: #it{#eta}", "hEtaGenLimAccPromptLcpKpi", "hf-task-lc/MC/generated/prompt/hEtaGenPrompt", 2, 1, 0);
   AddHistogram(vecHisLcMCEta, labelParticle + ", matched non-prompt: #it{#eta}", "hEtaLcNonPrompt", "hf-task-lc/MC/reconstructed/nonprompt/hEtaRecSigNonPrompt", 2, 1, 0);
   AddHistogram(vecHisLcMCEta, labelParticle + ", gen. non-prompt: #it{#eta}", "hEtaGenLimAccFeeddwLcpKpi", "hf-task-lc/MC/generated/nonprompt/hEtaGenNonPrompt", 2, 1, 0);
 
   VecSpecHis vecHisLcMCPhi;
-  AddHistogram(vecHisLcMCPhi, labelParticle + ", matched prompt: #it{#Phi}", "hPhiLcPrompt", "hf-task-lc/MC/reconstructed/prompt/hPhiRecSigPrompt", 2, 1, 0);
-  AddHistogram(vecHisLcMCPhi, labelParticle + ", gen. prompt:#it{#Phi}", "hPhiGenLimAccPromptLcpKpi", "hf-task-lc/MC/generated/prompt/hPhiGenPrompt", 2, 1, 0);
-  AddHistogram(vecHisLcMCPhi, labelParticle + ", matched non-prompt: #it{#Phi}", "hPhiLcNonPrompt", "hf-task-lc/MC/reconstructed/nonprompt/hPhiRecSigNonPrompt", 2, 1, 0);
-  AddHistogram(vecHisLcMCPhi, labelParticle + ", gen. non-prompt: #it{#Phi}", "hPhiGenLimAccFeeddwLcpKpi", "hf-task-lc/MC/generated/nonprompt/hPhiGenNonPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCPhi, labelParticle + ", matched prompt: #it{#varphi}", "hPhiLcPrompt", "hf-task-lc/MC/reconstructed/prompt/hPhiRecSigPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCPhi, labelParticle + ", gen. prompt: #it{#varphi}", "hPhiGenLimAccPromptLcpKpi", "hf-task-lc/MC/generated/prompt/hPhiGenPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCPhi, labelParticle + ", matched non-prompt: #it{#varphi}", "hPhiLcNonPrompt", "hf-task-lc/MC/reconstructed/nonprompt/hPhiRecSigNonPrompt", 2, 1, 0);
+  AddHistogram(vecHisLcMCPhi, labelParticle + ", gen. non-prompt: #it{#varphi}", "hPhiGenLimAccFeeddwLcpKpi", "hf-task-lc/MC/generated/nonprompt/hPhiGenNonPrompt", 2, 1, 0);
 
   VecSpecHis vecHisLcMCPrompt;
   AddHistogram(vecHisLcMCPrompt, "#it{p}_{T} prong 0 (GeV/#it{c})", "hPtLcDau0Prompt", "hf-task-lc/MC/reconstructed/prompt/hPtRecProng0SigPrompt", 2, 1, 0);
@@ -353,7 +353,7 @@ Int_t Compare(TString fileO2 = "AnalysisResults_O2.root", TString fileAli = "Ana
       hAli->SetLineWidth(2);
       hO2->SetLineColor(2);
       hO2->SetLineWidth(1);
-      hAli->SetTitle(Form("Entries: Ali: %d, O2: %d;%s;Entries", nAli, nO2, labelAxis.Data()));
+      hAli->SetTitle(Form("Entries: Ali: %d, O^{2}: %d;%s;Entries", nAli, nO2, labelAxis.Data()));
       hAli->GetYaxis()->SetMaxDigits(3);
       yMin = TMath::Min(hO2->GetMinimum(0), hAli->GetMinimum(0));
       yMax = TMath::Max(hO2->GetMaximum(), hAli->GetMaximum());
@@ -363,7 +363,7 @@ Int_t Compare(TString fileO2 = "AnalysisResults_O2.root", TString fileAli = "Ana
       hO2->Draw("same");
       TLegend* legend = new TLegend(0.8, 0.72, 1., 0.92);
       legend->AddEntry(hAli, "Ali", "L");
-      legend->AddEntry(hO2, "O2", "L");
+      legend->AddEntry(hO2, "O^{2}", "L");
       legend->Draw();
 
       // Ratio
@@ -371,7 +371,7 @@ Int_t Compare(TString fileO2 = "AnalysisResults_O2.root", TString fileAli = "Ana
         auto padR = canRat->cd(index + 1);
         hRatio = (TH1F*)hO2->Clone(Form("hRatio%d", index));
         hRatio->Divide(hAli);
-        hRatio->SetTitle(Form("Entries ratio: %g;%s;O2/Ali", (double)nO2 / (double)nAli, labelAxis.Data()));
+        hRatio->SetTitle(Form("Entries ratio: %g;%s;O^{2}/Ali", (double)nO2 / (double)nAli, labelAxis.Data()));
         yMin = hRatio->GetMinimum(0);
         yMax = hRatio->GetMaximum();
         SetHistogram(hRatio, yMin, yMax, marginRLow, marginRHigh, logScaleR);
