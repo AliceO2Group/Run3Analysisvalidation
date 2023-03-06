@@ -1,7 +1,7 @@
 ---
 options:
-  global: ""
-  local:
+  global: ""  # used once at the end of the command
+  local:      # used for every workflow
     - "-b"
     - "--configuration json://$JSON"
     - "--aod-memory-rate-limit 2000000000"
@@ -9,6 +9,22 @@ options:
     - "--min-failure-level error"
 
 workflows:
+  # dummy workflow with the full list of options
+  o2-analysis-workflow:
+    executable: o2-analysis-workflow  # workflow command, if different from the dictionary node name above
+    dependencies: []  # dictionary nodes that this workflow needs as direct dependencies (format: str, list)
+    requires_mc: no  # yes/no whether the workflow can only run on MC or not
+    options: "--option"  # command line options (format: str, list), see more detailed format below
+    # options:
+    #   default: ""
+    #   real: ""
+    #   mc: "--doMC"
+    tables: []  # descriptions of tables to be saved in the output tree (format: str, list), see more detailed format below
+    # tables:
+    #   default: []
+    #   real: []
+    #   mc: []
+
   o2-analysis-hf-track-to-collision-associator:
     executable: o2-analysis-hf-track-to-collision-associator
     tables: HFTRACKASSOC
@@ -353,6 +369,7 @@ workflows:
 
   o2-analysis-track-dca_run3:
     executable: o2-analysis-track-propagation
+    dependencies: o2-analysis-timestamp
 
   o2-analysis-track-dca_run5:
     executable: o2-analysis-alice3-trackextension
@@ -404,4 +421,4 @@ workflows:
   # LF
 
   o2-analysis-lf-lambdakzerobuilder:
-    dependencies: [o2-analysis-timestamp, o2-analysis-track-dca_runX]
+    dependencies: [o2-analysis-timestamp, o2-analysis-track-dca_runX, o2-analysis-pid-tpc-full]

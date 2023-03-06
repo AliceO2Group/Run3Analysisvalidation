@@ -6,34 +6,34 @@
 using VecSpecHis = std::vector<std::tuple<TString, TString, TString, int, bool, bool, TString>>;
 
 // Add histogram specification in the vector.
-void AddHistogram(VecSpecHis& vec, TString label, TString nameRun2, TString nameRun3, int rebin, bool logH, bool logR, TString proj = "x")
+void AddHistogram(VecSpecHis& vec, TString label, TString nameAli, TString nameO2, int rebin, bool logH, bool logR, TString proj = "x")
 {
-  vec.push_back(std::make_tuple(label, nameRun2, nameRun3, rebin, logH, logR, proj));
+  vec.push_back(std::make_tuple(label, nameAli, nameO2, rebin, logH, logR, proj));
 }
 
-Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun2 = "AnalysisResults_ALI.root", TString options = "", bool doRatio = false)
+Int_t Compare(TString fileO2 = "AnalysisResults_O2.root", TString fileAli = "AnalysisResults_ALI.root", TString options = "", bool doRatio = false)
 {
   gStyle->SetOptStat(0);
   gStyle->SetPalette(0);
   gStyle->SetCanvasColor(0);
   gStyle->SetFrameFillColor(0);
 
-  TFile* fRun3 = new TFile(filerun3.Data());
-  if (fRun3->IsZombie()) {
-    printf("Failed to open file %s\n", filerun3.Data());
+  TFile* fO2 = new TFile(fileO2.Data());
+  if (fO2->IsZombie()) {
+    printf("Failed to open file %s\n", fileO2.Data());
     return 1;
   }
-  TFile* fRun2 = new TFile(filerun2.Data());
-  if (fRun2->IsZombie()) {
-    printf("Failed to open file %s\n", filerun2.Data());
+  TFile* fAli = new TFile(fileAli.Data());
+  if (fAli->IsZombie()) {
+    printf("Failed to open file %s\n", fileAli.Data());
     return 1;
   }
 
-  TString pathListRun2 = "HFVertices/clistHFVertices";
-  TList* lRun2 = nullptr;
-  fRun2->GetObject(pathListRun2.Data(), lRun2);
-  if (!lRun2) {
-    printf("Failed to load list %s from %s\n", pathListRun2.Data(), filerun2.Data());
+  TString pathListAli = "HFVertices/clistHFVertices";
+  TList* lAli = nullptr;
+  fAli->GetObject(pathListAli.Data(), lAli);
+  if (!lAli) {
+    printf("Failed to load list %s from %s\n", pathListAli.Data(), fileAli.Data());
     return 1;
   }
 
@@ -253,14 +253,14 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun2 = "
   Float_t marginRLow = 0.05;
   bool logScaleR = false;
   Float_t yMin, yMax;
-  Int_t nRun2, nRun3, rebin;
+  Int_t nAli, nO2, rebin;
 
-  TH1F* hRun2 = nullptr;
-  TH1D* hRun3 = nullptr;
+  TH1F* hAli = nullptr;
+  TH1D* hO2 = nullptr;
   TH1F* hRatio = nullptr;
   TString labelAxis = "";
-  TString nameHisRun2 = "";
-  TString nameHisRun3 = "";
+  TString nameHisAli = "";
+  TString nameHisO2 = "";
   TString projAx = "";
   TCanvas* canHis = nullptr;
   TCanvas* canRat = nullptr;
@@ -288,79 +288,79 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun2 = "
     for (int index = 0; index < vecSpec.size(); index++) {
       auto spec = vecSpec[index];
       labelAxis = std::get<0>(spec);
-      nameHisRun2 = std::get<1>(spec);
-      nameHisRun3 = std::get<2>(spec);
+      nameHisAli = std::get<1>(spec);
+      nameHisO2 = std::get<2>(spec);
       rebin = std::get<3>(spec);
       logScaleH = std::get<4>(spec);
       logScaleR = std::get<5>(spec);
       projAx = std::get<6>(spec);
 
       // Get AliPhysics histogram.
-      hRun2 = (TH1F*)lRun2->FindObject(nameHisRun2.Data());
-      if (!hRun2) {
-        printf("Failed to load %s from %s\n", nameHisRun2.Data(), filerun2.Data());
+      hAli = (TH1F*)lAli->FindObject(nameHisAli.Data());
+      if (!hAli) {
+        printf("Failed to load %s from %s\n", nameHisAli.Data(), fileAli.Data());
         return 1;
       }
 
       // Get O2 histogram.
-      auto oRun3 = fRun3->Get(nameHisRun3.Data());
-      if (!oRun3) {
-        printf("Failed to load %s from %s\n", nameHisRun3.Data(), filerun3.Data());
+      auto oO2 = fO2->Get(nameHisO2.Data());
+      if (!oO2) {
+        printf("Failed to load %s from %s\n", nameHisO2.Data(), fileO2.Data());
         return 1;
       }
 
-      if (oRun3->InheritsFrom("TH3")) {
+      if (oO2->InheritsFrom("TH3")) {
         if (projAx == "x") {
-          hRun3 = ((TH3D*)oRun3)->ProjectionX();
+          hO2 = ((TH3D*)oO2)->ProjectionX();
         } else if (projAx == "y") {
-          hRun3 = ((TH3D*)oRun3)->ProjectionY();
+          hO2 = ((TH3D*)oO2)->ProjectionY();
         }
-      } else if (oRun3->InheritsFrom("TH2")) {
+      } else if (oO2->InheritsFrom("TH2")) {
         if (projAx == "x") {
-          hRun3 = ((TH2D*)oRun3)->ProjectionX();
+          hO2 = ((TH2D*)oO2)->ProjectionX();
         } else if (projAx == "y") {
-          hRun3 = ((TH2D*)oRun3)->ProjectionY();
+          hO2 = ((TH2D*)oO2)->ProjectionY();
         }
       } else {
-        hRun3 = (TH1D*)oRun3;
+        hO2 = (TH1D*)oO2;
       }
 
       Printf("%d (%s, %s): bins: %d, %d, ranges: %g-%g, %g-%g",
-             index, nameHisRun2.Data(), nameHisRun3.Data(),
-             hRun2->GetNbinsX(), hRun3->GetNbinsX(),
-             hRun2->GetXaxis()->GetBinLowEdge(1), hRun2->GetXaxis()->GetBinUpEdge(hRun2->GetNbinsX()),
-             hRun3->GetXaxis()->GetBinLowEdge(1), hRun3->GetXaxis()->GetBinUpEdge(hRun3->GetNbinsX()));
+             index, nameHisAli.Data(), nameHisO2.Data(),
+             hAli->GetNbinsX(), hO2->GetNbinsX(),
+             hAli->GetXaxis()->GetBinLowEdge(1), hAli->GetXaxis()->GetBinUpEdge(hAli->GetNbinsX()),
+             hO2->GetXaxis()->GetBinLowEdge(1), hO2->GetXaxis()->GetBinUpEdge(hO2->GetNbinsX()));
 
-      nRun2 = hRun2->GetEntries();
-      nRun3 = hRun3->GetEntries();
+      nAli = hAli->GetEntries();
+      nO2 = hO2->GetEntries();
 
       // Histograms
       auto padH = canHis->cd(index + 1);
-      hRun2->Rebin(rebin);
-      hRun3->Rebin(rebin);
-      hRun2->SetLineColor(1);
-      hRun2->SetLineWidth(2);
-      hRun3->SetLineColor(2);
-      hRun3->SetLineWidth(1);
-      hRun2->SetTitle(Form("Entries: Run2: %d, Run3: %d;%s;Entries", nRun2, nRun3, labelAxis.Data()));
-      hRun2->GetYaxis()->SetMaxDigits(3);
-      yMin = TMath::Min(hRun3->GetMinimum(0), hRun2->GetMinimum(0));
-      yMax = TMath::Max(hRun3->GetMaximum(), hRun2->GetMaximum());
-      SetHistogram(hRun2, yMin, yMax, marginLow, marginHigh, logScaleH);
+      hAli->Rebin(rebin);
+      hO2->Rebin(rebin);
+      hAli->SetLineColor(1);
+      hAli->SetLineWidth(2);
+      hO2->SetLineColor(2);
+      hO2->SetLineWidth(1);
+      hAli->SetTitle(Form("Entries: Ali: %d, O2: %d;%s;Entries", nAli, nO2, labelAxis.Data()));
+      hAli->GetYaxis()->SetMaxDigits(3);
+      yMin = TMath::Min(hO2->GetMinimum(0), hAli->GetMinimum(0));
+      yMax = TMath::Max(hO2->GetMaximum(), hAli->GetMaximum());
+      SetHistogram(hAli, yMin, yMax, marginLow, marginHigh, logScaleH);
       SetPad(padH, logScaleH);
-      hRun2->Draw();
-      hRun3->Draw("same");
+      hAli->Draw();
+      hO2->Draw("same");
       TLegend* legend = new TLegend(0.8, 0.72, 1., 0.92);
-      legend->AddEntry(hRun2, "Run2", "L");
-      legend->AddEntry(hRun3, "Run3", "L");
+      legend->AddEntry(hAli, "Ali", "L");
+      legend->AddEntry(hO2, "O2", "L");
       legend->Draw();
 
       // Ratio
       if (doRatio) {
         auto padR = canRat->cd(index + 1);
-        hRatio = (TH1F*)hRun3->Clone(Form("hRatio%d", index));
-        hRatio->Divide(hRun2);
-        hRatio->SetTitle(Form("Entries ratio: %g;%s;Run3/Run2", (double)nRun3 / (double)nRun2, labelAxis.Data()));
+        hRatio = (TH1F*)hO2->Clone(Form("hRatio%d", index));
+        hRatio->Divide(hAli);
+        hRatio->SetTitle(Form("Entries ratio: %g;%s;O2/Ali", (double)nO2 / (double)nAli, labelAxis.Data()));
         yMin = hRatio->GetMinimum(0);
         yMax = hRatio->GetMaximum();
         SetHistogram(hRatio, yMin, yMax, marginRLow, marginRHigh, logScaleR);
@@ -368,8 +368,10 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun2 = "
         hRatio->Draw();
       }
     }
+    canHis->SaveAs(Form("comparison_histos_%s.pdf", nameSpec.Data()));
     canHis->SaveAs(Form("comparison_histos_%s.png", nameSpec.Data()));
     if (doRatio) {
+      canRat->SaveAs(Form("comparison_ratios_%s.pdf", nameSpec.Data()));
       canRat->SaveAs(Form("comparison_ratios_%s.png", nameSpec.Data()));
     }
     delete canHis;
