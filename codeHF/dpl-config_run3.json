@@ -789,16 +789,17 @@
     "hf-candidate-selector-lc-to-k0s-p": {
         "ptCandMin": "0",
         "ptCandMax": "50",
-        "usePidBach": "true",
         "pPidThreshold": "1",
         "nSigmaTpcMaxLowP": "2",
-        "nSigmaTpcMaxHighP": "9999",
-        "nSigmaTofMaxLowP": "9999",
+        "nSigmaTpcCombinedMaxLowP": "2",
+        "nSigmaTpcMaxHighP": "0",
+        "nSigmaTpcCombinedMaxHighP": "9999",
+        "nSigmaTofMaxLowP": "0",
+        "nSigmaTofCombinedMaxLowP": "9999",
         "nSigmaTofMaxHighP": "3",
-        "requireTofLowP": "false",
-        "requireTofHighP": "true",
-        "probBayesMinLowP": "-1",
-        "probBayesMinHighP": "-1",
+        "nSigmaTofCombinedMaxHighP": "3",
+        "probBayesMinLowP": "0.8",
+        "probBayesMinHighP": "0.8",
         "binsPt": {
             "values": [
                 "1",
@@ -843,7 +844,9 @@
                 [ "0.016", "0.005", "0.1", "0.9", "0.4", "1.7", "0.10", "999999."],
                 [ "0.019", "0.005", "0.1", "1.0", "0.4", "1.9", "0.20", "999999."]
             ]
-        }
+        },
+        "processWithStandardPID": "true",
+        "processWithBayesPID": "false"
     },
     "hf-candidate-selector-xic-to-p-k-pi": {
         "ptCandMin": "0.",
