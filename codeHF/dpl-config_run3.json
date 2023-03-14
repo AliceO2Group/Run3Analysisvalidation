@@ -28,7 +28,10 @@
         "processRun2": "true",
         "processRun3": "false"
     },
-    "tof-signal": "",
+    "tof-signal": {
+        "processRun3": "false",
+        "processRun2": "true"
+    },
     "track-extension": {
         "processRun2": "true",
         "processRun3": "false"
