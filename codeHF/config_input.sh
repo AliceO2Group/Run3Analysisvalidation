@@ -73,26 +73,33 @@ case $INPUT_CASE in
     INPUT_RUN=3
     ;;
   8)
+    INPUT_LABEL="Run 3, p-p 13.6 TeV, LHC22r, real, low interaction rate (100 kHz)"
+    INPUT_DIR="$INPUT_BASE/Run3/pp_13.6TeV/real/LHC22r"
+    INPUT_FILES="AO2D.root"
+    ISINPUTO2=1
+    INPUT_RUN=3
+    ;;
+  9)
     INPUT_LABEL="Run 3, p-p 13.6 TeV, MC LHC21k6, general purpose"
-    INPUT_DIR="$INPUT_BASE/Run3/pp_13.6TeV/sim/LHC21k6/302028/AOD"
+    INPUT_DIR="$INPUT_BASE/Run3/pp_13.6TeV/sim/LHC21k6"
     INPUT_FILES="AO2D.root"
     ISINPUTO2=1
     INPUT_RUN=3
     ISMC=1
     ;;
-  9)
+  10)
     INPUT_LABEL="Run 2, p-p 13 TeV LHC18f, MC LHC20f4a (ESD)"
     INPUT_DIR="$INPUT_BASE/Run2/pp_13TeV/sim/LHC20f4a"
     ISMC=1
     ;;
-  10)
+  11)
     INPUT_LABEL="Run 2, p-p 13 TeV LHC18f, MC LHC20f4a (AO2D)"
     INPUT_DIR="$INPUT_BASE/Run2/pp_13TeV/sim_converted/LHC20f4a"
     INPUT_FILES="AO2D.root"
     ISINPUTO2=1
     ISMC=1
     ;;
-  11)
+  12)
     INPUT_LABEL="Run 2, p-p 13 TeV, LHC17j (AO2D)"
     INPUT_DIR="$INPUT_BASE/Run2/pp_13TeV/real_converted/LHC17j_20220601" # converted good AO2Ds
     INPUT_FILES="AO2D.root"
