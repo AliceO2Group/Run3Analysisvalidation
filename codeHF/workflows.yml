@@ -127,6 +127,9 @@ workflows:
     executable: o2-analysis-hf-candidate-selector-jpsi
     tables: HFSELJPSI
 
+  o2-analysis-hf-candidate-selector-jpsi_run2:
+    <<: *selector_jpsi
+
   o2-analysis-hf-candidate-selector-jpsi_run5:
     <<: *selector_jpsi
     options: --isAlice3
