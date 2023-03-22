@@ -139,7 +139,6 @@ workflows:
       - o2-analysis-hf-candidate-creator-3prong
       - o2-analysis-pid-tpc-full
       - o2-analysis-pid-tof-full_runX
-      - o2-analysis-pid-bayes
     tables: HFSELDPLUS
 
   o2-analysis-hf-candidate-selector-ds-to-k-k-pi:
@@ -152,6 +151,7 @@ workflows:
 
   o2-analysis-hf-candidate-selector-lc:
     <<: *selector_3prong
+    dependencies: o2-analysis-pid-bayes
     tables: HFSELLC
 
   o2-analysis-hf-candidate-selector-xic-to-p-k-pi:
