@@ -78,11 +78,11 @@
         "isRun2": "true",
         "fillHistograms": "true",
         "debug": "true",
-        "bz": "5",
         "doPvRefit": "false",
         "doCutQuality": "true",
         "useIsGlobalTrack": "false",
-        "tpcNClsFoundMin": "71",
+        "useIsGlobalTrackWoDCA": "false",
+        "tpcNClsFoundMin": "70",
         "binsPtTrack": {
             "values": [
                 "0.",
@@ -252,9 +252,9 @@
         "do3Prong": "1",
         "doPvRefit": "false",
         "ptTolerance": "0.1",
-        "bz": "5",
         "propagateToPCA": "true",
-        "useAbsDCA": "true",
+        "useAbsDCA": "false",
+        "useWeightedFinalPCA": "false",
         "maxR": "5",
         "maxDZIni": "999",
         "minParamChange": "0.001",
@@ -375,13 +375,13 @@
     "hf-track-index-skim-creator-cascades": {
         "isRun2": "true",
         "fillHistograms": "true",
-        "bz": "5",
         "propagateToPCA": "true",
         "maxR": "200",
         "maxDZIni": "4",
         "minParamChange": "0.001",
         "minRelChi2Change": "0.9",
         "useAbsDCA": "true",
+        "useWeightedFinalPCA": "true",
         "doCutQuality": "true",
         "tpcRefitBach": "true",
         "nCrossedRowsMinBach": "50",
@@ -401,8 +401,9 @@
     "hf-candidate-creator-2prong": {
         "isRun2": "true",
         "doPvRefit": "false",
-        "bz": "5",
         "propagateToPCA": "true",
+        "useAbsDCA": "false",
+        "useWeightedFinalPCA": "false",
         "maxR": "5",
         "maxDZIni": "999",
         "minParamChange": "0.001",
@@ -412,8 +413,9 @@
     "hf-candidate-creator-3prong": {
         "isRun2": "true",
         "doPvRefit": "false",
-        "bz": "5",
         "propagateToPCA": "true",
+        "useAbsDCA": "false",
+        "useWeightedFinalPCA": "false",
         "maxR": "5",
         "maxDZIni": "999",
         "minParamChange": "0.001",
@@ -590,7 +592,7 @@
     },
     "hf-candidate-selector-ds-to-k-k-pi": {
         "ptCandMin": "2.",
-        "ptCandMax": "36.",
+        "ptCandMax": "24.",
         "ptPidTpcMin": "0.15",
         "ptPidTpcMax": "20.",
         "ptPidTofMin": "0.15",
@@ -599,19 +601,15 @@
         "nSigmaTofMax": "3.",
         "binsPt": {
             "values": [
-              "1.",
-              "2.",
-              "3.",
-              "4.",
-              "5.",
-              "6.",
-              "7.",
-              "8.",
-              "10.",
-              "12.",
-              "16.",
-              "24.",
-              "36."
+                "2.",
+                "3.",
+                "4.",
+                "5.",
+                "6.",
+                "8.",
+                "12.",
+                "16.",
+                "24."
             ]
         },
         "cuts": {
@@ -623,11 +621,7 @@
                 "pT bin 4",
                 "pT bin 5",
                 "pT bin 6",
-                "pT bin 7",
-                "pT bin 8",
-                "pT bin 9",
-                "pT bin 10",
-                "pT bin 11"
+                "pT bin 7"
             ],
             "labels_cols": [
                 "deltaM",
@@ -637,21 +631,19 @@
                 "normalized decay length XY",
                 "cos pointing angle",
                 "cos pointing angle XY",
-                "max normalized deltaIP"
+                "impact parameter XY",
+                "deltaM Phi",
+                "cos^3 theta_PiK"
             ],
             "values": [
-                ["0.2", "0.3", "0.3", "0.07", "6.", "0.96", "0.985", "2.5"],
-                ["0.2", "0.3", "0.3", "0.07", "5.", "0.96", "0.985", "2.5"],
-                ["0.2", "0.3", "0.3", "0.10", "5.", "0.96", "0.980", "2.5"],
-                ["0.2", "0.3", "0.3", "0.10", "5.", "0.96", "0.000", "2.5"],
-                ["0.2", "0.3", "0.3", "0.10", "5.", "0.96", "0.000", "2.5"],
-                ["0.2", "0.3", "0.3", "0.10", "5.", "0.96", "0.000", "2.5"],
-                ["0.2", "0.3", "0.3", "0.10", "5.", "0.96", "0.000", "2.5"],
-                ["0.2", "0.3", "0.3", "0.12", "5.", "0.96", "0.000", "2.5"],
-                ["0.2", "0.3", "0.3", "0.12", "5.", "0.96", "0.000", "2.5"],
-                ["0.2", "0.3", "0.3", "0.12", "5.", "0.96", "0.000", "2.5"],
-                ["0.2", "0.3", "0.3", "0.12", "5.", "0.96", "0.000", "2.5"],
-                ["0.2", "0.3", "0.3", "0.20", "5.", "0.94", "0.000", "2.5"]
+                ["0.2", "0.3", "0.3", "0.02", "4.", "0.92", "0.92", "0.014", "0.010", "0.10"],
+                ["0.2", "0.3", "0.3", "0.02", "4.", "0.92", "0.92", "0.014", "0.010", "0.10"],
+                ["0.2", "0.3", "0.3", "0.03", "4.", "0.90", "0.90", "0.012", "0.010", "0.05"],
+                ["0.2", "0.3", "0.3", "0.03", "4.", "0.90", "0.90", "0.012", "0.010", "0.05"],
+                ["0.2", "0.3", "0.3", "0.03", "4.", "0.90", "0.90", "0.012", "0.010", "0.05"],
+                ["0.2", "0.3", "0.3", "0.03", "4.", "0.90", "0.90", "0.012", "0.010", "0.00"],
+                ["0.2", "0.3", "0.3", "0.05", "4.", "0.85", "0.85", "0.012", "0.015", "0.00"],
+                ["0.2", "0.3", "0.3", "0.05", "4.", "0.85", "0.85", "0.012", "0.015", "0.00"]
             ]
         }
     },
@@ -1107,19 +1099,15 @@
         "yCandMax": "0.8",
         "binsPt": {
             "values": [
-                "1.",
                 "2.",
                 "3.",
                 "4.",
                 "5.",
                 "6.",
-                "7.",
                 "8.",
-                "10.",
                 "12.",
                 "16.",
-                "24.",
-                "36."
+                "24."
             ]
         },
         "processMc": "true"

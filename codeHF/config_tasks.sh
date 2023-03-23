@@ -248,7 +248,7 @@ function AdjustJson {
   # Enable Ds selection.
   if [ $APPLYCUTS_DS -eq 1 ]; then
     MsgWarn "Using Ds selection cuts"
-    ReplaceString "\"selectionFlagDs\": \"0\"" "\"selectionFlagDs\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"selectionFlagDs\": \"0\"" "\"selectionFlagDs\": \"7\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # Enable D+ selection.
