@@ -65,14 +65,15 @@
         "processStandard": "false",
         "processCovariance": "true"
     },
-    "hf-track-to-collision-association": {
-        "nSigmaForTimeCompat": "4.",
-        "timeMargin": "0.",
+    "track-to-collision-association": {
+        "nSigmaForTimeCompat": "4",
+        "timeMargin": "0",
+        "applyMinimalTrackSelForRun2": "true",
+        "applyIsGlobalTrackWoDCA": "false",
+        "usePVAssociation": "true",
+        "includeUnassigned": "false",
         "processAssocWithTime": "false",
-        "processAssocWithAmb": "false",
-        "processStandardAssoc": "true",
-        "applyIsGlobalTrack": "true",
-        "applyTrackSelForRun2": "false"
+        "processStandardAssoc": "true"
     },
     "hf-track-index-skim-creator-tag-sel-tracks": {
         "isRun2": "true",

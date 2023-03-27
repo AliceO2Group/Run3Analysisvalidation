@@ -25,8 +25,8 @@ workflows:
     #   real: []
     #   mc: []
 
-  o2-analysis-hf-track-to-collision-associator:
-    executable: o2-analysis-hf-track-to-collision-associator
+  o2-analysis-track-to-collision-associator:
+    executable: o2-analysis-track-to-collision-associator
     tables: HFTRACKASSOC
 
   # Skimming
@@ -36,7 +36,7 @@ workflows:
     dependencies:
       - o2-analysis-track-dca_runX
       - o2-analysis-trackselection_runX
-      - o2-analysis-hf-track-to-collision-associator
+      - o2-analysis-track-to-collision-associator
     tables: [HFSELCOLLISION, HFSELTRACK, HF2PRONG, HF3PRONG, HFCASCADE, HFCASCLF2PRONG, HFCASCLF3PRONG]
 
   o2-analysis-hf-track-index-skim-creator_v0:
@@ -45,7 +45,7 @@ workflows:
       - o2-analysis-track-dca_runX
       - o2-analysis-trackselection_runX
       - o2-analysis-lf-lambdakzerobuilder
-      - o2-analysis-hf-track-to-collision-associator
+      - o2-analysis-track-to-collision-associator
 
   # Candidate creators
 
