@@ -26,7 +26,6 @@ workflows:
     #   mc: []
 
   o2-analysis-track-to-collision-associator:
-    executable: o2-analysis-track-to-collision-associator
     tables: HFTRACKASSOC
 
   # Skimming
