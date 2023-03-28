@@ -1054,6 +1054,10 @@
             ]
         }
     },
+    "hf-tree-creator-d0-to-k-pi": {
+        "processData": "true",
+        "processMc": "false"
+    },
     "hf-task-d0": {
         "selectionFlagD0": "0",
         "selectionFlagD0bar": "0",

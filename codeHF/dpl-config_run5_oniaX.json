@@ -475,6 +475,10 @@
             ]
         }
     },
+    "hf-tree-creator-d0-to-k-pi": {
+        "processData": "true",
+        "processMc": "false"
+    },
     "hf-task-d0": {
         "yCandMax": "0.8",
         "selectionFlagD0": "0",
