@@ -103,10 +103,21 @@ Int_t Compare(TString fileO2 = "AnalysisResults_O2.root", TString fileAli = "Ana
   AddHistogram(vecHisD0MC, labelParticle + ", gen. non-prompt: #it{p}_{T}^{gen} (GeV/#it{c})", "hPtGenLimAccFeeddwD0Kpi", "hf-task-d0/hPtGenNonPrompt", 2, 1, 0);
 
   VecSpecHis vecHisDs;
-  AddHistogram(vecHisDs, "#it{p}_{T} D_{s}^{#pm} (GeV/#it{c})", "hPtDs", "hf-task-ds/hPt", 2, 1, 0);
+  AddHistogram(vecHisDs, "#it{p}_{T} prong 0 (GeV/#it{c})", "hPtDsDau0", "hf-task-ds/hPtProng0", 2, 1, 0);
+  AddHistogram(vecHisDs, "#it{p}_{T} prong 1 (GeV/#it{c})", "hPtDsDau1", "hf-task-ds/hPtProng1", 2, 1, 0);
+  AddHistogram(vecHisDs, "#it{p}_{T} prong 2 (GeV/#it{c})", "hPtDsDau2", "hf-task-ds/hPtProng2", 2, 1, 0);
+  AddHistogram(vecHisDs, "#it{p}_{T} D_{s}^{+} (GeV/#it{c})", "hPtDs", "hf-task-ds/hPt", 2, 1, 0);
   AddHistogram(vecHisDs, "3-prong mass (K K #pi) (GeV/#it{c}^{2})", "hInvMassDs", "hf-task-ds/hMass", 5, 0, 0);
+  AddHistogram(vecHisDs, "impact par. XY (cm)", "hImpParXYDs", "hf-task-ds/hImpactParameterXY", 4, 1, 0);
   AddHistogram(vecHisDs, "decay length (cm)", "hDecLenDs", "hf-task-ds/hDecayLength", 4, 1, 0);
+  AddHistogram(vecHisDs, "decay length XY (cm)", "hDecLenXYDs", "hf-task-ds/hDecayLengthXY", 4, 1, 0);
+  AddHistogram(vecHisDs, "norm. decay length XY", "hNormDecLenXYDs", "hf-task-ds/hNormalisedDecayLengthXY", 2, 1, 0);
   AddHistogram(vecHisDs, "cos pointing angle", "hCosPointDs", "hf-task-ds/hCPA", 2, 1, 0);
+  AddHistogram(vecHisDs, "cos pointing angle XY", "hCosPointXYDs", "hf-task-ds/hCPAxy", 2, 1, 0);
+  AddHistogram(vecHisDs, "norm. IP", "hNormIPDs", "hf-task-ds/hMaxNormalisedDeltaIP", 4, 1, 0);
+  AddHistogram(vecHisDs, "|M(KK) - M(#phi)| (GeV/#it{c}^{2})", "hDeltaMassPhiDs", "hf-task-ds/hDeltaMassPhi", 1, 1, 0);
+  AddHistogram(vecHisDs, "cos^{3} #theta'(K)", "hCos3PiKDs", "hf-task-ds/hCos3PiK", 2, 1, 0);
+  AddHistogram(vecHisDs, "|cos^{3} #theta'(K)|", "hAbsCos3PiKDs", "hf-task-ds/hAbsCos3PiK", 2, 2, 0);
 
   VecSpecHis vecHisDPlus;
   AddHistogram(vecHisDPlus, "#it{p}_{T} prong 0 (GeV/#it{c})", "hPtDplusDau0", "hf-task-dplus/hPtProng0", 2, 1, 0);
@@ -226,7 +237,7 @@ Int_t Compare(TString fileO2 = "AnalysisResults_O2.root", TString fileAli = "Ana
   if (options.Contains(" d0-mc "))
     vecSpecVecSpec.push_back(std::make_tuple("d0-mc", vecHisD0MC, 2, 2));
   if (options.Contains(" ds "))
-    vecSpecVecSpec.push_back(std::make_tuple("ds", vecHisDs, 2, 2));
+    vecSpecVecSpec.push_back(std::make_tuple("ds", vecHisDs, 5, 3));
   if (options.Contains(" dplus "))
     vecSpecVecSpec.push_back(std::make_tuple("dplus", vecHisDPlus, 5, 4));
   if (options.Contains(" lc "))

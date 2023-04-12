@@ -1,5 +1,6 @@
 *.root
 *.pdf
+*.png
 *.log
 megalinter-reports/
 .DS_Store
