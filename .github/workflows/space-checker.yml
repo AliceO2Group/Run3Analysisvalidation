@@ -2,6 +2,7 @@
 # Find bad spacing in modified text files
 name: Space checker
 on: [push, pull_request]
+permissions: {}
 env:
   MAIN_BRANCH: master
 jobs:
