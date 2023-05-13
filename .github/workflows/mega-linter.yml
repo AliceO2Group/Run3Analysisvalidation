@@ -73,7 +73,7 @@ jobs:
           token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
           commit-message: "[MegaLinter] Apply linters automatic fixes"
           title: "[MegaLinter] Apply linters automatic fixes"
-          body: "Please merge this pull request to apply automatic fixes by MegaLinter"
+          body: "Please merge this pull request to apply automatic fixes by MegaLinter."
           labels: bot
           branch: patch-${{ github.workflow }}-${{ github.ref_name }}
           delete-branch: true

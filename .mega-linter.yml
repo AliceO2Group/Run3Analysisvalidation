@@ -18,9 +18,9 @@ DISABLE_LINTERS:
   - YAML_PRETTIER
   - REPOSITORY_DEVSKIM
   - REPOSITORY_TRIVY
-  - REPOSITORY_CHECKOV
 DISABLE_ERRORS_LINTERS: # If errors are found by these linters, they will be considered as non blocking.
   - PYTHON_BANDIT
+FORMATTERS_DISABLE_ERRORS: false # Formatter errors will be reported as errors.
 FILTER_REGEX_EXCLUDE: (codeQA/)
 SHOW_ELAPSED_TIME: true
 FILEIO_REPORTER: false
