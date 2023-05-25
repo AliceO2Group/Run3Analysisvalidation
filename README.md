@@ -31,7 +31,7 @@ The steering script [`runtest.sh`](exec/runtest.sh) performs the following execu
 * Load tasks configuration.
 * Print out input description.
 * Clean before running. (activated by `DOCLEAN=1`)
-    - Deletes specified files.
+  * Deletes specified files.
 * Generate list of input files.
 * Modify the JSON file.
 * Convert `AliESDs.root` to `AO2D.root`. (activated by `DOCONVERT=1`)
