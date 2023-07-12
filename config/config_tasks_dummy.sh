@@ -21,7 +21,7 @@ DOO2=1              # Run O2 tasks.
 DOPOSTPROCESS=1     # Run output postprocessing. (Compare AliPhysics and O2 output.)
 
 # Disable incompatible steps.
-[ "$ISINPUTO2" -eq 1 ] && { DOCONVERT=0; DOALI=0; }
+[ "$INPUT_IS_O2" -eq 1 ] && { DOCONVERT=0; DOALI=0; }
 
 # O2 database
 DATABASE_O2="workflows_dummy.yml"
@@ -73,7 +73,7 @@ function AdjustJson {
   fi
 
   # MC
-  if [ "$ISMC" -eq 1 ]; then
+  if [ "$INPUT_IS_MC" -eq 1 ]; then
     MsgWarn "Using MC data"
     ReplaceString "\"processMc\": \"false\"" "\"processMc\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processMC\": \"false\"" "\"processMC\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
@@ -99,7 +99,7 @@ function MakeScriptO2 {
 
    # Translate options into arguments of the generating script.
   OPT_MAKECMD=""
-  [ "$ISMC" -eq 1 ] && OPT_MAKECMD+=" --mc"
+  [ "$INPUT_IS_MC" -eq 1 ] && OPT_MAKECMD+=" --mc"
   [ "$DEBUG" -eq 1 ] && OPT_MAKECMD+=" -d"
   [ $SAVETREES -eq 1 ] && OPT_MAKECMD+=" -t"
   [ $MAKE_GRAPH -eq 1 ] && OPT_MAKECMD+=" -g"

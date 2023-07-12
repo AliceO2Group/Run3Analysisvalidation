@@ -1,7 +1,7 @@
 #!/bin/bash
 
 FILEIN="$1"
-ISMC=$2
+INPUT_IS_MC=$2
 USEALIEVCUTS=$3
 LOGFILE="$4"
 
@@ -9,7 +9,7 @@ LOGFILE="$4"
 DIR_THIS="$(dirname "$(realpath "$0")")"
 
 # Run the macro.
-root -b -q -l "$DIR_THIS/convertAO2D.C(\"$FILEIN\", $ISMC, $USEALIEVCUTS)" > "$LOGFILE" 2>&1
+root -b -q -l "$DIR_THIS/convertAO2D.C(\"$FILEIN\", $INPUT_IS_MC, $USEALIEVCUTS)" > "$LOGFILE" 2>&1
 ExitCode=$?
 
 # Show warnings, errors and fatals in the log file.

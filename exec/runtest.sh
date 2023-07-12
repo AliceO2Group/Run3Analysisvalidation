@@ -25,8 +25,8 @@ INPUT_FILES="AliESDs.root"      # Input file pattern
 INPUT_SYS="pp"                  # Collision system
 INPUT_RUN=2                     # LHC Run (2, 3, 5)
 JSON="dpl-config.json"          # Tasks parameters
-ISINPUTO2=0                     # Input files are in O2 format.
-ISMC=0                          # Input files are MC data.
+INPUT_IS_O2=0                   # Input files are in O2 format.
+INPUT_IS_MC=0                   # Input files are MC data.
 NFILESMAX=1                     # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
 NFILESPERJOB_CONVERT=1          # Number of input files per conversion job
 NFILESPERJOB_ALI=1              # Number of input files per AliPhysics job
@@ -115,7 +115,7 @@ fi
 
 # Generate list of input files.
 MsgStep "Generating list of input files..."
-[ $ISINPUTO2 -eq 1 ] && LISTFILES="$LISTFILES_O2" || LISTFILES="$LISTFILES_ALI"
+[ $INPUT_IS_O2 -eq 1 ] && LISTFILES="$LISTFILES_O2" || LISTFILES="$LISTFILES_ALI"
 INPUT_DIR="$(realpath "$INPUT_DIR")"
 [ $DEBUG -eq 1 ] && { echo "Searching for $INPUT_FILES in $INPUT_DIR"; }
 find "$INPUT_DIR" -name "$INPUT_FILES" | sort | head -n $NFILESMAX > "$LISTFILES"
@@ -135,12 +135,12 @@ if [ $DOCONVERT -eq 1 ]; then
   [ "$NFILES" -eq 0 ] && { ErrExit "No input conversion files!"; }
   NFILESPERJOB_CONVERT=$(python3 -c "n = $NFILESPERJOB_CONVERT; print(n if n > 0 else max(1, round($NFILES * $NCORESPERJOB_ALI / $NCORES)))")
   MsgStep "Converting... ($NFILES files)"
-  [ $ISMC -eq 1 ] && MsgWarn "Using MC mode"
+  [ $INPUT_IS_MC -eq 1 ] && MsgWarn "Using MC mode"
   [ $DEBUG -eq 1 ] && echo "Loading AliPhysics..."
   # Run the batch script in the ALI environment.
   [ "$O2_ROOT" ] && { MsgWarn "O2 environment is loaded - expect errors!"; }
   [ "$ALICE_PHYSICS" ] && { MsgWarn "AliPhysics environment is already loaded."; ENVALI=""; }
-  $ENVALI bash "$DIR_EXEC/batch_convert.sh" "$LISTFILES_ALI" "$LISTFILES_O2" $ISMC $USEALIEVCUTS $DEBUG "$NFILESPERJOB_CONVERT" || exit 1
+  $ENVALI bash "$DIR_EXEC/batch_convert.sh" "$LISTFILES_ALI" "$LISTFILES_O2" $INPUT_IS_MC $USEALIEVCUTS $DEBUG "$NFILESPERJOB_CONVERT" || exit 1
 fi
 
 # Run AliPhysics tasks.

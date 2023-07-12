@@ -20,8 +20,8 @@ NJOBSPARALLEL_O2=$(python3 -c "print(min(10, round($(nproc) / 2)))")
 # INPUT_FILES="AliESDs.root"
 # INPUT_SYS="pp"
 # INPUT_RUN=2
-# ISINPUTO2=0
-# ISMC=0
+# INPUT_IS_O2=0
+# INPUT_IS_MC=0
 # JSON="dpl-config.json"
 
 INPUT_BASE="/data"
