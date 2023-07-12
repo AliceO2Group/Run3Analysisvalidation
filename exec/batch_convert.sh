@@ -4,7 +4,7 @@
 
 LISTINPUT="$1"
 LISTOUTPUT="$2"
-ISMC=$3
+INPUT_IS_MC=$3
 USEALIEVCUTS=$4
 DEBUG=$5
 NFILESPERJOB=$6
@@ -26,7 +26,7 @@ IndexFile=0
 IndexJob=0
 DirOutMain="output_conversion"
 
-CMDPARALLEL="cd \"$DirOutMain/{}\" && bash \"$DIR_THIS/run_convert.sh\" \"$ListIn\" $ISMC $USEALIEVCUTS \"$LogFile\""
+CMDPARALLEL="cd \"$DirOutMain/{}\" && bash \"$DIR_THIS/run_convert.sh\" \"$ListIn\" $INPUT_IS_MC $USEALIEVCUTS \"$LogFile\""
 
 # Clean before running.
 rm -rf "$LISTOUTPUT" "$DirOutMain" || ErrExit "Failed to delete output files."

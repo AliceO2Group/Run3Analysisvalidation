@@ -46,7 +46,7 @@ The steering script [`runtest.sh`](exec/runtest.sh) performs the following execu
   * If `SAVETREES=1`, tables are saved as trees in the `AnalysisResults_trees_O2.root` file.
   * Parameters of individual tasks are picked up from the JSON configuration file (`dpl-config.json` by default).
   * By default, the list of input files includes files produced by the conversion step.
-  * In case you want to use `AO2D.root` files as input directly, you can set `ISINPUTO2=1` in your input specification
+  * In case you want to use `AO2D.root` files as input directly, you can set `INPUT_IS_O2=1` in your input specification
     and use it in your configuration to deactivate incompatible steps (typically the conversion and AliPhysics tasks).
 * Run output postprocessing. (activated by `DOPOSTPROCESS=1`)
   * Executes the postprocessing step script.
