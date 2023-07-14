@@ -21,6 +21,7 @@ CONFIG_TASKS="config_tasks.sh"  # Tasks configuration (Cleans directory, modifie
 INPUT_CASE=-1                   # Input case
 INPUT_LABEL="nothing"           # Input description
 INPUT_DIR="$PWD"                # Input directory
+INPUT_PARENT_MASK=""            # Path replacement mask for the input directory of parent files in case of derived input AO2D.root. Set to ";" if no replacement needed.
 INPUT_FILES="AliESDs.root"      # Input file pattern
 INPUT_SYS="pp"                  # Collision system
 INPUT_RUN=2                     # LHC Run (2, 3, 5)
