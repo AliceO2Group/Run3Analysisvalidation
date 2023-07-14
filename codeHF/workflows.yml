@@ -48,35 +48,45 @@ workflows:
 
   # Candidate creators
 
-  o2-analysis-hf-candidate-creator-2prong: &cand_creator
+  o2-analysis-hf-candidate-creator-2prong: &cand_creator_2p
+    executable: o2-analysis-hf-candidate-creator-2prong
     dependencies: o2-analysis-hf-track-index-skim-creator_skimX
     tables:
       default: [HFCAND2PBASE, HFCAND2PEXT]
       mc: [HFCAND2PMCREC, HFCAND2PMCGEN]
 
-  o2-analysis-hf-candidate-creator-3prong:
-    <<: *cand_creator
+  o2-analysis-hf-candidate-creator-2prong_derived:
+    <<: *cand_creator_2p
+    dependencies: o2-analysis-track-dca_runX
+
+  o2-analysis-hf-candidate-creator-3prong: &cand_creator_3p
+    <<: *cand_creator_2p
+    executable: o2-analysis-hf-candidate-creator-3prong
     tables:
       default: [HFCAND3PBASE, HFCAND3PEXT]
       mc: [HFCAND3PMCREC, HFCAND3PMCGEN]
 
+  o2-analysis-hf-candidate-creator-3prong_derived:
+    <<: *cand_creator_3p
+    dependencies: o2-analysis-track-dca_runX
+
   o2-analysis-hf-candidate-creator-dstar: {}
 
   o2-analysis-hf-candidate-creator-cascade:
-    <<: *cand_creator
+    <<: *cand_creator_2p
     tables:
       default: [HFCANDCASCBASE, HFCANDCASCEXT]
       mc: [HFCANDCASCMCREC, HFCANDCASCMCGEN]
 
   o2-analysis-hf-candidate-creator-x:
-    <<: *cand_creator
+    <<: *cand_creator_2p
     dependencies: o2-analysis-hf-candidate-selector-jpsi_runX
     tables:
       default: [HFCANDXBASE, HFCANDXEXT]
       mc: [HFCANDXMCREC, HFCANDXMCGEN]
 
   o2-analysis-hf-candidate-creator-xicc:
-    <<: *cand_creator
+    <<: *cand_creator_2p
     dependencies: o2-analysis-hf-candidate-selector-xic-to-p-k-pi
     requires_mc: yes
     options:
@@ -86,28 +96,28 @@ workflows:
       mc: [HFCANDXICCMCREC, HFCANDXICCMCGEN]
 
   o2-analysis-hf-candidate-creator-chic:
-    <<: *cand_creator
+    <<: *cand_creator_2p
     dependencies: o2-analysis-hf-candidate-selector-jpsi_runX
     tables:
       default: [HFCANDCHICBASE, HFCANDCHICEXT]
       mc: [HFCANDCHICMCREC, HFCANDCHICMCGEN]
 
   o2-analysis-hf-candidate-creator-b0:
-    <<: *cand_creator
+    <<: *cand_creator_2p
     dependencies: o2-analysis-hf-candidate-selector-dplus-to-pi-k-pi
     tables:
       default: [HFCANDB0BASE, HFCANDB0EXT]
       mc: [HFCANDB0MCREC, HFCANDB0MCGEN]
 
   o2-analysis-hf-candidate-creator-bplus:
-    <<: *cand_creator
+    <<: *cand_creator_2p
     dependencies: o2-analysis-hf-candidate-selector-d0
     tables:
       default: [HFCANDBPLUSBASE, HFCANDBPLUSEXT]
       mc: [HFCANDBPMCREC, HFCANDBPMCGEN]
 
   o2-analysis-hf-candidate-creator-lb:
-    <<: *cand_creator
+    <<: *cand_creator_2p
     dependencies: o2-analysis-hf-candidate-selector-lc
     tables:
       default: [HFCANDLB, HFCANDLBEXT]
@@ -117,7 +127,7 @@ workflows:
 
   o2-analysis-hf-candidate-selector-d0: &selector_2prong
     dependencies:
-      - o2-analysis-hf-candidate-creator-2prong
+      - o2-analysis-hf-candidate-creator-2prong_derX
       - o2-analysis-pid-tpc-full
       - o2-analysis-pid-tof-full_runX
     tables: HFSELD0
@@ -136,7 +146,7 @@ workflows:
 
   o2-analysis-hf-candidate-selector-dplus-to-pi-k-pi: &selector_3prong
     dependencies:
-      - o2-analysis-hf-candidate-creator-3prong
+      - o2-analysis-hf-candidate-creator-3prong_derX
       - o2-analysis-pid-tpc-full
       - o2-analysis-pid-tof-full_runX
     tables: HFSELDPLUS
@@ -151,7 +161,7 @@ workflows:
 
   o2-analysis-hf-candidate-selector-lc:
     dependencies:
-      - o2-analysis-hf-candidate-creator-3prong
+      - o2-analysis-hf-candidate-creator-3prong_derX
       - o2-analysis-pid-tpc-full
       - o2-analysis-pid-tof-full_runX
       - o2-analysis-pid-bayes
@@ -351,7 +361,7 @@ workflows:
 
   o2-analysis-hf-task-mc-validation:
     requires_mc: yes
-    dependencies: [o2-analysis-hf-candidate-creator-2prong, o2-analysis-hf-candidate-creator-3prong]
+    dependencies: [o2-analysis-hf-candidate-creator-2prong_derX, o2-analysis-hf-candidate-creator-3prong_derX]
 
   # Helper tasks
 

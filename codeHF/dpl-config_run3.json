@@ -7,7 +7,9 @@
         "start-value-enumeration": "0",
         "end-value-enumeration": "-1",
         "step-value-enumeration": "1",
-        "aod-file": "@list_o2.txt"
+        "aod-file": "@list_o2.txt",
+        "aod-parent-base-path-replacement": "PARENT_PATH_MASK",
+        "aod-parent-access-level": 1
     },
     "internal-dpl-aod-spawner": "",
     "internal-dpl-aod-index-builder": "",
