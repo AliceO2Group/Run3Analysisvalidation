@@ -39,7 +39,7 @@ def msg_bold(message: str):
     eprint("\x1b[1m%s\x1b[0m" % message)
 
 
-def join_strings(obj):
+def join_strings(obj) -> str:
     """Return strings concatenated into one."""
     if isinstance(obj, str):
         return obj
