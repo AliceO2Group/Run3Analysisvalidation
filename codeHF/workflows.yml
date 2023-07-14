@@ -36,7 +36,7 @@ workflows:
       - o2-analysis-track-dca_runX
       - o2-analysis-trackselection_runX
       - o2-analysis-track-to-collision-associator
-    tables: [HFSELCOLLISION, HFSELTRACK, HF2PRONG, HF3PRONG, HFCASCADE, HFCASCLF2PRONG, HFCASCLF3PRONG]
+    tables: [HF2PRONG/1, HF3PRONG/1, HFCASCADE/1, HFCASCLF2PRONG, HFCASCLF3PRONG, HFCUTSTATUS2P, HFCUTSTATUS3P, HFPVREFIT2PRONG, HFPVREFIT3PRONG, HFPVREFITTRACK, HFSELCOLLISION, HFSELTRACK]
 
   o2-analysis-hf-track-index-skim-creator_v0:
     <<: *skim_creator
