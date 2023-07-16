@@ -47,6 +47,7 @@ def join_strings(obj) -> str:
         return " ".join(obj)
     else:
         msg_fatal("Cannot convert %s into a string" % type(obj))
+        return ""
 
 
 def join_to_list(obj, list_out: list):
