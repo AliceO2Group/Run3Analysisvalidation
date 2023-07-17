@@ -244,7 +244,9 @@ def main():
                 )
         str_before = "AOD/"
         str_after = "/0"
-        string_tables = ",".join(str_before + t + ("" if "/" in t else str_after) for t in tables)
+        string_tables = ",".join(
+            str_before + t + ("" if "/" in t else str_after) for t in tables
+        )
         if string_tables:
             opt_local += " --aod-writer-keep " + string_tables
 
