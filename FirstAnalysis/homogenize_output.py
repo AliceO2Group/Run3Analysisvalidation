@@ -9,7 +9,7 @@ import os
 import time
 from multiprocessing import Pool
 
-from ROOT import TFile
+from ROOT import TFile, gROOT
 
 g_verbose = False
 g_out_path = False
@@ -79,6 +79,8 @@ def main(input_files, verbose=True, base_dir="TF_", out_path="", jobs=20):
 
 
 if __name__ == "__main__":
+    gROOT.SetBatch(True)
+
     parser = argparse.ArgumentParser(description="Omogenizer for ML processing")
     parser.add_argument("input_files", type=str, nargs="+", help="Input files")
     parser.add_argument(
