@@ -9,11 +9,11 @@ import os
 import time
 from multiprocessing import Pool
 
-from ROOT import TFile
+from ROOT import TFile, gROOT  # pylint: disable=import-error
 
 g_verbose = False
-g_out_path = False
-g_base_dir = False
+g_out_path = ""
+g_base_dir = ""
 
 
 def split_file(input_name):
@@ -79,6 +79,8 @@ def main(input_files, verbose=True, base_dir="TF_", out_path="", jobs=20):
 
 
 if __name__ == "__main__":
+    gROOT.SetBatch(True)
+
     parser = argparse.ArgumentParser(description="Omogenizer for ML processing")
     parser.add_argument("input_files", type=str, nargs="+", help="Input files")
     parser.add_argument(
@@ -87,12 +89,8 @@ if __name__ == "__main__":
         default="TF_",
         help="Name of the base directory, usually `TF_` or `DF_`",
     )
-    parser.add_argument(
-        "--out_dir", "-o", type=str, default="./tmp/", help="Name of the output path"
-    )
-    parser.add_argument(
-        "--jobs", "-j", type=int, default=5, help="Number of parallel jobs"
-    )
+    parser.add_argument("--out_dir", "-o", type=str, default="./tmp/", help="Name of the output path")
+    parser.add_argument("--jobs", "-j", type=int, default=5, help="Number of parallel jobs")
     parser.add_argument("-v", action="store_true", help="Verbose mode")
     args = parser.parse_args()
     main(args.input_files, verbose=args.v, base_dir=args.base_dir, jobs=args.jobs)
