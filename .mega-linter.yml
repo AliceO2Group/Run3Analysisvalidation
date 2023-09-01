@@ -28,5 +28,6 @@ UPDATED_SOURCES_REPORTER: false
 PRINT_ALPACA: false # Don't print ASCII alpaca in the log
 PRINT_ALL_FILES: true # Print all processed files
 FLAVOR_SUGGESTIONS: false # Don't show suggestions about different MegaLinter flavors
-PYTHON_ISORT_CONFIG_FILE: LINTER_DEFAULT
-PYTHON_RUFF_CONFIG_FILE: LINTER_DEFAULT
+PYTHON_ISORT_CONFIG_FILE: pyproject.toml
+PYTHON_PYRIGHT_CONFIG_FILE: pyproject.toml
+PYTHON_RUFF_CONFIG_FILE: pyproject.toml
