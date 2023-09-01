@@ -8,7 +8,17 @@ To run your comparison between AnalysisResults1.root AnalysisResults2.root you c
 """
 
 import argparse
-from ROOT import TH1, TCanvas, TColor, TFile, TLegend, gPad, gROOT, TLine # pylint: disable=import-error
+
+from ROOT import (  # pylint: disable=import-error
+    TH1,
+    TCanvas,
+    TColor,
+    TFile,
+    TLegend,
+    gPad,
+    gROOT,
+)
+
 # import itertools
 
 
@@ -40,7 +50,7 @@ def compare(dict_obj, add_leg_title=True, normalize=True):
             else:
                 opt += "same"
             dict_list_canvas[key_obj][0].cd()
-            print(f"Drawing {obj.GetName()} with opt \"{opt}\" on canvas {gPad.GetName()}")
+            print(f'Drawing {obj.GetName()} with opt "{opt}" on canvas {gPad.GetName()}')
             obj.SetLineColor(dict_colors[key_file])
             obj.SetMarkerStyle(dict_markers[key_file])
             obj.SetMarkerColor(dict_colors[key_file])
@@ -54,7 +64,7 @@ def compare(dict_obj, add_leg_title=True, normalize=True):
             # Ratio
             if not is_first_file:
                 dict_list_canvas[key_obj][1].cd()
-                print(f"Drawing {obj.GetName()} with opt \"{opt}\" on canvas {gPad.GetName()}")
+                print(f'Drawing {obj.GetName()} with opt "{opt}" on canvas {gPad.GetName()}')
                 # line_1 = TLine(obj.GetXaxis().GetXmin(), 1, obj.GetXaxis().GetXmax(), 1)
                 obj_ratio = obj.Clone(f"{obj.GetName()}_ratio")
                 obj_ratio.Divide(dict_obj[key_file_first][key_obj])
