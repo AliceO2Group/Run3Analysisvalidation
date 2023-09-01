@@ -6,6 +6,7 @@ options:
     - "--configuration json://$JSON"
     - "--aod-memory-rate-limit 2000000000"
     - "--shm-segment-size 16000000000"
+    - "--resources-monitoring 2"
     # - "--min-failure-level error"
 
 workflows:
@@ -43,8 +44,8 @@ workflows:
     dependencies:
       - o2-analysis-track-dca_runX
       - o2-analysis-trackselection_runX
-      - o2-analysis-lf-lambdakzerobuilder
       - o2-analysis-track-to-collision-associator
+      - o2-analysis-lf-lambdakzerobuilder
 
   # Candidate creators
 
@@ -60,8 +61,8 @@ workflows:
     dependencies: o2-analysis-track-dca_runX
 
   o2-analysis-hf-candidate-creator-3prong: &cand_creator_3p
-    <<: *cand_creator_2p
     executable: o2-analysis-hf-candidate-creator-3prong
+    dependencies: o2-analysis-hf-track-index-skim-creator_skimX
     tables:
       default: [HFCAND3PBASE, HFCAND3PEXT]
       mc: [HFCAND3PMCREC, HFCAND3PMCGEN]
@@ -73,20 +74,18 @@ workflows:
   o2-analysis-hf-candidate-creator-dstar: {}
 
   o2-analysis-hf-candidate-creator-cascade:
-    <<: *cand_creator_2p
+    dependencies: o2-analysis-hf-track-index-skim-creator_skimX
     tables:
       default: [HFCANDCASCBASE, HFCANDCASCEXT]
       mc: [HFCANDCASCMCREC, HFCANDCASCMCGEN]
 
   o2-analysis-hf-candidate-creator-x:
-    <<: *cand_creator_2p
     dependencies: o2-analysis-hf-candidate-selector-jpsi_runX
     tables:
       default: [HFCANDXBASE, HFCANDXEXT]
       mc: [HFCANDXMCREC, HFCANDXMCGEN]
 
   o2-analysis-hf-candidate-creator-xicc:
-    <<: *cand_creator_2p
     dependencies: o2-analysis-hf-candidate-selector-xic-to-p-k-pi
     requires_mc: yes
     options:
@@ -96,28 +95,24 @@ workflows:
       mc: [HFCANDXICCMCREC, HFCANDXICCMCGEN]
 
   o2-analysis-hf-candidate-creator-chic:
-    <<: *cand_creator_2p
     dependencies: o2-analysis-hf-candidate-selector-jpsi_runX
     tables:
       default: [HFCANDCHICBASE, HFCANDCHICEXT]
       mc: [HFCANDCHICMCREC, HFCANDCHICMCGEN]
 
   o2-analysis-hf-candidate-creator-b0:
-    <<: *cand_creator_2p
     dependencies: o2-analysis-hf-candidate-selector-dplus-to-pi-k-pi
     tables:
       default: [HFCANDB0BASE, HFCANDB0EXT]
       mc: [HFCANDB0MCREC, HFCANDB0MCGEN]
 
   o2-analysis-hf-candidate-creator-bplus:
-    <<: *cand_creator_2p
     dependencies: o2-analysis-hf-candidate-selector-d0
     tables:
       default: [HFCANDBPLUSBASE, HFCANDBPLUSEXT]
       mc: [HFCANDBPMCREC, HFCANDBPMCGEN]
 
   o2-analysis-hf-candidate-creator-lb:
-    <<: *cand_creator_2p
     dependencies: o2-analysis-hf-candidate-selector-lc
     tables:
       default: [HFCANDLB, HFCANDLBEXT]
@@ -267,6 +262,13 @@ workflows:
   o2-analysis-hf-task-flow:
     dependencies:
       - o2-analysis-hf-candidate-selector-d0
+      - o2-analysis-multiplicity-table_runX
+
+  o2-analysis-hf-correlator-dplus-hadrons:
+    dependencies: o2-analysis-hf-candidate-selector-dplus-to-pi-k-pi
+
+  o2-analysis-hf-correlator-ds-hadrons:
+    dependencies: o2-analysis-hf-candidate-selector-ds-to-k-k-pi
 
   # Tree creators
 
@@ -416,7 +418,8 @@ workflows:
   o2-analysis-pid-tpc-full:
     dependencies: [o2-analysis-pid-tpc-base, o2-analysis-timestamp]
 
-  o2-analysis-pid-tof-base: {}
+  o2-analysis-pid-tof-base:
+    dependencies: o2-analysis-event-selection
 
   o2-analysis-pid-tof-full_run2: &tof_full
     executable: o2-analysis-pid-tof-full

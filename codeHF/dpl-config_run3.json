@@ -2580,6 +2580,66 @@
         "processMcRec": "false",
         "processMcGen": "false"
     },
+    "hf-dplus-selection": {
+        "selectionFlagDplus": "1",
+        "yCandMax": "0.800000012",
+        "ptCandMin": "1",
+        "processDplusSelectionData": "true",
+        "processDplusSelectionMcRec": "false",
+        "processDplusSelectionMcGen": "false"
+    },
+    "hf-correlator-dplus-hadrons": {
+        "selectionFlagDplus": "1",
+        "applyEfficiency": "1",
+        "yCandMax": "0.800000012",
+        "etaTrackMax": "0.800000012",
+        "dcaXYTrackMax": "1",
+        "dcaZTrackMax": "1",
+        "ptCandMin": "1",
+        "ptTrackMin": "0.300000012",
+        "ptTrackMax": "50",
+        "multMin": "0",
+        "multMax": "10000",
+        "binsPt": {
+            "values": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "10",
+                "12",
+                "16",
+                "24",
+                "36"
+            ]
+        },
+        "efficiencyD": {
+            "values": [
+                "0",
+                "0",
+                "0",
+                "0",
+                "0",
+                "0",
+                "0",
+                "0",
+                "0",
+                "0",
+                "0",
+                "0"
+            ]
+        },
+        "processData": "true",
+        "processMcRec": "false",
+        "processMcGen": "false",
+        "processDataMixedEvent": "false",
+        "processMcRecMixedEvent": "false",
+        "processMcGenMixedEvent": "false"
+    },
     "collision-converter": {
         "doNotSwap": "false",
         "debug": "false",

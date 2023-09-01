@@ -13,6 +13,12 @@
 
 ####################################################################################################
 
+# Here you can select the AliPhysics and O2Physics branches to load.
+# BRANCH_ALI="master"
+# ENV_ALI="alienv setenv AliPhysics/latest-${BRANCH_ALI}-o2 -c"
+# BRANCH_O2="master"
+# ENV_O2="alienv setenv O2Physics/latest-${BRANCH_O2}-o2 -c"
+
 # Steps
 DOCLEAN=1           # Delete created files (before and after running tasks).
 DOCONVERT=1         # Convert AliESDs.root to AO2D.root.
@@ -89,20 +95,22 @@ DOO2_TREE_XICC=0    # hf-tree-creator-xicc-to-p-k-pi-pi
 DOO2_TREE_CHIC=0    # hf-tree-creator-chic-to-jpsi-gamma
 DOO2_TREE_BPLUS=0   # hf-tree-creator-bplus-to-d0-pi
 # Correlations
-DOO2_D0D0BAR_DATA=0       # hf-correlator-d0-d0bar
-DOO2_D0D0BAR_MCREC=0      # hf-correlator-d0-d0bar-mc-rec
-DOO2_D0D0BAR_MCGEN=0      # hf-correlator-d0-d0bar-mc-gen
-DOO2_DPLUSDMINUS_DATA=0   # hf-correlator-dplus-dminus
-DOO2_DPLUSDMINUS_MCREC=0  # hf-correlator-dplus-dminus-mc-rec
-DOO2_DPLUSDMINUS_MCGEN=0  # hf-correlator-dplus-dminus-mc-gen
-DOO2_CORRELATOR_D0HADRON=0    # hf-correlator-d0-hadrons
-DOO2_TASK_D0HADRON=0          # hf-task-correlation-d0-hadrons
-DOO2_TASK_FLOW=0    # hf-task-flow
-# Other
-DOO2_MCCONV=0       # mc-converter
-DOO2_FDDCONV=0      # fdd-converter
-DOO2_COLLCONV=0     # collision-converter
-DOO2_ZDCCONV=1      # zdc-converter
+DOO2_CORR_D0D0BAR_DATA=0       # hf-correlator-d0-d0bar
+DOO2_CORR_D0D0BAR_MCREC=0      # hf-correlator-d0-d0bar-mc-rec
+DOO2_CORR_D0D0BAR_MCGEN=0      # hf-correlator-d0-d0bar-mc-gen
+DOO2_CORR_DPLUSDMINUS_DATA=0   # hf-correlator-dplus-dminus
+DOO2_CORR_DPLUSDMINUS_MCREC=0  # hf-correlator-dplus-dminus-mc-rec
+DOO2_CORR_DPLUSDMINUS_MCGEN=0  # hf-correlator-dplus-dminus-mc-gen
+DOO2_CORR_D0HADRON=0           # hf-correlator-d0-hadrons
+DOO2_CORR_DPLUSHADRON=0        # hf-correlator-dplus-hadrons
+DOO2_CORR_DSHADRON=0           # hf-correlator-ds-hadrons
+DOO2_TASK_D0HADRON=0           # hf-task-correlation-d0-hadrons
+DOO2_TASK_FLOW=0               # hf-task-flow
+# Converters
+DOO2_CONV_MC=0       # mc-converter
+DOO2_CONV_FDD=0      # fdd-converter
+DOO2_CONV_COLL=0     # collision-converter
+DOO2_CONV_ZDC=1      # zdc-converter
 
 # Selection cuts
 APPLYCUTS_D0=1      # Apply D0 selection cuts.
@@ -396,14 +404,16 @@ function MakeScriptO2 {
   [ $DOO2_TASK_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-bplus"
   # Correlations
   WF_CORR=""
-  [ $DOO2_D0D0BAR_DATA -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-d0-d0bar o2-analysis-hf-task-correlation-d-dbar"
-  [ $DOO2_D0D0BAR_MCREC -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-d0-d0bar-mc-rec o2-analysis-hf-task-correlation-d-dbar-mc-rec"
-  [ $DOO2_D0D0BAR_MCGEN -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-d0-d0bar-mc-gen o2-analysis-hf-task-correlation-d-dbar-mc-gen"
-  [ $DOO2_DPLUSDMINUS_DATA -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-dplus-dminus o2-analysis-hf-task-correlation-d-dbar"
-  [ $DOO2_DPLUSDMINUS_MCREC -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-dplus-dminus-mc-rec o2-analysis-hf-task-correlation-d-dbar-mc-rec"
-  [ $DOO2_DPLUSDMINUS_MCGEN -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-dplus-dminus-mc-gen o2-analysis-hf-task-correlation-d-dbar-mc-gen"
+  [ $DOO2_CORR_D0D0BAR_DATA -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-d0-d0bar o2-analysis-hf-task-correlation-d-dbar"
+  [ $DOO2_CORR_D0D0BAR_MCREC -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-d0-d0bar-mc-rec o2-analysis-hf-task-correlation-d-dbar-mc-rec"
+  [ $DOO2_CORR_D0D0BAR_MCGEN -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-d0-d0bar-mc-gen o2-analysis-hf-task-correlation-d-dbar-mc-gen"
+  [ $DOO2_CORR_DPLUSDMINUS_DATA -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-dplus-dminus o2-analysis-hf-task-correlation-d-dbar"
+  [ $DOO2_CORR_DPLUSDMINUS_MCREC -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-dplus-dminus-mc-rec o2-analysis-hf-task-correlation-d-dbar-mc-rec"
+  [ $DOO2_CORR_DPLUSDMINUS_MCGEN -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-dplus-dminus-mc-gen o2-analysis-hf-task-correlation-d-dbar-mc-gen"
   [ "$WF_CORR" ] && WORKFLOWS+=" $WF_CORR"
-  [ $DOO2_CORRELATOR_D0HADRON -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-correlator-d0-hadrons"
+  [ $DOO2_CORR_D0HADRON -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-correlator-d0-hadrons"
+  [ $DOO2_CORR_DPLUSHADRON -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-correlator-dplus-hadrons"
+  [ $DOO2_CORR_DSHADRON -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-correlator-ds-hadrons"
   [ $DOO2_TASK_D0HADRON -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-correlation-d0-hadrons"
   [ $DOO2_TASK_FLOW -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-flow"
   # Tree creators
@@ -414,11 +424,11 @@ function MakeScriptO2 {
   [ $DOO2_TREE_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-xicc-to-p-k-pi-pi"
   [ $DOO2_TREE_CHIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-chic-to-jpsi-gamma"
   [ $DOO2_TREE_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-bplus-to-d0-pi"
-  # Other
-  [ $DOO2_MCCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-mc-converter"
-  [ $DOO2_FDDCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-fdd-converter"
-  [ $DOO2_COLLCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-collision-converter"
-  [ $DOO2_ZDCCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-zdc-converter"
+  # Converters
+  [ $DOO2_CONV_MC -eq 1 ] && WORKFLOWS+=" o2-analysis-mc-converter"
+  [ $DOO2_CONV_FDD -eq 1 ] && WORKFLOWS+=" o2-analysis-fdd-converter"
+  [ $DOO2_CONV_COLL -eq 1 ] && WORKFLOWS+=" o2-analysis-collision-converter"
+  [ $DOO2_CONV_ZDC -eq 1 ] && WORKFLOWS+=" o2-analysis-zdc-converter"
 
   # Translate options into arguments of the generating script.
   OPT_MAKECMD=""

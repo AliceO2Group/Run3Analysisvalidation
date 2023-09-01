@@ -59,9 +59,9 @@ FILEOUT_TREES="AnalysisResults_trees.root"
 FILEOUT_TREES_O2="AnalysisResults_trees_O2.root"
 
 # Steering commands
-ENVALI="alienv setenv AliPhysics/latest -c"
-ENVO2="alienv setenv O2Physics/latest -c"
-ENVPOST="alienv setenv ROOT/latest -c"
+ENV_ALI="alienv setenv AliPhysics/latest -c"
+ENV_O2="alienv setenv O2Physics/latest -c"
+ENV_POST="alienv setenv ROOT/latest -c"
 
 # Step scripts
 SCRIPT_O2="script_o2.sh"
@@ -140,8 +140,8 @@ if [ $DOCONVERT -eq 1 ]; then
   [ $DEBUG -eq 1 ] && echo "Loading AliPhysics..."
   # Run the batch script in the ALI environment.
   [ "$O2_ROOT" ] && { MsgWarn "O2 environment is loaded - expect errors!"; }
-  [ "$ALICE_PHYSICS" ] && { MsgWarn "AliPhysics environment is already loaded."; ENVALI=""; }
-  $ENVALI bash "$DIR_EXEC/batch_convert.sh" "$LISTFILES_ALI" "$LISTFILES_O2" $INPUT_IS_MC $USEALIEVCUTS $DEBUG "$NFILESPERJOB_CONVERT" || exit 1
+  [ "$ALICE_PHYSICS" ] && { MsgWarn "AliPhysics environment is already loaded."; ENV_ALI=""; }
+  $ENV_ALI bash "$DIR_EXEC/batch_convert.sh" "$LISTFILES_ALI" "$LISTFILES_O2" $INPUT_IS_MC $USEALIEVCUTS $DEBUG "$NFILESPERJOB_CONVERT" || exit 1
 fi
 
 # Run AliPhysics tasks.
@@ -157,8 +157,8 @@ if [ $DOALI -eq 1 ]; then
   [ $DEBUG -eq 1 ] && echo "Loading AliPhysics..."
   # Run the batch script in the ALI environment.
   [ "$O2_ROOT" ] && { MsgWarn "O2 environment is loaded - expect errors!"; }
-  [ "$ALICE_PHYSICS" ] && { MsgWarn "AliPhysics environment is already loaded."; ENVALI=""; }
-  $ENVALI bash "$DIR_EXEC/batch_ali.sh" "$LISTFILES_ALI" "$JSON" "$SCRIPT_ALI" $DEBUG "$NFILESPERJOB_ALI" || exit 1
+  [ "$ALICE_PHYSICS" ] && { MsgWarn "AliPhysics environment is already loaded."; ENV_ALI=""; }
+  $ENV_ALI bash "$DIR_EXEC/batch_ali.sh" "$LISTFILES_ALI" "$JSON" "$SCRIPT_ALI" $DEBUG "$NFILESPERJOB_ALI" || exit 1
   mv "$FILEOUT" "$FILEOUT_ALI" || ErrExit "Failed to mv $FILEOUT $FILEOUT_ALI."
 fi
 
@@ -176,8 +176,8 @@ if [ $DOO2 -eq 1 ]; then
   [ $DEBUG -eq 1 ] && echo "Loading O2Physics..."
   # Run the batch script in the O2 environment.
   [ "$ALICE_PHYSICS" ] && { MsgWarn "AliPhysics environment is loaded - expect errors!"; }
-  [ "$O2_ROOT" ] && { MsgWarn "O2 environment is already loaded."; ENVO2=""; }
-  $ENVO2 bash "$DIR_EXEC/batch_o2.sh" "$LISTFILES_O2" "$JSON" "$SCRIPT_O2" $DEBUG "$NFILESPERJOB_O2" "$FILEOUT_TREES" "$NJOBSPARALLEL_O2" || exit 1
+  [ "$O2_ROOT" ] && { MsgWarn "O2 environment is already loaded."; ENV_O2=""; }
+  $ENV_O2 bash "$DIR_EXEC/batch_o2.sh" "$LISTFILES_O2" "$JSON" "$SCRIPT_O2" $DEBUG "$NFILESPERJOB_O2" "$FILEOUT_TREES" "$NJOBSPARALLEL_O2" || exit 1
   mv "$FILEOUT" "$FILEOUT_O2" || ErrExit "Failed to mv $FILEOUT $FILEOUT_O2."
   [[ $SAVETREES -eq 1 && "$FILEOUT_TREES" ]] && { mv "$FILEOUT_TREES" "$FILEOUT_TREES_O2" || ErrExit "Failed to mv $FILEOUT_TREES $FILEOUT_TREES_O2."; }
 fi
@@ -190,8 +190,8 @@ if [ $DOPOSTPROCESS -eq 1 ]; then
   CheckFile "$SCRIPT_POSTPROCESS"
   [ $DEBUG -eq 1 ] && echo "Loading ROOT..."
   # Run the batch script in the postprocessing environment.
-  [ "$ROOTSYS" ] && { MsgWarn "ROOT environment is already loaded."; ENVPOST=""; }
-  $ENVPOST bash "$SCRIPT_POSTPROCESS" "$FILEOUT_O2" "$FILEOUT_ALI" > $LogFile 2>&1 || ErrExit "\nCheck $(realpath $LogFile)"
+  [ "$ROOTSYS" ] && { MsgWarn "ROOT environment is already loaded."; ENV_POST=""; }
+  $ENV_POST bash "$SCRIPT_POSTPROCESS" "$FILEOUT_O2" "$FILEOUT_ALI" > $LogFile 2>&1 || ErrExit "\nCheck $(realpath $LogFile)"
   grep -q -e '^'"W-" -e '^'"Warning" -e "warning" "$LogFile" && MsgWarn "There were warnings!\nCheck $(realpath $LogFile)"
   grep -q -e '^'"E-" -e '^'"Error" "$LogFile" && MsgErr "There were errors!\nCheck $(realpath $LogFile)"
   grep -q -e '^'"F-" -e '^'"Fatal" -e "segmentation" -e "Segmentation" "$LogFile" && ErrExit "There were fatal errors!\nCheck $(realpath $LogFile)"
