@@ -2312,6 +2312,11 @@
     "hf-tree-creator-bplus-to-d0-pi": {
         "isSignal": "1"
     },
+    "hf-tree-creator-lc-to-k0s-p": {
+        "downSampleBkgFactor": "1",
+        "processMc": "true",
+        "processData": "false"
+    },
     "hf-task-flow": {
         "zVertexMax": "10",
         "etaTrackAssocMax": "0.8",

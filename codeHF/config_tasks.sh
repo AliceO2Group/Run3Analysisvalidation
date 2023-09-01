@@ -94,6 +94,7 @@ DOO2_TREE_X=0       # hf-tree-creator-x-to-jpsi-pi-pi
 DOO2_TREE_XICC=0    # hf-tree-creator-xicc-to-p-k-pi-pi
 DOO2_TREE_CHIC=0    # hf-tree-creator-chic-to-jpsi-gamma
 DOO2_TREE_BPLUS=0   # hf-tree-creator-bplus-to-d0-pi
+DOO2_TREE_LCK0SP=0  # hf-tree-creator-lc-to-k0s-p
 # Correlations
 DOO2_CORR_D0D0BAR_DATA=0       # hf-correlator-d0-d0bar
 DOO2_CORR_D0D0BAR_MCREC=0      # hf-correlator-d0-d0bar-mc-rec
@@ -424,6 +425,7 @@ function MakeScriptO2 {
   [ $DOO2_TREE_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-xicc-to-p-k-pi-pi"
   [ $DOO2_TREE_CHIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-chic-to-jpsi-gamma"
   [ $DOO2_TREE_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-bplus-to-d0-pi"
+  [ $DOO2_TREE_LCK0SP -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-lc-to-k0s-p"
   # Converters
   [ $DOO2_CONV_MC -eq 1 ] && WORKFLOWS+=" o2-analysis-mc-converter"
   [ $DOO2_CONV_FDD -eq 1 ] && WORKFLOWS+=" o2-analysis-fdd-converter"
