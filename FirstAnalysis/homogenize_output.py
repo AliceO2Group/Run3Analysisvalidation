@@ -9,7 +9,7 @@ import os
 import time
 from multiprocessing import Pool
 
-from ROOT import TFile, gROOT # pylint: disable=import-error
+from ROOT import TFile, gROOT  # pylint: disable=import-error
 
 g_verbose = False
 g_out_path = ""
@@ -89,12 +89,8 @@ if __name__ == "__main__":
         default="TF_",
         help="Name of the base directory, usually `TF_` or `DF_`",
     )
-    parser.add_argument(
-        "--out_dir", "-o", type=str, default="./tmp/", help="Name of the output path"
-    )
-    parser.add_argument(
-        "--jobs", "-j", type=int, default=5, help="Number of parallel jobs"
-    )
+    parser.add_argument("--out_dir", "-o", type=str, default="./tmp/", help="Name of the output path")
+    parser.add_argument("--jobs", "-j", type=int, default=5, help="Number of parallel jobs")
     parser.add_argument("-v", action="store_true", help="Verbose mode")
     args = parser.parse_args()
     main(args.input_files, verbose=args.v, base_dir=args.base_dir, jobs=args.jobs)
