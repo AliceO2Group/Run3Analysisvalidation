@@ -2,15 +2,13 @@
 
 """
 Comparison script.
-Comparing different files with same structure and same plot names.
+Comparing different files with same structure and same histogram names.
 To run your comparison between AnalysisResults1.root AnalysisResults2.root you can use:
 ./compare.py AnalysisResults1.root AnalysisResults2.root -b
 """
 
 import argparse
-
-from ROOT import TH1, TCanvas, TColor, TFile, TLegend, gPad, gROOT, TLine
-
+from ROOT import TH1, TCanvas, TColor, TFile, TLegend, gPad, gROOT, TLine # pylint: disable=import-error
 # import itertools
 
 

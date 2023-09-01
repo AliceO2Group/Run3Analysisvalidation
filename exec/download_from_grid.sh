@@ -75,7 +75,7 @@ while true; do
   read -r -p "Answer: " yn
   case $yn in
     [y] ) echo "Proceeding"; break;;
-    [n] ) echo "Aborting";  [ "$LISTEXT" -eq 0 ] && rm -f "$inputlist"; exit 0; break;;
+    [n] ) echo "Aborting";  [ "$LISTEXT" -eq 0 ] && rm -f "$inputlist"; exit 0;;
     * ) echo "Please answer y or n.";;
   esac
 done
@@ -111,7 +111,7 @@ else
   pause=2 # [s] status update interval
   CMDNRUN="top -u $USER -n 1 -b -c | grep python3 | grep jalien | wc -l"
   # Wait for the start.
-  while [ $nrunning -eq 0 ]; do nrunning=$(eval "$CMDNRUN"); done
+  while [ "$nrunning" -eq 0 ]; do nrunning=$(eval "$CMDNRUN"); done
   # Report status
   while [ "$nrunning" -gt 0 ]; do
     nstarted=$(grep -c "Start" "$logfile")
