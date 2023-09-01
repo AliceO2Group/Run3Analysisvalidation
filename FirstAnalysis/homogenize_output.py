@@ -12,8 +12,8 @@ from multiprocessing import Pool
 from ROOT import TFile, gROOT # pylint: disable=import-error
 
 g_verbose = False
-g_out_path = False
-g_base_dir = False
+g_out_path = ""
+g_base_dir = ""
 
 
 def split_file(input_name):
