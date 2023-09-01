@@ -99,7 +99,7 @@ done < "$inputlist"
 
 if [ "$PARALLEL" -eq 1 ]; then
   # Download with GNU Parallel.
-  parallel --halt soon,fail=100% --will-cite --progress < "$scriptfile" > "$logfile"
+  parallel --halt soon,fail=100% --jobs 10 --will-cite --progress < "$scriptfile" > "$logfile"
   # Report result.
   nsuccess=$(grep -c "STATUS OK" "$logfile")
   nvalid=$(grep -c "TARGET VALID" "$logfile")
