@@ -446,6 +446,8 @@ workflows:
 
   o2-analysis-zdc-converter: {}
 
+  o2-analysis-bc-converter: {}
+
   # LF
 
   o2-analysis-lf-lambdakzerobuilder:
