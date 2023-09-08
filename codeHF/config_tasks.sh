@@ -109,8 +109,8 @@ DOO2_TASK_FLOW=0               # hf-task-flow
 # Jets
 DOO2_JET_FIND=0     # je-jet-finder-d0
 DOO2_JET_MATCH=0    # je-jet-matching
-DOO2_JET_SUB=1      # je-jet-substructure-hf
-DOO2_JET_SUB_TREE=0 # je-jet-substructure-hf-output
+DOO2_JET_SUB=0      # je-jet-substructure-hf
+DOO2_JET_SUB_TREE=1 # je-jet-substructure-hf-output
 # Converters
 DOO2_CONV_MC=0       # mc-converter
 DOO2_CONV_FDD=0      # fdd-converter
@@ -133,7 +133,7 @@ APPLYCUTS_XICC=0    # Apply Ξcc selection cuts.
 APPLYCUTS_B0=0      # Apply B0 selection cuts.
 APPLYCUTS_BPLUS=0   # Apply B+ selection cuts.
 
-SAVETREES=0         # Save O2 tables to trees.
+SAVETREES=1         # Save O2 tables to trees.
 USEO2VERTEXER=1     # Use the O2 vertexer in AliPhysics.
 USEALIEVCUTS=1      # Use AliEventCuts in AliPhysics (as used by conversion task)
 DORATIO=1           # Plot histogram ratios in comparison.

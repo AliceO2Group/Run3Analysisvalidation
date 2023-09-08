@@ -272,14 +272,17 @@ workflows:
 
   o2-analysis-je-jet-finder-d0-data-charged: &jethf
     dependencies: [o2-analysis-event-selection, o2-analysis-hf-candidate-selector-d0]
+    tables: [D0JET, D0JETCONSTS, D0JETCONSTSUB]
 
   o2-analysis-je-jet-finder-d0-mcp-charged:
     <<: *jethf
     requires_mc: yes
+    tables: [D0PJET, D0PJETCONSTS, D0PJETCONSTSUB]
 
   o2-analysis-je-jet-finder-d0-mcd-charged:
     <<: *jethf
     requires_mc: yes
+    tables: [D0DJET, D0DJETCONSTS, D0DJETCONSTSUB]
 
   o2-analysis-je-jet-matching:
     requires_mc: yes
@@ -288,16 +291,19 @@ workflows:
   o2-analysis-je-jet-substructure-hf-data:
     executable: o2-analysis-je-jet-substructure-hf
     dependencies: [o2-analysis-hf-candidate-selector-d0, o2-analysis-je-jet-finder-d0-data-charged]
+    tables: D0SS
 
   o2-analysis-je-jet-substructure-hf-mcd:
     executable: o2-analysis-je-jet-substructure-hf
     dependencies: [o2-analysis-hf-candidate-selector-d0, o2-analysis-je-jet-finder-d0-mcd-charged]
     requires_mc: yes
+    tables: D0MCDSS
 
   o2-analysis-je-jet-substructure-hf-mcp:
     executable: o2-analysis-je-jet-substructure-hf
     dependencies: [o2-analysis-hf-candidate-selector-d0, o2-analysis-je-jet-finder-d0-mcp-charged]
     requires_mc: yes
+    tables: D0MCPSS
 
   # Tree creators
 
@@ -340,23 +346,20 @@ workflows:
 
   o2-analysis-je-jet-substructure-hf-output-data:
     executable: o2-analysis-je-jet-substructure-hf-output
-    dependencies: [o2-analysis-hf-task-d0, o2-analysis-je-jet-finder-d0-data-charged, o2-analysis-je-jet-substructure-hf-data]
-    options: "--hfjetsubstructureoutputMode data"
-    tables: [JETSUBOutData]
+    dependencies: o2-analysis-je-jet-substructure-hf-data
+    tables: [D0O, D0SSO]
 
   o2-analysis-je-jet-substructure-hf-output-mcd:
     executable: o2-analysis-je-jet-substructure-hf-output
-    dependencies: [o2-analysis-hf-task-d0, o2-analysis-je-jet-finder-d0-mcd-charged, o2-analysis-je-jet-substructure-hf-mcd]
-    options: "--hfjetsubstructureoutputMode mcd"
+    dependencies: o2-analysis-je-jet-substructure-hf-mcd
     requires_mc: yes
-    tables: [JETSUBOutMCD]
+    tables: [D0MCDO, D0MCDSSO]
 
   o2-analysis-je-jet-substructure-hf-output-mcp:
     executable: o2-analysis-je-jet-substructure-hf-output
-    dependencies: [o2-analysis-hf-task-d0, o2-analysis-je-jet-finder-d0-mcp-charged, o2-analysis-je-jet-substructure-hf-mcp]
-    options: "--hfjetsubstructureoutputMode mcp"
+    dependencies: o2-analysis-je-jet-substructure-hf-mcp
     requires_mc: yes
-    tables: [JETSUBOutMCP]
+    tables: [D0MCPO, D0MCPSSO]
 
   # D meson correlations
 
