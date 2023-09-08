@@ -431,28 +431,16 @@ function MakeScriptO2 {
   [ $DOO2_TREE_CHIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-chic-to-jpsi-gamma"
   [ $DOO2_TREE_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-bplus-to-d0-pi"
   # Jets
-  if [ $DOO2_JET_FIND -eq 1 ]; then
-    if [ "$INPUT_IS_MC" -eq 0 ]; then
-      WORKFLOWS+=" o2-analysis-je-jet-finder-hf-data"
-    else
-      WORKFLOWS+=" o2-analysis-je-jet-finder-hf-mcd o2-analysis-je-jet-finder-hf-mcp"
-    fi
+  if [ "$INPUT_IS_MC" -eq 1 ]; then
+    [ $DOO2_JET_FIND -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf-mcd o2-analysis-je-jet-finder-hf-mcp"
+    [ $DOO2_JET_SUB -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-mcd o2-analysis-je-jet-substructure-hf-mcp"
+    [ $DOO2_JET_SUB_TREE -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-output-mcd o2-analysis-je-jet-substructure-hf-output-mcp"
+  else
+    [ $DOO2_JET_FIND -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf-data"
+    [ $DOO2_JET_SUB -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-data"
+    [ $DOO2_JET_SUB_TREE -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-output-data"
   fi
   [ $DOO2_JET_MATCH -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf-mcd o2-analysis-je-jet-finder-hf-mcp o2-analysis-je-jet-matching-hf"
-  if [ $DOO2_JET_SUB -eq 1 ]; then
-    if [ "$INPUT_IS_MC" -eq 0 ]; then
-      WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-data"
-    else
-      WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-mcd o2-analysis-je-jet-substructure-hf-mcp"
-    fi
-  fi
-  if [ $DOO2_JET_SUB_TREE -eq 1 ]; then
-    if [ "$INPUT_IS_MC" -eq 0 ]; then
-      WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-output-data"
-    else
-      WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-output-mcd o2-analysis-je-jet-substructure-hf-output-mcp"
-    fi
-  fi
   # Converters
   [ $DOO2_CONV_MC -eq 1 ] && WORKFLOWS+=" o2-analysis-mc-converter"
   [ $DOO2_CONV_FDD -eq 1 ] && WORKFLOWS+=" o2-analysis-fdd-converter"
@@ -517,20 +505,9 @@ function MakeScriptPostprocess {
     [ $DOO2_TASK_XIC -eq 1 ] && OPT_COMPARE+=" xic "
     [ $DOO2_TASK_JPSI -eq 1 ] && OPT_COMPARE+=" jpsi "
     # Jets
-    if [ $DOO2_JET_FIND -eq 1 ]; then
-      if [ "$INPUT_IS_MC" -eq 0 ]; then
-        OPT_COMPARE+=" jets-data "
-      else
-        OPT_COMPARE+=" jets-mc "
-      fi
-    fi
-    if [ $DOO2_JET_SUB -eq 1 ]; then
-      if [ "$INPUT_IS_MC" -eq 0 ]; then
-        OPT_COMPARE+=" jets-substructure-data "
-      else
-        OPT_COMPARE+=" jets-substructure-mc "
-      fi
-    fi
+    [ "$INPUT_IS_MC" -eq 1 ] && SUFFIX_JET="mc" || SUFFIX_JET="data"
+    [ $DOO2_JET_FIND -eq 1 ] && OPT_COMPARE+=" jets-${SUFFIX_JET} "
+    [ $DOO2_JET_SUB -eq 1 ] && OPT_COMPARE+=" jets-substructure-${SUFFIX_JET} "
     [ "$OPT_COMPARE" ] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/Compare.C(\\\"\$FileO2\\\", \\\"\$FileAli\\\", \\\"$OPT_COMPARE\\\", $DORATIO)\""
   }
   # Plot particle reconstruction efficiencies.
