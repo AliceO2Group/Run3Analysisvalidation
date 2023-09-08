@@ -466,13 +466,13 @@ function MakeScriptO2 {
   if [ "$INPUT_IS_MC" -eq 1 ]; then
     [ $DOO2_JET_FIND -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-d0-mcd-charged o2-analysis-je-jet-finder-d0-mcp-charged"
     [ $DOO2_JET_FIND_QA -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf-qa_mc"
-    [ $DOO2_JET_SUB -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-mcd o2-analysis-je-jet-substructure-hf-mcp"
-    [ $DOO2_JET_SUB_OUT -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-output-mcd o2-analysis-je-jet-substructure-hf-output-mcp"
+    [ $DOO2_JET_SUB -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf_mcd o2-analysis-je-jet-substructure-hf_mcp"
+    [ $DOO2_JET_SUB_OUT -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-output_mcd o2-analysis-je-jet-substructure-hf-output_mcp"
   else
     [ $DOO2_JET_FIND -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-d0-data-charged"
     [ $DOO2_JET_FIND_QA -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf-qa_data"
-    [ $DOO2_JET_SUB -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-data"
-    [ $DOO2_JET_SUB_OUT -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-output-data"
+    [ $DOO2_JET_SUB -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf_data"
+    [ $DOO2_JET_SUB_OUT -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-output_data"
   fi
   [ $DOO2_JET_MATCH -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-matching"
   # Converters
