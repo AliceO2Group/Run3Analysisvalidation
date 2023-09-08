@@ -110,13 +110,13 @@ DOO2_TASK_FLOW=0               # hf-task-flow
 DOO2_JET_FIND=0     # je-jet-finder-d0
 DOO2_JET_MATCH=0    # je-jet-matching
 DOO2_JET_SUB=0      # je-jet-substructure-hf
-DOO2_JET_SUB_TREE=1 # je-jet-substructure-hf-output
+DOO2_JET_SUB_OUT=1  # je-jet-substructure-hf-output
 # Converters
-DOO2_CONV_MC=0       # mc-converter
-DOO2_CONV_FDD=0      # fdd-converter
-DOO2_CONV_COLL=0     # collision-converter
-DOO2_CONV_ZDC=1      # zdc-converter
-DOO2_CONV_BC=1       # bc-converter
+DOO2_CONV_MC=0      # mc-converter
+DOO2_CONV_FDD=0     # fdd-converter
+DOO2_CONV_COLL=0    # collision-converter
+DOO2_CONV_ZDC=1     # zdc-converter
+DOO2_CONV_BC=1      # bc-converter
 
 # Selection cuts
 APPLYCUTS_D0=1      # Apply D0 selection cuts.
@@ -434,11 +434,11 @@ function MakeScriptO2 {
   if [ "$INPUT_IS_MC" -eq 1 ]; then
     [ $DOO2_JET_FIND -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-d0-mcd-charged o2-analysis-je-jet-finder-d0-mcp-charged"
     [ $DOO2_JET_SUB -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-mcd o2-analysis-je-jet-substructure-hf-mcp"
-    [ $DOO2_JET_SUB_TREE -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-output-mcd o2-analysis-je-jet-substructure-hf-output-mcp"
+    [ $DOO2_JET_SUB_OUT -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-output-mcd o2-analysis-je-jet-substructure-hf-output-mcp"
   else
     [ $DOO2_JET_FIND -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-d0-data-charged"
     [ $DOO2_JET_SUB -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-data"
-    [ $DOO2_JET_SUB_TREE -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-output-data"
+    [ $DOO2_JET_SUB_OUT -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-output-data"
   fi
   [ $DOO2_JET_MATCH -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-matching"
   # Converters
