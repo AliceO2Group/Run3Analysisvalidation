@@ -108,9 +108,9 @@ DOO2_TASK_D0HADRON=0           # hf-task-correlation-d0-hadrons
 DOO2_TASK_FLOW=0               # hf-task-flow
 # Jets
 DOO2_JET_FIND=0     # je-jet-finder-d0
-DOO2_JET_MATCH=0    # je-jet-matching
+DOO2_JET_MATCH=1    # je-jet-matching
 DOO2_JET_SUB=0      # je-jet-substructure-hf
-DOO2_JET_SUB_OUT=1  # je-jet-substructure-hf-output
+DOO2_JET_SUB_OUT=0  # je-jet-substructure-hf-output
 # Converters
 DOO2_CONV_MC=0      # mc-converter
 DOO2_CONV_FDD=0     # fdd-converter

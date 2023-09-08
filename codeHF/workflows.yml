@@ -362,6 +362,7 @@ workflows:
   o2-analysis-je-jet-matching:
     dependencies: [o2-analysis-je-jet-finder-d0-mcd-charged, o2-analysis-je-jet-finder-d0-mcp-charged]
     requires_mc: yes
+    tables: [D0JETMP2D, D0JETMD2P]
 
   o2-analysis-je-jet-substructure-hf-data:
     executable: o2-analysis-je-jet-substructure-hf
