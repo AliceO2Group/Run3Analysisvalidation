@@ -359,6 +359,15 @@ workflows:
     requires_mc: yes
     tables: [D0PJET, D0PJETCONSTS, D0PJETCONSTSUB]
 
+  o2-analysis-je-jet-finder-hf-qa_data:
+    executable: o2-analysis-je-jet-finder-hf-qa
+    dependencies: o2-analysis-je-jet-finder-d0-data-charged
+
+  o2-analysis-je-jet-finder-hf-qa_mc:
+    executable: o2-analysis-je-jet-finder-hf-qa
+    dependencies: [o2-analysis-je-jet-finder-d0-mcd-charged, o2-analysis-je-jet-finder-d0-mcp-charged]
+    requires_mc: yes
+
   o2-analysis-je-jet-matching:
     dependencies: [o2-analysis-je-jet-finder-d0-mcd-charged, o2-analysis-je-jet-finder-d0-mcp-charged]
     requires_mc: yes

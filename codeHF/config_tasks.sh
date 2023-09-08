@@ -31,7 +31,7 @@ DOPOSTPROCESS=1     # Run output postprocessing. (Comparison plots. Requires DOA
 
 # O2 database
 DATABASE_O2="workflows.yml"
-MAKE_GRAPH=1        # Make topology graph.
+MAKE_GRAPH=0        # Make topology graph.
 
 # Activation of O2 workflows
 # Trigger selection
@@ -108,9 +108,10 @@ DOO2_TASK_D0HADRON=0           # hf-task-correlation-d0-hadrons
 DOO2_TASK_FLOW=0               # hf-task-flow
 # Jets
 DOO2_JET_FIND=0     # je-jet-finder-d0
+DOO2_JET_FIND_QA=1  # je-jet-finder-hf-qa
 DOO2_JET_MATCH=0    # je-jet-matching
 DOO2_JET_SUB=0      # je-jet-substructure-hf
-DOO2_JET_SUB_OUT=1  # je-jet-substructure-hf-output
+DOO2_JET_SUB_OUT=0  # je-jet-substructure-hf-output
 # Converters
 DOO2_CONV_MC=0      # mc-converter
 DOO2_CONV_FDD=0     # fdd-converter
@@ -256,6 +257,14 @@ function AdjustJson {
   else
     ReplaceString "\"processSameRun3\": \"true\"" "\"processSameRun3\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processSameRun2\": \"false\"" "\"processSameRun2\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  fi
+
+  # jet-finder-charged-d0-qa
+  if [ "$INPUT_IS_MC" -eq 1 ]; then
+    ReplaceString "\"processJetsData\": \"true\"" "\"processJetsData\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  else
+    ReplaceString "\"processJetsMCD\": \"true\"" "\"processJetsMCD\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processJetsMCP\": \"true\"" "\"processJetsMCP\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # jet-substructure...
@@ -456,10 +465,12 @@ function MakeScriptO2 {
   # Jets
   if [ "$INPUT_IS_MC" -eq 1 ]; then
     [ $DOO2_JET_FIND -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-d0-mcd-charged o2-analysis-je-jet-finder-d0-mcp-charged"
+    [ $DOO2_JET_FIND_QA -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf-qa_mc"
     [ $DOO2_JET_SUB -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-mcd o2-analysis-je-jet-substructure-hf-mcp"
     [ $DOO2_JET_SUB_OUT -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-output-mcd o2-analysis-je-jet-substructure-hf-output-mcp"
   else
     [ $DOO2_JET_FIND -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-d0-data-charged"
+    [ $DOO2_JET_FIND_QA -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf-qa_data"
     [ $DOO2_JET_SUB -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-data"
     [ $DOO2_JET_SUB_OUT -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-output-data"
   fi

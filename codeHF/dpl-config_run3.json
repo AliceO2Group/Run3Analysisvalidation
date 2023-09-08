@@ -2781,6 +2781,35 @@
         "processChargedJetsMCD": "false",
         "processChargedJetsMCP": "true"
     },
+    "jet-finder-charged-d0-qa": {
+        "selectedJetsRadius": "0.4",
+        "vertexZCut": "10",
+        "jetRadii": {
+            "values": [
+                "0.4"
+            ]
+        },
+        "trackEtaMin": "-0.9",
+        "trackEtaMax": "0.9",
+        "trackPtMin": "0.15",
+        "trackPtMax": "100",
+        "trackSelections": "globalTracks",
+        "selectionFlagD0": "1",
+        "selectionFlagD0bar": "1",
+        "selectionFlagLcToPKPi": "1",
+        "selectionFlagLcToPiPK": "1",
+        "selectionFlagBplus": "1",
+        "processDummy": "false",
+        "processJetsData": "true",
+        "processJetsMCD": "true",
+        "processJetsMCDWeighted": "false",
+        "processJetsMCP": "true",
+        "processJetsMCPWeighted": "false",
+        "processJetsMCPMCDMatched": "false",
+        "processJetsMCPMCDMatchedWeighted": "false",
+        "processMCCollisionsWeighted": "false",
+        "processTriggeredData": "false"
+    },
     "jet-matching-d0-ch": {
         "doMatchingGeo": "true",
         "doMatchingPt": "true",
