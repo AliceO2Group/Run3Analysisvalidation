@@ -291,11 +291,11 @@ workflows:
     dependencies: o2-analysis-hf-candidate-selector-d0
     tables: [DDBARPAIR, DDBARRECOINFO]
 
-  o2-analysis-hf-correlator-d0-d0bar-mc-rec:
+  o2-analysis-hf-correlator-d0-d0bar_mc-rec:
     <<: *d0d0barcorr
     options: "--doMCRec"
 
-  o2-analysis-hf-correlator-d0-d0bar-mc-gen:
+  o2-analysis-hf-correlator-d0-d0bar_mc-gen:
     <<: *d0d0barcorr
     options: "--doMCGen"
     tables: DDBARPAIR
@@ -305,11 +305,11 @@ workflows:
     dependencies: o2-analysis-hf-candidate-selector-dplus-to-pi-k-pi
     tables: [DDBARPAIR, DDBARRECOINFO]
 
-  o2-analysis-hf-correlator-dplus-dminus-mc-rec:
+  o2-analysis-hf-correlator-dplus-dminus_mc-rec:
     <<: *dplusdminus
     requires_mc: yes
 
-  o2-analysis-hf-correlator-dplus-dminus-mc-gen:
+  o2-analysis-hf-correlator-dplus-dminus_mc-gen:
     <<: *dplusdminus
     requires_mc: yes
     tables: DDBARPAIR
@@ -327,11 +327,11 @@ workflows:
   o2-analysis-hf-task-correlation-d-dbar: &taskddbar
     executable: o2-analysis-hf-task-correlation-d-dbar
 
-  o2-analysis-hf-task-correlation-d-dbar-mc-rec:
+  o2-analysis-hf-task-correlation-d-dbar_mc-rec:
     <<: *taskddbar
     requires_mc: yes
 
-  o2-analysis-hf-task-correlation-d-dbar-mc-gen:
+  o2-analysis-hf-task-correlation-d-dbar_mc-gen:
     <<: *taskddbar
     requires_mc: yes
 

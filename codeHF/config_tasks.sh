@@ -96,11 +96,11 @@ DOO2_TREE_CHIC=0    # hf-tree-creator-chic-to-jpsi-gamma
 DOO2_TREE_BPLUS=0   # hf-tree-creator-bplus-to-d0-pi
 # Correlations
 DOO2_CORR_D0D0BAR_DATA=0       # hf-correlator-d0-d0bar
-DOO2_CORR_D0D0BAR_MCREC=0      # hf-correlator-d0-d0bar-mc-rec
-DOO2_CORR_D0D0BAR_MCGEN=0      # hf-correlator-d0-d0bar-mc-gen
+DOO2_CORR_D0D0BAR_MCREC=0      # hf-correlator-d0-d0bar_mc-rec
+DOO2_CORR_D0D0BAR_MCGEN=0      # hf-correlator-d0-d0bar_mc-gen
 DOO2_CORR_DPLUSDMINUS_DATA=0   # hf-correlator-dplus-dminus
-DOO2_CORR_DPLUSDMINUS_MCREC=0  # hf-correlator-dplus-dminus-mc-rec
-DOO2_CORR_DPLUSDMINUS_MCGEN=0  # hf-correlator-dplus-dminus-mc-gen
+DOO2_CORR_DPLUSDMINUS_MCREC=0  # hf-correlator-dplus-dminus_mc-rec
+DOO2_CORR_DPLUSDMINUS_MCGEN=0  # hf-correlator-dplus-dminus_mc-gen
 DOO2_CORR_D0HADRON=0           # hf-correlator-d0-hadrons
 DOO2_CORR_DPLUSHADRON=0        # hf-correlator-dplus-hadrons
 DOO2_CORR_DSHADRON=0           # hf-correlator-ds-hadrons
@@ -443,11 +443,11 @@ function MakeScriptO2 {
   # Correlations
   WF_CORR=""
   [ $DOO2_CORR_D0D0BAR_DATA -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-d0-d0bar o2-analysis-hf-task-correlation-d-dbar"
-  [ $DOO2_CORR_D0D0BAR_MCREC -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-d0-d0bar-mc-rec o2-analysis-hf-task-correlation-d-dbar-mc-rec"
-  [ $DOO2_CORR_D0D0BAR_MCGEN -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-d0-d0bar-mc-gen o2-analysis-hf-task-correlation-d-dbar-mc-gen"
+  [ $DOO2_CORR_D0D0BAR_MCREC -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-d0-d0bar_mc-rec o2-analysis-hf-task-correlation-d-dbar_mc-rec"
+  [ $DOO2_CORR_D0D0BAR_MCGEN -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-d0-d0bar_mc-gen o2-analysis-hf-task-correlation-d-dbar_mc-gen"
   [ $DOO2_CORR_DPLUSDMINUS_DATA -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-dplus-dminus o2-analysis-hf-task-correlation-d-dbar"
-  [ $DOO2_CORR_DPLUSDMINUS_MCREC -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-dplus-dminus-mc-rec o2-analysis-hf-task-correlation-d-dbar-mc-rec"
-  [ $DOO2_CORR_DPLUSDMINUS_MCGEN -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-dplus-dminus-mc-gen o2-analysis-hf-task-correlation-d-dbar-mc-gen"
+  [ $DOO2_CORR_DPLUSDMINUS_MCREC -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-dplus-dminus_mc-rec o2-analysis-hf-task-correlation-d-dbar_mc-rec"
+  [ $DOO2_CORR_DPLUSDMINUS_MCGEN -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-dplus-dminus_mc-gen o2-analysis-hf-task-correlation-d-dbar_mc-gen"
   [ "$WF_CORR" ] && WORKFLOWS+=" $WF_CORR"
   [ $DOO2_CORR_D0HADRON -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-correlator-d0-hadrons"
   [ $DOO2_CORR_DPLUSHADRON -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-correlator-dplus-hadrons"
