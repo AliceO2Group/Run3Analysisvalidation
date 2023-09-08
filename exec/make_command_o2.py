@@ -100,9 +100,7 @@ def healthy_structure(dic_full: dict):
         if not isinstance(dic_wf_single, dict):
             msg_err("%s is not a dictionary." % wf)
             return False
-        if "activate" in dic_wf_single and not isinstance(
-            dic_wf_single["activate"], bool
-        ):
+        if "activate" in dic_wf_single and not isinstance(dic_wf_single["activate"], bool):
             msg_err('"activate" in workflow %s is not a boolean.' % wf)
             return False
     return True
@@ -140,23 +138,14 @@ def activate_workflow(wf: str, dic_wf: dict, mc=False, level=0, debug=False):
 def main():
     """Main function"""
     parser = argparse.ArgumentParser(
-        description="Generates full O2 command based on a YAML "
-        "database of workflows and options."
+        description="Generates full O2 command based on a YAML " "database of workflows and options."
     )
     parser.add_argument("database", help="database with workflows and options")
-    parser.add_argument(
-        "-w", "--workflows", type=str, help="explicitly requested workflows"
-    )
+    parser.add_argument("-w", "--workflows", type=str, help="explicitly requested workflows")
     parser.add_argument("--mc", action="store_true", help="Monte Carlo mode")
-    parser.add_argument(
-        "-t", "--tables", action="store_true", help="save table into trees"
-    )
-    parser.add_argument(
-        "-g", "--graph", action="store_true", help="make topology graph"
-    )
-    parser.add_argument(
-        "-d", "--debug", action="store_true", help="print debugging info"
-    )
+    parser.add_argument("-t", "--tables", action="store_true", help="save table into trees")
+    parser.add_argument("-g", "--graph", action="store_true", help="make topology graph")
+    parser.add_argument("-d", "--debug", action="store_true", help="print debugging info")
     args = parser.parse_args()
     path_file_database = args.database
     debug = args.debug
@@ -195,9 +184,7 @@ def main():
 
     # Get list of primary workflows to run.
     # already activated in the database
-    list_wf_activated = [
-        wf for wf in dic_wf if "activate" in dic_wf[wf] and dic_wf[wf]["activate"]
-    ]
+    list_wf_activated = [wf for wf in dic_wf if "activate" in dic_wf[wf] and dic_wf[wf]["activate"]]
     if debug and list_wf_activated:
         eprint("\nWorkflows activated in the database:")
         eprint("\n".join("  " + wf for wf in list_wf_activated))
@@ -238,15 +225,10 @@ def main():
                 if mc_mode and "mc" in tab_wf:
                     join_to_list(tab_wf["mc"], tables)
             else:
-                msg_fatal(
-                    '"tables" in %s must be str, list or dict, is %s'
-                    % (wf, type(tab_wf))
-                )
+                msg_fatal('"tables" in %s must be str, list or dict, is %s' % (wf, type(tab_wf)))
         str_before = "AOD/"
         str_after = "/0"
-        string_tables = ",".join(
-            str_before + t + ("" if "/" in t else str_after) for t in tables
-        )
+        string_tables = ",".join(str_before + t + ("" if "/" in t else str_after) for t in tables)
         if string_tables:
             opt_local += " --aod-writer-keep " + string_tables
 
@@ -281,10 +263,7 @@ def main():
                 if mc_mode and "mc" in opt_wf:
                     string_wf += " " + join_strings(opt_wf["mc"])
             else:
-                msg_fatal(
-                    '"options" in %s must be str, list or dict, is %s'
-                    % (wf, type(opt_wf))
-                )
+                msg_fatal('"options" in %s must be str, list or dict, is %s' % (wf, type(opt_wf)))
         if opt_local:
             string_wf += " " + opt_local
         command += "| \\\n" + string_wf + " "
@@ -321,9 +300,7 @@ def main():
             label_wf = label_wf.replace("-", "\\n")
             dot += '  %s [label="%s"]\n' % (node_wf, label_wf)
             if "dependencies" in dic_wf_single:
-                nodes_dep = join_strings(dic_wf_single["dependencies"]).replace(
-                    "-", "_"
-                )
+                nodes_dep = join_strings(dic_wf_single["dependencies"]).replace("-", "_")
                 dot += "  %s -> {%s}\n" % (node_wf, nodes_dep)
         dot += "}\n"
         try:
@@ -331,10 +308,7 @@ def main():
                 file_dot.write(dot)
         except IOError:
             msg_fatal("Failed to open file " + path_file_dot)
-        eprint(
-            "Produce graph with Graphviz: dot -T%s %s -o %s"
-            % (ext_graph, path_file_dot, path_file_graph)
-        )
+        eprint("Produce graph with Graphviz: dot -T%s %s -o %s" % (ext_graph, path_file_dot, path_file_graph))
 
 
 main()
