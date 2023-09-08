@@ -340,7 +340,7 @@ function MakeScriptO2 {
   SUFFIX_SKIM_MASK="_skimX" # suffix mask to be replaced in the workflow names
   SUFFIX_SKIM="" # the actual suffix to be used instead of the mask
   # Λc → K0S p cascade reconstruction
-  [[ $DOO2_CAND_CASC -eq 1 || $DOO2_SEL_LCK0SP -eq 1 || $DOO2_TASK_LCK0SP -eq 1 ]] && SUFFIX_SKIM+="_v0"
+  [[ $DOO2_CAND_CASC -eq 1 || $DOO2_SEL_LCK0SP -eq 1 || $DOO2_TASK_LCK0SP -eq 1 || $DOO2_TREE_LCK0SP -eq 1 ]] && SUFFIX_SKIM+="_v0"
 
   # Suffix to distinguish versions of the same workflow for different runs in the workflow database
   SUFFIX_RUN_MASK="_runX" # suffix mask to be replaced in the workflow names
