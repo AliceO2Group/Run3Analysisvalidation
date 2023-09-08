@@ -267,7 +267,7 @@ def main():
             string_wf = wf
         # Detect duplicate workflows.
         if string_wf + " " in command:
-            msg_err("Workflow %s is already present." % string_wf)
+            msg_warn("Workflow %s is already present." % string_wf)
         # Process options.
         if "options" in dic_wf_single:
             opt_wf = dic_wf_single["options"]
