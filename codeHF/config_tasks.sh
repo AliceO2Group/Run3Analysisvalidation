@@ -86,9 +86,9 @@ DOO2_TASK_LCK0SP=0  # hf-task-lc-to-k0s-p
 DOO2_TASK_XICC=0    # hf-task-xicc
 DOO2_TASK_B0=0      # hf-task-b0
 DOO2_TASK_BPLUS=0   # hf-task-bplus
-DOJETS=0            # je-jet-finder-hf
-DOJETMATCHINGHF=0   # je-jet-matching-hf
-DOJETSUBSTRUCTURE=0 # je-jet-substructure-hf
+DOO2_JET_FIND=0     # je-jet-finder-hf
+DOO2_JET_MATCH=0    # je-jet-matching-hf
+DOO2_JET_SUB=0      # je-jet-substructure-hf
 # Tree creators
 DOO2_TREE_D0=0      # hf-tree-creator-d0-to-k-pi
 DOO2_TREE_LC=0      # hf-tree-creator-lc-to-p-k-pi
@@ -97,7 +97,7 @@ DOO2_TREE_X=0       # hf-tree-creator-x-to-jpsi-pi-pi
 DOO2_TREE_XICC=0    # hf-tree-creator-xicc-to-p-k-pi-pi
 DOO2_TREE_CHIC=0    # hf-tree-creator-chic-to-jpsi-gamma
 DOO2_TREE_BPLUS=0   # hf-tree-creator-bplus-to-d0-pi
-DOO2_TREE_JETSUBSTRUCTURE=0   # jet-substructure-hf-output
+DOO2_TREE_JET_SUB=0 # jet-substructure-hf-output
 # Correlations
 DOO2_CORR_D0D0BAR_DATA=0       # hf-correlator-d0-d0bar
 DOO2_CORR_D0D0BAR_MCREC=0      # hf-correlator-d0-d0bar-mc-rec
@@ -395,15 +395,15 @@ function MakeScriptO2 {
   [ $DOO2_SEL_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-bplus-to-d0-pi"
   # User tasks
   [ $DOO2_TASK_D0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-d0"
-  if [ $DOJETS -eq 1 ]; then
+  if [ $DOO2_JET_FIND -eq 1 ]; then
     if [ "$INPUT_IS_MC" -eq 0 ]; then
       WORKFLOWS+=" o2-analysis-je-jet-finder-hf-data"
     else
       WORKFLOWS+=" o2-analysis-je-jet-finder-hf-mcd o2-analysis-je-jet-finder-hf-mcp"
     fi
   fi
-  [ $DOJETMATCHINGHF -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf-mcd o2-analysis-je-jet-finder-hf-mcp o2-analysis-je-jet-matching-hf"
-  if [ $DOJETSUBSTRUCTURE -eq 1 ]; then
+  [ $DOO2_JET_MATCH -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf-mcd o2-analysis-je-jet-finder-hf-mcp o2-analysis-je-jet-matching-hf"
+  if [ $DOO2_JET_SUB -eq 1 ]; then
     if [ "$INPUT_IS_MC" -eq 0 ]; then
       WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-data"
     else
@@ -444,7 +444,7 @@ function MakeScriptO2 {
   [ $DOO2_TREE_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-xicc-to-p-k-pi-pi"
   [ $DOO2_TREE_CHIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-chic-to-jpsi-gamma"
   [ $DOO2_TREE_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-bplus-to-d0-pi"
-  if [ $DOO2_TREE_JETSUBSTRUCTURE -eq 1 ]; then
+  if [ $DOO2_TREE_JET_SUB -eq 1 ]; then
     if [ "$INPUT_IS_MC" -eq 0 ]; then
       WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-output-data"
     else
@@ -491,7 +491,7 @@ EOF
 }
 
 function MakeScriptAli {
-  ALIEXEC="root -b -q -l \"$DIR_TASKS/RunHFTaskLocal.C(\\\"\$FileIn\\\", \\\"\$JSON\\\", $INPUT_IS_MC, $USEO2VERTEXER, $USEALIEVCUTS, $DOJETS, $DOJETMATCHINGHF, $DOJETSUBSTRUCTURE)\""
+  ALIEXEC="root -b -q -l \"$DIR_TASKS/RunHFTaskLocal.C(\\\"\$FileIn\\\", \\\"\$JSON\\\", $INPUT_IS_MC, $USEO2VERTEXER, $USEALIEVCUTS, $DOO2_JET_FIND, $DOO2_JET_MATCH, $DOO2_JET_SUB)\""
   cat << EOF > "$SCRIPT_ALI"
 #!/bin/bash
 FileIn="\$1"
@@ -514,14 +514,14 @@ function MakeScriptPostprocess {
     [ $DOO2_TASK_LC -eq 1 ] && { OPT_COMPARE+=" lc "; [ "$INPUT_IS_MC" -eq 1 ] && OPT_COMPARE+=" lc-mc-pt  lc-mc-prompt  lc-mc-nonprompt  lc-mc-eta  lc-mc-phi "; }
     [ $DOO2_TASK_XIC -eq 1 ] && OPT_COMPARE+=" xic "
     [ $DOO2_TASK_JPSI -eq 1 ] && OPT_COMPARE+=" jpsi "
-    if [ $DOJETS -eq 1 ]; then
+    if [ $DOO2_JET_FIND -eq 1 ]; then
       if [ "$INPUT_IS_MC" -eq 0 ]; then
         OPT_COMPARE+=" jets-data "
       else
         OPT_COMPARE+=" jets-mc "
       fi
     fi
-    if [ $DOJETSUBSTRUCTURE -eq 1 ]; then
+    if [ $DOO2_JET_SUB -eq 1 ]; then
       if [ "$INPUT_IS_MC" -eq 0 ]; then
         OPT_COMPARE+=" jets-substructure-data "
       else
