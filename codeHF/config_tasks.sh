@@ -108,8 +108,8 @@ DOO2_TASK_D0HADRON=0           # hf-task-correlation-d0-hadrons
 DOO2_TASK_FLOW=0               # hf-task-flow
 # Jets
 DOO2_JET_FIND=0     # je-jet-finder-d0
-DOO2_JET_MATCH=1    # je-jet-matching
-DOO2_JET_SUB=0      # je-jet-substructure-hf
+DOO2_JET_MATCH=0    # je-jet-matching
+DOO2_JET_SUB=1      # je-jet-substructure-hf
 DOO2_JET_SUB_OUT=0  # je-jet-substructure-hf-output
 # Converters
 DOO2_CONV_MC=0      # mc-converter
@@ -133,7 +133,7 @@ APPLYCUTS_XICC=0    # Apply Ξcc selection cuts.
 APPLYCUTS_B0=0      # Apply B0 selection cuts.
 APPLYCUTS_BPLUS=0   # Apply B+ selection cuts.
 
-SAVETREES=1         # Save O2 tables to trees.
+SAVETREES=0         # Save O2 tables to trees.
 USEO2VERTEXER=1     # Use the O2 vertexer in AliPhysics.
 USEALIEVCUTS=1      # Use AliEventCuts in AliPhysics (as used by conversion task)
 DORATIO=1           # Plot histogram ratios in comparison.
@@ -257,6 +257,23 @@ function AdjustJson {
     ReplaceString "\"processSameRun3\": \"true\"" "\"processSameRun3\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processSameRun2\": \"false\"" "\"processSameRun2\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
+
+  # jet-substructure...
+  if [ "$INPUT_IS_MC" -eq 1 ]; then
+    ReplaceString "\"processChargedJetsHF_data\": \"true\"" "\"processChargedJetsHF_data\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processDummy_data\": \"false\"" "\"processDummy_data\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  else
+    ReplaceString "\"processChargedJetsHF_mcd\": \"true\"" "\"processChargedJetsHF_mcd\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processChargedJetsHFMCP_mcp\": \"true\"" "\"processChargedJetsHFMCP_mcp\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processDummy_mcd\": \"false\"" "\"processDummy_mcd\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processDummy_mcp\": \"false\"" "\"processDummy_mcp\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  fi
+  ReplaceString "\"processChargedJetsHF_data\"" "\"processChargedJetsHF\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  ReplaceString "\"processChargedJetsHF_mcd\"" "\"processChargedJetsHF\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  ReplaceString "\"processChargedJetsHFMCP_mcp\"" "\"processChargedJetsHFMCP\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  ReplaceString "\"processDummy_data\"" "\"processDummy\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  ReplaceString "\"processDummy_mcd\"" "\"processDummy\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  ReplaceString "\"processDummy_mcp\"" "\"processDummy\"" "$JSON" || ErrExit "Failed to edit $JSON."
 
   # Enable D0 selection.
   if [ $APPLYCUTS_D0 -eq 1 ]; then

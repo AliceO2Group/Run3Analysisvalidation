@@ -2116,23 +2116,23 @@
     "jet-substructure-D0-data": {
         "zCut": "0.1",
         "beta": "0",
-        "processDummy": "true",
-        "processChargedJetsHF": "false",
+        "processDummy_data": "false",
+        "processChargedJetsHF_data": "true",
         "processChargedJetsHFMCP": "false"
     },
     "jet-substructure-D0-mcd": {
         "zCut": "0.1",
         "beta": "0",
-        "processDummy": "false",
-        "processChargedJetsHF": "true",
+        "processDummy_mcd": "false",
+        "processChargedJetsHF_mcd": "true",
         "processChargedJetsHFMCP": "false"
     },
     "jet-substructure-D0-mcp": {
         "zCut": "0.1",
         "beta": "0",
-        "processDummy": "false",
+        "processDummy_mcp": "false",
         "processChargedJetsHF": "false",
-        "processChargedJetsHFMCP": "true"
+        "processChargedJetsHFMCP_mcp": "true"
     },
     "hf-task-d0": {
         "selectionFlagD0": "0",
