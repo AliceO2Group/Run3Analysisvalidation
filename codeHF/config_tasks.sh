@@ -107,8 +107,8 @@ DOO2_CORR_DSHADRON=0           # hf-correlator-ds-hadrons
 DOO2_TASK_D0HADRON=0           # hf-task-correlation-d0-hadrons
 DOO2_TASK_FLOW=0               # hf-task-flow
 # Jets
-DOO2_JET_FIND=1     # je-jet-finder-d0
-DOO2_JET_MATCH=0    # je-jet-matching-hf
+DOO2_JET_FIND=0     # je-jet-finder-d0
+DOO2_JET_MATCH=1    # je-jet-matching
 DOO2_JET_SUB=0      # je-jet-substructure-hf
 DOO2_JET_SUB_TREE=0 # je-jet-substructure-hf-output
 # Converters
@@ -440,7 +440,7 @@ function MakeScriptO2 {
     [ $DOO2_JET_SUB -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-data"
     [ $DOO2_JET_SUB_TREE -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-output-data"
   fi
-  [ $DOO2_JET_MATCH -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-d0-mcd-charged o2-analysis-je-jet-finder-d0-mcp-charged o2-analysis-je-jet-matching-hf"
+  [ $DOO2_JET_MATCH -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-matching"
   # Converters
   [ $DOO2_CONV_MC -eq 1 ] && WORKFLOWS+=" o2-analysis-mc-converter"
   [ $DOO2_CONV_FDD -eq 1 ] && WORKFLOWS+=" o2-analysis-fdd-converter"

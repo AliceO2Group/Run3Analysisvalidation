@@ -2104,6 +2104,15 @@
         "processChargedJetsMCD": "false",
         "processChargedJetsMCP": "true"
     },
+    "jet-matching-d0-ch": {
+        "doMatchingGeo": "true",
+        "doMatchingPt": "true",
+        "doMatchingHf": "true",
+        "maxMatchingDistance": "0.4",
+        "minPtFraction": "0",
+        "processDummy": "false",
+        "processJets": "true"
+    },
     "jet-substructure-hf-data": {
         "jetPtMin": "0.0",
         "zCut": "0.1",

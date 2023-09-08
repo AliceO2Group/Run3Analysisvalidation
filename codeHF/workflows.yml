@@ -281,7 +281,7 @@ workflows:
     <<: *jethf
     requires_mc: yes
 
-  o2-analysis-je-jet-matching-hf:
+  o2-analysis-je-jet-matching:
     requires_mc: yes
     dependencies: [o2-analysis-je-jet-finder-d0-mcd-charged, o2-analysis-je-jet-finder-d0-mcp-charged]
 
