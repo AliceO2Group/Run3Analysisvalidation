@@ -2811,6 +2811,36 @@
         "processChargedJetsHF": "false",
         "processChargedJetsHFMCP_mcp": "true"
     },
+    "jet-substructure-output-D0-data": {
+        "jetPtMin": "0",
+        "jetRadii": {
+            "values": [
+                "0.4"
+            ]
+        },
+        "processDummy_data": "false",
+        "processOutput_data": "true"
+    },
+    "jet-substructure-output-D0-mcd": {
+        "jetPtMin": "0",
+        "jetRadii": {
+            "values": [
+                "0.4"
+            ]
+        },
+        "processDummy_mcd": "false",
+        "processOutput_mcd": "true"
+    },
+    "jet-substructure-output-D0-mcp": {
+        "jetPtMin": "0",
+        "jetRadii": {
+            "values": [
+                "0.4"
+            ]
+        },
+        "processDummy_mcp": "false",
+        "processOutput_mcp": "true"
+    },
     "collision-converter": {
         "doNotSwap": "false",
         "debug": "false",

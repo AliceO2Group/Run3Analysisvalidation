@@ -109,8 +109,8 @@ DOO2_TASK_FLOW=0               # hf-task-flow
 # Jets
 DOO2_JET_FIND=0     # je-jet-finder-d0
 DOO2_JET_MATCH=0    # je-jet-matching
-DOO2_JET_SUB=1      # je-jet-substructure-hf
-DOO2_JET_SUB_OUT=0  # je-jet-substructure-hf-output
+DOO2_JET_SUB=0      # je-jet-substructure-hf
+DOO2_JET_SUB_OUT=1  # je-jet-substructure-hf-output
 # Converters
 DOO2_CONV_MC=0      # mc-converter
 DOO2_CONV_FDD=0     # fdd-converter
@@ -261,16 +261,22 @@ function AdjustJson {
   # jet-substructure...
   if [ "$INPUT_IS_MC" -eq 1 ]; then
     ReplaceString "\"processChargedJetsHF_data\": \"true\"" "\"processChargedJetsHF_data\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processOutput_data\": \"true\"" "\"processOutput_data\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processDummy_data\": \"false\"" "\"processDummy_data\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
   else
     ReplaceString "\"processChargedJetsHF_mcd\": \"true\"" "\"processChargedJetsHF_mcd\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processChargedJetsHFMCP_mcp\": \"true\"" "\"processChargedJetsHFMCP_mcp\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processOutput_mcd\": \"true\"" "\"processOutput_mcd\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processOutput_mcp\": \"true\"" "\"processOutput_mcp\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processDummy_mcd\": \"false\"" "\"processDummy_mcd\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processDummy_mcp\": \"false\"" "\"processDummy_mcp\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
   ReplaceString "\"processChargedJetsHF_data\"" "\"processChargedJetsHF\"" "$JSON" || ErrExit "Failed to edit $JSON."
   ReplaceString "\"processChargedJetsHF_mcd\"" "\"processChargedJetsHF\"" "$JSON" || ErrExit "Failed to edit $JSON."
   ReplaceString "\"processChargedJetsHFMCP_mcp\"" "\"processChargedJetsHFMCP\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  ReplaceString "\"processOutput_data\"" "\"processOutput\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  ReplaceString "\"processOutput_mcd\"" "\"processOutput\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  ReplaceString "\"processOutput_mcp\"" "\"processOutput\"" "$JSON" || ErrExit "Failed to edit $JSON."
   ReplaceString "\"processDummy_data\"" "\"processDummy\"" "$JSON" || ErrExit "Failed to edit $JSON."
   ReplaceString "\"processDummy_mcd\"" "\"processDummy\"" "$JSON" || ErrExit "Failed to edit $JSON."
   ReplaceString "\"processDummy_mcp\"" "\"processDummy\"" "$JSON" || ErrExit "Failed to edit $JSON."
