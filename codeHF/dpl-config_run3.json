@@ -2113,35 +2113,26 @@
         "processDummy": "false",
         "processJets": "true"
     },
-    "jet-substructure-hf-data": {
-        "jetPtMin": "0.0",
+    "jet-substructure-D0-data": {
         "zCut": "0.1",
-        "beta": "0.0",
-        "jetR": "0.4",
-        "doConstSub": "false",
-        "processData": "true",
-        "processMCD": "false",
-        "processMCP": "false"
+        "beta": "0",
+        "processDummy": "true",
+        "processChargedJetsHF": "false",
+        "processChargedJetsHFMCP": "false"
     },
-    "jet-substructure-hf-mcd": {
-        "jetPtMin": "0.0",
+    "jet-substructure-D0-mcd": {
         "zCut": "0.1",
-        "beta": "0.0",
-        "jetR": "0.4",
-        "doConstSub": "false",
-        "processData": "false",
-        "processMCD": "true",
-        "processMCP": "false"
+        "beta": "0",
+        "processDummy": "false",
+        "processChargedJetsHF": "true",
+        "processChargedJetsHFMCP": "false"
     },
-    "jet-substructure-hf-mcp": {
-        "jetPtMin": "0.0",
+    "jet-substructure-D0-mcp": {
         "zCut": "0.1",
-        "beta": "0.0",
-        "jetR": "0.4",
-        "doConstSub": "false",
-        "processData": "false",
-        "processMCD": "false",
-        "processMCP": "true"
+        "beta": "0",
+        "processDummy": "false",
+        "processChargedJetsHF": "false",
+        "processChargedJetsHFMCP": "true"
     },
     "hf-task-d0": {
         "selectionFlagD0": "0",

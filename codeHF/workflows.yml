@@ -288,18 +288,15 @@ workflows:
   o2-analysis-je-jet-substructure-hf-data:
     executable: o2-analysis-je-jet-substructure-hf
     dependencies: [o2-analysis-hf-candidate-selector-d0, o2-analysis-je-jet-finder-d0-data-charged]
-    options: "--hfjetsubstructureMode data"
 
   o2-analysis-je-jet-substructure-hf-mcd:
     executable: o2-analysis-je-jet-substructure-hf
     dependencies: [o2-analysis-hf-candidate-selector-d0, o2-analysis-je-jet-finder-d0-mcd-charged]
-    options: "--hfjetsubstructureMode mcd"
     requires_mc: yes
 
   o2-analysis-je-jet-substructure-hf-mcp:
     executable: o2-analysis-je-jet-substructure-hf
     dependencies: [o2-analysis-hf-candidate-selector-d0, o2-analysis-je-jet-finder-d0-mcp-charged]
-    options: "--hfjetsubstructureMode mcp"
     requires_mc: yes
 
   # Tree creators
