@@ -47,9 +47,9 @@ DOO2_PID_TOF=0      # pid-tof-full/alice3-pid-tof
 DOO2_PID_TOF_QA=0   # pid-tof-qa-mc
 DOO2_PID_BAYES=0    # pid-bayes
 # Vertexing
-DOO2_SKIM=0         # hf-track-index-skim-creator
-DOO2_CAND_2PRONG=0  # hf-candidate-creator-2prong
-DOO2_CAND_3PRONG=0  # hf-candidate-creator-3prong
+DOO2_SKIM=1         # hf-track-index-skim-creator
+DOO2_CAND_2PRONG=1  # hf-candidate-creator-2prong
+DOO2_CAND_3PRONG=1  # hf-candidate-creator-3prong
 DOO2_CAND_CASC=0    # hf-candidate-creator-cascade
 DOO2_CAND_LB=0      # hf-candidate-creator-lb
 DOO2_CAND_X=0       # hf-candidate-creator-x
@@ -73,10 +73,10 @@ DOO2_SEL_XICC=0     # hf-candidate-selector-xicc-to-p-k-pi-pi
 DOO2_SEL_B0=0       # hf-candidate-selector-b0-to-d-pi
 DOO2_SEL_BPLUS=0    # hf-candidate-selector-bplus-to-d0-pi
 # User tasks
-DOO2_TASK_D0=0      # hf-task-d0
+DOO2_TASK_D0=1      # hf-task-d0
 DOO2_TASK_DS=0      # hf-task-ds
 DOO2_TASK_DPLUS=0   # hf-task-dplus
-DOO2_TASK_LC=0      # hf-task-lc
+DOO2_TASK_LC=1      # hf-task-lc
 DOO2_TASK_LB=0      # hf-task-lb
 DOO2_TASK_XIC=0     # hf-task-xic
 DOO2_TASK_JPSI=0    # hf-task-jpsi
@@ -108,7 +108,7 @@ DOO2_TASK_D0HADRON=0           # hf-task-correlation-d0-hadrons
 DOO2_TASK_FLOW=0               # hf-task-flow
 # Jets
 DOO2_JET_FIND=0     # je-jet-finder-d0
-DOO2_JET_FIND_QA=1  # je-jet-finder-hf-qa
+DOO2_JET_FIND_QA=0  # je-jet-finder-hf-qa
 DOO2_JET_MATCH=0    # je-jet-matching
 DOO2_JET_SUB=0      # je-jet-substructure-hf
 DOO2_JET_SUB_OUT=0  # je-jet-substructure-hf-output
