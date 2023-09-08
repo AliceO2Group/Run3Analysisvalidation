@@ -4,9 +4,9 @@
 # Input specification for runtest.sh
 # (Modifies input parameters.)
 
-INPUT_CASE=3            # Input case
+INPUT_CASE=2            # Input case
 
-NFILESMAX=50            # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
+NFILESMAX=1             # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
 
 # Number of input files per job (Automatic optimisation on if < 1.)
 NFILESPERJOB_CONVERT=0  # Conversion

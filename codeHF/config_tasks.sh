@@ -87,8 +87,8 @@ DOO2_TASK_XICC=0    # hf-task-xicc
 DOO2_TASK_B0=0      # hf-task-b0
 DOO2_TASK_BPLUS=0   # hf-task-bplus
 DOJETS=0            # je-jet-finder-hf
-DOJETMATCHINGHF=0   # je-jet-matching-hf (needs jets)
-DOJETSUBSTRUCTURE=0   # je-jet-substructure-hf (needs jets)
+DOJETMATCHINGHF=0   # je-jet-matching-hf
+DOJETSUBSTRUCTURE=0 # je-jet-substructure-hf
 # Tree creators
 DOO2_TREE_D0=0      # hf-tree-creator-d0-to-k-pi
 DOO2_TREE_LC=0      # hf-tree-creator-lc-to-p-k-pi
@@ -97,7 +97,7 @@ DOO2_TREE_X=0       # hf-tree-creator-x-to-jpsi-pi-pi
 DOO2_TREE_XICC=0    # hf-tree-creator-xicc-to-p-k-pi-pi
 DOO2_TREE_CHIC=0    # hf-tree-creator-chic-to-jpsi-gamma
 DOO2_TREE_BPLUS=0   # hf-tree-creator-bplus-to-d0-pi
-DOO2_TREE_JETSUBSTRUCTURE=0   # jet-substructure-hf-output (needs jets and jet substructure)
+DOO2_TREE_JETSUBSTRUCTURE=0   # jet-substructure-hf-output
 # Correlations
 DOO2_CORR_D0D0BAR_DATA=0       # hf-correlator-d0-d0bar
 DOO2_CORR_D0D0BAR_MCREC=0      # hf-correlator-d0-d0bar-mc-rec
@@ -395,18 +395,16 @@ function MakeScriptO2 {
   [ $DOO2_SEL_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-bplus-to-d0-pi"
   # User tasks
   [ $DOO2_TASK_D0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-d0"
-  #[ $DOJETS -eq 1 ] && { [ "$ISMC" -eq 0 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf-data"; [ "$ISMC" -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf-mcd o2-analysis-je-jet-finder-hf-mcp"; }
   if [ $DOJETS -eq 1 ]; then
-    if [ "$ISMC" -eq 0 ]; then
+    if [ "$INPUT_IS_MC" -eq 0 ]; then
       WORKFLOWS+=" o2-analysis-je-jet-finder-hf-data"
     else
       WORKFLOWS+=" o2-analysis-je-jet-finder-hf-mcd o2-analysis-je-jet-finder-hf-mcp"
     fi
   fi
   [ $DOJETMATCHINGHF -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf-mcd o2-analysis-je-jet-finder-hf-mcp o2-analysis-je-jet-matching-hf"
-  #[ $DOJETSUBSTRUCTURE -eq 1 ] && { [ "$ISMC" -eq 0 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-data"; [ "$ISMC" -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-mcd o2-analysis-je-jet-substructure-hf-mcp"; }
   if [ $DOJETSUBSTRUCTURE -eq 1 ]; then
-    if [ "$ISMC" -eq 0 ]; then
+    if [ "$INPUT_IS_MC" -eq 0 ]; then
       WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-data"
     else
       WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-mcd o2-analysis-je-jet-substructure-hf-mcp"
@@ -446,9 +444,8 @@ function MakeScriptO2 {
   [ $DOO2_TREE_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-xicc-to-p-k-pi-pi"
   [ $DOO2_TREE_CHIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-chic-to-jpsi-gamma"
   [ $DOO2_TREE_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-bplus-to-d0-pi"
-  #[ $DOO2_TREE_JETSUBSTRUCTURE -eq 1 ] && { [ "$ISMC" -eq 0 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-output-data"; [ "$ISMC" -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-output-mcd o2-analysis-je-jet-substructure-hf-output-mcp"; }
   if [ $DOO2_TREE_JETSUBSTRUCTURE -eq 1 ]; then
-    if [ "$ISMC" -eq 0 ]; then
+    if [ "$INPUT_IS_MC" -eq 0 ]; then
       WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-output-data"
     else
       WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-output-mcd o2-analysis-je-jet-substructure-hf-output-mcp"
@@ -517,17 +514,15 @@ function MakeScriptPostprocess {
     [ $DOO2_TASK_LC -eq 1 ] && { OPT_COMPARE+=" lc "; [ "$INPUT_IS_MC" -eq 1 ] && OPT_COMPARE+=" lc-mc-pt  lc-mc-prompt  lc-mc-nonprompt  lc-mc-eta  lc-mc-phi "; }
     [ $DOO2_TASK_XIC -eq 1 ] && OPT_COMPARE+=" xic "
     [ $DOO2_TASK_JPSI -eq 1 ] && OPT_COMPARE+=" jpsi "
-    #[ $DOJETS -eq 1 ] && { [ "$ISMC" -eq 0 ] && OPT_COMPARE+=" jets-data "; [ "$ISMC" -eq 1 ] && OPT_COMPARE+=" jets-mc "; }
     if [ $DOJETS -eq 1 ]; then
-      if [ "$ISMC" -eq 0 ]; then
+      if [ "$INPUT_IS_MC" -eq 0 ]; then
         OPT_COMPARE+=" jets-data "
       else
         OPT_COMPARE+=" jets-mc "
       fi
     fi
-    #[ $DOJETSUBSTRUCTURE -eq 1 ] && { [ "$ISMC" -eq 0 ] && OPT_COMPARE+=" jets-substructure-data "; [ "$ISMC" -eq 1 ] && OPT_COMPARE+=" jets-substructure-mc "; }
     if [ $DOJETSUBSTRUCTURE -eq 1 ]; then
-      if [ "$ISMC" -eq 0 ]; then
+      if [ "$INPUT_IS_MC" -eq 0 ]; then
         OPT_COMPARE+=" jets-substructure-data "
       else
         OPT_COMPARE+=" jets-substructure-mc "
