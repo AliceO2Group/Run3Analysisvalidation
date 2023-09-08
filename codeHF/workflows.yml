@@ -245,31 +245,6 @@ workflows:
       mc: "--doMC"
     dependencies: o2-analysis-hf-candidate-selector-chic-to-jpsi-gamma
 
-  o2-analysis-hf-task-correlation-d-dbar: &taskddbar
-    executable: o2-analysis-hf-task-correlation-d-dbar
-
-  o2-analysis-hf-task-correlation-d-dbar-mc-rec:
-    <<: *taskddbar
-    requires_mc: yes
-
-  o2-analysis-hf-task-correlation-d-dbar-mc-gen:
-    <<: *taskddbar
-    requires_mc: yes
-
-  o2-analysis-hf-task-correlation-d0-hadrons:
-    dependencies: o2-analysis-hf-correlator-d0-hadrons
-
-  o2-analysis-hf-task-flow:
-    dependencies:
-      - o2-analysis-hf-candidate-selector-d0
-      - o2-analysis-multiplicity-table_runX
-
-  o2-analysis-hf-correlator-dplus-hadrons:
-    dependencies: o2-analysis-hf-candidate-selector-dplus-to-pi-k-pi
-
-  o2-analysis-hf-correlator-ds-hadrons:
-    dependencies: o2-analysis-hf-candidate-selector-ds-to-k-k-pi
-
   # Tree creators
 
   o2-analysis-hf-tree-creator-d0-to-k-pi:
@@ -342,6 +317,31 @@ workflows:
   o2-analysis-hf-correlator-d0-hadrons:
     dependencies: o2-analysis-hf-candidate-selector-d0
     tables: [DHADRONPAIR, DHADRONRECOINFO]
+
+  o2-analysis-hf-correlator-dplus-hadrons:
+    dependencies: o2-analysis-hf-candidate-selector-dplus-to-pi-k-pi
+
+  o2-analysis-hf-correlator-ds-hadrons:
+    dependencies: o2-analysis-hf-candidate-selector-ds-to-k-k-pi
+
+  o2-analysis-hf-task-correlation-d-dbar: &taskddbar
+    executable: o2-analysis-hf-task-correlation-d-dbar
+
+  o2-analysis-hf-task-correlation-d-dbar-mc-rec:
+    <<: *taskddbar
+    requires_mc: yes
+
+  o2-analysis-hf-task-correlation-d-dbar-mc-gen:
+    <<: *taskddbar
+    requires_mc: yes
+
+  o2-analysis-hf-task-correlation-d0-hadrons:
+    dependencies: o2-analysis-hf-correlator-d0-hadrons
+
+  o2-analysis-hf-task-flow:
+    dependencies:
+      - o2-analysis-hf-candidate-selector-d0
+      - o2-analysis-multiplicity-table_runX
 
   # Jets
 
