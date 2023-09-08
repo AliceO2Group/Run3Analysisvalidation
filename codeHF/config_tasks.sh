@@ -31,7 +31,7 @@ DOPOSTPROCESS=1     # Run output postprocessing. (Comparison plots. Requires DOA
 
 # O2 database
 DATABASE_O2="workflows.yml"
-MAKE_GRAPH=0        # Make topology graph.
+MAKE_GRAPH=1        # Make topology graph.
 
 # Activation of O2 workflows
 # Trigger selection
@@ -47,9 +47,9 @@ DOO2_PID_TOF=0      # pid-tof-full/alice3-pid-tof
 DOO2_PID_TOF_QA=0   # pid-tof-qa-mc
 DOO2_PID_BAYES=0    # pid-bayes
 # Vertexing
-DOO2_SKIM=1         # hf-track-index-skim-creator
-DOO2_CAND_2PRONG=1  # hf-candidate-creator-2prong
-DOO2_CAND_3PRONG=1  # hf-candidate-creator-3prong
+DOO2_SKIM=0         # hf-track-index-skim-creator
+DOO2_CAND_2PRONG=0  # hf-candidate-creator-2prong
+DOO2_CAND_3PRONG=0  # hf-candidate-creator-3prong
 DOO2_CAND_CASC=0    # hf-candidate-creator-cascade
 DOO2_CAND_LB=0      # hf-candidate-creator-lb
 DOO2_CAND_X=0       # hf-candidate-creator-x
@@ -73,10 +73,10 @@ DOO2_SEL_XICC=0     # hf-candidate-selector-xicc-to-p-k-pi-pi
 DOO2_SEL_B0=0       # hf-candidate-selector-b0-to-d-pi
 DOO2_SEL_BPLUS=0    # hf-candidate-selector-bplus-to-d0-pi
 # User tasks
-DOO2_TASK_D0=1      # hf-task-d0
+DOO2_TASK_D0=0      # hf-task-d0
 DOO2_TASK_DS=0      # hf-task-ds
 DOO2_TASK_DPLUS=0   # hf-task-dplus
-DOO2_TASK_LC=1      # hf-task-lc
+DOO2_TASK_LC=0      # hf-task-lc
 DOO2_TASK_LB=0      # hf-task-lb
 DOO2_TASK_XIC=0     # hf-task-xic
 DOO2_TASK_JPSI=0    # hf-task-jpsi
@@ -107,7 +107,7 @@ DOO2_CORR_DSHADRON=0           # hf-correlator-ds-hadrons
 DOO2_TASK_D0HADRON=0           # hf-task-correlation-d0-hadrons
 DOO2_TASK_FLOW=0               # hf-task-flow
 # Jets
-DOO2_JET_FIND=0     # je-jet-finder-hf
+DOO2_JET_FIND=1     # je-jet-finder-d0
 DOO2_JET_MATCH=0    # je-jet-matching-hf
 DOO2_JET_SUB=0      # je-jet-substructure-hf
 DOO2_JET_SUB_TREE=0 # je-jet-substructure-hf-output
@@ -432,15 +432,15 @@ function MakeScriptO2 {
   [ $DOO2_TREE_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-bplus-to-d0-pi"
   # Jets
   if [ "$INPUT_IS_MC" -eq 1 ]; then
-    [ $DOO2_JET_FIND -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf-mcd o2-analysis-je-jet-finder-hf-mcp"
+    [ $DOO2_JET_FIND -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-d0-mcd-charged o2-analysis-je-jet-finder-d0-mcp-charged"
     [ $DOO2_JET_SUB -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-mcd o2-analysis-je-jet-substructure-hf-mcp"
     [ $DOO2_JET_SUB_TREE -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-output-mcd o2-analysis-je-jet-substructure-hf-output-mcp"
   else
-    [ $DOO2_JET_FIND -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf-data"
+    [ $DOO2_JET_FIND -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-d0-data-charged"
     [ $DOO2_JET_SUB -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-data"
     [ $DOO2_JET_SUB_TREE -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-output-data"
   fi
-  [ $DOO2_JET_MATCH -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf-mcd o2-analysis-je-jet-finder-hf-mcp o2-analysis-je-jet-matching-hf"
+  [ $DOO2_JET_MATCH -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-d0-mcd-charged o2-analysis-je-jet-finder-d0-mcp-charged o2-analysis-je-jet-matching-hf"
   # Converters
   [ $DOO2_CONV_MC -eq 1 ] && WORKFLOWS+=" o2-analysis-mc-converter"
   [ $DOO2_CONV_FDD -eq 1 ] && WORKFLOWS+=" o2-analysis-fdd-converter"

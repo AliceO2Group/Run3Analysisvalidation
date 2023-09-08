@@ -270,39 +270,35 @@ workflows:
   o2-analysis-hf-correlator-ds-hadrons:
     dependencies: o2-analysis-hf-candidate-selector-ds-to-k-k-pi
 
-  o2-analysis-je-jet-finder-hf-data: &jethf
-    options: "--hfjetMode data"
-    executable: o2-analysis-je-jet-finder-hf
+  o2-analysis-je-jet-finder-d0-data-charged: &jethf
     dependencies: [o2-analysis-event-selection, o2-analysis-hf-candidate-selector-d0]
 
-  o2-analysis-je-jet-finder-hf-mcp:
+  o2-analysis-je-jet-finder-d0-mcp-charged:
     <<: *jethf
-    options: "--hfjetMode mcp"
     requires_mc: yes
 
-  o2-analysis-je-jet-finder-hf-mcd:
+  o2-analysis-je-jet-finder-d0-mcd-charged:
     <<: *jethf
-    options: "--hfjetMode mcd"
     requires_mc: yes
 
   o2-analysis-je-jet-matching-hf:
     requires_mc: yes
-    dependencies: [o2-analysis-je-jet-finder-hf-mcd, o2-analysis-je-jet-finder-hf-mcp]
+    dependencies: [o2-analysis-je-jet-finder-d0-mcd-charged, o2-analysis-je-jet-finder-d0-mcp-charged]
 
   o2-analysis-je-jet-substructure-hf-data:
     executable: o2-analysis-je-jet-substructure-hf
-    dependencies: [o2-analysis-hf-candidate-selector-d0, o2-analysis-je-jet-finder-hf-data]
+    dependencies: [o2-analysis-hf-candidate-selector-d0, o2-analysis-je-jet-finder-d0-data-charged]
     options: "--hfjetsubstructureMode data"
 
   o2-analysis-je-jet-substructure-hf-mcd:
     executable: o2-analysis-je-jet-substructure-hf
-    dependencies: [o2-analysis-hf-candidate-selector-d0, o2-analysis-je-jet-finder-hf-mcd]
+    dependencies: [o2-analysis-hf-candidate-selector-d0, o2-analysis-je-jet-finder-d0-mcd-charged]
     options: "--hfjetsubstructureMode mcd"
     requires_mc: yes
 
   o2-analysis-je-jet-substructure-hf-mcp:
     executable: o2-analysis-je-jet-substructure-hf
-    dependencies: [o2-analysis-hf-candidate-selector-d0, o2-analysis-je-jet-finder-hf-mcp]
+    dependencies: [o2-analysis-hf-candidate-selector-d0, o2-analysis-je-jet-finder-d0-mcp-charged]
     options: "--hfjetsubstructureMode mcp"
     requires_mc: yes
 
@@ -347,20 +343,20 @@ workflows:
 
   o2-analysis-je-jet-substructure-hf-output-data:
     executable: o2-analysis-je-jet-substructure-hf-output
-    dependencies: [o2-analysis-hf-task-d0, o2-analysis-je-jet-finder-hf-data, o2-analysis-je-jet-substructure-hf-data]
+    dependencies: [o2-analysis-hf-task-d0, o2-analysis-je-jet-finder-d0-data-charged, o2-analysis-je-jet-substructure-hf-data]
     options: "--hfjetsubstructureoutputMode data"
     tables: [JETSUBOutData]
 
   o2-analysis-je-jet-substructure-hf-output-mcd:
     executable: o2-analysis-je-jet-substructure-hf-output
-    dependencies: [o2-analysis-hf-task-d0, o2-analysis-je-jet-finder-hf-mcd, o2-analysis-je-jet-substructure-hf-mcd]
+    dependencies: [o2-analysis-hf-task-d0, o2-analysis-je-jet-finder-d0-mcd-charged, o2-analysis-je-jet-substructure-hf-mcd]
     options: "--hfjetsubstructureoutputMode mcd"
     requires_mc: yes
     tables: [JETSUBOutMCD]
 
   o2-analysis-je-jet-substructure-hf-output-mcp:
     executable: o2-analysis-je-jet-substructure-hf-output
-    dependencies: [o2-analysis-hf-task-d0, o2-analysis-je-jet-finder-hf-mcp, o2-analysis-je-jet-substructure-hf-mcp]
+    dependencies: [o2-analysis-hf-task-d0, o2-analysis-je-jet-finder-d0-mcp-charged, o2-analysis-je-jet-substructure-hf-mcp]
     options: "--hfjetsubstructureoutputMode mcp"
     requires_mc: yes
     tables: [JETSUBOutMCP]
