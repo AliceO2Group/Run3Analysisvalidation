@@ -245,31 +245,6 @@ workflows:
       mc: "--doMC"
     dependencies: o2-analysis-hf-candidate-selector-chic-to-jpsi-gamma
 
-  o2-analysis-hf-task-correlation-d-dbar: &taskddbar
-    executable: o2-analysis-hf-task-correlation-d-dbar
-
-  o2-analysis-hf-task-correlation-d-dbar-mc-rec:
-    <<: *taskddbar
-    requires_mc: yes
-
-  o2-analysis-hf-task-correlation-d-dbar-mc-gen:
-    <<: *taskddbar
-    requires_mc: yes
-
-  o2-analysis-hf-task-correlation-d0-hadrons:
-    dependencies: o2-analysis-hf-correlator-d0-hadrons
-
-  o2-analysis-hf-task-flow:
-    dependencies:
-      - o2-analysis-hf-candidate-selector-d0
-      - o2-analysis-multiplicity-table_runX
-
-  o2-analysis-hf-correlator-dplus-hadrons:
-    dependencies: o2-analysis-hf-candidate-selector-dplus-to-pi-k-pi
-
-  o2-analysis-hf-correlator-ds-hadrons:
-    dependencies: o2-analysis-hf-candidate-selector-ds-to-k-k-pi
-
   # Tree creators
 
   o2-analysis-hf-tree-creator-d0-to-k-pi:
@@ -316,11 +291,11 @@ workflows:
     dependencies: o2-analysis-hf-candidate-selector-d0
     tables: [DDBARPAIR, DDBARRECOINFO]
 
-  o2-analysis-hf-correlator-d0-d0bar-mc-rec:
+  o2-analysis-hf-correlator-d0-d0bar_mc-rec:
     <<: *d0d0barcorr
     options: "--doMCRec"
 
-  o2-analysis-hf-correlator-d0-d0bar-mc-gen:
+  o2-analysis-hf-correlator-d0-d0bar_mc-gen:
     <<: *d0d0barcorr
     options: "--doMCGen"
     tables: DDBARPAIR
@@ -330,11 +305,11 @@ workflows:
     dependencies: o2-analysis-hf-candidate-selector-dplus-to-pi-k-pi
     tables: [DDBARPAIR, DDBARRECOINFO]
 
-  o2-analysis-hf-correlator-dplus-dminus-mc-rec:
+  o2-analysis-hf-correlator-dplus-dminus_mc-rec:
     <<: *dplusdminus
     requires_mc: yes
 
-  o2-analysis-hf-correlator-dplus-dminus-mc-gen:
+  o2-analysis-hf-correlator-dplus-dminus_mc-gen:
     <<: *dplusdminus
     requires_mc: yes
     tables: DDBARPAIR
@@ -342,6 +317,95 @@ workflows:
   o2-analysis-hf-correlator-d0-hadrons:
     dependencies: o2-analysis-hf-candidate-selector-d0
     tables: [DHADRONPAIR, DHADRONRECOINFO]
+
+  o2-analysis-hf-correlator-dplus-hadrons:
+    dependencies: o2-analysis-hf-candidate-selector-dplus-to-pi-k-pi
+
+  o2-analysis-hf-correlator-ds-hadrons:
+    dependencies: o2-analysis-hf-candidate-selector-ds-to-k-k-pi
+
+  o2-analysis-hf-task-correlation-d-dbar: &taskddbar
+    executable: o2-analysis-hf-task-correlation-d-dbar
+
+  o2-analysis-hf-task-correlation-d-dbar_mc-rec:
+    <<: *taskddbar
+    requires_mc: yes
+
+  o2-analysis-hf-task-correlation-d-dbar_mc-gen:
+    <<: *taskddbar
+    requires_mc: yes
+
+  o2-analysis-hf-task-correlation-d0-hadrons:
+    dependencies: o2-analysis-hf-correlator-d0-hadrons
+
+  o2-analysis-hf-task-flow:
+    dependencies:
+      - o2-analysis-hf-candidate-selector-d0
+      - o2-analysis-multiplicity-table_runX
+
+  # Jets
+
+  o2-analysis-je-jet-finder-d0-data-charged: &jethf
+    dependencies: [o2-analysis-event-selection, o2-analysis-hf-candidate-selector-d0]
+    tables: [D0JET, D0JETCONSTS, D0JETCONSTSUB]
+
+  o2-analysis-je-jet-finder-d0-mcd-charged:
+    <<: *jethf
+    requires_mc: yes
+    tables: [D0DJET, D0DJETCONSTS, D0DJETCONSTSUB]
+
+  o2-analysis-je-jet-finder-d0-mcp-charged:
+    <<: *jethf
+    requires_mc: yes
+    tables: [D0PJET, D0PJETCONSTS, D0PJETCONSTSUB]
+
+  o2-analysis-je-jet-finder-hf-qa_data:
+    executable: o2-analysis-je-jet-finder-hf-qa
+    dependencies: o2-analysis-je-jet-finder-d0-data-charged
+
+  o2-analysis-je-jet-finder-hf-qa_mc:
+    executable: o2-analysis-je-jet-finder-hf-qa
+    dependencies: [o2-analysis-je-jet-finder-d0-mcd-charged, o2-analysis-je-jet-finder-d0-mcp-charged]
+    requires_mc: yes
+
+  o2-analysis-je-jet-matching:
+    dependencies: [o2-analysis-je-jet-finder-d0-mcd-charged, o2-analysis-je-jet-finder-d0-mcp-charged]
+    requires_mc: yes
+    tables: [D0JETMP2D, D0JETMD2P]
+
+  o2-analysis-je-jet-substructure-hf_data:
+    executable: o2-analysis-je-jet-substructure-hf
+    dependencies: [o2-analysis-hf-candidate-selector-d0, o2-analysis-je-jet-finder-d0-data-charged]
+    tables: D0SS
+
+  o2-analysis-je-jet-substructure-hf_mcd:
+    executable: o2-analysis-je-jet-substructure-hf
+    dependencies: [o2-analysis-hf-candidate-selector-d0, o2-analysis-je-jet-finder-d0-mcd-charged]
+    requires_mc: yes
+    tables: D0MCDSS
+
+  o2-analysis-je-jet-substructure-hf_mcp:
+    executable: o2-analysis-je-jet-substructure-hf
+    dependencies: [o2-analysis-hf-candidate-selector-d0, o2-analysis-je-jet-finder-d0-mcp-charged]
+    requires_mc: yes
+    tables: D0MCPSS
+
+  o2-analysis-je-jet-substructure-hf-output_data:
+    executable: o2-analysis-je-jet-substructure-hf-output
+    dependencies: o2-analysis-je-jet-substructure-hf_data
+    tables: [D0O, D0SSO]
+
+  o2-analysis-je-jet-substructure-hf-output_mcd:
+    executable: o2-analysis-je-jet-substructure-hf-output
+    dependencies: o2-analysis-je-jet-substructure-hf_mcd
+    requires_mc: yes
+    tables: [D0MCDO, D0MCDSSO]
+
+  o2-analysis-je-jet-substructure-hf-output_mcp:
+    executable: o2-analysis-je-jet-substructure-hf-output
+    dependencies: o2-analysis-je-jet-substructure-hf_mcp
+    requires_mc: yes
+    tables: [D0MCPO, D0MCPSSO]
 
   # QA
 

@@ -96,22 +96,28 @@ DOO2_TREE_CHIC=0    # hf-tree-creator-chic-to-jpsi-gamma
 DOO2_TREE_BPLUS=0   # hf-tree-creator-bplus-to-d0-pi
 # Correlations
 DOO2_CORR_D0D0BAR_DATA=0       # hf-correlator-d0-d0bar
-DOO2_CORR_D0D0BAR_MCREC=0      # hf-correlator-d0-d0bar-mc-rec
-DOO2_CORR_D0D0BAR_MCGEN=0      # hf-correlator-d0-d0bar-mc-gen
+DOO2_CORR_D0D0BAR_MCREC=0      # hf-correlator-d0-d0bar_mc-rec
+DOO2_CORR_D0D0BAR_MCGEN=0      # hf-correlator-d0-d0bar_mc-gen
 DOO2_CORR_DPLUSDMINUS_DATA=0   # hf-correlator-dplus-dminus
-DOO2_CORR_DPLUSDMINUS_MCREC=0  # hf-correlator-dplus-dminus-mc-rec
-DOO2_CORR_DPLUSDMINUS_MCGEN=0  # hf-correlator-dplus-dminus-mc-gen
+DOO2_CORR_DPLUSDMINUS_MCREC=0  # hf-correlator-dplus-dminus_mc-rec
+DOO2_CORR_DPLUSDMINUS_MCGEN=0  # hf-correlator-dplus-dminus_mc-gen
 DOO2_CORR_D0HADRON=0           # hf-correlator-d0-hadrons
 DOO2_CORR_DPLUSHADRON=0        # hf-correlator-dplus-hadrons
 DOO2_CORR_DSHADRON=0           # hf-correlator-ds-hadrons
 DOO2_TASK_D0HADRON=0           # hf-task-correlation-d0-hadrons
 DOO2_TASK_FLOW=0               # hf-task-flow
+# Jets
+DOO2_JET_FIND=0     # je-jet-finder-d0
+DOO2_JET_FIND_QA=0  # je-jet-finder-hf-qa
+DOO2_JET_MATCH=0    # je-jet-matching
+DOO2_JET_SUB=0      # je-jet-substructure-hf
+DOO2_JET_SUB_OUT=0  # je-jet-substructure-hf-output
 # Converters
-DOO2_CONV_MC=0       # mc-converter
-DOO2_CONV_FDD=0      # fdd-converter
-DOO2_CONV_COLL=0     # collision-converter
-DOO2_CONV_ZDC=1      # zdc-converter
-DOO2_CONV_BC=1       # bc-converter
+DOO2_CONV_MC=0      # mc-converter
+DOO2_CONV_FDD=0     # fdd-converter
+DOO2_CONV_COLL=0    # collision-converter
+DOO2_CONV_ZDC=1     # zdc-converter
+DOO2_CONV_BC=1      # bc-converter
 
 # Selection cuts
 APPLYCUTS_D0=1      # Apply D0 selection cuts.
@@ -252,6 +258,37 @@ function AdjustJson {
     ReplaceString "\"processSameRun3\": \"true\"" "\"processSameRun3\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processSameRun2\": \"false\"" "\"processSameRun2\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
+
+  # jet-finder-charged-d0-qa
+  if [ "$INPUT_IS_MC" -eq 1 ]; then
+    ReplaceString "\"processJetsData\": \"true\"" "\"processJetsData\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  else
+    ReplaceString "\"processJetsMCD\": \"true\"" "\"processJetsMCD\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processJetsMCP\": \"true\"" "\"processJetsMCP\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  fi
+
+  # jet-substructure...
+  if [ "$INPUT_IS_MC" -eq 1 ]; then
+    ReplaceString "\"processChargedJetsHF_data\": \"true\"" "\"processChargedJetsHF_data\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processOutput_data\": \"true\"" "\"processOutput_data\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processDummy_data\": \"false\"" "\"processDummy_data\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  else
+    ReplaceString "\"processChargedJetsHF_mcd\": \"true\"" "\"processChargedJetsHF_mcd\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processChargedJetsHFMCP_mcp\": \"true\"" "\"processChargedJetsHFMCP_mcp\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processOutput_mcd\": \"true\"" "\"processOutput_mcd\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processOutput_mcp\": \"true\"" "\"processOutput_mcp\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processDummy_mcd\": \"false\"" "\"processDummy_mcd\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processDummy_mcp\": \"false\"" "\"processDummy_mcp\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  fi
+  ReplaceString "\"processChargedJetsHF_data\"" "\"processChargedJetsHF\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  ReplaceString "\"processChargedJetsHF_mcd\"" "\"processChargedJetsHF\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  ReplaceString "\"processChargedJetsHFMCP_mcp\"" "\"processChargedJetsHFMCP\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  ReplaceString "\"processOutput_data\"" "\"processOutput\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  ReplaceString "\"processOutput_mcd\"" "\"processOutput\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  ReplaceString "\"processOutput_mcp\"" "\"processOutput\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  ReplaceString "\"processDummy_data\"" "\"processDummy\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  ReplaceString "\"processDummy_mcd\"" "\"processDummy\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  ReplaceString "\"processDummy_mcp\"" "\"processDummy\"" "$JSON" || ErrExit "Failed to edit $JSON."
 
   # Enable D0 selection.
   if [ $APPLYCUTS_D0 -eq 1 ]; then
@@ -406,11 +443,11 @@ function MakeScriptO2 {
   # Correlations
   WF_CORR=""
   [ $DOO2_CORR_D0D0BAR_DATA -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-d0-d0bar o2-analysis-hf-task-correlation-d-dbar"
-  [ $DOO2_CORR_D0D0BAR_MCREC -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-d0-d0bar-mc-rec o2-analysis-hf-task-correlation-d-dbar-mc-rec"
-  [ $DOO2_CORR_D0D0BAR_MCGEN -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-d0-d0bar-mc-gen o2-analysis-hf-task-correlation-d-dbar-mc-gen"
+  [ $DOO2_CORR_D0D0BAR_MCREC -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-d0-d0bar_mc-rec o2-analysis-hf-task-correlation-d-dbar_mc-rec"
+  [ $DOO2_CORR_D0D0BAR_MCGEN -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-d0-d0bar_mc-gen o2-analysis-hf-task-correlation-d-dbar_mc-gen"
   [ $DOO2_CORR_DPLUSDMINUS_DATA -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-dplus-dminus o2-analysis-hf-task-correlation-d-dbar"
-  [ $DOO2_CORR_DPLUSDMINUS_MCREC -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-dplus-dminus-mc-rec o2-analysis-hf-task-correlation-d-dbar-mc-rec"
-  [ $DOO2_CORR_DPLUSDMINUS_MCGEN -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-dplus-dminus-mc-gen o2-analysis-hf-task-correlation-d-dbar-mc-gen"
+  [ $DOO2_CORR_DPLUSDMINUS_MCREC -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-dplus-dminus_mc-rec o2-analysis-hf-task-correlation-d-dbar_mc-rec"
+  [ $DOO2_CORR_DPLUSDMINUS_MCGEN -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-dplus-dminus_mc-gen o2-analysis-hf-task-correlation-d-dbar_mc-gen"
   [ "$WF_CORR" ] && WORKFLOWS+=" $WF_CORR"
   [ $DOO2_CORR_D0HADRON -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-correlator-d0-hadrons"
   [ $DOO2_CORR_DPLUSHADRON -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-correlator-dplus-hadrons"
@@ -425,6 +462,19 @@ function MakeScriptO2 {
   [ $DOO2_TREE_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-xicc-to-p-k-pi-pi"
   [ $DOO2_TREE_CHIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-chic-to-jpsi-gamma"
   [ $DOO2_TREE_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-bplus-to-d0-pi"
+  # Jets
+  if [ "$INPUT_IS_MC" -eq 1 ]; then
+    [ $DOO2_JET_FIND -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-d0-mcd-charged o2-analysis-je-jet-finder-d0-mcp-charged"
+    [ $DOO2_JET_FIND_QA -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf-qa_mc"
+    [ $DOO2_JET_SUB -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf_mcd o2-analysis-je-jet-substructure-hf_mcp"
+    [ $DOO2_JET_SUB_OUT -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-output_mcd o2-analysis-je-jet-substructure-hf-output_mcp"
+  else
+    [ $DOO2_JET_FIND -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-d0-data-charged"
+    [ $DOO2_JET_FIND_QA -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-hf-qa_data"
+    [ $DOO2_JET_SUB -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf_data"
+    [ $DOO2_JET_SUB_OUT -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-output_data"
+  fi
+  [ $DOO2_JET_MATCH -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-matching"
   # Converters
   [ $DOO2_CONV_MC -eq 1 ] && WORKFLOWS+=" o2-analysis-mc-converter"
   [ $DOO2_CONV_FDD -eq 1 ] && WORKFLOWS+=" o2-analysis-fdd-converter"
@@ -465,7 +515,7 @@ EOF
 }
 
 function MakeScriptAli {
-  ALIEXEC="root -b -q -l \"$DIR_TASKS/RunHFTaskLocal.C(\\\"\$FileIn\\\", \\\"\$JSON\\\", $INPUT_IS_MC, $USEO2VERTEXER, $USEALIEVCUTS)\""
+  ALIEXEC="root -b -q -l \"$DIR_TASKS/RunHFTaskLocal.C(\\\"\$FileIn\\\", \\\"\$JSON\\\", $INPUT_IS_MC, $USEO2VERTEXER, $USEALIEVCUTS, $DOO2_JET_FIND, $DOO2_JET_MATCH, $DOO2_JET_SUB)\""
   cat << EOF > "$SCRIPT_ALI"
 #!/bin/bash
 FileIn="\$1"
@@ -488,6 +538,10 @@ function MakeScriptPostprocess {
     [ $DOO2_TASK_LC -eq 1 ] && { OPT_COMPARE+=" lc "; [ "$INPUT_IS_MC" -eq 1 ] && OPT_COMPARE+=" lc-mc-pt  lc-mc-prompt  lc-mc-nonprompt  lc-mc-eta  lc-mc-phi "; }
     [ $DOO2_TASK_XIC -eq 1 ] && OPT_COMPARE+=" xic "
     [ $DOO2_TASK_JPSI -eq 1 ] && OPT_COMPARE+=" jpsi "
+    # Jets
+    [ "$INPUT_IS_MC" -eq 1 ] && SUFFIX_JET="mc" || SUFFIX_JET="data"
+    [ $DOO2_JET_FIND -eq 1 ] && OPT_COMPARE+=" jets-${SUFFIX_JET} "
+    [ $DOO2_JET_SUB -eq 1 ] && OPT_COMPARE+=" jets-substructure-${SUFFIX_JET} "
     [ "$OPT_COMPARE" ] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/Compare.C(\\\"\$FileO2\\\", \\\"\$FileAli\\\", \\\"$OPT_COMPARE\\\", $DORATIO)\""
   }
   # Plot particle reconstruction efficiencies.

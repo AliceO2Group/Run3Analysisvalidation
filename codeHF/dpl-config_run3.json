@@ -2582,7 +2582,7 @@
     },
     "hf-dplus-selection": {
         "selectionFlagDplus": "1",
-        "yCandMax": "0.800000012",
+        "yCandMax": "0.8",
         "ptCandMin": "1",
         "processDplusSelectionData": "true",
         "processDplusSelectionMcRec": "false",
@@ -2591,12 +2591,12 @@
     "hf-correlator-dplus-hadrons": {
         "selectionFlagDplus": "1",
         "applyEfficiency": "1",
-        "yCandMax": "0.800000012",
-        "etaTrackMax": "0.800000012",
+        "yCandMax": "0.8",
+        "etaTrackMax": "0.8",
         "dcaXYTrackMax": "1",
         "dcaZTrackMax": "1",
         "ptCandMin": "1",
-        "ptTrackMin": "0.300000012",
+        "ptTrackMin": "0.3",
         "ptTrackMax": "50",
         "multMin": "0",
         "multMax": "10000",
@@ -2639,6 +2639,236 @@
         "processDataMixedEvent": "false",
         "processMcRecMixedEvent": "false",
         "processMcGenMixedEvent": "false"
+    },
+    "jet-finder-d0-data-charged": {
+        "vertexZCut": "10",
+        "trackPtMin": "0.15",
+        "trackPtMax": "1000",
+        "trackEtaMin": "-0.9",
+        "trackEtaMax": "0.9",
+        "trackPhiMin": "-999",
+        "trackPhiMax": "999",
+        "trackSelections": "globalTracks",
+        "eventSelections": "sel8",
+        "particleSelections": "PhysicalPrimary",
+        "clusterDefinition": "kV3Default",
+        "clusterEtaMin": "-0.7",
+        "clusterEtaMax": "0.7",
+        "clusterPhiMin": "-999",
+        "clusterPhiMax": "999",
+        "candPtMin": "0",
+        "candPtMax": "100",
+        "candYMin": "-0.8",
+        "candYMax": "0.8",
+        "rejectBackgroundMCCandidates": "true",
+        "selectionFlagD0": "1",
+        "selectionFlagD0bar": "1",
+        "selectionFlagLcToPKPi": "1",
+        "selectionFlagLcToPiPK": "1",
+        "selectionFlagBplus": "1",
+        "jetRadius": {
+            "values": [
+                "0.4"
+            ]
+        },
+        "jetPtMin": "0",
+        "jetPtMax": "1000",
+        "jetEtaMin": "-99",
+        "jetEtaMax": "99",
+        "jetTypeParticleLevel": "1",
+        "jetAlgorithm": "2",
+        "jetRecombScheme": "0",
+        "jetGhostArea": "0.005",
+        "ghostRepeat": "1",
+        "DoRhoAreaSub": "false",
+        "DoConstSub": "false",
+        "processDummy": "false",
+        "processChargedJetsData": "true",
+        "processChargedJetsMCD": "false",
+        "processChargedJetsMCP": "false"
+    },
+    "jet-finder-d0-mcd-charged": {
+        "vertexZCut": "10",
+        "trackPtMin": "0.15",
+        "trackPtMax": "1000",
+        "trackEtaMin": "-0.9",
+        "trackEtaMax": "0.9",
+        "trackPhiMin": "-999",
+        "trackPhiMax": "999",
+        "trackSelections": "globalTracks",
+        "eventSelections": "sel8",
+        "particleSelections": "PhysicalPrimary",
+        "clusterDefinition": "kV3Default",
+        "clusterEtaMin": "-0.7",
+        "clusterEtaMax": "0.7",
+        "clusterPhiMin": "-999",
+        "clusterPhiMax": "999",
+        "candPtMin": "0",
+        "candPtMax": "100",
+        "candYMin": "-0.8",
+        "candYMax": "0.8",
+        "rejectBackgroundMCCandidates": "true",
+        "selectionFlagD0": "1",
+        "selectionFlagD0bar": "1",
+        "selectionFlagLcToPKPi": "1",
+        "selectionFlagLcToPiPK": "1",
+        "selectionFlagBplus": "1",
+        "jetRadius": {
+            "values": [
+                "0.4"
+            ]
+        },
+        "jetPtMin": "0",
+        "jetPtMax": "1000",
+        "jetEtaMin": "-99",
+        "jetEtaMax": "99",
+        "jetTypeParticleLevel": "1",
+        "jetAlgorithm": "2",
+        "jetRecombScheme": "0",
+        "jetGhostArea": "0.005",
+        "ghostRepeat": "1",
+        "DoRhoAreaSub": "false",
+        "DoConstSub": "false",
+        "processDummy": "false",
+        "processChargedJetsData": "false",
+        "processChargedJetsMCD": "true",
+        "processChargedJetsMCP": "false"
+    },
+    "jet-finder-d0-mcp-charged": {
+        "vertexZCut": "10",
+        "trackPtMin": "0.15",
+        "trackPtMax": "1000",
+        "trackEtaMin": "-0.9",
+        "trackEtaMax": "0.9",
+        "trackPhiMin": "-999",
+        "trackPhiMax": "999",
+        "trackSelections": "globalTracks",
+        "eventSelections": "sel8",
+        "particleSelections": "PhysicalPrimary",
+        "clusterDefinition": "kV3Default",
+        "clusterEtaMin": "-0.7",
+        "clusterEtaMax": "0.7",
+        "clusterPhiMin": "-999",
+        "clusterPhiMax": "999",
+        "candPtMin": "0",
+        "candPtMax": "100",
+        "candYMin": "-0.8",
+        "candYMax": "0.8",
+        "rejectBackgroundMCCandidates": "true",
+        "selectionFlagD0": "1",
+        "selectionFlagD0bar": "1",
+        "selectionFlagLcToPKPi": "1",
+        "selectionFlagLcToPiPK": "1",
+        "selectionFlagBplus": "1",
+        "jetRadius": {
+            "values": [
+                "0.4"
+            ]
+        },
+        "jetPtMin": "0",
+        "jetPtMax": "1000",
+        "jetEtaMin": "-99",
+        "jetEtaMax": "99",
+        "jetTypeParticleLevel": "1",
+        "jetAlgorithm": "2",
+        "jetRecombScheme": "0",
+        "jetGhostArea": "0.005",
+        "ghostRepeat": "1",
+        "DoRhoAreaSub": "false",
+        "DoConstSub": "false",
+        "processDummy": "false",
+        "processChargedJetsData": "false",
+        "processChargedJetsMCD": "false",
+        "processChargedJetsMCP": "true"
+    },
+    "jet-finder-charged-d0-qa": {
+        "selectedJetsRadius": "0.4",
+        "vertexZCut": "10",
+        "jetRadii": {
+            "values": [
+                "0.4"
+            ]
+        },
+        "trackEtaMin": "-0.9",
+        "trackEtaMax": "0.9",
+        "trackPtMin": "0.15",
+        "trackPtMax": "100",
+        "trackSelections": "globalTracks",
+        "selectionFlagD0": "1",
+        "selectionFlagD0bar": "1",
+        "selectionFlagLcToPKPi": "1",
+        "selectionFlagLcToPiPK": "1",
+        "selectionFlagBplus": "1",
+        "processDummy": "false",
+        "processJetsData": "true",
+        "processJetsMCD": "true",
+        "processJetsMCDWeighted": "false",
+        "processJetsMCP": "true",
+        "processJetsMCPWeighted": "false",
+        "processJetsMCPMCDMatched": "false",
+        "processJetsMCPMCDMatchedWeighted": "false",
+        "processMCCollisionsWeighted": "false",
+        "processTriggeredData": "false"
+    },
+    "jet-matching-d0-ch": {
+        "doMatchingGeo": "true",
+        "doMatchingPt": "true",
+        "doMatchingHf": "true",
+        "maxMatchingDistance": "0.4",
+        "minPtFraction": "0",
+        "processDummy": "false",
+        "processJets": "true"
+    },
+    "jet-substructure-D0-data": {
+        "zCut": "0.1",
+        "beta": "0",
+        "processDummy_data": "false",
+        "processChargedJetsHF_data": "true",
+        "processChargedJetsHFMCP": "false"
+    },
+    "jet-substructure-D0-mcd": {
+        "zCut": "0.1",
+        "beta": "0",
+        "processDummy_mcd": "false",
+        "processChargedJetsHF_mcd": "true",
+        "processChargedJetsHFMCP": "false"
+    },
+    "jet-substructure-D0-mcp": {
+        "zCut": "0.1",
+        "beta": "0",
+        "processDummy_mcp": "false",
+        "processChargedJetsHF": "false",
+        "processChargedJetsHFMCP_mcp": "true"
+    },
+    "jet-substructure-output-D0-data": {
+        "jetPtMin": "0",
+        "jetRadii": {
+            "values": [
+                "0.4"
+            ]
+        },
+        "processDummy_data": "false",
+        "processOutput_data": "true"
+    },
+    "jet-substructure-output-D0-mcd": {
+        "jetPtMin": "0",
+        "jetRadii": {
+            "values": [
+                "0.4"
+            ]
+        },
+        "processDummy_mcd": "false",
+        "processOutput_mcd": "true"
+    },
+    "jet-substructure-output-D0-mcp": {
+        "jetPtMin": "0",
+        "jetRadii": {
+            "values": [
+                "0.4"
+            ]
+        },
+        "processDummy_mcp": "false",
+        "processOutput_mcp": "true"
     },
     "collision-converter": {
         "doNotSwap": "false",
