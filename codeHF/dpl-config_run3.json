@@ -480,8 +480,10 @@
         "ccdbPathLut": "GLO/Param/MatLUT",
         "ccdbPathGrp": "GLO/GRP/GRP",
         "ccdbPathGrpMag": "GLO/Config/GRPMagField",
-        "processPvRefit": "false",
-        "processNoPvRefit": "true"
+        "processPvRefitWithDCAFitterN": "false",
+        "processNoPvRefitWithDCAFitterN": "true",
+        "processPvRefitWithKFParticle": "false",
+        "processNoPvRefitWithKFParticle": "false"
     },
     "hf-candidate-creator-2prong-expressions": {
         "processMc": "true"
@@ -951,7 +953,9 @@
                 [ "0.4", "0.030", "1", "0.7", "0.7", "0.1", "0.1", "1000.e-5", "0.85", "0", "0", "10", "10", "0.06" ],
                 [ "0.4", "0.030", "1", "0.6", "0.6", "0.1", "0.1", "1000.e-5", "0.80", "0", "0", "10", "10", "0.06" ]
             ]
-        }
+        },
+        "processWithDCAFitterN": "true",
+        "processWithKFParticle": "false"
     },
     "hf-candidate-selector-dplus-to-pi-k-pi": {
         "ptCandMin": "0",
@@ -2002,7 +2006,10 @@
                 "100"
             ]
         },
-        "processMc": "true"
+        "processWithDCAFitterN": "true",
+        "processWithKFParticle": "false",
+        "processMcWithDCAFitterN": "false",
+        "processMcWithKFParticle": "false"
     },
     "hf-task-dplus": {
         "selectionFlagDplus": "0",
@@ -2301,8 +2308,14 @@
         "checkAmbiguousTracksWithHfEventsOnly": "false"
     },
     "hf-tree-creator-d0-to-k-pi": {
-        "processData": "true",
-        "processMc": "true"
+        "processDataWithDCAFitterN": "true",
+        "processDataWithKFParticle": "false",
+        "processMcWithDCAFitterOnlySig": "false",
+        "processMcWithDCAFitterOnlyBkg": "false",
+        "processMcWithDCAFitterAll": "false",
+        "processMcWithKFParticleOnlySig": "false",
+        "processMcWithKFParticleOnlyBkg": "false",
+        "processMcWithKFParticleAll": "false"
     },
     "hf-tree-creator-lc-to-p-k-pi": {
         "downSampleBkgFactor": "1",
