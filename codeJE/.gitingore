@@ -1,0 +1,8 @@
+*.png
+runtest.sh
+utils_plot.h
+*.log
+*.root
+output_ali/
+output_conversion/
+output_o2/
