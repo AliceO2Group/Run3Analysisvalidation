@@ -11,7 +11,7 @@ R__ADD_INCLUDE_PATH($ALICE_PHYSICS)
 TChain* CreateLocalChain(const char* txtfile);
 
 Long64_t RunJetTaskLocal(TString txtfile = "./list_ali.txt",
-                        TString jsonfilename = "dpl-config-old.json",
+                        TString jsonfilename = "dpl-config_std.json",
                         Bool_t isMC = kFALSE,
                         Bool_t useO2Vertexer = kFALSE,
                         Bool_t useAliEventCuts = kFALSE
