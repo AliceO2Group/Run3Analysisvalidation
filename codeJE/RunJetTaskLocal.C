@@ -11,7 +11,7 @@ R__ADD_INCLUDE_PATH($ALICE_PHYSICS)
 TChain* CreateLocalChain(const char* txtfile);
 
 Long64_t RunJetTaskLocal(TString txtfile = "./list_ali.txt",
-                        TString jsonfilename = "dpl-config_std.json",
+                        TString jsonfilename = "dpl-config-old.json",
                         Bool_t isMC = kFALSE
                        )
 {
@@ -41,7 +41,7 @@ Long64_t RunJetTaskLocal(TString txtfile = "./list_ali.txt",
   //  esdH->SetNeedField(kTRUE);
   mgr->SetInputEventHandler(esdH);
 
-  AliMCEventHandler* handler = NULL; 
+  AliMCEventHandler* handler = NULL;
    if(isMC){
       handler = new AliMCEventHandler;
       handler->SetReadTR(kFALSE);
@@ -56,9 +56,14 @@ Long64_t RunJetTaskLocal(TString txtfile = "./list_ali.txt",
   AliPhysicsSelectionTask* physSelTask = reinterpret_cast<AliPhysicsSelectionTask*>(gInterpreter->ProcessLine(Form(".x %s(%d)", gSystem->ExpandPathName("$ALICE_PHYSICS/OADB/macros/AddTaskPhysicsSelection.C"), isMC)));
 
   AliAnalysisTaskEmcalJetValidation *taskJet = reinterpret_cast<AliAnalysisTaskEmcalJetValidation*>(gInterpreter->ProcessLine(Form(".x %s(\"\",\"%s\",%d)", gSystem->ExpandPathName("$ALICE_PHYSICS/PWGJE/EMCALJetTasks/macros/AddTaskEmcalJetValidation.C"), jsonfilename.Data(), isMC)));
-
+  if (useAliEventCuts) {
+    taskJet->SetUseAliEventCuts(useAliEventCuts);
+  }
+  if (useO2Vertexer) {
+    taskJet->SetUseO2Vertexer();
+  }
 //AliAnalysisTaskHFSimpleVertices* tasktr3 = reinterpret_cast<AliAnalysisTaskHFSimpleVertices*>(gInterpreter->ProcessLine(Form(".x %s(\"\",\"%s\",%d)", gSystem->ExpandPathName("$ALICE_PHYSICS/PWGHF/vertexingHF/macros/AddTaskHFSimpleVertices.C"), jsonfilename.Data(), isMC)));
- 
+
   mgr->InitAnalysis();
   mgr->PrintStatus();
   return mgr->StartAnalysis("local", chainESD);
