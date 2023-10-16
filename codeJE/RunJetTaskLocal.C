@@ -12,8 +12,10 @@ TChain* CreateLocalChain(const char* txtfile);
 
 Long64_t RunJetTaskLocal(TString txtfile = "./list_ali.txt",
                         TString jsonfilename = "dpl-config-old.json",
-                        Bool_t isMC = kFALSE
-                       )
+                        Bool_t isMC = kFALSE,
+                        Bool_t useO2Vertexer = kFALSE,
+                        Bool_t useAliEventCuts = kFALSE
+                        )
 {
   // Load common libraries
   gSystem->Load("libCore.so");
