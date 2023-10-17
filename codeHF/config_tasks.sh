@@ -224,7 +224,6 @@ function AdjustJson {
     ReplaceString "\"processNoCascades\": \"true\"" "\"processNoCascades\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
-
   # timestamp-task
   if [[ "$INPUT_IS_MC" -eq 1 && "$INPUT_RUN" -eq 2 ]]; then
     ReplaceString "\"isRun2MC\": \"false\"" "\"isRun2MC\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
