@@ -2326,7 +2326,9 @@
         "isSignal": "1"
     },
     "hf-tree-creator-lc-to-k0s-p": {
+        "fillCandidateLiteTable": "false",
         "downSampleBkgFactor": "1",
+        "ptMaxForDownSample": "24",
         "processMc": "true",
         "processData": "false"
     },
