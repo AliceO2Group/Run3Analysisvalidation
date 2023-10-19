@@ -61,9 +61,9 @@ Long64_t RunJetTaskLocal(TString txtfile = "./list_ali.txt",
   if (useAliEventCuts) {
     taskJet->SetUseAliEventCuts(useAliEventCuts);
   }
-  if (useO2Vertexer) {
-    taskJet->SetUseO2Vertexer();
-  }
+  // if (useO2Vertexer) {
+  //   taskJet->SetUseO2Vertexer();
+  // }
 //AliAnalysisTaskHFSimpleVertices* tasktr3 = reinterpret_cast<AliAnalysisTaskHFSimpleVertices*>(gInterpreter->ProcessLine(Form(".x %s(\"\",\"%s\",%d)", gSystem->ExpandPathName("$ALICE_PHYSICS/PWGHF/vertexingHF/macros/AddTaskHFSimpleVertices.C"), jsonfilename.Data(), isMC)));
 
   mgr->InitAnalysis();

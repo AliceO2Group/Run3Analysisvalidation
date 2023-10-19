@@ -45,7 +45,7 @@ DOO2_TASK_JETFINDER=1   # jet-finder
 DOO2_TASK_JETQA=1   # jetqa
 
 SAVETREES=0         # Save O2 tables to trees.
-USEO2VERTEXER=1     # Use the O2 vertexer in AliPhysics.
+USEO2VERTEXER=0     # Use the O2 vertexer in AliPhysics.
 USEALIEVCUTS=1      # Use AliEventCuts in AliPhysics (as used by conversion task)
 DORATIO=1           # Plot histogram ratios in comparison.
 
@@ -184,7 +184,7 @@ EOF
 
 function MakeScriptAli {
   #ALIEXEC="root -b -q -l \"$DIR_TASKS/RunHFTaskLocal.C(\\\"\$FileIn\\\", \\\"\$JSON\\\", $ISMC, $USEO2VERTEXER, $USEALIEVCUTS)\""
-  ALIEXEC="root -b -q -l \"$DIR_TASKS/RunJetTaskLocal.C(\\\"\$FileIn\\\", \\\"\$JSON\\\", $ISMC)\""
+  ALIEXEC="root -b -q -l \"$DIR_TASKS/RunJetTaskLocal.C(\\\"\$FileIn\\\", \\\"\$JSON\\\", $ISMC, $USEO2VERTEXER, $USEALIEVCUTS)\""
   cat << EOF > "$SCRIPT_ALI"
 #!/bin/bash
 FileIn="\$1"
@@ -196,7 +196,8 @@ EOF
 function MakeScriptPostprocess {
   POSTEXEC="echo Postprocessing"
   # Compare AliPhysics and O2 histograms.
-  [[ $DOALI -eq 1 && $DOO2 -eq 1 ]] && {
+  #[[ $DOALI -eq 1 && $DOO2 -eq 1 ]] && {
+   [[ $DOPOSTPROCESS -eq 1 ]] && {
     OPT_COMPARE=""
     [ $DOO2_TASK_JETQA -eq 1 ] && OPT_COMPARE+=" jets "
     [ "$OPT_COMPARE" ] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/Compare.C(\\\"\$FileO2\\\", \\\"\$FileAli\\\", \\\"$OPT_COMPARE\\\", $DORATIO)\""

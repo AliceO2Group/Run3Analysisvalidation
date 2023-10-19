@@ -48,8 +48,6 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun2 = "
   AddHistogram(vecHisJets, "#it{p}_{T,track} (GeV/#it{c}",  "jetTrackPt",     "jet-validation-track-collision-qa/selectedTrackPt",        1,      1,          0);   //
   AddHistogram(vecHisJets, "#varphi_{track}",               "jetTrackPhi",    "jet-validation-track-collision-qa/selectedTrackPhi",       1,      0,          0);
   AddHistogram(vecHisJets, "#eta_{track}",                  "jetTrackEta",    "jet-validation-track-collision-qa/selectedTrackEta",       1,      0,          0);
-  //AddHistogram(vecHisJets, "primary vtx Z (cm)",            "Events Vertex Distribution", "jet-validation-track-collision-qa/collisionVtxZ", 1,   1,          0);
-
 
 
   // vector of specifications of vectors: name, VecSpecHis, pads X, pads Y
@@ -178,12 +176,7 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun2 = "
         xmax = 0.9;
         rebin = 8;
       }
-      // if (std::string(hRun2->GetName()) == "Events Vertex Distribution"){
-      //   xmin = -20;
-      //   xmax = 20;
-      //   rebin = 8;
-      // }
-
+      
       hRun2->Rebin(rebin);
       hRun3->Rebin(rebin);
       hRun2->GetXaxis()->SetRangeUser(xmin, xmax);
