@@ -2320,7 +2320,7 @@
     "hf-tree-creator-lc-to-p-k-pi": {
         "downSampleBkgFactor": "1",
         "processMc": "true",
-        "processData": "true"
+        "processData": "false"
     },
     "hf-tree-creator-bplus-to-d0-pi": {
         "isSignal": "1"
