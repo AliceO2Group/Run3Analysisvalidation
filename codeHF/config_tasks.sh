@@ -94,6 +94,7 @@ DOO2_TREE_X=0       # hf-tree-creator-x-to-jpsi-pi-pi
 DOO2_TREE_XICC=0    # hf-tree-creator-xicc-to-p-k-pi-pi
 DOO2_TREE_CHIC=0    # hf-tree-creator-chic-to-jpsi-gamma
 DOO2_TREE_BPLUS=0   # hf-tree-creator-bplus-to-d0-pi
+DOO2_TREE_LCK0SP=0  # hf-tree-creator-lc-to-k0s-p
 # Correlations
 DOO2_CORR_D0D0BAR_DATA=0       # hf-correlator-d0-d0bar
 DOO2_CORR_D0D0BAR_MCREC=0      # hf-correlator-d0-d0bar_mc-rec
@@ -192,6 +193,7 @@ function AdjustJson {
     ReplaceString "\"processMc\": \"true\"" "\"processMc\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processMC\": \"true\"" "\"processMC\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"isMC\": \"true\"" "\"isMC\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processData\": \"false\"" "\"processData\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # event-selection
@@ -213,6 +215,12 @@ function AdjustJson {
   if [ "$INPUT_RUN" -eq 3 ]; then
     # do not perform track quality cuts for Run 3 until they are updated
     ReplaceString "\"doCutQuality\": \"true\"" "\"doCutQuality\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  fi
+
+  # hf-track-index-skim-creator-cascades
+  if [[ $DOO2_CAND_CASC -eq 1 || $DOO2_SEL_LCK0SP -eq 1 || $DOO2_TASK_LCK0SP -eq 1 || $DOO2_TREE_LCK0SP -eq 1 ]]; then
+    ReplaceString "\"processCascades\": \"false\"" "\"processCascades\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processNoCascades\": \"true\"" "\"processNoCascades\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # timestamp-task
@@ -377,7 +385,7 @@ function MakeScriptO2 {
   SUFFIX_SKIM_MASK="_skimX" # suffix mask to be replaced in the workflow names
   SUFFIX_SKIM="" # the actual suffix to be used instead of the mask
   # Λc → K0S p cascade reconstruction
-  [[ $DOO2_CAND_CASC -eq 1 || $DOO2_SEL_LCK0SP -eq 1 || $DOO2_TASK_LCK0SP -eq 1 ]] && SUFFIX_SKIM+="_v0"
+  [[ $DOO2_CAND_CASC -eq 1 || $DOO2_SEL_LCK0SP -eq 1 || $DOO2_TASK_LCK0SP -eq 1 || $DOO2_TREE_LCK0SP -eq 1 ]] && SUFFIX_SKIM+="_v0"
 
   # Suffix to distinguish versions of the same workflow for different runs in the workflow database
   SUFFIX_RUN_MASK="_runX" # suffix mask to be replaced in the workflow names
@@ -462,6 +470,7 @@ function MakeScriptO2 {
   [ $DOO2_TREE_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-xicc-to-p-k-pi-pi"
   [ $DOO2_TREE_CHIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-chic-to-jpsi-gamma"
   [ $DOO2_TREE_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-bplus-to-d0-pi"
+  [ $DOO2_TREE_LCK0SP -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-lc-to-k0s-p"
   # Jets
   if [ "$INPUT_IS_MC" -eq 1 ]; then
     [ $DOO2_JET_FIND -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-d0-mcd-charged o2-analysis-je-jet-finder-d0-mcp-charged"

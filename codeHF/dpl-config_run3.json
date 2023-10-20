@@ -410,11 +410,11 @@
         "minParamChange": "0.001",
         "minRelChi2Change": "0.9",
         "useAbsDCA": "true",
-        "useWeightedFinalPCA": "true",
+        "useWeightedFinalPCA": "false",
         "doCutQuality": "true",
-        "tpcRefitBach": "true",
+        "tpcRefitBach": "false",
         "nCrossedRowsMinBach": "50",
-        "tpcRefitV0Daugh": "true",
+        "tpcRefitV0Daugh": "false",
         "nCrossedRowsMinV0Daugh": "50",
         "etaMinV0Daugh": "-99999",
         "etaMaxV0Daugh": "1.1",
@@ -511,7 +511,7 @@
     "hf-candidate-creator-cascade": {
         "propagateToPCA": "true",
         "useAbsDCA": "true",
-        "useWeightedFinalPCA": "true",
+        "useWeightedFinalPCA": "false",
         "maxR": "200",
         "maxDZIni": "4",
         "minParamChange": "0.001",
@@ -2320,10 +2320,17 @@
     "hf-tree-creator-lc-to-p-k-pi": {
         "downSampleBkgFactor": "1",
         "processMc": "true",
-        "processData": "true"
+        "processData": "false"
     },
     "hf-tree-creator-bplus-to-d0-pi": {
         "isSignal": "1"
+    },
+    "hf-tree-creator-lc-to-k0s-p": {
+        "fillCandidateLiteTable": "false",
+        "downSampleBkgFactor": "1",
+        "ptMaxForDownSample": "24",
+        "processMc": "true",
+        "processData": "false"
     },
     "hf-task-flow": {
         "zVertexMax": "10",
