@@ -257,7 +257,7 @@ workflows:
 
   o2-analysis-hf-tree-creator-lc-to-k0s-p:
     dependencies: o2-analysis-hf-candidate-selector-lc-to-k0s-p
-    tables: [HFCANDCASCFull, HFCANDCASCFullE, HFCANDCASCFullP]
+    tables: [HFCANDCASCLITE, HFCANDCASCFULL, HFCANDCASCFULLE, HFCANDCASCFULLP]
 
   o2-analysis-hf-tree-creator-bplus-to-d0-pi:
     requires_mc: yes
