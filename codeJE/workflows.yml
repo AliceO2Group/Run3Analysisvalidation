@@ -28,12 +28,24 @@ workflows:
     executable: o2-analysis-trackselection
     dependencies: o2-analysis-track-dca_run2
 
+  o2-analysis-track-dca_run2:
+    executable: o2-analysis-trackextension
+    dependencies: o2-analysis-timestamp
+
+  o2-analysis-trackselection_run3:
+    executable: o2-analysis-trackselection
+    dependencies: o2-analysis-track-dca_run3
+
   o2-analysis-event-selection:
     dependencies: o2-analysis-timestamp
+
+  # Converters
+
+  o2-analysis-zdc-converter: {}
 
   # JET
   o2-analysis-je-jet-finder:
     dependencies: [o2-analysis-timestamp]
 
   o2-analysis-je-jet-validation-qa:
-    dependencies: [o2-analysis-timestamp, o2-analysis-je-jet-finder]
+    dependencies: [o2-analysis-timestamp, o2-analysis-je-jet-finder, o2-analysis-event-selection, o2-analysis-trackselection_runX, o2-analysis-track-dca_runX]
