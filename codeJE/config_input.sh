@@ -16,7 +16,7 @@ NFILESPERJOB_O2=1       # O2
 # Maximum number of simultaneously running O2 jobs
 NJOBSPARALLEL_O2=$(python3 -c "print(min(10, round($(nproc) / 2)))")
 
-JSONRUN3="dpl-config-old.json"  # Run 3 tasks parameters
+JSONRUN3="dpl-config.json"  # Run 3 tasks parameters
 JSON="$JSONRUN3"
 
 # Default settings:

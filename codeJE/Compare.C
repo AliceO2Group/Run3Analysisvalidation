@@ -150,37 +150,13 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun2 = "
 
       nRun2 = hRun2->GetEntries();
       nRun3 = hRun3->GetEntries();
-      double xmin = 0;
-      double xmax = 100;
       // Histograms
       auto padH = canHis->cd(index + 1);
 
       Printf("histo name: %s", hRun2->GetName());
-      if (std::string(hRun2->GetName()) == "jetPt" || std::string(hRun2->GetName()) == "jetTrackPt"){
-        xmin = 0;
-        xmax = 15;
-        rebin = 1;
-      }
-      if (std::string(hRun2->GetName()) == "jetPhi" || std::string(hRun2->GetName()) == "jetTrackPhi"){
-        xmin = 0;
-        xmax = 6.3;
-        rebin = 8;
-      }
-      if (std::string(hRun2->GetName()) == "jetEta"){
-        xmin = -0.6;
-        xmax = 0.6;
-        rebin = 6;
-      }
-      if (std::string(hRun2->GetName()) == "jetTrackEta"){
-        xmin = -0.9;
-        xmax = 0.9;
-        rebin = 8;
-      }
       
       hRun2->Rebin(rebin);
       hRun3->Rebin(rebin);
-      hRun2->GetXaxis()->SetRangeUser(xmin, xmax);
-      hRun3->GetXaxis()->SetRangeUser(xmin, xmax);
       hRun2->SetLineColor(1);
       hRun2->SetLineWidth(2);
       hRun2->SetMarkerStyle(22);
