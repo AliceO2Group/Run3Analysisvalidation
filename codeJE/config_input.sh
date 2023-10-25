@@ -95,7 +95,7 @@ case $INPUT_CASE in
     ;;
   12)
     INPUT_LABEL="Run 2, p-p 13 TeV, LHC18p (ESD)"
-    INPUT_DIR="/home/archita/alice/Run3Analysisvalidation/codeJE" 	#specify your own local path to the downloaded data file
+    INPUT_DIR="/path/to/your/data" 	#specify your own local path to the downloaded data file
     #INPUT_DIR="alien://alice/data/2017/LHC17m/000280140/pass2/17000280140039.810/"
     ISINPUTO2=0
     ISMC=0
