@@ -26,9 +26,6 @@ workflows:
     #   real: []
     #   mc: []
 
-  o2-analysis-track-to-collision-associator:
-    tables: HFTRACKASSOC
-
   # Skimming
 
   o2-analysis-hf-track-index-skim-creator: &skim_creator
@@ -431,6 +428,9 @@ workflows:
 
   # Helper tasks
 
+  o2-analysis-track-to-collision-associator:
+    tables: HFTRACKASSOC
+
   o2-analysis-timestamp: {}
 
   o2-analysis-trackselection_run2:
@@ -511,6 +511,8 @@ workflows:
   o2-analysis-zdc-converter: {}
 
   o2-analysis-bc-converter: {}
+
+  o2-analysis-tracks-extra-converter: {}
 
   # LF
 
