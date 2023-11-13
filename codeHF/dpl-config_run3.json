@@ -138,6 +138,7 @@
     "hf-track-index-skim-creator": {
         "isRun2": "true",
         "do3Prong": "1",
+        "doDstar": "false",
         "debug": "false",
         "fillHistograms": "true",
         "axisNumTracks": {
@@ -373,6 +374,30 @@
                     "2.8",
                     "-2",
                     "0"
+                ]
+            ]
+        },
+        "binsPtDstarToD0Pi": {
+            "values": [
+                "0",
+                "5",
+                "1000"
+            ]
+        },
+        "cutsDstarToD0Pi": {
+            "labels_rows": "",
+            "labels_cols": [
+                "deltaMassMax",
+                "deltaMassD0"
+            ],
+            "values": [
+                [
+                    "0.17",
+                    "0.08"
+                ],
+                [
+                    "0.17",
+                    "0.12"
                 ]
             ]
         },

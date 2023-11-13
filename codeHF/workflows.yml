@@ -34,7 +34,7 @@ workflows:
       - o2-analysis-track-dca_runX
       - o2-analysis-trackselection_runX
       - o2-analysis-track-to-collision-associator
-    tables: [HF2PRONG/1, HF3PRONG/1, HFCASCADE/1, HFCASCLF2PRONG, HFCASCLF3PRONG, HFCUTSTATUS2P, HFCUTSTATUS3P, HFPVREFIT2PRONG, HFPVREFIT3PRONG, HFPVREFITTRACK, HFSELCOLLISION, HFSELTRACK]
+    tables: [HF2PRONG/1, HF3PRONG/1, HFDSTAR, HFCASCADE/1, HFCASCLF2PRONG, HFCASCLF3PRONG, HFCUTSTATUS2P, HFCUTSTATUS3P, HFPVREFIT2PRONG, HFPVREFIT3PRONG, HFPVREFITTRACK, HFSELCOLLISION, HFSELTRACK]
 
   o2-analysis-hf-track-index-skim-creator_v0:
     <<: *skim_creator
@@ -68,7 +68,16 @@ workflows:
     <<: *cand_creator_3p
     dependencies: o2-analysis-track-dca_runX
 
-  o2-analysis-hf-candidate-creator-dstar: {}
+  o2-analysis-hf-candidate-creator-dstar: &cand_creator_dstar
+    executable: o2-analysis-hf-candidate-dstar
+    dependencies: o2-analysis-hf-track-index-skim-creator_skimX
+    tables:
+      default: [HFDSTARCANDBASE, HFDSTAREXT, HFD0FROMDSTAR, HFD0FRMDSTREXT]
+      mc: [HFDSTARMCREC, HFDSTARMCGEN]
+
+  o2-analysis-hf-candidate-creator-dstar_derived:
+    <<: *cand_creator_dstar
+    dependencies: o2-analysis-track-dca_runX
 
   o2-analysis-hf-candidate-creator-cascade:
     dependencies: o2-analysis-hf-track-index-skim-creator_skimX
@@ -162,6 +171,13 @@ workflows:
   o2-analysis-hf-candidate-selector-xic-to-p-k-pi:
     <<: *selector_3prong
     tables: HFSELXIC
+
+  o2-analysis-hf-candidate-selector-dstar:
+    dependencies:
+      - o2-analysis-hf-candidate-creator-dstar_derX
+      - o2-analysis-pid-tpc-full
+      - o2-analysis-pid-tof-full_runX
+    tables: HFSELDSTAR
 
   o2-analysis-hf-candidate-selector-lc-to-k0s-p:
     dependencies:
