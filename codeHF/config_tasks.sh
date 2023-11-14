@@ -119,6 +119,7 @@ DOO2_CONV_FDD=0     # fdd-converter
 DOO2_CONV_COLL=0    # collision-converter
 DOO2_CONV_ZDC=1     # zdc-converter
 DOO2_CONV_BC=1      # bc-converter
+DOO2_CONV_TRKEX=1   # tracks-extra-converter
 
 # Selection cuts
 APPLYCUTS_D0=1      # Apply D0 selection cuts.
@@ -490,6 +491,7 @@ function MakeScriptO2 {
   [ $DOO2_CONV_COLL -eq 1 ] && WORKFLOWS+=" o2-analysis-collision-converter"
   [ $DOO2_CONV_ZDC -eq 1 ] && WORKFLOWS+=" o2-analysis-zdc-converter"
   [ $DOO2_CONV_BC -eq 1 ] && WORKFLOWS+=" o2-analysis-bc-converter"
+  [ $DOO2_CONV_TRKEX -eq 1 ] && WORKFLOWS+=" o2-analysis-tracks-extra-converter"
 
   # Translate options into arguments of the generating script.
   OPT_MAKECMD=""
