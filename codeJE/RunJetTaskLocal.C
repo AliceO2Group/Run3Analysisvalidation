@@ -11,11 +11,10 @@ R__ADD_INCLUDE_PATH($ALICE_PHYSICS)
 TChain* CreateLocalChain(const char* txtfile);
 
 Long64_t RunJetTaskLocal(TString txtfile = "./list_ali.txt",
-                        TString jsonfilename = "dpl-config_std.json",
-                        Bool_t isMC = kFALSE,
-                        Bool_t useO2Vertexer = kFALSE,
-                        Bool_t useAliEventCuts = kFALSE
-                        )
+                         TString jsonfilename = "dpl-config_std.json",
+                         Bool_t isMC = kFALSE,
+                         Bool_t useO2Vertexer = kFALSE,
+                         Bool_t useAliEventCuts = kFALSE)
 {
   // Load common libraries
   gSystem->Load("libCore.so");
@@ -44,20 +43,20 @@ Long64_t RunJetTaskLocal(TString txtfile = "./list_ali.txt",
   mgr->SetInputEventHandler(esdH);
 
   AliMCEventHandler* handler = NULL;
-   if(isMC){
-      handler = new AliMCEventHandler;
-      handler->SetReadTR(kFALSE);
-      mgr->SetMCtruthEventHandler(handler);
-   }
+  if (isMC) {
+    handler = new AliMCEventHandler;
+    handler->SetReadTR(kFALSE);
+    mgr->SetMCtruthEventHandler(handler);
+  }
 
   // CDBconnect task
-  AliTaskCDBconnect * taskCDB = AddTaskCDBconnect();
+  AliTaskCDBconnect* taskCDB = AddTaskCDBconnect();
   taskCDB->SetFallBackToRaw(kTRUE);
 
   // Apply the event selection
   AliPhysicsSelectionTask* physSelTask = reinterpret_cast<AliPhysicsSelectionTask*>(gInterpreter->ProcessLine(Form(".x %s(%d)", gSystem->ExpandPathName("$ALICE_PHYSICS/OADB/macros/AddTaskPhysicsSelection.C"), isMC)));
 
-  AliAnalysisTaskEmcalJetValidation *taskJet = reinterpret_cast<AliAnalysisTaskEmcalJetValidation*>(gInterpreter->ProcessLine(Form(".x %s(\"\",\"%s\",%d)", gSystem->ExpandPathName("$ALICE_PHYSICS/PWGJE/EMCALJetTasks/macros/AddTaskEmcalJetValidation.C"), jsonfilename.Data(), isMC)));
+  AliAnalysisTaskEmcalJetValidation* taskJet = reinterpret_cast<AliAnalysisTaskEmcalJetValidation*>(gInterpreter->ProcessLine(Form(".x %s(\"\",\"%s\",%d)", gSystem->ExpandPathName("$ALICE_PHYSICS/PWGJE/EMCALJetTasks/macros/AddTaskEmcalJetValidation.C"), jsonfilename.Data(), isMC)));
   if (useAliEventCuts) {
     taskJet->SetUseAliEventCuts(useAliEventCuts);
   }
