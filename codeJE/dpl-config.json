@@ -7,7 +7,7 @@
         "start-value-enumeration": "0",
         "end-value-enumeration": "-1",
         "step-value-enumeration": "1",
-        "aod-file": "@list_o2.txt"
+        "aod-file": "AO2D.root"
     },
     "internal-dpl-aod-spawner": "",
     "timestamp-task": {
@@ -59,6 +59,7 @@
         "trackPhiMax": "999",
         "trackSelections": "hybridTracksJE",
         "eventSelections": "sel7",
+        "particleSelections": "PhysicalPrimary",
         "clusterDefinition": "kV3Default",
         "clusterEtaMin": "-0.699999988",
         "clusterEtaMax": "0.699999988",
@@ -102,6 +103,7 @@
         "trackPhiMax": "999",
         "trackSelections": "globalTracks",
         "eventSelections": "sel7",
+        "particleSelections": "PhysicalPrimary",
         "clusterDefinition": "kV3Default",
         "clusterEtaMin": "-0.699999988",
         "clusterEtaMax": "0.699999988",
@@ -120,7 +122,6 @@
         "jetPtMax": "1000",
         "jetEtaMin": "-99",
         "jetEtaMax": "99",
-        "jetTypeParticleLevel": "1",
         "jetAlgorithm": "2",
         "jetRecombScheme": "0",
         "jetGhostArea": "0.00499999989",
@@ -132,7 +133,9 @@
         "processChargedJets": "false",
         "processNeutralJets": "false",
         "processFullJets": "false",
-        "processParticleLevelJets": "false"
+        "processParticleLevelChargedJets": "false",
+        "processParticleLevelNeutralJets": "false",
+        "processParticleLevelFullJets": "false"
     },
     "jet-finder-data-neutral": {
         "vertexZCut": "10",
@@ -144,6 +147,7 @@
         "trackPhiMax": "999",
         "trackSelections": "globalTracks",
         "eventSelections": "sel8",
+        "particleSelections": "PhysicalPrimary",
         "clusterDefinition": "kV3Default",
         "clusterEtaMin": "-0.699999988",
         "clusterEtaMax": "0.699999988",
@@ -162,7 +166,6 @@
         "jetPtMax": "1000",
         "jetEtaMin": "-99",
         "jetEtaMax": "99",
-        "jetTypeParticleLevel": "1",
         "jetAlgorithm": "2",
         "jetRecombScheme": "0",
         "jetGhostArea": "0.00499999989",
@@ -174,7 +177,9 @@
         "processChargedJets": "false",
         "processNeutralJets": "false",
         "processFullJets": "false",
-        "processParticleLevelJets": "false"
+        "processParticleLevelChargedJets": "false",
+        "processParticleLevelNeutralJets": "false",
+        "processParticleLevelFullJets": "false"
     },
     "jet-finder-mcd-charged": {
         "vertexZCut": "10",
@@ -186,6 +191,7 @@
         "trackPhiMax": "999",
         "trackSelections": "globalTracks",
         "eventSelections": "sel8",
+        "particleSelections": "PhysicalPrimary",
         "clusterDefinition": "kV3Default",
         "clusterEtaMin": "-0.699999988",
         "clusterEtaMax": "0.699999988",
@@ -204,7 +210,6 @@
         "jetPtMax": "1000",
         "jetEtaMin": "-99",
         "jetEtaMax": "99",
-        "jetTypeParticleLevel": "1",
         "jetAlgorithm": "2",
         "jetRecombScheme": "0",
         "jetGhostArea": "0.00499999989",
@@ -216,7 +221,9 @@
         "processChargedJets": "false",
         "processNeutralJets": "false",
         "processFullJets": "false",
-        "processParticleLevelJets": "false"
+        "processParticleLevelChargedJets": "false",
+        "processParticleLevelNeutralJets": "false",
+        "processParticleLevelFullJets": "false"
     },
     "jet-finder-mcd-full": {
         "vertexZCut": "10",
@@ -228,6 +235,7 @@
         "trackPhiMax": "999",
         "trackSelections": "globalTracks",
         "eventSelections": "sel8",
+        "particleSelections": "PhysicalPrimary",
         "clusterDefinition": "kV3Default",
         "clusterEtaMin": "-0.699999988",
         "clusterEtaMax": "0.699999988",
@@ -246,7 +254,6 @@
         "jetPtMax": "1000",
         "jetEtaMin": "-99",
         "jetEtaMax": "99",
-        "jetTypeParticleLevel": "1",
         "jetAlgorithm": "2",
         "jetRecombScheme": "0",
         "jetGhostArea": "0.00499999989",
@@ -258,7 +265,9 @@
         "processChargedJets": "false",
         "processNeutralJets": "false",
         "processFullJets": "false",
-        "processParticleLevelJets": "false"
+        "processParticleLevelChargedJets": "false",
+        "processParticleLevelNeutralJets": "false",
+        "processParticleLevelFullJets": "false"
     },
     "jet-finder-mcd-neutral": {
         "vertexZCut": "10",
@@ -270,6 +279,7 @@
         "trackPhiMax": "999",
         "trackSelections": "globalTracks",
         "eventSelections": "sel8",
+        "particleSelections": "PhysicalPrimary",
         "clusterDefinition": "kV3Default",
         "clusterEtaMin": "-0.699999988",
         "clusterEtaMax": "0.699999988",
@@ -288,7 +298,6 @@
         "jetPtMax": "1000",
         "jetEtaMin": "-99",
         "jetEtaMax": "99",
-        "jetTypeParticleLevel": "1",
         "jetAlgorithm": "2",
         "jetRecombScheme": "0",
         "jetGhostArea": "0.00499999989",
@@ -300,7 +309,9 @@
         "processChargedJets": "false",
         "processNeutralJets": "false",
         "processFullJets": "false",
-        "processParticleLevelJets": "false"
+        "processParticleLevelChargedJets": "false",
+        "processParticleLevelNeutralJets": "false",
+        "processParticleLevelFullJets": "false"
     },
     "jet-finder-mcp-charged": {
         "vertexZCut": "10",
@@ -312,6 +323,7 @@
         "trackPhiMax": "999",
         "trackSelections": "globalTracks",
         "eventSelections": "sel8",
+        "particleSelections": "PhysicalPrimary",
         "clusterDefinition": "kV3Default",
         "clusterEtaMin": "-0.699999988",
         "clusterEtaMax": "0.699999988",
@@ -330,7 +342,6 @@
         "jetPtMax": "1000",
         "jetEtaMin": "-99",
         "jetEtaMax": "99",
-        "jetTypeParticleLevel": "1",
         "jetAlgorithm": "2",
         "jetRecombScheme": "0",
         "jetGhostArea": "0.00499999989",
@@ -342,7 +353,9 @@
         "processChargedJets": "false",
         "processNeutralJets": "false",
         "processFullJets": "false",
-        "processParticleLevelJets": "false"
+        "processParticleLevelChargedJets": "false",
+        "processParticleLevelNeutralJets": "false",
+        "processParticleLevelFullJets": "false"
     },
     "jet-finder-mcp-full": {
         "vertexZCut": "10",
@@ -354,6 +367,7 @@
         "trackPhiMax": "999",
         "trackSelections": "globalTracks",
         "eventSelections": "sel8",
+        "particleSelections": "PhysicalPrimary",
         "clusterDefinition": "kV3Default",
         "clusterEtaMin": "-0.699999988",
         "clusterEtaMax": "0.699999988",
@@ -372,7 +386,6 @@
         "jetPtMax": "1000",
         "jetEtaMin": "-99",
         "jetEtaMax": "99",
-        "jetTypeParticleLevel": "1",
         "jetAlgorithm": "2",
         "jetRecombScheme": "0",
         "jetGhostArea": "0.00499999989",
@@ -384,7 +397,9 @@
         "processChargedJets": "false",
         "processNeutralJets": "false",
         "processFullJets": "false",
-        "processParticleLevelJets": "false"
+        "processParticleLevelChargedJets": "false",
+        "processParticleLevelNeutralJets": "false",
+        "processParticleLevelFullJets": "false"
     },
     "jet-finder-mcp-neutral": {
         "vertexZCut": "10",
@@ -396,6 +411,7 @@
         "trackPhiMax": "999",
         "trackSelections": "globalTracks",
         "eventSelections": "sel8",
+        "particleSelections": "PhysicalPrimary",
         "clusterDefinition": "kV3Default",
         "clusterEtaMin": "-0.699999988",
         "clusterEtaMax": "0.699999988",
@@ -414,7 +430,6 @@
         "jetPtMax": "1000",
         "jetEtaMin": "-99",
         "jetEtaMax": "99",
-        "jetTypeParticleLevel": "1",
         "jetAlgorithm": "2",
         "jetRecombScheme": "0",
         "jetGhostArea": "0.00499999989",
@@ -426,7 +441,9 @@
         "processChargedJets": "false",
         "processNeutralJets": "false",
         "processFullJets": "false",
-        "processParticleLevelJets": "false"
+        "processParticleLevelChargedJets": "false",
+        "processParticleLevelNeutralJets": "false",
+        "processParticleLevelFullJets": "false"
     },
     "jet-validation-track-collision-qa": {
         "ptLow": "0.150000006",
@@ -453,7 +470,7 @@
             "values": [
                 "200",
                 "0",
-                "100"
+                "100",
             ]
         },
         "trackSelections": "hybridTracksJE",
