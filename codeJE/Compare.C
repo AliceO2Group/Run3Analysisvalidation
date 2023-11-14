@@ -29,7 +29,7 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun2 = "
     return 1;
   }
 
-  TString pathListRun2 = Form("ChJetSpectraAliAnalysisTaskEmcalJetValidation/AliAnalysisTaskEmcalJetValidation");//
+  TString pathListRun2 = Form("ChJetSpectraAliAnalysisTaskEmcalJetValidation/AliAnalysisTaskEmcalJetValidation"); //
   TList* lRun2 = nullptr;
   fRun2->GetObject(pathListRun2.Data(), lRun2);
   if (!lRun2) {
@@ -41,14 +41,13 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun2 = "
 
   VecSpecHis vecHisEvents;
 
-  VecSpecHis vecHisJets;     //X axis ,                  Hist Name Run2,  Hist  Name in Run3, rebin, logScaleH , logScaleR
-  AddHistogram(vecHisJets, "#it{p}_{T,ch jet} (GeV/#it{c}", "jetPt",     "jet-validation-track-collision-qa/jetPt",        1,      1,          0);   //
-  AddHistogram(vecHisJets, "#varphi_{jet}",                 "jetPhi",    "jet-validation-track-collision-qa/jetPhi",       1,      0,          0);
-  AddHistogram(vecHisJets, "#eta_{jet}",                    "jetEta",    "jet-validation-track-collision-qa/jetEta",       1,      0,          0);
-  AddHistogram(vecHisJets, "#it{p}_{T,track} (GeV/#it{c}",  "jetTrackPt",     "jet-validation-track-collision-qa/selectedTrackPt",        1,      1,          0);   //
-  AddHistogram(vecHisJets, "#varphi_{track}",               "jetTrackPhi",    "jet-validation-track-collision-qa/selectedTrackPhi",       1,      0,          0);
-  AddHistogram(vecHisJets, "#eta_{track}",                  "jetTrackEta",    "jet-validation-track-collision-qa/selectedTrackEta",       1,      0,          0);
-
+  VecSpecHis vecHisJets;                                                                                                  //X axis ,                  Hist Name Run2,  Hist  Name in Run3, rebin, logScaleH , logScaleR
+  AddHistogram(vecHisJets, "#it{p}_{T,ch jet} (GeV/#it{c}", "jetPt", "jet-validation-track-collision-qa/jetPt", 1, 1, 0); //
+  AddHistogram(vecHisJets, "#varphi_{jet}", "jetPhi", "jet-validation-track-collision-qa/jetPhi", 1, 0, 0);
+  AddHistogram(vecHisJets, "#eta_{jet}", "jetEta", "jet-validation-track-collision-qa/jetEta", 1, 0, 0);
+  AddHistogram(vecHisJets, "#it{p}_{T,track} (GeV/#it{c}", "jetTrackPt", "jet-validation-track-collision-qa/selectedTrackPt", 1, 1, 0); //
+  AddHistogram(vecHisJets, "#varphi_{track}", "jetTrackPhi", "jet-validation-track-collision-qa/selectedTrackPhi", 1, 0, 0);
+  AddHistogram(vecHisJets, "#eta_{track}", "jetTrackEta", "jet-validation-track-collision-qa/selectedTrackEta", 1, 0, 0);
 
   // vector of specifications of vectors: name, VecSpecHis, pads X, pads Y
   std::vector<std::tuple<TString, VecSpecHis, int, int>> vecSpecVecSpec;
@@ -154,7 +153,6 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun2 = "
       auto padH = canHis->cd(index + 1);
 
       Printf("histo name: %s", hRun2->GetName());
-      
       hRun2->Rebin(rebin);
       hRun3->Rebin(rebin);
       hRun2->SetLineColor(1);
@@ -165,7 +163,6 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun2 = "
       hRun3->SetLineWidth(2);
       hRun3->SetMarkerStyle(22);
       hRun3->SetMarkerColor(2);
-      //hRun2->SetTitle(Form("Entries: AliPhysics: %d, O2Physics: %d;%s;Entries", nRun2, nRun3, labelAxis.Data()));
       hRun2->SetTitle(" ");
       hRun2->GetYaxis()->SetTitle("number of entries");
       hRun2->GetYaxis()->SetMaxDigits(3);
@@ -176,13 +173,13 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun2 = "
       hRun2->Draw("");
       hRun3->Draw("Esame");
 
-      if (std::string(hRun2->GetName()) == "jetPt" || std::string(hRun2->GetName()) == "jetTrackPt"){
+      if (std::string(hRun2->GetName()) == "jetPt" || std::string(hRun2->GetName()) == "jetTrackPt") {
         TLegend* legend = new TLegend(0.2, 0.84, 0.82, 0.92);
         legend->SetNColumns(2);
         legend->AddEntry(hRun2, Form("AliPhysics: %d", nRun2), "L");
         legend->AddEntry(hRun3, Form("O2Physics: %d", nRun3), "L");
         legend->Draw();
-      }else{
+      } else {
         TLegend* legend = new TLegend(0.2, 0.92, 0.82, 1.0);
         legend->SetNColumns(2);
         legend->SetBorderSize(0);
@@ -191,18 +188,15 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun2 = "
         legend->Draw();
       }
 
-
-
       // Ratio
       if (doRatio) {
         auto padR = canRat->cd(index + 1);
         hRatio = (TH1F*)hRun3->Clone(Form("hRatio%d", index));
         hRatio->Divide(hRun2);
-        //hRatio->SetTitle(Form("Entries ratio: %g;%s;AliPhysics/O2Physics", (double) hRatio->GetEntries(), labelAxis.Data()));
         hRatio->SetTitle("");
         hRatio->GetYaxis()->SetTitle("O2Physics/AliPhysics");
-        yMin = hRatio->GetMinimum(0)*0.3;
-        yMax = hRatio->GetMaximum()*1.3;
+        yMin = hRatio->GetMinimum(0) * 0.3;
+        yMax = hRatio->GetMaximum() * 1.3;
         SetHistogram(hRatio, yMin, yMax, marginRLow, marginRHigh, logScaleR);
         SetPad(padR, logScaleR);
         hRatio->Draw();
@@ -212,10 +206,9 @@ Int_t Compare(TString filerun3 = "AnalysisResults_O2.root", TString filerun2 = "
     if (doRatio) {
       canRat->SaveAs(Form("comparison_ratios_%s.png", nameSpec.Data()));
     }
-//    delete canHis;
+    //    delete canHis;
     delete canRat;
   }
-
 
   return 0;
 }
