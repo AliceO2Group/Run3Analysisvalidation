@@ -145,8 +145,7 @@ function MakeScriptO2 {
   [ $DOO2_COLLCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-collision-converter"
   [ $DOO2_ZDC -eq 1 ] && WORKFLOWS+=" o2-analysis-zdc-converter"
   [ $DOO2_TRACKEXTRA -eq 1 ] && WORKFLOWS+=" o2-analysis-tracks-extra-converter"
-  [ $DOO2_BC -eq 1 ] && WORKFLOWS+=" o2-analysis-bc-converter"  
-
+  [ $DOO2_BC -eq 1 ] && WORKFLOWS+=" o2-analysis-bc-converter"
   # Trigger selection
   [ $DOO2_TRIGSEL -eq 1 ] && WORKFLOWS+=" o2-analysis-event-selection"
   # QA
