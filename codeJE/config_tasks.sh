@@ -27,7 +27,10 @@ DOO2_FDDCONV=0      # fdd-converter
 DOO2_COLLCONV=0     # collision-converter
 DOO2_ZDC=1          # zdc-converter
 DOO2_TRACKSELE=1    # trackselection, dca, propagation
+DOO2_TRACKEXTRA=1   # track-extra-converter
 DOO2_BC=1           # BC
+DOO2_DERIVED=1      # to fix the old workflow
+
 # Disable incompatible steps.
 [ "$ISINPUTO2" -eq 1 ] && { DOCONVERT=0; DOALI=0; }
 
@@ -45,7 +48,7 @@ DOO2_TASK_JETFINDER=1   # jet-finder
 DOO2_TASK_JETQA=1   # jetqa
 
 SAVETREES=0         # Save O2 tables to trees.
-USEO2VERTEXER=1     # Use the O2 vertexer in AliPhysics.
+USEO2VERTEXER=0     # Use the O2 vertexer in AliPhysics.
 USEALIEVCUTS=1      # Use AliEventCuts in AliPhysics (as used by conversion task)
 DORATIO=1           # Plot histogram ratios in comparison.
 
@@ -140,10 +143,11 @@ function MakeScriptO2 {
   # others
   [ $DOO2_MCCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-mc-converter"
   [ $DOO2_FDDCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-fdd-converter"
-  [ $DOO2_COLLCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-collision-converter"  
-  [ $DOO2_TRACKSELE -eq 1 ] && WORKFLOWS+=" o2-analysis-trackselection o2-analysis-trackextension"
-  [ $DOO2_BC -eq 1 ] && WORKFLOWS+=" o2-analysis-bc-converter"
+  [ $DOO2_COLLCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-collision-converter"
   [ $DOO2_ZDC -eq 1 ] && WORKFLOWS+=" o2-analysis-zdc-converter"
+  [ $DOO2_TRACKEXTRA -eq 1 ] && WORKFLOWS+=" o2-analysis-tracks-extra-converter"
+  [ $DOO2_BC -eq 1 ] && WORKFLOWS+=" o2-analysis-bc-converter"  
+  [ $DOO2_DERIVED -eq 1] && WORKFLOWS+=" o2-analysis-je-jet-deriveddata-producer"
 
   # Trigger selection
   [ $DOO2_TRIGSEL -eq 1 ] && WORKFLOWS+=" o2-analysis-event-selection"
@@ -185,7 +189,7 @@ EOF
 
 function MakeScriptAli {
   #ALIEXEC="root -b -q -l \"$DIR_TASKS/RunHFTaskLocal.C(\\\"\$FileIn\\\", \\\"\$JSON\\\", $ISMC, $USEO2VERTEXER, $USEALIEVCUTS)\""
-  ALIEXEC="root -b -q -l \"$DIR_TASKS/RunJetTaskLocal.C(\\\"\$FileIn\\\", \\\"\$JSON\\\", $ISMC)\""
+  ALIEXEC="root -b -q -l \"$DIR_TASKS/RunJetTaskLocal.C(\\\"\$FileIn\\\", \\\"\$JSON\\\", $ISMC, $USEO2VERTEXER, $USEALIEVCUTS)\""
   cat << EOF > "$SCRIPT_ALI"
 #!/bin/bash
 FileIn="\$1"
@@ -197,7 +201,8 @@ EOF
 function MakeScriptPostprocess {
   POSTEXEC="echo Postprocessing"
   # Compare AliPhysics and O2 histograms.
-  [[ $DOALI -eq 1 && $DOO2 -eq 1 ]] && {
+  #[[ $DOALI -eq 1 && $DOO2 -eq 1 ]] && {
+   [[ $DOPOSTPROCESS -eq 1 ]] && {
     OPT_COMPARE=""
     [ $DOO2_TASK_JETQA -eq 1 ] && OPT_COMPARE+=" jets "
     [ "$OPT_COMPARE" ] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/Compare.C(\\\"\$FileO2\\\", \\\"\$FileAli\\\", \\\"$OPT_COMPARE\\\", $DORATIO)\""
