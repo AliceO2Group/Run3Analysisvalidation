@@ -43,6 +43,9 @@
         "doCutQuality": "true",
         "useIsGlobalTrack": "false",
         "useIsGlobalTrackWoDCA": "false",
+        "useIsGlobalTrackForSoftPion": "false",
+        "useIsGlobalTrackWoDCAForSoftPion": "true",
+        "useIsQualityTrackITSForSoftPion": "false",
         "tpcNClsFoundMin": "70",
         "binsPtTrack": {
             "values": [
@@ -2937,6 +2940,7 @@
         "etaMax": "0.8"
     },
     "track-propagation": {
+        "minPropagationDistance": "83.0999985",
         "processStandard": "false",
         "processCovariance": "true"
     },
