@@ -482,15 +482,21 @@ workflows:
   o2-analysis-pid-tpc-full:
     dependencies: [o2-analysis-pid-tpc-base, o2-analysis-timestamp]
 
-  o2-analysis-pid-tof-base:
+  o2-analysis-pid-tof-base_run2:
+    executable: o2-analysis-pid-tof-base
     dependencies: o2-analysis-event-selection
 
-  o2-analysis-pid-tof-full_run2: &tof_full
+  o2-analysis-pid-tof-base_run3:
+    executable: o2-analysis-pid-tof-base
+    dependencies: [o2-analysis-event-selection, o2-analysis-ft0-corrected-table]
+
+  o2-analysis-pid-tof-full_run2:
     executable: o2-analysis-pid-tof-full
-    dependencies: [o2-analysis-pid-tof-base, o2-analysis-timestamp]
+    dependencies: [o2-analysis-pid-tof-base_run2, o2-analysis-timestamp]
 
   o2-analysis-pid-tof-full_run3:
-    <<: *tof_full
+    executable: o2-analysis-pid-tof-full
+    dependencies: [o2-analysis-pid-tof-base_run3, o2-analysis-timestamp]
 
   o2-analysis-pid-tof-full_run5:
     executable: o2-analysis-alice3-pid-tof
