@@ -11,6 +11,9 @@
 
 // Plotting utilities
 
+#ifndef EXEC_UTILS_PLOT_H_
+#define EXEC_UTILS_PLOT_H_
+
 void SetCanvas(TCanvas* can, int nPadsX, int nPadsY)
 {
   can->Divide(nPadsX, nPadsY, 0.005, 0.005);
@@ -54,3 +57,5 @@ void SetHistogramStyle(TH1* his, Int_t colour = 1, Int_t markerStyle = 1, Float_
   his->SetMarkerStyle(markerStyle);
   his->SetMarkerSize(markerSize);
 }
+
+#endif // EXEC_UTILS_PLOT_H_

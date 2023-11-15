@@ -11,6 +11,9 @@
 
 // AliPhysics utilities
 
+#ifndef EXEC_UTILS_ALI_H_
+#define EXEC_UTILS_ALI_H_
+
 TChain* CreateLocalChain(const char* txtfile, const char* type = "esd", int nfiles = -1)
 {
   TString treename = type;
@@ -46,3 +49,5 @@ TChain* CreateLocalChain(const char* txtfile, const char* type = "esd", int nfil
   }
   return chain;
 }
+
+#endif // EXEC_UTILS_ALI_H_

@@ -11,7 +11,11 @@
 
 // Validation utilities
 
+#ifndef EXEC_UTILS_VALIDATION_H_
+#define EXEC_UTILS_VALIDATION_H_
+
 #include <tuple>
+#include <vector>
 
 // vectors of histogram specifications
 using VecSpecHis = std::vector<std::tuple<TString, TString, TString, int, bool, bool, TString>>;
@@ -21,3 +25,5 @@ void AddHistogram(VecSpecHis& vec, TString label, TString nameAli, TString nameO
 {
   vec.push_back(std::make_tuple(label, nameAli, nameO2, rebin, logH, logR, proj));
 }
+
+#endif // EXEC_UTILS_VALIDATION_H_
