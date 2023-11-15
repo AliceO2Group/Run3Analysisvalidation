@@ -7,7 +7,7 @@
         "start-value-enumeration": "0",
         "end-value-enumeration": "-1",
         "step-value-enumeration": "1",
-        "aod-file": "AO2D.root"
+        "aod-file": "@list_o2.txt"
     },
     "internal-dpl-aod-spawner": "",
     "timestamp-task": {

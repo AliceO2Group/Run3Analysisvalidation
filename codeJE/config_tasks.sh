@@ -20,16 +20,6 @@ DOALI=1             # Run AliPhysics tasks.
 DOO2=1              # Run O2 tasks.
 DOPOSTPROCESS=1     # Run output postprocessing. (Comparison plots. Requires DOALI=1 and/or DOO2=1)
 
-
-# Other
-DOO2_MCCONV=0       # mc-converter
-DOO2_FDDCONV=0      # fdd-converter
-DOO2_COLLCONV=0     # collision-converter
-DOO2_ZDC=1          # zdc-converter
-DOO2_TRACKSELE=1    # trackselection, dca, propagation
-DOO2_TRACKEXTRA=1   # track-extra-converter
-DOO2_BC=1           # BC
-
 # Disable incompatible steps.
 [ "$ISINPUTO2" -eq 1 ] && { DOCONVERT=0; DOALI=0; }
 
@@ -45,6 +35,15 @@ DOO2_QA_EVTRK=0     # qa-event-track
 # User tasks
 DOO2_TASK_JETFINDER=1   # jet-finder
 DOO2_TASK_JETQA=1   # jetqa
+# Converters
+DOO2_MCCONV=0       # mc-converter
+DOO2_FDDCONV=0      # fdd-converter
+DOO2_COLLCONV=0     # collision-converter
+DOO2_ZDC=1          # zdc-converter
+DOO2_TRACKSELE=1    # trackselection, dca, propagation
+DOO2_TRACKEXTRA=1   # track-extra-converter
+DOO2_BC=1           # BC
+DOO2_DERIVED=1      # jet-deriveddata-producer
 
 SAVETREES=0         # Save O2 tables to trees.
 USEO2VERTEXER=0     # Use the O2 vertexer in AliPhysics.
@@ -89,7 +88,7 @@ function AdjustJson {
   fi
 
   # MC
-  if [ "$ISMC" -eq 1 ]; then
+  if [ "$INPUT_IS_MC" -eq 1 ]; then
     MsgWarn "Using MC data"
     ReplaceString "\"processMc\": \"false\"" "\"processMc\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processMC\": \"false\"" "\"processMC\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
@@ -104,7 +103,6 @@ function AdjustJson {
   # event-selection
   ReplaceString "\"syst\": \"pp\"" "\"syst\": \"$INPUT_SYS\"" "$JSON" || ErrExit "Failed to edit $JSON."
 
-  # hf-track-index-skim-creator-tag-sel-collisions
   if [ $DOO2_TRIGSEL -eq 1 ]; then
     # trigger selection
     ReplaceString "\"processTrigSel\": \"false\"" "\"processTrigSel\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
@@ -117,7 +115,7 @@ function AdjustJson {
   fi
 
   # timestamp-task
-  if [[ "$ISMC" -eq 1 && "$INPUT_RUN" -eq 2 ]]; then
+  if [[ "$INPUT_IS_MC" -eq 1 && "$INPUT_RUN" -eq 2 ]]; then
     ReplaceString "\"isRun2MC\": \"false\"" "\"isRun2MC\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
   else
     ReplaceString "\"isRun2MC\": \"true\"" "\"isRun2MC\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
@@ -139,13 +137,6 @@ function MakeScriptO2 {
   SUFFIX_RUN="_run${INPUT_RUN}" # the actual suffix to be used instead of the mask
 
   WORKFLOWS=""
-  # others
-  [ $DOO2_MCCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-mc-converter"
-  [ $DOO2_FDDCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-fdd-converter"
-  [ $DOO2_COLLCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-collision-converter"
-  [ $DOO2_ZDC -eq 1 ] && WORKFLOWS+=" o2-analysis-zdc-converter"
-  [ $DOO2_TRACKEXTRA -eq 1 ] && WORKFLOWS+=" o2-analysis-tracks-extra-converter"
-  [ $DOO2_BC -eq 1 ] && WORKFLOWS+=" o2-analysis-bc-converter"
   # Trigger selection
   [ $DOO2_TRIGSEL -eq 1 ] && WORKFLOWS+=" o2-analysis-event-selection"
   # QA
@@ -153,10 +144,18 @@ function MakeScriptO2 {
   # User tasks
   [ $DOO2_TASK_JETFINDER -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder"
   [ $DOO2_TASK_JETQA -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-validation-qa"
+  # Converters
+  [ $DOO2_MCCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-mc-converter"
+  [ $DOO2_FDDCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-fdd-converter"
+  [ $DOO2_COLLCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-collision-converter"
+  [ $DOO2_ZDC -eq 1 ] && WORKFLOWS+=" o2-analysis-zdc-converter"
+  [ $DOO2_TRACKEXTRA -eq 1 ] && WORKFLOWS+=" o2-analysis-tracks-extra-converter"
+  [ $DOO2_BC -eq 1 ] && WORKFLOWS+=" o2-analysis-bc-converter"
+  [ $DOO2_DERIVED -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-deriveddata-producer"
 
   # Translate options into arguments of the generating script.
   OPT_MAKECMD=""
-  [ "$ISMC" -eq 1 ] && OPT_MAKECMD+=" --mc"
+  [ "$INPUT_IS_MC" -eq 1 ] && OPT_MAKECMD+=" --mc"
   [ "$DEBUG" -eq 1 ] && OPT_MAKECMD+=" -d"
   [ $SAVETREES -eq 1 ] && OPT_MAKECMD+=" -t"
   [ $MAKE_GRAPH -eq 1 ] && OPT_MAKECMD+=" -g"
@@ -185,7 +184,7 @@ EOF
 }
 
 function MakeScriptAli {
-  ALIEXEC="root -b -q -l \"$DIR_TASKS/RunJetTaskLocal.C(\\\"\$FileIn\\\", \\\"\$JSON\\\", $ISMC, $USEO2VERTEXER, $USEALIEVCUTS)\""
+  ALIEXEC="root -b -q -l \"$DIR_TASKS/RunJetTaskLocal.C(\\\"\$FileIn\\\", \\\"\$JSON\\\", $INPUT_IS_MC, $USEO2VERTEXER, $USEALIEVCUTS)\""
   cat << EOF > "$SCRIPT_ALI"
 #!/bin/bash
 FileIn="\$1"
