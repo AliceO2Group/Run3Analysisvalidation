@@ -11,8 +11,8 @@
 
 // Validation utilities
 
-#ifndef EXEC_UTILS_VALIDATION_H_
-#define EXEC_UTILS_VALIDATION_H_
+#ifndef EXEC_UTILITIESVALIDATION_H_
+#define EXEC_UTILITIESVALIDATION_H_
 
 #include <tuple>
 #include <vector>
@@ -197,4 +197,4 @@ Int_t MakePlots(const VecSpecVecSpec& vecSpecVecSpec,
   return 0;
 }
 
-#endif // EXEC_UTILS_VALIDATION_H_
+#endif // EXEC_UTILITIESVALIDATION_H_

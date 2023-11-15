@@ -11,8 +11,8 @@
 
 // AliPhysics utilities
 
-#ifndef EXEC_UTILS_ALI_H_
-#define EXEC_UTILS_ALI_H_
+#ifndef EXEC_UTILITIESALI_H_
+#define EXEC_UTILITIESALI_H_
 
 TChain* CreateLocalChain(const char* txtfile, const char* type = "esd", int nfiles = -1)
 {
@@ -50,4 +50,4 @@ TChain* CreateLocalChain(const char* txtfile, const char* type = "esd", int nfil
   return chain;
 }
 
-#endif // EXEC_UTILS_ALI_H_
+#endif // EXEC_UTILITIESALI_H_
