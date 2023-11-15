@@ -32,7 +32,11 @@ void AddHistogram(VecSpecHis& vec, TString label, TString nameAli, TString nameO
 }
 
 // Make validation plots.
-Int_t MakePlots(const VecSpecVecSpec& vecSpecVecSpec, TString pathFileO2 = "AnalysisResults_O2.root", TString pathFileAli = "AnalysisResults_ALI.root", TString pathListAli = "list", bool doRatio = false)
+Int_t MakePlots(const VecSpecVecSpec& vecSpecVecSpec,
+                TString pathFileO2 = "AnalysisResults_O2.root",
+                TString pathFileAli = "AnalysisResults_ALI.root",
+                TString pathListAli = "list",
+                bool doRatio = false)
 {
   gStyle->SetOptStat(0);
   gStyle->SetPalette(0);
