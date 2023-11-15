@@ -21,7 +21,7 @@
 // .L PlotEfficiencyRecoStep.C
 // PlotEfficiencyRecoStep("InputName.root","particlename",true);
 
-#include "../exec/utils_plot.h"
+#include "../exec/utilitiesPlot.h"
 
 void SetProperAxisRange(TH1F** histo, int NIteration, float marginHigh, float marginLow, bool logScaleH);
 

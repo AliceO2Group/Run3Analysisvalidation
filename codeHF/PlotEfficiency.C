@@ -11,7 +11,7 @@
 
 // Plotting of reconstruction efficiency
 
-#include "../exec/utils_plot.h"
+#include "../exec/utilitiesPlot.h"
 
 Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particles = "d0")
 {

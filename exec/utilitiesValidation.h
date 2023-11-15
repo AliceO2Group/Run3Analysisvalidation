@@ -17,7 +17,7 @@
 #include <tuple>
 #include <vector>
 
-#include "../exec/utils_plot.h"
+#include "utilitiesPlot.h"
 
 // vectors of histogram specifications: axis label, AliPhysics name, O2Physics path/name, rebin, log scale histogram, log scale ratio, projection axis
 using VecSpecHis = std::vector<std::tuple<TString, TString, TString, int, bool, bool, TString>>;

@@ -11,7 +11,7 @@
 
 // Comparison of AliPhysics and O2 histograms
 
-#include "../exec/utils_validation.h"
+#include "../exec/utilitiesValidation.h"
 
 Int_t Compare(TString pathFileO2 = "AnalysisResults_O2.root", TString pathFileAli = "AnalysisResults_ALI.root", TString options = "", bool doRatio = false)
 {
