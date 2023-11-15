@@ -12,9 +12,9 @@
     "internal-dpl-aod-spawner": "",
     "timestamp-task": {
         "verbose": "false",
-        "rct-path": "RCT\/Info\/RunInformation",
-        "orbit-reset-path": "CTP\/Calib\/OrbitReset",
-        "ccdb-url": "http:\/\/alice-ccdb.cern.ch",
+        "rct-path": "RCT/Info/RunInformation",
+        "orbit-reset-path": "CTP/Calib/OrbitReset",
+        "ccdb-url": "http://alice-ccdb.cern.ch",
         "isRun2MC": "false"
     },
     "zdc-converter": "",
@@ -470,7 +470,7 @@
             "values": [
                 "200",
                 "0",
-                "100",
+                "100"
             ]
         },
         "trackSelections": "hybridTracksJE",
