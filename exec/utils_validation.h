@@ -17,8 +17,11 @@
 #include <tuple>
 #include <vector>
 
-// vectors of histogram specifications
+// vectors of histogram specifications: axis label, AliPhysics name, O2Physics path/name, rebin, log scale histogram, log scale ratio, projection axis
 using VecSpecHis = std::vector<std::tuple<TString, TString, TString, int, bool, bool, TString>>;
+
+// vector of specifications of vectors: name, VecSpecHis, pads X, pads Y
+using VecSpecVecSpec = std::vector<std::tuple<TString, VecSpecHis, int, int>>;
 
 // Add histogram specification in the vector.
 void AddHistogram(VecSpecHis& vec, TString label, TString nameAli, TString nameO2, int rebin, bool logH, bool logR, TString proj = "x")

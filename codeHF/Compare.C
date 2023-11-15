@@ -14,7 +14,7 @@
 #include "../exec/utils_plot.h"
 #include "../exec/utils_validation.h"
 
-Int_t MakePlots(const VecSpecVecSpec& vecSpecVecSpec, TString fileO2 = "AnalysisResults_O2.root", TString fileAli = "AnalysisResults_ALI.root", bool doRatio = false) {
+Int_t MakePlots(const VecSpecVecSpec& vecSpecVecSpec, TString fileO2 = "AnalysisResults_O2.root", TString fileAli = "AnalysisResults_ALI.root", TString pathListAli = "list", bool doRatio = false) {
   gStyle->SetOptStat(0);
   gStyle->SetPalette(0);
   gStyle->SetCanvasColor(0);
@@ -31,7 +31,6 @@ Int_t MakePlots(const VecSpecVecSpec& vecSpecVecSpec, TString fileO2 = "Analysis
     return 1;
   }
 
-  TString pathListAli = "HFVertices/clistHFVertices";
   TList* lAli = nullptr;
   fAli->GetObject(pathListAli.Data(), lAli);
   if (!lAli) {
@@ -177,6 +176,7 @@ Int_t MakePlots(const VecSpecVecSpec& vecSpecVecSpec, TString fileO2 = "Analysis
 
 Int_t Compare(TString fileO2 = "AnalysisResults_O2.root", TString fileAli = "AnalysisResults_ALI.root", TString options = "", bool doRatio = false)
 {
+  TString pathListAli = "HFVertices/clistHFVertices";
   TString labelParticle = "";
 
   // Histogram specification: axis label, AliPhysics name, O2Physics path/name, rebin, log scale histogram, log scale ratio, projection axis
@@ -435,5 +435,5 @@ Int_t Compare(TString fileO2 = "AnalysisResults_O2.root", TString fileAli = "Ana
   if (options.Contains(" jets-substructure-mc "))
     vecSpecVecSpec.push_back(std::make_tuple("jets-substructure-mc", vecHisJetSubstructureMC, 5, 3));
 
-  return MakePlots(vecSpecVecSpec, fileO2, fileAli, doRatio);
+  return MakePlots(vecSpecVecSpec, fileO2, fileAli, pathListAli, doRatio);
 }
