@@ -1,15 +1,7 @@
 // Comparison of AliPhysics and O2 histograms
 
-#include "utils_plot.h"
-
-// vectors of histogram specifications
-using VecSpecHis = std::vector<std::tuple<TString, TString, TString, int, bool, bool, TString>>;
-
-// Add histogram specification in the vector.
-void AddHistogram(VecSpecHis& vec, TString label, TString nameAli, TString nameO2, int rebin, bool logH, bool logR, TString proj = "x")
-{
-  vec.push_back(std::make_tuple(label, nameAli, nameO2, rebin, logH, logR, proj));
-}
+#include "../exec/utils_plot.h"
+#include "../exec/utils_validation.h"
 
 Int_t Compare(TString fileO2 = "AnalysisResults_O2.root", TString fileAli = "AnalysisResults_ALI.root", TString options = "", bool doRatio = false)
 {

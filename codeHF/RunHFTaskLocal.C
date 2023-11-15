@@ -1,4 +1,4 @@
-TChain* CreateLocalChain(const char* txtfile);
+#include "../exec/utils_ali.h"
 
 Long64_t RunHFTaskLocal(TString txtfile = "./list_ali.txt",
                         TString jsonfilename = "dpl-config_std.json",
@@ -60,34 +60,3 @@ Long64_t RunHFTaskLocal(TString txtfile = "./list_ali.txt",
   mgr->PrintStatus();
   return mgr->StartAnalysis("local", chainESD);
 };
-
-TChain* CreateLocalChain(const char* txtfile)
-{
-  // Open the file
-  ifstream in;
-  in.open(txtfile);
-  Int_t count = 0;
-  // Read the input list of files and add them to the chain
-  TString line;
-  TChain* chain = new TChain("esdTree");
-  while (in.good()) {
-    in >> line;
-    if (line.IsNull() || line.BeginsWith("#"))
-      continue;
-    TString esdFile(line);
-    TFile* file = TFile::Open(esdFile);
-    if (file && !file->IsZombie()) {
-      chain->Add(esdFile);
-      file->Close();
-    } else {
-      Error("CreateLocalChain", "Skipping un-openable file: %s", esdFile.Data());
-    }
-  }
-  in.close();
-  if (!chain->GetListOfFiles()->GetEntries()) {
-    Error("CreateLocalChain", "No file from %s could be opened", txtfile);
-    delete chain;
-    return nullptr;
-  }
-  return chain;
-}

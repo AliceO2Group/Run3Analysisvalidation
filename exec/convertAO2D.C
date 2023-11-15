@@ -8,7 +8,7 @@ R__ADD_INCLUDE_PATH($ALICE_PHYSICS)
 #include <ANALYSIS/macros/AddTaskPIDResponse.C>
 #include <RUN3/AddTaskAO2Dconverter.C>
 
-TChain* CreateLocalChain(const char* txtfile, const char* type, int nfiles);
+#include "utils_ali.h"
 
 Long64_t convertAO2D(TString listoffiles, bool isMC = 1, bool useAliEvCuts = false, bool isESD = 1, int nmaxevents = -1)
 {
@@ -56,43 +56,4 @@ Long64_t convertAO2D(TString listoffiles, bool isMC = 1, bool useAliEvCuts = fal
 
   mgr->SetDebugLevel(1);
   return mgr->StartAnalysis("localfile", chain, nentries, 0);
-}
-
-TChain* CreateLocalChain(const char* txtfile, const char* type, int nfiles)
-{
-  TString treename = type;
-  treename.ToLower();
-  treename += "Tree";
-  printf("***************************************\n");
-  printf("    Getting chain of trees %s\n", treename.Data());
-  printf("***************************************\n");
-  // Open the file
-  ifstream in;
-  in.open(txtfile);
-  Int_t count = 0;
-  // Read the input list of files and add them to the chain
-  TString line;
-  TChain* chain = new TChain(treename);
-  while (in.good()) {
-    in >> line;
-    if (line.IsNull() || line.BeginsWith("#"))
-      continue;
-    if (count++ == nfiles)
-      break;
-    TString esdFile(line);
-    TFile* file = TFile::Open(esdFile);
-    if (file && !file->IsZombie()) {
-      chain->Add(esdFile);
-      file->Close();
-    } else {
-      Error("GetChainforTestMode", "Skipping un-openable file: %s", esdFile.Data());
-    }
-  }
-  in.close();
-  if (!chain->GetListOfFiles()->GetEntries()) {
-    Error("CreateLocalChain", "No file from %s could be opened", txtfile);
-    delete chain;
-    return nullptr;
-  }
-  return chain;
 }
