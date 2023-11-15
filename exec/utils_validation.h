@@ -84,7 +84,7 @@ Int_t MakePlots(const VecSpecVecSpec& vecSpecVecSpec, TString pathFileO2 = "Anal
     auto vecSpec = std::get<1>(specVecSpec);  // list of histogram specs.
     int nPadsX = std::get<2>(specVecSpec);    // number of horizontal pads
     int nPadsY = std::get<3>(specVecSpec);    // number of vertical pads
-    Printf("\nProcessing histogram list: %s (%d)", nameSpec.Data(), (int)vecSpec.size());
+    Printf("\nProcessing histogram list: %s (%lu)", nameSpec.Data(), vecSpec.size());
     if (nPadsX * nPadsY < vecSpec.size()) {
       Printf("Not enough pads (%d)", nPadsX * nPadsY);
       return 1;
@@ -109,7 +109,7 @@ Int_t MakePlots(const VecSpecVecSpec& vecSpecVecSpec, TString pathFileO2 = "Anal
       projAx = std::get<6>(spec);
 
       // Get AliPhysics histogram.
-      hAli = (TH1F*)lAli->FindObject(nameHisAli.Data());
+      hAli = reinterpret_cast<TH1F*>(lAli->FindObject(nameHisAli.Data()));
       if (!hAli) {
         printf("Failed to load %s from %s\n", nameHisAli.Data(), pathFileAli.Data());
         return 1;
@@ -124,18 +124,18 @@ Int_t MakePlots(const VecSpecVecSpec& vecSpecVecSpec, TString pathFileO2 = "Anal
 
       if (oO2->InheritsFrom("TH3")) {
         if (projAx == "x") {
-          hO2 = ((TH3D*)oO2)->ProjectionX();
+          hO2 = (reinterpret_cast<TH3D*>(oO2))->ProjectionX();
         } else if (projAx == "y") {
-          hO2 = ((TH3D*)oO2)->ProjectionY();
+          hO2 = (reinterpret_cast<TH3D*>(oO2))->ProjectionY();
         }
       } else if (oO2->InheritsFrom("TH2")) {
         if (projAx == "x") {
-          hO2 = ((TH2D*)oO2)->ProjectionX();
+          hO2 = (reinterpret_cast<TH2D*>(oO2))->ProjectionX();
         } else if (projAx == "y") {
-          hO2 = ((TH2D*)oO2)->ProjectionY();
+          hO2 = (reinterpret_cast<TH2D*>(oO2))->ProjectionY();
         }
       } else {
-        hO2 = (TH1D*)oO2;
+        hO2 = reinterpret_cast<TH1D*>(oO2);
       }
 
       Printf("%d (%s, %s): bins: %d, %d, ranges: %g-%g, %g-%g",
@@ -171,9 +171,9 @@ Int_t MakePlots(const VecSpecVecSpec& vecSpecVecSpec, TString pathFileO2 = "Anal
       // Ratio
       if (doRatio) {
         auto padR = canRat->cd(index + 1);
-        hRatio = (TH1F*)hO2->Clone(Form("hRatio%d", index));
+        hRatio = reinterpret_cast<TH1F*>(hO2->Clone(Form("hRatio%d", index)));
         hRatio->Divide(hAli);
-        hRatio->SetTitle(Form("Entries ratio: %g;%s;O^{2}/Ali", (double)nO2 / (double)nAli, labelAxis.Data()));
+        hRatio->SetTitle(Form("Entries ratio: %g;%s;O^{2}/Ali", static_cast<float>(nO2) / static_cast<float>(nAli), labelAxis.Data()));
         yMin = hRatio->GetMinimum(0);
         yMax = hRatio->GetMaximum();
         SetHistogram(hRatio, yMin, yMax, marginRLow, marginRHigh, logScaleR);
