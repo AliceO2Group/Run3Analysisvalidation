@@ -45,19 +45,19 @@ Int_t MakePlots(const VecSpecVecSpec& vecSpecVecSpec,
 
   TFile* fO2 = new TFile(pathFileO2.Data());
   if (fO2->IsZombie()) {
-    printf("Failed to open file %s\n", pathFileO2.Data());
+    Fatal("MakePlots", "Failed to open file %s\n", pathFileO2.Data());
     return 1;
   }
   TFile* fAli = new TFile(pathFileAli.Data());
   if (fAli->IsZombie()) {
-    printf("Failed to open file %s\n", pathFileAli.Data());
+    Fatal("MakePlots", "Failed to open file %s\n", pathFileAli.Data());
     return 1;
   }
 
   TList* lAli = nullptr;
   fAli->GetObject(pathListAli.Data(), lAli);
   if (!lAli) {
-    printf("Failed to load list %s from %s\n", pathListAli.Data(), pathFileAli.Data());
+    Fatal("MakePlots", "Failed to load list %s from %s\n", pathListAli.Data(), pathFileAli.Data());
     return 1;
   }
 
@@ -115,14 +115,14 @@ Int_t MakePlots(const VecSpecVecSpec& vecSpecVecSpec,
       // Get AliPhysics histogram.
       hAli = reinterpret_cast<TH1F*>(lAli->FindObject(nameHisAli.Data()));
       if (!hAli) {
-        printf("Failed to load %s from %s\n", nameHisAli.Data(), pathFileAli.Data());
+        Fatal("MakePlots", "Failed to load %s from %s\n", nameHisAli.Data(), pathFileAli.Data());
         return 1;
       }
 
       // Get O2 histogram.
       auto oO2 = fO2->Get(nameHisO2.Data());
       if (!oO2) {
-        printf("Failed to load %s from %s\n", nameHisO2.Data(), pathFileO2.Data());
+        Fatal("MakePlots", "Failed to load %s from %s\n", nameHisO2.Data(), pathFileO2.Data());
         return 1;
       }
 

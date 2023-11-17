@@ -99,12 +99,12 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
     bool okPrompt = true;
     TH1F* hPtRecPrompt = (TH1F*)file->Get(nameHistRec.Data());
     if (!hPtRecPrompt) {
-      Printf("Warning: Failed to load %s from %s", nameHistRec.Data(), pathFile.Data());
+      Warning("PlotEfficiency", "Failed to load %s from %s", nameHistRec.Data(), pathFile.Data());
       okPrompt = false;
     }
     TH1F* hPtGenPrompt = (TH1F*)file->Get(nameHistgen.Data());
     if (!hPtGenPrompt) {
-      Printf("Warning: Failed to load %s from %s", nameHistgen.Data(), pathFile.Data());
+      Warning("PlotEfficiency", "Failed to load %s from %s", nameHistgen.Data(), pathFile.Data());
       okPrompt = false;
     }
 
@@ -120,12 +120,12 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
     bool okNonPrompt = true;
     TH1F* hPtRecNonPrompt = (TH1F*)file->Get(nameHistRec.Data());
     if (!hPtRecNonPrompt) {
-      Printf("Warning: Failed to load %s from %s", nameHistRec.Data(), pathFile.Data());
+      Warning("PlotEfficiency", "Failed to load %s from %s", nameHistRec.Data(), pathFile.Data());
       okNonPrompt = false;
     }
     TH1F* hPtGenNonPrompt = (TH1F*)file->Get(nameHistgen.Data());
     if (!hPtGenNonPrompt) {
-      Printf("Warning: Failed to load %s from %s", nameHistgen.Data(), pathFile.Data());
+      Warning("PlotEfficiency", "Failed to load %s from %s", nameHistgen.Data(), pathFile.Data());
       okNonPrompt = false;
     }
 
