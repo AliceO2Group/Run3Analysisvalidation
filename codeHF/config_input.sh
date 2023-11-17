@@ -105,4 +105,20 @@ case $INPUT_CASE in
     INPUT_FILES="AO2D.root"
     INPUT_IS_O2=1
     ;;
+  13)
+    INPUT_LABEL="Run 3, p-p 13.6 TeV, MC LHC22b1b, D2H enriched"
+    INPUT_DIR="$INPUT_BASE/Run3/pp_13.6TeV/sim/LHC22b1b"
+    INPUT_FILES="AO2D.root"
+    INPUT_IS_O2=1
+    INPUT_IS_MC=1
+    INPUT_RUN=3
+    ;;
+  14)
+    INPUT_LABEL="Run 3, p-p 13.6 TeV, MC LHC23f4b2, general purpose"
+    INPUT_DIR="$INPUT_BASE/Run3/pp_13.6TeV/sim/LHC23f4b2"
+    INPUT_FILES="AO2D.root"
+    INPUT_IS_O2=1
+    INPUT_IS_MC=1
+    INPUT_RUN=3
+    ;;
   esac
