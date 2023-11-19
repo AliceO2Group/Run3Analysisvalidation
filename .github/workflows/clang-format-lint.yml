@@ -44,10 +44,10 @@ jobs:
       - name: Print PR condition
         run: |
           # Print the condition
-          echo "${{ steps.clang-result.outputs.status }} == 1 && (${{ github.event_name }} == 'push' || ${{ github.event.pull_request.head.repo.full_name }} == ${{ github.repository }})"
+          echo "${{ steps.clang-result.outputs.status }} == 1 && ${{ github.event_name }} == 'push'"
       - name: Create Pull Request with applied fixes
         id: cpr
-        if: steps.clang-result.outputs.status == 1 && (github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository)
+        if: steps.clang-result.outputs.status == 1 && github.event_name == 'push'
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
@@ -58,7 +58,7 @@ jobs:
           branch: patch-${{ github.workflow }}-${{ github.ref_name }}
           delete-branch: true
       - name: Create PR output
-        if: steps.clang-result.outputs.status == 1 && (github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository)
+        if: steps.clang-result.outputs.status == 1 && github.event_name == 'push'
         run: |
           echo "::error::Merge pull request ${{ steps.cpr.outputs.pull-request-url }} to apply automatic fixes."
           exit 1
