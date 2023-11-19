@@ -1,11 +1,11 @@
 ---
 # https://github.com/marketplace/actions/clang-format-lint
-name: Clang Format Linter
+name: ClangFormat
 on: [push, pull_request]
 permissions: {}
 jobs:
-  build:
-    name: Clang Format Linter
+  clang-format:
+    name: Clang Format
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
