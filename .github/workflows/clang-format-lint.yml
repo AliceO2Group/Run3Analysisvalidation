@@ -10,11 +10,37 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+
       - name: Clang Format
-        uses: DoozyX/clang-format-lint-action@v0.11
+        id: clang
+        uses: DoozyX/clang-format-lint-action@v0.16.2
         with:
           #source: '.'
           #exclude: './third_party ./external'
-          #extensions: 'h,cpp,cxx,C'
-          clangFormatVersion: 11
+          extensions: 'C,c,c++,cc,cl,cpp,cu,cuh,cxx,cxx.in,h,h++,hh,h.in,hpp,hxx,inc,inl,macro,json'
+          clangFormatVersion: 16
           style: file
+          inplace: true
+
+        # Create pull request if applicable (for now works only on PR from same repository, not from forks)
+      - name: Print PR condition
+        run: |
+          # Print the condition
+          echo "${{ steps.clang.outputs.has_updated_sources }} == 1 && (${{ github.event_name }} == 'push' || ${{ github.event.pull_request.head.repo.full_name }} == ${{ github.repository }})"
+      - name: Create Pull Request with applied fixes
+        id: cpr
+        if: steps.clang.outputs.has_updated_sources == 1 && (github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository)
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
+          commit-message: "[Clang format] Apply linters automatic fixes"
+          title: "[Clang format] Apply linters automatic fixes"
+          body: "Please merge this pull request to apply automatic fixes by Clang format."
+          labels: bot
+          branch: patch-${{ github.workflow }}-${{ github.ref_name }}
+          delete-branch: true
+      - name: Create PR output
+        if: steps.clang.outputs.has_updated_sources == 1 && (github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository)
+        run: |
+          echo "::error::Merge pull request ${{ steps.cpr.outputs.pull-request-url }} to apply automatic fixes."
+          exit 1
