@@ -2,7 +2,15 @@
 # https://github.com/marketplace/actions/clang-format-lint
 name: ClangFormat
 on: [push, pull_request]
-permissions: {}
+permissions:
+  # Give the default GITHUB_TOKEN write permission to commit and push, comment issues & post new PR
+  # Remove the ones you do not need
+  contents: write
+  issues: write
+  pull-requests: write
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
 jobs:
   clang-format:
     name: Clang Format
