@@ -55,23 +55,23 @@ void SOverBComp()
   canvas3a_1->SetFillColor(0);
   canvas3a_1->SetBorderMode(0);
   canvas3a_1->SetBorderSize(2);
-  //canvas3a_1->SetGridx();
-  //canvas3a_1->SetGridy();
+  // canvas3a_1->SetGridx();
+  // canvas3a_1->SetGridy();
   canvas3a_1->SetLeftMargin(0.15);
   canvas3a_1->SetFrameBorderMode(0);
   canvas3a_1->SetFrameBorderMode(0);
 
   cout << "ok" << endl;
 
-  //sig_sc3->SetMarkerSize(1.25);
-  //sig_sc3->SetMinimum(2.27);
-  //sig_sc3->SetMaximum(2.30);
+  // sig_sc3->SetMarkerSize(1.25);
+  // sig_sc3->SetMinimum(2.27);
+  // sig_sc3->SetMaximum(2.30);
   sig_sc3->SetEntries(7);
   sig_sc3->SetStats(0);
   sig_sc3->SetLineWidth(2);
   sig_sc3->SetLineColor(4);
-  //sig_sc3->SetMarkerColor(1);
-  //sig_sc3->SetMarkerStyle(21);
+  // sig_sc3->SetMarkerColor(1);
+  // sig_sc3->SetMarkerStyle(21);
   sig_sc3->GetXaxis()->SetTitle("#it{p}_{T}(#Lambda_{c}) [GeV/#it{c}]");
   sig_sc3->GetXaxis()->SetNdivisions(511);
   sig_sc3->GetXaxis()->SetRangeUser(0, 10);
@@ -98,7 +98,7 @@ void SOverBComp()
   sig_sc2->SetLineColor(2);
   // sig_sc2->SetMarkerStyle(21);
   // sig_sc2->SetMarkerSize(1.25);
-  //sig_sc2->SetMarkerColor(2);
+  // sig_sc2->SetMarkerColor(2);
   sig_sc2->Draw("same");
 
   lat->DrawLatex(0.2, 0.83, "ALICE3 projection, pp #sqrt{s}= 14 TeV");
@@ -113,7 +113,7 @@ void SOverBComp()
   leg->SetFillStyle(0);
   leg->SetBorderSize(0);
   leg->SetFillColor(0);
-  //leg->SetTextSize(22);
+  // leg->SetTextSize(22);
 
   leg->Draw();
 
@@ -128,7 +128,7 @@ void SOverBComp()
   canvas3a_2->SetFillColor(0);
   canvas3a_2->SetBorderMode(0);
   canvas3a_2->SetBorderSize(2);
-  //canvas3a_2->SetGridx();
+  // canvas3a_2->SetGridx();
   canvas3a_2->SetGridy();
   canvas3a_2->SetLeftMargin(0.15);
   canvas3a_2->SetBottomMargin(0.2);
@@ -138,8 +138,8 @@ void SOverBComp()
   TH1F* SigRatio = new TH1F("SigRatio", "", 6, xAxis1);
   SigRatio->Divide(sig_sc3, sig_sc2, 1., 1.);
 
-  //SigRatio->SetMarkerStyle(1);
-  //SigRatio->SetMarkerSize(1);
+  // SigRatio->SetMarkerStyle(1);
+  // SigRatio->SetMarkerSize(1);
   SigRatio->SetMinimum(0.99);
   SigRatio->SetMaximum(1.01);
   SigRatio->SetEntries(7);
@@ -147,7 +147,7 @@ void SOverBComp()
   SigRatio->SetLineWidth(2);
   SigRatio->SetLineColor(4);
   SigRatio->GetXaxis()->SetTitle("p_{T}(#Lambda_{c}) [GeV/c]");
-  //SigRatio->GetXaxis()->SetNdivisions(511);
+  // SigRatio->GetXaxis()->SetNdivisions(511);
   SigRatio->GetXaxis()->SetLabelFont(42);
   SigRatio->GetXaxis()->SetLabelSize(0.085);
   SigRatio->GetXaxis()->SetTitleSize(0.095);

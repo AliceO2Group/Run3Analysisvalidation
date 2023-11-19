@@ -50,7 +50,7 @@ void doPhiProjections(
   static Double_t Nch[] = {0, 10, 20, 30, 40, 50, 60, 80, 100, 200};
   //  Nbins is the number of multiplicity bins
   static const uint Nbins = 9;
-  //static const uint Nbins = sizeof(Nch) / sizeof(Nch[0]);
+  // static const uint Nbins = sizeof(Nch) / sizeof(Nch[0]);
   const double absDeltaPhi = 1.3; // y-projection range (it is only needed for jet yield calculation from delta eta projection)
 
   TFile* infile = new TFile(inFileName, "read");

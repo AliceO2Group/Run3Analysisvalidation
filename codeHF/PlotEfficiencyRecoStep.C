@@ -39,8 +39,8 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults_O2.root", TStri
 
   // binning
   Int_t iNRebin = 4;
-  //Double_t* dRebin = nullptr;
-  //const Int_t NRebin = 1;
+  // Double_t* dRebin = nullptr;
+  // const Int_t NRebin = 1;
   Double_t dRebin[] = {0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 5, 6, 8, 10};
   const Int_t NRebin = sizeof(dRebin) / sizeof(dRebin[0]) - 1;
 
@@ -209,7 +209,7 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults_O2.root", TStri
     hGenYNonPrompt->Draw("pe");
 
     for (int iRs = 0; iRs < NRecoStep; iRs++) {
-      //inclusive
+      // inclusive
       TString nameHistRec = outputDir + "/hPtVsYRecSig" + recoStep[iRs]; // reconstruction level pT of matched candidates
       cout << nameHistRec.Data() << endl;
 
@@ -249,7 +249,7 @@ Int_t PlotEfficiencyRecoStep(TString pathFile = "AnalysisResults_O2.root", TStri
       hEffYIncl[iRs]->SetTitle("inclusive ;#it{y}; efficiency");
       SetHistogramStyle(hEffYIncl[iRs], colours[iRs], markers[iRs], markersize[iRs], lineWidth);
 
-      //prompt
+      // prompt
       TString nameHistRecPrompt = outputDir + "/hPtVsYRecSigPrompt" + recoStep[iRs]; // reconstruction level pT of matched candidates
       TH2F* hPtVsYRecPrompt = (TH2F*)file->Get(nameHistRecPrompt.Data());
       if (!hPtVsYRecPrompt) {

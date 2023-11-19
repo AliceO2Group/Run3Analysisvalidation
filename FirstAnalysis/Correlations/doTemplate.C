@@ -82,8 +82,8 @@ void doTemplate(
       //  F*Y_peripheral(deltaphi) + Y_ridge = template fit
       TF1* fTemplate = new TF1("fTemplate", templateFitFunction, -0.5 * TMath::Pi() + 1e-6, 1.5 * TMath::Pi() - 1e-6, 4);
       fTemplate->SetParameters(par); //  set the parameters obtained from template fit above using tempMinuit()
-      //fTemplate->SetLineStyle(kSolid);
-      //fTemplate->SetLineColor(kBlue+1);
+      // fTemplate->SetLineStyle(kSolid);
+      // fTemplate->SetLineColor(kBlue+1);
 
       TH1F* hTemplate = (TH1F*)hminuit->Clone();
       hTemplate->Reset();
@@ -184,7 +184,7 @@ void doTemplate(
       latex->DrawLatex(0.3, 0.93, "pp #sqrt{s} = 13 TeV");
       latex->DrawLatex(0.3, 0.86, Form("%.1f < p_{T, trig, assoc} < %.1f", binspTref[0], binspTref[1]));
       latex->DrawLatex(0.3, 0.79, Form("%.1f < N_{ch} < %.1f", binsMult[iMult], binsMult[iMult + 1]));
-      //latex->DrawLatex(0.3,0.72,Form("%.1f < #Delta#eta < %.1f",etaMin,etaMax));
+      // latex->DrawLatex(0.3,0.72,Form("%.1f < #Delta#eta < %.1f",etaMin,etaMax));
 
       if (savePlots)
         cTemplate->SaveAs(Form("%s/template_ref_%d.png", outputPlotsName, iMult));
@@ -297,7 +297,7 @@ void doTemplate(
         latex->DrawLatex(0.3, 0.93, "pp #sqrt{s} = 13 TeV");
         latex->DrawLatex(0.3, 0.86, Form("%.1f < p_{T, trig} < %.1f", binspTtrig[ipTtrig], binspTtrig[ipTtrig + 1]));
         latex->DrawLatex(0.3, 0.79, Form("%.1f < N_{ch} < %.1f", binsMult[iMult], binsMult[iMult + 1]));
-        //latex->DrawLatex(0.3,0.72,Form("%.1f < #Delta#eta < %.1f",etaMin,etaMax));
+        // latex->DrawLatex(0.3,0.72,Form("%.1f < #Delta#eta < %.1f",etaMin,etaMax));
 
         if (savePlots)
           cTemplate->SaveAs(Form("%s/template_%d_%d.png", outputPlotsName, ipTtrig, iMult));

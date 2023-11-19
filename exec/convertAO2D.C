@@ -43,15 +43,15 @@ Long64_t convertAO2D(TString listoffiles, bool isMC = 1, bool useAliEvCuts = fal
   if (isMC && isESD)
     AliMCEventHandler* handlerMC = AddMCHandler();
   AliAnalysisTaskAO2Dconverter* converter = AddTaskAO2Dconverter("");
-  //converter->SelectCollisionCandidates(AliVEvent::kAny);
+  // converter->SelectCollisionCandidates(AliVEvent::kAny);
   if (useAliEvCuts)
     converter->SetUseEventCuts(kTRUE);
   if (isMC)
     converter->SetMCMode();
   if (!mgr->InitAnalysis())
     return -1;
-  //PH   mgr->SetBit(AliAnalysisManager::kTrueNotify);
-  //mgr->SetRunFromPath(244918);
+  // PH   mgr->SetBit(AliAnalysisManager::kTrueNotify);
+  // mgr->SetRunFromPath(244918);
   mgr->PrintStatus();
 
   mgr->SetDebugLevel(1);
