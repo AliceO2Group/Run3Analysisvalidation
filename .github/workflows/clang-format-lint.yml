@@ -25,7 +25,7 @@ jobs:
         with:
           #source: '.'
           #exclude: './third_party ./external'
-          extensions: 'C,c,c++,cc,cl,cpp,cu,cuh,cxx,cxx.in,h,h++,hh,h.in,hpp,hxx,inc,inl,macro,json'
+          extensions: 'C,c,c++,cc,cl,cpp,cu,cuh,cxx,cxx.in,h,h++,hh,h.in,hpp,hxx,inc,inl,macro'
           clangFormatVersion: 16
           style: file
           inplace: true
