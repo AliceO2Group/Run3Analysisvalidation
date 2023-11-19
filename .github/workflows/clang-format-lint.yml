@@ -58,7 +58,12 @@ jobs:
           branch: patch-${{ github.workflow }}-${{ github.ref_name }}
           delete-branch: true
       - name: Create PR output
-        if: steps.clang-result.outputs.status == 1 && github.event_name == 'push'
+        if: steps.clang-result.outputs.status == 1
         run: |
-          echo "::error::Merge pull request ${{ steps.cpr.outputs.pull-request-url }} to apply automatic fixes."
+          echo "::error::Files need formatting."
+          if [ ${{ github.event_name }} == 'push' ]; then
+            echo "::error::Merge pull request ${{ steps.cpr.outputs.pull-request-url }} to apply automatic fixes."
+          elif [ ${{ github.event_name }} == 'pull_request' ]; then
+            echo "::error::Please check ${{ github.event.pull_request.head.repo.full_name }}/pulls to apply automatic fixes."
+          fi
           exit 1
