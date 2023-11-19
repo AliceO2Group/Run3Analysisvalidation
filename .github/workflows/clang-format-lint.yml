@@ -64,6 +64,6 @@ jobs:
           if [ ${{ github.event_name }} == 'push' ]; then
             echo "::error::Merge pull request ${{ steps.cpr.outputs.pull-request-url }} to apply automatic fixes."
           elif [ ${{ github.event_name }} == 'pull_request' ]; then
-            echo "::error::Please check ${{ github.event.pull_request.head.repo.full_name }}/pulls to apply automatic fixes."
+            echo "::error::Please check ${{ github.event.pull_request.head.repo.html_url }}/pulls to apply automatic fixes."
           fi
           exit 1
