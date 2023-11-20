@@ -32,11 +32,7 @@ MAKE_GRAPH=0          # Make topology graph.
 DOO2_TRIGSEL=1        # event-selection
 # QA
 DOO2_QA_EVTRK=0       # qa-event-track
-# User tasks
 DOO2_TASK_JETVALID=1  # je-jet-validation-qa
-# Jets
-DOO2_JET_DERIVED=1    # je-jet-deriveddata-producer
-DOO2_JET_FINDER=1     # je-jet-finder
 # Converters
 DOO2_CONV_MC=0      # mc-converter
 DOO2_CONV_FDD=0     # fdd-converter
@@ -142,11 +138,7 @@ function MakeScriptO2 {
   [ $DOO2_TRIGSEL -eq 1 ] && WORKFLOWS+=" o2-analysis-event-selection"
   # QA
   [ $DOO2_QA_EVTRK -eq 1 ] && WORKFLOWS+=" o2-analysis-qa-event-track"
-  # Analysis tasks
   [ $DOO2_TASK_JETVALID -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-validation-qa"
-  # Table producers
-  [ $DOO2_JET_DERIVED -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-deriveddata-producer"
-  [ $DOO2_JET_FINDER -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder"
   # Converters
   [ $DOO2_CONV_MC -eq 1 ] && WORKFLOWS+=" o2-analysis-mc-converter"
   [ $DOO2_CONV_FDD -eq 1 ] && WORKFLOWS+=" o2-analysis-fdd-converter"

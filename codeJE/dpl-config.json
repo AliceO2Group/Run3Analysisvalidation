@@ -446,7 +446,7 @@
         "ptUp": "100",
         "etaLow": "-0.9",
         "etaUp": "0.9",
-        "evSel": "false",
+        "evSel": "true",
         "nBins": "200",
         "BinsPhi": {
             "values": [

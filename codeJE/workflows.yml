@@ -12,9 +12,6 @@ workflows:
 
   # Analysis tasks
 
-  o2-analysis-je-jet-validation-qa:
-    dependencies: [o2-analysis-je-jet-finder, o2-analysis-je-jet-deriveddata-producer, o2-analysis-trackselection_runX]
-
   # Table producers
 
   o2-analysis-je-emcal-correction-task:
@@ -27,6 +24,9 @@ workflows:
     dependencies: [o2-analysis-je-jet-deriveddata-producer]
 
   # QA
+
+  o2-analysis-je-jet-validation-qa:
+    dependencies: [o2-analysis-je-jet-finder, o2-analysis-je-jet-deriveddata-producer, o2-analysis-trackselection_runX]
 
   o2-analysis-qa-efficiency:
     requires_mc: yes
