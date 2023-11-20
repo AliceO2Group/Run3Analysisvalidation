@@ -33,6 +33,9 @@ DOO2_TRIGSEL=1        # event-selection
 # QA
 DOO2_QA_EVTRK=0       # qa-event-track
 DOO2_TASK_JETVALID=1  # je-jet-validation-qa
+# Table producers
+DOO2_JET_DERIVED=0    # je-jet-deriveddata-producer
+DOO2_JET_FINDER=0     # je-jet-finder
 # Converters
 DOO2_CONV_MC=0      # mc-converter
 DOO2_CONV_FDD=0     # fdd-converter
@@ -139,6 +142,9 @@ function MakeScriptO2 {
   # QA
   [ $DOO2_QA_EVTRK -eq 1 ] && WORKFLOWS+=" o2-analysis-qa-event-track"
   [ $DOO2_TASK_JETVALID -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-validation-qa"
+  # Table producers
+  [ $DOO2_JET_DERIVED -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-deriveddata-producer"
+  [ $DOO2_JET_FINDER -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder"
   # Converters
   [ $DOO2_CONV_MC -eq 1 ] && WORKFLOWS+=" o2-analysis-mc-converter"
   [ $DOO2_CONV_FDD -eq 1 ] && WORKFLOWS+=" o2-analysis-fdd-converter"
