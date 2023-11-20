@@ -1,0 +1,76 @@
+---
+options:
+  global: ""
+  local:
+    - "-b"
+    - "--configuration json://$JSON"
+    - "--aod-memory-rate-limit 2000000000"
+    - "--shm-segment-size 16000000000"
+    - "--min-failure-level error"
+
+workflows:
+
+  # Analysis tasks
+
+  # Table producers
+
+  o2-analysis-je-emcal-correction-task:
+    dependencies: [o2-analysis-event-selection, o2-analysis-trackselection_runX]
+
+  o2-analysis-je-jet-deriveddata-producer:
+    dependencies: [o2-analysis-je-emcal-correction-task]
+
+  o2-analysis-je-jet-finder:
+    dependencies: [o2-analysis-je-jet-deriveddata-producer]
+
+  # QA
+
+  o2-analysis-je-jet-validation-qa:
+    dependencies: [o2-analysis-je-jet-finder, o2-analysis-je-jet-deriveddata-producer, o2-analysis-trackselection_runX]
+
+  o2-analysis-qa-efficiency:
+    requires_mc: yes
+    dependencies: [o2-analysis-event-selection, o2-analysis-trackselection_runX]
+
+  o2-analysis-qa-event-track:
+    requires_mc: yes
+    dependencies: [o2-analysis-event-selection, o2-analysis-trackselection_runX, o2-analysis-pid-tof-base]
+
+  # Helper tasks
+
+  o2-analysis-timestamp: {}
+
+  o2-analysis-trackselection_run2:
+    executable: o2-analysis-trackselection
+    dependencies: o2-analysis-track-dca_run2
+
+  o2-analysis-trackselection_run3:
+    executable: o2-analysis-trackselection
+    dependencies: o2-analysis-track-dca_run3
+
+  o2-analysis-track-dca_run2:
+    executable: o2-analysis-trackextension
+    dependencies: o2-analysis-timestamp
+
+  o2-analysis-track-dca_run3:
+    executable: o2-analysis-track-propagation
+    dependencies: o2-analysis-timestamp
+
+  o2-analysis-event-selection:
+    dependencies: o2-analysis-timestamp
+
+# Converters
+
+  o2-analysis-mc-converter: {}
+
+  o2-analysis-fdd-converter: {}
+
+  o2-analysis-collision-converter: {}
+
+  o2-analysis-zdc-converter: {}
+
+  o2-analysis-bc-converter: {}
+
+  o2-analysis-tracks-extra-converter: {}
+
+  o2-analysis-calo-label-converter: {}
