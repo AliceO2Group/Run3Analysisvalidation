@@ -10,6 +10,7 @@
         "aod-file": "@list_o2.txt"
     },
     "internal-dpl-aod-spawner": "",
+    "bc-converter": "",
     "timestamp-task": {
         "verbose": "false",
         "rct-path": "RCT/Info/RunInformation",
@@ -17,15 +18,26 @@
         "ccdb-url": "http://alice-ccdb.cern.ch",
         "isRun2MC": "false"
     },
+    "tracks-extra-converter": "",
     "zdc-converter": "",
     "internal-dpl-aod-index-builder": "",
+    "tracks-extra-spawner": "",
+    "bc-selection-task": {
+        "triggerBcShift": "999",
+        "ITSROFrameBorderMargin": "30",
+        "processRun2": "true",
+        "processRun3": "false"
+    },
     "track-extension": {
         "compatibilityIU": "false",
         "processRun2": "true",
         "processRun3": "false"
     },
-    "bc-selection-task": {
-        "triggerBcShift": "999",
+    "event-selection-task": {
+        "syst": "pp",
+        "muonSelection": "0",
+        "customDeltaBC": "300",
+        "isMC": "false",
         "processRun2": "true",
         "processRun3": "false"
     },
@@ -36,33 +48,35 @@
         "compatibilityIU": "false",
         "itsMatching": "0",
         "dcaSetup": "0",
-        "ptMin": "0.100000001",
+        "ptMin": "0.1",
         "ptMax": "1e+10",
-        "etaMin": "-0.800000012",
-        "etaMax": "0.800000012"
+        "etaMin": "-0.8",
+        "etaMax": "0.8"
     },
-    "event-selection-task": {
-        "syst": "pp",
-        "muonSelection": "0",
-        "customDeltaBC": "300",
-        "isMC": "false",
-        "processRun2": "true",
-        "processRun3": "false"
+    "jet-deriveddata-producer": {
+        "processBunchCossings": "true",
+        "processCollisions": "true",
+        "processMcCollisionLabels": "false",
+        "processMcCollisions": "false",
+        "processTracks": "true",
+        "processMcTrackLabels": "false",
+        "processParticles": "false",
+        "processClusters": "false"
     },
     "jet-finder-data-charged": {
         "vertexZCut": "10",
-        "trackPtMin": "0.150000006",
+        "trackPtMin": "0.15",
         "trackPtMax": "1000",
-        "trackEtaMin": "-0.899999976",
-        "trackEtaMax": "0.899999976",
+        "trackEtaMin": "-0.9",
+        "trackEtaMax": "0.9",
         "trackPhiMin": "-999",
         "trackPhiMax": "999",
         "trackSelections": "hybridTracksJE",
         "eventSelections": "sel7",
         "particleSelections": "PhysicalPrimary",
         "clusterDefinition": "kV3Default",
-        "clusterEtaMin": "-0.699999988",
-        "clusterEtaMax": "0.699999988",
+        "clusterEtaMin": "-0.7",
+        "clusterEtaMax": "0.7",
         "clusterPhiMin": "-999",
         "clusterPhiMax": "999",
         "clusterEnergyMin": "0.5",
@@ -71,7 +85,7 @@
         "clusterRejectExotics": "true",
         "jetRadius": {
             "values": [
-                "0.40000000000000002"
+                "0.4"
             ]
         },
         "jetPtMin": "0",
@@ -80,11 +94,9 @@
         "jetEtaMax": "99",
         "jetAlgorithm": "2",
         "jetRecombScheme": "0",
-        "jetGhostArea": "0.00499999989",
+        "jetGhostArea": "0.005",
         "ghostRepeat": "1",
         "DoTriggering": "false",
-        "DoRhoAreaSub": "false",
-        "DoConstSub": "false",
         "processDummy": "false",
         "processChargedJets": "true",
         "processNeutralJets": "false",
@@ -95,18 +107,18 @@
     },
     "jet-finder-data-full": {
         "vertexZCut": "10",
-        "trackPtMin": "0.150000006",
+        "trackPtMin": "0.15",
         "trackPtMax": "1000",
-        "trackEtaMin": "-0.800000012",
-        "trackEtaMax": "0.800000012",
+        "trackEtaMin": "-0.8",
+        "trackEtaMax": "0.8",
         "trackPhiMin": "-999",
         "trackPhiMax": "999",
         "trackSelections": "globalTracks",
         "eventSelections": "sel7",
         "particleSelections": "PhysicalPrimary",
         "clusterDefinition": "kV3Default",
-        "clusterEtaMin": "-0.699999988",
-        "clusterEtaMax": "0.699999988",
+        "clusterEtaMin": "-0.7",
+        "clusterEtaMax": "0.7",
         "clusterPhiMin": "-999",
         "clusterPhiMax": "999",
         "clusterEnergyMin": "0.5",
@@ -115,7 +127,7 @@
         "clusterRejectExotics": "true",
         "jetRadius": {
             "values": [
-                "0.40000000000000002"
+                "0.4"
             ]
         },
         "jetPtMin": "0",
@@ -124,11 +136,9 @@
         "jetEtaMax": "99",
         "jetAlgorithm": "2",
         "jetRecombScheme": "0",
-        "jetGhostArea": "0.00499999989",
+        "jetGhostArea": "0.005",
         "ghostRepeat": "1",
         "DoTriggering": "false",
-        "DoRhoAreaSub": "false",
-        "DoConstSub": "false",
         "processDummy": "true",
         "processChargedJets": "false",
         "processNeutralJets": "false",
@@ -139,18 +149,18 @@
     },
     "jet-finder-data-neutral": {
         "vertexZCut": "10",
-        "trackPtMin": "0.150000006",
+        "trackPtMin": "0.15",
         "trackPtMax": "1000",
-        "trackEtaMin": "-0.800000012",
-        "trackEtaMax": "0.800000012",
+        "trackEtaMin": "-0.8",
+        "trackEtaMax": "0.8",
         "trackPhiMin": "-999",
         "trackPhiMax": "999",
         "trackSelections": "globalTracks",
         "eventSelections": "sel8",
         "particleSelections": "PhysicalPrimary",
         "clusterDefinition": "kV3Default",
-        "clusterEtaMin": "-0.699999988",
-        "clusterEtaMax": "0.699999988",
+        "clusterEtaMin": "-0.7",
+        "clusterEtaMax": "0.7",
         "clusterPhiMin": "-999",
         "clusterPhiMax": "999",
         "clusterEnergyMin": "0.5",
@@ -159,7 +169,7 @@
         "clusterRejectExotics": "true",
         "jetRadius": {
             "values": [
-                "0.40000000000000002"
+                "0.4"
             ]
         },
         "jetPtMin": "0",
@@ -168,11 +178,9 @@
         "jetEtaMax": "99",
         "jetAlgorithm": "2",
         "jetRecombScheme": "0",
-        "jetGhostArea": "0.00499999989",
+        "jetGhostArea": "0.005",
         "ghostRepeat": "1",
         "DoTriggering": "false",
-        "DoRhoAreaSub": "false",
-        "DoConstSub": "false",
         "processDummy": "true",
         "processChargedJets": "false",
         "processNeutralJets": "false",
@@ -183,18 +191,18 @@
     },
     "jet-finder-mcd-charged": {
         "vertexZCut": "10",
-        "trackPtMin": "0.150000006",
+        "trackPtMin": "0.15",
         "trackPtMax": "1000",
-        "trackEtaMin": "-0.800000012",
-        "trackEtaMax": "0.800000012",
+        "trackEtaMin": "-0.8",
+        "trackEtaMax": "0.8",
         "trackPhiMin": "-999",
         "trackPhiMax": "999",
         "trackSelections": "globalTracks",
         "eventSelections": "sel8",
         "particleSelections": "PhysicalPrimary",
         "clusterDefinition": "kV3Default",
-        "clusterEtaMin": "-0.699999988",
-        "clusterEtaMax": "0.699999988",
+        "clusterEtaMin": "-0.7",
+        "clusterEtaMax": "0.7",
         "clusterPhiMin": "-999",
         "clusterPhiMax": "999",
         "clusterEnergyMin": "0.5",
@@ -203,7 +211,7 @@
         "clusterRejectExotics": "true",
         "jetRadius": {
             "values": [
-                "0.40000000000000002"
+                "0.4"
             ]
         },
         "jetPtMin": "0",
@@ -212,11 +220,9 @@
         "jetEtaMax": "99",
         "jetAlgorithm": "2",
         "jetRecombScheme": "0",
-        "jetGhostArea": "0.00499999989",
+        "jetGhostArea": "0.005",
         "ghostRepeat": "1",
         "DoTriggering": "false",
-        "DoRhoAreaSub": "false",
-        "DoConstSub": "false",
         "processDummy": "true",
         "processChargedJets": "false",
         "processNeutralJets": "false",
@@ -227,18 +233,18 @@
     },
     "jet-finder-mcd-full": {
         "vertexZCut": "10",
-        "trackPtMin": "0.150000006",
+        "trackPtMin": "0.15",
         "trackPtMax": "1000",
-        "trackEtaMin": "-0.800000012",
-        "trackEtaMax": "0.800000012",
+        "trackEtaMin": "-0.8",
+        "trackEtaMax": "0.8",
         "trackPhiMin": "-999",
         "trackPhiMax": "999",
         "trackSelections": "globalTracks",
         "eventSelections": "sel8",
         "particleSelections": "PhysicalPrimary",
         "clusterDefinition": "kV3Default",
-        "clusterEtaMin": "-0.699999988",
-        "clusterEtaMax": "0.699999988",
+        "clusterEtaMin": "-0.7",
+        "clusterEtaMax": "0.7",
         "clusterPhiMin": "-999",
         "clusterPhiMax": "999",
         "clusterEnergyMin": "0.5",
@@ -247,7 +253,7 @@
         "clusterRejectExotics": "true",
         "jetRadius": {
             "values": [
-                "0.40000000000000002"
+                "0.4"
             ]
         },
         "jetPtMin": "0",
@@ -256,11 +262,9 @@
         "jetEtaMax": "99",
         "jetAlgorithm": "2",
         "jetRecombScheme": "0",
-        "jetGhostArea": "0.00499999989",
+        "jetGhostArea": "0.005",
         "ghostRepeat": "1",
         "DoTriggering": "false",
-        "DoRhoAreaSub": "false",
-        "DoConstSub": "false",
         "processDummy": "true",
         "processChargedJets": "false",
         "processNeutralJets": "false",
@@ -271,18 +275,18 @@
     },
     "jet-finder-mcd-neutral": {
         "vertexZCut": "10",
-        "trackPtMin": "0.150000006",
+        "trackPtMin": "0.15",
         "trackPtMax": "1000",
-        "trackEtaMin": "-0.800000012",
-        "trackEtaMax": "0.800000012",
+        "trackEtaMin": "-0.8",
+        "trackEtaMax": "0.8",
         "trackPhiMin": "-999",
         "trackPhiMax": "999",
         "trackSelections": "globalTracks",
         "eventSelections": "sel8",
         "particleSelections": "PhysicalPrimary",
         "clusterDefinition": "kV3Default",
-        "clusterEtaMin": "-0.699999988",
-        "clusterEtaMax": "0.699999988",
+        "clusterEtaMin": "-0.7",
+        "clusterEtaMax": "0.7",
         "clusterPhiMin": "-999",
         "clusterPhiMax": "999",
         "clusterEnergyMin": "0.5",
@@ -291,7 +295,7 @@
         "clusterRejectExotics": "true",
         "jetRadius": {
             "values": [
-                "0.40000000000000002"
+                "0.4"
             ]
         },
         "jetPtMin": "0",
@@ -300,11 +304,9 @@
         "jetEtaMax": "99",
         "jetAlgorithm": "2",
         "jetRecombScheme": "0",
-        "jetGhostArea": "0.00499999989",
+        "jetGhostArea": "0.005",
         "ghostRepeat": "1",
         "DoTriggering": "false",
-        "DoRhoAreaSub": "false",
-        "DoConstSub": "false",
         "processDummy": "true",
         "processChargedJets": "false",
         "processNeutralJets": "false",
@@ -315,18 +317,18 @@
     },
     "jet-finder-mcp-charged": {
         "vertexZCut": "10",
-        "trackPtMin": "0.150000006",
+        "trackPtMin": "0.15",
         "trackPtMax": "1000",
-        "trackEtaMin": "-0.800000012",
-        "trackEtaMax": "0.800000012",
+        "trackEtaMin": "-0.8",
+        "trackEtaMax": "0.8",
         "trackPhiMin": "-999",
         "trackPhiMax": "999",
         "trackSelections": "globalTracks",
         "eventSelections": "sel8",
         "particleSelections": "PhysicalPrimary",
         "clusterDefinition": "kV3Default",
-        "clusterEtaMin": "-0.699999988",
-        "clusterEtaMax": "0.699999988",
+        "clusterEtaMin": "-0.7",
+        "clusterEtaMax": "0.7",
         "clusterPhiMin": "-999",
         "clusterPhiMax": "999",
         "clusterEnergyMin": "0.5",
@@ -335,7 +337,7 @@
         "clusterRejectExotics": "true",
         "jetRadius": {
             "values": [
-                "0.40000000000000002"
+                "0.4"
             ]
         },
         "jetPtMin": "0",
@@ -344,11 +346,9 @@
         "jetEtaMax": "99",
         "jetAlgorithm": "2",
         "jetRecombScheme": "0",
-        "jetGhostArea": "0.00499999989",
+        "jetGhostArea": "0.005",
         "ghostRepeat": "1",
         "DoTriggering": "false",
-        "DoRhoAreaSub": "false",
-        "DoConstSub": "false",
         "processDummy": "true",
         "processChargedJets": "false",
         "processNeutralJets": "false",
@@ -359,18 +359,18 @@
     },
     "jet-finder-mcp-full": {
         "vertexZCut": "10",
-        "trackPtMin": "0.150000006",
+        "trackPtMin": "0.15",
         "trackPtMax": "1000",
-        "trackEtaMin": "-0.800000012",
-        "trackEtaMax": "0.800000012",
+        "trackEtaMin": "-0.8",
+        "trackEtaMax": "0.8",
         "trackPhiMin": "-999",
         "trackPhiMax": "999",
         "trackSelections": "globalTracks",
         "eventSelections": "sel8",
         "particleSelections": "PhysicalPrimary",
         "clusterDefinition": "kV3Default",
-        "clusterEtaMin": "-0.699999988",
-        "clusterEtaMax": "0.699999988",
+        "clusterEtaMin": "-0.7",
+        "clusterEtaMax": "0.7",
         "clusterPhiMin": "-999",
         "clusterPhiMax": "999",
         "clusterEnergyMin": "0.5",
@@ -379,7 +379,7 @@
         "clusterRejectExotics": "true",
         "jetRadius": {
             "values": [
-                "0.40000000000000002"
+                "0.4"
             ]
         },
         "jetPtMin": "0",
@@ -388,11 +388,9 @@
         "jetEtaMax": "99",
         "jetAlgorithm": "2",
         "jetRecombScheme": "0",
-        "jetGhostArea": "0.00499999989",
+        "jetGhostArea": "0.005",
         "ghostRepeat": "1",
         "DoTriggering": "false",
-        "DoRhoAreaSub": "false",
-        "DoConstSub": "false",
         "processDummy": "true",
         "processChargedJets": "false",
         "processNeutralJets": "false",
@@ -403,18 +401,18 @@
     },
     "jet-finder-mcp-neutral": {
         "vertexZCut": "10",
-        "trackPtMin": "0.150000006",
+        "trackPtMin": "0.15",
         "trackPtMax": "1000",
-        "trackEtaMin": "-0.800000012",
-        "trackEtaMax": "0.800000012",
+        "trackEtaMin": "-0.8",
+        "trackEtaMax": "0.8",
         "trackPhiMin": "-999",
         "trackPhiMax": "999",
         "trackSelections": "globalTracks",
         "eventSelections": "sel8",
         "particleSelections": "PhysicalPrimary",
         "clusterDefinition": "kV3Default",
-        "clusterEtaMin": "-0.699999988",
-        "clusterEtaMax": "0.699999988",
+        "clusterEtaMin": "-0.7",
+        "clusterEtaMax": "0.7",
         "clusterPhiMin": "-999",
         "clusterPhiMax": "999",
         "clusterEnergyMin": "0.5",
@@ -423,7 +421,7 @@
         "clusterRejectExotics": "true",
         "jetRadius": {
             "values": [
-                "0.40000000000000002"
+                "0.4"
             ]
         },
         "jetPtMin": "0",
@@ -432,11 +430,9 @@
         "jetEtaMax": "99",
         "jetAlgorithm": "2",
         "jetRecombScheme": "0",
-        "jetGhostArea": "0.00499999989",
+        "jetGhostArea": "0.005",
         "ghostRepeat": "1",
         "DoTriggering": "false",
-        "DoRhoAreaSub": "false",
-        "DoConstSub": "false",
         "processDummy": "true",
         "processChargedJets": "false",
         "processNeutralJets": "false",
@@ -446,24 +442,24 @@
         "processParticleLevelFullJets": "false"
     },
     "jet-validation-track-collision-qa": {
-        "ptLow": "0.150000006",
-        "ptUp": "9.9999998e+10",
-        "etaLow": "-0.899999976",
-        "etaUp": "0.899999976",
-        "evSel": "true",
+        "ptLow": "0.15",
+        "ptUp": "100",
+        "etaLow": "-0.9",
+        "etaUp": "0.9",
+        "evSel": "false",
         "nBins": "200",
         "BinsPhi": {
             "values": [
                 "180",
                 "0",
-                "6.4000000000000004"
+                "6.4"
             ]
         },
         "BinsEta": {
             "values": [
                 "200",
-                "-0.90000000000000002",
-                "0.90000000000000002"
+                "-0.9",
+                "0.9"
             ]
         },
         "BinsPt": {
@@ -479,75 +475,75 @@
         "processDummy": "false"
     },
     "mc-jet-validation-track-collision-qa": {
-        "ptLow": "0.150000006",
-        "ptUp": "9.9999998e+10",
-        "etaLow": "-0.899999976",
-        "etaUp": "0.899999976",
+        "ptLow": "0.15",
+        "ptUp": "100",
+        "etaLow": "-0.9",
+        "etaUp": "0.9",
         "nBins": "200",
         "BinsPhi": {
             "values": [
                 "200",
-                "-3.2000000000000002",
-                "6.4000000000000004"
+                "-3.2",
+                "6.4"
             ]
         },
         "BinsEta": {
             "values": [
                 "200",
-                "-0.90000000000000002",
-                "0.90000000000000002"
+                "-0.9",
+                "0.9"
             ]
         },
         "BinsPt": {
             "values": [
                 "0",
                 "0",
-                "0.10000000000000001",
+                "0.1",
                 "0.12",
-                "0.14000000000000001",
+                "0.14",
                 "0.16",
-                "0.17999999999999999",
-                "0.20000000000000001",
+                "0.18",
+                "0.2",
                 "0.25",
-                "0.29999999999999999",
-                "0.34999999999999998",
-                "0.40000000000000002",
-                "0.45000000000000001",
+                "0.3",
+                "0.35",
+                "0.4",
+                "0.45",
                 "0.5",
-                "0.55000000000000004",
-                "0.59999999999999998",
-                "0.65000000000000002",
-                "0.69999999999999996",
+                "0.55",
+                "0.6",
+                "0.65",
+                "0.7",
                 "0.75",
-                "0.80000000000000004",
-                "0.84999999999999998",
-                "0.90000000000000002",
-                "0.94999999999999996",
+                "0.8",
+                "0.85",
+                "0.9",
+                "0.95",
                 "1",
-                "1.1000000000000001",
+                "1.1",
                 "1.2",
                 "1.3",
-                "1.3999999999999999",
+                "1.4",
                 "1.5",
-                "1.6000000000000001",
+                "1.6",
                 "1.7",
                 "1.8",
-                "1.8999999999999999",
+                "1.9",
                 "2",
-                "2.2000000000000002",
-                "2.3999999999999999",
-                "2.6000000000000001",
-                "2.7999999999999998",
+                "2.2",
+                "2.4",
+                "2.6",
+                "2.8",
                 "3",
-                "3.2000000000000002",
-                "3.3999999999999999",
-                "3.6000000000000001",
-                "3.7999999999999998",
+                "3.2",
+                "3.4",
+                "3.6",
+                "3.8",
                 "4",
-                "4.2000000000000002",
-                "4.4000000000000004",
-                "4.5999999999999996",
-                "4.7999999999999998",
+                "4.2",
+                "4.4",
+                "4.6",
+                "4.8",
                 "5"
             ]
         },

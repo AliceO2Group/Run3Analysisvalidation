@@ -21,29 +21,29 @@ DOO2=1              # Run O2 tasks.
 DOPOSTPROCESS=1     # Run output postprocessing. (Comparison plots. Requires DOALI=1 and/or DOO2=1)
 
 # Disable incompatible steps.
-[ "$ISINPUTO2" -eq 1 ] && { DOCONVERT=0; DOALI=0; }
+[ "$INPUT_IS_O2" -eq 1 ] && { DOCONVERT=0; DOALI=0; }
 
 # O2 database
 DATABASE_O2="workflows.yml"
-MAKE_GRAPH=0        # Make topology graph.
+MAKE_GRAPH=0          # Make topology graph.
 
 # Activation of O2 workflows
 # Trigger selection
-DOO2_TRIGSEL=1      # event-selection
+DOO2_TRIGSEL=1        # event-selection
 # QA
-DOO2_QA_EVTRK=0     # qa-event-track
+DOO2_QA_EVTRK=0       # qa-event-track
 # User tasks
-DOO2_TASK_JETFINDER=1   # jet-finder
-DOO2_TASK_JETQA=1   # jetqa
+DOO2_TASK_JETVALID=1  # je-jet-validation-qa
+# Jets
+DOO2_JET_DERIVED=1    # jet-deriveddata-producer
+DOO2_JET_FINDER=1     # je-jet-finder
 # Converters
-DOO2_MCCONV=0       # mc-converter
-DOO2_FDDCONV=0      # fdd-converter
-DOO2_COLLCONV=0     # collision-converter
-DOO2_ZDC=1          # zdc-converter
-DOO2_TRACKSELE=1    # trackselection, dca, propagation
-DOO2_TRACKEXTRA=1   # track-extra-converter
-DOO2_BC=1           # BC
-DOO2_DERIVED=1      # jet-deriveddata-producer
+DOO2_CONV_MC=0      # mc-converter
+DOO2_CONV_FDD=0     # fdd-converter
+DOO2_CONV_COLL=0    # collision-converter
+DOO2_CONV_ZDC=1     # zdc-converter
+DOO2_CONV_BC=1      # bc-converter
+DOO2_CONV_TRKEX=1   # tracks-extra-converter
 
 SAVETREES=0         # Save O2 tables to trees.
 USEO2VERTEXER=0     # Use the O2 vertexer in AliPhysics.
@@ -61,7 +61,7 @@ function Clean {
   [ "$1" -eq 2 ] && {
     rm -f "$LISTFILES_ALI" "$LISTFILES_O2" "$SCRIPT_ALI" "$SCRIPT_O2" "$SCRIPT_POSTPROCESS" || ErrExit "Failed to rm created files."
     [ "$JSON_EDIT" ] && { rm "$JSON_EDIT" || ErrExit "Failed to rm $JSON_EDIT."; }
-    rm "$DATABASE_O2_EDIT" || ErrExit "Failed to rm $DATABASE_O2_EDIT."
+    [ "$DATABASE_O2_EDIT" ] && { rm "$DATABASE_O2_EDIT" || ErrExit "Failed to rm $DATABASE_O2_EDIT."; }
   }
 
   return 0
@@ -98,6 +98,7 @@ function AdjustJson {
     ReplaceString "\"processMc\": \"true\"" "\"processMc\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processMC\": \"true\"" "\"processMC\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"isMC\": \"true\"" "\"isMC\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processData\": \"false\"" "\"processData\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # event-selection
@@ -142,16 +143,17 @@ function MakeScriptO2 {
   # QA
   [ $DOO2_QA_EVTRK -eq 1 ] && WORKFLOWS+=" o2-analysis-qa-event-track"
   # User tasks
-  [ $DOO2_TASK_JETFINDER -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder"
-  [ $DOO2_TASK_JETQA -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-validation-qa"
+  [ $DOO2_TASK_JETVALID -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-validation-qa"
+  # Jets
+  [ $DOO2_JET_DERIVED -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-deriveddata-producer"
+  [ $DOO2_JET_FINDER -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder"
   # Converters
-  [ $DOO2_MCCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-mc-converter"
-  [ $DOO2_FDDCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-fdd-converter"
-  [ $DOO2_COLLCONV -eq 1 ] && WORKFLOWS+=" o2-analysis-collision-converter"
-  [ $DOO2_ZDC -eq 1 ] && WORKFLOWS+=" o2-analysis-zdc-converter"
-  [ $DOO2_TRACKEXTRA -eq 1 ] && WORKFLOWS+=" o2-analysis-tracks-extra-converter"
-  [ $DOO2_BC -eq 1 ] && WORKFLOWS+=" o2-analysis-bc-converter"
-  [ $DOO2_DERIVED -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-deriveddata-producer"
+  [ $DOO2_CONV_MC -eq 1 ] && WORKFLOWS+=" o2-analysis-mc-converter"
+  [ $DOO2_CONV_FDD -eq 1 ] && WORKFLOWS+=" o2-analysis-fdd-converter"
+  [ $DOO2_CONV_COLL -eq 1 ] && WORKFLOWS+=" o2-analysis-collision-converter"
+  [ $DOO2_CONV_ZDC -eq 1 ] && WORKFLOWS+=" o2-analysis-zdc-converter"
+  [ $DOO2_CONV_BC -eq 1 ] && WORKFLOWS+=" o2-analysis-bc-converter"
+  [ $DOO2_CONV_TRKEX -eq 1 ] && WORKFLOWS+=" o2-analysis-tracks-extra-converter"
 
   # Translate options into arguments of the generating script.
   OPT_MAKECMD=""
@@ -196,10 +198,10 @@ EOF
 function MakeScriptPostprocess {
   POSTEXEC="echo Postprocessing"
   # Compare AliPhysics and O2 histograms.
-  #[[ $DOALI -eq 1 && $DOO2 -eq 1 ]] && {
-   [[ $DOPOSTPROCESS -eq 1 ]] && {
+  [[ $DOALI -eq 1 && $DOO2 -eq 1 ]] && {
+  # [[ $DOPOSTPROCESS -eq 1 ]] && {
     OPT_COMPARE=""
-    [ $DOO2_TASK_JETQA -eq 1 ] && OPT_COMPARE+=" jets "
+    [ $DOO2_TASK_JETVALID -eq 1 ] && OPT_COMPARE+=" jets "
     [ "$OPT_COMPARE" ] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/Compare.C(\\\"\$FileO2\\\", \\\"\$FileAli\\\", \\\"$OPT_COMPARE\\\", $DORATIO)\""
   }
   cat << EOF > "$SCRIPT_POSTPROCESS"
