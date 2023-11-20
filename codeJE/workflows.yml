@@ -15,7 +15,7 @@ workflows:
   o2-analysis-je-jet-validation-qa:
     dependencies: [o2-analysis-je-jet-finder, o2-analysis-je-jet-deriveddata-producer, o2-analysis-trackselection_runX]
 
-  # Jets
+  # Table producers
 
   o2-analysis-je-emcal-correction-task:
     dependencies: [o2-analysis-event-selection, o2-analysis-trackselection_runX]

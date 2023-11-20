@@ -35,7 +35,7 @@ DOO2_QA_EVTRK=0       # qa-event-track
 # User tasks
 DOO2_TASK_JETVALID=1  # je-jet-validation-qa
 # Jets
-DOO2_JET_DERIVED=1    # jet-deriveddata-producer
+DOO2_JET_DERIVED=1    # je-jet-deriveddata-producer
 DOO2_JET_FINDER=1     # je-jet-finder
 # Converters
 DOO2_CONV_MC=0      # mc-converter
@@ -142,9 +142,9 @@ function MakeScriptO2 {
   [ $DOO2_TRIGSEL -eq 1 ] && WORKFLOWS+=" o2-analysis-event-selection"
   # QA
   [ $DOO2_QA_EVTRK -eq 1 ] && WORKFLOWS+=" o2-analysis-qa-event-track"
-  # User tasks
+  # Analysis tasks
   [ $DOO2_TASK_JETVALID -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-validation-qa"
-  # Jets
+  # Table producers
   [ $DOO2_JET_DERIVED -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-deriveddata-producer"
   [ $DOO2_JET_FINDER -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder"
   # Converters
@@ -199,7 +199,6 @@ function MakeScriptPostprocess {
   POSTEXEC="echo Postprocessing"
   # Compare AliPhysics and O2 histograms.
   [[ $DOALI -eq 1 && $DOO2 -eq 1 ]] && {
-  # [[ $DOPOSTPROCESS -eq 1 ]] && {
     OPT_COMPARE=""
     [ $DOO2_TASK_JETVALID -eq 1 ] && OPT_COMPARE+=" jets "
     [ "$OPT_COMPARE" ] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/Compare.C(\\\"\$FileO2\\\", \\\"\$FileAli\\\", \\\"$OPT_COMPARE\\\", $DORATIO)\""
