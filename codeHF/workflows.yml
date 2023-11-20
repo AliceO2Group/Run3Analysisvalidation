@@ -475,6 +475,8 @@ workflows:
     executable: o2-analysis-multiplicity-table
     dependencies: o2-analysis-event-selection
 
+  o2-analysis-ft0-corrected-table: {}
+
   # PID
 
   o2-analysis-pid-tpc-base: {}
