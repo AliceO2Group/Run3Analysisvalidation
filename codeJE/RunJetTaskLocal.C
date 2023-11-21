@@ -42,9 +42,8 @@ Long64_t RunJetTaskLocal(TString txtfile = "./list_ali.txt",
   //  esdH->SetNeedField(kTRUE);
   mgr->SetInputEventHandler(esdH);
 
-  AliMCEventHandler* handler = NULL;
   if (isMC) {
-    handler = new AliMCEventHandler;
+    AliMCEventHandler* handler = new AliMCEventHandler();
     handler->SetReadTR(kFALSE);
     mgr->SetMCtruthEventHandler(handler);
   }

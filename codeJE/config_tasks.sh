@@ -13,6 +13,12 @@
 
 ####################################################################################################
 
+# Here you can select the AliPhysics and O2Physics branches to load.
+# BRANCH_ALI="master"
+# ENV_ALI="alienv setenv AliPhysics/latest-${BRANCH_ALI}-o2 -c"
+# BRANCH_O2="master"
+# ENV_O2="alienv setenv O2Physics/latest-${BRANCH_O2}-o2 -c"
+
 # Steps
 DOCLEAN=1           # Delete created files (before and after running tasks).
 DOCONVERT=1         # Convert AliESDs.root to AO2D.root.
@@ -25,17 +31,17 @@ DOPOSTPROCESS=1     # Run output postprocessing. (Comparison plots. Requires DOA
 
 # O2 database
 DATABASE_O2="workflows.yml"
-MAKE_GRAPH=0          # Make topology graph.
+MAKE_GRAPH=0        # Make topology graph.
 
 # Activation of O2 workflows
-# Trigger selection
-DOO2_TRIGSEL=1        # event-selection
-# QA
-DOO2_QA_EVTRK=0       # qa-event-track
-DOO2_TASK_JETVALID=1  # je-jet-validation-qa
 # Table producers
-DOO2_JET_DERIVED=0    # je-jet-deriveddata-producer
-DOO2_JET_FINDER=0     # je-jet-finder
+DOO2_JET_DERIVED=0  # je-jet-deriveddata-producer
+DOO2_JET_FINDER=0   # je-jet-finder
+# Analysis tasks
+# TODO: Add analysis tasks
+# QA
+DOO2_QA_EVTRK=0     # qa-event-track
+DOO2_JET_VALID=1    # je-jet-validation-qa
 # Converters
 DOO2_CONV_MC=0      # mc-converter
 DOO2_CONV_FDD=0     # fdd-converter
@@ -45,7 +51,7 @@ DOO2_CONV_BC=1      # bc-converter
 DOO2_CONV_TRKEX=1   # tracks-extra-converter
 
 SAVETREES=0         # Save O2 tables to trees.
-USEO2VERTEXER=0     # Use the O2 vertexer in AliPhysics.
+USEO2VERTEXER=1     # Use the O2 vertexer in AliPhysics.
 USEALIEVCUTS=1      # Use AliEventCuts in AliPhysics (as used by conversion task)
 DORATIO=1           # Plot histogram ratios in comparison.
 
@@ -72,6 +78,11 @@ function AdjustJson {
   JSON_EDIT="${JSON/.json/_edit.json}"
   cp "$JSON" "$JSON_EDIT" || ErrExit "Failed to cp $JSON $JSON_EDIT."
   JSON="$JSON_EDIT"
+
+  # Derived AO2D input
+  if [ "$INPUT_PARENT_MASK" ]; then
+    ReplaceString "PARENT_PATH_MASK" "$INPUT_PARENT_MASK" "$JSON" || ErrExit "Failed to edit $JSON."
+  fi
 
   # Collision system
   MsgWarn "Setting collision system $INPUT_SYS"
@@ -103,17 +114,6 @@ function AdjustJson {
   # event-selection
   ReplaceString "\"syst\": \"pp\"" "\"syst\": \"$INPUT_SYS\"" "$JSON" || ErrExit "Failed to edit $JSON."
 
-  if [ $DOO2_TRIGSEL -eq 1 ]; then
-    # trigger selection
-    ReplaceString "\"processTrigSel\": \"false\"" "\"processTrigSel\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
-    ReplaceString "\"processNoTrigSel\": \"true\"" "\"processNoTrigSel\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
-  fi
-  if [ "$INPUT_RUN" -eq 3 ]; then
-    # do not use trigger selection for Run 3
-    ReplaceString "\"processTrigSel\": \"true\"" "\"processTrigSel\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
-    ReplaceString "\"processNoTrigSel\": \"false\"" "\"processNoTrigSel\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
-  fi
-
   # timestamp-task
   if [[ "$INPUT_IS_MC" -eq 1 && "$INPUT_RUN" -eq 2 ]]; then
     ReplaceString "\"isRun2MC\": \"false\"" "\"isRun2MC\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
@@ -136,15 +136,19 @@ function MakeScriptO2 {
   SUFFIX_RUN_MASK="_runX" # suffix mask to be replaced in the workflow names
   SUFFIX_RUN="_run${INPUT_RUN}" # the actual suffix to be used instead of the mask
 
+  # Suffix to distinguish the workflows that run on derived data with parent access
+  SUFFIX_DER_MASK="_derX" # suffix mask to be replaced in the workflow names
+  [ "$INPUT_PARENT_MASK" ] && SUFFIX_DER="_derived" || SUFFIX_DER="" # the actual suffix to be used instead of the mask
+
   WORKFLOWS=""
-  # Trigger selection
-  [ $DOO2_TRIGSEL -eq 1 ] && WORKFLOWS+=" o2-analysis-event-selection"
-  # QA
-  [ $DOO2_QA_EVTRK -eq 1 ] && WORKFLOWS+=" o2-analysis-qa-event-track"
-  [ $DOO2_TASK_JETVALID -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-validation-qa"
   # Table producers
   [ $DOO2_JET_DERIVED -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-deriveddata-producer"
   [ $DOO2_JET_FINDER -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder"
+  # Analysis tasks
+  # TODO: Add analysis tasks
+  # QA
+  [ $DOO2_QA_EVTRK -eq 1 ] && WORKFLOWS+=" o2-analysis-qa-event-track"
+  [ $DOO2_JET_VALID -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-validation-qa"
   # Converters
   [ $DOO2_CONV_MC -eq 1 ] && WORKFLOWS+=" o2-analysis-mc-converter"
   [ $DOO2_CONV_FDD -eq 1 ] && WORKFLOWS+=" o2-analysis-fdd-converter"
@@ -167,6 +171,7 @@ function MakeScriptO2 {
 
   # Replace the workflow version masks with the actual values in the workflow database.
   ReplaceString "$SUFFIX_RUN_MASK" "$SUFFIX_RUN" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
+  ReplaceString "$SUFFIX_DER_MASK" "$SUFFIX_DER" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
 
   # Generate the O2 command.
   MAKECMD="python3 $DIR_EXEC/make_command_o2.py $DATABASE_O2 $OPT_MAKECMD"
@@ -198,7 +203,7 @@ function MakeScriptPostprocess {
   # Compare AliPhysics and O2 histograms.
   [[ $DOALI -eq 1 && $DOO2 -eq 1 ]] && {
     OPT_COMPARE=""
-    [ $DOO2_TASK_JETVALID -eq 1 ] && OPT_COMPARE+=" jets "
+    [ $DOO2_JET_VALID -eq 1 ] && OPT_COMPARE+=" jets "
     [ "$OPT_COMPARE" ] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/Compare.C(\\\"\$FileO2\\\", \\\"\$FileAli\\\", \\\"$OPT_COMPARE\\\", $DORATIO)\""
   }
   cat << EOF > "$SCRIPT_POSTPROCESS"

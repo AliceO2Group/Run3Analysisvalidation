@@ -35,9 +35,11 @@ Long64_t RunHFTaskLocal(TString txtfile = "./list_ali.txt",
   //  esdH->SetNeedField(kTRUE);
   mgr->SetInputEventHandler(esdH);
 
-  AliMCEventHandler* handler = new AliMCEventHandler;
-  handler->SetReadTR(kFALSE);
-  mgr->SetMCtruthEventHandler(handler);
+  if (isMC) {
+    AliMCEventHandler* handler = new AliMCEventHandler();
+    handler->SetReadTR(kFALSE);
+    mgr->SetMCtruthEventHandler(handler);
+  }
 
   // Apply the event selection
   AliPhysicsSelectionTask* physSelTask = reinterpret_cast<AliPhysicsSelectionTask*>(gInterpreter->ProcessLine(Form(".x %s(%d)", gSystem->ExpandPathName("$ALICE_PHYSICS/OADB/macros/AddTaskPhysicsSelection.C"), isMC)));

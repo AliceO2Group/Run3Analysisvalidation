@@ -1,16 +1,30 @@
 ---
 options:
-  global: ""
-  local:
+  global: ""  # used once at the end of the command
+  local:      # used for every workflow
     - "-b"
     - "--configuration json://$JSON"
     - "--aod-memory-rate-limit 2000000000"
     - "--shm-segment-size 16000000000"
+    - "--resources-monitoring 2"
     - "--min-failure-level error"
 
 workflows:
-
-  # Analysis tasks
+  # dummy workflow with the full list of options
+  o2-analysis-workflow:
+    executable: o2-analysis-workflow  # workflow command, if different from the dictionary node name above
+    dependencies: []  # dictionary nodes that this workflow needs as direct dependencies (format: str, list)
+    requires_mc: no  # yes/no whether the workflow can only run on MC or not
+    options: "--option"  # command line options (format: str, list), see more detailed format below
+    # options:
+    #   default: ""
+    #   real: ""
+    #   mc: "--doMC"
+    tables: []  # descriptions of tables to be saved in the output tree (format: str, list), see more detailed format below
+    # tables:
+    #   default: []
+    #   real: []
+    #   mc: []
 
   # Table producers
 
@@ -22,6 +36,10 @@ workflows:
 
   o2-analysis-je-jet-finder:
     dependencies: [o2-analysis-je-jet-deriveddata-producer]
+
+  # Analysis tasks
+
+  # TODO: Add analysis tasks
 
   # QA
 
@@ -37,6 +55,9 @@ workflows:
     dependencies: [o2-analysis-event-selection, o2-analysis-trackselection_runX, o2-analysis-pid-tof-base]
 
   # Helper tasks
+
+  o2-analysis-track-to-collision-associator:
+    tables: HFTRACKASSOC
 
   o2-analysis-timestamp: {}
 
@@ -59,7 +80,7 @@ workflows:
   o2-analysis-event-selection:
     dependencies: o2-analysis-timestamp
 
-# Converters
+  # Converters
 
   o2-analysis-mc-converter: {}
 
