@@ -25,6 +25,8 @@
         "chi2Max": "0",
         "triggerClassName": "kINT7",
         "useSel8Trigger": "false",
+        "centralityMin": "0",
+        "centralityMax": "100",
         "axisNumContributors": {
             "values": [
                 "200",
@@ -32,6 +34,10 @@
                 "199.5"
             ]
         },
+        "processTrigAndCentFT0ASel": "false",
+        "processTrigAndCentFT0CSel": "false",
+        "processTrigAndCentFT0MSel": "false",
+        "processTrigAndCentFV0ASel": "false",
         "processTrigSel": "false",
         "processNoTrigSel": "true"
     },
@@ -141,7 +147,9 @@
     "hf-track-index-skim-creator": {
         "isRun2": "true",
         "do3Prong": "1",
+        "doDstar": "false",
         "debug": "false",
+        "debugPvRefit": "false",
         "fillHistograms": "true",
         "axisNumTracks": {
             "values": [
@@ -302,19 +310,22 @@
                 "massMin",
                 "massMax",
                 "cosp",
-                "decL"
+                "decL",
+                "deltaMassKK"
             ],
             "values": [
                 [
-                    "1.74",
-                    "2.18",
-                    "0.94",
+                    "1.7",
+                    "2.15",
+                    "0.7",
+                    "0.02",
                     "0.02"
                 ],
                 [
-                    "1.74",
-                    "2.18",
-                    "0.94",
+                    "1.7",
+                    "2.15",
+                    "0.5",
+                    "0.02",
                     "0.02"
                 ]
             ]
@@ -376,6 +387,30 @@
                     "2.8",
                     "-2",
                     "0"
+                ]
+            ]
+        },
+        "binsPtDstarToD0Pi": {
+            "values": [
+                "1",
+                "5",
+                "1000"
+            ]
+        },
+        "cutsDstarToD0Pi": {
+            "labels_rows": "",
+            "labels_cols": [
+                "deltaMassMax",
+                "deltaMassD0"
+            ],
+            "values": [
+                [
+                    "0.17",
+                    "0.05"
+                ],
+                [
+                    "0.17",
+                    "0.08"
                 ]
             ]
         },
