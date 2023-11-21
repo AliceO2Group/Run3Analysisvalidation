@@ -212,12 +212,6 @@ function AdjustJson {
     ReplaceString "\"processNoTrigSel\": \"false\"" "\"processNoTrigSel\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
-  # hf-track-index-skim-creator-tag-sel-tracks, hf-track-index-skim-creator-cascades
-  if [ "$INPUT_RUN" -eq 3 ]; then
-    # do not perform track quality cuts for Run 3 until they are updated
-    ReplaceString "\"doCutQuality\": \"true\"" "\"doCutQuality\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
-  fi
-
   # hf-track-index-skim-creator-cascades
   if [[ $DOO2_CAND_CASC -eq 1 || $DOO2_SEL_LCK0SP -eq 1 || $DOO2_TASK_LCK0SP -eq 1 || $DOO2_TREE_LCK0SP -eq 1 ]]; then
     ReplaceString "\"processCascades\": \"false\"" "\"processCascades\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
@@ -254,9 +248,13 @@ function AdjustJson {
 
   # tof-event-time
   if [ "$INPUT_RUN" -eq 3 ]; then
-    ReplaceString "\"processNoFT0\": \"false\"" "\"processNoFT0\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
-  else
+    ReplaceString "\"processFT0\": \"false\"" "\"processFT0\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processNoFT0\": \"true\"" "\"processNoFT0\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processOnlyFT0\": \"true\"" "\"processOnlyFT0\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  else
+    ReplaceString "\"processFT0\": \"true\"" "\"processFT0\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processNoFT0\": \"true\"" "\"processNoFT0\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processOnlyFT0\": \"true\"" "\"processOnlyFT0\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # hf-task-flow
