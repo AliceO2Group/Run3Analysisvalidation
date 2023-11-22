@@ -159,7 +159,7 @@ Int_t MakePlots(const VecSpecVecSpec& vecSpecVecSpec,
       hAli->SetLineWidth(2);
       hO2->SetLineColor(2);
       hO2->SetLineWidth(1);
-      hAli->SetTitle(Form("Entries: Ali: %d, O^{2}: %d;%s;Entries", nAli, nO2, labelAxis.Data()));
+      hAli->SetTitle(Form(";%s;Entries", labelAxis.Data()));
       hAli->GetYaxis()->SetMaxDigits(3);
       yMin = TMath::Min(hO2->GetMinimum(0), hAli->GetMinimum(0));
       yMax = TMath::Max(hO2->GetMaximum(), hAli->GetMaximum());
@@ -167,9 +167,11 @@ Int_t MakePlots(const VecSpecVecSpec& vecSpecVecSpec,
       SetPad(padH, logScaleH);
       hAli->Draw();
       hO2->Draw("same");
-      TLegend* legend = new TLegend(0.8, 0.72, 1., 0.92);
-      legend->AddEntry(hAli, "Ali", "L");
-      legend->AddEntry(hO2, "O^{2}", "L");
+      TLegend* legend = new TLegend(0.2, 0.92, 0.82, 1.0);
+      legend->SetNColumns(2);
+      legend->SetBorderSize(0);
+      legend->AddEntry(hAli, Form("Ali: %d", nAli), "L");
+      legend->AddEntry(hO2, Form("O^{2}: %d", nO2), "L");
       legend->Draw();
 
       // Ratio
