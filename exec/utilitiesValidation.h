@@ -171,7 +171,7 @@ Int_t MakePlots(const VecSpecVecSpec& vecSpecVecSpec,
       SetPad(padH, logScaleH);
       hAli->Draw("hist");
       hO2->Draw("hist same");
-      TLegend* legend = new TLegend(0.2, 0.92, 0.82, 1.0);
+      TLegend* legend = new TLegend(0.1, 0.93, 0.9, 1.0);
       legend->SetNColumns(2);
       legend->SetBorderSize(0);
       legend->AddEntry(hAli, Form("Ali: %d", nAli), "L");
