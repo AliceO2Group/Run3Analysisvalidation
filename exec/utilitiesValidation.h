@@ -14,8 +14,9 @@
 #ifndef EXEC_UTILITIESVALIDATION_H_
 #define EXEC_UTILITIESVALIDATION_H_
 
-#include <tuple>
-#include <vector>
+#include <algorithm> // std::min, std::max
+#include <tuple>     // std::tuple, std::make_tuple
+#include <vector>    // std::vector
 
 #include "utilitiesPlot.h"
 
@@ -161,12 +162,15 @@ Int_t MakePlots(const VecSpecVecSpec& vecSpecVecSpec,
       hO2->SetLineWidth(1);
       hAli->SetTitle(Form(";%s;Entries", labelAxis.Data()));
       hAli->GetYaxis()->SetMaxDigits(3);
-      yMin = TMath::Min(hO2->GetMinimum(0), hAli->GetMinimum(0));
-      yMax = TMath::Max(hO2->GetMaximum(), hAli->GetMaximum());
+      Float_t yMinO2, yMaxO2;
+      GetYRange(hO2, yMinO2, yMaxO2, logScaleH, false);
+      GetYRange(hAli, yMin, yMax, logScaleH, false);
+      yMin = std::min(yMinO2, yMin);
+      yMax = std::max(yMaxO2, yMax);
       SetHistogram(hAli, yMin, yMax, marginLow, marginHigh, logScaleH);
       SetPad(padH, logScaleH);
-      hAli->Draw();
-      hO2->Draw("same");
+      hAli->Draw("hist");
+      hO2->Draw("hist same");
       TLegend* legend = new TLegend(0.2, 0.92, 0.82, 1.0);
       legend->SetNColumns(2);
       legend->SetBorderSize(0);
@@ -180,11 +184,10 @@ Int_t MakePlots(const VecSpecVecSpec& vecSpecVecSpec,
         hRatio = reinterpret_cast<TH1F*>(hO2->Clone(Form("hRatio%d", index)));
         hRatio->Divide(hAli);
         hRatio->SetTitle(Form("Entries ratio: %g;%s;O^{2}/Ali", static_cast<float>(nO2) / static_cast<float>(nAli), labelAxis.Data()));
-        yMin = hRatio->GetMinimum(0);
-        yMax = hRatio->GetMaximum();
+        GetYRange(hRatio, yMin, yMax, logScaleR, false);
         SetHistogram(hRatio, yMin, yMax, marginRLow, marginRHigh, logScaleR);
         SetPad(padR, logScaleR);
-        hRatio->Draw();
+        hRatio->Draw("hist");
       }
     }
     canHis->SaveAs(Form("comparison_histos_%s.pdf", nameSpec.Data()));
