@@ -9,6 +9,8 @@
 // granted to it by virtue of its status as an Intergovernmental Organization
 // or submit itself to any jurisdiction.
 
+// Macro to run the HF AliPhysics task that produces validation histograms
+
 #include "../exec/utilitiesAli.h"
 
 Long64_t RunHFTaskLocal(TString txtfile = "./list_ali.txt",

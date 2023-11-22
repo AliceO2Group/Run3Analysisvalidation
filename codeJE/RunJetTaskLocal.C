@@ -9,6 +9,8 @@
 // granted to it by virtue of its status as an Intergovernmental Organization
 // or submit itself to any jurisdiction.
 
+// Macro to run the JE AliPhysics task that produces validation histograms
+
 #include "../exec/utilitiesAli.h"
 
 #ifdef __CLING__
