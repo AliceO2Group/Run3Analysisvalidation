@@ -9,8 +9,6 @@
 // granted to it by virtue of its status as an Intergovernmental Organization
 // or submit itself to any jurisdiction.
 
-//
-
 #include "../exec/utilitiesAli.h"
 
 Long64_t RunHFTaskLocal(TString txtfile = "./list_ali.txt",
@@ -39,7 +37,7 @@ Long64_t RunHFTaskLocal(TString txtfile = "./list_ali.txt",
 
   TChain* chainESD = CreateLocalChain(txtfile.Data());
   if (!chainESD) {
-    Error("CreateLocalChain", "Failed to create chain from file %s", txtfile.Data());
+    Fatal("CreateLocalChain", "Failed to create chain from file %s", txtfile.Data());
     return -1;
   }
 
