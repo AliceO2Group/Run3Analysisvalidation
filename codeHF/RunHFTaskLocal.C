@@ -1,4 +1,17 @@
-TChain* CreateLocalChain(const char* txtfile);
+// Copyright 2019-2020 CERN and copyright holders of ALICE O2.
+// See https://alice-o2.web.cern.ch/copyright for details of the copyright holders.
+// All rights not expressly granted are reserved.
+//
+// This software is distributed under the terms of the GNU General Public
+// License v3 (GPL Version 3), copied verbatim in the file "COPYING".
+//
+// In applying this license CERN does not waive the privileges and immunities
+// granted to it by virtue of its status as an Intergovernmental Organization
+// or submit itself to any jurisdiction.
+
+// Macro to run the HF AliPhysics task that produces validation histograms
+
+#include "../exec/utilitiesAli.h"
 
 Long64_t RunHFTaskLocal(TString txtfile = "./list_ali.txt",
                         TString jsonfilename = "dpl-config_std.json",
@@ -26,7 +39,7 @@ Long64_t RunHFTaskLocal(TString txtfile = "./list_ali.txt",
 
   TChain* chainESD = CreateLocalChain(txtfile.Data());
   if (!chainESD) {
-    Error("CreateLocalChain", "Failed to create chain from file %s", txtfile.Data());
+    Fatal("CreateLocalChain", "Failed to create chain from file %s", txtfile.Data());
     return -1;
   }
 
@@ -60,34 +73,3 @@ Long64_t RunHFTaskLocal(TString txtfile = "./list_ali.txt",
   mgr->PrintStatus();
   return mgr->StartAnalysis("local", chainESD);
 };
-
-TChain* CreateLocalChain(const char* txtfile)
-{
-  // Open the file
-  ifstream in;
-  in.open(txtfile);
-  Int_t count = 0;
-  // Read the input list of files and add them to the chain
-  TString line;
-  TChain* chain = new TChain("esdTree");
-  while (in.good()) {
-    in >> line;
-    if (line.IsNull() || line.BeginsWith("#"))
-      continue;
-    TString esdFile(line);
-    TFile* file = TFile::Open(esdFile);
-    if (file && !file->IsZombie()) {
-      chain->Add(esdFile);
-      file->Close();
-    } else {
-      Error("CreateLocalChain", "Skipping un-openable file: %s", esdFile.Data());
-    }
-  }
-  in.close();
-  if (!chain->GetListOfFiles()->GetEntries()) {
-    Error("CreateLocalChain", "No file from %s could be opened", txtfile);
-    delete chain;
-    return nullptr;
-  }
-  return chain;
-}
