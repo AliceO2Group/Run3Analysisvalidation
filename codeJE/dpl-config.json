@@ -74,7 +74,7 @@
         "trackPhiMin": "-999",
         "trackPhiMax": "999",
         "trackSelections": "hybridTracksJE",
-        "eventSelections": "sel7",
+        "eventSelections": "none",
         "particleSelections": "PhysicalPrimary",
         "clusterDefinition": "kV3Default",
         "clusterEtaMin": "-0.7",
