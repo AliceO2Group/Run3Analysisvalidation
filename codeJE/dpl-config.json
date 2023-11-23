@@ -50,7 +50,7 @@
         "compatibilityIU": "false",
         "itsMatching": "0",
         "dcaSetup": "0",
-        "ptMin": "0.1",
+        "ptMin": "0.15",
         "ptMax": "1e+10",
         "etaMin": "-0.8",
         "etaMax": "0.8"
@@ -74,7 +74,7 @@
         "trackPhiMin": "-999",
         "trackPhiMax": "999",
         "trackSelections": "hybridTracksJE",
-        "eventSelections": "sel7",
+        "eventSelections": "none",
         "particleSelections": "PhysicalPrimary",
         "clusterDefinition": "kV3Default",
         "clusterEtaMin": "-0.7",
@@ -445,10 +445,10 @@
     },
     "jet-validation-track-collision-qa": {
         "ptLow": "0.15",
-        "ptUp": "100",
+        "ptUp": "1e15",
         "etaLow": "-0.9",
         "etaUp": "0.9",
-        "evSel": "true",
+        "evSel": "false",
         "nBins": "200",
         "BinsPhi": {
             "values": [

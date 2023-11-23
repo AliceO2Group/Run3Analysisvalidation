@@ -202,8 +202,9 @@ function MakeScriptPostprocess {
   POSTEXEC="echo Postprocessing"
   # Compare AliPhysics and O2 histograms.
   [[ $DOALI -eq 1 && $DOO2 -eq 1 ]] && {
-    OPT_COMPARE=""
+    OPT_COMPARE=" "
     [ $DOO2_JET_VALID -eq 1 ] && OPT_COMPARE+=" jets "
+    [ $DOO2_JET_VALID -eq 1 ] && OPT_COMPARE+=" Events "
     [ "$OPT_COMPARE" ] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/Compare.C(\\\"\$FileO2\\\", \\\"\$FileAli\\\", \\\"$OPT_COMPARE\\\", $DORATIO)\""
   }
   cat << EOF > "$SCRIPT_POSTPROCESS"

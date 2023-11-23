@@ -20,6 +20,7 @@ Int_t Compare(TString pathFileO2 = "AnalysisResults_O2.root", TString pathFileAl
   // Histogram specification: axis label, AliPhysics name, O2Physics path/name, rebin, log scale histogram, log scale ratio, projection axis
 
   VecSpecHis vecHisEvents;
+  AddHistogram(vecHisEvents, "z_{Event} [cm]", "Events Vertex Distribution", "jet-validation-track-collision-qa/controlCollisionVtxZ", 1, 0, 0);
 
   VecSpecHis vecHisJets;
   AddHistogram(vecHisJets, "#it{p}_{T, ch jet} (GeV/#it{c})", "jetPt", "jet-validation-track-collision-qa/jetPt", 1, 1, 0);
@@ -29,6 +30,7 @@ Int_t Compare(TString pathFileO2 = "AnalysisResults_O2.root", TString pathFileAl
   AddHistogram(vecHisJets, "#it{#varphi}_{track}", "jetTrackPhi", "jet-validation-track-collision-qa/selectedTrackPhi", 1, 0, 0);
   AddHistogram(vecHisJets, "#it{#eta}_{track}", "jetTrackEta", "jet-validation-track-collision-qa/selectedTrackEta", 1, 0, 0);
 
+
   // vector of specifications of vectors: name, VecSpecHis, pads X, pads Y
   VecSpecVecSpec vecSpecVecSpec;
 
@@ -37,6 +39,8 @@ Int_t Compare(TString pathFileO2 = "AnalysisResults_O2.root", TString pathFileAl
   //  vecSpecVecSpec.push_back(std::make_tuple("events", vecHisEvents, 4, 2));
   if (options.Contains("jets"))
     vecSpecVecSpec.push_back(std::make_tuple("jets", vecHisJets, 3, 2));
+  if (options.Contains("Events"))
+    vecSpecVecSpec.push_back(std::make_tuple("Events", vecHisEvents, 1, 1));
 
   return MakePlots(vecSpecVecSpec, pathFileO2, pathFileAli, pathListAli, doRatio);
 }
