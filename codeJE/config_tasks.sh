@@ -204,6 +204,7 @@ function MakeScriptPostprocess {
   [[ $DOALI -eq 1 && $DOO2 -eq 1 ]] && {
     OPT_COMPARE=""
     [ $DOO2_JET_VALID -eq 1 ] && OPT_COMPARE+=" jets "
+    [ $DOO2_JET_VALID -eq 1 ] && OPT_COMPARE+=" events "
     [ "$OPT_COMPARE" ] && POSTEXEC+=" && root -b -q -l \"$DIR_TASKS/Compare.C(\\\"\$FileO2\\\", \\\"\$FileAli\\\", \\\"$OPT_COMPARE\\\", $DORATIO)\""
   }
   cat << EOF > "$SCRIPT_POSTPROCESS"
