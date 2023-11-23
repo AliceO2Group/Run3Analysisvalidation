@@ -30,7 +30,6 @@ Int_t Compare(TString pathFileO2 = "AnalysisResults_O2.root", TString pathFileAl
   AddHistogram(vecHisJets, "#it{#varphi}_{track}", "jetTrackPhi", "jet-validation-track-collision-qa/selectedTrackPhi", 1, 0, 0);
   AddHistogram(vecHisJets, "#it{#eta}_{track}", "jetTrackEta", "jet-validation-track-collision-qa/selectedTrackEta", 1, 0, 0);
 
-
   // vector of specifications of vectors: name, VecSpecHis, pads X, pads Y
   VecSpecVecSpec vecSpecVecSpec;
 
