@@ -142,7 +142,12 @@
                 "-0.5",
                 "0.5"
             ]
-        }
+        },
+        "processNoPid": "true",
+        "processProtonPidTpc": "false",
+        "processProtonPidTof": "false",
+        "processProtonPidTpcOrTof": "false",
+        "processProtonPidTpcAndTof": "false"
     },
     "hf-track-index-skim-creator": {
         "isRun2": "true",
@@ -414,6 +419,8 @@
                 ]
             ]
         },
+        "applyProtonPidForLcToPKPi": "true",
+        "applyProtonPidForXicToPKPi": "true",
         "axisPvRefitDeltaX": {
             "values": [
                 "1000",
@@ -463,6 +470,7 @@
         "cutInvMassV0": "0.05",
         "ptCascCandMin": "-1",
         "cutInvMassCascLc": "1",
+        "applyProtonPid": "true",
         "ccdbUrl": "http://alice-ccdb.cern.ch",
         "ccdbPathLut": "GLO/Param/MatLUT",
         "ccdbPathGrp": "GLO/GRP/GRP",
