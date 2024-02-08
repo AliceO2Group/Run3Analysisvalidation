@@ -6,7 +6,7 @@ brief: script with miscellanea utils methods for the HF analyses
 author: Fabrizio Grosa <fabrizio.grosa@cern.ch>, CERN
 """
 
-import numpy as np  # pylint: disable=import-error
+import numpy as np
 
 
 # pylint: disable=too-many-arguments
@@ -89,13 +89,13 @@ def compute_fraction_fc(
     - frac_fd: list of fraction of non-prompt D (central, min, max)
     """
 
-    if not isinstance(cross_sec_prompt, list) or isinstance(cross_sec_prompt, float):
+    if not isinstance(cross_sec_prompt, list) and isinstance(cross_sec_prompt, float):
         cross_sec_prompt = [cross_sec_prompt]
-    if not isinstance(cross_sec_fd, list) or isinstance(cross_sec_fd, float):
+    if not isinstance(cross_sec_fd, list) and isinstance(cross_sec_fd, float):
         cross_sec_fd = [cross_sec_fd]
-    if not isinstance(raa_prompt, list) or isinstance(raa_prompt, float):
+    if not isinstance(raa_prompt, list) and isinstance(raa_prompt, float):
         raa_prompt = [raa_prompt]
-    if not isinstance(raa_fd, list) or isinstance(raa_fd, float):
+    if not isinstance(raa_fd, list) and isinstance(raa_fd, float):
         raa_fd = [raa_fd]
 
     frac_prompt, frac_fd = [], []
@@ -196,10 +196,10 @@ def compute_fraction_nb(
     - frac: list of fraction of prompt (non-prompt) D (central, min, max)
     """
 
-    if not isinstance(crosssection, list) or isinstance(crosssection, float):
+    if not isinstance(crosssection, list) and isinstance(crosssection, float):
         crosssection = [crosssection]
 
-    if not isinstance(raa_ratio, list) or isinstance(raa_ratio, float):
+    if not isinstance(raa_ratio, list) and isinstance(raa_ratio, float):
         raa_ratio = [raa_ratio]
 
     frac = []
