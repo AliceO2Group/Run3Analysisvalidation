@@ -7,26 +7,26 @@ usage: python3 HfPtSpectrum.py CONFIG
 author: Fabrizio Grosa <fabrizio.grosa@cern.ch>, CERN
 """
 
-
 import argparse
 import os
 import sys
 
-import numpy as np
-import yaml
+import numpy as np  # pylint: disable=import-error
+import yaml  # pylint: disable=import-error
 from hf_analysis_utils import (
     compute_crosssection,
     compute_fraction_fc,
     compute_fraction_nb,
     get_hist_binlimits,
 )
-from hfplot.plot_spec_root import ROOTFigure
-from hfplot.style import StyleObject1D
 from ROOT import (  # pylint: disable=import-error,no-name-in-module
     TH1,
     TH1F,
+    TCanvas,
     TFile,
     TGraphAsymmErrors,
+    TStyle,
+    gPad,
     gROOT,
     kAzure,
     kFullCircle,
@@ -190,6 +190,22 @@ def main():
     if args.batch:
         gROOT.SetBatch(True)
 
+    # final plots style settings
+    style_hist = TStyle('style_hist','Histo graphics style')
+    style_hist.SetOptStat("n")
+    style_hist.SetMarkerColor(kAzure + 4)
+    style_hist.SetMarkerStyle(kFullCircle)
+    style_hist.SetMarkerSize(1)
+    style_hist.SetHistLineColor(kAzure + 4)
+    style_hist.SetHistLineWidth(2)
+    style_hist.SetLabelSize(0.030)
+    style_hist.SetLabelOffset(0.010)
+    style_hist.SetTitleXOffset(1.3)
+    style_hist.SetTitleYOffset(1.3)
+    style_hist.SetDrawOption("AP")
+    gROOT.SetStyle("style_hist")
+    gROOT.ForceStyle()
+
     # load info from config file
     with open(args.configfile_name, "r") as yml_configfile:
         cfg = yaml.safe_load(yml_configfile)
@@ -213,8 +229,9 @@ def main():
     axistit_cross_times_br = "d#sigma/d#it{p}_{T} #times BR (pb GeV^{-1} #it{c})"
     axistit_pt = "#it{p}_{T} (GeV/#it{c})"
     axistit_fprompt = "#if{f}_{prompt}"
-    gfraction = TGraphAsymmErrors(0)
+    gfraction = TGraphAsymmErrors()
     gfraction.SetNameTitle("gfraction", f";{axistit_pt};{axistit_fprompt}")
+
     hptspectrum = TH1F(
         "hptspectrum",
         f";{axistit_pt};{axistit_cross}",
@@ -252,6 +269,7 @@ def main():
         ]
 
         # compute prompt fraction
+        frac = [0., 0., 0.]
         if frac_method == "Nb":
             frac = compute_fraction_nb(  # BR already included in FONLL prediction
                 rawy,
@@ -272,7 +290,7 @@ def main():
                 / (ptmax - ptmin)
                 for pred in histos["FONLL"]["prompt"]
             ]
-            frac = compute_fraction_fc(
+            frac, _ = compute_fraction_fc(
                 eff_times_acc_prompt,
                 eff_times_acc_nonprompt,
                 crosssec_prompt_fonll,
@@ -298,33 +316,24 @@ def main():
         hptspectrum_wo_br.SetBinContent(i_pt + 1, crosssec)
         hptspectrum_wo_br.SetBinError(i_pt + 1, crosssec_unc)
         gfraction.SetPoint(i_pt, pt_cent, frac[0])
-        gfraction.SetPointError(
-            i_pt, pt_delta / 2, pt_delta / 2, frac[0] - frac[1], frac[2] - frac[0]
-        )
+        #gfraction.SetPointError(
+        #    i_pt, pt_delta / 2, pt_delta / 2, frac[0] - frac[1], frac[2] - frac[0]
+        #)
 
-    # create plots
-    style_hist = StyleObject1D()
-    style_hist.markercolor = kAzure + 4
-    style_hist.markerstyle = kFullCircle
-    style_hist.markersize = 1
-    style_hist.linecolor = kAzure + 4
-    style_hist.linewidth = 2
-    style_hist.draw_options = "P"
-
-    fig_crosssec = ROOTFigure(
-        1, 1, column_margin=(0.14, 0.035), row_margin=(0.1, 0.035), size=(600, 800)
-    )
-    fig_crosssec.axes(label_size=0.025, title_size=0.030)
-    fig_crosssec.axes("x", title=axistit_pt, title_offset=1.5)
-    fig_crosssec.axes("y", title=axistit_cross_times_br, title_offset=1.8)
-    fig_crosssec.define_plot(0, 0, y_log=True)
-    fig_crosssec.add_object(hptspectrum_wo_br, style=style_hist)
-    fig_crosssec.create()
+    c = TCanvas("c", "c", 600, 800)
+    c.Divide (1, 2)
+    c.cd(1)
+    gPad.SetLogy(True)
+    hptspectrum.Draw()
+    c.cd(2)
+    gPad.SetLogy(True)
+    hptspectrum_wo_br.Draw()
 
     output_dir = cfg["output"]["directory"]
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
-    fig_crosssec.save(os.path.join(output_dir, f'{cfg["output"]["filename"]}.pdf'))
+
+    c.Print(os.path.join(output_dir, f'{cfg["output"]["filename"]}.pdf'))
 
     # save output file
     output_file = TFile(
