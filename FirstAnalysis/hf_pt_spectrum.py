@@ -245,6 +245,8 @@ def main():
         ptlims["rawyields"],
     )
 
+    ptmin = 0.
+    ptmax = 0.
     for i_pt, (ptmin, ptmax) in enumerate(
         zip(ptlims["rawyields"][:-1], ptlims["rawyields"][1:])
     ):
@@ -315,9 +317,9 @@ def main():
         hptspectrum_wo_br.SetBinContent(i_pt + 1, crosssec)
         hptspectrum_wo_br.SetBinError(i_pt + 1, crosssec_unc)
         gfraction.SetPoint(i_pt, pt_cent, frac[0])
-        gfraction.SetPointError(
-            i_pt, pt_delta / 2, pt_delta / 2, frac[0] - frac[1], frac[2] - frac[0]
-        )
+        #gfraction.SetPointError(
+        #    i_pt, pt_delta / 2, pt_delta / 2, frac[0] - frac[1], frac[2] - frac[0]
+        #)
 
     c = TCanvas("c", "c", 600, 800)
     c.Divide (1, 2)
