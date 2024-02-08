@@ -98,7 +98,7 @@ def compute_fraction_fc(
     if not isinstance(raa_fd, list) and isinstance(raa_fd, float):
         raa_fd = [raa_fd]
 
-    frac_prompt, frac_fd = [], []
+    frac_prompt, frac_fd = [0., 0., 0.], [0., 0., 0.]
     if acc_eff_prompt == 0:
         frac_fd_cent = 1.0
         frac_prompt_cent = 0.0
@@ -202,7 +202,7 @@ def compute_fraction_nb(
     if not isinstance(raa_ratio, list) and isinstance(raa_ratio, float):
         raa_ratio = [raa_ratio]
 
-    frac = []
+    frac = [0., 0., 0.]
     for i_sigma, sigma in enumerate(crosssection):
         for i_raa_ratio, raa_rat in enumerate(raa_ratio):
             raa_other = 1.0
