@@ -6,7 +6,7 @@ brief: script with miscellanea utils methods for the HF analyses
 author: Fabrizio Grosa <fabrizio.grosa@cern.ch>, CERN
 """
 
-import numpy as np
+import numpy as np  # pylint: disable=import-error
 
 
 # pylint: disable=too-many-arguments
@@ -68,7 +68,7 @@ def compute_fraction_fc(
     cross_sec_fd,
     raa_prompt=1.0,
     raa_fd=1.0,
-) -> tuple[list[float,float]]:
+) -> tuple[list[float]]:
     """
     Method to get fraction of prompt / FD fraction with fc method
 
