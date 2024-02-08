@@ -68,7 +68,7 @@ def compute_fraction_fc(
     cross_sec_fd,
     raa_prompt=1.0,
     raa_fd=1.0,
-):
+) -> tuple[list[float,float]]:
     """
     Method to get fraction of prompt / FD fraction with fc method
 
@@ -172,7 +172,7 @@ def compute_fraction_nb(
     sigma_mb,
     raa_ratio=1.0,
     taa=1.0,
-):
+) -> list[float]:
     """
     Method to get fraction of prompt / FD fraction with Nb method
 
