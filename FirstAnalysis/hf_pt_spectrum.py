@@ -7,29 +7,27 @@ usage: python3 HfPtSpectrum.py CONFIG
 author: Fabrizio Grosa <fabrizio.grosa@cern.ch>, CERN
 """
 
-
 import argparse
 import os
 import sys
 
-import numpy as np
-import yaml
+import numpy as np  # pylint: disable=import-error
+import yaml  # pylint: disable=import-error
 from hf_analysis_utils import (
     compute_crosssection,
     compute_fraction_fc,
     compute_fraction_nb,
     get_hist_binlimits,
 )
-
 from ROOT import (  # pylint: disable=import-error,no-name-in-module
     TH1,
     TH1F,
-    TFile,
     TCanvas,
-    TStyle,
+    TFile,
     TGraphAsymmErrors,
-    gROOT,
+    TStyle,
     gPad,
+    gROOT,
     kAzure,
     kFullCircle,
 )
@@ -291,7 +289,7 @@ def main():
                 / (ptmax - ptmin)
                 for pred in histos["FONLL"]["prompt"]
             ]
-            frac = compute_fraction_fc(
+            frac, _ = compute_fraction_fc(
                 eff_times_acc_prompt,
                 eff_times_acc_nonprompt,
                 crosssec_prompt_fonll,
