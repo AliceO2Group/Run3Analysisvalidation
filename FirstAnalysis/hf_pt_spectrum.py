@@ -245,8 +245,6 @@ def main():
         ptlims["rawyields"],
     )
 
-    ptmin = 0.
-    ptmax = 0.
     for i_pt, (ptmin, ptmax) in enumerate(
         zip(ptlims["rawyields"][:-1], ptlims["rawyields"][1:])
     ):
@@ -271,6 +269,7 @@ def main():
         ]
 
         # compute prompt fraction
+        frac = [0., 0., 0.]
         if frac_method == "Nb":
             frac = compute_fraction_nb(  # BR already included in FONLL prediction
                 rawy,
