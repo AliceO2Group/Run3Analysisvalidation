@@ -36,7 +36,7 @@ MAKE_GRAPH=0        # Make topology graph.
 # Activation of O2 workflows
 # Table producers
 DOO2_JET_DERIVED=0  # je-jet-deriveddata-producer
-DOO2_JET_FINDER=0   # je-jet-finder
+DOO2_JET_FINDER=0   # je-jet-finder-data-charged
 # Analysis tasks
 # TODO: Add analysis tasks
 # QA
@@ -143,7 +143,7 @@ function MakeScriptO2 {
   WORKFLOWS=""
   # Table producers
   [ $DOO2_JET_DERIVED -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-deriveddata-producer"
-  [ $DOO2_JET_FINDER -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder"
+  [ $DOO2_JET_FINDER -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-data-charged"
   # Analysis tasks
   # TODO: Add analysis tasks
   # QA
