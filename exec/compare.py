@@ -89,7 +89,8 @@ def are_same_histograms(his1 : TH1, his2 : TH1) -> bool:
         print(f"Different number of entries {his1.GetEntries()} vs {his2.GetEntries()}")
         return False;
     # Compare axes
-    for ax1, ax2 in zip((his1.GetXaxis(), his1.GetYaxis(), his1.GetZaxis()), (his2.GetXaxis(), his2.GetYaxis(), his2.GetZaxis())):
+    for ax1, ax2 in zip((his1.GetXaxis(), his1.GetYaxis(), his1.GetZaxis()),
+                        (his2.GetXaxis(), his2.GetYaxis(), his2.GetZaxis())):
         if not are_same_axes(ax1, ax2):
             print("Different axes")
             return False
@@ -98,8 +99,10 @@ def are_same_histograms(his1 : TH1, his2 : TH1) -> bool:
         for bin_y in range(his1.GetNbinsY() + 2):
             for bin_x in range(his1.GetNbinsX() + 2):
                 bin = his1.GetBin(bin_x, bin_y, bin_z)
-                if his1.GetBinContent(bin) != his2.GetBinContent(bin) or his1.GetBinError(bin) != his2.GetBinError(bin):
-                    print(f"Different bin {bin} content: {his1.GetBinContent(bin)} ± {his1.GetBinError(bin)} vs {his2.GetBinContent(bin)} ± {his2.GetBinError(bin)}")
+                if his1.GetBinContent(bin) != his2.GetBinContent(bin) or \
+                    his1.GetBinError(bin) != his2.GetBinError(bin):
+                    print(f"Different bin {bin} content: {his1.GetBinContent(bin)} ± {his1.GetBinError(bin)} vs "
+                          "{his2.GetBinContent(bin)} ± {his2.GetBinError(bin)}")
                     return False
     return True
 
@@ -135,7 +138,8 @@ def are_same_thnspare(his1 : THnSparse, his2 : THnSparse) -> bool:
 #         msg_fatal("Bad input objects")
 #         return False
 #     # Compare number of dimensions
-#     if his1.GetDimensionMeasured() != his2.GetDimensionMeasured() or his1.GetDimensionTruth() != his2.GetDimensionTruth():
+#     if his1.GetDimensionMeasured() != his2.GetDimensionMeasured() or \
+#         his1.GetDimensionTruth() != his2.GetDimensionTruth():
 #         return False
 #     # Compare number of bins
 #     if his1.GetNbinsMeasured() != his2.GetNbinsMeasured() or his1.GetNbinsTruth() != his2.GetNbinsTruth():
@@ -158,7 +162,7 @@ def are_same_objects(obj1, obj2) -> bool:
         msg_fatal("Bad input objects")
         return False
     # Compare types
-    if type(obj1) != type(obj2):
+    if type(obj1) is not type(obj2):
         print(f"Different types {type(obj1)} {type(obj2)}")
         return False
     # Get ROOT types
