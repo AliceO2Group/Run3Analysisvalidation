@@ -4,7 +4,7 @@
 # Input specification for runtest.sh
 # (Modifies input parameters.)
 
-INPUT_CASE=2            # Input case
+INPUT_CASE=13            # Input case
 
 NFILESMAX=1             # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
 
@@ -16,12 +16,7 @@ NFILESPERJOB_O2=1       # O2
 # Maximum number of simultaneously running O2 jobs
 NJOBSPARALLEL_O2=$(python3 -c "print(min(10, round($(nproc) / 2)))")
 
-JSONRUN3="dpl-config_run3.json"  # Run 3 tasks parameters
-# Run 5 tasks parameters for open HF study
-JSONRUN5_HF="dpl-config_run5_hf.json"
-# Run 5 tasks parameters for onia studies:
-# J/psi and X (higher pt cut on 2-prong decay tracks and no DCA cut on single track)
-JSONRUN5_ONIAX="dpl-config_run5_oniaX.json"
+JSONRUN3="dpl-config.json"  # Run 3 tasks parameters
 JSON="$JSONRUN3"
 
 # Default settings:
@@ -106,19 +101,7 @@ case $INPUT_CASE in
     INPUT_IS_O2=1
     ;;
   13)
-    INPUT_LABEL="Run 3, p-p 13.6 TeV, MC LHC22b1b, D2H enriched"
-    INPUT_DIR="$INPUT_BASE/Run3/pp_13.6TeV/sim/LHC22b1b"
-    INPUT_FILES="AO2D.root"
-    INPUT_IS_O2=1
-    INPUT_IS_MC=1
-    INPUT_RUN=3
-    ;;
-  14)
-    INPUT_LABEL="Run 3, p-p 13.6 TeV, MC LHC23f4b2, general purpose"
-    INPUT_DIR="$INPUT_BASE/Run3/pp_13.6TeV/sim/LHC23f4b2"
-    INPUT_FILES="AO2D.root"
-    INPUT_IS_O2=1
-    INPUT_IS_MC=1
-    INPUT_RUN=3
+    INPUT_LABEL="Run 2, p-p 13 TeV, LHC18p, real"
+    INPUT_DIR="$INPUT_BASE/Run2/pp_13TeV/real/LHC18p/294009"
     ;;
   esac
