@@ -57,7 +57,7 @@ void getFlow(
   TFile* inFile = TFile::Open(Form("%s", inputFileName), "read");
 
   //  DO REFERENCE FLOW
-  TH1D* hReferenceV2 = (TH1D*)inFile->Get("hReferenceV2");
+  TH1D* hReferenceV2 = reinterpret_cast<TH1D*>(inFile->Get("hReferenceV2"));
 
   TH1D* hRefFlow_v2 = new TH1D("hRefFlow_v2", "reference flow; multiplicity; v_{2}", nBinsMult, binsMult);
 
@@ -82,7 +82,7 @@ void getFlow(
     hRefFlow_v2->SetBinError(iMult + 1, v2err);
 
     //  DO DIFFERENTIAL FLOW
-    hDifferentialV2[iMult] = (TH1D*)inFile->Get(Form("hDifferentialV2_%d", iMult));
+    hDifferentialV2[iMult] = reinterpret_cast<TH1D*>(inFile->Get(Form("hDifferentialV2_%d", iMult)));
 
     hDiffFlow_v2[iMult] = new TH1D(Form("hDiffFlow_v2_%d", iMult), Form("differential flow, %.0f < N_{ch} < %.0f; p_{T}; v_{2}", binsMult[iMult], binsMult[iMult + 1]), nBinspTtrig, binspTtrig);
 

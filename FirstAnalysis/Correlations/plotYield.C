@@ -71,8 +71,8 @@ void plotYield(const char* inFileName = "yield.root", bool savePlots = false)
       for (uint imult = 0; imult < nmult; imult++) {
 
         //  get the deltaphi projection and its fit (the fit was performed in yieldExtraction.C)
-        hdphiRidge[itrig][iassoc][imult] = (TH1D*)infile->Get(Form("proj_dphi_%u_%u_%u", itrig, iassoc, imult));
-        fdphiRidge[itrig][iassoc][imult] = (TF1*)infile->Get(Form("fit_%u_%u_%u", itrig, iassoc, imult));
+        hdphiRidge[itrig][iassoc][imult] = reinterpret_cast<TH1D*>(infile->Get(Form("proj_dphi_%u_%u_%u", itrig, iassoc, imult)));
+        fdphiRidge[itrig][iassoc][imult] = reinterpret_cast<TF1*>(infile->Get(Form("fit_%u_%u_%u", itrig, iassoc, imult)));
 
         //  draw a line that shows 0 baseline
         double xbinlowedge = hdphiRidge[itrig][iassoc][imult]->GetBinLowEdge(1);
@@ -136,7 +136,7 @@ void plotYield(const char* inFileName = "yield.root", bool savePlots = false)
       }
 
       //  plot the yield vs. multiplicity
-      gRidge[itrig][iassoc] = (TGraphErrors*)infile->Get(Form("ridgeYield_%u_%u", itrig, iassoc));
+      gRidge[itrig][iassoc] = reinterpret_cast<TGraphErrors*>(infile->Get(Form("ridgeYield_%u_%u", itrig, iassoc)));
 
       cRidge[itrig][iassoc] = new TCanvas(Form("cRidge_%u_%u", itrig, iassoc), "", 700, 500);
 
