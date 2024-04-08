@@ -155,9 +155,6 @@
                 ]
             ]
         },
-        "useIsGlobalTrackForSoftPion": "false",
-        "useIsGlobalTrackWoDCAForSoftPion": "false",
-        "useIsQualityTrackITSForSoftPion": "true",
         "ccdbUrl": "http://alice-ccdb.cern.ch",
         "ccdbPathLut": "GLO/Param/MatLUT",
         "ccdbPathGrp": "GLO/GRP/GRP",
