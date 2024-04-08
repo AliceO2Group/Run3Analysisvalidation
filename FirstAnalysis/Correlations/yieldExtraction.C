@@ -1,3 +1,14 @@
+// Copyright 2019-2020 CERN and copyright holders of ALICE O2.
+// See https://alice-o2.web.cern.ch/copyright for details of the copyright holders.
+// All rights not expressly granted are reserved.
+//
+// This software is distributed under the terms of the GNU General Public
+// License v3 (GPL Version 3), copied verbatim in the file "COPYING".
+//
+// In applying this license CERN does not waive the privileges and immunities
+// granted to it by virtue of its status as an Intergovernmental Organization
+// or submit itself to any jurisdiction.
+
 //////////////////////////////////////////////////////////////
 //  Macro to obtain projections of two-particle correlations and yield
 //
@@ -35,17 +46,17 @@ bool wingCorrection = false; // correct for increase of correlation signal at la
 void yieldExtraction(const char* inFileName = "dphi_corr.root", double absDeltaEtaMin = 1.4, double absDeltaEtaMax = 1.8, const char* outFileName = "yield.root")
 {
   //  Nch represents the multiplicity interval of the analysis
-  //static Double_t Nch[] = {0.0, 2.750, 5.250, 7.750, 12.750, 17.750, 22.750, 27.750, 32.750, 37.750, 42.750, 47.750, 52.750, 57.750, 62.750, 67.750, 72.750, 77.750, 82.750, 87.750, 92.750, 97.750, 250.1};
+  // static Double_t Nch[] = {0.0, 2.750, 5.250, 7.750, 12.750, 17.750, 22.750, 27.750, 32.750, 37.750, 42.750, 47.750, 52.750, 57.750, 62.750, 67.750, 72.750, 77.750, 82.750, 87.750, 92.750, 97.750, 250.1};
   static Double_t Nch[] = {0, 10, 20, 30, 40, 50, 60, 80, 100, 200};
   //  Nbins is the number of multiplicity bins
   static const uint Nbins = 9;
-  //static const uint Nbins = sizeof(Nch) / sizeof(Nch[0]);
+  // static const uint Nbins = sizeof(Nch) / sizeof(Nch[0]);
   const double absDeltaPhi = 1.3; // y-projection range (it is only needed for jet yield calculation from delta eta projection)
 
   TFile* infile = new TFile(inFileName, "read");
   TFile* outfile = new TFile(outFileName, "recreate");
 
-  const uint trigCount = 1; //4
+  const uint trigCount = 1; // 4
 
   for (uint itrig = 0; itrig < trigCount; ++itrig) {
     for (uint iassoc = 0; iassoc <= itrig; ++iassoc) {
@@ -55,14 +66,14 @@ void yieldExtraction(const char* inFileName = "dphi_corr.root", double absDeltaE
       for (uint imult = 0; imult < Nbins; ++imult) {
 
         // 2D histogram of two-particle correlation: same/mixed event ratio (normalised as it should be: Ntrig, B(0,0))
-        TH2D* hdphidetaRidge = (TH2D*)infile->Get(Form("dphi_%u_%u_%u", itrig, iassoc, imult));
+        TH2D* hdphidetaRidge = reinterpret_cast<TH2D*>(infile->Get(Form("dphi_%u_%u_%u", itrig, iassoc, imult)));
         if (!hdphidetaRidge) {
           printf("No histograms corresponding mult bin %u. (itrig=%u, iassoc=%u)\n", imult, itrig, iassoc);
           continue;
         } // if histogram not existing
 
         // Clone hdphidetaJet: hdphidetaRidge will be used for phi projection; hdphidetaJet for eta projection
-        TH2D* hdphidetaJet = (TH2D*)hdphidetaRidge->Clone("hdphidetaJet");
+        TH2D* hdphidetaJet = reinterpret_cast<TH2D*>(hdphidetaRidge->Clone("hdphidetaJet"));
 
         //  Normalise hdphidetaRidge used for delta phi projection with the width of the long-range region
         double norm = 2.0 * (absDeltaEtaMax - absDeltaEtaMin);
@@ -116,7 +127,7 @@ void yieldExtraction(const char* inFileName = "dphi_corr.root", double absDeltaE
         hdphiRidgeN->Write();
 
         //  add the projections positive + negative
-        TH1D* hdphiRidge = (TH1D*)hdphiRidgeP->Clone(Form("proj_dphi_%u_%u_%u", itrig, iassoc, imult));
+        TH1D* hdphiRidge = reinterpret_cast<TH1D*>(hdphiRidgeP->Clone(Form("proj_dphi_%u_%u_%u", itrig, iassoc, imult)));
         hdphiRidge->Add(hdphiRidgeP, hdphiRidgeN, 0.5, 0.5);
 
         //  fit the projection to get ZYAM

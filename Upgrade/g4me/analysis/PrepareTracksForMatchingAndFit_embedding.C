@@ -131,7 +131,7 @@ void PrepareTracksForMatchingAndFit_embedding(const char* inputFileName_underlyi
 
     for (int iHit = 0; iHit < io_underlying.hits.n; iHit++) {
 
-      //filling arrays of hit IDs from MID layers (coming from any charged tracks)
+      // filling arrays of hit IDs from MID layers (coming from any charged tracks)
 
       auto trackID = io_underlying.hits.trkid[iHit];
 
