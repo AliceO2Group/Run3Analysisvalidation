@@ -1,3 +1,14 @@
+// Copyright 2019-2020 CERN and copyright holders of ALICE O2.
+// See https://alice-o2.web.cern.ch/copyright for details of the copyright holders.
+// All rights not expressly granted are reserved.
+//
+// This software is distributed under the terms of the GNU General Public
+// License v3 (GPL Version 3), copied verbatim in the file "COPYING".
+//
+// In applying this license CERN does not waive the privileges and immunities
+// granted to it by virtue of its status as an Intergovernmental Organization
+// or submit itself to any jurisdiction.
+
 //////////////////////////////////////////////////////////////
 //  Macro to obtain projections of two-particle correlations for flow studies
 //
@@ -50,7 +61,7 @@ void doPhiProjections(
   static Double_t Nch[] = {0, 10, 20, 30, 40, 50, 60, 80, 100, 200};
   //  Nbins is the number of multiplicity bins
   static const uint Nbins = 9;
-  //static const uint Nbins = sizeof(Nch) / sizeof(Nch[0]);
+  // static const uint Nbins = sizeof(Nch) / sizeof(Nch[0]);
   const double absDeltaPhi = 1.3; // y-projection range (it is only needed for jet yield calculation from delta eta projection)
 
   TFile* infile = new TFile(inFileName, "read");
@@ -64,7 +75,7 @@ void doPhiProjections(
     //  do reference flow
 
     // 2D histogram of two-particle correlation: same/mixed event ratio (normalised as it should be: Ntrig, B(0,0))
-    TH2D* hdphidetaRidge_ref = (TH2D*)infile->Get(Form("dphi_ref_%u", imult));
+    TH2D* hdphidetaRidge_ref = reinterpret_cast<TH2D*>(infile->Get(Form("dphi_ref_%u", imult)));
     if (!hdphidetaRidge_ref) {
       printf("No histograms corresponding mult bin %u \n", imult);
       continue;
@@ -85,7 +96,7 @@ void doPhiProjections(
     hdphiRidgeN_ref->Write();
 
     //  add the projections positive + negative
-    TH1D* hdphiRidge_ref = (TH1D*)hdphiRidgeP_ref->Clone(Form("proj_dphi_ref_%u", imult));
+    TH1D* hdphiRidge_ref = reinterpret_cast<TH1D*>(hdphiRidgeP_ref->Clone(Form("proj_dphi_ref_%u", imult)));
     hdphiRidge_ref->Add(hdphiRidgeP_ref, hdphiRidgeN_ref, 0.5, 0.5);
 
     outfile->cd();
@@ -127,14 +138,14 @@ void doPhiProjections(
       for (uint iassoc = 0; iassoc < assocCount; ++iassoc) {
 
         // 2D histogram of two-particle correlation: same/mixed event ratio (normalised as it should be: Ntrig, B(0,0))
-        TH2D* hdphidetaRidge = (TH2D*)infile->Get(Form("dphi_%u_%u_%u", itrig, iassoc, imult));
+        TH2D* hdphidetaRidge = reinterpret_cast<TH2D*>(infile->Get(Form("dphi_%u_%u_%u", itrig, iassoc, imult)));
         if (!hdphidetaRidge) {
           printf("No histograms corresponding mult bin %u. (itrig=%u, iassoc=%u)\n", imult, itrig, iassoc);
           continue;
         } // if histogram not existing
 
         // Clone hdphidetaJet: hdphidetaRidge will be used for phi projection; hdphidetaJet for eta projection
-        TH2D* hdphidetaJet = (TH2D*)hdphidetaRidge->Clone("hdphidetaJet");
+        TH2D* hdphidetaJet = reinterpret_cast<TH2D*>(hdphidetaRidge->Clone("hdphidetaJet"));
 
         //  Normalise hdphidetaRidge used for delta phi projection with the width of the long-range region
         double norm = 2.0 * (absDeltaEtaMax - absDeltaEtaMin);
@@ -188,7 +199,7 @@ void doPhiProjections(
         hdphiRidgeN->Write();
 
         //  add the projections positive + negative
-        TH1D* hdphiRidge = (TH1D*)hdphiRidgeP->Clone(Form("proj_dphi_%u_%u_%u", itrig, iassoc, imult));
+        TH1D* hdphiRidge = reinterpret_cast<TH1D*>(hdphiRidgeP->Clone(Form("proj_dphi_%u_%u_%u", itrig, iassoc, imult)));
         hdphiRidge->Add(hdphiRidgeP, hdphiRidgeN, 0.5, 0.5);
 
         outfile->cd();
