@@ -115,7 +115,7 @@ TH1* getProjectionOfAxis(CorrelationContainer* h, CorrelationContainer::CFStep s
   else
     sparse = h->getTriggerHist()->getTHn(step);
 
-  TH1* hprojection = (TH1*)sparse->Projection(naxis);
+  TH1* hprojection = reinterpret_cast<TH1*>(sparse->Projection(naxis));
   return hprojection;
 }
 
@@ -169,8 +169,8 @@ void extract2D(
     directoryh = Form("%s/sameEventTPCTPCChHadrons", folder);
     directoryhMixed = Form("%s/mixedEventTPCTPCChHadrons", folder);
   }
-  auto h = (CorrelationContainer*)inputFile->Get(Form("%s", directoryh));
-  auto hMixed = (CorrelationContainer*)inputFile->Get(Form("%s", directoryhMixed));
+  auto h = reinterpret_cast<CorrelationContainer*>(inputFile->Get(Form("%s", directoryh)));
+  auto hMixed = reinterpret_cast<CorrelationContainer*>(inputFile->Get(Form("%s", directoryhMixed)));
 
   //  auto proj = getProjectionOfAxis(h, step, false, 0);
   //  proj->Draw();
@@ -179,8 +179,8 @@ void extract2D(
 
   // the number of events for each multiplicity/centrality class is calculated and printed.
   auto eventHist = h->getEventCount();
-  Printf("Events with centrality: %d", (int)eventHist->Integral(eventHist->GetXaxis()->FindBin(6.), eventHist->GetXaxis()->FindBin(6.), eventHist->GetYaxis()->FindBin(0.), eventHist->GetYaxis()->FindBin(99.9)));
-  Printf("Events: %d", (int)eventHist->ProjectionX()->Integral(eventHist->GetXaxis()->FindBin(6.), eventHist->GetXaxis()->FindBin(6.)));
+  Printf("Events with centrality: %d", static_cast<int>(eventHist->Integral(eventHist->GetXaxis()->FindBin(6.)), eventHist->GetXaxis()->FindBin(6.), eventHist->GetYaxis()->FindBin(0.), eventHist->GetYaxis()->FindBin(99.9)));
+  Printf("Events: %d", static_cast<int>(eventHist->ProjectionX()->Integral(eventHist->GetXaxis()->FindBin(6.)), eventHist->GetXaxis()->FindBin(6.)));
   //   eventHist->ProjectionX()->Draw();
   //   return;
 
@@ -193,7 +193,7 @@ void extract2D(
     hMixed->setCentralityRange(10, 20);
     hMixed->setZVtxRange(-10, 10);
 
-    TH2* sameTwoD = (TH2*)h->getPerTriggerYield(step, 0.2, 2.99, true);
+    TH2* sameTwoD = reinterpret_cast<TH2*>(h->getPerTriggerYield(step, 0.2, 2.99, true));
     auto c1 = new TCanvas;
     sameTwoD->Draw("SURF1");
     sameTwoD->SetStats(0);
@@ -202,7 +202,7 @@ void extract2D(
     c1->SaveAs(Form("%s/general/sameCorr.png", outputPlots));
 
     //  Note: this is not normalised for the bin (0,0),
-    TH2* mixedTwoD = (TH2*)hMixed->getPerTriggerYield(step, 0.2, 2.99, false);
+    TH2* mixedTwoD = reinterpret_cast<TH2*>(hMixed->getPerTriggerYield(step, 0.2, 2.99, false));
     auto c2 = new TCanvas;
     mixedTwoD->Draw("SURF1");
     mixedTwoD->SetStats(0);
@@ -210,7 +210,7 @@ void extract2D(
     mixedTwoD->GetXaxis()->SetTitleOffset(1.5);
     c2->SaveAs(Form("%s/general/mixedCorr.png", outputPlots));
 
-    auto ratio = (TH2*)sameTwoD->Clone("ratio");
+    auto ratio = reinterpret_cast<TH2*>(sameTwoD->Clone("ratio"));
     ratio->Divide(mixedTwoD);
 
     auto c3 = new TCanvas;
@@ -234,7 +234,7 @@ void extract2D(
     hMixed->setCentralityRange(40, 100);
     hMixed->setZVtxRange(-10, 10);
 
-    TH2* sameTwoDHM = (TH2*)h->getPerTriggerYield(step, 0.2, 2.99, true);
+    TH2* sameTwoDHM = reinterpret_cast<TH2*>(h->getPerTriggerYield(step, 0.2, 2.99, true));
     auto c1HM = new TCanvas;
     sameTwoDHM->Draw("SURF1");
     sameTwoDHM->SetStats(0);
@@ -243,7 +243,7 @@ void extract2D(
     c1HM->SaveAs(Form("%s/general/sameCorr_HM.png", outputPlots));
 
     //  Note: this is not normalised for the bin (0,0)
-    TH2* mixedTwoDHM = (TH2*)hMixed->getPerTriggerYield(step, 0.2, 2.99, false);
+    TH2* mixedTwoDHM = reinterpret_cast<TH2*>(hMixed->getPerTriggerYield(step, 0.2, 2.99, false));
     auto c2HM = new TCanvas;
     mixedTwoDHM->Draw("SURF1");
     mixedTwoDHM->SetStats(0);
@@ -251,7 +251,7 @@ void extract2D(
     mixedTwoDHM->GetXaxis()->SetTitleOffset(1.5);
     c2HM->SaveAs(Form("%s/general/mixedCorr_HM.png", outputPlots));
 
-    auto ratioHM = (TH2*)sameTwoDHM->Clone("ratioHM");
+    auto ratioHM = reinterpret_cast<TH2*>(sameTwoDHM->Clone("ratioHM"));
     ratioHM->Divide(mixedTwoDHM);
 
     auto c3HM = new TCanvas;
