@@ -62,6 +62,7 @@ DOO2_SEL_LCK0SP=0   # hf-candidate-selector-lc-to-k0s-p
 DOO2_SEL_XICC=0     # hf-candidate-selector-xicc-to-p-k-pi-pi
 DOO2_SEL_B0=0       # hf-candidate-selector-b0-to-d-pi
 DOO2_SEL_BPLUS=0    # hf-candidate-selector-bplus-to-d0-pi
+DOO2_SEL_DSTAR=0    # hf-candidate-selector-dstar
 # Analysis tasks
 DOO2_TASK_D0=1      # hf-task-d0
 DOO2_TASK_DS=0      # hf-task-ds
@@ -210,6 +211,11 @@ function AdjustJson {
     # do not use trigger selection for Run 3
     ReplaceString "\"processTrigSel\": \"true\"" "\"processTrigSel\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processNoTrigSel\": \"false\"" "\"processNoTrigSel\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  fi
+
+  # hf-track-index-skim-creator
+  if [[ $DOO2_CAND_DSTAR -eq 11 ]]; then
+    ReplaceString "\"doDstar\": \"false\"" "\"doDstar\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # hf-track-index-skim-creator-cascades
@@ -423,6 +429,7 @@ function MakeScriptO2 {
   [ $DOO2_SEL_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-xicc-to-p-k-pi-pi"
   [ $DOO2_SEL_B0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-b0-to-d-pi"
   [ $DOO2_SEL_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-bplus-to-d0-pi"
+  [ $DOO2_SEL_DSTAR -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-dstar"
   # Analysis tasks
   [ $DOO2_TASK_D0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-d0"
   [ $DOO2_TASK_JPSI -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-jpsi"
