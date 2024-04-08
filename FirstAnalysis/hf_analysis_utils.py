@@ -193,15 +193,12 @@ def compute_fraction_nb(
     - frac: list of fraction of prompt (non-prompt) D (central, min, max)
     """
 
-    if not isinstance(crosssection, list) and isinstance(crosssection, float):
-        crosssection = [crosssection]
-
-    if not isinstance(raa_ratio, list) and isinstance(raa_ratio, float):
-        raa_ratio = [raa_ratio]
+    crosssection_l = crosssection if isinstance(crosssection, list) else [crosssection]
+    raa_ratio_l = raa_ratio if isinstance(raa_ratio, list) else [raa_ratio]
 
     frac: list[float] = []
-    for i_sigma, sigma in enumerate(crosssection):
-        for i_raa_ratio, raa_rat in enumerate(raa_ratio):
+    for i_sigma, sigma in enumerate(crosssection_l):
+        for i_raa_ratio, raa_rat in enumerate(raa_ratio_l):
             raa_other = 1.0
             if i_sigma == 0 and i_raa_ratio == 0:
                 if raa_rat == 1.0 and taa == 1.0:  # pp
