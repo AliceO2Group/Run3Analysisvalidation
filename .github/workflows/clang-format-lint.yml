@@ -1,20 +1,70 @@
 ---
 # https://github.com/marketplace/actions/clang-format-lint
-name: Clang Format Linter
+name: ClangFormat
 on: [push, pull_request]
-permissions: {}
+permissions:
+  # Give the default GITHUB_TOKEN write permission to commit and push, comment issues & post new PR
+  # Remove the ones you do not need
+  contents: write
+  issues: write
+  pull-requests: write
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
 jobs:
-  build:
-    name: Clang Format Linter
+  clang-format:
+    name: Clang Format
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+
       - name: Clang Format
-        uses: DoozyX/clang-format-lint-action@v0.11
+        id: clang
+        uses: DoozyX/clang-format-lint-action@v0.16.2
         with:
           #source: '.'
           #exclude: './third_party ./external'
-          #extensions: 'h,cpp,cxx,C'
-          clangFormatVersion: 11
+          extensions: 'C,c,c++,cc,cl,cpp,cu,cuh,cxx,cxx.in,h,h++,hh,h.in,hpp,hxx,inc,inl,macro'
+          clangFormatVersion: 16
           style: file
+          inplace: true
+
+      # Set a results status = 0 if no changes, = 1 if formatted
+      - name: Set result status
+        id: clang-result
+        run: |
+          status=0
+          if ! git diff --quiet; then
+            status=1
+          fi
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+
+        # Create pull request if applicable (for now works only on PR from same repository, not from forks)
+      - name: Print PR condition
+        run: |
+          # Print the condition
+          echo "${{ github.event_name }} == 'push'"
+      - name: Create Pull Request with applied fixes
+        id: cpr
+        if: github.event_name == 'push'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
+          commit-message: "[Clang format] Apply linters automatic fixes"
+          title: "[Clang format] Apply linters automatic fixes"
+          body: "Please merge this pull request to apply automatic fixes by Clang format."
+          labels: bot
+          branch: patch-${{ github.workflow }}-${{ github.ref_name }}
+          delete-branch: true
+      - name: Create PR output
+        if: steps.clang-result.outputs.status == 1
+        run: |
+          echo "::error::Files need formatting."
+          if [ ${{ github.event_name }} == 'push' ]; then
+            echo "::error::Merge pull request ${{ steps.cpr.outputs.pull-request-url }} to apply automatic fixes."
+          elif [ ${{ github.event_name }} == 'pull_request' ]; then
+            echo "::error::Check ${{ github.event.pull_request.head.repo.html_url }}/pulls to apply automatic fixes."
+            echo "::notice::Actions must be allowed in your repository. See ${{ github.event.pull_request.head.repo.html_url }}/settings/actions"
+          fi
+          exit 1

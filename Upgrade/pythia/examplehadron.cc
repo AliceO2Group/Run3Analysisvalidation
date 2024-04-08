@@ -27,16 +27,16 @@
 #include "TRandom3.h"
 #include "TH1D.h"
 #include "fastjet/PseudoJet.hh"
-//#include "fastjet/ClusterSequence.hh"
-//#include "fastjet/ClusterSequenceArea.hh"
+// #include "fastjet/ClusterSequence.hh"
+// #include "fastjet/ClusterSequenceArea.hh"
 #include <ctime>
 #include <iostream> // needed for io
 #include <cstdio>   // needed for io
 #include <valarray>
 #include <time.h> /* time */
-//#include <yaml.h>
-//include <stdio.h>
-//include <glib.h>
+// #include <yaml.h>
+// include <stdio.h>
+// include <glib.h>
 #include <yaml-cpp/yaml.h>
 
 using namespace Pythia8;
@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
 {
   (void)argc;
   std::string mycase = argv[1];
-  int cislo = -1; //unique number for each file
+  int cislo = -1; // unique number for each file
   cislo = atoi(argv[2]);
   // number of parallel jobs to be run. Be aware that each single file
   // will be normalized by this number to make sure that the merged output
@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
   double ymax = nodecase["ymax"].as<float>();
   const std::string extramode = nodecase["extramode"].as<std::string>();
 
-  //END OF CONFIGURATION
+  // END OF CONFIGURATION
 
   // Generator. Process selection. LHC initialization. Histogram.
   Pythia pythia;
