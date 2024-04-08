@@ -9,18 +9,25 @@
 // granted to it by virtue of its status as an Intergovernmental Organization
 // or submit itself to any jurisdiction.
 
-// Macro to run the HF AliPhysics task that produces validation histograms
+// Macro to run the JE AliPhysics task that produces validation histograms
 
 #include "../exec/utilitiesAli.h"
 
-Long64_t RunHFTaskLocal(TString txtfile = "./list_ali.txt",
-                        TString jsonfilename = "dpl-config_std.json",
-                        Bool_t isMC = kFALSE,
-                        Bool_t useO2Vertexer = kFALSE,
-                        Bool_t useAliEventCuts = kFALSE,
-                        Bool_t doJets = kFALSE,
-                        Bool_t doJetMatching = kFALSE,
-                        Bool_t doJetSubstructure = kFALSE)
+#ifdef __CLING__
+// Tell ROOT where to find AliRoot headers
+R__ADD_INCLUDE_PATH($ALICE_ROOT)
+// Tell ROOT where to find AliPhysics headers
+R__ADD_INCLUDE_PATH($ALICE_PHYSICS)
+
+#include "PWGPP/PilotTrain/AddTaskCDBconnect.C"
+
+#endif
+
+Long64_t RunJetTaskLocal(TString txtfile = "./list_ali.txt",
+                         TString jsonfilename = "dpl-config_std.json",
+                         Bool_t isMC = kFALSE,
+                         Bool_t useO2Vertexer = kFALSE,
+                         Bool_t useAliEventCuts = kFALSE)
 {
   // Load common libraries
   gSystem->Load("libCore.so");
@@ -54,20 +61,20 @@ Long64_t RunHFTaskLocal(TString txtfile = "./list_ali.txt",
     mgr->SetMCtruthEventHandler(handler);
   }
 
+  // CDBconnect task
+  AliTaskCDBconnect* taskCDB = AddTaskCDBconnect();
+  taskCDB->SetFallBackToRaw(kTRUE);
+
   // Apply the event selection
   AliPhysicsSelectionTask* physSelTask = reinterpret_cast<AliPhysicsSelectionTask*>(gInterpreter->ProcessLine(Form(".x %s(%d)", gSystem->ExpandPathName("$ALICE_PHYSICS/OADB/macros/AddTaskPhysicsSelection.C"), isMC)));
 
-  AliAnalysisTaskHFSimpleVertices* tasktr3 = reinterpret_cast<AliAnalysisTaskHFSimpleVertices*>(gInterpreter->ProcessLine(Form(".x %s(\"\",\"%s\",%d)", gSystem->ExpandPathName("$ALICE_PHYSICS/PWGHF/vertexingHF/macros/AddTaskHFSimpleVertices.C"), jsonfilename.Data(), isMC)));
+  AliAnalysisTaskEmcalJetValidation* taskJet = reinterpret_cast<AliAnalysisTaskEmcalJetValidation*>(gInterpreter->ProcessLine(Form(".x %s(\"\",\"%s\",%d)", gSystem->ExpandPathName("$ALICE_PHYSICS/PWGJE/EMCALJetTasks/macros/AddTaskEmcalJetValidation.C"), jsonfilename.Data(), isMC)));
   if (useAliEventCuts) {
-    tasktr3->SetUseAliEventCuts(useAliEventCuts);
+    taskJet->SetUseAliEventCuts(useAliEventCuts);
   }
-  if (useO2Vertexer) {
-    tasktr3->SetUseO2Vertexer();
-  }
-  tasktr3->SetUseCandidateAnalysisCuts();
-  tasktr3->SetDoJetFinding(doJets);
-  tasktr3->SetJetMatching(doJetMatching);
-  tasktr3->SetDoJetSubstructure(doJetSubstructure);
+  // if (useO2Vertexer) {
+  //   taskJet->SetUseO2Vertexer();
+  // }
 
   mgr->InitAnalysis();
   mgr->PrintStatus();

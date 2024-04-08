@@ -1,14 +1,26 @@
+// Copyright 2019-2020 CERN and copyright holders of ALICE O2.
+// See https://alice-o2.web.cern.ch/copyright for details of the copyright holders.
+// All rights not expressly granted are reserved.
+//
+// This software is distributed under the terms of the GNU General Public
+// License v3 (GPL Version 3), copied verbatim in the file "COPYING".
+//
+// In applying this license CERN does not waive the privileges and immunities
+// granted to it by virtue of its status as an Intergovernmental Organization
+// or submit itself to any jurisdiction.
+
 R__ADD_INCLUDE_PATH($ALICE_ROOT)
 R__ADD_INCLUDE_PATH($ALICE_PHYSICS)
-#include <ANALYSIS/macros/train/AddESDHandler.C>
-#include <ANALYSIS/macros/train/AddAODHandler.C>
-#include <ANALYSIS/macros/train/AddMCHandler.C>
-#include <OADB/COMMON/MULTIPLICITY/macros/AddTaskMultSelection.C>
-#include <OADB/macros/AddTaskPhysicsSelection.C>
-#include <ANALYSIS/macros/AddTaskPIDResponse.C>
-#include <RUN3/AddTaskAO2Dconverter.C>
 
-TChain* CreateLocalChain(const char* txtfile, const char* type, int nfiles);
+#include "ANALYSIS/macros/train/AddESDHandler.C"                  // NOLINT
+#include "ANALYSIS/macros/train/AddAODHandler.C"                  // NOLINT
+#include "ANALYSIS/macros/train/AddMCHandler.C"                   // NOLINT
+#include "OADB/COMMON/MULTIPLICITY/macros/AddTaskMultSelection.C" // NOLINT
+#include "OADB/macros/AddTaskPhysicsSelection.C"                  // NOLINT
+#include "ANALYSIS/macros/AddTaskPIDResponse.C"                   // NOLINT
+#include "RUN3/AddTaskAO2Dconverter.C"                            // NOLINT
+
+#include "utilitiesAli.h"
 
 Long64_t convertAO2D(TString listoffiles, bool isMC = 1, bool useAliEvCuts = false, bool isESD = 1, int nmaxevents = -1)
 {
@@ -43,56 +55,17 @@ Long64_t convertAO2D(TString listoffiles, bool isMC = 1, bool useAliEvCuts = fal
   if (isMC && isESD)
     AliMCEventHandler* handlerMC = AddMCHandler();
   AliAnalysisTaskAO2Dconverter* converter = AddTaskAO2Dconverter("");
-  //converter->SelectCollisionCandidates(AliVEvent::kAny);
+  // converter->SelectCollisionCandidates(AliVEvent::kAny);
   if (useAliEvCuts)
     converter->SetUseEventCuts(kTRUE);
   if (isMC)
     converter->SetMCMode();
   if (!mgr->InitAnalysis())
     return -1;
-  //PH   mgr->SetBit(AliAnalysisManager::kTrueNotify);
-  //mgr->SetRunFromPath(244918);
+  // PH   mgr->SetBit(AliAnalysisManager::kTrueNotify);
+  // mgr->SetRunFromPath(244918);
   mgr->PrintStatus();
 
   mgr->SetDebugLevel(1);
   return mgr->StartAnalysis("localfile", chain, nentries, 0);
-}
-
-TChain* CreateLocalChain(const char* txtfile, const char* type, int nfiles)
-{
-  TString treename = type;
-  treename.ToLower();
-  treename += "Tree";
-  printf("***************************************\n");
-  printf("    Getting chain of trees %s\n", treename.Data());
-  printf("***************************************\n");
-  // Open the file
-  ifstream in;
-  in.open(txtfile);
-  Int_t count = 0;
-  // Read the input list of files and add them to the chain
-  TString line;
-  TChain* chain = new TChain(treename);
-  while (in.good()) {
-    in >> line;
-    if (line.IsNull() || line.BeginsWith("#"))
-      continue;
-    if (count++ == nfiles)
-      break;
-    TString esdFile(line);
-    TFile* file = TFile::Open(esdFile);
-    if (file && !file->IsZombie()) {
-      chain->Add(esdFile);
-      file->Close();
-    } else {
-      Error("GetChainforTestMode", "Skipping un-openable file: %s", esdFile.Data());
-    }
-  }
-  in.close();
-  if (!chain->GetListOfFiles()->GetEntries()) {
-    Error("CreateLocalChain", "No file from %s could be opened", txtfile);
-    delete chain;
-    return nullptr;
-  }
-  return chain;
 }

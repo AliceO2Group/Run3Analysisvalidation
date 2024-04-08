@@ -1,6 +1,17 @@
+// Copyright 2019-2020 CERN and copyright holders of ALICE O2.
+// See https://alice-o2.web.cern.ch/copyright for details of the copyright holders.
+// All rights not expressly granted are reserved.
+//
+// This software is distributed under the terms of the GNU General Public
+// License v3 (GPL Version 3), copied verbatim in the file "COPYING".
+//
+// In applying this license CERN does not waive the privileges and immunities
+// granted to it by virtue of its status as an Intergovernmental Organization
+// or submit itself to any jurisdiction.
+
 // Plotting of reconstruction efficiency
 
-#include "utils_plot.h"
+#include "../exec/utilitiesPlot.h"
 
 Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particles = "d0")
 {
@@ -88,12 +99,12 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
     bool okPrompt = true;
     TH1F* hPtRecPrompt = (TH1F*)file->Get(nameHistRec.Data());
     if (!hPtRecPrompt) {
-      Printf("Warning: Failed to load %s from %s", nameHistRec.Data(), pathFile.Data());
+      Warning("PlotEfficiency", "Failed to load %s from %s", nameHistRec.Data(), pathFile.Data());
       okPrompt = false;
     }
     TH1F* hPtGenPrompt = (TH1F*)file->Get(nameHistgen.Data());
     if (!hPtGenPrompt) {
-      Printf("Warning: Failed to load %s from %s", nameHistgen.Data(), pathFile.Data());
+      Warning("PlotEfficiency", "Failed to load %s from %s", nameHistgen.Data(), pathFile.Data());
       okPrompt = false;
     }
 
@@ -109,12 +120,12 @@ Int_t PlotEfficiency(TString pathFile = "AnalysisResults.root", TString particle
     bool okNonPrompt = true;
     TH1F* hPtRecNonPrompt = (TH1F*)file->Get(nameHistRec.Data());
     if (!hPtRecNonPrompt) {
-      Printf("Warning: Failed to load %s from %s", nameHistRec.Data(), pathFile.Data());
+      Warning("PlotEfficiency", "Failed to load %s from %s", nameHistRec.Data(), pathFile.Data());
       okNonPrompt = false;
     }
     TH1F* hPtGenNonPrompt = (TH1F*)file->Get(nameHistgen.Data());
     if (!hPtGenNonPrompt) {
-      Printf("Warning: Failed to load %s from %s", nameHistgen.Data(), pathFile.Data());
+      Warning("PlotEfficiency", "Failed to load %s from %s", nameHistgen.Data(), pathFile.Data());
       okNonPrompt = false;
     }
 

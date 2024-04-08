@@ -36,16 +36,6 @@ MAKE_GRAPH=0        # Make topology graph.
 # Activation of O2 workflows
 # Trigger selection
 DOO2_TRIGSEL=0      # event-selection
-# QA
-DOO2_REJ_ALICE3=0   # hf-task-qa-pid-rejection
-DOO2_QA_EFF=0       # qa-efficiency
-DOO2_QA_EVTRK=0     # qa-event-track
-DOO2_MC_VALID=0     # hf-task-mc-validation
-# PID
-DOO2_PID_TPC=0      # pid-tpc-full
-DOO2_PID_TOF=0      # pid-tof-full/alice3-pid-tof
-DOO2_PID_TOF_QA=0   # pid-tof-qa-mc
-DOO2_PID_BAYES=0    # pid-bayes
 # Vertexing
 DOO2_SKIM=1         # hf-track-index-skim-creator
 DOO2_CAND_2PRONG=1  # hf-candidate-creator-2prong
@@ -73,7 +63,7 @@ DOO2_SEL_XICC=0     # hf-candidate-selector-xicc-to-p-k-pi-pi
 DOO2_SEL_B0=0       # hf-candidate-selector-b0-to-d-pi
 DOO2_SEL_BPLUS=0    # hf-candidate-selector-bplus-to-d0-pi
 DOO2_SEL_DSTAR=0    # hf-candidate-selector-dstar
-# User tasks
+# Analysis tasks
 DOO2_TASK_D0=1      # hf-task-d0
 DOO2_TASK_DS=0      # hf-task-ds
 DOO2_TASK_DPLUS=0   # hf-task-dplus
@@ -114,6 +104,16 @@ DOO2_JET_FIND_QA=0  # je-jet-finder-hf-qa
 DOO2_JET_MATCH=0    # je-jet-matching
 DOO2_JET_SUB=0      # je-jet-substructure-hf
 DOO2_JET_SUB_OUT=0  # je-jet-substructure-hf-output
+# QA
+DOO2_REJ_ALICE3=0   # hf-task-qa-pid-rejection
+DOO2_QA_EFF=0       # qa-efficiency
+DOO2_QA_EVTRK=0     # qa-event-track
+DOO2_MC_VALID=0     # hf-task-mc-validation
+# PID
+DOO2_PID_TPC=0      # pid-tpc-full
+DOO2_PID_TOF=0      # pid-tof-full/alice3-pid-tof
+DOO2_PID_TOF_QA=0   # pid-tof-qa-mc
+DOO2_PID_BAYES=0    # pid-bayes
 # Converters
 DOO2_CONV_MC=0      # mc-converter
 DOO2_CONV_FDD=0     # fdd-converter
@@ -213,12 +213,6 @@ function AdjustJson {
     ReplaceString "\"processNoTrigSel\": \"false\"" "\"processNoTrigSel\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
-  # hf-track-index-skim-creator-tag-sel-tracks, hf-track-index-skim-creator-cascades
-  if [ "$INPUT_RUN" -eq 3 ]; then
-    # do not perform track quality cuts for Run 3 until they are updated
-    ReplaceString "\"doCutQuality\": \"true\"" "\"doCutQuality\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
-  fi
-
   # hf-track-index-skim-creator
   if [[ $DOO2_CAND_DSTAR -eq 11 ]]; then
     ReplaceString "\"doDstar\": \"false\"" "\"doDstar\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
@@ -260,9 +254,13 @@ function AdjustJson {
 
   # tof-event-time
   if [ "$INPUT_RUN" -eq 3 ]; then
-    ReplaceString "\"processNoFT0\": \"false\"" "\"processNoFT0\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
-  else
+    ReplaceString "\"processFT0\": \"false\"" "\"processFT0\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processNoFT0\": \"true\"" "\"processNoFT0\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processOnlyFT0\": \"true\"" "\"processOnlyFT0\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  else
+    ReplaceString "\"processFT0\": \"true\"" "\"processFT0\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processNoFT0\": \"true\"" "\"processNoFT0\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processOnlyFT0\": \"true\"" "\"processOnlyFT0\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # hf-task-flow
@@ -398,23 +396,13 @@ function MakeScriptO2 {
   SUFFIX_RUN_MASK="_runX" # suffix mask to be replaced in the workflow names
   SUFFIX_RUN="_run${INPUT_RUN}" # the actual suffix to be used instead of the mask
 
-  # Suffix to distinguish the candidate creators that do or do not need skim creator in the workflow database
+  # Suffix to distinguish the workflows that run on derived data with parent access (skims)
   SUFFIX_DER_MASK="_derX" # suffix mask to be replaced in the workflow names
   [ "$INPUT_PARENT_MASK" ] && SUFFIX_DER="_derived" || SUFFIX_DER="" # the actual suffix to be used instead of the mask
 
   WORKFLOWS=""
   # Trigger selection
   [ $DOO2_TRIGSEL -eq 1 ] && WORKFLOWS+=" o2-analysis-event-selection"
-  # QA
-  [ $DOO2_REJ_ALICE3 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-qa-pid-rejection"
-  [ $DOO2_QA_EFF -eq 1 ] && WORKFLOWS+=" o2-analysis-qa-efficiency"
-  [ $DOO2_QA_EVTRK -eq 1 ] && WORKFLOWS+=" o2-analysis-qa-event-track"
-  [ $DOO2_MC_VALID -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-mc-validation"
-  # PID
-  [ $DOO2_PID_TPC -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tpc-full"
-  [ $DOO2_PID_BAYES -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-bayes"
-  [ $DOO2_PID_TOF -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tof-full${SUFFIX_RUN}"
-  [ $DOO2_PID_TOF_QA -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tof-qa-mc"
   # Vertexing
   [ $DOO2_SKIM -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-track-index-skim-creator${SUFFIX_SKIM}"
   [ $DOO2_CAND_2PRONG -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-creator-2prong${SUFFIX_DER}"
@@ -442,7 +430,7 @@ function MakeScriptO2 {
   [ $DOO2_SEL_B0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-b0-to-d-pi"
   [ $DOO2_SEL_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-bplus-to-d0-pi"
   [ $DOO2_SEL_DSTAR -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-dstar"
-  # User tasks
+  # Analysis tasks
   [ $DOO2_TASK_D0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-d0"
   [ $DOO2_TASK_JPSI -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-jpsi"
   [ $DOO2_TASK_DS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-ds"
@@ -456,6 +444,15 @@ function MakeScriptO2 {
   [ $DOO2_TASK_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-xicc"
   [ $DOO2_TASK_B0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-b0"
   [ $DOO2_TASK_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-bplus"
+  # Tree creators
+  [ $DOO2_TREE_D0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-d0-to-k-pi"
+  [ $DOO2_TREE_LC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-lc-to-p-k-pi"
+  [ $DOO2_TREE_LB -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-lb-to-lc-pi"
+  [ $DOO2_TREE_X -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-x-to-jpsi-pi-pi"
+  [ $DOO2_TREE_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-xicc-to-p-k-pi-pi"
+  [ $DOO2_TREE_CHIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-chic-to-jpsi-gamma"
+  [ $DOO2_TREE_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-bplus-to-d0-pi"
+  [ $DOO2_TREE_LCK0SP -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-lc-to-k0s-p"
   # Correlations
   WF_CORR=""
   [ $DOO2_CORR_D0D0BAR_DATA -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-d0-d0bar o2-analysis-hf-task-correlation-d-dbar"
@@ -470,15 +467,6 @@ function MakeScriptO2 {
   [ $DOO2_CORR_DSHADRON -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-correlator-ds-hadrons"
   [ $DOO2_TASK_D0HADRON -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-correlation-d0-hadrons"
   [ $DOO2_TASK_FLOW -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-flow"
-  # Tree creators
-  [ $DOO2_TREE_D0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-d0-to-k-pi"
-  [ $DOO2_TREE_LC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-lc-to-p-k-pi"
-  [ $DOO2_TREE_LB -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-lb-to-lc-pi"
-  [ $DOO2_TREE_X -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-x-to-jpsi-pi-pi"
-  [ $DOO2_TREE_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-xicc-to-p-k-pi-pi"
-  [ $DOO2_TREE_CHIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-chic-to-jpsi-gamma"
-  [ $DOO2_TREE_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-bplus-to-d0-pi"
-  [ $DOO2_TREE_LCK0SP -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-lc-to-k0s-p"
   # Jets
   if [ "$INPUT_IS_MC" -eq 1 ]; then
     [ $DOO2_JET_FIND -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-finder-d0-mcd-charged o2-analysis-je-jet-finder-d0-mcp-charged"
@@ -492,6 +480,16 @@ function MakeScriptO2 {
     [ $DOO2_JET_SUB_OUT -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-substructure-hf-output_data"
   fi
   [ $DOO2_JET_MATCH -eq 1 ] && WORKFLOWS+=" o2-analysis-je-jet-matching"
+  # QA
+  [ $DOO2_REJ_ALICE3 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-qa-pid-rejection"
+  [ $DOO2_QA_EFF -eq 1 ] && WORKFLOWS+=" o2-analysis-qa-efficiency"
+  [ $DOO2_QA_EVTRK -eq 1 ] && WORKFLOWS+=" o2-analysis-qa-event-track"
+  [ $DOO2_MC_VALID -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-mc-validation"
+  # PID
+  [ $DOO2_PID_TPC -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tpc-full"
+  [ $DOO2_PID_BAYES -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-bayes"
+  [ $DOO2_PID_TOF -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tof-full${SUFFIX_RUN}"
+  [ $DOO2_PID_TOF_QA -eq 1 ] && WORKFLOWS+=" o2-analysis-pid-tof-qa-mc"
   # Converters
   [ $DOO2_CONV_MC -eq 1 ] && WORKFLOWS+=" o2-analysis-mc-converter"
   [ $DOO2_CONV_FDD -eq 1 ] && WORKFLOWS+=" o2-analysis-fdd-converter"

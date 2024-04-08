@@ -25,6 +25,8 @@
         "chi2Max": "0",
         "triggerClassName": "kINT7",
         "useSel8Trigger": "false",
+        "centralityMin": "0",
+        "centralityMax": "100",
         "axisNumContributors": {
             "values": [
                 "200",
@@ -32,6 +34,10 @@
                 "199.5"
             ]
         },
+        "processTrigAndCentFT0ASel": "false",
+        "processTrigAndCentFT0CSel": "false",
+        "processTrigAndCentFT0MSel": "false",
+        "processTrigAndCentFV0ASel": "false",
         "processTrigSel": "false",
         "processNoTrigSel": "true"
     },
@@ -42,7 +48,10 @@
         "debug": "false",
         "doCutQuality": "true",
         "useIsGlobalTrack": "false",
-        "useIsGlobalTrackWoDCA": "false",
+        "useIsGlobalTrackWoDCA": "true",
+        "useIsGlobalTrackForSoftPion": "false",
+        "useIsGlobalTrackWoDCAForSoftPion": "true",
+        "useIsQualityTrackITSForSoftPion": "false",
         "tpcNClsFoundMin": "70",
         "binsPtTrack": {
             "values": [
@@ -173,13 +182,19 @@
                 "-0.5",
                 "0.5"
             ]
-        }
+        },
+        "processNoPid": "true",
+        "processProtonPidTpc": "false",
+        "processProtonPidTof": "false",
+        "processProtonPidTpcOrTof": "false",
+        "processProtonPidTpcAndTof": "false"
     },
     "hf-track-index-skim-creator": {
         "isRun2": "true",
         "do3Prong": "1",
         "doDstar": "false",
         "debug": "false",
+        "debugPvRefit": "false",
         "fillHistograms": "true",
         "axisNumTracks": {
             "values": [
@@ -340,19 +355,22 @@
                 "massMin",
                 "massMax",
                 "cosp",
-                "decL"
+                "decL",
+                "deltaMassKK"
             ],
             "values": [
                 [
-                    "1.74",
-                    "2.18",
-                    "0.94",
+                    "1.7",
+                    "2.15",
+                    "0.7",
+                    "0.02",
                     "0.02"
                 ],
                 [
-                    "1.74",
-                    "2.18",
-                    "0.94",
+                    "1.7",
+                    "2.15",
+                    "0.5",
+                    "0.02",
                     "0.02"
                 ]
             ]
@@ -441,6 +459,8 @@
                 ]
             ]
         },
+        "applyProtonPidForLcToPKPi": "true",
+        "applyProtonPidForXicToPKPi": "true",
         "axisPvRefitDeltaX": {
             "values": [
                 "1000",
@@ -490,6 +510,7 @@
         "cutInvMassV0": "0.05",
         "ptCascCandMin": "-1",
         "cutInvMassCascLc": "1",
+        "applyProtonPid": "true",
         "ccdbUrl": "http://alice-ccdb.cern.ch",
         "ccdbPathLut": "GLO/Param/MatLUT",
         "ccdbPathGrp": "GLO/GRP/GRP",
@@ -3388,6 +3409,7 @@
         "etaMax": "0.8"
     },
     "track-propagation": {
+        "minPropagationDistance": "5",
         "processStandard": "false",
         "processCovariance": "true"
     },
