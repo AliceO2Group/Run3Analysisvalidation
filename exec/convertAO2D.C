@@ -12,13 +12,13 @@
 R__ADD_INCLUDE_PATH($ALICE_ROOT)
 R__ADD_INCLUDE_PATH($ALICE_PHYSICS)
 
-#include "ANALYSIS/macros/train/AddESDHandler.C"// NOLINT
-#include "ANALYSIS/macros/train/AddAODHandler.C"// NOLINT
-#include "ANALYSIS/macros/train/AddMCHandler.C"// NOLINT
-#include "OADB/COMMON/MULTIPLICITY/macros/AddTaskMultSelection.C"// NOLINT
-#include "OADB/macros/AddTaskPhysicsSelection.C"// NOLINT
-#include "ANALYSIS/macros/AddTaskPIDResponse.C"// NOLINT
-#include "RUN3/AddTaskAO2Dconverter.C"// NOLINT
+#include "ANALYSIS/macros/train/AddESDHandler.C"                  // NOLINT
+#include "ANALYSIS/macros/train/AddAODHandler.C"                  // NOLINT
+#include "ANALYSIS/macros/train/AddMCHandler.C"                   // NOLINT
+#include "OADB/COMMON/MULTIPLICITY/macros/AddTaskMultSelection.C" // NOLINT
+#include "OADB/macros/AddTaskPhysicsSelection.C"                  // NOLINT
+#include "ANALYSIS/macros/AddTaskPIDResponse.C"                   // NOLINT
+#include "RUN3/AddTaskAO2Dconverter.C"                            // NOLINT
 
 #include "utilitiesAli.h"
 
