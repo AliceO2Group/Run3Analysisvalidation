@@ -10,30 +10,29 @@ To run your comparison between AnalysisResults1.root AnalysisResults2.root you c
 import argparse
 from sys import exit
 
-from ROOT import (  # pylint: disable=import-error
+from ROOT import (  # pylint: disable=import-error; RooUnfoldResponse,
     TH1,
     TH2,
     TH3,
-    THnSparse,
-    # RooUnfoldResponse,
     TAxis,
     TCanvas,
     TColor,
     TFile,
+    THnSparse,
     TLegend,
-    gPad,
     gROOT,
 )
 
 # import itertools
 
-def msg_err(message : str):
-    """ Print error message """
+
+def msg_err(message: str):
+    """Print error message"""
     print(f"Error: {message}")
 
 
-def msg_fatal(message : str):
-    """ Print error message and exit """
+def msg_fatal(message: str):
+    """Print error message and exit"""
     print(f"Fatal: {message}")
     exit(1)
 
@@ -49,7 +48,7 @@ def are_valid(*objects) -> bool:
 
 
 def are_same_axes(axis1, axis2) -> bool:
-    """ Tell whether two axes are same. """
+    """Tell whether two axes are same."""
     if not are_valid(axis1, axis2):
         msg_fatal("Bad input objects")
         return False
@@ -79,18 +78,19 @@ def get_object_type(obj) -> int:
     return 0
 
 
-def are_same_histograms(his1 : TH1, his2 : TH1) -> bool:
-    """ Tell whether two histograms are same. """
+def are_same_histograms(his1: TH1, his2: TH1) -> bool:
+    """Tell whether two histograms are same."""
     if not are_valid(his1, his2):
         msg_fatal("Bad input objects")
         return False
     # Compare number of entries
     if his1.GetEntries() != his2.GetEntries():
         print(f"Different number of entries {his1.GetEntries()} vs {his2.GetEntries()}")
-        return False;
+        return False
     # Compare axes
-    for ax1, ax2 in zip((his1.GetXaxis(), his1.GetYaxis(), his1.GetZaxis()),
-                        (his2.GetXaxis(), his2.GetYaxis(), his2.GetZaxis())):
+    for ax1, ax2 in zip(
+        (his1.GetXaxis(), his1.GetYaxis(), his1.GetZaxis()), (his2.GetXaxis(), his2.GetYaxis(), his2.GetZaxis())
+    ):
         if not are_same_axes(ax1, ax2):
             print("Different axes")
             return False
@@ -99,16 +99,17 @@ def are_same_histograms(his1 : TH1, his2 : TH1) -> bool:
         for bin_y in range(his1.GetNbinsY() + 2):
             for bin_x in range(his1.GetNbinsX() + 2):
                 bin = his1.GetBin(bin_x, bin_y, bin_z)
-                if his1.GetBinContent(bin) != his2.GetBinContent(bin) or \
-                    his1.GetBinError(bin) != his2.GetBinError(bin):
-                    print(f"Different bin {bin} content: {his1.GetBinContent(bin)} ± {his1.GetBinError(bin)} vs "
-                          "{his2.GetBinContent(bin)} ± {his2.GetBinError(bin)}")
+                if his1.GetBinContent(bin) != his2.GetBinContent(bin) or his1.GetBinError(bin) != his2.GetBinError(bin):
+                    print(
+                        f"Different bin {bin} content: {his1.GetBinContent(bin)} ± {his1.GetBinError(bin)} vs "
+                        "{his2.GetBinContent(bin)} ± {his2.GetBinError(bin)}"
+                    )
                     return False
     return True
 
 
-def are_same_thnspare(his1 : THnSparse, his2 : THnSparse) -> bool:
-    """ Tell whether two THnSparse objects are same. """
+def are_same_thnspare(his1: THnSparse, his2: THnSparse) -> bool:
+    """Tell whether two THnSparse objects are same."""
     if not are_valid(his1, his2):
         msg_fatal("Bad input objects")
         return False
@@ -157,7 +158,7 @@ def are_same_thnspare(his1 : THnSparse, his2 : THnSparse) -> bool:
 
 
 def are_same_objects(obj1, obj2) -> bool:
-    """ Tell whether two histogram-like objects are same. """
+    """Tell whether two histogram-like objects are same."""
     if not are_valid(obj1, obj2):
         msg_fatal("Bad input objects")
         return False
