@@ -9,6 +9,13 @@ author: Fabrizio Grosa <fabrizio.grosa@cern.ch>, CERN
 import numpy as np  # pylint: disable=import-error
 
 
+def make_list(object) -> list:
+    """
+    Returns the object as a list if it is not a list already.
+    """
+    return object if isinstance(object, list) else [object]
+
+
 # pylint: disable=too-many-arguments
 def compute_crosssection(
     rawy,
@@ -84,10 +91,10 @@ def compute_fraction_fc(
     - frac_fd: list of fraction of non-prompt D (central, min, max)
     """
 
-    cross_sec_prompt_l = cross_sec_prompt if isinstance(cross_sec_prompt, list) else [cross_sec_prompt]
-    cross_sec_fd_l = cross_sec_fd if isinstance(cross_sec_fd, list) else [cross_sec_fd]
-    raa_prompt_l = raa_prompt if isinstance(raa_prompt, list) else [raa_prompt]
-    raa_fd_l = raa_fd if isinstance(raa_fd, list) else [raa_fd]
+    cross_sec_prompt_l = make_list(cross_sec_prompt)
+    cross_sec_fd_l = make_list(cross_sec_fd)
+    raa_prompt_l = make_list(raa_prompt)
+    raa_fd_l = make_list(raa_fd)
 
     frac_prompt: list[float] = []
     frac_fd: list[float] = []
@@ -162,8 +169,8 @@ def compute_fraction_nb(
     - frac: list of fraction of prompt (non-prompt) D (central, min, max)
     """
 
-    crosssection_l = crosssection if isinstance(crosssection, list) else [crosssection]
-    raa_ratio_l = raa_ratio if isinstance(raa_ratio, list) else [raa_ratio]
+    crosssection_l = make_list(crosssection)
+    raa_ratio_l = make_list(raa_ratio)
 
     frac: list[float] = []
     for i_sigma, sigma in enumerate(crosssection_l):
