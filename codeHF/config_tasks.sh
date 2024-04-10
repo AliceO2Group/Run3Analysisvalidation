@@ -86,6 +86,9 @@ DOO2_TREE_XICC=0    # hf-tree-creator-xicc-to-p-k-pi-pi
 DOO2_TREE_CHIC=0    # hf-tree-creator-chic-to-jpsi-gamma
 DOO2_TREE_BPLUS=0   # hf-tree-creator-bplus-to-d0-pi
 DOO2_TREE_LCK0SP=0  # hf-tree-creator-lc-to-k0s-p
+# Derived-data creators
+DOO2_DATA_D0=0      # hf-derived-data-creator-d0-to-k-pi
+DOO2_DATA_LC=0      # hf-derived-data-creator-lc-to-p-k-pi
 # Correlations
 DOO2_CORR_D0D0BAR_DATA=0       # hf-correlator-d0-d0bar
 DOO2_CORR_D0D0BAR_MCREC=0      # hf-correlator-d0-d0bar_mc-rec
@@ -121,6 +124,7 @@ DOO2_CONV_COLL=0    # collision-converter
 DOO2_CONV_ZDC=1     # zdc-converter
 DOO2_CONV_BC=1      # bc-converter
 DOO2_CONV_TRKEX=1   # tracks-extra-converter
+DOO2_CONV_V0=0      # v0converter
 
 # Selection cuts
 APPLYCUTS_D0=1      # Apply D0 selection cuts.
@@ -206,11 +210,6 @@ function AdjustJson {
     # trigger selection
     ReplaceString "\"processTrigSel\": \"false\"" "\"processTrigSel\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processNoTrigSel\": \"true\"" "\"processNoTrigSel\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
-  fi
-  if [ "$INPUT_RUN" -eq 3 ]; then
-    # do not use trigger selection for Run 3
-    ReplaceString "\"processTrigSel\": \"true\"" "\"processTrigSel\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
-    ReplaceString "\"processNoTrigSel\": \"false\"" "\"processNoTrigSel\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # hf-track-index-skim-creator
@@ -453,6 +452,9 @@ function MakeScriptO2 {
   [ $DOO2_TREE_CHIC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-chic-to-jpsi-gamma"
   [ $DOO2_TREE_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-bplus-to-d0-pi"
   [ $DOO2_TREE_LCK0SP -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-lc-to-k0s-p"
+  # Derive-data creators
+  [ $DOO2_DATA_D0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-derived-data-creator-d0-to-k-pi"
+  [ $DOO2_DATA_LC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-derived-data-creator-lc-to-p-k-pi"
   # Correlations
   WF_CORR=""
   [ $DOO2_CORR_D0D0BAR_DATA -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-d0-d0bar o2-analysis-hf-task-correlation-d-dbar"
@@ -497,6 +499,7 @@ function MakeScriptO2 {
   [ $DOO2_CONV_ZDC -eq 1 ] && WORKFLOWS+=" o2-analysis-zdc-converter"
   [ $DOO2_CONV_BC -eq 1 ] && WORKFLOWS+=" o2-analysis-bc-converter"
   [ $DOO2_CONV_TRKEX -eq 1 ] && WORKFLOWS+=" o2-analysis-tracks-extra-converter"
+  [ $DOO2_CONV_V0 -eq 1 ] && WORKFLOWS+=" o2-analysis-v0converter"
 
   # Translate options into arguments of the generating script.
   OPT_MAKECMD=""
