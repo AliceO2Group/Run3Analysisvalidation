@@ -3518,13 +3518,25 @@
                 "PVMults",
                 "MultsExtra",
                 "MultSelections",
-                "MultZeqs",
+                "FV0MultZeqs",
+                "FT0MultZeqs",
+                "FDDMultZeqs",
+                "PVMultZeqs",
                 "MultsExtraMC"
             ],
             "labels_cols": [
                 "Enable"
             ],
             "values": [
+                [
+                    "-1"
+                ],
+                [
+                    "-1"
+                ],
+                [
+                    "-1"
+                ],
                 [
                     "-1"
                 ],
@@ -3564,7 +3576,8 @@
         "ccdbpath": "Centrality/Calibration",
         "processRun2": "true",
         "processRun3": "false",
-        "processMc": "true"
+        "processGlobalTrackingCounters": "false",
+        "processMC": "true"
     },
     "pid-multiplicity": {
         "processIU": "false",
