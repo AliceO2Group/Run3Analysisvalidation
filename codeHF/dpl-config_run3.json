@@ -66,15 +66,17 @@
             "labels_rows": "",
             "labels_cols": [
                 "min_dcaxytoprimary",
-                "max_dcaxytoprimary"
+                "max_dcaxytoprimary",
+                "min_dcaztoprimary",
+                "max_dcaztoprimary"
             ],
             "values": [
-                ["0.03", "1"],
-                ["0.03", "1"],
-                ["0.03", "1"],
-                ["0.03", "1"],
-                ["0.00", "10"],
-                ["0.00", "10"]
+                ["0.03", "1", "0", "100"],
+                ["0.03", "1", "0", "100"],
+                ["0.03", "1", "0", "100"],
+                ["0.03", "1", "0", "100"],
+                ["0.00", "10", "0", "100"],
+                ["0.00", "10", "0", "100"]
             ]
         },
         "etaMinTrack2Prong": "-99999",
@@ -84,15 +86,17 @@
             "labels_rows": "",
             "labels_cols": [
                 "min_dcaxytoprimary",
-                "max_dcaxytoprimary"
+                "max_dcaxytoprimary",
+                "min_dcaztoprimary",
+                "max_dcaztoprimary"
             ],
             "values": [
-                ["0.03", "1"],
-                ["0.03", "1"],
-                ["0.03", "1"],
-                ["0.03", "1"],
-                ["0.00", "10"],
-                ["0.00", "10"]
+                ["0.03", "1", "0", "100"],
+                ["0.03", "1", "0", "100"],
+                ["0.03", "1", "0", "100"],
+                ["0.03", "1", "0", "100"],
+                ["0.00", "10", "0", "100"],
+                ["0.00", "10", "0", "100"]
             ]
         },
         "etaMinTrack3Prong": "-99999",
@@ -102,15 +106,17 @@
             "labels_rows": "",
             "labels_cols": [
                 "min_dcaxytoprimary",
-                "max_dcaxytoprimary"
+                "max_dcaxytoprimary",
+                "min_dcaztoprimary",
+                "max_dcaztoprimary"
             ],
             "values": [
-                ["0.00", "1"],
-                ["0.00", "1"],
-                ["0.00", "1"],
-                ["0.00", "1"],
-                ["0.00", "1"],
-                ["0.00", "1"]
+                ["0.00", "1", "0", "100"],
+                ["0.00", "1", "0", "100"],
+                ["0.00", "1", "0", "100"],
+                ["0.00", "1", "0", "100"],
+                ["0.00", "1", "0", "100"],
+                ["0.00", "1", "0", "100"]
             ]
         },
         "etaMinTrackBach": "-99999",
@@ -123,32 +129,46 @@
             "labels_rows": "",
             "labels_cols": [
                 "min_dcaxytoprimary",
-                "max_dcaxytoprimary"
+                "max_dcaxytoprimary",
+                "min_dcaztoprimary",
+                "max_dcaztoprimary"
             ],
             "values": [
                 [
                     "0",
-                    "2"
+                    "2",
+                    "0",
+                    "100"
                 ],
                 [
                     "0",
-                    "2"
+                    "2",
+                    "0",
+                    "100"
                 ],
                 [
                     "0",
-                    "2"
+                    "2",
+                    "0",
+                    "100"
                 ],
                 [
                     "0",
-                    "2"
+                    "2",
+                    "0",
+                    "100"
                 ],
                 [
                     "0",
-                    "2"
+                    "2",
+                    "0",
+                    "100"
                 ],
                 [
                     "0",
-                    "2"
+                    "2",
+                    "0",
+                    "100"
                 ]
             ]
         },
@@ -572,7 +592,7 @@
         "centralityMin": "0",
         "centralityMax": "100",
         "useSel8Trigger": "true",
-        "maxPvPosZ": "10",
+        "zPvPosMax": "10",
         "useTimeFrameBorderCut": "true",
         "propagateToPCA": "true",
         "useAbsDCA": "false",
@@ -2835,6 +2855,8 @@
         "fillCandidateMc": "true",
         "fillCollBase": "true",
         "fillCollId": "true",
+        "fillMcCollBase": "true",
+        "fillMcCollId": "true",
         "fillParticleBase": "true",
         "fillParticleId": "true",
         "downSampleBkgFactor": "1",
@@ -2866,6 +2888,8 @@
         "fillCandidateMc": "true",
         "fillCollBase": "true",
         "fillCollId": "true",
+        "fillMcCollBase": "true",
+        "fillMcCollId": "true",
         "fillParticleBase": "true",
         "fillParticleId": "true",
         "downSampleBkgFactor": "1",
@@ -3499,10 +3523,11 @@
         "ccdburl": "http://alice-ccdb.cern.ch",
         "ccdbpath": "Centrality/Estimators",
         "genname": "",
-        "doNotCrashOnNull": "false",
+        "doNotCrashOnNull": "true",
         "embedINELgtZEROselection": "false",
         "processRun2": "true",
-        "processRun3": "false"
+        "processRun3": "false",
+        "processRun3FT0": "false"
     },
     "multiplicity-table": {
         "doVertexZeq": "1",
