@@ -13,7 +13,7 @@
 
 ####################################################################################################
 
-# Here you can select the AliPhysics and O2Physics branches to load.
+# Here you can select the AliPhysics and O2Physics Git branches to load. (You need to have them built with aliBuild.)
 # BRANCH_ALI="master"
 # ENV_ALI="alienv setenv AliPhysics/latest-${BRANCH_ALI}-o2 -c"
 # BRANCH_O2="master"
@@ -29,9 +29,8 @@ DOPOSTPROCESS=1     # Run output postprocessing. (Comparison plots. Requires DOA
 # Disable incompatible steps.
 [ "$INPUT_IS_O2" -eq 1 ] && { DOCONVERT=0; DOALI=0; }
 
-# O2 database
-DATABASE_O2="workflows.yml"
-MAKE_GRAPH=0        # Make topology graph.
+DATABASE_O2="workflows.yml"  # Workflow specification database
+MAKE_GRAPH=0                 # Make topology graph.
 
 # Activation of O2 workflows
 # Table producers
@@ -49,6 +48,7 @@ DOO2_CONV_COLL=0    # collision-converter
 DOO2_CONV_ZDC=1     # zdc-converter
 DOO2_CONV_BC=1      # bc-converter
 DOO2_CONV_TRKEX=1   # tracks-extra-converter
+DOO2_CONV_V0=0      # v0converter
 
 SAVETREES=0         # Save O2 tables to trees.
 USEO2VERTEXER=1     # Use the O2 vertexer in AliPhysics.
@@ -156,6 +156,7 @@ function MakeScriptO2 {
   [ $DOO2_CONV_ZDC -eq 1 ] && WORKFLOWS+=" o2-analysis-zdc-converter"
   [ $DOO2_CONV_BC -eq 1 ] && WORKFLOWS+=" o2-analysis-bc-converter"
   [ $DOO2_CONV_TRKEX -eq 1 ] && WORKFLOWS+=" o2-analysis-tracks-extra-converter"
+  [ $DOO2_CONV_V0 -eq 1 ] && WORKFLOWS+=" o2-analysis-v0converter"
 
   # Translate options into arguments of the generating script.
   OPT_MAKECMD=""

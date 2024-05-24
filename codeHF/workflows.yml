@@ -20,7 +20,7 @@ workflows:
     #   default: ""
     #   real: ""
     #   mc: "--doMC"
-    tables: []  # descriptions of tables to be saved in the output tree (format: str, list), see more detailed format below
+    tables: []  # descriptions of output tables to be saved as trees (format: str, list), see more detailed format below
     # tables:
     #   default: []
     #   real: []

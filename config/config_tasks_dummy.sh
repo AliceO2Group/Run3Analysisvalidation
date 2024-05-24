@@ -13,19 +13,24 @@
 
 ####################################################################################################
 
+# Here you can select the AliPhysics and O2Physics Git branches to load. (You need to have them built with aliBuild.)
+# BRANCH_ALI="master"
+# ENV_ALI="alienv setenv AliPhysics/latest-${BRANCH_ALI}-o2 -c"
+# BRANCH_O2="master"
+# ENV_O2="alienv setenv O2Physics/latest-${BRANCH_O2}-o2 -c"
+
 # Steps
 DOCLEAN=1           # Delete created files (before and after running tasks).
 DOCONVERT=1         # Convert AliESDs.root to AO2D.root.
 DOALI=1             # Run AliPhysics tasks.
 DOO2=1              # Run O2 tasks.
-DOPOSTPROCESS=1     # Run output postprocessing. (Compare AliPhysics and O2 output.)
+DOPOSTPROCESS=1     # Run output postprocessing. (Comparison plots. Requires DOALI=1 and/or DOO2=1)
 
 # Disable incompatible steps.
 [ "$INPUT_IS_O2" -eq 1 ] && { DOCONVERT=0; DOALI=0; }
 
-# O2 database
-DATABASE_O2="workflows_dummy.yml"
-MAKE_GRAPH=0        # Make topology graph.
+DATABASE_O2="workflows_dummy.yml"  # Workflow specification database
+MAKE_GRAPH=0                 # Make topology graph.
 
 # Activation of O2 workflows
 # Trigger selection
@@ -45,7 +50,7 @@ function Clean {
   [ "$1" -eq 2 ] && {
     rm -f "$LISTFILES_ALI" "$LISTFILES_O2" "$SCRIPT_ALI" "$SCRIPT_O2" "$SCRIPT_POSTPROCESS" || ErrExit "Failed to rm created files."
     [ "$JSON_EDIT" ] && { rm "$JSON_EDIT" || ErrExit "Failed to rm $JSON_EDIT."; }
-    rm "$DATABASE_O2_EDIT" || ErrExit "Failed to rm $DATABASE_O2_EDIT."
+    [ "$DATABASE_O2_EDIT" ] && { rm "$DATABASE_O2_EDIT" || ErrExit "Failed to rm $DATABASE_O2_EDIT."; }
   }
 
   return 0
@@ -58,6 +63,11 @@ function AdjustJson {
   JSON_EDIT="${JSON/.json/_edit.json}"
   cp "$JSON" "$JSON_EDIT" || ErrExit "Failed to cp $JSON $JSON_EDIT."
   JSON="$JSON_EDIT"
+
+  # Derived AO2D input
+  if [ "$INPUT_PARENT_MASK" ]; then
+    ReplaceString "PARENT_PATH_MASK" "$INPUT_PARENT_MASK" "$JSON" || ErrExit "Failed to edit $JSON."
+  fi
 
   # Collision system
   MsgWarn "Setting collision system $INPUT_SYS"
@@ -97,7 +107,7 @@ function MakeScriptO2 {
   [ $DOO2_EVTSEL -eq 1 ] && WORKFLOWS+=" o2-analysis-event-selection"
   [ $DOO2_TRACKSEL -eq 1 ] && WORKFLOWS+=" o2-analysis-trackselection${SUFFIX_RUN}"
 
-   # Translate options into arguments of the generating script.
+  # Translate options into arguments of the generating script.
   OPT_MAKECMD=""
   [ "$INPUT_IS_MC" -eq 1 ] && OPT_MAKECMD+=" --mc"
   [ "$DEBUG" -eq 1 ] && OPT_MAKECMD+=" -d"
@@ -111,6 +121,7 @@ function MakeScriptO2 {
 
   # Replace the workflow version masks with the actual values in the workflow database.
   ReplaceString "$SUFFIX_RUN_MASK" "$SUFFIX_RUN" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
+  ReplaceString "$SUFFIX_DER_MASK" "$SUFFIX_DER" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
 
   # Generate the O2 command.
   MAKECMD="python3 $DIR_EXEC/make_command_o2.py $DATABASE_O2 $OPT_MAKECMD"
