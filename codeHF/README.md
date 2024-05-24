@@ -55,13 +55,3 @@ The postprocessing step produces several plots `comparison_histos_(...).pdf`, `M
 To confirm that the output of the default settings looks as expected, compare the produced plots with their reference counterparts `(...)_ref.pdf`.
 
 The complete list of commit hashes used to produce the reference plots can be found in `versions_ref.txt`.
-
-## Add a new workflow
-
-- Add the workflow in the task configuration ([`config_task.sh`](config_tasks.sh)):
-  - Add the activation switch: `DOO2_...=0         # name of the workflow (without o2-analysis)`.
-  - Add the application of the switch in the `MakeScriptO2` function: `[ $DOO2_... -eq 1 ] && WORKFLOWS+=" o2-analysis-..."`.
-  - If needed, add lines in the `AdjustJson` function to modify the JSON configuration.
-- Add the workflow specification in the workflow database ([`workflows.yml`](workflows.yml)):
-  - See the dummy example `o2-analysis-workflow` for the full list of options.
-- Add the device configuration in the default JSON file ([`dpl-config_run3.json`](dpl-config_run3.json)).
