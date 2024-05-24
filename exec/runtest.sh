@@ -4,7 +4,15 @@
 # Steering script to run Run 2 to Run 3 conversion, AliPhysics tasks, O2 tasks, and postprocessing
 
 ####################################################################################################
-# Default settings
+# Declarations of global parameters and their default values
+
+# Main directories
+DIR_EXEC="$(dirname "$(realpath "$0")")"  # Directory of this script (and other execution code)
+DIR_TASKS="$PWD"                          # Directory with task configuration
+
+# Configuration scripts
+CONFIG_INPUT="config_input.sh"  # Input specification (Modifies input parameters.)
+CONFIG_TASKS="config_tasks.sh"  # Task configuration (Cleans directory, modifies step activation, modifies JSON and generates step scripts via functions Clean, AdjustJson, MakeScriptAli, MakeScriptO2, MakeScriptPostprocess.)
 
 # Steps
 DOCLEAN=1        # Delete created files (before and after running tasks).
@@ -13,30 +21,23 @@ DOALI=1          # Run AliPhysics tasks.
 DOO2=1           # Run O2 tasks.
 DOPOSTPROCESS=1  # Run output postprocessing. (Compare AliPhysics and O2 output.)
 
-# Configuration scripts
-CONFIG_INPUT="config_input.sh"  # Input specification (Modifies input parameters.)
-CONFIG_TASKS="config_tasks.sh"  # Tasks configuration (Cleans directory, modifies step activation, modifies JSON and generates step scripts via functions Clean, AdjustJson, MakeScriptAli, MakeScriptO2, MakeScriptPostprocess.)
-
 # Input parameters
 INPUT_CASE=-1                   # Input case
 INPUT_LABEL="nothing"           # Input description
 INPUT_DIR="$PWD"                # Input directory
-INPUT_PARENT_MASK=""            # Path replacement mask for the input directory of parent files in case of derived input AO2D.root. Set to ";" if no replacement needed.
 INPUT_FILES="AliESDs.root"      # Input file pattern
-INPUT_SYS="pp"                  # Collision system
+INPUT_SYS="pp"                  # Collision system ("pp", "PbPb")
 INPUT_RUN=2                     # LHC Run (2, 3, 5)
-JSON="dpl-config.json"          # Tasks parameters
 INPUT_IS_O2=0                   # Input files are in O2 format.
 INPUT_IS_MC=0                   # Input files are MC data.
+INPUT_PARENT_MASK=""            # Path replacement mask for the input directory of parent files in case of linked derived O2 input. Set to ";" if no replacement needed.
+JSON="dpl-config.json"          # O2 device configuration
+
+# Processing
 NFILESMAX=1                     # Maximum number of processed input files. (Set to -0 to process all; to -N to process all but the last N files.)
 NFILESPERJOB_CONVERT=1          # Number of input files per conversion job
 NFILESPERJOB_ALI=1              # Number of input files per AliPhysics job
 NFILESPERJOB_O2=1               # Number of input files per O2 job
-
-# Other options
-SAVETREES=0                     # Save O2 tables to trees.
-DEBUG=0                         # Print out more information.
-USEALIEVCUTS=0                  # Use AliEventCuts in AliPhysics (as used by conversion task)
 
 # Performance
 NCORES=$(nproc)                 # Ideal number of used cores
@@ -44,21 +45,23 @@ NCORESPERJOB_ALI=1              # Average number of cores used by one AliPhysics
 NCORESPERJOB_O2=1.6             # Average number of cores used by one O2 job
 NJOBSPARALLEL_O2=$(nproc)       # Maximum number of simultaneously running O2 jobs
 
-# This directory
-DIR_EXEC="$(dirname "$(realpath "$0")")"
+# Other options
+SAVETREES=0                     # Save O2 tables to trees.
+DEBUG=0                         # Print out more information.
+USEALIEVCUTS=0                  # Use AliEventCuts in AliPhysics (as used by conversion task)
 
 # Lists of input files
 LISTFILES_ALI="list_ali.txt"  # conversion and AliPhysics input
 LISTFILES_O2="list_o2.txt"    # O2 input
 
-# Output files names
+# Output files
 FILEOUT="AnalysisResults.root"
 FILEOUT_ALI="AnalysisResults_ALI.root"
 FILEOUT_O2="AnalysisResults_O2.root"
 FILEOUT_TREES="AnalysisResults_trees.root"
 FILEOUT_TREES_O2="AnalysisResults_trees_O2.root"
 
-# Steering commands
+# Steering commands (loading aliBuild environments)
 ENV_ALI="alienv setenv AliPhysics/latest -c"
 ENV_O2="alienv setenv O2Physics/latest -c"
 ENV_POST="alienv setenv ROOT/latest -c"
@@ -67,6 +70,9 @@ ENV_POST="alienv setenv ROOT/latest -c"
 SCRIPT_O2="script_o2.sh"
 SCRIPT_ALI="script_ali.sh"
 SCRIPT_POSTPROCESS="script_postprocess.sh"
+
+# End of declarations of global parameters and their default values
+####################################################################################################
 
 # Load utilities.
 source "$DIR_EXEC/utilities.sh" || { echo "Error: Failed to load utilities."; exit 1; }
