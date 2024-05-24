@@ -138,7 +138,7 @@
                 "100"
             ]
         },
-        "trackSelections": "hybridTracksJE",
+        "trackSelections": "hybridTracks",
         "processESD": "true",
         "processRun3AOD": "false",
         "processDummy": "false"
