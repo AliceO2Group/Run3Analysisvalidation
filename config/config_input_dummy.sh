@@ -27,6 +27,9 @@ NJOBSPARALLEL_O2=$(python3 -c "print(min(10, round($(nproc) / 2)))")
 # INPUT_PARENT_MASK=""            # Path replacement mask for the input directory of parent files in case of linked derived O2 input. Set to ";" if no replacement needed.
 # JSON="dpl-config.json"          # O2 device configuration
 
+# O2 device configuration
+JSON="dpl-config_dummy.json"
+
 INPUT_BASE="/data"
 
 case $INPUT_CASE in

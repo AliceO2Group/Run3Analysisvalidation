@@ -36,6 +36,14 @@ MAKE_GRAPH=0                 # Make topology graph.
 # Trigger selection
 DOO2_EVTSEL=1       # event-selection
 DOO2_TRACKSEL=1     # trackselection
+# Converters
+DOO2_CONV_MC=0      # mc-converter
+DOO2_CONV_FDD=0     # fdd-converter
+DOO2_CONV_COLL=0    # collision-converter
+DOO2_CONV_ZDC=1     # zdc-converter
+DOO2_CONV_BC=1      # bc-converter
+DOO2_CONV_TRKEX=1   # tracks-extra-converter
+DOO2_CONV_V0=0      # v0converter
 
 SAVETREES=0         # Save O2 tables to trees.
 
@@ -103,9 +111,21 @@ function MakeScriptO2 {
   SUFFIX_RUN_MASK="_runX" # suffix mask to be replaced in the workflow names
   SUFFIX_RUN="_run${INPUT_RUN}" # the actual suffix to be used instead of the mask
 
+  # Suffix to distinguish the workflows that run on derived data with parent access (skims)
+  SUFFIX_DER_MASK="_derX" # suffix mask to be replaced in the workflow names
+  [ "$INPUT_PARENT_MASK" ] && SUFFIX_DER="_derived" || SUFFIX_DER="" # the actual suffix to be used instead of the mask
+
   WORKFLOWS=""
   [ $DOO2_EVTSEL -eq 1 ] && WORKFLOWS+=" o2-analysis-event-selection"
   [ $DOO2_TRACKSEL -eq 1 ] && WORKFLOWS+=" o2-analysis-trackselection${SUFFIX_RUN}"
+  # Converters
+  [ $DOO2_CONV_MC -eq 1 ] && WORKFLOWS+=" o2-analysis-mc-converter"
+  [ $DOO2_CONV_FDD -eq 1 ] && WORKFLOWS+=" o2-analysis-fdd-converter"
+  [ $DOO2_CONV_COLL -eq 1 ] && WORKFLOWS+=" o2-analysis-collision-converter"
+  [ $DOO2_CONV_ZDC -eq 1 ] && WORKFLOWS+=" o2-analysis-zdc-converter"
+  [ $DOO2_CONV_BC -eq 1 ] && WORKFLOWS+=" o2-analysis-bc-converter"
+  [ $DOO2_CONV_TRKEX -eq 1 ] && WORKFLOWS+=" o2-analysis-tracks-extra-converter"
+  [ $DOO2_CONV_V0 -eq 1 ] && WORKFLOWS+=" o2-analysis-v0converter"
 
   # Translate options into arguments of the generating script.
   OPT_MAKECMD=""
