@@ -4,10 +4,32 @@
 
 ## Introduction
 
-The main purpose of the Run 3 validation framework is to provide a compact and flexible tool for validation of the
+The Run 3 validation framework is a tool for an easy execution, testing and validation of the Run 3 analysis code on large local samples.
+
+Its features include
+
+* simple specification of input datasets,
+* simple configuration and activation of analysis tasks,
+* easy generation of the O<sup>2</sup> command for complex workflow topologies,
+* job parallelisation,
+* output merging,
+* error checking and reporting,
+* specification of postprocessing.
+
+It also provides tools for:
+
+* post mortem debugging of failing jobs,
+* comparison of ROOT file content,
+* visualisation of workflow dependencies,
+* maintenance of Git repositories and installations of aliBuild packages.
+
+The original purpose of the Run 3 validation framework was to provide a compact and flexible tool for validation of the
 [O<sup>2</sup>(Physics)](https://github.com/AliceO2Group/O2Physics) analysis framework by comparison of its output to its
 [AliPhysics](https://github.com/alisw/AliPhysics) counterpart.
 The general idea is to run the same analysis using AliPhysics and O<sup>2</sup>(Physics) and produce comparison plots.
+
+However, it can be used without AliPhysics as well to run O<sup>2</sup> analyses locally, similar to running trains on AliHyperloop.
+This makes it a convenient framework for local development, testing and debugging of O<sup>2</sup>(Physics) code.
 
 ## Overview
 
