@@ -41,13 +41,13 @@ DOO2_JET_FINDER=0   # je-jet-finder-data-charged
 # QA
 DOO2_QA_EVTRK=0     # qa-event-track
 DOO2_JET_VALID=1    # je-jet-validation-qa
-# Converters
+# Converters (Consider setting these per input case via INPUT_TASK_CONFIG.)
 DOO2_CONV_MC=0      # mc-converter
 DOO2_CONV_FDD=0     # fdd-converter
 DOO2_CONV_COLL=0    # collision-converter
-DOO2_CONV_ZDC=1     # zdc-converter
-DOO2_CONV_BC=1      # bc-converter
-DOO2_CONV_TRKEX=1   # tracks-extra-converter
+DOO2_CONV_ZDC=0     # zdc-converter
+DOO2_CONV_BC=0      # bc-converter
+DOO2_CONV_TRKEX=0   # tracks-extra-converter
 DOO2_CONV_V0=0      # v0converter
 
 SAVETREES=0         # Save O2 tables to trees.

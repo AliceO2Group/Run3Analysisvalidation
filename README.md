@@ -119,6 +119,7 @@ These are the available input parameters and their default values:
 * `INPUT_IS_O2=0`                   Input files are in O<sup>2</sup> format.
 * `INPUT_IS_MC=0`                   Input files are MC data.
 * `INPUT_PARENT_MASK=""`            Path replacement mask for the input directory of parent files in case of linked derived O<sup>2</sup> input. Set to `";"` if no replacement needed.
+* `INPUT_TASK_CONFIG=""`            Input-specific task configuration (e.g. enabling converters), overriding the task configuration. String of space-separated commands.
 * `JSON="dpl-config.json"`          O<sup>2</sup> device configuration
 
 This allows you to define several input datasets and switch between them easily by setting the corresponding value of `INPUT_CASE`.
