@@ -31,6 +31,7 @@ INPUT_RUN=2                     # LHC Run (2, 3, 5)
 INPUT_IS_O2=0                   # Input files are in O2 format.
 INPUT_IS_MC=0                   # Input files are MC data.
 INPUT_PARENT_MASK=""            # Path replacement mask for the input directory of parent files in case of linked derived O2 input. Set to ";" if no replacement needed.
+INPUT_TASK_CONFIG=""            # Input-specific task configuration (e.g. enabling converters), overriding the task configuration in CONFIG_TASKS. String of space-separated commands.
 JSON="dpl-config.json"          # O2 device configuration
 
 # Processing
@@ -99,7 +100,7 @@ done
 # Load input specification.
 source "$CONFIG_INPUT" || ErrExit "Failed to load input specification."
 
-# Load tasks configuration.
+# Load task configuration.
 source "$CONFIG_TASKS" || ErrExit "Failed to load tasks configuration."
 DIR_TASKS="$(dirname "$(realpath "$CONFIG_TASKS")")"
 
@@ -113,6 +114,14 @@ DIR_TASKS="$(dirname "$(realpath "$CONFIG_TASKS")")"
 
 # Print out input description.
 MsgStep "Processing case $INPUT_CASE: $INPUT_LABEL"
+
+# Adjust task configuration with input-specific configuration.
+if [ "$INPUT_TASK_CONFIG" ]; then
+  for cmd in $INPUT_TASK_CONFIG; do
+    MsgWarn "Evaluating $cmd"
+    eval "$cmd"
+  done
+fi
 
 # Clean before running.
 if [ $DOCLEAN -eq 1 ]; then

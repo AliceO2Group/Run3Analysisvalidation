@@ -25,6 +25,7 @@ NJOBSPARALLEL_O2=$(python3 -c "print(min(10, round($(nproc) / 2)))")
 # INPUT_IS_O2=0                   # Input files are in O2 format.
 # INPUT_IS_MC=0                   # Input files are MC data.
 # INPUT_PARENT_MASK=""            # Path replacement mask for the input directory of parent files in case of linked derived O2 input. Set to ";" if no replacement needed.
+# INPUT_TASK_CONFIG=""            # Input-specific task configuration (e.g. enabling converters), overriding the task configuration in CONFIG_TASKS. String of space-separated commands.
 # JSON="dpl-config.json"          # O2 device configuration
 
 # O2 device configuration
@@ -44,6 +45,7 @@ case $INPUT_CASE in
     INPUT_LABEL="Run 2, p-p 5.02 TeV LHC17p, MC LHC18a4a2_cent"
     INPUT_DIR="$INPUT_BASE/Run2/pp_5.02TeV/sim/LHC18a4a2_cent/282099"
     INPUT_IS_MC=1
+    INPUT_TASK_CONFIG="DOO2_CONV_ZDC=1 DOO2_CONV_BC=1 DOO2_CONV_TRKEX=1"
     ;;
   3)
     INPUT_LABEL="Run 2, p-p 5.02 TeV LHC17p, MC LHC18a4a2_cent"

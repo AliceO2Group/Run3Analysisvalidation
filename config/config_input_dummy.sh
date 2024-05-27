@@ -25,6 +25,7 @@ NJOBSPARALLEL_O2=$(python3 -c "print(min(10, round($(nproc) / 2)))")
 # INPUT_IS_O2=0                   # Input files are in O2 format.
 # INPUT_IS_MC=0                   # Input files are MC data.
 # INPUT_PARENT_MASK=""            # Path replacement mask for the input directory of parent files in case of linked derived O2 input. Set to ";" if no replacement needed.
+# INPUT_TASK_CONFIG=""            # Input-specific task configuration (e.g. enabling converters), overriding the task configuration in CONFIG_TASKS. String of space-separated commands.
 # JSON="dpl-config.json"          # O2 device configuration
 
 # O2 device configuration
