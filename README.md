@@ -305,7 +305,7 @@ as well as re-building your AliPhysics and O<sup>2</sup>(Physics) installations 
 You can execute the script from any directory on your system using the following syntax:
 
 ```bash
-python <path to the Run3Analysisvalidation directory>/exec/update_packages.py [-h] [-d] [-l] [-c] database
+python [<path>/]exec/update_packages.py [-h] [-d] [-l] [-c] database
 ```
 
 optional arguments:
@@ -352,7 +352,7 @@ It is possible to check your code locally (before even committing or pushing):
 ### Space checker
 
 ```bash
-bash exec/check_spaces.sh
+bash [<path>/]exec/check_spaces.sh
 ```
 
 ### [ClangFormat](https://clang.llvm.org/docs/ClangFormat.html)
