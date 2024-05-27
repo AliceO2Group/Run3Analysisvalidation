@@ -245,7 +245,7 @@ If the main log file of a validation step mentions "parallel: This job failed:",
 
 ## How to add a new workflow
 
-To add a new workflow in the framework configuration, you need to the following steps.
+To add a new workflow in the framework configuration, you need to follow these steps.
 
 * Add the workflow in the [task configuration](#task-configuration):
   * Add the activation switch: `DOO2_...=0         # name of the workflow (without o2-analysis)`.
