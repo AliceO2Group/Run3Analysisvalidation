@@ -19,8 +19,9 @@ Its features include
 It also provides tools for:
 
 * post mortem debugging of failing jobs,
-* comparison of ROOT file content,
+* comparison of histograms between ROOT files,
 * visualisation of workflow dependencies,
+* downloading of data samples from the Grid,
 * maintenance of Git repositories and installations of aliBuild packages.
 
 The original purpose of the Run 3 validation framework was to provide a compact and flexible tool for validation of the
@@ -43,7 +44,7 @@ Configuration is separate from execution code, input configuration is separate f
   * produce modified configuration files,
   * generate step scripts executed by the framework in the validation steps.
 
-### Execution
+## Execution
 
 Execution code can be found in the [`exec`](exec) directory.
 
@@ -82,7 +83,7 @@ The steering script [`runtest.sh`](exec/runtest.sh) performs the following execu
 
 All steps are activated by default and some can be disabled individually by setting the respective activation variables to `0` in user's task configuration.
 
-### Configuration
+## Configuration
 
 The steering script [`runtest.sh`](exec/runtest.sh) can be executed with the following optional arguments:
 
@@ -102,7 +103,7 @@ bash [<path>/]runtest.sh [-h] [-i <input-configuration>] [-t <task-configuration
 
 `-h` Help. Prints out the usage specification above.
 
-#### Input specification
+### Input specification
 
 The input specification script is a Bash script that sets input parameters used by the steering script.
 
@@ -124,7 +125,7 @@ This allows you to define several input datasets and switch between them easily 
 
 Other available parameters allow you to specify how many input files to process and how to parallelise the job execution.
 
-#### Task configuration
+### Task configuration
 
 The task configuration script is a Bash script that modifies the task parameters used by the steering script.
 
@@ -147,7 +148,7 @@ Configuration that should be defined in the task configuration includes:
 * Customisation of the commands loading the AliPhysics, O2Physics and postprocessing environments (`ENV_ALI`, `ENV_O2`, `ENV_POST`). By default the latest builds of AliPhysics, O2Physics and ROOT are used, respectively.
 * Any other parameters related to "what should run and how", e.g. `SAVETREES`, `MAKE_GRAPH`, `USEALIEVCUTS`
 
-#### Workflow specification
+### Workflow specification
 
 The full O<sup>2</sup> command, executed in the O<sup>2</sup> step script to run the activated O<sup>2</sup> workflows, is generated in the `MakeScriptO2` function using a dedicated Python script [`make_command_o2.py`](exec/make_command_o2.py).
 This script generates the command using a **YAML database (`workflows.yml`) that specifies workflow options and how workflows depend on each other**.
@@ -242,7 +243,7 @@ If any step fails, the script will display an error message and you should look 
 
 If the main log file of a validation step mentions "parallel: This job failed:", inspect the respective log file in the directory of the corresponding job.
 
-## Add a new workflow
+## How to add a new workflow
 
 To add a new workflow in the framework configuration, you need to the following steps.
 
@@ -279,9 +280,15 @@ bash [<path>/]debug.sh [-h] [-t TYPE] [-b [-u]] [-f] [-w] [-e]
 
 `-e`  Show errors (for all jobs).
 
-## Heavy-flavour analyses
+## Specific analyses
+
+### Heavy-flavour analyses
 
 Enter the [`codeHF`](codeHF) directory and see the [`README`](codeHF/README.md).
+
+### Jet analyses
+
+Enter the [`codeJE`](codeJE) directory.
 
 ## Keep your repositories and installations up to date and clean
 
@@ -345,7 +352,7 @@ It is possible to check your code locally (before even committing or pushing):
 ### Space checker
 
 ```bash
-bash <path to the Run3Analysisvalidation directory>/exec/check_spaces.sh
+bash exec/check_spaces.sh
 ```
 
 ### [ClangFormat](https://clang.llvm.org/docs/ClangFormat.html)
@@ -354,7 +361,7 @@ bash <path to the Run3Analysisvalidation directory>/exec/check_spaces.sh
 clang-format -style=file -i <file>
 ```
 
-### [MegaLinter](https://oxsecurity.github.io/megalinter/latest/mega-linter-runner/)
+### [MegaLinter](http://megalinter.io/latest/mega-linter-runner/)
 
 ```bash
 npx mega-linter-runner
