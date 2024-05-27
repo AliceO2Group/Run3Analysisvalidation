@@ -13,7 +13,7 @@
 
 ####################################################################################################
 
-# Here you can select the AliPhysics and O2Physics branches to load.
+# Here you can select the AliPhysics and O2Physics Git branches to load. (You need to have them built with aliBuild.)
 # BRANCH_ALI="master"
 # ENV_ALI="alienv setenv AliPhysics/latest-${BRANCH_ALI}-o2 -c"
 # BRANCH_O2="master"
@@ -29,9 +29,8 @@ DOPOSTPROCESS=1     # Run output postprocessing. (Comparison plots. Requires DOA
 # Disable incompatible steps.
 [ "$INPUT_IS_O2" -eq 1 ] && { DOCONVERT=0; DOALI=0; }
 
-# O2 database
-DATABASE_O2="workflows.yml"
-MAKE_GRAPH=0        # Make topology graph.
+DATABASE_O2="workflows.yml"  # Workflow specification database
+MAKE_GRAPH=0                 # Make topology graph.
 
 # Activation of O2 workflows
 # Trigger selection

@@ -4,33 +4,59 @@
 
 ## Introduction
 
-The main purpose of the Run 3 validation framework is to provide a compact and flexible tool for validation of the
+The Run 3 validation framework is a tool for an easy execution, testing and validation of the Run 3 analysis code on large local samples.
+
+Its features include
+
+* simple specification of input datasets,
+* simple configuration and activation of analysis tasks,
+* easy generation of the O<sup>2</sup> command for complex workflow topologies,
+* job parallelisation,
+* output merging,
+* error checking and reporting,
+* specification of postprocessing.
+
+It also provides tools for:
+
+* post mortem debugging of failing jobs,
+* comparison of histograms between ROOT files,
+* visualisation of workflow dependencies,
+* downloading of data samples from the Grid,
+* maintenance of Git repositories and installations of aliBuild packages.
+
+The original purpose of the Run 3 validation framework was to provide a compact and flexible tool for validation of the
 [O<sup>2</sup>(Physics)](https://github.com/AliceO2Group/O2Physics) analysis framework by comparison of its output to its
 [AliPhysics](https://github.com/alisw/AliPhysics) counterpart.
 The general idea is to run the same analysis using AliPhysics and O<sup>2</sup>(Physics) and produce comparison plots.
 
+However, it can be used without AliPhysics as well to run O<sup>2</sup> analyses locally, similar to running trains on AliHyperloop.
+This makes it a convenient framework for local development, testing and debugging of O<sup>2</sup>(Physics) code.
+
 ## Overview
 
 The validation framework is a general configurable platform that gives user the full control over what is done.
-Its flexibility is enabled by strict separation of its specialised components into a system of bash scripts.
+Its flexibility is enabled by strict separation of its specialised components into a system of Bash scripts.
 Configuration is separate from execution code, input configuration is separate from task configuration, execution steps are separate from the main steering code.
 
 * The steering script [`runtest.sh`](exec/runtest.sh) provides control parameters and interface to the machinery for task execution.
-* User provides configuration bash scripts which:
+* User provides configuration Bash scripts which:
   * modify control parameters,
   * produce modified configuration files,
   * generate step scripts executed by the framework in the validation steps.
 
-### Execution
+## Execution
 
 Execution code can be found in the [`exec`](exec) directory.
 
+**The user should not touch anything in this directory!**
+
 The steering script [`runtest.sh`](exec/runtest.sh) performs the following execution steps:
+
 * Load input specification.
 * Load tasks configuration.
 * Print out input description.
 * Clean before running. (activated by `DOCLEAN=1`)
-  * Deletes specified files.
+  * Deletes specified files (produced by previous runs).
 * Generate list of input files.
 * Modify the JSON file.
 * Convert `AliESDs.root` to `AO2D.root`. (activated by `DOCONVERT=1`)
@@ -51,46 +77,107 @@ The steering script [`runtest.sh`](exec/runtest.sh) performs the following execu
   * Executes the postprocessing step script.
   * This step typically compares AliPhysics and O<sup>2</sup> output and produces plots.
 * Clean after running. (activated by `DOCLEAN=1`)
-  * Deletes specified files.
+  * Deletes specified (temporary) files.
 * Done
   * This step is just a visual confirmation that all steps have finished without errors.
 
 All steps are activated by default and some can be disabled individually by setting the respective activation variables to `0` in user's task configuration.
 
-### Configuration
+## Configuration
 
 The steering script [`runtest.sh`](exec/runtest.sh) can be executed with the following optional arguments:
 
 ```bash
-bash [<path>/]runtest.sh [-h] [-i <input config>] [-t <task config>] [-d]
+bash [<path>/]runtest.sh [-h] [-i <input-configuration>] [-t <task-configuration>] [-d]
 ```
 
-`-h` Prints out the usage specification above.
+`<input-configuration>` Input specification script. See [Input specification](#input-specification).
 
-`-d` (Debug mode) Prints out more information about settings and execution.
-
-`<input config>` Input specification
-* Bash script that modifies input parameters.
-* This script defines which data will be processed.
 * Defaults to `config_input.sh` (in the current directory).
 
-`<task config>` Task configuration
-* Bash script that cleans the directory, deactivates steps, modifies the JSON file, generates step scripts.
-* This script defines what the validation steps will do.
+`<task-configuration>` Task configuration script. See [Task configuration](#task-configuration).
+
 * Defaults to `config_tasks.sh` (in the current directory).
-* Provides these mandatory functions:
-  * `Clean` Performs cleanup before and after running.
-  * `AdjustJson`             Modifies the JSON file. (e.g. selection cut activation)
-  * `MakeScriptAli`          Generates the AliPhysics step script.
-  * `MakeScriptO2`           Generates the O<sup>2</sup> step script.
-  * `MakeScriptPostprocess`  Generates the postprocessing step script. (e.g. plotting)
-* The `Clean` function takes one argument: `$1=1` before running, `$1=2` after running.
-* The AliPhysics and O<sup>2</sup> step scripts take two arguments: `$1="<input file>"`, `$2="<JSON file>"`.
-* The postprocessing step script takes two arguments: `$1="<O2 output file>"`, `$2="<AliPhysics output file>"`.
 
-Implementation of these configuration scripts is fully up to the user.
+`-d` Debug mode. Prints out more information about settings and execution.
 
-Dummy examples can be found in: [`config/config_input_dummy.sh`](config/config_input_dummy.sh), [`config/config_tasks_dummy.sh`](config/config_tasks_dummy.sh).
+`-h` Help. Prints out the usage specification above.
+
+### Input specification
+
+The input specification script is a Bash script that sets input parameters used by the steering script.
+
+**This script defines which data will be processed and how.**
+
+These are the available input parameters and their default values:
+
+* `INPUT_LABEL="nothing"`           Input description
+* `INPUT_DIR="$PWD"`                Input directory
+* `INPUT_FILES="AliESDs.root"`      Input file pattern
+* `INPUT_SYS="pp"`                  Collision system (`"pp"`, `"PbPb"`)
+* `INPUT_RUN=2`                     LHC Run (2, 3, 5)
+* `INPUT_IS_O2=0`                   Input files are in O<sup>2</sup> format.
+* `INPUT_IS_MC=0`                   Input files are MC data.
+* `INPUT_PARENT_MASK=""`            Path replacement mask for the input directory of parent files in case of linked derived O<sup>2</sup> input. Set to `";"` if no replacement needed.
+* `JSON="dpl-config.json"`          O<sup>2</sup> device configuration
+
+This allows you to define several input datasets and switch between them easily by setting the corresponding value of `INPUT_CASE`.
+
+Other available parameters allow you to specify how many input files to process and how to parallelise the job execution.
+
+### Task configuration
+
+The task configuration script is a Bash script that modifies the task parameters used by the steering script.
+
+**This script defines which validation steps will run and what they will do.**
+
+* It cleans the directory, deactivates incompatible steps, modifies the JSON file, generates step scripts.
+* The body of the script has to provide these mandatory functions:
+  * `Clean`                  Performs cleanup before and after running.
+  * `AdjustJson`             Modifies the JSON file (e.g. selection cut activation).
+  * `MakeScriptAli`          Generates the AliPhysics step script `script_ali.sh`.
+  * `MakeScriptO2`           Generates the O<sup>2</sup> step script `script_o2.sh`.
+  * `MakeScriptPostprocess`  Generates the postprocessing step script `script_postprocess.sh` (e.g. plotting).
+* The `Clean` function takes one argument: `$1=1` for cleaning before running, `$1=2` for cleaning after running.
+* The AliPhysics and O<sup>2</sup> step scripts take two arguments: `$1="<input-file>"`, `$2="<JSON-file>"`.
+* The postprocessing step script takes two arguments: `$1="<O2-output-file>"`, `$2="<AliPhysics-output-file>"`.
+
+Configuration that should be defined in the task configuration includes:
+
+* Deactivation of the validation steps (`DOCLEAN`, `DOCONVERT`, `DOALI`, `DOO2`, `DOPOSTPROCESS`)
+* Customisation of the commands loading the AliPhysics, O2Physics and postprocessing environments (`ENV_ALI`, `ENV_O2`, `ENV_POST`). By default the latest builds of AliPhysics, O2Physics and ROOT are used, respectively.
+* Any other parameters related to "what should run and how", e.g. `SAVETREES`, `MAKE_GRAPH`, `USEALIEVCUTS`
+
+### Workflow specification
+
+The full O<sup>2</sup> command, executed in the O<sup>2</sup> step script to run the activated O<sup>2</sup> workflows, is generated in the `MakeScriptO2` function using a dedicated Python script [`make_command_o2.py`](exec/make_command_o2.py).
+This script generates the command using a **YAML database (`workflows.yml`) that specifies workflow options and how workflows depend on each other**.
+You can consider a workflow specification in this database to be the equivalent of a wagon definition on AliHyperloop, including the definition of the wagon name, the workflow name, the dependencies and the derived data. The main difference is that the device configuration is stored in the JSON file.
+
+The workflow database has two sections: `options` and `workflows`.
+The `options` section defines `global` options, used once at the end of the command, and `local` options, used for every workflow.
+The `workflows` section contains the "wagon" definitions.
+The available parameters are:
+
+* `executable` Workflow command, if different from the "wagon" name
+  * This allows you to define multiple wagons for the same workflow.
+* `dependencies` **Direct** dependencies (i.e. other wagons **directly** needed to run this wagon)
+  * Allowed formats: string, list of strings
+  * Direct dependencies are wagons that produce tables consumed by this wagon. You can figure them out using the [`find_dependencies.py`](https://github.com/AliceO2Group/O2Physics/blob/master/Scripts/find_dependencies.py) script in O2Physics.
+* `requires_mc` Boolean parameter to specify whether the workflow can only run on MC
+* `options` Command line options. (Currently not supported on AliHyperloop.)
+  * Allowed formats: string, list of strings, dictionary with keys `default`, `real`, `mc`
+* `tables` Descriptions of output tables to be saved as trees
+  * Allowed formats: string, list of strings, dictionary with keys `default`, `real`, `mc`
+
+The `make_command_o2.py` script allows you to generate a topology graph to visualise the dependencies defined in the database, using [Graphviz](https://graphviz.org/).
+Generation of the topology graph can be conveniently enabled with `MAKE_GRAPH=1` in the task configuration.
+
+Dummy examples of the configuration files can be found in:
+
+* [`config/config_input_dummy.sh`](config/config_input_dummy.sh),
+* [`config/config_tasks_dummy.sh`](config/config_tasks_dummy.sh),
+* [`config/workflows_dummy.yml`](config/workflows_dummy.yml).
 
 ## Preparation
 
@@ -136,7 +223,7 @@ sudo apt install parallel
 
 Now you are ready to run the validation code.
 
-**Make sure that your bash environment is clean!
+**Make sure that your Bash environment is clean!
 Do not load ROOT, AliPhysics, O<sup>2</sup>, O<sup>2</sup>Physics or any other aliBuild package environment before running the framework!**
 
 Enter any directory and execute the steering script `runtest.sh`.
@@ -156,12 +243,25 @@ If any step fails, the script will display an error message and you should look 
 
 If the main log file of a validation step mentions "parallel: This job failed:", inspect the respective log file in the directory of the corresponding job.
 
+## How to add a new workflow
+
+To add a new workflow in the framework configuration, you need to follow these steps.
+
+* Add the workflow in the [task configuration](#task-configuration):
+  * Add the activation switch: `DOO2_...=0         # name of the workflow (without o2-analysis)`.
+  * Add the application of the switch in the `MakeScriptO2` function: `[ $DOO2_... -eq 1 ] && WORKFLOWS+=" o2-analysis-..."`.
+  * If needed, add lines in the `AdjustJson` function to modify the JSON configuration.
+* Add the [workflow specification](#workflow-specification) in the workflow database:
+  * See the dummy example `o2-analysis-workflow` for the full list of options.
+* Add the device configuration in the default JSON file.
+
 ## Job debugging
 
 If you run many parallelised jobs and some of them don't finish successfully, you can make use of the debugging script [`debug.sh`](exec/debug.sh) in the [`exec`](exec) directory
 which can help you figure out what went wrong, where and why.
 
 You can execute the script from the current working directory using the following syntax (options can be combined):
+
 ```bash
 bash [<path>/]debug.sh [-h] [-t TYPE] [-b [-u]] [-f] [-w] [-e]
 ```
@@ -180,9 +280,15 @@ bash [<path>/]debug.sh [-h] [-t TYPE] [-b [-u]] [-f] [-w] [-e]
 
 `-e`  Show errors (for all jobs).
 
-## Heavy-flavour analyses
+## Specific analyses
+
+### Heavy-flavour analyses
 
 Enter the [`codeHF`](codeHF) directory and see the [`README`](codeHF/README.md).
+
+### Jet analyses
+
+Enter the [`codeJE`](codeJE) directory.
 
 ## Keep your repositories and installations up to date and clean
 
@@ -197,8 +303,9 @@ This includes updating alidist, AliPhysics, O<sup>2</sup>(Physics), and this Run
 as well as re-building your AliPhysics and O<sup>2</sup>(Physics) installations via aliBuild and deleting obsolete builds.
 
 You can execute the script from any directory on your system using the following syntax:
+
 ```bash
-python <path to the Run3Analysisvalidation directory>/exec/update_packages.py [-h] [-d] [-l] [-c] database
+python [<path>/]exec/update_packages.py [-h] [-d] [-l] [-c] database
 ```
 
 optional arguments:
@@ -245,7 +352,7 @@ It is possible to check your code locally (before even committing or pushing):
 ### Space checker
 
 ```bash
-bash <path to the Run3Analysisvalidation directory>/exec/check_spaces.sh
+bash [<path>/]exec/check_spaces.sh
 ```
 
 ### [ClangFormat](https://clang.llvm.org/docs/ClangFormat.html)
@@ -254,7 +361,7 @@ bash <path to the Run3Analysisvalidation directory>/exec/check_spaces.sh
 clang-format -style=file -i <file>
 ```
 
-### [MegaLinter](https://oxsecurity.github.io/megalinter/latest/mega-linter-runner/)
+### [MegaLinter](http://megalinter.io/latest/mega-linter-runner/)
 
 ```bash
 npx mega-linter-runner
