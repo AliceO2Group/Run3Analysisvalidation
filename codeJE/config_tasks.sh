@@ -31,7 +31,7 @@ DOPOSTPROCESS=1     # Run output postprocessing. (Comparison plots. Requires DOA
 
 DATABASE_O2="workflows.yml"  # Workflow specification database
 MAKE_GRAPH=0                 # Make topology graph.
-MAKE_PERF_STATS=1            # Produce performance profiling stats.
+MAKE_PERF_STATS=0            # Produce performance profiling stats.
 
 # Activation of O2 workflows
 # Table producers
