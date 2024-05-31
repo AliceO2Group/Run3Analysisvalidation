@@ -174,7 +174,9 @@ def main():
     if save_tables:
         msg_warn("Tables will be saved in trees.")
     if perf:
-        msg_warn("Performance profiling stats will be saved in perf.data files.\n  Convert them with: perf script --demangle -i perf.data --no-inline | c++filt -r -t  > profile.linux-perf.txt\n  and upload the output to https://www.speedscope.app/")
+        msg_warn("Performance profiling stats will be saved in perf.data files.\n"
+                 "  Convert them with: perf script --demangle -i perf.data --no-inline | c++filt -r -t  > profile.linux-perf.txt\n"
+                 "  and upload the output to https://www.speedscope.app/.")
 
     # Get workflow-independent options.
     dic_opt = dic_in["options"]
