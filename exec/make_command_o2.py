@@ -146,6 +146,7 @@ def main():
     parser.add_argument("-t", "--tables", action="store_true", help="save table into trees")
     parser.add_argument("-g", "--graph", action="store_true", help="make topology graph")
     parser.add_argument("-d", "--debug", action="store_true", help="print debugging info")
+    parser.add_argument("-p", "--perf", action="store_true", help="produce performance profiling stats")
     args = parser.parse_args()
     path_file_database = args.database
     debug = args.debug
@@ -153,6 +154,7 @@ def main():
     mc_mode = args.mc
     save_tables = args.tables
     make_graph = args.graph
+    perf = args.perf
 
     # Open database input file.
     if debug:
@@ -171,6 +173,8 @@ def main():
         msg_warn("MC mode is on.")
     if save_tables:
         msg_warn("Tables will be saved in trees.")
+    if perf:
+        msg_warn("Performance profiling stats will be saved in perf.data files.\n  Convert them with: perf script --demangle -i perf.data --no-inline | c++filt -r -t  > profile.linux-perf.txt\n  and upload the output to https://www.speedscope.app/")
 
     # Get workflow-independent options.
     dic_opt = dic_in["options"]
@@ -271,6 +275,10 @@ def main():
         msg_fatal("Nothing to do!")
     # Remove the leading "| \\\n".
     command = command[4:]
+    # Append performance profiling options.
+    if perf:
+        opt_perf = "perf record -F 99 -g --call-graph dwarf --user-callchains"
+        command = command.replace(string_wf, f"{opt_perf} {string_wf}")
     # Append global options.
     if opt_global:
         command += " " + opt_global
@@ -311,4 +319,5 @@ def main():
         eprint("Produce graph with Graphviz: dot -T%s %s -o %s" % (ext_graph, path_file_dot, path_file_graph))
 
 
-main()
+if __name__ == "__main__":
+    main()
