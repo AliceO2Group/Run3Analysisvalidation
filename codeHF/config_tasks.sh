@@ -31,6 +31,7 @@ DOPOSTPROCESS=1     # Run output postprocessing. (Comparison plots. Requires DOA
 
 DATABASE_O2="workflows.yml"  # Workflow specification database
 MAKE_GRAPH=0                 # Make topology graph.
+MAKE_PERF_STATS=0            # Produce performance profiling stats.
 
 # Activation of O2 workflows
 # Trigger selection
@@ -506,6 +507,7 @@ function MakeScriptO2 {
   [ "$DEBUG" -eq 1 ] && OPT_MAKECMD+=" -d"
   [ $SAVETREES -eq 1 ] && OPT_MAKECMD+=" -t"
   [ $MAKE_GRAPH -eq 1 ] && OPT_MAKECMD+=" -g"
+  [ $MAKE_PERF_STATS -eq 1 ] && OPT_MAKECMD+=" -p"
 
   # Make a copy of the default workflow database file before modifying it.
   DATABASE_O2_EDIT="${DATABASE_O2/.yml/_edit.yml}"
