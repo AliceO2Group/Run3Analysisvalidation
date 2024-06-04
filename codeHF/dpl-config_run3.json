@@ -1954,10 +1954,23 @@
         },
         "nClassesMl": "3",
         "enableDebugMl": "false",
-        "namesInputFeatures": "{\"values\":[\" \\u0000�\\u0002\\u0000\\u0000\\u0000\\u0000\",\"�\\u0000�\\u0002\\u0000\\u0000\\u0000\\u0000\"]}",
+        "namesInputFeatures": {
+            "values": [
+                "feature1",
+                "feature2"
+            ]
+        },
         "ccdbUrl": "http://alice-ccdb.cern.ch",
-        "modelPathsCCDB": "{\"values\":[\"\\u0000L�~�\\u0000\\u0000\\u0000;{\\u0002\\u0000\\u0000\\u0000\\u0000@p�\\u0002\\u0000\\u0000\\u0000\\u0000!\\u0000\"]}",
-        "onnxFileNames": "{\"values\":[\"`,�\\u0002\\u0000\\u0000\\u0000\\u0000 ��\\u0002\\u0000\\u0000\\u0000\\u0000ector-lc\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\"]}",
+        "modelPathsCCDB": {
+            "values": [
+                "EventFiltering/PWGHF/BDTLc"
+            ]
+        },
+        "onnxFileNames": {
+            "values": [
+                "ModelHandler_onnx_LcToPK0S.onnx"
+            ]
+        },
         "timestampCCDB": "-1",
         "loadModelsFromCCDB": "false",
         "processWithDCAFitterN": "true",
@@ -2769,10 +2782,23 @@
             ]
         },
         "nClassesMl": "3",
-        "namesInputFeatures": "{\"values\":[\"�Ϗ\\u0001\\u0000\\u0000\\u0000\\u0000\",\"`Џ\\u0001\\u0000\\u0000\\u0000\\u0000\"]}",
+        "namesInputFeatures": {
+            "values": [
+                "feature1",
+                "feature2"
+            ]
+        },
         "ccdbUrl": "http://alice-ccdb.cern.ch",
-        "modelPathsCCDB": "{\"values\":[\"0��\\u0001\\u0000\\u0000\\u0000\\u0000\\u001F\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u001F\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000h\\u0000\"]}",
-        "onnxFileNames": "{\"values\":[\"\\u0013\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000P��\\u0001\\u0000\\u0000\\u0000\\u0000\\u0002\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\"]}",
+        "modelPathsCCDB": {
+            "values": [
+                "EventFiltering/PWGHF/BDTLc"
+            ]
+        },
+        "onnxFileNames": {
+            "values": [
+                "ModelHandler_onnx_LcToPK0S.onnx"
+            ]
+        },
         "timestampCCDB": "-1",
         "loadModelsFromCCDB": "false"
     },
@@ -3016,16 +3042,21 @@
             ]
         },
         "nClassesMl": "3",
-        "namesInputFeatures": "{\"values\":[\" \\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\",\"��k\\u0001\\u0000\\u0000\\u0000\\u0000\"]}",
+        "namesInputFeatures": {
+            "values": [
+                "feature1",
+                "feature2"
+            ]
+        },
         "ccdbUrl": "http://alice-ccdb.cern.ch",
         "modelPathsCCDB": {
             "values": [
-                "\u0010\u000Bn\u0001\u0000\u0000\u0000\u0000\u001F\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u001F\u0000\u0000\u0000\u0000\u0000\u0000\u0000h\u0000"
+                "EventFiltering/PWGHF/BDTLc"
             ]
         },
         "onnxFileNames": {
             "values": [
-                " \u000Bn\u0001\u0000\u0000\u0000\u0000!\u0000\u0000\u0000\u0000\u0000\u0000\u0000drop\u0000\u0000\u0000@_Q\u0001\u0000\u0000\u0000"
+                "ModelHandler_onnx_LcToPK0S.onnx"
             ]
         },
         "timestampCCDB": "-1",
