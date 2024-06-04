@@ -841,16 +841,16 @@
         "maxChi2": "100",
         "refitWithMatCorr": "true",
         "v0TransvRadius": "1",
-        "cascTransvRadius": "0.400000006",
-        "dcaBachToPv": "0.0500000007",
-        "dcaV0ToPv": "0.0500000007",
+        "cascTransvRadius": "0.4",
+        "dcaBachToPv": "0.05",
+        "dcaV0ToPv": "0.05",
         "v0CosPA": "0.95",
         "cascCosPA": "0.95",
         "dcaV0Dau": "2",
         "dcaCascDau": "1",
-        "dcaNegToPv": "0.0500000007",
-        "dcaPosToPv": "0.0500000007",
-        "v0MassWindow": "0.00800000038",
+        "dcaNegToPv": "0.05",
+        "dcaPosToPv": "0.05",
+        "v0MassWindow": "0.008",
         "cascadeMassWindow": "0.01",
         "isRun2": "true",
         "ccdbUrl": "http://alice-ccdb.cern.ch",
@@ -971,7 +971,29 @@
         "ccdbUrl": "http://alice-ccdb.cern.ch",
         "ccdbPathLut": "GLO/Param/MatLUT",
         "ccdbPathGrp": "GLO/GRP/GRP",
-        "ccdbPathGrpMag": "GLO/Config/GRPMagField"
+        "ccdbPathGrpMag": "GLO/Config/GRPMagField",
+        "hfEvSel": {
+            "centralityMin": "0",
+            "centralityMax": "100",
+            "useSel8Trigger": "true",
+            "triggerClass": "-1",
+            "useTimeFrameBorderCut": "true",
+            "useIsGoodZvtxFT0vsPV": "false",
+            "useNoSameBunchPileup": "false",
+            "useNumTracksInTimeRange": "false",
+            "numTracksInTimeRangeMin": "0",
+            "numTracksInTimeRangeMax": "1000000",
+            "nPvContributorsMin": "0",
+            "chi2PvMax": "-1",
+            "zPvPosMin": "-10",
+            "zPvPosMax": "10"
+        },
+        "processNoCent": "true",
+        "processCentFT0C": "false",
+        "processCentFT0M": "false",
+        "processCollisions": "true",
+        "processCollisionsCentFT0C": "false",
+        "processCollisionsCentFT0M": "false"
     },
     "hf-candidate-creator-cascade-mc": {
         "processMc": "true"
@@ -2803,16 +2825,211 @@
                 "d0V0"
             ],
             "values": [
-                [ "0.008", "0.005", "0.1", "0.5", "0.3", "0.6", "0.05", "999999"],
-                [ "0.008", "0.005", "0.1", "0.5", "0.4", "1.3", "0.05", "999999"],
-                [ "0.009", "0.005", "0.1", "0.6", "0.4", "1.3", "0.05", "999999"],
-                [ "0.011", "0.005", "0.1", "0.6", "0.4", "1.4", "0.05", "999999"],
-                [ "0.013", "0.005", "0.1", "0.6", "0.4", "1.4", "0.06", "999999"],
-                [ "0.013", "0.005", "0.1", "0.9", "0.4", "1.6", "0.09", "999999"],
-                [ "0.016", "0.005", "0.1", "0.9", "0.4", "1.7", "0.10", "999999"],
-                [ "0.019", "0.005", "0.1", "1", "0.4", "1.9", "0.20", "999999"]
+                [
+                    "0.008",
+                    "0.005",
+                    "0.1",
+                    "0.5",
+                    "0.3",
+                    "0.6",
+                    "0.05",
+                    "999999"
+                ],
+                [
+                    "0.008",
+                    "0.005",
+                    "0.1",
+                    "0.5",
+                    "0.4",
+                    "1.3",
+                    "0.05",
+                    "999999"
+                ],
+                [
+                    "0.009",
+                    "0.005",
+                    "0.1",
+                    "0.6",
+                    "0.4",
+                    "1.3",
+                    "0.05",
+                    "999999"
+                ],
+                [
+                    "0.011",
+                    "0.005",
+                    "0.1",
+                    "0.6",
+                    "0.4",
+                    "1.4",
+                    "0.05",
+                    "999999"
+                ],
+                [
+                    "0.013",
+                    "0.005",
+                    "0.1",
+                    "0.6",
+                    "0.4",
+                    "1.4",
+                    "0.06",
+                    "999999"
+                ],
+                [
+                    "0.013",
+                    "0.005",
+                    "0.1",
+                    "0.9",
+                    "0.4",
+                    "1.6",
+                    "0.09",
+                    "999999"
+                ],
+                [
+                    "0.016",
+                    "0.005",
+                    "0.1",
+                    "0.9",
+                    "0.4",
+                    "1.7",
+                    "0.10",
+                    "999999"
+                ],
+                [
+                    "0.019",
+                    "0.005",
+                    "0.1",
+                    "1",
+                    "0.4",
+                    "1.9",
+                    "0.20",
+                    "999999"
+                ]
             ]
         },
+        "applyMl": "false",
+        "binsPtMl": {
+            "values": [
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "8",
+                "10",
+                "12",
+                "16",
+                "24",
+                "50"
+            ]
+        },
+        "cutDirMl": {
+            "values": [
+                "0",
+                "1",
+                "1"
+            ]
+        },
+        "cutsMl": {
+            "labels_rows": [
+                "pT bin 0",
+                "pT bin 1",
+                "pT bin 2",
+                "pT bin 3",
+                "pT bin 4",
+                "pT bin 5",
+                "pT bin 6",
+                "pT bin 7",
+                "pT bin 8",
+                "pT bin 9",
+                "pT bin 10",
+                "pT bin 11"
+            ],
+            "labels_cols": [
+                "score class 1",
+                "score class 2",
+                "score class 3"
+            ],
+            "values": [
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ]
+            ]
+        },
+        "nClassesMl": "3",
+        "namesInputFeatures": "{\"values\":[\" \\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\",\"��k\\u0001\\u0000\\u0000\\u0000\\u0000\"]}",
+        "ccdbUrl": "http://alice-ccdb.cern.ch",
+        "modelPathsCCDB": {
+            "values": [
+                "\u0010\u000Bn\u0001\u0000\u0000\u0000\u0000\u001F\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u001F\u0000\u0000\u0000\u0000\u0000\u0000\u0000h\u0000"
+            ]
+        },
+        "onnxFileNames": {
+            "values": [
+                " \u000Bn\u0001\u0000\u0000\u0000\u0000!\u0000\u0000\u0000\u0000\u0000\u0000\u0000drop\u0000\u0000\u0000@_Q\u0001\u0000\u0000\u0000"
+            ]
+        },
+        "timestampCCDB": "-1",
+        "loadModelsFromCCDB": "false",
         "processWithStandardPID": "true",
         "processWithBayesPID": "false"
     },
@@ -3648,7 +3865,7 @@
             "values": [
                 "120",
                 "1.5848",
-                "2.1848000000000001"
+                "2.1848"
             ]
         },
         "thnConfigAxisPtB": {
@@ -5019,13 +5236,51 @@
         "pid-he": "1",
         "pid-al": "1"
     },
+    "lambdakzero-preselector": {
+        "dIfMCgenerateK0Short": "true",
+        "dIfMCgenerateLambda": "true",
+        "dIfMCgenerateAntiLambda": "true",
+        "dIfMCgenerateGamma": "false",
+        "dIfMCgenerateHypertriton": "false",
+        "dIfMCgenerateAntiHypertriton": "false",
+        "dIfMCselectV0MotherPDG": "0",
+        "dIfMCselectPhysicalPrimary": "true",
+        "ddEdxPreSelectK0Short": "true",
+        "ddEdxPreSelectLambda": "true",
+        "ddEdxPreSelectAntiLambda": "true",
+        "ddEdxPreSelectGamma": "false",
+        "ddEdxPreSelectHypertriton": "false",
+        "ddEdxPreSelectAntiHypertriton": "false",
+        "ddEdxPreSelectionWindow": "7",
+        "dTPCNCrossedRows": "50",
+        "dPreselectOnlyBaryons": "false",
+        "forceITSOnlyMesons": "false",
+        "minITSCluITSOnly": "0",
+        "processBuildAll": "true",
+        "processBuildMCAssociated": "false",
+        "processBuildValiddEdx": "false",
+        "processBuildValiddEdxMCAssociated": "false",
+        "processBuildFindable": "false",
+        "processSkipV0sNotUsedInCascades": "false",
+        "processSkipV0sNotUsedInTrackedCascades": "false"
+    },
     "lambdakzero-builder": {
         "createV0CovMats": "-1",
         "createV0DauCovMats": "-1",
         "createV0PosAtDCAs": "0",
+        "createV0PosAtIUs": "0",
         "storePhotonCandidates": "false",
         "d_UseAutodetectMode": "false",
-        "downscaleFactor": "2",
+        "downscalingOptions": {
+            "downscaleFactor": "2",
+            "downscale_adaptive": "false",
+            "downscale_mass": "0.14",
+            "downscale_sqrts": "13.6",
+            "downscale_factorPt": "1",
+            "downscale_factor1Pt": "1",
+            "downscale_factorUniform": "0.001",
+            "downscale_triggerMaskSelection": "0"
+        },
         "dcanegtopv": "0.1",
         "dcapostopv": "0.1",
         "v0cospa": "0.995",
@@ -5035,147 +5290,261 @@
         "minimumPt": "0",
         "maximumPt": "1000",
         "maxDaughterEta": "5",
-        "d_bz": "-999",
-        "d_UseAbsDCA": "true",
-        "d_UseWeightedPCA": "false",
-        "useMatCorrType": "0",
-        "rejDiffCollTracks": "0",
-        "d_doTrackQA": "false",
-        "d_QA_checkMC": "true",
-        "d_QA_checkdEdx": "false",
-        "ccdb-url": "http://alice-ccdb.cern.ch",
-        "grpPath": "GLO/GRP/GRP",
-        "grpmagPath": "GLO/Config/GRPMagField",
-        "lutPath": "GLO/Param/MatLUT",
-        "geoPath": "GLO/Config/GeometryAligned",
-        "mVtxPath": "GLO/Calib/MeanVertex",
-        "d_doQA": "false",
-        "dQANBinsRadius": "500",
-        "dQANBinsPtCoarse": "10",
-        "dQANBinsMass": "400",
-        "dQAMaxPt": "5",
-        "dQAGammaMassWindow": "0.05",
-        "dQAK0ShortMassWindow": "0.005",
-        "dQALambdaMassWindow": "0.005",
-        "axisPtQA": {
+        "mlConfigurations": {
+            "calculateK0ShortScores": "false",
+            "calculateLambdaScores": "false",
+            "calculateAntiLambdaScores": "false",
+            "calculateGammaScores": "false",
+            "modelPathCCDB": "",
+            "timestampCCDB": "-1",
+            "loadModelsFromCCDB": "false",
+            "enableOptimizations": "false",
+            "localModelPathLambda": "Lambda_BDTModel.onnx",
+            "localModelPathAntiLambda": "AntiLambda_BDTModel.onnx",
+            "localModelPathGamma": "Gamma_BDTModel.onnx",
+            "localModelPathK0Short": "KZeroShort_BDTModel.onnx",
+            "thresholdGamma": "-1",
+            "thresholdLambda": "-1",
+            "thresholdAntiLambda": "-1",
+            "thresholdK0Short": "-1"
+        },
+        "dcaFitterConfigurations": {
+            "d_bz": "-999",
+            "d_UseAbsDCA": "true",
+            "d_UseWeightedPCA": "false",
+            "d_UseCollinearFit": "false",
+            "d_maxDZIni": "1e+09",
+            "d_maxDXYIni": "4",
+            "useMatCorrType": "2",
+            "rejDiffCollTracks": "0"
+        },
+        "ccdbConfigurations": {
+            "ccdb-url": "http://alice-ccdb.cern.ch",
+            "grpPath": "GLO/GRP/GRP",
+            "grpmagPath": "GLO/Config/GRPMagField",
+            "lutPath": "GLO/Param/MatLUT",
+            "geoPath": "GLO/Config/GeometryAligned",
+            "mVtxPath": "GLO/Calib/MeanVertex"
+        },
+        "roundDCAVariables": "false",
+        "precisionDCAs": "0.01",
+        "qaConfigurations": {
+            "d_doQA": "false",
+            "dQANBinsRadius": "500",
+            "dQANBinsPtCoarse": "10",
+            "dQANBinsMass": "400",
+            "dQAMaxPt": "5",
+            "dQAGammaMassWindow": "0.05",
+            "dQAK0ShortMassWindow": "0.005",
+            "dQALambdaMassWindow": "0.005",
+            "d_doTrackQA": "false",
+            "d_QA_checkMC": "true",
+            "d_QA_checkdEdx": "false"
+        },
+        "axisConfigurations": {
+            "axisTopoVarPointingAngle": {
+                "values": [
+                    "50",
+                    "0",
+                    "1"
+                ]
+            },
+            "axisTopoVarRAP": {
+                "values": [
+                    "50",
+                    "0",
+                    "1"
+                ]
+            },
+            "axisTopoVarV0Radius": {
+                "values": [
+                    "500",
+                    "0",
+                    "100"
+                ]
+            },
+            "axisTopoVarDCAV0Dau": {
+                "values": [
+                    "200",
+                    "0",
+                    "2"
+                ]
+            },
+            "axisTopoVarDCAToPV": {
+                "values": [
+                    "200",
+                    "-1",
+                    "1"
+                ]
+            },
+            "axisTopoVarDCAV0ToPV": {
+                "values": [
+                    "200",
+                    "0",
+                    "5"
+                ]
+            },
+            "axisX": {
+                "values": [
+                    "200",
+                    "0",
+                    "200"
+                ]
+            },
+            "axisRadius": {
+                "values": [
+                    "500",
+                    "0",
+                    "50"
+                ]
+            },
+            "axisDeltaDistanceRadii": {
+                "values": [
+                    "500",
+                    "-50",
+                    "50"
+                ]
+            },
+            "axisDCAXY": {
+                "values": [
+                    "500",
+                    "-50",
+                    "50"
+                ]
+            },
+            "axisDCACHI2": {
+                "values": [
+                    "500",
+                    "0",
+                    "50"
+                ]
+            },
+            "axisPositionGuess": {
+                "values": [
+                    "240",
+                    "0",
+                    "120"
+                ]
+            },
+            "axisPtQA": {
+                "values": [
+                    "0",
+                    "0",
+                    "0.1",
+                    "0.2",
+                    "0.3",
+                    "0.4",
+                    "0.5",
+                    "0.6",
+                    "0.7",
+                    "0.8",
+                    "0.9",
+                    "1",
+                    "1.1",
+                    "1.2",
+                    "1.3",
+                    "1.4",
+                    "1.5",
+                    "1.6",
+                    "1.7",
+                    "1.8",
+                    "1.9",
+                    "2",
+                    "2.2",
+                    "2.4",
+                    "2.6",
+                    "2.8",
+                    "3",
+                    "3.2",
+                    "3.4",
+                    "3.6",
+                    "3.8",
+                    "4",
+                    "4.4",
+                    "4.8",
+                    "5.2",
+                    "5.6",
+                    "6",
+                    "6.5",
+                    "7",
+                    "7.5",
+                    "8",
+                    "9",
+                    "10",
+                    "11",
+                    "12",
+                    "13",
+                    "14",
+                    "15",
+                    "17",
+                    "19",
+                    "21",
+                    "23",
+                    "25",
+                    "30",
+                    "35",
+                    "40",
+                    "50"
+                ]
+            }
+        },
+        "massCutK0": {
+            "labels_rows": "",
+            "labels_cols": [
+                "constant",
+                "linear",
+                "expoConstant",
+                "expoRelax"
+            ],
             "values": [
-                "0",
-                "0",
-                "0.1",
-                "0.2",
-                "0.3",
-                "0.4",
-                "0.5",
-                "0.6",
-                "0.7",
-                "0.8",
-                "0.9",
-                "1",
-                "1.1",
-                "1.2",
-                "1.3",
-                "1.4",
-                "1.5",
-                "1.6",
-                "1.7",
-                "1.8",
-                "1.9",
-                "2",
-                "2.2",
-                "2.4",
-                "2.6",
-                "2.8",
-                "3",
-                "3.2",
-                "3.4",
-                "3.6",
-                "3.8",
-                "4",
-                "4.4",
-                "4.8",
-                "5.2",
-                "5.6",
-                "6",
-                "6.5",
-                "7",
-                "7.5",
-                "8",
-                "9",
-                "10",
-                "11",
-                "12",
-                "13",
-                "14",
-                "15",
-                "17",
-                "19",
-                "21",
-                "23",
-                "25",
-                "30",
-                "35",
-                "40",
-                "50"
+                [
+                    "0.00281882007",
+                    "0.00114057004",
+                    "0.00172138005",
+                    "0.500262022"
+                ]
             ]
         },
-        "axisTopoVarPointingAngle": {
+        "massCutLambda": {
+            "labels_rows": "",
+            "labels_cols": [
+                "constant",
+                "linear",
+                "expoConstant",
+                "expoRelax"
+            ],
             "values": [
-                "50",
-                "0",
-                "1"
+                [
+                    "0.00117517996",
+                    "0.000124098995",
+                    "0.00547936978",
+                    "0.308008999"
+                ]
             ]
         },
-        "axisTopoVarRAP": {
+        "massWindownumberOfSigmas": "5000000",
+        "massWindowWithTPCPID": "false",
+        "massWindowSafetyMargin": "0.001",
+        "lifetimecut": {
+            "labels_rows": "",
+            "labels_cols": [
+                "lifetimecutLambda",
+                "lifetimecutK0S"
+            ],
             "values": [
-                "50",
-                "0",
-                "1"
-            ]
-        },
-        "axisTopoVarV0Radius": {
-            "values": [
-                "500",
-                "0",
-                "100"
-            ]
-        },
-        "axisTopoVarDCAV0Dau": {
-            "values": [
-                "200",
-                "0",
-                "2"
-            ]
-        },
-        "axisTopoVarDCAToPV": {
-            "values": [
-                "200",
-                "-1",
-                "1"
-            ]
-        },
-        "axisTopoVarDCAV0ToPV": {
-            "values": [
-                "200",
-                "0",
-                "5"
-            ]
-        },
-        "axisX": {
-            "values": [
-                "200",
-                "0",
-                "200"
-            ]
-        },
-        "axisRadius": {
-            "values": [
-                "500",
-                "0",
-                "50"
+                [
+                    "1000000",
+                    "1000000"
+                ]
             ]
         },
         "processRun2": "true",
-        "processRun3": "false"
+        "processRun3": "false",
+        "processFindableRun3": "false"
+    },
+    "lambdakzero-v0-data-link-builder": {
+        "processFound": "true",
+        "processFindable": "false"
     },
     "qa-efficiency": {
         "noFakesHits": "false",
