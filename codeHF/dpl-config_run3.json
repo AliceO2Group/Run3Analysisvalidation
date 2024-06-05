@@ -5472,11 +5472,14 @@
         "checkAmbiguousTracksWithHfEventsOnly": "false"
     },
     "hf-tree-creator-d0-to-k-pi": {
-        "processDataWithDCAFitterN": "true",
+        "fillCandidateLiteTable": "false",
+        "downSampleBkgFactor": "1",
+        "ptMaxForDownSample": "10",
+        "processDataWithDCAFitterN": "false",
         "processDataWithKFParticle": "false",
         "processMcWithDCAFitterOnlySig": "false",
         "processMcWithDCAFitterOnlyBkg": "false",
-        "processMcWithDCAFitterAll": "false",
+        "processMcWithDCAFitterAll": "true",
         "processMcWithKFParticleOnlySig": "false",
         "processMcWithKFParticleOnlyBkg": "false",
         "processMcWithKFParticleAll": "false"
