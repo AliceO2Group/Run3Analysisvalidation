@@ -2122,12 +2122,12 @@
         "ccdbUrl": "http://alice-ccdb.cern.ch",
         "modelPathsCCDB": {
             "values": [
-                "EventFiltering/PWGHF/BDTLc"
+                "EventFiltering/PWGHF/BDTD0"
             ]
         },
         "onnxFileNames": {
             "values": [
-                "ModelHandler_onnx_LcToPK0S.onnx"
+                "ModelHandler_onnx_D0ToKPi.onnx"
             ]
         },
         "timestampCCDB": "-1",
@@ -2503,12 +2503,12 @@
         "ccdbUrl": "http://alice-ccdb.cern.ch",
         "modelPathsCCDB": {
             "values": [
-                "EventFiltering/PWGHF/BDTLc"
+                "EventFiltering/PWGHF/BDTDPlus"
             ]
         },
         "onnxFileNames": {
             "values": [
-                "ModelHandler_onnx_LcToPK0S.onnx"
+                "ModelHandler_onnx_DPlusToKPiPi.onnx"
             ]
         },
         "timestampCCDB": "-1",
@@ -2838,12 +2838,12 @@
         "ccdbUrl": "http://alice-ccdb.cern.ch",
         "modelPathsCCDB": {
             "values": [
-                "EventFiltering/PWGHF/BDTLc"
+                "EventFiltering/PWGHF/BDTDs"
             ]
         },
         "onnxFileNames": {
             "values": [
-                "ModelHandler_onnx_LcToPK0S.onnx"
+                "ModelHandler_onnx_DsToKKPi.onnx"
             ]
         },
         "timestampCCDB": "-1",
@@ -3533,7 +3533,7 @@
         },
         "onnxFileNames": {
             "values": [
-                "ModelHandler_onnx_LcToPK0S.onnx"
+                "ModelHandler_onnx_LcToPKPi.onnx"
             ]
         },
         "timestampCCDB": "-1",
@@ -3804,7 +3804,7 @@
     "hf-candidate-selector-xic-to-p-k-pi": {
         "ptCandMin": "0",
         "ptCandMax": "36",
-        "usePid": "true",
+        "usePid": "false",
         "ptPidTpcMin": "0.15",
         "ptPidTpcMax": "20",
         "nSigmaTpcMax": "3",
@@ -4106,12 +4106,12 @@
         "ccdbUrl": "http://alice-ccdb.cern.ch",
         "modelPathsCCDB": {
             "values": [
-                "EventFiltering/PWGHF/BDTLc"
+                "EventFiltering/PWGHF/BDTXic"
             ]
         },
         "onnxFileNames": {
             "values": [
-                "ModelHandler_onnx_LcToPK0S.onnx"
+                "ModelHandler_onnx_XicToPKPi.onnx"
             ]
         },
         "timestampCCDB": "-1",
