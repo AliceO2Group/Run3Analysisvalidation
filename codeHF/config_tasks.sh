@@ -77,10 +77,11 @@ DOO2_TASK_LCK0SP=0  # hf-task-lc-to-k0s-p
 DOO2_TASK_XICC=0    # hf-task-xicc
 DOO2_TASK_B0=0      # hf-task-b0
 DOO2_TASK_BPLUS=0   # hf-task-bplus
+DOO2_TASK_DSTAR=1   # hf-task-dstar-to-d0-pi
 # Tree creators
 DOO2_TREE_D0=0      # hf-tree-creator-d0-to-k-pi
-DOO2_TREE_LC=0      # hf-tree-creator-lc-to-p-k-pi
-DOO2_TREE_LB=0      # hf-tree-creator-lb-to-lc-pi
+DOO2_TREE_LC=0      # hf-tree-creator-lc-to-p-k-pi (only Run 3)
+DOO2_TREE_LB=0      # hf-tree-creator-lb-to-lc-pi (only Run 5)
 DOO2_TREE_X=0       # hf-tree-creator-x-to-jpsi-pi-pi
 DOO2_TREE_XICC=0    # hf-tree-creator-xicc-to-p-k-pi-pi
 DOO2_TREE_CHIC=0    # hf-tree-creator-chic-to-jpsi-gamma
@@ -192,14 +193,23 @@ function AdjustJson {
   if [ "$INPUT_IS_MC" -eq 1 ]; then
     MsgWarn "Using MC data"
     ReplaceString "\"processMc\": \"false\"" "\"processMc\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processMcStd\": \"false\"" "\"processMcStd\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processMcWithDCAFitterAll\": \"false\"" "\"processMcWithDCAFitterAll\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processMC\": \"false\"" "\"processMC\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"isMC\": \"false\"" "\"isMC\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processData\": \"true\"" "\"processData\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processDataStd\": \"true\"" "\"processDataStd\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processDataWithDCAFitterN\": \"true\"" "\"processDataWithDCAFitterN\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
   else
     MsgWarn "Using real data"
     ReplaceString "\"processMc\": \"true\"" "\"processMc\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processMcStd\": \"true\"" "\"processMcStd\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processMcWithDCAFitterAll\": \"true\"" "\"processMcWithDCAFitterAll\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processMC\": \"true\"" "\"processMC\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"isMC\": \"true\"" "\"isMC\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processData\": \"false\"" "\"processData\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processDataStd\": \"false\"" "\"processDataStd\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processDataWithDCAFitterN\": \"false\"" "\"processDataWithDCAFitterN\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # event-selection
@@ -428,7 +438,7 @@ function MakeScriptO2 {
   [ $DOO2_SEL_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-xicc-to-p-k-pi-pi"
   [ $DOO2_SEL_B0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-b0-to-d-pi"
   [ $DOO2_SEL_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-bplus-to-d0-pi"
-  [ $DOO2_SEL_DSTAR -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-dstar"
+  [ $DOO2_SEL_DSTAR -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-candidate-selector-dstar-to-d0-pi"
   # Analysis tasks
   [ $DOO2_TASK_D0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-d0"
   [ $DOO2_TASK_JPSI -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-jpsi"
@@ -443,6 +453,7 @@ function MakeScriptO2 {
   [ $DOO2_TASK_XICC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-xicc"
   [ $DOO2_TASK_B0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-b0"
   [ $DOO2_TASK_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-bplus"
+  [ $DOO2_TASK_DSTAR -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-task-dstar-to-d0-pi"
   # Tree creators
   [ $DOO2_TREE_D0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-d0-to-k-pi"
   [ $DOO2_TREE_LC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-tree-creator-lc-to-p-k-pi"
