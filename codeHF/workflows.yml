@@ -400,8 +400,12 @@ workflows:
 
   # Jets
 
+  o2-analysis-je-jet-deriveddata-producer: {}
+
   o2-analysis-je-jet-finder-d0-data-charged: &jethf
-    dependencies: [o2-analysis-event-selection, o2-analysis-hf-candidate-selector-d0]
+    dependencies:
+      - o2-analysis-hf-derived-data-creator-d0-to-k-pi
+      - o2-analysis-je-jet-deriveddata-producer
     tables: [D0JET, D0JETCONSTS, D0JETCONSTSUB]
 
   o2-analysis-je-jet-finder-d0-mcd-charged:
