@@ -13,24 +13,22 @@
     },
     "hf-track-index-skim-creator-tag-sel-collisions": {
         "fillHistograms": "true",
-        "xVertexMin": "-100",
-        "xVertexMax": "100",
-        "yVertexMin": "-100",
-        "yVertexMax": "100",
-        "zVertexMin": "-100",
-        "zVertexMax": "100",
-        "nContribMin": "0",
-        "chi2Max": "0",
         "triggerClassName": "kINT7",
-        "useSel8Trigger": "false",
-        "centralityMin": "0",
-        "centralityMax": "100",
-        "axisNumContributors": {
-            "values": [
-                "200",
-                "-0.5",
-                "199.5"
-            ]
+        "hfEvSel": {
+            "centralityMin": "0",
+            "centralityMax": "100",
+            "useSel8Trigger": "true",
+            "triggerClass": "-1",
+            "useTimeFrameBorderCut": "true",
+            "useIsGoodZvtxFT0vsPV": "false",
+            "useNoSameBunchPileup": "false",
+            "useNumTracksInTimeRange": "false",
+            "numTracksInTimeRangeMin": "0",
+            "numTracksInTimeRangeMax": "1000000",
+            "nPvContributorsMin": "0",
+            "chi2PvMax": "-1",
+            "zPvPosMin": "-10",
+            "zPvPosMax": "10"
         },
         "processTrigAndCentFT0ASel": "false",
         "processTrigAndCentFT0CSel": "false",
@@ -43,13 +41,10 @@
         "isRun2": "true",
         "doPvRefit": "false",
         "fillHistograms": "true",
-        "debug": "false",
+        "debugPvRefit": "false",
         "doCutQuality": "true",
         "useIsGlobalTrack": "false",
         "useIsGlobalTrackWoDCA": "true",
-        "useIsGlobalTrackForSoftPion": "false",
-        "useIsGlobalTrackWoDCAForSoftPion": "true",
-        "useIsQualityTrackITSForSoftPion": "false",
         "tpcNClsFoundMin": "70",
         "binsPtTrack": {
             "values": [
@@ -72,12 +67,42 @@
                 "max_dcaztoprimary"
             ],
             "values": [
-                ["0.03", "1", "0", "100"],
-                ["0.03", "1", "0", "100"],
-                ["0.03", "1", "0", "100"],
-                ["0.03", "1", "0", "100"],
-                ["0.00", "10", "0", "100"],
-                ["0.00", "10", "0", "100"]
+                [
+                    "0.03",
+                    "1",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0.03",
+                    "1",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0.03",
+                    "1",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0.03",
+                    "1",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0.00",
+                    "10",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0.00",
+                    "10",
+                    "0",
+                    "100"
+                ]
             ]
         },
         "etaMinTrack2Prong": "-99999",
@@ -92,12 +117,42 @@
                 "max_dcaztoprimary"
             ],
             "values": [
-                ["0.03", "1", "0", "100"],
-                ["0.03", "1", "0", "100"],
-                ["0.03", "1", "0", "100"],
-                ["0.03", "1", "0", "100"],
-                ["0.00", "10", "0", "100"],
-                ["0.00", "10", "0", "100"]
+                [
+                    "0.03",
+                    "1",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0.03",
+                    "1",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0.03",
+                    "1",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0.03",
+                    "1",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0.00",
+                    "10",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0.00",
+                    "10",
+                    "0",
+                    "100"
+                ]
             ]
         },
         "etaMinTrack3Prong": "-99999",
@@ -112,20 +167,102 @@
                 "max_dcaztoprimary"
             ],
             "values": [
-                ["0.00", "1", "0", "100"],
-                ["0.00", "1", "0", "100"],
-                ["0.00", "1", "0", "100"],
-                ["0.00", "1", "0", "100"],
-                ["0.00", "1", "0", "100"],
-                ["0.00", "1", "0", "100"]
+                [
+                    "0.00",
+                    "1",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0.00",
+                    "1",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0.00",
+                    "1",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0.00",
+                    "1",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0.00",
+                    "1",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0.00",
+                    "1",
+                    "0",
+                    "100"
+                ]
             ]
         },
         "etaMinTrackBach": "-99999",
         "etaMaxTrackBach": "0.8",
-        "ptMinSoftPionForDstar": "0.050000000000000003",
-        "ptMaxSoftPionForDstar": "2",
+        "ptMinTrackBachLfCasc": "0.1",
+        "cutsTrackBachLfCasc": {
+            "labels_rows": "",
+            "labels_cols": [
+                "min_dcaxytoprimary",
+                "max_dcaxytoprimary",
+                "min_dcaztoprimary",
+                "max_dcaztoprimary"
+            ],
+            "values": [
+                [
+                    "0.0025",
+                    "10",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0.0025",
+                    "10",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0.0025",
+                    "10",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0.0025",
+                    "10",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0",
+                    "10",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0",
+                    "10",
+                    "0",
+                    "100"
+                ]
+            ]
+        },
+        "etaMinTrackBachLfCasc": "-99999",
+        "etaMaxTrackBachLfCasc": "1.1",
+        "useIsGlobalTrackForBachLfCasc": "false",
+        "useIsGlobalTrackWoDCAForBachLfCasc": "false",
+        "useIsQualityTrackITSForBachLfCasc": "true",
+        "ptMinSoftPionForDstar": "0.05",
         "etaMinSoftPionForDstar": "-99999",
-        "etaMaxSoftPionForDstar": "0.80000000000000004",
+        "etaMaxSoftPionForDstar": "0.8",
         "cutsTrackDstar": {
             "labels_rows": "",
             "labels_cols": [
@@ -173,6 +310,59 @@
                 ]
             ]
         },
+        "useIsGlobalTrackForSoftPion": "false",
+        "useIsGlobalTrackWoDCAForSoftPion": "true",
+        "useIsQualityTrackITSForSoftPion": "false",
+        "selectionsPid": {
+            "labels_rows": [
+                "ProtonInLcToPKPi",
+                "ProtonInXicToPKPi",
+                "ProtonInLcToPK0S",
+                "KaonIn3Prongs"
+            ],
+            "labels_cols": [
+                "minPtTpc",
+                "maxPtTpc",
+                "nSigmaMaxTpc",
+                "minPtTof",
+                "maxPtTof",
+                "nSigmaMaxTof"
+            ],
+            "values": [
+                [
+                    "0",
+                    "1000",
+                    "5",
+                    "0",
+                    "1000",
+                    "5"
+                ],
+                [
+                    "0",
+                    "1000",
+                    "5",
+                    "0",
+                    "1000",
+                    "5"
+                ],
+                [
+                    "0",
+                    "1000",
+                    "5",
+                    "0",
+                    "1000",
+                    "5"
+                ],
+                [
+                    "0",
+                    "1000",
+                    "5",
+                    "0",
+                    "1000",
+                    "5"
+                ]
+            ]
+        },
         "ccdbUrl": "http://alice-ccdb.cern.ch",
         "ccdbPathLut": "GLO/Param/MatLUT",
         "ccdbPathGrp": "GLO/GRP/GRP",
@@ -206,26 +396,14 @@
     },
     "hf-track-index-skim-creator": {
         "isRun2": "true",
-        "do3Prong": "1",
+        "do3Prong": "true",
         "doDstar": "true",
         "debug": "false",
         "debugPvRefit": "false",
         "fillHistograms": "true",
-        "axisNumTracks": {
-            "values": [
-                "250",
-                "-0.5",
-                "249.5"
-            ]
-        },
-        "axisNumCands": {
-            "values": [
-                "200",
-                "-0.5",
-                "199"
-            ]
-        },
         "ptTolerance": "0.1",
+        "minTwoTrackDecayLengthFor3Prongs": "0",
+        "maxTwoTrackChi2PcaFor3Prongs": "10000000000",
         "propagateToPCA": "true",
         "useAbsDCA": "false",
         "useWeightedFinalPCA": "false",
@@ -476,6 +654,115 @@
         },
         "applyProtonPidForLcToPKPi": "true",
         "applyProtonPidForXicToPKPi": "true",
+        "applyKaonPidIn3Prongs": "false",
+        "applyMlForHfFilters": "false",
+        "mlModelPathCCDB": "EventFiltering/PWGHF/BDTSmeared",
+        "timestampCcdbForHfFilters": "1657032422771",
+        "loadMlModelsFromCCDB": "true",
+        "onnxFileNames": {
+            "labels_rows": [
+                "D0",
+                "Dplus",
+                "Lc",
+                "Ds",
+                "Xic"
+            ],
+            "labels_cols": [
+                "Model path"
+            ],
+            "values": [
+                [
+                    "ModelHandler_onnx_D0ToKPi.onnx"
+                ],
+                [
+                    "ModelHandler_onnx_DplusToPiKPi.onnx"
+                ],
+                [
+                    "ModelHandler_onnx_LcToPKPi.onnx"
+                ],
+                [
+                    "ModelHandler_onnx_DsToKKPi.onnx"
+                ],
+                [
+                    ""
+                ]
+            ]
+        },
+        "thresholdMlScoreD0ToKPi": {
+            "labels_rows": "",
+            "labels_cols": [
+                "BDTbkg",
+                "BDTprompt",
+                "BDTnonprompt"
+            ],
+            "values": [
+                [
+                    "0.1",
+                    "0.5",
+                    "0.5"
+                ]
+            ]
+        },
+        "thresholdMlScoreDplusToPiKPi": {
+            "labels_rows": "",
+            "labels_cols": [
+                "BDTbkg",
+                "BDTprompt",
+                "BDTnonprompt"
+            ],
+            "values": [
+                [
+                    "0.1",
+                    "0.5",
+                    "0.5"
+                ]
+            ]
+        },
+        "thresholdMlScoreDsToPiKK": {
+            "labels_rows": "",
+            "labels_cols": [
+                "BDTbkg",
+                "BDTprompt",
+                "BDTnonprompt"
+            ],
+            "values": [
+                [
+                    "0.1",
+                    "0.5",
+                    "0.5"
+                ]
+            ]
+        },
+        "thresholdMlScoreLcToPiKP": {
+            "labels_rows": "",
+            "labels_cols": [
+                "BDTbkg",
+                "BDTprompt",
+                "BDTnonprompt"
+            ],
+            "values": [
+                [
+                    "0.1",
+                    "0.5",
+                    "0.5"
+                ]
+            ]
+        },
+        "thresholdMlScoreXicToPiKP": {
+            "labels_rows": "",
+            "labels_cols": [
+                "BDTbkg",
+                "BDTprompt",
+                "BDTnonprompt"
+            ],
+            "values": [
+                [
+                    "0.1",
+                    "0.5",
+                    "0.5"
+                ]
+            ]
+        },
         "axisPvRefitDeltaX": {
             "values": [
                 "1000",
@@ -536,29 +823,35 @@
     "hf-track-index-skim-creator-lf-cascades": {
         "fillHistograms": "true",
         "do3Prong": "false",
+        "rejDiffCollTrack": "true",
+        "massXiPiMin": "2.1",
+        "massXiPiMax": "3",
+        "massOmegaCharmBachelorMin": "2.4",
+        "massOmegaCharmBachelorMax": "3",
+        "massXiPiPiMin": "2.1",
+        "massXiPiPiMax": "2.9",
         "propagateToPCA": "true",
-        "maxR": "200",
-        "maxDZIni": "4",
-        "minParamChange": "0.001",
-        "minRelChi2Change": "0.9",
         "useAbsDCA": "true",
         "useWeightedFinalPCA": "true",
-        "rejDiffCollTrack": "true",
-        "doCutQuality": "true",
+        "maxR": "200",
+        "maxDZIni": "4",
+        "maxDXYIni": "4",
+        "minParamChange": "0.001",
+        "minRelChi2Change": "0.9",
+        "maxChi2": "100",
+        "refitWithMatCorr": "true",
+        "v0TransvRadius": "1",
+        "cascTransvRadius": "0.4",
+        "dcaBachToPv": "0.05",
+        "dcaV0ToPv": "0.05",
         "v0CosPA": "0.95",
         "cascCosPA": "0.95",
         "dcaV0Dau": "2",
         "dcaCascDau": "1",
         "dcaNegToPv": "0.05",
         "dcaPosToPv": "0.05",
-        "dcaBachToPv": "0.05",
-        "dcaV0ToPv": "0.05",
-        "v0Radius": "0.9",
-        "cascRadius": "0.5",
         "v0MassWindow": "0.008",
-        "tpcNsigmaBachelor": "4",
-        "tpcNsigmaProton": "4",
-        "tpcNsigmaPion": "4",
+        "cascadeMassWindow": "0.01",
         "isRun2": "true",
         "ccdbUrl": "http://alice-ccdb.cern.ch",
         "ccdbPathLut": "GLO/Param/MatLUT",
@@ -568,6 +861,7 @@
         "processLfCascades": "false"
     },
     "hf-candidate-creator-2prong": {
+        "constrainKfToPv": "true",
         "propagateToPCA": "true",
         "useAbsDCA": "false",
         "useWeightedFinalPCA": "false",
@@ -581,20 +875,42 @@
         "ccdbPathLut": "GLO/Param/MatLUT",
         "ccdbPathGrp": "GLO/GRP/GRP",
         "ccdbPathGrpMag": "GLO/Config/GRPMagField",
+        "hfEvSel": {
+            "centralityMin": "0",
+            "centralityMax": "100",
+            "useSel8Trigger": "true",
+            "triggerClass": "-1",
+            "useTimeFrameBorderCut": "true",
+            "useIsGoodZvtxFT0vsPV": "false",
+            "useNoSameBunchPileup": "false",
+            "useNumTracksInTimeRange": "false",
+            "numTracksInTimeRangeMin": "0",
+            "numTracksInTimeRangeMax": "1000000",
+            "nPvContributorsMin": "0",
+            "chi2PvMax": "-1",
+            "zPvPosMin": "-10",
+            "zPvPosMax": "10"
+        },
         "processPvRefitWithDCAFitterN": "false",
         "processNoPvRefitWithDCAFitterN": "true",
         "processPvRefitWithKFParticle": "false",
-        "processNoPvRefitWithKFParticle": "false"
+        "processNoPvRefitWithKFParticle": "false",
+        "processPvRefitWithDCAFitterNCentFT0C": "false",
+        "processNoPvRefitWithDCAFitterNCentFT0C": "false",
+        "processPvRefitWithKFParticleCentFT0C": "false",
+        "processNoPvRefitWithKFParticleCentFT0C": "false",
+        "processPvRefitWithDCAFitterNCentFT0M": "false",
+        "processNoPvRefitWithDCAFitterNCentFT0M": "false",
+        "processPvRefitWithKFParticleCentFT0M": "false",
+        "processNoPvRefitWithKFParticleCentFT0M": "false",
+        "processCollisions": "true",
+        "processCollisionsCentFT0C": "false",
+        "processCollisionsCentFT0M": "false"
     },
     "hf-candidate-creator-2prong-expressions": {
         "processMc": "true"
     },
     "hf-candidate-creator-3prong": {
-        "centralityMin": "0",
-        "centralityMax": "100",
-        "useSel8Trigger": "true",
-        "zPvPosMax": "10",
-        "useTimeFrameBorderCut": "true",
         "propagateToPCA": "true",
         "useAbsDCA": "false",
         "useWeightedFinalPCA": "false",
@@ -612,6 +928,22 @@
         "createDs": "true",
         "createLc": "true",
         "createXic": "true",
+        "hfEvSel": {
+            "centralityMin": "0",
+            "centralityMax": "100",
+            "useSel8Trigger": "true",
+            "triggerClass": "-1",
+            "useTimeFrameBorderCut": "true",
+            "useIsGoodZvtxFT0vsPV": "false",
+            "useNoSameBunchPileup": "false",
+            "useNumTracksInTimeRange": "false",
+            "numTracksInTimeRangeMin": "0",
+            "numTracksInTimeRangeMax": "1000000",
+            "nPvContributorsMin": "0",
+            "chi2PvMax": "-1",
+            "zPvPosMin": "-10",
+            "zPvPosMax": "10"
+        },
         "processPvRefit": "false",
         "processNoPvRefit": "true",
         "processPvRefitCentFT0C": "false",
@@ -639,7 +971,29 @@
         "ccdbUrl": "http://alice-ccdb.cern.ch",
         "ccdbPathLut": "GLO/Param/MatLUT",
         "ccdbPathGrp": "GLO/GRP/GRP",
-        "ccdbPathGrpMag": "GLO/Config/GRPMagField"
+        "ccdbPathGrpMag": "GLO/Config/GRPMagField",
+        "hfEvSel": {
+            "centralityMin": "0",
+            "centralityMax": "100",
+            "useSel8Trigger": "true",
+            "triggerClass": "-1",
+            "useTimeFrameBorderCut": "true",
+            "useIsGoodZvtxFT0vsPV": "false",
+            "useNoSameBunchPileup": "false",
+            "useNumTracksInTimeRange": "false",
+            "numTracksInTimeRangeMin": "0",
+            "numTracksInTimeRangeMax": "1000000",
+            "nPvContributorsMin": "0",
+            "chi2PvMax": "-1",
+            "zPvPosMin": "-10",
+            "zPvPosMax": "10"
+        },
+        "processNoCent": "true",
+        "processCentFT0C": "false",
+        "processCentFT0M": "false",
+        "processCollisions": "true",
+        "processCollisionsCentFT0C": "false",
+        "processCollisionsCentFT0M": "false"
     },
     "hf-candidate-creator-cascade-mc": {
         "processMc": "true"
@@ -708,6 +1062,9 @@
     },
     "hf-candidate-creator-b0-expressions": {
         "processMc": "true"
+    },
+    "hf-candidate-creator-lb-expressions": {
+        "processMc": "false"
     },
     "hf-candidate-creator-bplus": {
         "propagateToPCA": "true",
@@ -787,7 +1144,7 @@
         "minParamChange": "0.001",
         "minRelChi2Change": "0.9",
         "ptPionMin": "0.5",
-        "selectionFlagLc": "0",
+        "selectionFlagLc": "1",
         "yCandMax": "-1"
     },
     "hf-candidate-creator-xicc": {
@@ -862,18 +1219,174 @@
                 "Cos ThetaStar"
             ],
             "values": [
-                ["1", "0.80", "1", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.10", "0.80"],
-                ["1", "0.80", "1", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.10", "0.80"],
-                ["1", "0.80", "1", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.10", "0.80"],
-                ["1", "0.80", "1", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.10", "0.80"],
-                ["1", "0.80", "1", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.10", "0.80"],
-                ["1", "0.80", "1", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.10", "0.80"],
-                ["1", "0.80", "1", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.10", "0.80"],
-                ["1", "0.80", "1", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.10", "0.80"],
-                ["1", "0.80", "1", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.10", "0.80"],
-                ["1", "0.80", "1", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.10", "0.80"],
-                ["1", "0.80", "1", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.10", "0.80"],
-                ["1", "0.80", "1", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.10", "0.80"]
+                [
+                    "1",
+                    "0.80",
+                    "1",
+                    "0.01",
+                    "0.01",
+                    "1",
+                    "0.15",
+                    "0.05",
+                    "0.05",
+                    "0",
+                    "0.10",
+                    "0.80"
+                ],
+                [
+                    "1",
+                    "0.80",
+                    "1",
+                    "0.01",
+                    "0.01",
+                    "1",
+                    "0.15",
+                    "0.05",
+                    "0.05",
+                    "0",
+                    "0.10",
+                    "0.80"
+                ],
+                [
+                    "1",
+                    "0.80",
+                    "1",
+                    "0.01",
+                    "0.01",
+                    "1",
+                    "0.15",
+                    "0.05",
+                    "0.05",
+                    "0",
+                    "0.10",
+                    "0.80"
+                ],
+                [
+                    "1",
+                    "0.80",
+                    "1",
+                    "0.01",
+                    "0.01",
+                    "1",
+                    "0.15",
+                    "0.05",
+                    "0.05",
+                    "0",
+                    "0.10",
+                    "0.80"
+                ],
+                [
+                    "1",
+                    "0.80",
+                    "1",
+                    "0.01",
+                    "0.01",
+                    "1",
+                    "0.15",
+                    "0.05",
+                    "0.05",
+                    "0",
+                    "0.10",
+                    "0.80"
+                ],
+                [
+                    "1",
+                    "0.80",
+                    "1",
+                    "0.01",
+                    "0.01",
+                    "1",
+                    "0.15",
+                    "0.05",
+                    "0.05",
+                    "0",
+                    "0.10",
+                    "0.80"
+                ],
+                [
+                    "1",
+                    "0.80",
+                    "1",
+                    "0.01",
+                    "0.01",
+                    "1",
+                    "0.15",
+                    "0.05",
+                    "0.05",
+                    "0",
+                    "0.10",
+                    "0.80"
+                ],
+                [
+                    "1",
+                    "0.80",
+                    "1",
+                    "0.01",
+                    "0.01",
+                    "1",
+                    "0.15",
+                    "0.05",
+                    "0.05",
+                    "0",
+                    "0.10",
+                    "0.80"
+                ],
+                [
+                    "1",
+                    "0.80",
+                    "1",
+                    "0.01",
+                    "0.01",
+                    "1",
+                    "0.15",
+                    "0.05",
+                    "0.05",
+                    "0",
+                    "0.10",
+                    "0.80"
+                ],
+                [
+                    "1",
+                    "0.80",
+                    "1",
+                    "0.01",
+                    "0.01",
+                    "1",
+                    "0.15",
+                    "0.05",
+                    "0.05",
+                    "0",
+                    "0.10",
+                    "0.80"
+                ],
+                [
+                    "1",
+                    "0.80",
+                    "1",
+                    "0.01",
+                    "0.01",
+                    "1",
+                    "0.15",
+                    "0.05",
+                    "0.05",
+                    "0",
+                    "0.10",
+                    "0.80"
+                ],
+                [
+                    "1",
+                    "0.80",
+                    "1",
+                    "0.01",
+                    "0.01",
+                    "1",
+                    "0.15",
+                    "0.05",
+                    "0.05",
+                    "0",
+                    "0.10",
+                    "0.80"
+                ]
             ]
         },
         "activateQA": "false"
@@ -935,18 +1448,162 @@
                 "Cos ThetaStar"
             ],
             "values": [
-                ["1", "0.8", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.1", "0.80"],
-                ["1", "0.8", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.1", "0.80"],
-                ["1", "0.8", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.1", "0.80"],
-                ["1", "0.8", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.1", "0.80"],
-                ["1", "0.8", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.1", "0.80"],
-                ["1", "0.8", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.1", "0.80"],
-                ["1", "0.8", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.1", "0.80"],
-                ["1", "0.8", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.1", "0.80"],
-                ["1", "0.8", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.1", "0.80"],
-                ["1", "0.8", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.1", "0.80"],
-                ["1", "0.8", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.1", "0.80"],
-                ["1", "0.8", "0.01", "0.01", "1", "0.15", "0.05", "0.05", "0", "0.1", "0.80"]
+                [
+                    "1",
+                    "0.8",
+                    "0.01",
+                    "0.01",
+                    "1",
+                    "0.15",
+                    "0.05",
+                    "0.05",
+                    "0",
+                    "0.1",
+                    "0.80"
+                ],
+                [
+                    "1",
+                    "0.8",
+                    "0.01",
+                    "0.01",
+                    "1",
+                    "0.15",
+                    "0.05",
+                    "0.05",
+                    "0",
+                    "0.1",
+                    "0.80"
+                ],
+                [
+                    "1",
+                    "0.8",
+                    "0.01",
+                    "0.01",
+                    "1",
+                    "0.15",
+                    "0.05",
+                    "0.05",
+                    "0",
+                    "0.1",
+                    "0.80"
+                ],
+                [
+                    "1",
+                    "0.8",
+                    "0.01",
+                    "0.01",
+                    "1",
+                    "0.15",
+                    "0.05",
+                    "0.05",
+                    "0",
+                    "0.1",
+                    "0.80"
+                ],
+                [
+                    "1",
+                    "0.8",
+                    "0.01",
+                    "0.01",
+                    "1",
+                    "0.15",
+                    "0.05",
+                    "0.05",
+                    "0",
+                    "0.1",
+                    "0.80"
+                ],
+                [
+                    "1",
+                    "0.8",
+                    "0.01",
+                    "0.01",
+                    "1",
+                    "0.15",
+                    "0.05",
+                    "0.05",
+                    "0",
+                    "0.1",
+                    "0.80"
+                ],
+                [
+                    "1",
+                    "0.8",
+                    "0.01",
+                    "0.01",
+                    "1",
+                    "0.15",
+                    "0.05",
+                    "0.05",
+                    "0",
+                    "0.1",
+                    "0.80"
+                ],
+                [
+                    "1",
+                    "0.8",
+                    "0.01",
+                    "0.01",
+                    "1",
+                    "0.15",
+                    "0.05",
+                    "0.05",
+                    "0",
+                    "0.1",
+                    "0.80"
+                ],
+                [
+                    "1",
+                    "0.8",
+                    "0.01",
+                    "0.01",
+                    "1",
+                    "0.15",
+                    "0.05",
+                    "0.05",
+                    "0",
+                    "0.1",
+                    "0.80"
+                ],
+                [
+                    "1",
+                    "0.8",
+                    "0.01",
+                    "0.01",
+                    "1",
+                    "0.15",
+                    "0.05",
+                    "0.05",
+                    "0",
+                    "0.1",
+                    "0.80"
+                ],
+                [
+                    "1",
+                    "0.8",
+                    "0.01",
+                    "0.01",
+                    "1",
+                    "0.15",
+                    "0.05",
+                    "0.05",
+                    "0",
+                    "0.1",
+                    "0.80"
+                ],
+                [
+                    "1",
+                    "0.8",
+                    "0.01",
+                    "0.01",
+                    "1",
+                    "0.15",
+                    "0.05",
+                    "0.05",
+                    "0",
+                    "0.1",
+                    "0.80"
+                ]
             ]
         },
         "activateQA": "false"
@@ -955,18 +1612,41 @@
         "fillHistograms": "true",
         "ccdbUrl": "http://alice-ccdb.cern.ch",
         "ccdbPathLut": "GLO/Param/MatLUT",
-        "isRun2": "true",
+        "isRun2": "false",
         "ccdbPathGrp": "GLO/GRP/GRP",
         "ccdbPathGrpMag": "GLO/Config/GRPMagField",
         "propagateToPCA": "true",
         "maxR": "200",
         "maxDZIni": "4",
         "minParamChange": "0.001",
-        "minRelChi2Change": "0.90000000000000002",
+        "minRelChi2Change": "0.9",
         "useAbsDCA": "false",
         "useWeightedFinalPCA": "false",
+        "hfEvSel": {
+            "centralityMin": "0",
+            "centralityMax": "100",
+            "useSel8Trigger": "true",
+            "triggerClass": "-1",
+            "useTimeFrameBorderCut": "true",
+            "useIsGoodZvtxFT0vsPV": "false",
+            "useNoSameBunchPileup": "false",
+            "useNumTracksInTimeRange": "false",
+            "numTracksInTimeRangeMin": "0",
+            "numTracksInTimeRangeMax": "1000000",
+            "nPvContributorsMin": "0",
+            "chi2PvMax": "-1",
+            "zPvPosMin": "-10",
+            "zPvPosMax": "10"
+        },
         "processPvRefit": "false",
-        "processNoPvRefit": "true"
+        "processNoPvRefit": "true",
+        "processPvRefitCentFT0C": "false",
+        "processNoPvRefitCentFT0C": "false",
+        "processPvRefitCentFT0M": "false",
+        "processNoPvRefitCentFT0M": "false",
+        "processCollisions": "true",
+        "processCollisionsCentFT0C": "false",
+        "processCollisionsCentFT0M": "false"
     },
     "hf-candidate-creator-dstar-expressions": {
         "processMc": "true"
@@ -974,10 +1654,12 @@
     "hf-candidate-selector-d0": {
         "ptCandMin": "0",
         "ptCandMax": "50",
+        "usePid": "true",
         "ptPidTpcMin": "0.15",
         "ptPidTpcMax": "10",
         "nSigmaTpcMax": "3",
         "nSigmaTpcCombinedMax": "5",
+        "usePidTpcOnly": "false",
         "ptPidTofMin": "0.15",
         "ptPidTofMax": "10",
         "nSigmaTofMax": "3",
@@ -1061,36 +1743,564 @@
                 "norm dauImpPar XY"
             ],
             "values": [
-                [ "0.4", "0.035", "0.8", "0.5", "0.5", "0.1", "0.1", "-5.e-5", "0.80", "0", "0", "10", "10", "0.06", "0.5" ],
-                [ "0.4", "0.035", "0.8", "0.5", "0.5", "0.1", "0.1", "-5.e-5", "0.80", "0", "0", "10", "10", "0.06", "0.5" ],
-                [ "0.4", "0.030", "0.8", "0.4", "0.4", "0.1", "0.1", "-25.e-5", "0.80", "0", "0", "10", "10", "0.06", "0.5" ],
-                [ "0.4", "0.030", "0.8", "0.4", "0.4", "0.1", "0.1", "-25.e-5", "0.80", "0", "0", "10", "10", "0.06", "0.5" ],
-                [ "0.4", "0.030", "0.8", "0.7", "0.7", "0.1", "0.1", "-20.e-5", "0.90", "0", "0", "10", "10", "0.06", "0.5" ],
-                [ "0.4", "0.030", "0.8", "0.7", "0.7", "0.1", "0.1", "-20.e-5", "0.90", "0", "0", "10", "10", "0.06", "0.5" ],
-                [ "0.4", "0.030", "0.8", "0.7", "0.7", "0.1", "0.1", "-12.e-5", "0.85", "0", "0", "10", "10", "0.06", "0.5" ],
-                [ "0.4", "0.030", "0.8", "0.7", "0.7", "0.1", "0.1", "-12.e-5", "0.85", "0", "0", "10", "10", "0.06", "0.5" ],
-                [ "0.4", "0.030", "0.8", "0.7", "0.7", "0.1", "0.1", "-8.e-5", "0.85", "0", "0", "10", "10", "0.06", "0.5" ],
-                [ "0.4", "0.030", "0.8", "0.7", "0.7", "0.1", "0.1", "-8.e-5", "0.85", "0", "0", "10", "10", "0.06", "0.5" ],
-                [ "0.4", "0.030", "0.8", "0.7", "0.7", "0.1", "0.1", "-8.e-5", "0.85", "0", "0", "10", "10", "0.06", "0.5" ],
-                [ "0.4", "0.030", "0.8", "0.7", "0.7", "0.1", "0.1", "-8.e-5", "0.85", "0", "0", "10", "10", "0.06", "0.5" ],
-                [ "0.4", "0.030", "0.8", "0.7", "0.7", "0.1", "0.1", "-8.e-5", "0.85", "0", "0", "10", "10", "0.06", "0.5" ],
-                [ "0.4", "0.030", "0.8", "0.7", "0.7", "0.1", "0.1", "-8.e-5", "0.85", "0", "0", "10", "10", "0.06", "0.5" ],
-                [ "0.4", "0.030", "0.8", "0.7", "0.7", "0.1", "0.1", "-7.e-5", "0.85", "0", "0", "10", "10", "0.06", "0.5" ],
-                [ "0.4", "0.030", "0.8", "0.7", "0.7", "0.1", "0.1", "-7.e-5", "0.85", "0", "0", "10", "10", "0.06", "0.5" ],
-                [ "0.4", "0.030", "0.9", "0.7", "0.7", "0.1", "0.1", "-5.e-5", "0.85", "0", "0", "10", "10", "0.06", "0.5" ],
-                [ "0.4", "0.030", "0.9", "0.7", "0.7", "0.1", "0.1", "-5.e-5", "0.85", "0", "0", "10", "10", "0.06", "0.5" ],
-                [ "0.4", "0.030", "0.9", "0.7", "0.7", "0.1", "0.1", "-5.e-5", "0.85", "0", "0", "10", "10", "0.06", "0.5" ],
-                [ "0.4", "0.030", "1", "0.7", "0.7", "0.1", "0.1", "10.e-5", "0.85", "0", "0", "10", "10", "0.06", "0.5" ],
-                [ "0.4", "0.030", "1", "0.7", "0.7", "0.1", "0.1", "1000.e-5", "0.85", "0", "0", "10", "10", "0.06", "0.5" ],
-                [ "0.4", "0.030", "1", "0.7", "0.7", "0.1", "0.1", "1000.e-5", "0.85", "0", "0", "10", "10", "0.06", "0.5" ],
-                [ "0.4", "0.030", "1", "0.7", "0.7", "0.1", "0.1", "1000.e-5", "0.85", "0", "0", "10", "10", "0.06", "0.5" ],
-                [ "0.4", "0.030", "1", "0.7", "0.7", "0.1", "0.1", "1000.e-5", "0.85", "0", "0", "10", "10", "0.06", "0.5" ],
-                [ "0.4", "0.030", "1", "0.6", "0.6", "0.1", "0.1", "1000.e-5", "0.80", "0", "0", "10", "10", "0.06", "0.5" ]
+                [
+                    "0.4",
+                    "0.035",
+                    "0.8",
+                    "0.5",
+                    "0.5",
+                    "0.1",
+                    "0.1",
+                    "-5.e-5",
+                    "0.80",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.035",
+                    "0.8",
+                    "0.5",
+                    "0.5",
+                    "0.1",
+                    "0.1",
+                    "-5.e-5",
+                    "0.80",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.030",
+                    "0.8",
+                    "0.4",
+                    "0.4",
+                    "0.1",
+                    "0.1",
+                    "-25.e-5",
+                    "0.80",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.030",
+                    "0.8",
+                    "0.4",
+                    "0.4",
+                    "0.1",
+                    "0.1",
+                    "-25.e-5",
+                    "0.80",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.030",
+                    "0.8",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "-20.e-5",
+                    "0.90",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.030",
+                    "0.8",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "-20.e-5",
+                    "0.90",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.030",
+                    "0.8",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "-12.e-5",
+                    "0.85",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.030",
+                    "0.8",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "-12.e-5",
+                    "0.85",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.030",
+                    "0.8",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "-8.e-5",
+                    "0.85",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.030",
+                    "0.8",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "-8.e-5",
+                    "0.85",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.030",
+                    "0.8",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "-8.e-5",
+                    "0.85",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.030",
+                    "0.8",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "-8.e-5",
+                    "0.85",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.030",
+                    "0.8",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "-8.e-5",
+                    "0.85",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.030",
+                    "0.8",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "-8.e-5",
+                    "0.85",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.030",
+                    "0.8",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "-7.e-5",
+                    "0.85",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.030",
+                    "0.8",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "-7.e-5",
+                    "0.85",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.030",
+                    "0.9",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "-5.e-5",
+                    "0.85",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.030",
+                    "0.9",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "-5.e-5",
+                    "0.85",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.030",
+                    "0.9",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "-5.e-5",
+                    "0.85",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.030",
+                    "1",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "10.e-5",
+                    "0.85",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.030",
+                    "1",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "1000.e-5",
+                    "0.85",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.030",
+                    "1",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "1000.e-5",
+                    "0.85",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.030",
+                    "1",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "1000.e-5",
+                    "0.85",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.030",
+                    "1",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "1000.e-5",
+                    "0.85",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.030",
+                    "1",
+                    "0.6",
+                    "0.6",
+                    "0.1",
+                    "0.1",
+                    "1000.e-5",
+                    "0.80",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ]
             ]
         },
+        "applyMl": "false",
+        "binsPtMl": {
+            "values": [
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "8",
+                "10",
+                "12",
+                "16",
+                "24",
+                "50"
+            ]
+        },
+        "cutDirMl": {
+            "values": [
+                "0",
+                "1",
+                "1"
+            ]
+        },
+        "cutsMl": {
+            "labels_rows": [
+                "pT bin 0",
+                "pT bin 1",
+                "pT bin 2",
+                "pT bin 3",
+                "pT bin 4",
+                "pT bin 5",
+                "pT bin 6",
+                "pT bin 7",
+                "pT bin 8",
+                "pT bin 9",
+                "pT bin 10",
+                "pT bin 11"
+            ],
+            "labels_cols": [
+                "score class 1",
+                "score class 2",
+                "score class 3"
+            ],
+            "values": [
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ]
+            ]
+        },
+        "nClassesMl": "3",
+        "enableDebugMl": "false",
+        "namesInputFeatures": {
+            "values": [
+                "feature1",
+                "feature2"
+            ]
+        },
+        "ccdbUrl": "http://alice-ccdb.cern.ch",
+        "modelPathsCCDB": {
+            "values": [
+                "EventFiltering/PWGHF/BDTD0"
+            ]
+        },
+        "onnxFileNames": {
+            "values": [
+                "ModelHandler_onnx_D0ToKPi.onnx"
+            ]
+        },
+        "timestampCCDB": "-1",
+        "loadModelsFromCCDB": "false",
         "processWithDCAFitterN": "true",
-        "processWithKFParticle": "false",
-        "processTest": "false"
+        "processWithKFParticle": "false"
     },
     "hf-pid-creator": {
         "processDummy": "false",
@@ -1112,9 +2322,12 @@
         "ptPidTpcMin": "0.15",
         "ptPidTpcMax": "-1",
         "nSigmaTpcMax": "3",
+        "nSigmaTpcCombinedMax": "5",
         "ptPidTofMin": "0.15",
         "ptPidTofMax": "-1",
         "nSigmaTofMax": "3",
+        "nSigmaTofCombinedMax": "5",
+        "usePidTpcAndTof": "false",
         "binsPt": {
             "values": [
                 "1",
@@ -1158,21 +2371,315 @@
                 "max normalized deltaIP"
             ],
             "values": [
-                ["0.2", "0.3", "0.3", "0.07", "6", "0.96", "0.985", "2.5"],
-                ["0.2", "0.3", "0.3", "0.07", "5", "0.96", "0.985", "2.5"],
-                ["0.2", "0.3", "0.3", "0.10", "5", "0.96", "0.980", "2.5"],
-                ["0.2", "0.3", "0.3", "0.10", "5", "0.96", "0.000", "2.5"],
-                ["0.2", "0.3", "0.3", "0.10", "5", "0.96", "0.000", "2.5"],
-                ["0.2", "0.3", "0.3", "0.10", "5", "0.96", "0.000", "2.5"],
-                ["0.2", "0.3", "0.3", "0.10", "5", "0.96", "0.000", "2.5"],
-                ["0.2", "0.3", "0.3", "0.12", "5", "0.96", "0.000", "2.5"],
-                ["0.2", "0.3", "0.3", "0.12", "5", "0.96", "0.000", "2.5"],
-                ["0.2", "0.3", "0.3", "0.12", "5", "0.96", "0.000", "2.5"],
-                ["0.2", "0.3", "0.3", "0.12", "5", "0.96", "0.000", "2.5"],
-                ["0.2", "0.3", "0.3", "0.20", "5", "0.94", "0.000", "2.5"]
+                [
+                    "0.2",
+                    "0.3",
+                    "0.3",
+                    "0.07",
+                    "6",
+                    "0.96",
+                    "0.985",
+                    "2.5"
+                ],
+                [
+                    "0.2",
+                    "0.3",
+                    "0.3",
+                    "0.07",
+                    "5",
+                    "0.96",
+                    "0.985",
+                    "2.5"
+                ],
+                [
+                    "0.2",
+                    "0.3",
+                    "0.3",
+                    "0.10",
+                    "5",
+                    "0.96",
+                    "0.980",
+                    "2.5"
+                ],
+                [
+                    "0.2",
+                    "0.3",
+                    "0.3",
+                    "0.10",
+                    "5",
+                    "0.96",
+                    "0.000",
+                    "2.5"
+                ],
+                [
+                    "0.2",
+                    "0.3",
+                    "0.3",
+                    "0.10",
+                    "5",
+                    "0.96",
+                    "0.000",
+                    "2.5"
+                ],
+                [
+                    "0.2",
+                    "0.3",
+                    "0.3",
+                    "0.10",
+                    "5",
+                    "0.96",
+                    "0.000",
+                    "2.5"
+                ],
+                [
+                    "0.2",
+                    "0.3",
+                    "0.3",
+                    "0.10",
+                    "5",
+                    "0.96",
+                    "0.000",
+                    "2.5"
+                ],
+                [
+                    "0.2",
+                    "0.3",
+                    "0.3",
+                    "0.12",
+                    "5",
+                    "0.96",
+                    "0.000",
+                    "2.5"
+                ],
+                [
+                    "0.2",
+                    "0.3",
+                    "0.3",
+                    "0.12",
+                    "5",
+                    "0.96",
+                    "0.000",
+                    "2.5"
+                ],
+                [
+                    "0.2",
+                    "0.3",
+                    "0.3",
+                    "0.12",
+                    "5",
+                    "0.96",
+                    "0.000",
+                    "2.5"
+                ],
+                [
+                    "0.2",
+                    "0.3",
+                    "0.3",
+                    "0.12",
+                    "5",
+                    "0.96",
+                    "0.000",
+                    "2.5"
+                ],
+                [
+                    "0.2",
+                    "0.3",
+                    "0.3",
+                    "0.20",
+                    "5",
+                    "0.94",
+                    "0.000",
+                    "2.5"
+                ]
             ]
         },
-        "activateQA": "false"
+        "cutsSingleTrack": {
+            "labels_rows": "",
+            "labels_cols": [
+                "min_dcaxytoprimary",
+                "max_dcaxytoprimary",
+                "min_dcaztoprimary",
+                "max_dcaztoprimary"
+            ],
+            "values": [
+                [
+                    "0.0025",
+                    "10",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0.0025",
+                    "10",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0.0025",
+                    "10",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0.0025",
+                    "10",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0",
+                    "10",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0",
+                    "10",
+                    "0",
+                    "100"
+                ]
+            ]
+        },
+        "binsPtTrack": {
+            "values": [
+                "0",
+                "0.5",
+                "1",
+                "1.5",
+                "2",
+                "3",
+                "1000"
+            ]
+        },
+        "activateQA": "false",
+        "applyMl": "false",
+        "binsPtMl": {
+            "values": [
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "8",
+                "10",
+                "12",
+                "16",
+                "24",
+                "50"
+            ]
+        },
+        "cutDirMl": {
+            "values": [
+                "0",
+                "1",
+                "1"
+            ]
+        },
+        "cutsMl": {
+            "labels_rows": [
+                "pT bin 0",
+                "pT bin 1",
+                "pT bin 2",
+                "pT bin 3",
+                "pT bin 4",
+                "pT bin 5",
+                "pT bin 6",
+                "pT bin 7",
+                "pT bin 8",
+                "pT bin 9",
+                "pT bin 10",
+                "pT bin 11"
+            ],
+            "labels_cols": [
+                "score class 1",
+                "score class 2",
+                "score class 3"
+            ],
+            "values": [
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ]
+            ]
+        },
+        "nClassesMl": "3",
+        "namesInputFeatures": {
+            "values": [
+                "feature1",
+                "feature2"
+            ]
+        },
+        "ccdbUrl": "http://alice-ccdb.cern.ch",
+        "modelPathsCCDB": {
+            "values": [
+                "EventFiltering/PWGHF/BDTDPlus"
+            ]
+        },
+        "onnxFileNames": {
+            "values": [
+                "ModelHandler_onnx_DPlusToKPiPi.onnx"
+            ]
+        },
+        "timestampCCDB": "-1",
+        "loadModelsFromCCDB": "false"
     },
     "hf-candidate-selector-ds-to-k-k-pi": {
         "ptCandMin": "2",
@@ -1180,9 +2687,12 @@
         "ptPidTpcMin": "0.15",
         "ptPidTpcMax": "20",
         "nSigmaTpcMax": "3",
+        "nSigmaTpcCombinedMax": "5",
         "ptPidTofMin": "0.15",
         "ptPidTofMax": "20",
         "nSigmaTofMax": "3",
+        "nSigmaTofCombinedMax": "5",
+        "usePidTpcAndTof": "false",
         "binsPt": {
             "values": [
                 "2",
@@ -1220,16 +2730,291 @@
                 "cos^3 theta_PiK"
             ],
             "values": [
-                ["0.2", "0.3", "0.3", "0.02", "4", "0.92", "0.92", "0.014", "0.010", "0.10"],
-                ["0.2", "0.3", "0.3", "0.02", "4", "0.92", "0.92", "0.014", "0.010", "0.10"],
-                ["0.2", "0.3", "0.3", "0.03", "4", "0.90", "0.90", "0.012", "0.010", "0.05"],
-                ["0.2", "0.3", "0.3", "0.03", "4", "0.90", "0.90", "0.012", "0.010", "0.05"],
-                ["0.2", "0.3", "0.3", "0.03", "4", "0.90", "0.90", "0.012", "0.010", "0.05"],
-                ["0.2", "0.3", "0.3", "0.03", "4", "0.90", "0.90", "0.012", "0.010", "0.00"],
-                ["0.2", "0.3", "0.3", "0.05", "4", "0.85", "0.85", "0.012", "0.015", "0.00"],
-                ["0.2", "0.3", "0.3", "0.05", "4", "0.85", "0.85", "0.012", "0.015", "0.00"]
+                [
+                    "0.2",
+                    "0.3",
+                    "0.3",
+                    "0.02",
+                    "4",
+                    "0.92",
+                    "0.92",
+                    "0.014",
+                    "0.010",
+                    "0.10"
+                ],
+                [
+                    "0.2",
+                    "0.3",
+                    "0.3",
+                    "0.02",
+                    "4",
+                    "0.92",
+                    "0.92",
+                    "0.014",
+                    "0.010",
+                    "0.10"
+                ],
+                [
+                    "0.2",
+                    "0.3",
+                    "0.3",
+                    "0.03",
+                    "4",
+                    "0.90",
+                    "0.90",
+                    "0.012",
+                    "0.010",
+                    "0.05"
+                ],
+                [
+                    "0.2",
+                    "0.3",
+                    "0.3",
+                    "0.03",
+                    "4",
+                    "0.90",
+                    "0.90",
+                    "0.012",
+                    "0.010",
+                    "0.05"
+                ],
+                [
+                    "0.2",
+                    "0.3",
+                    "0.3",
+                    "0.03",
+                    "4",
+                    "0.90",
+                    "0.90",
+                    "0.012",
+                    "0.010",
+                    "0.05"
+                ],
+                [
+                    "0.2",
+                    "0.3",
+                    "0.3",
+                    "0.03",
+                    "4",
+                    "0.90",
+                    "0.90",
+                    "0.012",
+                    "0.010",
+                    "0.00"
+                ],
+                [
+                    "0.2",
+                    "0.3",
+                    "0.3",
+                    "0.05",
+                    "4",
+                    "0.85",
+                    "0.85",
+                    "0.012",
+                    "0.015",
+                    "0.00"
+                ],
+                [
+                    "0.2",
+                    "0.3",
+                    "0.3",
+                    "0.05",
+                    "4",
+                    "0.85",
+                    "0.85",
+                    "0.012",
+                    "0.015",
+                    "0.00"
+                ]
             ]
-        }
+        },
+        "cutsSingleTrack": {
+            "labels_rows": "",
+            "labels_cols": [
+                "min_dcaxytoprimary",
+                "max_dcaxytoprimary",
+                "min_dcaztoprimary",
+                "max_dcaztoprimary"
+            ],
+            "values": [
+                [
+                    "0.0025",
+                    "10",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0.0025",
+                    "10",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0.0025",
+                    "10",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0.0025",
+                    "10",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0",
+                    "10",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0",
+                    "10",
+                    "0",
+                    "100"
+                ]
+            ]
+        },
+        "binsPtTrack": {
+            "values": [
+                "0",
+                "0.5",
+                "1",
+                "1.5",
+                "2",
+                "3",
+                "1000"
+            ]
+        },
+        "activateQA": "false",
+        "applyMl": "false",
+        "binsPtMl": {
+            "values": [
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "8",
+                "10",
+                "12",
+                "16",
+                "24",
+                "50"
+            ]
+        },
+        "cutDirMl": {
+            "values": [
+                "0",
+                "1",
+                "1"
+            ]
+        },
+        "cutsMl": {
+            "labels_rows": [
+                "pT bin 0",
+                "pT bin 1",
+                "pT bin 2",
+                "pT bin 3",
+                "pT bin 4",
+                "pT bin 5",
+                "pT bin 6",
+                "pT bin 7",
+                "pT bin 8",
+                "pT bin 9",
+                "pT bin 10",
+                "pT bin 11"
+            ],
+            "labels_cols": [
+                "score class 1",
+                "score class 2",
+                "score class 3"
+            ],
+            "values": [
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ]
+            ]
+        },
+        "nClassesMl": "3",
+        "namesInputFeatures": {
+            "values": [
+                "feature1",
+                "feature2"
+            ]
+        },
+        "ccdbUrl": "http://alice-ccdb.cern.ch",
+        "modelPathsCCDB": {
+            "values": [
+                "EventFiltering/PWGHF/BDTDs"
+            ]
+        },
+        "onnxFileNames": {
+            "values": [
+                "ModelHandler_onnx_DsToKKPi.onnx"
+            ]
+        },
+        "timestampCCDB": "-1",
+        "loadModelsFromCCDB": "false"
     },
     "hf-candidate-selector-jpsi": {
         "ptCandMin": "0",
@@ -1376,6 +3161,9 @@
                 "24"
             ]
         },
+        "impactParameterMaximum": "0.2",
+        "maxDecayLengthError": "0.015",
+        "maxDecayLengthXYError": "0.01",
         "cuts": {
             "labels_rows": [
                 "pT bin 0",
@@ -1576,7 +3364,7 @@
                 ]
             ]
         },
-        "selectionFlagLc": "0"
+        "selectionFlagLc": "1"
     },
     "hf-candidate-selector-lc": {
         "ptCandMin": "0",
@@ -1594,6 +3382,70 @@
         "ptPidBayesMin": "0.1",
         "ptPidBayesMax": "5",
         "usePidTpcAndTof": "false",
+        "tpcNClustersFoundMin": "0",
+        "tpcNCrossedRowsMin": "0",
+        "tpcNCrossedRowsOverFindableClustersMin": "0",
+        "tpcChi2PerClusterMax": "1e+10",
+        "itsNClustersFoundMin": "0",
+        "itsChi2PerClusterMax": "1e+10",
+        "binsPtTrack": {
+            "values": [
+                "0",
+                "0.5",
+                "1",
+                "1.5",
+                "2",
+                "3",
+                "1000"
+            ]
+        },
+        "cutsSingleTrack": {
+            "labels_rows": "",
+            "labels_cols": [
+                "min_dcaxytoprimary",
+                "max_dcaxytoprimary",
+                "min_dcaztoprimary",
+                "max_dcaztoprimary"
+            ],
+            "values": [
+                [
+                    "0.0025",
+                    "10",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0.0025",
+                    "10",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0.0025",
+                    "10",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0.0025",
+                    "10",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0",
+                    "10",
+                    "0",
+                    "100"
+                ],
+                [
+                    "0",
+                    "10",
+                    "0",
+                    "100"
+                ]
+            ]
+        },
         "binsPt": {
             "values": [
                 "0",
@@ -1632,18 +3484,227 @@
                 "cos pointing angle"
             ],
             "values": [
-                [ "0.300", "0.4", "0.4", "0.4", "0.5", "0.004", "0"],
-                [ "0.300", "0.4", "0.4", "0.4", "0.5", "0.004", "0"],
-                [ "0.300", "0.4", "0.4", "0.4", "0.5", "0.004", "0"],
-                [ "0.300", "0.4", "0.4", "0.4", "0.5", "0.004", "0"],
-                [ "0.300", "0.4", "0.4", "0.4", "0.5", "0.004", "0"],
-                [ "0.300", "0.4", "0.4", "0.4", "0.5", "0.004", "0"],
-                [ "0.300", "0.4", "0.4", "0.4", "0.5", "0.004", "0"],
-                [ "0.300", "0.4", "0.4", "0.4", "0.5", "0.004", "0"],
-                [ "0.300", "0.4", "0.4", "0.4", "0.5", "0.004", "0"],
-                [ "0.300", "0.4", "0.4", "0.4", "0.5", "0.004", "0"]
+                [
+                    "0.300",
+                    "0.4",
+                    "0.4",
+                    "0.4",
+                    "0.5",
+                    "0.004",
+                    "0"
+                ],
+                [
+                    "0.300",
+                    "0.4",
+                    "0.4",
+                    "0.4",
+                    "0.5",
+                    "0.004",
+                    "0"
+                ],
+                [
+                    "0.300",
+                    "0.4",
+                    "0.4",
+                    "0.4",
+                    "0.5",
+                    "0.004",
+                    "0"
+                ],
+                [
+                    "0.300",
+                    "0.4",
+                    "0.4",
+                    "0.4",
+                    "0.5",
+                    "0.004",
+                    "0"
+                ],
+                [
+                    "0.300",
+                    "0.4",
+                    "0.4",
+                    "0.4",
+                    "0.5",
+                    "0.004",
+                    "0"
+                ],
+                [
+                    "0.300",
+                    "0.4",
+                    "0.4",
+                    "0.4",
+                    "0.5",
+                    "0.004",
+                    "0"
+                ],
+                [
+                    "0.300",
+                    "0.4",
+                    "0.4",
+                    "0.4",
+                    "0.5",
+                    "0.004",
+                    "0"
+                ],
+                [
+                    "0.300",
+                    "0.4",
+                    "0.4",
+                    "0.4",
+                    "0.5",
+                    "0.004",
+                    "0"
+                ],
+                [
+                    "0.300",
+                    "0.4",
+                    "0.4",
+                    "0.4",
+                    "0.5",
+                    "0.004",
+                    "0"
+                ],
+                [
+                    "0.300",
+                    "0.4",
+                    "0.4",
+                    "0.4",
+                    "0.5",
+                    "0.004",
+                    "0"
+                ]
             ]
-        }
+        },
+        "activateQA": "false",
+        "applyMl": "false",
+        "binsPtMl": {
+            "values": [
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "8",
+                "10",
+                "12",
+                "16",
+                "24",
+                "50"
+            ]
+        },
+        "cutDirMl": {
+            "values": [
+                "0",
+                "1",
+                "1"
+            ]
+        },
+        "cutsMl": {
+            "labels_rows": [
+                "pT bin 0",
+                "pT bin 1",
+                "pT bin 2",
+                "pT bin 3",
+                "pT bin 4",
+                "pT bin 5",
+                "pT bin 6",
+                "pT bin 7",
+                "pT bin 8",
+                "pT bin 9",
+                "pT bin 10",
+                "pT bin 11"
+            ],
+            "labels_cols": [
+                "score class 1",
+                "score class 2",
+                "score class 3"
+            ],
+            "values": [
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ]
+            ]
+        },
+        "nClassesMl": "3",
+        "namesInputFeatures": {
+            "values": [
+                "feature1",
+                "feature2"
+            ]
+        },
+        "ccdbUrl": "http://alice-ccdb.cern.ch",
+        "modelPathsCCDB": {
+            "values": [
+                "EventFiltering/PWGHF/BDTLc"
+            ]
+        },
+        "onnxFileNames": {
+            "values": [
+                "ModelHandler_onnx_LcToPKPi.onnx"
+            ]
+        },
+        "timestampCCDB": "-1",
+        "loadModelsFromCCDB": "false"
     },
     "hf-candidate-selector-lc-to-k0s-p": {
         "ptCandMin": "0",
@@ -1694,16 +3755,216 @@
                 "d0V0"
             ],
             "values": [
-                [ "0.008", "0.005", "0.1", "0.5", "0.3", "0.6", "0.05", "999999"],
-                [ "0.008", "0.005", "0.1", "0.5", "0.4", "1.3", "0.05", "999999"],
-                [ "0.009", "0.005", "0.1", "0.6", "0.4", "1.3", "0.05", "999999"],
-                [ "0.011", "0.005", "0.1", "0.6", "0.4", "1.4", "0.05", "999999"],
-                [ "0.013", "0.005", "0.1", "0.6", "0.4", "1.4", "0.06", "999999"],
-                [ "0.013", "0.005", "0.1", "0.9", "0.4", "1.6", "0.09", "999999"],
-                [ "0.016", "0.005", "0.1", "0.9", "0.4", "1.7", "0.10", "999999"],
-                [ "0.019", "0.005", "0.1", "1", "0.4", "1.9", "0.20", "999999"]
+                [
+                    "0.008",
+                    "0.005",
+                    "0.1",
+                    "0.5",
+                    "0.3",
+                    "0.6",
+                    "0.05",
+                    "999999"
+                ],
+                [
+                    "0.008",
+                    "0.005",
+                    "0.1",
+                    "0.5",
+                    "0.4",
+                    "1.3",
+                    "0.05",
+                    "999999"
+                ],
+                [
+                    "0.009",
+                    "0.005",
+                    "0.1",
+                    "0.6",
+                    "0.4",
+                    "1.3",
+                    "0.05",
+                    "999999"
+                ],
+                [
+                    "0.011",
+                    "0.005",
+                    "0.1",
+                    "0.6",
+                    "0.4",
+                    "1.4",
+                    "0.05",
+                    "999999"
+                ],
+                [
+                    "0.013",
+                    "0.005",
+                    "0.1",
+                    "0.6",
+                    "0.4",
+                    "1.4",
+                    "0.06",
+                    "999999"
+                ],
+                [
+                    "0.013",
+                    "0.005",
+                    "0.1",
+                    "0.9",
+                    "0.4",
+                    "1.6",
+                    "0.09",
+                    "999999"
+                ],
+                [
+                    "0.016",
+                    "0.005",
+                    "0.1",
+                    "0.9",
+                    "0.4",
+                    "1.7",
+                    "0.10",
+                    "999999"
+                ],
+                [
+                    "0.019",
+                    "0.005",
+                    "0.1",
+                    "1",
+                    "0.4",
+                    "1.9",
+                    "0.20",
+                    "999999"
+                ]
             ]
         },
+        "applyMl": "false",
+        "binsPtMl": {
+            "values": [
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "8",
+                "10",
+                "12",
+                "16",
+                "24",
+                "50"
+            ]
+        },
+        "cutDirMl": {
+            "values": [
+                "0",
+                "1",
+                "1"
+            ]
+        },
+        "cutsMl": {
+            "labels_rows": [
+                "pT bin 0",
+                "pT bin 1",
+                "pT bin 2",
+                "pT bin 3",
+                "pT bin 4",
+                "pT bin 5",
+                "pT bin 6",
+                "pT bin 7",
+                "pT bin 8",
+                "pT bin 9",
+                "pT bin 10",
+                "pT bin 11"
+            ],
+            "labels_cols": [
+                "score class 1",
+                "score class 2",
+                "score class 3"
+            ],
+            "values": [
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ]
+            ]
+        },
+        "nClassesMl": "3",
+        "namesInputFeatures": {
+            "values": [
+                "feature1",
+                "feature2"
+            ]
+        },
+        "ccdbUrl": "http://alice-ccdb.cern.ch",
+        "modelPathsCCDB": {
+            "values": [
+                "EventFiltering/PWGHF/BDTLc"
+            ]
+        },
+        "onnxFileNames": {
+            "values": [
+                "ModelHandler_onnx_LcToPK0S.onnx"
+            ]
+        },
+        "timestampCCDB": "-1",
+        "loadModelsFromCCDB": "false",
         "processWithStandardPID": "true",
         "processWithBayesPID": "false"
     },
@@ -1712,11 +3973,11 @@
         "ptCandMax": "36",
         "usePid": "false",
         "ptPidTpcMin": "0.15",
-        "ptPidTpcMax": "1",
+        "ptPidTpcMax": "20",
         "nSigmaTpcMax": "3",
         "nSigmaTpcCombinedMax": "5",
-        "ptPidTofMin": "0.5",
-        "ptPidTofMax": "4",
+        "ptPidTofMin": "0.15",
+        "ptPidTofMax": "20",
         "nSigmaTofMax": "3",
         "nSigmaTofCombinedMax": "5",
         "decayLengthXYNormalisedMin": "3",
@@ -1767,7 +4028,7 @@
                     "0.4",
                     "0.4",
                     "0.4",
-                    "1.0-05",
+                    "1.0e-05",
                     "0.005",
                     "0.8",
                     "0.005",
@@ -1893,7 +4154,135 @@
                     "0"
                 ]
             ]
-        }
+        },
+        "applyMl": "false",
+        "binsPtMl": {
+            "values": [
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "8",
+                "10",
+                "12",
+                "16",
+                "24",
+                "50"
+            ]
+        },
+        "cutDirMl": {
+            "values": [
+                "0",
+                "1",
+                "1"
+            ]
+        },
+        "cutsMl": {
+            "labels_rows": [
+                "pT bin 0",
+                "pT bin 1",
+                "pT bin 2",
+                "pT bin 3",
+                "pT bin 4",
+                "pT bin 5",
+                "pT bin 6",
+                "pT bin 7",
+                "pT bin 8",
+                "pT bin 9",
+                "pT bin 10",
+                "pT bin 11"
+            ],
+            "labels_cols": [
+                "score class 1",
+                "score class 2",
+                "score class 3"
+            ],
+            "values": [
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ]
+            ]
+        },
+        "nClassesMl": "3",
+        "namesInputFeatures": {
+            "values": [
+                "feature1",
+                "feature2"
+            ]
+        },
+        "ccdbUrl": "http://alice-ccdb.cern.ch",
+        "modelPathsCCDB": {
+            "values": [
+                "EventFiltering/PWGHF/BDTXic"
+            ]
+        },
+        "onnxFileNames": {
+            "values": [
+                "ModelHandler_onnx_XicToPKPi.onnx"
+            ]
+        },
+        "timestampCCDB": "-1",
+        "loadModelsFromCCDB": "false"
     },
     "hf-candidate-selector-xicc-to-p-k-pi-pi": {
         "ptCandMin": "0",
@@ -2115,11 +4504,13 @@
             ]
         }
     },
-    "hf-candidate-selector-dstar": {
+    "hf-candidate-selector-dstar-to-d0-pi": {
         "ptD0CandMin": "0",
         "ptD0CandMax": "50",
         "binsPtD0": {
             "values": [
+                "0",
+                "0.5",
                 "1",
                 "1.5",
                 "2",
@@ -2130,7 +4521,20 @@
                 "4.5",
                 "5",
                 "5.5",
-                "6"
+                "6",
+                "6.5",
+                "7",
+                "7.5",
+                "8",
+                "9",
+                "10",
+                "12",
+                "16",
+                "20",
+                "24",
+                "36",
+                "50",
+                "100"
             ]
         },
         "cutsD0": {
@@ -2144,7 +4548,22 @@
                 "pT bin 6",
                 "pT bin 7",
                 "pT bin 8",
-                "pT bin 9"
+                "pT bin 9",
+                "pT bin 10",
+                "pT bin 11",
+                "pT bin 12",
+                "pT bin 13",
+                "pT bin 14",
+                "pT bin 15",
+                "pT bin 16",
+                "pT bin 17",
+                "pT bin 18",
+                "pT bin 19",
+                "pT bin 20",
+                "pT bin 21",
+                "pT bin 22",
+                "pT bin 23",
+                "pT bin 24"
             ],
             "labels_cols": [
                 "m",
@@ -2157,171 +4576,437 @@
                 "d0d0",
                 "cos pointing angle",
                 "cos pointing angle xy",
-                "normalized decay length XY",
-                "decay length",
-                "decay length XY",
-                "minimum decay length"
+                "min norm decay length XY",
+                "max decay length",
+                "max decay length XY",
+                "min decay length",
+                "norm dauImpPar XY"
             ],
             "values": [
                 [
-                    "0.40000000000000002",
-                    "0.035000000000000003",
-                    "0.80000000000000004",
+                    "0.4",
+                    "0.035",
+                    "0.8",
                     "0.5",
                     "0.5",
-                    "0.10000000000000001",
-                    "0.10000000000000001",
-                    "-5.0000000000000002e-05",
-                    "0.80000000000000004",
+                    "0.1",
+                    "0.1",
+                    "-5.e-05",
+                    "0.8",
                     "0",
                     "0",
                     "10",
                     "10",
-                    "0.059999999999999998"
+                    "0.06",
+                    "0.5"
                 ],
                 [
-                    "0.40000000000000002",
-                    "0.035000000000000003",
-                    "0.80000000000000004",
+                    "0.4",
+                    "0.035",
+                    "0.8",
                     "0.5",
                     "0.5",
-                    "0.10000000000000001",
-                    "0.10000000000000001",
-                    "-5.0000000000000002e-05",
-                    "0.80000000000000004",
+                    "0.1",
+                    "0.1",
+                    "-5.e-05",
+                    "0.8",
                     "0",
                     "0",
                     "10",
                     "10",
-                    "0.059999999999999998"
+                    "0.06",
+                    "0.5"
                 ],
                 [
-                    "0.40000000000000002",
-                    "0.030000000000000002",
-                    "0.80000000000000004",
-                    "0.40000000000000002",
-                    "0.40000000000000002",
-                    "0.10000000000000001",
-                    "0.10000000000000001",
-                    "-0.00025000000000000001",
-                    "0.80000000000000004",
+                    "0.4",
+                    "0.03",
+                    "0.8",
+                    "0.4",
+                    "0.4",
+                    "0.1",
+                    "0.1",
+                    "-0.00025",
+                    "0.8",
                     "0",
                     "0",
                     "10",
                     "10",
-                    "0.059999999999999998"
+                    "0.06",
+                    "0.5"
                 ],
                 [
-                    "0.40000000000000002",
-                    "0.030000000000000002",
-                    "0.80000000000000004",
-                    "0.40000000000000002",
-                    "0.40000000000000002",
-                    "0.10000000000000001",
-                    "0.10000000000000001",
-                    "-0.00025000000000000001",
-                    "0.80000000000000004",
+                    "0.4",
+                    "0.03",
+                    "0.8",
+                    "0.4",
+                    "0.4",
+                    "0.1",
+                    "0.1",
+                    "-0.00025",
+                    "0.8",
                     "0",
                     "0",
                     "10",
                     "10",
-                    "0.059999999999999998"
+                    "0.06",
+                    "0.5"
                 ],
                 [
-                    "0.40000000000000002",
-                    "0.030000000000000002",
-                    "0.80000000000000004",
-                    "0.69999999999999996",
-                    "0.69999999999999996",
-                    "0.10000000000000001",
-                    "0.10000000000000001",
-                    "-0.00020000000000000001",
-                    "0.90000000000000002",
+                    "0.4",
+                    "0.03",
+                    "0.8",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "-0.0002",
+                    "0.9",
                     "0",
                     "0",
                     "10",
                     "10",
-                    "0.059999999999999998"
+                    "0.06",
+                    "0.5"
                 ],
                 [
-                    "0.40000000000000002",
-                    "0.030000000000000002",
-                    "0.80000000000000004",
-                    "0.69999999999999996",
-                    "0.69999999999999996",
-                    "0.10000000000000001",
-                    "0.10000000000000001",
-                    "-0.00020000000000000001",
-                    "0.90000000000000002",
+                    "0.4",
+                    "0.03",
+                    "0.8",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "-0.0002",
+                    "0.9",
                     "0",
                     "0",
                     "10",
                     "10",
-                    "0.059999999999999998"
+                    "0.06",
+                    "0.5"
                 ],
                 [
-                    "0.40000000000000002",
-                    "0.030000000000000002",
-                    "0.80000000000000004",
-                    "0.69999999999999996",
-                    "0.69999999999999996",
-                    "0.10000000000000001",
-                    "0.10000000000000001",
+                    "0.4",
+                    "0.03",
+                    "0.8",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
                     "-0.00012",
-                    "0.84999999999999998",
+                    "0.85",
                     "0",
                     "0",
                     "10",
                     "10",
-                    "0.059999999999999998"
+                    "0.06",
+                    "0.5"
                 ],
                 [
-                    "0.40000000000000002",
-                    "0.030000000000000002",
-                    "0.80000000000000004",
-                    "0.69999999999999996",
-                    "0.69999999999999996",
-                    "0.10000000000000001",
-                    "0.10000000000000001",
+                    "0.4",
+                    "0.03",
+                    "0.8",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
                     "-0.00012",
-                    "0.84999999999999998",
+                    "0.85",
                     "0",
                     "0",
                     "10",
                     "10",
-                    "0.059999999999999998"
+                    "0.06",
+                    "0.5"
                 ],
                 [
-                    "0.40000000000000002",
-                    "0.030000000000000002",
-                    "0.80000000000000004",
-                    "0.69999999999999996",
-                    "0.69999999999999996",
-                    "0.10000000000000001",
-                    "0.10000000000000001",
-                    "-8.0000000000000007e-05",
-                    "0.84999999999999998",
+                    "0.4",
+                    "0.03",
+                    "0.8",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "-8.e-05",
+                    "0.85",
                     "0",
                     "0",
                     "10",
                     "10",
-                    "0.059999999999999998"
+                    "0.06",
+                    "0.5"
                 ],
                 [
-                    "0.40000000000000002",
-                    "0.030000000000000002",
-                    "0.80000000000000004",
-                    "0.69999999999999996",
-                    "0.69999999999999996",
-                    "0.10000000000000001",
-                    "0.10000000000000001",
-                    "-8.0000000000000007e-05",
-                    "0.84999999999999998",
+                    "0.4",
+                    "0.03",
+                    "0.8",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "-8.e-05",
+                    "0.85",
                     "0",
                     "0",
                     "10",
                     "10",
-                    "0.059999999999999998"
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.03",
+                    "0.8",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "-8.e-05",
+                    "0.85",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.03",
+                    "0.8",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "-8.e-05",
+                    "0.85",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.03",
+                    "0.8",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "-8.e-05",
+                    "0.85",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.03",
+                    "0.8",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "-8.e-05",
+                    "0.85",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.03",
+                    "0.8",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "-7.e-05",
+                    "0.85",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.03",
+                    "0.8",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "-7.e-05",
+                    "0.85",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.03",
+                    "0.9",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "-5.e-05",
+                    "0.85",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.03",
+                    "0.9",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "-5.e-05",
+                    "0.85",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.03",
+                    "0.9",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "-5.e-05",
+                    "0.85",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.03",
+                    "1",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "0.0001",
+                    "0.85",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.03",
+                    "1",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "0.01",
+                    "0.85",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.03",
+                    "1",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "0.01",
+                    "0.85",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.03",
+                    "1",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "0.01",
+                    "0.85",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.03",
+                    "1",
+                    "0.7",
+                    "0.7",
+                    "0.1",
+                    "0.1",
+                    "0.01",
+                    "0.85",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
+                ],
+                [
+                    "0.4",
+                    "0.03",
+                    "1",
+                    "0.6",
+                    "0.6",
+                    "0.1",
+                    "0.1",
+                    "0.01",
+                    "0.8",
+                    "0",
+                    "0",
+                    "10",
+                    "10",
+                    "0.06",
+                    "0.5"
                 ]
             ]
         },
@@ -2329,6 +5014,8 @@
         "ptDstarCandMax": "50",
         "binsPtDstar": {
             "values": [
+                "0",
+                "0.5",
                 "1",
                 "1.5",
                 "2",
@@ -2339,7 +5026,20 @@
                 "4.5",
                 "5",
                 "5.5",
-                "6"
+                "6",
+                "6.5",
+                "7",
+                "7.5",
+                "8",
+                "9",
+                "10",
+                "12",
+                "16",
+                "20",
+                "24",
+                "36",
+                "50",
+                "100"
             ]
         },
         "cutsDstar": {
@@ -2353,7 +5053,22 @@
                 "pT bin 6",
                 "pT bin 7",
                 "pT bin 8",
-                "pT bin 9"
+                "pT bin 9",
+                "pT bin 10",
+                "pT bin 11",
+                "pT bin 12",
+                "pT bin 13",
+                "pT bin 14",
+                "pT bin 15",
+                "pT bin 16",
+                "pT bin 17",
+                "pT bin 18",
+                "pT bin 19",
+                "pT bin 20",
+                "pT bin 21",
+                "pT bin 22",
+                "pT bin 23",
+                "pT bin 24"
             ],
             "labels_cols": [
                 "ptSoftPiMin",
@@ -2367,123 +5082,401 @@
             ],
             "values": [
                 [
-                    "0.050000000000000003",
-                    "0.29999999999999999",
-                    "0.10000000000000001",
-                    "0.5",
-                    "0.20000000000000001",
+                    "0.050",
+                    "0.2",
+                    "0.1",
+                    "1000",
+                    "0.2",
                     "300",
-                    "0.5",
-                    "0.5"
+                    "0",
+                    "0"
                 ],
                 [
-                    "0.050000000000000003",
-                    "0.29999999999999999",
-                    "0.10000000000000001",
-                    "0.5",
-                    "0.20000000000000001",
+                    "0.050",
+                    "0.2",
+                    "0.1",
+                    "1000",
+                    "0.2",
                     "300",
-                    "0.5",
-                    "0.5"
+                    "0",
+                    "0"
                 ],
                 [
-                    "0.050000000000000003",
-                    "0.40000000000000002",
-                    "0.10000000000000001",
-                    "0.5",
-                    "0.20000000000000001",
+                    "0.050",
+                    "0.3",
+                    "0.1",
+                    "1000",
+                    "0.2",
                     "300",
-                    "0.5",
-                    "0.5"
+                    "0",
+                    "0"
                 ],
                 [
-                    "0.050000000000000003",
-                    "0.40000000000000002",
-                    "0.10000000000000001",
-                    "0.5",
-                    "0.20000000000000001",
+                    "0.050",
+                    "0.3",
+                    "0.1",
+                    "1000",
+                    "0.2",
                     "300",
-                    "0.5",
-                    "0.5"
+                    "0",
+                    "0"
                 ],
                 [
-                    "0.050000000000000003",
-                    "0.59999999999999998",
-                    "0.10000000000000001",
-                    "0.5",
-                    "0.20000000000000001",
+                    "0.050",
+                    "0.4",
+                    "0.1",
+                    "1000",
+                    "0.2",
                     "300",
-                    "0.5",
-                    "0.5"
+                    "0",
+                    "0"
                 ],
                 [
-                    "0.050000000000000003",
-                    "0.59999999999999998",
-                    "0.10000000000000001",
-                    "0.5",
-                    "0.20000000000000001",
+                    "0.050",
+                    "0.4",
+                    "0.1",
+                    "1000",
+                    "0.2",
                     "300",
-                    "0.5",
-                    "0.5"
+                    "0",
+                    "0"
                 ],
                 [
-                    "0.050000000000000003",
-                    "0.59999999999999998",
-                    "0.10000000000000001",
-                    "0.5",
-                    "0.20000000000000001",
+                    "0.050",
+                    "0.6",
+                    "0.1",
+                    "1000",
+                    "0.2",
                     "300",
-                    "0.5",
-                    "0.5"
+                    "0",
+                    "0"
                 ],
                 [
-                    "0.050000000000000003",
+                    "0.050",
+                    "0.6",
+                    "0.1",
+                    "1000",
+                    "0.2",
+                    "300",
+                    "0",
+                    "0"
+                ],
+                [
+                    "0.050",
+                    "0.6",
+                    "0.1",
+                    "1000",
+                    "0.2",
+                    "300",
+                    "0",
+                    "0"
+                ],
+                [
+                    "0.050",
                     "100",
-                    "0.10000000000000001",
-                    "0.5",
-                    "0.20000000000000001",
+                    "0.1",
+                    "1000",
+                    "0.2",
                     "300",
-                    "0.5",
-                    "0.5"
+                    "0",
+                    "0"
                 ],
                 [
-                    "0.050000000000000003",
+                    "0.050",
                     "100",
-                    "0.10000000000000001",
-                    "0.5",
-                    "0.20000000000000001",
+                    "0.1",
+                    "1000",
+                    "0.2",
                     "300",
-                    "0.5",
-                    "0.5"
+                    "0",
+                    "0"
                 ],
                 [
-                    "0.050000000000000003",
+                    "0.050",
                     "100",
-                    "0.10000000000000001",
-                    "0.5",
-                    "0.20000000000000001",
+                    "0.1",
+                    "1000",
+                    "0.2",
                     "300",
-                    "0.5",
-                    "0.5"
+                    "0",
+                    "0"
+                ],
+                [
+                    "0.050",
+                    "100",
+                    "0.1",
+                    "1000",
+                    "0.2",
+                    "300",
+                    "0",
+                    "0"
+                ],
+                [
+                    "0.050",
+                    "100",
+                    "0.1",
+                    "1000",
+                    "0.2",
+                    "300",
+                    "0",
+                    "0"
+                ],
+                [
+                    "0.050",
+                    "100",
+                    "0.1",
+                    "1000",
+                    "0.2",
+                    "300",
+                    "0",
+                    "0"
+                ],
+                [
+                    "0.050",
+                    "100",
+                    "0.1",
+                    "1000",
+                    "0.2",
+                    "300",
+                    "0",
+                    "0"
+                ],
+                [
+                    "0.050",
+                    "100",
+                    "0.1",
+                    "1000",
+                    "0.2",
+                    "300",
+                    "0",
+                    "0"
+                ],
+                [
+                    "0.050",
+                    "100",
+                    "0.1",
+                    "1000",
+                    "0.2",
+                    "300",
+                    "0",
+                    "0"
+                ],
+                [
+                    "0.050",
+                    "100",
+                    "0.1",
+                    "1000",
+                    "0.2",
+                    "300",
+                    "0",
+                    "0"
+                ],
+                [
+                    "0.050",
+                    "100",
+                    "0.1",
+                    "1000",
+                    "0.2",
+                    "300",
+                    "0",
+                    "0"
+                ],
+                [
+                    "0.050",
+                    "100",
+                    "0.1",
+                    "1000",
+                    "0.2",
+                    "300",
+                    "0",
+                    "0"
+                ],
+                [
+                    "0.050",
+                    "100",
+                    "0.1",
+                    "1000",
+                    "0.2",
+                    "300",
+                    "0",
+                    "0"
+                ],
+                [
+                    "0.050",
+                    "100",
+                    "0.1",
+                    "1000",
+                    "0.2",
+                    "300",
+                    "0",
+                    "0"
+                ],
+                [
+                    "0.050",
+                    "100",
+                    "0.1",
+                    "1000",
+                    "0.2",
+                    "300",
+                    "0",
+                    "0"
+                ],
+                [
+                    "0.050",
+                    "100",
+                    "0.1",
+                    "1000",
+                    "0.2",
+                    "300",
+                    "0",
+                    "0"
                 ]
             ]
         },
-        "ptPidTpcMin": "0.14999999999999999",
+        "ptPidTpcMin": "0.15",
         "ptPidTpcMax": "5",
         "nSigmaTpcMax": "3",
         "nSigmaTpcCombinedMax": "5",
-        "ptPidTofMin": "0.14999999999999999",
+        "ptPidTofMin": "0.15",
         "ptPidTofMax": "5",
         "nSigmaTofMax": "3",
         "nSigmaTofCombinedMax": "5",
         "usePidTpcAndTof": "false",
         "keepOnlySidebandCandidates": "false",
-        "distanceFromDeltaMinvDstarForSidebands": "0.050000000000000003",
-        "ccdbUrl": "http://alice-ccdb.cern.ch"
+        "distanceFromDeltaMassForSidebands": "0.050",
+        "activateQA": "false",
+        "applyMl": "false",
+        "binsPtMl": {
+            "values": [
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "8",
+                "10",
+                "12",
+                "16",
+                "24",
+                "50"
+            ]
+        },
+        "cutDirMl": {
+            "values": [
+                "0",
+                "1",
+                "1"
+            ]
+        },
+        "cutsMl": {
+            "labels_rows": [
+                "pT bin 0",
+                "pT bin 1",
+                "pT bin 2",
+                "pT bin 3",
+                "pT bin 4",
+                "pT bin 5",
+                "pT bin 6",
+                "pT bin 7",
+                "pT bin 8",
+                "pT bin 9",
+                "pT bin 10",
+                "pT bin 11"
+            ],
+            "labels_cols": [
+                "score class 1",
+                "score class 2",
+                "score class 3"
+            ],
+            "values": [
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ],
+                [
+                    "0.5",
+                    "0.5",
+                    "0.5"
+                ]
+            ]
+        },
+        "nClassesMl": "3",
+        "namesInputFeatures": {
+            "values": [
+                "feature1",
+                "feature2"
+            ]
+        },
+        "ccdbUrl": "http://alice-ccdb.cern.ch",
+        "modelPathsCCDB": {
+            "values": [
+                ""
+            ]
+        },
+        "onnxFileNames": {
+            "values": [
+                "Model.onnx"
+            ]
+        },
+        "timestampCCDB": "-1",
+        "loadModelsFromCCDB": "false"
     },
     "hf-task-d0": {
-        "selectionFlagD0": "0",
-        "selectionFlagD0bar": "0",
+        "selectionFlagD0": "1",
+        "selectionFlagD0bar": "1",
         "yCandGenMax": "0.5",
         "yCandRecoMax": "0.8",
         "selectionFlagHf": "1",
@@ -2520,13 +5513,88 @@
                 "100"
             ]
         },
-        "processWithDCAFitterN": "true",
-        "processWithKFParticle": "false",
+        "applyMl": "false",
+        "thnConfigAxisBkgScore": {
+            "values": [
+                "50",
+                "0",
+                "1"
+            ]
+        },
+        "thnConfigAxisNonPromptScore": {
+            "values": [
+                "50",
+                "0",
+                "1"
+            ]
+        },
+        "thnConfigAxisMass": {
+            "values": [
+                "120",
+                "1.5848",
+                "2.1848"
+            ]
+        },
+        "thnConfigAxisPtB": {
+            "values": [
+                "1000",
+                "0",
+                "100"
+            ]
+        },
+        "thnConfigAxisPt": {
+            "values": [
+                "500",
+                "0",
+                "50"
+            ]
+        },
+        "thnConfigAxisY": {
+            "values": [
+                "20",
+                "-1",
+                "1"
+            ]
+        },
+        "thnConfigAxisOrigin": {
+            "values": [
+                "3",
+                "-0.5",
+                "2.5"
+            ]
+        },
+        "thnConfigAxisCandType": {
+            "values": [
+                "4",
+                "-0.5",
+                "3.5"
+            ]
+        },
+        "thnConfigAxisGenPtD": {
+            "values": [
+                "500",
+                "0",
+                "50"
+            ]
+        },
+        "thnConfigAxisGenPtB": {
+            "values": [
+                "1000",
+                "0",
+                "100"
+            ]
+        },
+        "processDataWithDCAFitterN": "true",
+        "processDataWithKFParticle": "false",
+        "processDataWithDCAFitterNMl": "false",
+        "processDataWithKFParticleMl": "false",
         "processMcWithDCAFitterN": "false",
-        "processMcWithKFParticle": "false"
+        "processMcWithKFParticle": "false",
+        "processMcWithDCAFitterNMl": "false",
+        "processMcWithKFParticleMl": "false"
     },
     "hf-task-dplus": {
-        "selectionFlagDplus": "0",
+        "selectionFlagDplus": "7",
         "yCandGenMax": "0.5",
         "yCandRecoMax": "0.8",
         "binsPt": {
@@ -2546,15 +5614,56 @@
                 "36"
             ]
         },
-        "processMc": "true"
+        "classMl": {
+            "values": [
+                "0",
+                "1",
+                "2"
+            ]
+        },
+        "axisMlScore0": {
+            "values": [
+                "100",
+                "0",
+                "1"
+            ]
+        },
+        "axisMlScore1": {
+            "values": [
+                "100",
+                "0",
+                "1"
+            ]
+        },
+        "axisMlScore2": {
+            "values": [
+                "100",
+                "0",
+                "1"
+            ]
+        },
+        "processData": "false",
+        "processDataWithMl": "false",
+        "processMc": "true",
+        "processMcWithMl": "false"
     },
     "hf-task-ds": {
         "decayChannel": "1",
+        "fillDplusMc": "true",
         "selectionFlagDs": "0",
+        "classMl": {
+            "values": [
+                "0",
+                "2",
+                "3"
+            ]
+        },
         "yCandGenMax": "0.5",
         "yCandRecoMax": "0.8",
-        "binsPt": {
+        "axisPt": {
             "values": [
+                "0",
+                "1",
                 "2",
                 "3",
                 "4",
@@ -2562,11 +5671,46 @@
                 "6",
                 "8",
                 "12",
-                "16",
                 "24"
             ]
         },
-        "processMc": "true"
+        "axisMlScore0": {
+            "values": [
+                "100",
+                "0",
+                "1"
+            ]
+        },
+        "axisMlScore1": {
+            "values": [
+                "100",
+                "0",
+                "1"
+            ]
+        },
+        "axisMlScore2": {
+            "values": [
+                "100",
+                "0",
+                "1"
+            ]
+        },
+        "processDataWithCentFT0C": "false",
+        "processDataWithCentFT0M": "false",
+        "processDataWithCentNTracksPV": "false",
+        "processData": "true",
+        "processDataWithMlAndCentFT0C": "false",
+        "processDataWithMlAndCentFT0M": "false",
+        "processDataWithMlAndCentNTracksPV": "false",
+        "processDataWithMl": "false",
+        "processMcWithCentFT0C": "false",
+        "processMcWithCentFT0M": "false",
+        "processMcWithCentNTracksPV": "false",
+        "processMc": "false",
+        "processMcWithMlAndCentFT0C": "false",
+        "processMcWithMlAndCentFT0M": "false",
+        "processMcWithMlAndCentNTracksPV": "false",
+        "processMcWithMl": "false"
     },
     "hf-task-jpsi": {
         "selectionFlagJpsi": "0",
@@ -2618,6 +5762,16 @@
         "selectionFlagLb": "0",
         "yCandGenMax": "0.5",
         "yCandRecoMax": "0.8",
+        "DCALengthParameter": "0.02",
+        "minLikelihoodRatio": "10",
+        "minLikelihoodRatioLc": "10",
+        "mDiffKStar892Max": "0.0473",
+        "mDiffDelta1232Max": "0.117",
+        "mDiffLambda1520Max": "0.032",
+        "mDiffLcMax": "0.1",
+        "maximumImpactParameterForLambdaCCrossChecks": "0.2",
+        "resoCorrectionFactor": "1.1",
+        "largeLifetimeBG": "0.01",
         "binsPt": {
             "values": [
                 "0",
@@ -2634,32 +5788,12 @@
                 "20",
                 "24"
             ]
-        }
-    },
-    "hf-task-lb-mc": {
-        "selectionFlagLb": "0",
-        "yCandGenMax": "0.5",
-        "yCandRecoMax": "0.8",
-        "binsPt": {
-            "values": [
-                "0",
-                "0.5",
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "7",
-                "10",
-                "13",
-                "16",
-                "20",
-                "24"
-            ]
-        }
+        },
+        "processData": "true",
+        "processMc": "false"
     },
     "hf-task-lc": {
-        "selectionFlagLc": "0",
+        "selectionFlagLc": "1",
         "yCandGenMax": "0.5",
         "yCandRecoMax": "0.8",
         "binsPt": {
@@ -2678,7 +5812,81 @@
                 "36"
             ]
         },
-        "processMc": "true"
+        "enableTHn": "false",
+        "thnConfigAxisPt": {
+            "values": [
+                "72",
+                "0",
+                "36"
+            ]
+        },
+        "thnConfigAxisMass": {
+            "values": [
+                "300",
+                "1.98",
+                "2.58"
+            ]
+        },
+        "thnConfigAxisPtProng": {
+            "values": [
+                "100",
+                "0",
+                "20"
+            ]
+        },
+        "thnConfigAxisMultiplicity": {
+            "values": [
+                "100",
+                "0",
+                "1000"
+            ]
+        },
+        "thnConfigAxisChi2PCA": {
+            "values": [
+                "100",
+                "0",
+                "20"
+            ]
+        },
+        "thnConfigAxisDecLength": {
+            "values": [
+                "10",
+                "0",
+                "0.05"
+            ]
+        },
+        "thnConfigAxisCPA": {
+            "values": [
+                "20",
+                "0.8",
+                "1"
+            ]
+        },
+        "thnConfigAxisBdtScoreBkg": {
+            "values": [
+                "1000",
+                "0",
+                "1"
+            ]
+        },
+        "thnConfigAxisBdtScoreSignal": {
+            "values": [
+                "100",
+                "0",
+                "1"
+            ]
+        },
+        "thnConfigAxisCanType": {
+            "values": [
+                "5",
+                "0",
+                "5"
+            ]
+        },
+        "processDataStd": "true",
+        "processDataWithMl": "false",
+        "processMcStd": "false",
+        "processMcWithMl": "false"
     },
     "hf-task-lc-to-k0s-p": {
         "selectionFlagLcToK0sP": "0",
@@ -2729,6 +5937,8 @@
         "selectionFlagBplus": "0",
         "yCandGenMax": "0.5",
         "yCandRecoMax": "0.8",
+        "etaTrackMax": "0.8",
+        "ptTrackMin": "0.1",
         "binsPt": {
             "values": [
                 "0",
@@ -2770,7 +5980,74 @@
                 "36"
             ]
         },
-        "processMc": "true"
+        "enableTHn": "false",
+        "thnConfigAxisPt": {
+            "values": [
+                "36",
+                "0",
+                "36"
+            ]
+        },
+        "thnConfigAxisMass": {
+            "values": [
+                "300",
+                "1.98",
+                "2.58"
+            ]
+        },
+        "thnConfigAxisPtProng": {
+            "values": [
+                "100",
+                "0",
+                "20"
+            ]
+        },
+        "thnConfigAxisChi2PCA": {
+            "values": [
+                "100",
+                "0",
+                "20"
+            ]
+        },
+        "thnConfigAxisDecLength": {
+            "values": [
+                "10",
+                "0",
+                "0.05"
+            ]
+        },
+        "thnConfigAxisDecLengthXY": {
+            "values": [
+                "10",
+                "0",
+                "0.05"
+            ]
+        },
+        "thnConfigAxisCPA": {
+            "values": [
+                "20",
+                "0.8",
+                "1"
+            ]
+        },
+        "thnConfigAxisBdtScoreBkg": {
+            "values": [
+                "100",
+                "0",
+                "1"
+            ]
+        },
+        "thnConfigAxisBdtScoreSignal": {
+            "values": [
+                "100",
+                "0",
+                "1"
+            ]
+        },
+        "processDataStd": "true",
+        "processDataWithMl": "false",
+        "processMcStd": "false",
+        "processMcWithMl": "false"
     },
     "hf-task-xicc": {
         "selectionFlagXicc": "0",
@@ -2810,6 +6087,64 @@
             ]
         }
     },
+    "hf-task-dstar-to-d0-pi": {
+        "selectionFlagDstarToD0Pi": "true",
+        "yCandDstarRecoMax": "0.8",
+        "yCandDstarGenMax": "0.5",
+        "selectionFlagHfD0ToPiK": "true",
+        "ptBins": {
+            "values": [
+                "0",
+                "0.5",
+                "1",
+                "1.5",
+                "2",
+                "2.5",
+                "3",
+                "3.5",
+                "4",
+                "4.5",
+                "5",
+                "5.5",
+                "6",
+                "6.5",
+                "7",
+                "7.5",
+                "8",
+                "9",
+                "10",
+                "12",
+                "16",
+                "20",
+                "24",
+                "36",
+                "50",
+                "100"
+            ]
+        },
+        "binningImpactParam": {
+            "values": [
+                "1000",
+                "0.1",
+                "-0.1"
+            ]
+        },
+        "binningDecayLength": {
+            "values": [
+                "1000",
+                "0",
+                "0.7"
+            ]
+        },
+        "binningNormDecayLength": {
+            "values": [
+                "1000",
+                "0",
+                "40"
+            ]
+        },
+        "processMC": "false"
+    },
     "hf-task-mc-validation-gen": {
         "xVertexMin": "-100",
         "xVertexMax": "100",
@@ -2822,11 +6157,14 @@
         "checkAmbiguousTracksWithHfEventsOnly": "false"
     },
     "hf-tree-creator-d0-to-k-pi": {
-        "processDataWithDCAFitterN": "true",
+        "fillCandidateLiteTable": "false",
+        "downSampleBkgFactor": "1",
+        "ptMaxForDownSample": "10",
+        "processDataWithDCAFitterN": "false",
         "processDataWithKFParticle": "false",
         "processMcWithDCAFitterOnlySig": "false",
         "processMcWithDCAFitterOnlyBkg": "false",
-        "processMcWithDCAFitterAll": "false",
+        "processMcWithDCAFitterAll": "true",
         "processMcWithKFParticleOnlySig": "false",
         "processMcWithKFParticleOnlyBkg": "false",
         "processMcWithKFParticleAll": "false"
@@ -3232,8 +6570,28 @@
         "processMcRecMixedEvent": "false",
         "processMcGenMixedEvent": "false"
     },
+    "jet-deriveddata-producer": {
+        "processBunchCrossings": "false",
+        "processCollisions": "true",
+        "processCollisionsWithoutCentralityAndMultiplicity": "false",
+        "processCollisionsRun2": "false",
+        "processMcCollisionLabels": "false",
+        "processMcCollisions": "false",
+        "processTracks": "true",
+        "processMcTrackLabels": "false",
+        "processParticles": "false",
+        "processClusters": "false",
+        "processD0": "true",
+        "processD0MC": "true",
+        "processLc": "false",
+        "processLcMC": "false",
+        "processV0": "false",
+        "processV0MC": "false"
+    },
     "jet-finder-d0-data-charged": {
         "vertexZCut": "10",
+        "centralityMin": "-999",
+        "centralityMax": "999",
         "trackPtMin": "0.15",
         "trackPtMax": "1000",
         "trackEtaMin": "-0.9",
@@ -3248,16 +6606,16 @@
         "clusterEtaMax": "0.7",
         "clusterPhiMin": "-999",
         "clusterPhiMax": "999",
+        "clusterEnergyMin": "0.5",
+        "clusterTimeMin": "-25",
+        "clusterTimeMax": "25",
+        "clusterRejectExotics": "true",
         "candPtMin": "0",
         "candPtMax": "100",
         "candYMin": "-0.8",
         "candYMax": "0.8",
-        "rejectBackgroundMCCandidates": "true",
-        "selectionFlagD0": "1",
-        "selectionFlagD0bar": "1",
-        "selectionFlagLcToPKPi": "1",
-        "selectionFlagLcToPiPK": "1",
-        "selectionFlagBplus": "1",
+        "rejectBackgroundMCDCandidates": "false",
+        "rejectIncorrectDecaysMCP": "true",
         "jetRadius": {
             "values": [
                 "0.4"
@@ -3265,6 +6623,8 @@
         },
         "jetPtMin": "0",
         "jetPtMax": "1000",
+        "jetEWSPtMin": "0",
+        "jetEWSPtMax": "1000",
         "jetEtaMin": "-99",
         "jetEtaMax": "99",
         "jetTypeParticleLevel": "1",
@@ -3272,15 +6632,20 @@
         "jetRecombScheme": "0",
         "jetGhostArea": "0.005",
         "ghostRepeat": "1",
-        "DoRhoAreaSub": "false",
-        "DoConstSub": "false",
+        "jetAreaFractionMin": "-99",
+        "jetPtBinWidth": "5",
+        "fillTHnSparse": "false",
         "processDummy": "false",
         "processChargedJetsData": "true",
+        "processChargedEvtWiseSubJetsData": "false",
         "processChargedJetsMCD": "false",
+        "processChargedEvtWiseSubJetsMCD": "false",
         "processChargedJetsMCP": "false"
     },
     "jet-finder-d0-mcd-charged": {
         "vertexZCut": "10",
+        "centralityMin": "-999",
+        "centralityMax": "999",
         "trackPtMin": "0.15",
         "trackPtMax": "1000",
         "trackEtaMin": "-0.9",
@@ -3295,16 +6660,16 @@
         "clusterEtaMax": "0.7",
         "clusterPhiMin": "-999",
         "clusterPhiMax": "999",
+        "clusterEnergyMin": "0.5",
+        "clusterTimeMin": "-25",
+        "clusterTimeMax": "25",
+        "clusterRejectExotics": "true",
         "candPtMin": "0",
         "candPtMax": "100",
         "candYMin": "-0.8",
         "candYMax": "0.8",
-        "rejectBackgroundMCCandidates": "true",
-        "selectionFlagD0": "1",
-        "selectionFlagD0bar": "1",
-        "selectionFlagLcToPKPi": "1",
-        "selectionFlagLcToPiPK": "1",
-        "selectionFlagBplus": "1",
+        "rejectBackgroundMCDCandidates": "false",
+        "rejectIncorrectDecaysMCP": "true",
         "jetRadius": {
             "values": [
                 "0.4"
@@ -3312,6 +6677,8 @@
         },
         "jetPtMin": "0",
         "jetPtMax": "1000",
+        "jetEWSPtMin": "0",
+        "jetEWSPtMax": "1000",
         "jetEtaMin": "-99",
         "jetEtaMax": "99",
         "jetTypeParticleLevel": "1",
@@ -3319,15 +6686,20 @@
         "jetRecombScheme": "0",
         "jetGhostArea": "0.005",
         "ghostRepeat": "1",
-        "DoRhoAreaSub": "false",
-        "DoConstSub": "false",
+        "jetAreaFractionMin": "-99",
+        "jetPtBinWidth": "5",
+        "fillTHnSparse": "false",
         "processDummy": "false",
         "processChargedJetsData": "false",
+        "processChargedEvtWiseSubJetsData": "false",
         "processChargedJetsMCD": "true",
+        "processChargedEvtWiseSubJetsMCD": "false",
         "processChargedJetsMCP": "false"
     },
     "jet-finder-d0-mcp-charged": {
         "vertexZCut": "10",
+        "centralityMin": "-999",
+        "centralityMax": "999",
         "trackPtMin": "0.15",
         "trackPtMax": "1000",
         "trackEtaMin": "-0.9",
@@ -3342,16 +6714,16 @@
         "clusterEtaMax": "0.7",
         "clusterPhiMin": "-999",
         "clusterPhiMax": "999",
+        "clusterEnergyMin": "0.5",
+        "clusterTimeMin": "-25",
+        "clusterTimeMax": "25",
+        "clusterRejectExotics": "true",
         "candPtMin": "0",
         "candPtMax": "100",
         "candYMin": "-0.8",
         "candYMax": "0.8",
-        "rejectBackgroundMCCandidates": "true",
-        "selectionFlagD0": "1",
-        "selectionFlagD0bar": "1",
-        "selectionFlagLcToPKPi": "1",
-        "selectionFlagLcToPiPK": "1",
-        "selectionFlagBplus": "1",
+        "rejectBackgroundMCDCandidates": "false",
+        "rejectIncorrectDecaysMCP": "true",
         "jetRadius": {
             "values": [
                 "0.4"
@@ -3359,6 +6731,8 @@
         },
         "jetPtMin": "0",
         "jetPtMax": "1000",
+        "jetEWSPtMin": "0",
+        "jetEWSPtMax": "1000",
         "jetEtaMin": "-99",
         "jetEtaMax": "99",
         "jetTypeParticleLevel": "1",
@@ -3366,11 +6740,14 @@
         "jetRecombScheme": "0",
         "jetGhostArea": "0.005",
         "ghostRepeat": "1",
-        "DoRhoAreaSub": "false",
-        "DoConstSub": "false",
+        "jetAreaFractionMin": "-99",
+        "jetPtBinWidth": "5",
+        "fillTHnSparse": "false",
         "processDummy": "false",
         "processChargedJetsData": "false",
+        "processChargedEvtWiseSubJetsData": "false",
         "processChargedJetsMCD": "false",
+        "processChargedEvtWiseSubJetsMCD": "false",
         "processChargedJetsMCP": "true"
     },
     "jet-finder-charged-d0-qa": {
@@ -3477,14 +6854,19 @@
     },
     "bc-selection-task": {
         "triggerBcShift": "999",
+        "ITSROFrameStartBorderMargin": "-1",
+        "ITSROFrameEndBorderMargin": "-1",
+        "TimeFrameStartBorderMargin": "-1",
+        "TimeFrameEndBorderMargin": "-1",
         "processRun2": "true",
         "processRun3": "false"
     },
     "event-selection-task": {
         "syst": "pp",
         "muonSelection": "0",
-        "customDeltaBC": "300",
+        "maxDiffZvtxFT0vsPV": "1",
         "isMC": "true",
+        "TimeIntervalForOccupancyCalculation": "100",
         "processRun2": "true",
         "processRun3": "false"
     },
@@ -3517,6 +6899,7 @@
         "usePVAssociation": "true",
         "includeUnassigned": "false",
         "fillTableOfCollIdsPerTrack": "false",
+        "bcWindowForOneSigma": "60",
         "processAssocWithTime": "false",
         "processStandardAssoc": "true"
     },
@@ -3600,6 +6983,7 @@
         },
         "ccdburl": "http://alice-ccdb.cern.ch",
         "ccdbpath": "Centrality/Calibration",
+        "produceHistograms": "false",
         "processRun2": "true",
         "processRun3": "false",
         "processGlobalTrackingCounters": "false",
@@ -3610,34 +6994,43 @@
         "processStandard": "true"
     },
     "tof-signal": {
+        "ccdb-url": "http://alice-ccdb.cern.ch",
+        "ccdb-timestamp": "-1",
+        "timeShiftCCDBPath": "",
+        "distanceForGoodMatch": "999",
+        "distanceForGoodMatchLowMult": "999",
+        "multThreshold": "0",
         "processRun3": "false",
         "processRun2": "true"
     },
     "tof-event-time": {
+        "inheritFromBaseTask": "true",
+        "ccdb-url": "http://alice-ccdb.cern.ch",
+        "ccdb-timestamp": "-1",
         "minMomentum": "0.5",
         "maxMomentum": "2",
         "maxEvTimeTOF": "100000",
-        "paramFileName": "",
-        "ccdb-url": "http://alice-ccdb.cern.ch",
-        "parametrizationPath": "TOF/Calib/Params",
-        "passName": "",
-        "ccdb-timestamp": "-1",
-        "loadResponseFromCCDB": "false",
-        "fatalOnPassNotAvailable": "true",
         "sel8TOFEvTime": "false",
         "maxNtracksInSet": "10",
+        "paramFileName": "",
+        "parametrizationPath": "TOF/Calib/Params",
+        "passName": "",
+        "loadResponseFromCCDB": "false",
+        "enableTimeDependentResponse": "false",
+        "fatalOnPassNotAvailable": "true",
         "processRun2": "true",
         "processNoFT0": "false",
         "processFT0": "false",
         "processOnlyFT0": "false"
     },
     "tof-pid-full": {
-        "paramFileName": "",
+        "inheritFromBaseTask": "true",
         "ccdb-url": "http://alice-ccdb.cern.ch",
-        "parametrizationPath": "TOF/Calib/Params",
-        "timeShiftCCDBPath": "",
-        "passName": "",
         "ccdb-timestamp": "-1",
+        "paramFileName": "",
+        "parametrizationPath": "TOF/Calib/Params",
+        "passName": "",
+        "timeShiftCCDBPath": "",
         "loadResponseFromCCDB": "false",
         "enableTimeDependentResponse": "false",
         "fatalOnPassNotAvailable": "true",
@@ -3693,9 +7086,11 @@
         "param-file": "",
         "ccdb-url": "http://alice-ccdb.cern.ch",
         "ccdbPath": "Analysis/PID/TPC/Response",
+        "recoPass": "",
         "ccdb-timestamp": "0",
         "useNetworkCorrection": "false",
         "autofetchNetworks": "true",
+        "skipTPCOnly": "false",
         "networkPathLocally": "network.onnx",
         "networkPathCCDB": "Analysis/PID/TPC/ML",
         "enableNetworkOptimizations": "true",
@@ -3708,7 +7103,20 @@
         "pid-de": "-1",
         "pid-tr": "-1",
         "pid-he": "-1",
-        "pid-al": "-1"
+        "pid-al": "-1",
+        "enableTuneOnDataTable": "-1",
+        "useNetworkEl": "1",
+        "useNetworkMu": "1",
+        "useNetworkPi": "1",
+        "useNetworkKa": "1",
+        "useNetworkPr": "1",
+        "useNetworkDe": "1",
+        "useNetworkTr": "1",
+        "useNetworkHe": "1",
+        "useNetworkAl": "1",
+        "networkBetaGammaCutoff": "0.45",
+        "processStandard": "true",
+        "processMcTuneOnData": "false"
     },
     "bayes-pid": {
         "param-file-TOF": "",
@@ -3730,13 +7138,51 @@
         "pid-he": "1",
         "pid-al": "1"
     },
+    "lambdakzero-preselector": {
+        "dIfMCgenerateK0Short": "true",
+        "dIfMCgenerateLambda": "true",
+        "dIfMCgenerateAntiLambda": "true",
+        "dIfMCgenerateGamma": "false",
+        "dIfMCgenerateHypertriton": "false",
+        "dIfMCgenerateAntiHypertriton": "false",
+        "dIfMCselectV0MotherPDG": "0",
+        "dIfMCselectPhysicalPrimary": "true",
+        "ddEdxPreSelectK0Short": "true",
+        "ddEdxPreSelectLambda": "true",
+        "ddEdxPreSelectAntiLambda": "true",
+        "ddEdxPreSelectGamma": "false",
+        "ddEdxPreSelectHypertriton": "false",
+        "ddEdxPreSelectAntiHypertriton": "false",
+        "ddEdxPreSelectionWindow": "7",
+        "dTPCNCrossedRows": "50",
+        "dPreselectOnlyBaryons": "false",
+        "forceITSOnlyMesons": "false",
+        "minITSCluITSOnly": "0",
+        "processBuildAll": "true",
+        "processBuildMCAssociated": "false",
+        "processBuildValiddEdx": "false",
+        "processBuildValiddEdxMCAssociated": "false",
+        "processBuildFindable": "false",
+        "processSkipV0sNotUsedInCascades": "false",
+        "processSkipV0sNotUsedInTrackedCascades": "false"
+    },
     "lambdakzero-builder": {
         "createV0CovMats": "-1",
         "createV0DauCovMats": "-1",
         "createV0PosAtDCAs": "0",
+        "createV0PosAtIUs": "0",
         "storePhotonCandidates": "false",
         "d_UseAutodetectMode": "false",
-        "downscaleFactor": "2",
+        "downscalingOptions": {
+            "downscaleFactor": "2",
+            "downscale_adaptive": "false",
+            "downscale_mass": "0.14",
+            "downscale_sqrts": "13.6",
+            "downscale_factorPt": "1",
+            "downscale_factor1Pt": "1",
+            "downscale_factorUniform": "0.001",
+            "downscale_triggerMaskSelection": "0"
+        },
         "dcanegtopv": "0.1",
         "dcapostopv": "0.1",
         "v0cospa": "0.995",
@@ -3746,147 +7192,261 @@
         "minimumPt": "0",
         "maximumPt": "1000",
         "maxDaughterEta": "5",
-        "d_bz": "-999",
-        "d_UseAbsDCA": "true",
-        "d_UseWeightedPCA": "false",
-        "useMatCorrType": "0",
-        "rejDiffCollTracks": "0",
-        "d_doTrackQA": "false",
-        "d_QA_checkMC": "true",
-        "d_QA_checkdEdx": "false",
-        "ccdb-url": "http://alice-ccdb.cern.ch",
-        "grpPath": "GLO/GRP/GRP",
-        "grpmagPath": "GLO/Config/GRPMagField",
-        "lutPath": "GLO/Param/MatLUT",
-        "geoPath": "GLO/Config/GeometryAligned",
-        "mVtxPath": "GLO/Calib/MeanVertex",
-        "d_doQA": "false",
-        "dQANBinsRadius": "500",
-        "dQANBinsPtCoarse": "10",
-        "dQANBinsMass": "400",
-        "dQAMaxPt": "5",
-        "dQAGammaMassWindow": "0.05",
-        "dQAK0ShortMassWindow": "0.005",
-        "dQALambdaMassWindow": "0.005",
-        "axisPtQA": {
+        "mlConfigurations": {
+            "calculateK0ShortScores": "false",
+            "calculateLambdaScores": "false",
+            "calculateAntiLambdaScores": "false",
+            "calculateGammaScores": "false",
+            "modelPathCCDB": "",
+            "timestampCCDB": "-1",
+            "loadModelsFromCCDB": "false",
+            "enableOptimizations": "false",
+            "localModelPathLambda": "Lambda_BDTModel.onnx",
+            "localModelPathAntiLambda": "AntiLambda_BDTModel.onnx",
+            "localModelPathGamma": "Gamma_BDTModel.onnx",
+            "localModelPathK0Short": "KZeroShort_BDTModel.onnx",
+            "thresholdGamma": "-1",
+            "thresholdLambda": "-1",
+            "thresholdAntiLambda": "-1",
+            "thresholdK0Short": "-1"
+        },
+        "dcaFitterConfigurations": {
+            "d_bz": "-999",
+            "d_UseAbsDCA": "true",
+            "d_UseWeightedPCA": "false",
+            "d_UseCollinearFit": "false",
+            "d_maxDZIni": "1e+09",
+            "d_maxDXYIni": "4",
+            "useMatCorrType": "2",
+            "rejDiffCollTracks": "0"
+        },
+        "ccdbConfigurations": {
+            "ccdb-url": "http://alice-ccdb.cern.ch",
+            "grpPath": "GLO/GRP/GRP",
+            "grpmagPath": "GLO/Config/GRPMagField",
+            "lutPath": "GLO/Param/MatLUT",
+            "geoPath": "GLO/Config/GeometryAligned",
+            "mVtxPath": "GLO/Calib/MeanVertex"
+        },
+        "roundDCAVariables": "false",
+        "precisionDCAs": "0.01",
+        "qaConfigurations": {
+            "d_doQA": "false",
+            "dQANBinsRadius": "500",
+            "dQANBinsPtCoarse": "10",
+            "dQANBinsMass": "400",
+            "dQAMaxPt": "5",
+            "dQAGammaMassWindow": "0.05",
+            "dQAK0ShortMassWindow": "0.005",
+            "dQALambdaMassWindow": "0.005",
+            "d_doTrackQA": "false",
+            "d_QA_checkMC": "true",
+            "d_QA_checkdEdx": "false"
+        },
+        "axisConfigurations": {
+            "axisTopoVarPointingAngle": {
+                "values": [
+                    "50",
+                    "0",
+                    "1"
+                ]
+            },
+            "axisTopoVarRAP": {
+                "values": [
+                    "50",
+                    "0",
+                    "1"
+                ]
+            },
+            "axisTopoVarV0Radius": {
+                "values": [
+                    "500",
+                    "0",
+                    "100"
+                ]
+            },
+            "axisTopoVarDCAV0Dau": {
+                "values": [
+                    "200",
+                    "0",
+                    "2"
+                ]
+            },
+            "axisTopoVarDCAToPV": {
+                "values": [
+                    "200",
+                    "-1",
+                    "1"
+                ]
+            },
+            "axisTopoVarDCAV0ToPV": {
+                "values": [
+                    "200",
+                    "0",
+                    "5"
+                ]
+            },
+            "axisX": {
+                "values": [
+                    "200",
+                    "0",
+                    "200"
+                ]
+            },
+            "axisRadius": {
+                "values": [
+                    "500",
+                    "0",
+                    "50"
+                ]
+            },
+            "axisDeltaDistanceRadii": {
+                "values": [
+                    "500",
+                    "-50",
+                    "50"
+                ]
+            },
+            "axisDCAXY": {
+                "values": [
+                    "500",
+                    "-50",
+                    "50"
+                ]
+            },
+            "axisDCACHI2": {
+                "values": [
+                    "500",
+                    "0",
+                    "50"
+                ]
+            },
+            "axisPositionGuess": {
+                "values": [
+                    "240",
+                    "0",
+                    "120"
+                ]
+            },
+            "axisPtQA": {
+                "values": [
+                    "0",
+                    "0",
+                    "0.1",
+                    "0.2",
+                    "0.3",
+                    "0.4",
+                    "0.5",
+                    "0.6",
+                    "0.7",
+                    "0.8",
+                    "0.9",
+                    "1",
+                    "1.1",
+                    "1.2",
+                    "1.3",
+                    "1.4",
+                    "1.5",
+                    "1.6",
+                    "1.7",
+                    "1.8",
+                    "1.9",
+                    "2",
+                    "2.2",
+                    "2.4",
+                    "2.6",
+                    "2.8",
+                    "3",
+                    "3.2",
+                    "3.4",
+                    "3.6",
+                    "3.8",
+                    "4",
+                    "4.4",
+                    "4.8",
+                    "5.2",
+                    "5.6",
+                    "6",
+                    "6.5",
+                    "7",
+                    "7.5",
+                    "8",
+                    "9",
+                    "10",
+                    "11",
+                    "12",
+                    "13",
+                    "14",
+                    "15",
+                    "17",
+                    "19",
+                    "21",
+                    "23",
+                    "25",
+                    "30",
+                    "35",
+                    "40",
+                    "50"
+                ]
+            }
+        },
+        "massCutK0": {
+            "labels_rows": "",
+            "labels_cols": [
+                "constant",
+                "linear",
+                "expoConstant",
+                "expoRelax"
+            ],
             "values": [
-                "0",
-                "0",
-                "0.1",
-                "0.2",
-                "0.3",
-                "0.4",
-                "0.5",
-                "0.6",
-                "0.7",
-                "0.8",
-                "0.9",
-                "1",
-                "1.1",
-                "1.2",
-                "1.3",
-                "1.4",
-                "1.5",
-                "1.6",
-                "1.7",
-                "1.8",
-                "1.9",
-                "2",
-                "2.2",
-                "2.4",
-                "2.6",
-                "2.8",
-                "3",
-                "3.2",
-                "3.4",
-                "3.6",
-                "3.8",
-                "4",
-                "4.4",
-                "4.8",
-                "5.2",
-                "5.6",
-                "6",
-                "6.5",
-                "7",
-                "7.5",
-                "8",
-                "9",
-                "10",
-                "11",
-                "12",
-                "13",
-                "14",
-                "15",
-                "17",
-                "19",
-                "21",
-                "23",
-                "25",
-                "30",
-                "35",
-                "40",
-                "50"
+                [
+                    "0.00281882007",
+                    "0.00114057004",
+                    "0.00172138005",
+                    "0.500262022"
+                ]
             ]
         },
-        "axisTopoVarPointingAngle": {
+        "massCutLambda": {
+            "labels_rows": "",
+            "labels_cols": [
+                "constant",
+                "linear",
+                "expoConstant",
+                "expoRelax"
+            ],
             "values": [
-                "50",
-                "0",
-                "1"
+                [
+                    "0.00117517996",
+                    "0.000124098995",
+                    "0.00547936978",
+                    "0.308008999"
+                ]
             ]
         },
-        "axisTopoVarRAP": {
+        "massWindownumberOfSigmas": "5000000",
+        "massWindowWithTPCPID": "false",
+        "massWindowSafetyMargin": "0.001",
+        "lifetimecut": {
+            "labels_rows": "",
+            "labels_cols": [
+                "lifetimecutLambda",
+                "lifetimecutK0S"
+            ],
             "values": [
-                "50",
-                "0",
-                "1"
-            ]
-        },
-        "axisTopoVarV0Radius": {
-            "values": [
-                "500",
-                "0",
-                "100"
-            ]
-        },
-        "axisTopoVarDCAV0Dau": {
-            "values": [
-                "200",
-                "0",
-                "2"
-            ]
-        },
-        "axisTopoVarDCAToPV": {
-            "values": [
-                "200",
-                "-1",
-                "1"
-            ]
-        },
-        "axisTopoVarDCAV0ToPV": {
-            "values": [
-                "200",
-                "0",
-                "5"
-            ]
-        },
-        "axisX": {
-            "values": [
-                "200",
-                "0",
-                "200"
-            ]
-        },
-        "axisRadius": {
-            "values": [
-                "500",
-                "0",
-                "50"
+                [
+                    "1000000",
+                    "1000000"
+                ]
             ]
         },
         "processRun2": "true",
-        "processRun3": "false"
+        "processRun3": "false",
+        "processFindableRun3": "false"
+    },
+    "lambdakzero-v0-data-link-builder": {
+        "processFound": "true",
+        "processFindable": "false"
     },
     "qa-efficiency": {
         "noFakesHits": "false",
@@ -3926,7 +7486,7 @@
             "values": [
                 "100",
                 "0",
-                "6.2839999999999998"
+                "6.284"
             ]
         },
         "yBins": {
