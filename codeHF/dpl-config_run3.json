@@ -1610,11 +1610,11 @@
     },
     "hf-candidate-creator-dstar": {
         "fillHistograms": "true",
-        "ccdbUrl": "http:\/\/alice-ccdb.cern.ch",
-        "ccdbPathLut": "GLO\/Param\/MatLUT",
+        "ccdbUrl": "http://alice-ccdb.cern.ch",
+        "ccdbPathLut": "GLO/Param/MatLUT",
         "isRun2": "false",
-        "ccdbPathGrp": "GLO\/GRP\/GRP",
-        "ccdbPathGrpMag": "GLO\/Config\/GRPMagField",
+        "ccdbPathGrp": "GLO/GRP/GRP",
+        "ccdbPathGrpMag": "GLO/Config/GRPMagField",
         "propagateToPCA": "true",
         "maxR": "200",
         "maxDZIni": "4",
@@ -4263,7 +4263,7 @@
                 ]
             ]
         },
-        "nClassesMl": "51",
+        "nClassesMl": "3",
         "namesInputFeatures": {
             "values": [
                 "feature1",
@@ -5453,7 +5453,7 @@
                 ]
             ]
         },
-        "nClassesMl": "51",
+        "nClassesMl": "3",
         "namesInputFeatures": {
             "values": [
                 "feature1",
