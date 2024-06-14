@@ -7,7 +7,7 @@ options:
     - "--aod-memory-rate-limit 2000000000"
     - "--shm-segment-size 16000000000"
     - "--resources-monitoring 2"
-    - "--min-failure-level error"
+    # - "--min-failure-level error"
 
 workflows:
   # dummy workflow with the full list of options
@@ -47,6 +47,15 @@ workflows:
       - o2-analysis-track-to-collision-associator
       - o2-analysis-lf-lambdakzerobuilder
 
+  o2-analysis-hf-track-index-skim-creator_casc-lf:
+    <<: *skim_creator
+    dependencies:
+      - o2-analysis-track-dca_runX
+      - o2-analysis-trackselection_runX
+      - o2-analysis-track-to-collision-associator
+      - o2-analysis-lf-lambdakzerobuilder
+      - o2-analysis-lf-cascadebuilder
+
   # Candidate creators
 
   o2-analysis-hf-candidate-creator-2prong: &cand_creator_2p
@@ -83,7 +92,9 @@ workflows:
     dependencies: o2-analysis-track-dca_runX
 
   o2-analysis-hf-candidate-creator-cascade:
-    dependencies: o2-analysis-hf-track-index-skim-creator_skimX
+    dependencies:
+      - o2-analysis-hf-track-index-skim-creator_skimX
+      - o2-analysis-event-selection
     tables:
       default: [HFCANDCASCBASE, HFCANDCASCEXT]
       mc: [HFCANDCASCMCREC, HFCANDCASCMCGEN]
@@ -126,6 +137,14 @@ workflows:
     tables:
       default: [HFCANDLB, HFCANDLBEXT]
       mc: [HFCANDLBMCREC, HFCANDLBMCGEN]
+
+  o2-analysis-hf-candidate-creator-xic0-omegac0:
+    dependencies:
+      - o2-analysis-hf-track-index-skim-creator_skimX
+      - o2-analysis-event-selection
+    tables:
+      default: [HFCANDTOXIPI, HFCANDTOOMEGAPI, HFCANDTOOMEGAK]
+      mc: [HFXICXIPIMCREC, HFOMCXIPIMCREC, HFTOOMEPIMCREC, HFTOOMEKMCREC, HFXICXIPIMCGEN, HFOMECXIPIMCGEN, HFTOOMEPIMCGEN, HFTOOMEKMCGEN]
 
   # Selectors
 
@@ -216,6 +235,13 @@ workflows:
     dependencies: o2-analysis-hf-candidate-creator-bplus
     tables: HFSELBPLUS
 
+  o2-analysis-hf-candidate-selector-to-xi-pi:
+    dependencies:
+      - o2-analysis-hf-candidate-creator-xic0-omegac0
+      - o2-analysis-pid-tof-full_runX
+      - o2-analysis-multiplicity-table_runX
+    tables: HFSELTOXIPI
+
   # Analysis tasks
 
   o2-analysis-hf-task-d0:
@@ -273,11 +299,11 @@ workflows:
 
   o2-analysis-hf-tree-creator-d0-to-k-pi:
     dependencies: o2-analysis-hf-candidate-selector-d0
-    tables: [HFCAND2PFull, HFCAND2PFullE, HFCAND2PFullP]
+    tables: [HFCANDD0LITE, HFCANDD0FULL, HFCANDD0FULLEV, HFCANDD0FULLP]
 
   o2-analysis-hf-tree-creator-lc-to-p-k-pi:
     dependencies: [o2-analysis-hf-candidate-selector-lc, o2-analysis-centrality_runX]
-    tables: [HFCAND3PFull, HFCAND3PFullE, HFCAND3PFullP]
+    tables: [HFCANDLCLITE, HFCOLLIDLCLITE, HFCANDLCFULL, HFCANDLCFULLEV, HFCANDLCFULLP]
 
   o2-analysis-hf-tree-creator-lc-to-k0s-p:
     dependencies: o2-analysis-hf-candidate-selector-lc-to-k0s-p
@@ -286,27 +312,31 @@ workflows:
   o2-analysis-hf-tree-creator-bplus-to-d0-pi:
     requires_mc: yes
     dependencies: o2-analysis-hf-candidate-selector-bplus-to-d0-pi
-    tables: [HFCANDBPFull, HFCANDBPFullE, HFCANDBPFullP]
+    tables: [HFCANDBPFULL, HFCANDBPFULLEV, HFCANDBPFULLP, HFCANDBPLITE]
 
   o2-analysis-hf-tree-creator-lb-to-lc-pi:
     requires_mc: yes
     dependencies: o2-analysis-hf-candidate-selector-lb-to-lc-pi
-    tables: [HFCANDLbFull, HFCANDLbFullE, HFCANDLbFullP]
+    tables: [HFCANDLBFULL]
 
   o2-analysis-hf-tree-creator-x-to-jpsi-pi-pi:
     requires_mc: yes
     dependencies: o2-analysis-hf-candidate-selector-x-to-jpsi-pi-pi
-    tables: [HFCANDXFull, HFCANDXFullE, HFCANDXFullP]
+    tables: [HFCANDXFULL, HFCANDXFULLEV, HFCANDXFULLP]
 
   o2-analysis-hf-tree-creator-xicc-to-p-k-pi-pi:
     requires_mc: yes
     dependencies: o2-analysis-hf-candidate-selector-xicc-to-p-k-pi-pi
-    tables: [HFCANDXiccFull, HFCANDXiccFullE, HFCANDXiccFullP]
+    tables: [HFCANDXICCFULL, HFCANDXICCFULLE, HFCANDXICCFULLP]
 
   o2-analysis-hf-tree-creator-chic-to-jpsi-gamma:
     requires_mc: yes
     dependencies: o2-analysis-hf-candidate-selector-chic-to-jpsi-gamma
-    tables: [HFCANDChicFull, HFCANDChicFullE, HFCANDChicFullP]
+    tables: [HFCANDCHICFULL, HFCANDCHICFULLE, HFCANDCHICFULLP]
+
+  o2-analysis-hf-tree-creator-to-xi-pi:
+    dependencies: o2-analysis-hf-candidate-selector-to-xi-pi
+    tables: [HFTOXIPIEV, HFTOXIPIFULL, HFTOXIPILITE]
 
   # Derived-data creators
 
@@ -589,4 +619,7 @@ workflows:
   # LF
 
   o2-analysis-lf-lambdakzerobuilder:
+    dependencies: [o2-analysis-timestamp, o2-analysis-track-dca_runX, o2-analysis-pid-tpc-full]
+
+  o2-analysis-lf-cascadebuilder:
     dependencies: [o2-analysis-timestamp, o2-analysis-track-dca_runX, o2-analysis-pid-tpc-full]
