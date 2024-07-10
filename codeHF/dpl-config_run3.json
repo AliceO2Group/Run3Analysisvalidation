@@ -1159,6 +1159,32 @@
         "selectionFlagXic": "0",
         "cutPtPionMin": "1"
     },
+    "hf-candidate-creator-xic-to-xi-pi-pi": {
+        "fillHistograms": "true",
+        "isRun2": "false",
+        "ccdbUrl": "http://alice-ccdb.cern.ch",
+        "ccdbPathLut": "GLO/Param/MatLUT",
+        "ccdbPathGrp": "GLO/GRP/GRP",
+        "ccdbPathGrpMag": "GLO/Config/GRPMagField",
+        "doCascadePreselection": "true",
+        "massToleranceCascade": "0.01",
+        "dcaXYToPVCascadeMax": "3",
+        "propagateToPCA": "true",
+        "maxR": "200",
+        "maxDZIni": "4",
+        "minParamChange": "0.001",
+        "minRelChi2Change": "0.9",
+        "useAbsDCA": "false",
+        "useWeightedFinalPCA": "false",
+        "constrainXicPlusToPv": "false",
+        "kfConstructMethod": "0",
+        "rejDiffCollTrack": "true",
+        "processXicplusWithDcaFitter": "true",
+        "processXicplusWithKFParticle": "false"
+    },
+    "hf-candidate-creator-xic-to-xi-pi-pi-expressions": {
+        "processMc": "false"
+    },
     "hf-candidate-selector-b0-to-d-pi": {
         "ptCandMin": "0",
         "ptCandMax": "50",
@@ -3523,7 +3549,8 @@
                 "pT Pi",
                 "Chi2PCA",
                 "decay length",
-                "cos pointing angle"
+                "cos pointing angle",
+                "mass (Kpi)"
             ],
             "values": [
                 [
@@ -3533,7 +3560,8 @@
                     "0.4",
                     "0.5",
                     "0.004",
-                    "0"
+                    "0",
+                    "-1"
                 ],
                 [
                     "0.300",
@@ -3542,7 +3570,8 @@
                     "0.4",
                     "0.5",
                     "0.004",
-                    "0"
+                    "0",
+                    "-1"
                 ],
                 [
                     "0.300",
@@ -3551,7 +3580,8 @@
                     "0.4",
                     "0.5",
                     "0.004",
-                    "0"
+                    "0",
+                    "-1"
                 ],
                 [
                     "0.300",
@@ -3560,7 +3590,8 @@
                     "0.4",
                     "0.5",
                     "0.004",
-                    "0"
+                    "0",
+                    "-1"
                 ],
                 [
                     "0.300",
@@ -3569,7 +3600,8 @@
                     "0.4",
                     "0.5",
                     "0.004",
-                    "0"
+                    "0",
+                    "-1"
                 ],
                 [
                     "0.300",
@@ -3578,7 +3610,8 @@
                     "0.4",
                     "0.5",
                     "0.004",
-                    "0"
+                    "0",
+                    "-1"
                 ],
                 [
                     "0.300",
@@ -3587,7 +3620,8 @@
                     "0.4",
                     "0.5",
                     "0.004",
-                    "0"
+                    "0",
+                    "-1"
                 ],
                 [
                     "0.300",
@@ -3596,7 +3630,8 @@
                     "0.4",
                     "0.5",
                     "0.004",
-                    "0"
+                    "0",
+                    "-1"
                 ],
                 [
                     "0.300",
@@ -3605,7 +3640,8 @@
                     "0.4",
                     "0.5",
                     "0.004",
-                    "0"
+                    "0",
+                    "-1"
                 ],
                 [
                     "0.300",
@@ -3614,7 +3650,8 @@
                     "0.4",
                     "0.5",
                     "0.004",
-                    "0"
+                    "0",
+                    "-1"
                 ]
             ]
         },
@@ -5572,6 +5609,206 @@
         "nClustersItsInnBarrMin": "1",
         "itsChi2PerClusterMax": "36"
     },
+    "hf-candidate-selector-xic-to-xi-pi-pi": {
+        "ptCandMin": "0",
+        "ptCandMax": "36",
+        "binsPt": {
+            "values": [
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "8",
+                "12",
+                "24",
+                "36"
+            ]
+        },
+        "cuts": {
+            "labels_rows": [
+                "pT bin 0",
+                "pT bin 1",
+                "pT bin 2",
+                "pT bin 3",
+                "pT bin 4",
+                "pT bin 5",
+                "pT bin 6",
+                "pT bin 7",
+                "pT bin 8",
+                "pT bin 9"
+            ],
+            "labels_cols": [
+                "m",
+                "pT Xi",
+                "pT Pi0",
+                "pT Pi1",
+                "chi2PCA",
+                "max decay length",
+                "max decay length XY",
+                "cos pointing angle",
+                "cos pointing angle XY",
+                "max impParXY Xi",
+                "max impParXY Pi0",
+                "max impParXY Pi1"
+            ],
+            "values": [
+                [
+                    "0.4",
+                    "0.4",
+                    "0.4",
+                    "0.4",
+                    "1.0e-05",
+                    "0.5",
+                    "0.5",
+                    "0.9",
+                    "0.9",
+                    "0.1",
+                    "0.1",
+                    "0.1"
+                ],
+                [
+                    "0.4",
+                    "0.4",
+                    "0.4",
+                    "0.4",
+                    "1.0e-05",
+                    "0.5",
+                    "0.5",
+                    "0.9",
+                    "0.9",
+                    "0.1",
+                    "0.1",
+                    "0.1"
+                ],
+                [
+                    "0.4",
+                    "0.4",
+                    "0.4",
+                    "0.4",
+                    "1.0e-05",
+                    "0.5",
+                    "0.5",
+                    "0.9",
+                    "0.9",
+                    "0.1",
+                    "0.1",
+                    "0.1"
+                ],
+                [
+                    "0.4",
+                    "0.4",
+                    "0.4",
+                    "0.4",
+                    "1.0e-05",
+                    "0.5",
+                    "0.5",
+                    "0.9",
+                    "0.9",
+                    "0.1",
+                    "0.1",
+                    "0.1"
+                ],
+                [
+                    "0.4",
+                    "0.4",
+                    "0.4",
+                    "0.4",
+                    "1.0e-05",
+                    "0.5",
+                    "0.5",
+                    "0.9",
+                    "0.9",
+                    "0.1",
+                    "0.1",
+                    "0.1"
+                ],
+                [
+                    "0.4",
+                    "0.4",
+                    "0.4",
+                    "0.4",
+                    "1.0e-05",
+                    "0.5",
+                    "0.5",
+                    "0.9",
+                    "0.9",
+                    "0.1",
+                    "0.1",
+                    "0.1"
+                ],
+                [
+                    "0.4",
+                    "0.4",
+                    "0.4",
+                    "0.4",
+                    "1.0e-05",
+                    "0.5",
+                    "0.5",
+                    "0.9",
+                    "0.9",
+                    "0.1",
+                    "0.1",
+                    "0.1"
+                ],
+                [
+                    "0.4",
+                    "0.4",
+                    "0.4",
+                    "0.4",
+                    "1.0e-05",
+                    "0.5",
+                    "0.5",
+                    "0.9",
+                    "0.9",
+                    "0.1",
+                    "0.1",
+                    "0.1"
+                ],
+                [
+                    "0.4",
+                    "0.4",
+                    "0.4",
+                    "0.4",
+                    "1.0e-05",
+                    "0.5",
+                    "0.5",
+                    "0.9",
+                    "0.9",
+                    "0.1",
+                    "0.1",
+                    "0.1"
+                ],
+                [
+                    "0.4",
+                    "0.4",
+                    "0.4",
+                    "0.4",
+                    "1.0e-05",
+                    "0.5",
+                    "0.5",
+                    "0.9",
+                    "0.9",
+                    "0.1",
+                    "0.1",
+                    "0.1"
+                ]
+            ]
+        },
+        "activateQA": "false",
+        "usePid": "true",
+        "acceptPIDNotApplicable": "true",
+        "ptPidTpcMin": "0.15",
+        "ptPidTpcMax": "20",
+        "nSigmaTpcMax": "5",
+        "nSigmaTpcCombinedMax": "5",
+        "ptPidTofMin": "0.15",
+        "ptPidTofMax": "20",
+        "nSigmaTofMax": "5",
+        "nSigmaTofCombinedMax": "5"
+    },
     "hf-pid-creator": {
         "processDummy": "false",
         "processFullEl": "false",
@@ -6256,6 +6493,30 @@
         },
         "processMC": "false"
     },
+    "hf-task-xic-to-xi-pi-pi": {
+        "selectionFlagXic": "1",
+        "yCandGenMax": "0.5",
+        "yCandRecoMax": "0.8",
+        "etaTrackMax": "0.8",
+        "ptTrackMin": "0.1",
+        "binsPt": {
+            "values": [
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "8",
+                "12",
+                "24",
+                "36"
+            ]
+        },
+        "checkDecayTypeMc": "false",
+        "processMc": "false"
+    },
     "hf-task-mc-validation-gen": {
         "xVertexMin": "-100",
         "xVertexMax": "100",
@@ -6303,6 +6564,19 @@
         "processDataLite": "false",
         "processMcLiteXic0": "false",
         "processMcLiteOmegac0": "false"
+    },
+    "hf-tree-creator-xic-to-xi-pi-pi": {
+        "selectionXic": "1",
+        "fillCandidateLiteTable": "false",
+        "fillCandidateDauIndexTable": "false",
+        "fillOnlySignal": "false",
+        "fillOnlyBackground": "false",
+        "downSampleBkgFactor": "1",
+        "ptMaxForDownSample": "10",
+        "processData": "true",
+        "processDataKf": "false",
+        "processMc": "false",
+        "processMcKf": "false"
     },
     "hf-derived-data-creator-d0-to-k-pi": {
         "fillCandidateBase": "true",
@@ -7202,7 +7476,7 @@
         "processWSlice": "true",
         "processWoSlice": "false"
     },
-    "tpc-pid-full": {
+    "tpc-pid": {
         "param-file": "",
         "ccdb-url": "http://alice-ccdb.cern.ch",
         "ccdbPath": "Analysis/PID/TPC/Response",
@@ -7215,15 +7489,24 @@
         "networkPathCCDB": "Analysis/PID/TPC/ML",
         "enableNetworkOptimizations": "true",
         "networkSetNumThreads": "0",
-        "pid-el": "-1",
-        "pid-mu": "-1",
-        "pid-pi": "-1",
-        "pid-ka": "-1",
-        "pid-pr": "-1",
-        "pid-de": "-1",
-        "pid-tr": "-1",
-        "pid-he": "-1",
-        "pid-al": "-1",
+        "pid-full-el": "-1",
+        "pid-full-mu": "-1",
+        "pid-full-pi": "-1",
+        "pid-full-ka": "-1",
+        "pid-full-pr": "-1",
+        "pid-full-de": "-1",
+        "pid-full-tr": "-1",
+        "pid-full-he": "-1",
+        "pid-full-al": "-1",
+        "pid-tiny-el": "-1",
+        "pid-tiny-mu": "-1",
+        "pid-tiny-pi": "-1",
+        "pid-tiny-ka": "-1",
+        "pid-tiny-pr": "-1",
+        "pid-tiny-de": "-1",
+        "pid-tiny-tr": "-1",
+        "pid-tiny-he": "-1",
+        "pid-tiny-al": "-1",
         "enableTuneOnDataTable": "-1",
         "useNetworkEl": "1",
         "useNetworkMu": "1",

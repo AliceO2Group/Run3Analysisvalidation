@@ -81,7 +81,7 @@ workflows:
 
   o2-analysis-pid-tpc-base: {}
 
-  o2-analysis-pid-tpc-full:
+  o2-analysis-pid-tpc:
     dependencies: [o2-analysis-pid-tpc-base, o2-analysis-timestamp]
 
   o2-analysis-pid-tof-base_run2:
@@ -104,7 +104,7 @@ workflows:
     executable: o2-analysis-alice3-pid-tof
 
   o2-analysis-pid-bayes:
-    dependencies: [o2-analysis-pid-tof-full_runX, o2-analysis-pid-tpc-full, o2-analysis-multiplicity-table_runX]
+    dependencies: [o2-analysis-pid-tof-full_runX, o2-analysis-pid-tpc, o2-analysis-multiplicity-table_runX]
 
   o2-analysis-pid-tof-beta: {}
 
@@ -127,4 +127,4 @@ workflows:
   # LF
 
   o2-analysis-lf-lambdakzerobuilder:
-    dependencies: [o2-analysis-timestamp, o2-analysis-track-dca_runX, o2-analysis-pid-tpc-full]
+    dependencies: [o2-analysis-timestamp, o2-analysis-track-dca_runX, o2-analysis-pid-tpc]
