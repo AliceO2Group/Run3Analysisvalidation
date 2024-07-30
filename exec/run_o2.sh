@@ -5,8 +5,8 @@ FILEIN="$2"
 JSON="$3"
 LOGFILE="$4"
 
-# Run the script and show how much time it took.
-/usr/bin/time -f "time: %E\nCPU: %P" bash "$SCRIPT" "$FILEIN" "$JSON" > "$LOGFILE" 2>&1
+# Run the script.
+bash "$SCRIPT" "$FILEIN" "$JSON" > "$LOGFILE" 2>&1
 ExitCode=$?
 
 # Show warnings and errors in the log file.
