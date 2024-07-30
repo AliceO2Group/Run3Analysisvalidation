@@ -250,6 +250,7 @@ workflows:
       - o2-analysis-hf-candidate-creator-xic-to-xi-pi-pi
       - o2-analysis-pid-tof-full_runX
       - o2-analysis-multiplicity-table_runX
+      - o2-analysis-pid-tpc
 
   # Analysis tasks
 
