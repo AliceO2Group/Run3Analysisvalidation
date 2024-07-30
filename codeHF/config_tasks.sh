@@ -82,7 +82,7 @@ DOO2_TASK_XICC=0    # hf-task-xicc
 DOO2_TASK_B0=0      # hf-task-b0
 DOO2_TASK_BPLUS=0   # hf-task-bplus
 DOO2_TASK_DSTAR=0   # hf-task-dstar-to-d0-pi
-DOO2_TASK_XIC_XIPIPI=1  # hf-task-xic-to-xi-pi-pi
+DOO2_TASK_XIC_XIPIPI=0  # hf-task-xic-to-xi-pi-pi
 # Tree creators
 DOO2_TREE_D0=0      # hf-tree-creator-d0-to-k-pi
 DOO2_TREE_LC=0      # hf-tree-creator-lc-to-p-k-pi (only Run 3)
