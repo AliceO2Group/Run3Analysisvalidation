@@ -129,6 +129,7 @@ DOO2_PID_BAYES=0    # pid-bayes
 DOO2_CONV_MC=0      # mc-converter
 DOO2_CONV_FDD=0     # fdd-converter
 DOO2_CONV_COLL=0    # collision-converter
+DOO2_CONV_MCCOLL=0  # mccollision-converter
 DOO2_CONV_ZDC=0     # zdc-converter
 DOO2_CONV_BC=0      # bc-converter
 DOO2_CONV_TRKEX=0   # tracks-extra-converter
@@ -531,6 +532,7 @@ function MakeScriptO2 {
   [ $DOO2_CONV_MC -eq 1 ] && WORKFLOWS+=" o2-analysis-mc-converter"
   [ $DOO2_CONV_FDD -eq 1 ] && WORKFLOWS+=" o2-analysis-fdd-converter"
   [ $DOO2_CONV_COLL -eq 1 ] && WORKFLOWS+=" o2-analysis-collision-converter"
+  [ $DOO2_CONV_MCCOLL -eq 1 ] && WORKFLOWS+=" o2-analysis-mccollision-converter"
   [ $DOO2_CONV_ZDC -eq 1 ] && WORKFLOWS+=" o2-analysis-zdc-converter"
   [ $DOO2_CONV_BC -eq 1 ] && WORKFLOWS+=" o2-analysis-bc-converter"
   [ $DOO2_CONV_TRKEX -eq 1 ] && WORKFLOWS+=" o2-analysis-tracks-extra-converter"
