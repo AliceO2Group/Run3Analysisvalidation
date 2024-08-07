@@ -21,10 +21,10 @@ Int_t Compare(TString pathFileO2 = "AnalysisResults_O2.root", TString pathFileAl
   // Histogram specification: axis label, AliPhysics name, O2Physics path/name, rebin, log scale histogram, log scale ratio, projection axis
 
   VecSpecHis vecHisEvents;
-  AddHistogram(vecHisEvents, "primary vtx x (cm)", "hPrimVertX", "hf-track-index-skim-creator-tag-sel-collisions/hPrimVtxXAfterSel", 1, 1, 0);
-  AddHistogram(vecHisEvents, "primary vtx y (cm)", "hPrimVertY", "hf-track-index-skim-creator-tag-sel-collisions/hPrimVtxYAfterSel", 1, 1, 0);
-  AddHistogram(vecHisEvents, "primary vtx z (cm)", "hPrimVertZ", "hf-track-index-skim-creator-tag-sel-collisions/hPrimVtxZAfterSel", 1, 1, 0);
-  AddHistogram(vecHisEvents, "primary vtx N contributors", "fHistPrimVertContr", "hf-track-index-skim-creator-tag-sel-collisions/hNContributorsAfterSel", 1, 1, 0);
+  AddHistogram(vecHisEvents, "primary vtx x (cm)", "hPrimVertX", "hf-track-index-skim-creator-tag-sel-collisions/hPosXAfterEvSel", 1, 1, 0);
+  AddHistogram(vecHisEvents, "primary vtx y (cm)", "hPrimVertY", "hf-track-index-skim-creator-tag-sel-collisions/hPosYAfterEvSel", 1, 1, 0);
+  AddHistogram(vecHisEvents, "primary vtx z (cm)", "hPrimVertZ", "hf-track-index-skim-creator-tag-sel-collisions/hPosZAfterEvSel", 1, 1, 0);
+  AddHistogram(vecHisEvents, "primary vtx N contributors", "fHistPrimVertContr", "hf-track-index-skim-creator-tag-sel-collisions/hNumPvContributorsAfterSel", 1, 1, 0);
 
   VecSpecHis vecHisTracks;
   AddHistogram(vecHisTracks, "#it{p}_{T} before selections (GeV/#it{c})", "hPtAllTracks", "hf-track-index-skim-creator-tag-sel-tracks/hPtNoCuts", 2, 1, 0);
