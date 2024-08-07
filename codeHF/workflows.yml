@@ -537,6 +537,7 @@ workflows:
   # Helper tasks
 
   o2-analysis-track-to-collision-associator:
+    dependencies: [o2-analysis-track-dca_runX, o2-analysis-trackselection_runX]
     tables: HFTRACKASSOC
 
   o2-analysis-timestamp: {}
@@ -565,6 +566,7 @@ workflows:
 
   o2-analysis-centrality_run2:
     executable: o2-analysis-centrality-table
+    dependencies: [o2-analysis-timestamp, o2-analysis-multiplicity-table_run2]
 
   o2-analysis-centrality_run3:
     executable: o2-analysis-centrality-table
