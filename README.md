@@ -118,7 +118,7 @@ These are the available input parameters and their default values:
 * `INPUT_RUN=2`                     LHC Run (2, 3, 5)
 * `INPUT_IS_O2=0`                   Input files are in O<sup>2</sup> format.
 * `INPUT_IS_MC=0`                   Input files are MC data.
-* `INPUT_PARENT_MASK=""`            Path replacement mask for the input directory of parent files in case of linked derived O<sup>2</sup> input. Set to `";"` if no replacement needed.
+* `INPUT_PARENT_MASK=""`            Path replacement mask for the input directory of parent files in case of linked derived O<sup>2</sup> input. Set to `";"` if no replacement needed. Syntax: "alien:///path/in/alien;/local/path"
 * `INPUT_TASK_CONFIG=""`            Input-specific task configuration (e.g. enabling converters), overriding the task configuration. String of space-separated commands.
 * `JSON="dpl-config.json"`          O<sup>2</sup> device configuration
 
