@@ -192,9 +192,13 @@ function AdjustJson {
   if [ "$INPUT_RUN" -eq 2 ]; then
     ReplaceString "\"processRun2\": \"false\"" "\"processRun2\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processRun3\": \"true\"" "\"processRun3\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processRun2\": \"0\"" "\"processRun2\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processRun3\": \"1\"" "\"processRun3\": \"0\"" "$JSON" || ErrExit "Failed to edit $JSON."
   elif [ "$INPUT_RUN" -eq 3 ]; then
     ReplaceString "\"processRun2\": \"true\"" "\"processRun2\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processRun3\": \"false\"" "\"processRun3\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processRun2\": \"1\"" "\"processRun2\": \"0\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processRun3\": \"0\"" "\"processRun3\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # MC
@@ -206,6 +210,7 @@ function AdjustJson {
     ReplaceString "\"processMcWithDCAFitterAll\": \"false\"" "\"processMcWithDCAFitterAll\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processMcWithDCAFitterN\": \"false\"" "\"processMcWithDCAFitterN\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processMC\": \"false\"" "\"processMC\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processMC\": \"0\"" "\"processMC\": \"1\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processData\": \"true\"" "\"processData\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processDataStd\": \"true\"" "\"processDataStd\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processDataWithDCAFitterN\": \"true\"" "\"processDataWithDCAFitterN\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
@@ -217,6 +222,7 @@ function AdjustJson {
     ReplaceString "\"processMcWithDCAFitterAll\": \"true\"" "\"processMcWithDCAFitterAll\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processMcWithDCAFitterN\": \"true\"" "\"processMcWithDCAFitterN\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processMC\": \"true\"" "\"processMC\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processMC\": \"1\"" "\"processMC\": \"0\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processData\": \"false\"" "\"processData\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processDataStd\": \"false\"" "\"processDataStd\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
     ReplaceString "\"processDataWithDCAFitterN\": \"false\"" "\"processDataWithDCAFitterN\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
