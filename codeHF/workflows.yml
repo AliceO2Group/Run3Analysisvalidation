@@ -60,7 +60,14 @@ workflows:
 
   o2-analysis-hf-candidate-creator-2prong: &cand_creator_2p
     executable: o2-analysis-hf-candidate-creator-2prong
-    dependencies: o2-analysis-hf-track-index-skim-creator_skimX
+    dependencies:
+      - o2-analysis-hf-track-index-skim-creator_skimX
+      - o2-analysis-track-dca_runX
+      - o2-analysis-event-selection
+      - o2-analysis-hf-pid-creator
+      - o2-analysis-pid-tof-full_runX
+      - o2-analysis-pid-tpc
+
     tables:
       default: [HFCAND2PBASE, DYN/HFCAND2PEXT]
       mc: [HFCAND2PMCREC, HFCAND2PMCGEN]
@@ -70,8 +77,8 @@ workflows:
     dependencies: o2-analysis-track-dca_runX
 
   o2-analysis-hf-candidate-creator-3prong: &cand_creator_3p
+    <<: *cand_creator_2p
     executable: o2-analysis-hf-candidate-creator-3prong
-    dependencies: o2-analysis-hf-track-index-skim-creator_skimX
     tables:
       default: [HFCAND3PBASE, DYN/HFCAND3PEXT]
       mc: [HFCAND3PMCREC, HFCAND3PMCGEN]
@@ -81,8 +88,8 @@ workflows:
     dependencies: o2-analysis-track-dca_runX
 
   o2-analysis-hf-candidate-creator-dstar: &cand_creator_dstar
+    <<: *cand_creator_2p
     executable: o2-analysis-hf-candidate-creator-dstar
-    dependencies: o2-analysis-hf-track-index-skim-creator_skimX
     tables:
       default: [HFDSTARCANDBASE, DYN/HFDSTAREXT, HFD0FROMDSTAR, DYN/HFD0FRMDSTREXT]
       mc: [HFDSTARMCREC, HFDSTARMCGEN]

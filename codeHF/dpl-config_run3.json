@@ -19,7 +19,9 @@
             "centralityMax": "100",
             "useSel8Trigger": "true",
             "triggerClass": "-1",
+            "useTvxTrigger": "true",
             "useTimeFrameBorderCut": "true",
+            "useItsRofBorderCut": "true",
             "useIsGoodZvtxFT0vsPV": "false",
             "useNoSameBunchPileup": "false",
             "useNumTracksInTimeRange": "false",
@@ -28,7 +30,10 @@
             "nPvContributorsMin": "0",
             "chi2PvMax": "-1",
             "zPvPosMin": "-10",
-            "zPvPosMax": "10"
+            "zPvPosMax": "10",
+            "softwareTrigger": "",
+            "bcMarginForSoftwareTrigger": "100",
+            "ccdbPathSoftwareTrigger": "Users/m/mpuccio/EventFiltering/OTS/"
         },
         "processTrigAndCentFT0ASel": "false",
         "processTrigAndCentFT0CSel": "false",
@@ -791,6 +796,7 @@
     "hf-track-index-skim-creator-cascades": {
         "isRun2": "true",
         "fillHistograms": "true",
+        "useDCAFitter": "true",
         "propagateToPCA": "true",
         "maxR": "200",
         "maxDZIni": "4",
@@ -798,11 +804,6 @@
         "minRelChi2Change": "0.9",
         "useAbsDCA": "true",
         "useWeightedFinalPCA": "false",
-        "doCutQuality": "true",
-        "tpcRefitBach": "false",
-        "nCrossedRowsMinBach": "50",
-        "tpcRefitV0Daugh": "false",
-        "nCrossedRowsMinV0Daugh": "50",
         "etaMinV0Daugh": "-99999",
         "etaMaxV0Daugh": "1.1",
         "ptMinV0Daugh": "0.05",
@@ -2380,6 +2381,38 @@
         },
         "timestampCCDB": "-1",
         "loadModelsFromCCDB": "false",
+        "useTriggerMassCut": "false",
+        "hfTrigger2ProngCuts": {
+            "nSigmaMax": "2",
+            "ptDeltaMassMax": "10",
+            "ptMassCutMax": "9999",
+            "deltaMassPars": {
+                "labels_rows": "",
+                "labels_cols": [
+                    "constant",
+                    "linear"
+                ],
+                "values": [
+                    [
+                        "-0.0025",
+                        "9.99999975e-05"
+                    ]
+                ]
+            },
+            "sigmaPars": {
+                "labels_rows": "",
+                "labels_cols": [
+                    "constant",
+                    "linear"
+                ],
+                "values": [
+                    [
+                        "0.0142400004",
+                        "0.00178000005"
+                    ]
+                ]
+            }
+        },
         "processWithDCAFitterN": "true",
         "processWithKFParticle": "false"
     },
@@ -5876,6 +5909,13 @@
                 "1"
             ]
         },
+        "thnConfigAxisPromptScore": {
+            "values": [
+                "50",
+                "0",
+                "1"
+            ]
+        },
         "thnConfigAxisMass": {
             "values": [
                 "120",
@@ -6182,11 +6222,11 @@
                 "20"
             ]
         },
-        "thnConfigAxisMultiplicity": {
+        "thnConfigAxisCentrality": {
             "values": [
                 "100",
                 "0",
-                "1000"
+                "100"
             ]
         },
         "thnConfigAxisChi2PCA": {
@@ -6233,8 +6273,16 @@
         },
         "processDataStd": "true",
         "processDataWithMl": "false",
+        "processDataStdWithFT0C": "false",
+        "processDataWithMlWithFT0C": "false",
+        "processDataStdWithFT0M": "false",
+        "processDataWithMlWithFT0M": "false",
         "processMcStd": "false",
-        "processMcWithMl": "false"
+        "processMcWithMl": "false",
+        "processMcStdWithFT0C": "false",
+        "processMcWithMlWithFT0C": "false",
+        "processMcStdWithFT0M": "false",
+        "processMcWithMlWithFT0M": "false"
     },
     "hf-task-lc-to-k0s-p": {
         "selectionFlagLcToK0sP": "0",
@@ -7308,80 +7356,67 @@
         "processRun3FT0": "false"
     },
     "multiplicity-table": {
-        "doVertexZeq": "1",
-        "fractionOfEvents": "2",
+        "processRun3": "0",
+        "processRun2": "1",
         "enabledTables": {
-            "labels_rows": [
-                "FV0Mults",
-                "FT0Mults",
-                "FDDMults",
-                "ZDCMults",
-                "TrackletMults",
-                "TPCMults",
-                "PVMults",
-                "MultsExtra",
-                "MultSelections",
-                "FV0MultZeqs",
-                "FT0MultZeqs",
-                "FDDMultZeqs",
-                "PVMultZeqs",
-                "MultsExtraMC"
-            ],
-            "labels_cols": [
-                "Enable"
-            ],
             "values": [
                 [
-                    "-1"
+                    -1
                 ],
                 [
-                    "-1"
+                    -1
                 ],
                 [
-                    "-1"
+                    -1
                 ],
                 [
-                    "-1"
+                    -1
                 ],
                 [
-                    "-1"
+                    -1
                 ],
                 [
-                    "-1"
+                    -1
                 ],
                 [
-                    "-1"
+                    -1
                 ],
                 [
-                    "-1"
+                    -1
                 ],
                 [
-                    "-1"
+                    -1
                 ],
                 [
-                    "-1"
+                    -1
                 ],
                 [
-                    "-1"
+                    -1
                 ],
                 [
-                    "-1"
+                    -1
                 ],
                 [
-                    "-1"
+                    -1
                 ],
                 [
-                    "-1"
+                    -1
                 ]
             ]
         },
-        "ccdburl": "http://alice-ccdb.cern.ch",
+        "fractionOfEvents": "2",
+        "processMC2Mults": "0",
+        "min_pt_globaltrack": "0.15",
+        "min_ncluster_its_globaltrack": "5",
+        "max_pt_globaltrack": "1e+10",
+        "processGlobalTrackingCounters": "0",
+        "min_ncluster_itsib_globaltrack": "1",
+        "doVertexZeq": "1",
+        "produceHistograms": "0",
+        "reconstructionPass": " ",
         "ccdbpath": "Centrality/Calibration",
-        "produceHistograms": "false",
-        "processRun2": "true",
-        "processRun3": "false",
-        "processGlobalTrackingCounters": "false",
-        "processMC": "true"
+        "ccdburl": "http://alice-ccdb.cern.ch",
+        "processMC": "1"
     },
     "pid-multiplicity": {
         "processIU": "false",
