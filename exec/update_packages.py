@@ -20,6 +20,7 @@ import yaml  # pylint: disable=import-error
 
 # global variables
 debug = False
+alibuild_exists = False
 alibuild_arch, alibuild_opt, alibuild_dir_alice, alibuild_dir_sw = "", "", "", ""
 clean_do, clean_aggressive, clean_purge = 0, 0, 0
 
@@ -157,13 +158,13 @@ def healthy_structure(dic_full: dict):
     if not alibuild_dir_alice:
         msg_fatal(f"Invalid path: {alibuild_dir_alice}.")
     alibuild_dir_alice_real = get_cmd(f"realpath {alibuild_dir_alice}")
-    if not os.path.isdir(alibuild_dir_alice_real):
+    if alibuild_exists and not os.path.isdir(alibuild_dir_alice_real):
         msg_fatal(f"{alibuild_dir_alice} does not exist.")
     alibuild_opt = dic_alibuild["options"]
     alibuild_dir_sw = os.environ["ALIBUILD_WORK_DIR"]
     if not alibuild_dir_sw:
         msg_fatal("ALIBUILD_WORK_DIR is not defined.")
-    if not os.path.isdir(alibuild_dir_sw):
+    if alibuild_exists and not os.path.isdir(alibuild_dir_sw):
         msg_fatal(f"{alibuild_dir_sw} does not exist.")
     clean_do = dic_alibuild["clean"]
     clean_aggressive = dic_alibuild["clean_aggressive"]
@@ -304,7 +305,10 @@ def update_package(repo: str, dic_repo: dict):
         print("Update deactivated. Skipping")
     # Build package.
     if dic_repo.get("build", False):
-        build_package(repo, dic_repo)
+        if alibuild_exists:
+            build_package(repo, dic_repo)
+        else:
+            msg_warn("Skipping build because of absent aliBuild.")
 
 
 def main():
@@ -343,16 +347,22 @@ def main():
     dic_repos = dic_in["repositories"]
 
     # Check aliBuild
-    get_cmd("which aliBuild", "aliBuild not found")
+    global alibuild_exists
+    try:
+        get_cmd("which aliBuild", "aliBuild not found")
+        alibuild_exists = True
+    except:
+        msg_warn("aliBuild commands will be skipped.")
 
     global alibuild_arch
-    if not alibuild_arch:
+    if not alibuild_arch and alibuild_exists:
         alibuild_arch = get_cmd("aliBuild architecture", "Failed to get architecture")
 
     # Dry run: Print out configuration and exit.
     if show_config:
         msg_step("Configuration")
-        print(get_cmd("aliBuild version", "Failed to get aliBuild version"))
+        if alibuild_exists:
+            print(get_cmd("aliBuild version", "Failed to get aliBuild version"))
         print(f"Architecture: {alibuild_arch}")
         print(f"aliBuild work dir: {alibuild_dir_sw}")
         print(f"aliBuild build dir: {alibuild_dir_alice}")
@@ -376,7 +386,7 @@ def main():
         update_package(repo, dic_repo)
 
     # Cleanup
-    if clean_do:
+    if clean_do and alibuild_exists:
         msg_step("Cleaning aliBuild files")
         alibuild_dir_arch = f"{alibuild_dir_sw}/{alibuild_arch}"
         alibuild_dir_build = f"{alibuild_dir_sw}/BUILD"
