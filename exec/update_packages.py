@@ -84,9 +84,7 @@ def exec_cmd(cmd: str, msg=None, silent=False, safe=False):
         msg_fatal("Command contains forbidden characters!")
     try:
         if silent:
-            sp.run(  # nosec B602
-                cmd, shell=True, check=True, stdout=sp.DEVNULL, stderr=sp.DEVNULL
-            )
+            sp.run(cmd, shell=True, check=True, stdout=sp.DEVNULL, stderr=sp.DEVNULL)  # nosec B602
         else:
             sp.run(cmd, shell=True, check=True)  # nosec B602
     except sp.CalledProcessError:
@@ -150,9 +148,7 @@ def healthy_structure(dic_full: dict):
             msg_err('"aliBuild" is not a dictionary.')
             return False
         for key, val in template_alibuild.items():
-            dic_alibuild[key] = dic_alibuild.get(
-                key, val
-            )  # Create a default value if not set.
+            dic_alibuild[key] = dic_alibuild.get(key, val)  # Create a default value if not set.
     global alibuild_arch, alibuild_dir_alice, alibuild_opt, alibuild_dir_sw, clean_do, clean_aggressive, clean_purge
     alibuild_arch = dic_alibuild["architecture"]
     alibuild_dir_alice = dic_alibuild["dir_alice"]
@@ -232,15 +228,11 @@ def update_branch(remote_upstream, remote_origin, branch_main, branch_current):
 
     # Synchronise with the origin first, just in case there are some commits pushed from another local repository.
     if remote_origin:
-        msg_subsubstep(
-            f"-- Updating branch {branch_current} from {remote_origin}/{branch_current}"
-        )
+        msg_subsubstep(f"-- Updating branch {branch_current} from {remote_origin}/{branch_current}")
         exec_cmd(f"git pull --rebase {remote_origin} {branch_current}")
 
     # Synchronise with upstream/main.
-    msg_subsubstep(
-        f"-- Updating branch {branch_current} from {remote_upstream}/{branch_main}"
-    )
+    msg_subsubstep(f"-- Updating branch {branch_current} from {remote_upstream}/{branch_main}")
     exec_cmd(f"git pull --rebase {remote_upstream} {branch_main}")
 
     # Push to the origin.
@@ -317,12 +309,8 @@ def main():
     parser = argparse.ArgumentParser(
         description="This script updates local and remote Git repositories, builds aliBuild packages and does cleanup."
     )
-    parser.add_argument(
-        "database", help="database with package configuration and options"
-    )
-    parser.add_argument(
-        "-d", "--debug", action="store_true", help="print debugging info"
-    )
+    parser.add_argument("database", help="database with package configuration and options")
+    parser.add_argument("-d", "--debug", action="store_true", help="print debugging info")
     parser.add_argument("-l", action="store_true", help="print latest commits and exit")
     parser.add_argument("-c", action="store_true", help="print configuration and exit")
     args = parser.parse_args()
@@ -399,9 +387,7 @@ def main():
         # Delete all symlinks to builds and recreate the latest ones to allow deleting of all other builds.
         if clean_purge:
             msg_substep("- Purging builds")
-            msg_warn(
-                "This action will run 'aliBuild build' for each development package."
-            )
+            msg_warn("This action will run 'aliBuild build' for each development package.")
             # Check existence of the build directories.
             msg_subsubstep("-- Checking existence of the build directories")
             for dir in (alibuild_dir_arch, alibuild_dir_build):
@@ -440,9 +426,7 @@ def main():
                     msg_subsubstep(f"-- Recreating symlinks in SOURCES to {repo}")
                     path_link = f"{alibuild_dir_sw}/SOURCES/{repo}/{dic_repo['branch']}"
                     os.makedirs(path_link)
-                    os.symlink(
-                        get_cmd(f"realpath {dic_repo['path']}"), f"{path_link}/0"
-                    )
+                    os.symlink(get_cmd(f"realpath {dic_repo['path']}"), f"{path_link}/0")
 
         # Get the directory size after cleaning.
         msg_substep(f"- Estimating size of {alibuild_dir_sw}")
