@@ -105,6 +105,7 @@ def get_cmd(cmd: str, msg=None, safe=False) -> str:
         return out.strip()
     except sp.CalledProcessError:
         msg_fatal(msg if msg else f"executing: {cmd}")
+        return ""
 
 
 def chdir(path: str):
