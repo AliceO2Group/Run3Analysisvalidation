@@ -20,6 +20,7 @@ import yaml  # pylint: disable=import-error
 
 # global variables
 debug = False
+alibuild_exists = False
 alibuild_arch, alibuild_opt, alibuild_dir_alice, alibuild_dir_sw = "", "", "", ""
 clean_do, clean_aggressive, clean_purge = 0, 0, 0
 
@@ -83,16 +84,14 @@ def exec_cmd(cmd: str, msg=None, silent=False, safe=False):
         msg_fatal("Command contains forbidden characters!")
     try:
         if silent:
-            sp.run(  # nosec B602
-                cmd, shell=True, check=True, stdout=sp.DEVNULL, stderr=sp.DEVNULL
-            )
+            sp.run(cmd, shell=True, check=True, stdout=sp.DEVNULL, stderr=sp.DEVNULL)  # nosec B602
         else:
             sp.run(cmd, shell=True, check=True)  # nosec B602
     except sp.CalledProcessError:
         msg_fatal(msg if msg else f"executing: {cmd}")
 
 
-def get_cmd(cmd: str, msg=None, safe=False):
+def get_cmd(cmd: str, msg=None, safe=False) -> str:
     """Get output of a shell command."""
     if debug:
         eprint(cmd)
@@ -104,6 +103,7 @@ def get_cmd(cmd: str, msg=None, safe=False):
         return out.strip()
     except sp.CalledProcessError:
         msg_fatal(msg if msg else f"executing: {cmd}")
+        return ""
 
 
 def chdir(path: str):
@@ -148,22 +148,20 @@ def healthy_structure(dic_full: dict):
             msg_err('"aliBuild" is not a dictionary.')
             return False
         for key, val in template_alibuild.items():
-            dic_alibuild[key] = dic_alibuild.get(
-                key, val
-            )  # Create a default value if not set.
+            dic_alibuild[key] = dic_alibuild.get(key, val)  # Create a default value if not set.
     global alibuild_arch, alibuild_dir_alice, alibuild_opt, alibuild_dir_sw, clean_do, clean_aggressive, clean_purge
     alibuild_arch = dic_alibuild["architecture"]
     alibuild_dir_alice = dic_alibuild["dir_alice"]
     if not alibuild_dir_alice:
         msg_fatal(f"Invalid path: {alibuild_dir_alice}.")
     alibuild_dir_alice_real = get_cmd(f"realpath {alibuild_dir_alice}")
-    if not os.path.isdir(alibuild_dir_alice_real):
+    if alibuild_exists and not os.path.isdir(alibuild_dir_alice_real):
         msg_fatal(f"{alibuild_dir_alice} does not exist.")
     alibuild_opt = dic_alibuild["options"]
     alibuild_dir_sw = os.environ["ALIBUILD_WORK_DIR"]
     if not alibuild_dir_sw:
         msg_fatal("ALIBUILD_WORK_DIR is not defined.")
-    if not os.path.isdir(alibuild_dir_sw):
+    if alibuild_exists and not os.path.isdir(alibuild_dir_sw):
         msg_fatal(f"{alibuild_dir_sw} does not exist.")
     clean_do = dic_alibuild["clean"]
     clean_aggressive = dic_alibuild["clean_aggressive"]
@@ -230,15 +228,11 @@ def update_branch(remote_upstream, remote_origin, branch_main, branch_current):
 
     # Synchronise with the origin first, just in case there are some commits pushed from another local repository.
     if remote_origin:
-        msg_subsubstep(
-            f"-- Updating branch {branch_current} from {remote_origin}/{branch_current}"
-        )
+        msg_subsubstep(f"-- Updating branch {branch_current} from {remote_origin}/{branch_current}")
         exec_cmd(f"git pull --rebase {remote_origin} {branch_current}")
 
     # Synchronise with upstream/main.
-    msg_subsubstep(
-        f"-- Updating branch {branch_current} from {remote_upstream}/{branch_main}"
-    )
+    msg_subsubstep(f"-- Updating branch {branch_current} from {remote_upstream}/{branch_main}")
     exec_cmd(f"git pull --rebase {remote_upstream} {branch_main}")
 
     # Push to the origin.
@@ -304,7 +298,10 @@ def update_package(repo: str, dic_repo: dict):
         print("Update deactivated. Skipping")
     # Build package.
     if dic_repo.get("build", False):
-        build_package(repo, dic_repo)
+        if alibuild_exists:
+            build_package(repo, dic_repo)
+        else:
+            msg_warn("Skipping build because of absent aliBuild.")
 
 
 def main():
@@ -312,12 +309,8 @@ def main():
     parser = argparse.ArgumentParser(
         description="This script updates local and remote Git repositories, builds aliBuild packages and does cleanup."
     )
-    parser.add_argument(
-        "database", help="database with package configuration and options"
-    )
-    parser.add_argument(
-        "-d", "--debug", action="store_true", help="print debugging info"
-    )
+    parser.add_argument("database", help="database with package configuration and options")
+    parser.add_argument("-d", "--debug", action="store_true", help="print debugging info")
     parser.add_argument("-l", action="store_true", help="print latest commits and exit")
     parser.add_argument("-c", action="store_true", help="print configuration and exit")
     args = parser.parse_args()
@@ -343,16 +336,22 @@ def main():
     dic_repos = dic_in["repositories"]
 
     # Check aliBuild
-    get_cmd("which aliBuild", "aliBuild not found")
+    global alibuild_exists
+    try:
+        get_cmd("which aliBuild", "aliBuild not found")
+        alibuild_exists = True
+    except SystemExit:
+        msg_warn("aliBuild commands will be skipped.")
 
     global alibuild_arch
-    if not alibuild_arch:
+    if not alibuild_arch and alibuild_exists:
         alibuild_arch = get_cmd("aliBuild architecture", "Failed to get architecture")
 
     # Dry run: Print out configuration and exit.
     if show_config:
         msg_step("Configuration")
-        print(get_cmd("aliBuild version", "Failed to get aliBuild version"))
+        if alibuild_exists:
+            print(get_cmd("aliBuild version", "Failed to get aliBuild version"))
         print(f"Architecture: {alibuild_arch}")
         print(f"aliBuild work dir: {alibuild_dir_sw}")
         print(f"aliBuild build dir: {alibuild_dir_alice}")
@@ -376,7 +375,7 @@ def main():
         update_package(repo, dic_repo)
 
     # Cleanup
-    if clean_do:
+    if clean_do and alibuild_exists:
         msg_step("Cleaning aliBuild files")
         alibuild_dir_arch = f"{alibuild_dir_sw}/{alibuild_arch}"
         alibuild_dir_build = f"{alibuild_dir_sw}/BUILD"
@@ -388,9 +387,7 @@ def main():
         # Delete all symlinks to builds and recreate the latest ones to allow deleting of all other builds.
         if clean_purge:
             msg_substep("- Purging builds")
-            msg_warn(
-                "This action will run 'aliBuild build' for each development package."
-            )
+            msg_warn("This action will run 'aliBuild build' for each development package.")
             # Check existence of the build directories.
             msg_subsubstep("-- Checking existence of the build directories")
             for dir in (alibuild_dir_arch, alibuild_dir_build):
@@ -429,9 +426,7 @@ def main():
                     msg_subsubstep(f"-- Recreating symlinks in SOURCES to {repo}")
                     path_link = f"{alibuild_dir_sw}/SOURCES/{repo}/{dic_repo['branch']}"
                     os.makedirs(path_link)
-                    os.symlink(
-                        get_cmd(f"realpath {dic_repo['path']}"), f"{path_link}/0"
-                    )
+                    os.symlink(get_cmd(f"realpath {dic_repo['path']}"), f"{path_link}/0")
 
         # Get the directory size after cleaning.
         msg_substep(f"- Estimating size of {alibuild_dir_sw}")
