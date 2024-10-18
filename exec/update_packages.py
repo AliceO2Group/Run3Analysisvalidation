@@ -93,7 +93,7 @@ def exec_cmd(cmd: str, msg=None, silent=False, safe=False):
         msg_fatal(msg if msg else f"executing: {cmd}")
 
 
-def get_cmd(cmd: str, msg=None, safe=False):
+def get_cmd(cmd: str, msg=None, safe=False) -> str:
     """Get output of a shell command."""
     if debug:
         eprint(cmd)
@@ -351,7 +351,7 @@ def main():
     try:
         get_cmd("which aliBuild", "aliBuild not found")
         alibuild_exists = True
-    except:
+    except SystemExit:
         msg_warn("aliBuild commands will be skipped.")
 
     global alibuild_arch
