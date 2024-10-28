@@ -62,7 +62,7 @@ workflows:
     executable: o2-analysis-hf-candidate-creator-2prong
     dependencies: o2-analysis-hf-track-index-skim-creator_skimX
     tables:
-      default: [HFCAND2PBASE, HFCAND2PEXT]
+      default: [HFCAND2PBASE, DYN/HFCAND2PEXT]
       mc: [HFCAND2PMCREC, HFCAND2PMCGEN]
 
   o2-analysis-hf-candidate-creator-2prong_derived:
@@ -73,7 +73,7 @@ workflows:
     executable: o2-analysis-hf-candidate-creator-3prong
     dependencies: o2-analysis-hf-track-index-skim-creator_skimX
     tables:
-      default: [HFCAND3PBASE, HFCAND3PEXT]
+      default: [HFCAND3PBASE, DYN/HFCAND3PEXT]
       mc: [HFCAND3PMCREC, HFCAND3PMCGEN]
 
   o2-analysis-hf-candidate-creator-3prong_derived:
@@ -84,7 +84,7 @@ workflows:
     executable: o2-analysis-hf-candidate-creator-dstar
     dependencies: o2-analysis-hf-track-index-skim-creator_skimX
     tables:
-      default: [HFDSTARCANDBASE, HFDSTAREXT, HFD0FROMDSTAR, HFD0FRMDSTREXT]
+      default: [HFDSTARCANDBASE, DYN/HFDSTAREXT, HFD0FROMDSTAR, DYN/HFD0FRMDSTREXT]
       mc: [HFDSTARMCREC, HFDSTARMCGEN]
 
   o2-analysis-hf-candidate-creator-dstar_derived:
@@ -96,13 +96,13 @@ workflows:
       - o2-analysis-hf-track-index-skim-creator_skimX
       - o2-analysis-event-selection
     tables:
-      default: [HFCANDCASCBASE, HFCANDCASCEXT]
+      default: [HFCANDCASCBASE, DYN/HFCANDCASCEXT]
       mc: [HFCANDCASCMCREC, HFCANDCASCMCGEN]
 
   o2-analysis-hf-candidate-creator-x:
     dependencies: o2-analysis-hf-candidate-selector-jpsi_runX
     tables:
-      default: [HFCANDXBASE, HFCANDXEXT]
+      default: [HFCANDXBASE, DYN/HFCANDXEXT]
       mc: [HFCANDXMCREC, HFCANDXMCGEN]
 
   o2-analysis-hf-candidate-creator-xicc:
@@ -111,31 +111,31 @@ workflows:
     options:
       mc: "--doMC"
     tables:
-      default: [HFCANDXICCBASE, HFCANDXICCEXT]
+      default: [HFCANDXICCBASE, DYN/HFCANDXICCEXT]
       mc: [HFCANDXICCMCREC, HFCANDXICCMCGEN]
 
   o2-analysis-hf-candidate-creator-chic:
     dependencies: o2-analysis-hf-candidate-selector-jpsi_runX
     tables:
-      default: [HFCANDCHICBASE, HFCANDCHICEXT]
+      default: [HFCANDCHICBASE, DYN/HFCANDCHICEXT]
       mc: [HFCANDCHICMCREC, HFCANDCHICMCGEN]
 
   o2-analysis-hf-candidate-creator-b0:
     dependencies: o2-analysis-hf-candidate-selector-dplus-to-pi-k-pi
     tables:
-      default: [HFCANDB0BASE, HFCANDB0EXT]
+      default: [HFCANDB0BASE, DYN/HFCANDB0EXT]
       mc: [HFCANDB0MCREC, HFCANDB0MCGEN]
 
   o2-analysis-hf-candidate-creator-bplus:
     dependencies: o2-analysis-hf-candidate-selector-d0
     tables:
-      default: [HFCANDBPLUSBASE, HFCANDBPLUSEXT]
+      default: [HFCANDBPLUSBASE, DYN/HFCANDBPLUSEXT]
       mc: [HFCANDBPMCREC, HFCANDBPMCGEN]
 
   o2-analysis-hf-candidate-creator-lb:
     dependencies: o2-analysis-hf-candidate-selector-lc
     tables:
-      default: [HFCANDLB, HFCANDLBEXT]
+      default: [HFCANDLB, DYN/HFCANDLBEXT]
       mc: [HFCANDLBMCREC, HFCANDLBMCGEN]
 
   o2-analysis-hf-candidate-creator-xic0-omegac0:
