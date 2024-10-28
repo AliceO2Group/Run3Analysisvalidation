@@ -60,6 +60,21 @@ def join_to_list(obj, list_out: list):
         msg_fatal("Cannot convert %s into a string" % type(obj))
 
 
+def make_table_output(spec: str) -> str:
+    """Format the output table descriptor."""
+    words = spec.split("/")
+    if len(words) > 2:
+        return spec
+    if len(words) == 1:
+        return f"AOD/{spec}/0"
+    if len(words) == 2:
+        if words[0] in ("AOD", "AOD1", "DYN"):
+            return f"{spec}/0"
+        if words[1].isdigit():
+            return f"AOD/{spec}"
+    return spec
+
+
 def healthy_structure(dic_full: dict):
     """Check correct structure of the database."""
     if not isinstance(dic_full, dict):
@@ -235,9 +250,7 @@ def main():
                     join_to_list(tab_wf["mc"], tables)
             else:
                 msg_fatal('"tables" in %s must be str, list or dict, is %s' % (wf, type(tab_wf)))
-        str_before = "AOD/"
-        str_after = "/0"
-        string_tables = ",".join(str_before + t + ("" if "/" in t else str_after) for t in tables)
+        string_tables = ",".join(make_table_output(t) for t in tables)
         if string_tables:
             opt_local += " --aod-writer-keep " + string_tables
 
