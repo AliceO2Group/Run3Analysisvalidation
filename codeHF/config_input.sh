@@ -152,5 +152,6 @@ case $INPUT_CASE in
     INPUT_RUN=3
     INPUT_IS_O2=1
     INPUT_IS_MC=1
+    INPUT_TASK_CONFIG="DOO2_CONV_MCCOLL=1"
     ;;
   esac
