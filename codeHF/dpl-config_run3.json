@@ -7304,11 +7304,19 @@
         "processRun3": "false"
     },
     "event-selection-task": {
-        "syst": "pp",
         "muonSelection": "0",
         "maxDiffZvtxFT0vsPV": "1",
-        "isMC": "true",
-        "TimeIntervalForOccupancyCalculation": "100",
+        "isMC": "0",
+        "confSigmaBCforHighPtTracks": "4",
+        "TimeIntervalForOccupancyCalculationMin": "-40",
+        "TimeIntervalForOccupancyCalculationMax": "100",
+        "TimeRangeVetoOnCollStandard": "10",
+        "TimeRangeVetoOnCollNarrow": "2",
+        "FT0CamplPerCollCutVetoOnCollInTimeRange": "8000",
+        "EpsilonDistanceForVzDependentVetoTPC": "2.5",
+        "FT0CamplPerCollCutVetoOnCollInROF": "5000",
+        "EpsilonVzDiffVetoInROF": "0.3",
+        "UseWeightsForOccupancyEstimator": "true",
         "processRun2": "true",
         "processRun3": "false"
     },
