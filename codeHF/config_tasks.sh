@@ -97,6 +97,7 @@ DOO2_TREE_XIC_XIPIPI=0  # hf-tree-creator-xic-to-xi-pi-pi
 # Derived-data creators
 DOO2_DATA_D0=0      # hf-derived-data-creator-d0-to-k-pi
 DOO2_DATA_LC=0      # hf-derived-data-creator-lc-to-p-k-pi
+DOO2_DATA_BPLUS=0   # hf-derived-data-creator-bplus-to-d0-pi
 # Correlations
 DOO2_CORR_D0D0BAR_DATA=0       # hf-correlator-d0-d0bar
 DOO2_CORR_D0D0BAR_MCREC=0      # hf-correlator-d0-d0bar_mc-rec
@@ -497,6 +498,7 @@ function MakeScriptO2 {
   # Derive-data creators
   [ $DOO2_DATA_D0 -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-derived-data-creator-d0-to-k-pi"
   [ $DOO2_DATA_LC -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-derived-data-creator-lc-to-p-k-pi"
+  [ $DOO2_DATA_BPLUS -eq 1 ] && WORKFLOWS+=" o2-analysis-hf-derived-data-creator-bplus-to-d0-pi"
   # Correlations
   WF_CORR=""
   [ $DOO2_CORR_D0D0BAR_DATA -eq 1 ] && WF_CORR="o2-analysis-hf-correlator-d0-d0bar o2-analysis-hf-task-correlation-d-dbar"
