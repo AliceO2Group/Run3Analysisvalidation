@@ -10,6 +10,6 @@ bash "$SCRIPT" "$FILEIN" "$JSON" > "$LOGFILE" 2>&1
 ExitCode=$?
 
 # Show warnings and errors in the log file.
-grep -e "\\[WARN\\]" -e "\\[ERROR\\]" -e "\\[FATAL\\]" -e "segmentation" -e "Segmentation" -e "command not found" -e "Error:" -e "Error in " -e "Warning in " "$LOGFILE" | sort -u
+grep -e "\\[ERROR\\]" -e "\\[FATAL\\]" -e "segmentation" -e "Segmentation" -e "SEGMENTATION" -e "command not found" -e "Program crashed" -e "Error:" -e "Error in " -e "\\[WARN\\]" -e "Warning in " "$LOGFILE" | sort -u
 
 exit $ExitCode
