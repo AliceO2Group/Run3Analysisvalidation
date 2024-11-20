@@ -6779,8 +6779,8 @@
         "nMixedEvents": 5,
         "processMixedTpcTpcHH": "true",
         "processMixedHfHadrons": "true",
-        "processRun2": "true",
-        "processRun3": "false"
+        "processRun3": "true",
+        "processRun2": "false"
     },
     "hf-correlator-d0-hadrons": {
         "selectionFlagD0": "0",
@@ -7252,25 +7252,50 @@
         "ITSROFrameEndBorderMargin": "-1",
         "TimeFrameStartBorderMargin": "-1",
         "TimeFrameEndBorderMargin": "-1",
-        "processRun2": "true",
-        "processRun3": "false"
+        "processRun3": "true",
+        "processRun2": "false"
     },
     "event-selection-task": {
-        "syst": "pp",
         "muonSelection": "0",
         "maxDiffZvtxFT0vsPV": "1",
-        "isMC": "true",
-        "TimeIntervalForOccupancyCalculation": "100",
+        "isMC": "1",
+        "TimeIntervalForOccupancyCalculationMin": "-40",
+        "TimeIntervalForOccupancyCalculationMax": "100",
+        "TimeBinsForOccupancyCalculation": {
+            "values": [
+                "-40",
+                "-20",
+                "0",
+                "25",
+                "50",
+                "75",
+                "100"
+            ]
+        },
+        "ReferenceOccupanciesInTimeBins": {
+            "values": [
+                "3000",
+                "1400",
+                "750",
+                "1000",
+                "1750",
+                "4000"
+            ]
+        },
+        "TimeRangeVetoOnCollStandard": "10",
+        "TimeRangeVetoOnCollNarrow": "4",
+        "UseWeightsForOccupancyEstimator": "true",
+        "confSigmaBCforHighPtTracks": "4",
         "processRun2": "true",
         "processRun3": "false"
     },
     "track-extension": {
         "compatibilityIU": "false",
-        "processRun2": "true",
-        "processRun3": "false"
+        "processRun3": "true",
+        "processRun2": "false"
     },
     "track-selection": {
-        "isRun3": "false",
+        "isRun3": "true",
         "produceTable": "-1",
         "produceFBextendedTable": "-1",
         "compatibilityIU": "false",
@@ -7303,8 +7328,8 @@
         "genname": "",
         "doNotCrashOnNull": "true",
         "embedINELgtZEROselection": "false",
-        "processRun2": "true",
-        "processRun3": "false",
+        "processRun3": "true",
+        "processRun2": "false",
         "processRun3FT0": "false"
     },
     "multiplicity-table": {
@@ -7378,8 +7403,8 @@
         "ccdburl": "http://alice-ccdb.cern.ch",
         "ccdbpath": "Centrality/Calibration",
         "produceHistograms": "false",
-        "processRun2": "true",
-        "processRun3": "false",
+        "processRun3": "true",
+        "processRun2": "false",
         "processGlobalTrackingCounters": "false",
         "processMC": "true"
     },
@@ -7394,8 +7419,8 @@
         "distanceForGoodMatch": "999",
         "distanceForGoodMatchLowMult": "999",
         "multThreshold": "0",
-        "processRun3": "false",
-        "processRun2": "true"
+        "processRun2": "false",
+        "processRun3": "true"
     },
     "tof-event-time": {
         "inheritFromBaseTask": "true",
@@ -7843,8 +7868,8 @@
                 ]
             ]
         },
-        "processRun2": "true",
-        "processRun3": "false",
+        "processRun3": "true",
+        "processRun2": "false",
         "processFindableRun3": "false"
     },
     "lambdakzero-v0-data-link-builder": {
@@ -8029,8 +8054,8 @@
         "roundDCAVariables": "false",
         "precisionDCAs": "0.01",
         "maxDaughterEta": "5",
-        "processRun2": "true",
-        "processRun3": "false",
+        "processRun3": "true",
+        "processRun2": "false",
         "processFindableRun3": "false",
         "processRun3withKFParticle": "false",
         "processRun3withStrangenessTracking": "false"
