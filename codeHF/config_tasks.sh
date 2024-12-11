@@ -180,11 +180,6 @@ function AdjustJson {
   cp "$JSON" "$JSON_EDIT" || ErrExit "Failed to cp $JSON $JSON_EDIT."
   JSON="$JSON_EDIT"
 
-  # Derived AO2D input
-  if [ "$INPUT_PARENT_MASK" ]; then
-    ReplaceString "PARENT_PATH_MASK" "$INPUT_PARENT_MASK" "$JSON" || ErrExit "Failed to edit $JSON."
-  fi
-
   # Collision system
   MsgWarn "Setting collision system $INPUT_SYS"
 
@@ -563,6 +558,10 @@ function MakeScriptO2 {
   ReplaceString "$SUFFIX_RUN_MASK" "$SUFFIX_RUN" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
   ReplaceString "$SUFFIX_SKIM_MASK" "$SUFFIX_SKIM" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
   ReplaceString "$SUFFIX_DER_MASK" "$SUFFIX_DER" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
+  # Derived AO2D input
+  if [ "$INPUT_PARENT_MASK" ]; then
+    ReplaceString "PARENT_PATH_MASK" "$INPUT_PARENT_MASK" "$DATABASE_O2" || ErrExit "Failed to edit $DATABASE_O2."
+  fi
 
   # Generate the O2 command.
   MAKECMD="python3 $DIR_EXEC/make_command_o2.py $DATABASE_O2 $OPT_MAKECMD"
