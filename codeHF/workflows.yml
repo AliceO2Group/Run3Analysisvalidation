@@ -371,6 +371,7 @@ workflows:
       - o2-analysis-hf-candidate-creator-2prong_derX
       - o2-analysis-hf-pid-creator
       - o2-analysis-centrality_runX
+      - o2-analysis-lf-mc-centrality
       - o2-analysis-multiplicity-table_runX
       - o2-analysis-track-dca_runX
       - o2-analysis-pid-tof-full_runX
@@ -383,6 +384,7 @@ workflows:
       - o2-analysis-hf-candidate-creator-3prong_derX
       - o2-analysis-hf-pid-creator
       - o2-analysis-centrality_runX
+      - o2-analysis-lf-mc-centrality
       - o2-analysis-multiplicity-table_runX
       - o2-analysis-track-dca_runX
       - o2-analysis-pid-tof-full_runX
@@ -395,6 +397,7 @@ workflows:
       - o2-analysis-hf-candidate-creator-bplus
       - o2-analysis-hf-pid-creator
       - o2-analysis-centrality_runX
+      - o2-analysis-lf-mc-centrality
       - o2-analysis-multiplicity-table_runX
       - o2-analysis-track-dca_runX
       - o2-analysis-pid-tof-full_runX
@@ -595,6 +598,8 @@ workflows:
   o2-analysis-centrality_run5:
     executable: o2-analysis-alice3-centrality
     dependencies: o2-analysis-track-dca_run5
+
+  o2-analysis-lf-mc-centrality: {}
 
   o2-analysis-event-selection:
     dependencies: o2-analysis-timestamp

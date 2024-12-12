@@ -8187,5 +8187,33 @@
         "applyEvSel": "0",
         "processMC": "true",
         "processData": "false"
+    },
+    "mc-centrality": {
+        "ccdb-url": "http://alice-ccdb.cern.ch",
+        "ccdb-timestamp": "-1",
+        "path": "ccdb://Users/n/njacazio/MCCentrality",
+        "selectPrimaries": "true",
+        "binsPercentile": {
+            "values": [
+                "0",
+                "0",
+                "0.001",
+                "0.01",
+                "1",
+                "5",
+                "10",
+                "15",
+                "20",
+                "25",
+                "30",
+                "40",
+                "50",
+                "60",
+                "70",
+                "80",
+                "90",
+                "100"
+            ]
+        }
     }
 }
