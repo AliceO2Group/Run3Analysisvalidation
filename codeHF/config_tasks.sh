@@ -37,9 +37,9 @@ MAKE_PERF_STATS=0            # Produce performance profiling stats.
 # Trigger selection
 DOO2_TRIGSEL=0      # event-selection
 # Vertexing
-DOO2_SKIM=1         # hf-track-index-skim-creator
-DOO2_CAND_2PRONG=1  # hf-candidate-creator-2prong
-DOO2_CAND_3PRONG=1  # hf-candidate-creator-3prong
+DOO2_SKIM=0         # hf-track-index-skim-creator
+DOO2_CAND_2PRONG=0  # hf-candidate-creator-2prong
+DOO2_CAND_3PRONG=0  # hf-candidate-creator-3prong
 DOO2_CAND_CASC=0    # hf-candidate-creator-cascade
 DOO2_CAND_LB=0      # hf-candidate-creator-lb
 DOO2_CAND_X=0       # hf-candidate-creator-x
