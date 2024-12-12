@@ -12,6 +12,8 @@
 R__ADD_INCLUDE_PATH($ALICE_ROOT)
 R__ADD_INCLUDE_PATH($ALICE_PHYSICS)
 
+#include <iostream>
+
 #include "ANALYSIS/macros/train/AddESDHandler.C"                  // NOLINT
 #include "ANALYSIS/macros/train/AddAODHandler.C"                  // NOLINT
 #include "ANALYSIS/macros/train/AddMCHandler.C"                   // NOLINT
@@ -19,6 +21,7 @@ R__ADD_INCLUDE_PATH($ALICE_PHYSICS)
 #include "OADB/macros/AddTaskPhysicsSelection.C"                  // NOLINT
 #include "ANALYSIS/macros/AddTaskPIDResponse.C"                   // NOLINT
 #include "RUN3/AddTaskAO2Dconverter.C"                            // NOLINT
+#include "PWGGA/GammaConv/macros/AddTask_V0Reader.C"              // NOLINT
 
 #include "utilitiesAli.h"
 
@@ -40,8 +43,8 @@ Long64_t convertAO2D(TString listoffiles, bool isMC = 1, bool useAliEvCuts = fal
   ULong64_t nentries = chain->GetEntries();
   if (nmaxevents != -1)
     nentries = nmaxevents;
-  cout << nentries << " entries in the chain." << endl;
-  cout << nentries << " converted" << endl;
+  std::cout << nentries << " entries in the chain." << endl;
+  std::cout << nentries << " converted" << endl;
   AliAnalysisManager* mgr = new AliAnalysisManager("AOD converter");
   if (isESD) {
     AddESDHandler();
@@ -52,9 +55,29 @@ Long64_t convertAO2D(TString listoffiles, bool isMC = 1, bool useAliEvCuts = fal
   AddTaskMultSelection();
   AddTaskPhysicsSelection(isMC);
   AddTaskPIDResponse();
+
+  // V0Reader related stuff
+  Int_t isHeavyIon = 0;
+  TString periodNameV0Reader = "LHC17p";
+  TString cutnumberEvent = "00000003";
+  if (isHeavyIon == 1)
+    cutnumberEvent = "10000003";
+  else if (isHeavyIon == 2)
+    cutnumberEvent = "80000003";
+  else if (isHeavyIon == 29) // UPC
+    cutnumberEvent = "100c0003";
+  TString conversionPhotonCutnumber = "00000008400000001100000000";
+  AddTask_V0Reader(periodNameV0Reader, kFALSE, 0, kTRUE, isHeavyIon, cutnumberEvent + "_" + conversionPhotonCutnumber, conversionPhotonCutnumber);
+
   if (isMC && isESD)
     AliMCEventHandler* handlerMC = AddMCHandler();
   AliAnalysisTaskAO2Dconverter* converter = AddTaskAO2Dconverter("");
+  converter->SetTruncation(true);
+  converter->SetCompression(501);
+  converter->SetMaxBytes(250000000);
+  converter->SetEMCALAmplitudeThreshold(0.075);
+  converter->SetConversionCut(conversionPhotonCutnumber);
+  converter->SetDeltaAODBranchName(Form("GammaConv_%s_%s_gamma", cutnumberEvent.Data(), conversionPhotonCutnumber.Data()));
   // converter->SelectCollisionCandidates(AliVEvent::kAny);
   if (useAliEvCuts)
     converter->SetUseEventCuts(kTRUE);
