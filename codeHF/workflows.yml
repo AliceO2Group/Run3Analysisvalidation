@@ -660,7 +660,11 @@ workflows:
 
   o2-analysis-tracks-extra-converter: {}
 
+  o2-analysis-tracks-extra-v002-converter: {}
+
   o2-analysis-v0converter: {}
+
+  o2-analysis-mft-tracks-converter: {}
 
   # LF
 
