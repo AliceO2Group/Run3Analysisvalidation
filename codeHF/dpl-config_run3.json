@@ -7372,6 +7372,10 @@
         "processStandard": "false",
         "processCovariance": "true"
     },
+    "tracks-extra-v002-converter": {
+        "processV000ToV002": "true",
+        "processV001ToV002": "false"
+    },
     "track-to-collision-association": {
         "nSigmaForTimeCompat": "4",
         "timeMargin": "0",
@@ -7394,67 +7398,90 @@
         "processRun3FT0": "false"
     },
     "multiplicity-table": {
-        "processRun3": "0",
-        "processRun2": "1",
+        "doVertexZeq": "1",
+        "fractionOfEvents": "2",
         "enabledTables": {
+            "labels_rows": [
+                "FV0Mults",
+                "FT0Mults",
+                "FDDMults",
+                "ZDCMults",
+                "TrackletMults",
+                "TPCMults",
+                "PVMults",
+                "MultsExtra",
+                "MultSelections",
+                "FV0MultZeqs",
+                "FT0MultZeqs",
+                "FDDMultZeqs",
+                "PVMultZeqs",
+                "MultMCExtras",
+                "MFTMults"
+            ],
+            "labels_cols": [
+                "Enable"
+            ],
             "values": [
                 [
-                    -1
+                    "-1"
                 ],
                 [
-                    -1
+                    "-1"
                 ],
                 [
-                    -1
+                    "-1"
                 ],
                 [
-                    -1
+                    "-1"
                 ],
                 [
-                    -1
+                    "-1"
                 ],
                 [
-                    -1
+                    "-1"
                 ],
                 [
-                    -1
+                    "-1"
                 ],
                 [
-                    -1
+                    "-1"
                 ],
                 [
-                    -1
+                    "-1"
                 ],
                 [
-                    -1
+                    "-1"
                 ],
                 [
-                    -1
+                    "-1"
                 ],
                 [
-                    -1
+                    "-1"
                 ],
                 [
-                    -1
+                    "-1"
                 ],
                 [
-                    -1
+                    "-1"
+                ],
+                [
+                    "-1"
                 ]
             ]
         },
-        "fractionOfEvents": "2",
-        "processMC2Mults": "0",
-        "min_pt_globaltrack": "0.15",
-        "min_ncluster_its_globaltrack": "5",
-        "max_pt_globaltrack": "1e+10",
-        "processGlobalTrackingCounters": "0",
-        "min_ncluster_itsib_globaltrack": "1",
-        "doVertexZeq": "1",
-        "produceHistograms": "0",
-        "reconstructionPass": " ",
-        "ccdbpath": "Centrality/Calibration",
         "ccdburl": "http://alice-ccdb.cern.ch",
-        "processMC": "1"
+        "ccdbpath": "Centrality/Calibration",
+        "reconstructionPass": "",
+        "produceHistograms": "false",
+        "min_pt_globaltrack": "0.15",
+        "max_pt_globaltrack": "1e+10",
+        "min_ncluster_its_globaltrack": "5",
+        "min_ncluster_itsib_globaltrack": "1",
+        "processRun2": "true",
+        "processRun3": "false",
+        "processGlobalTrackingCounters": "false",
+        "processMC": "false",
+        "processMC2Mults": "false"
     },
     "pid-multiplicity": {
         "processIU": "false",

@@ -127,14 +127,17 @@ DOO2_PID_TOF=0      # pid-tof-full/alice3-pid-tof
 DOO2_PID_TOF_QA=0   # pid-tof-qa-mc
 DOO2_PID_BAYES=0    # pid-bayes
 # Converters (Consider setting these per input case via INPUT_TASK_CONFIG.)
-DOO2_CONV_MC=0      # mc-converter
-DOO2_CONV_FDD=0     # fdd-converter
-DOO2_CONV_COLL=0    # collision-converter
-DOO2_CONV_MCCOLL=0  # mccollision-converter
-DOO2_CONV_ZDC=0     # zdc-converter
-DOO2_CONV_BC=0      # bc-converter
-DOO2_CONV_TRKEX=0   # tracks-extra-converter
-DOO2_CONV_V0=0      # v0converter
+DOO2_CONV_MC=0         # mc-converter
+DOO2_CONV_FDD=0        # fdd-converter
+DOO2_CONV_COLL=0       # collision-converter
+DOO2_CONV_MCCOLL=0     # mccollision-converter
+DOO2_CONV_ZDC=0        # zdc-converter
+DOO2_CONV_BC=0         # bc-converter
+DOO2_CONV_TRKEX_0_1=0  # tracks-extra-converter (0→1)
+DOO2_CONV_TRKEX_0_2=0  # tracks-extra-v002-converter (0→2)
+DOO2_CONV_TRKEX_1_2=0  # tracks-extra-v002-converter (1→2)
+DOO2_CONV_V0=0         # v0converter
+DOO2_CONV_MFT=0        # mft-tracks-converter
 
 # Selection cuts
 APPLYCUTS_D0=1      # Apply D0 selection cuts.
@@ -263,6 +266,15 @@ function AdjustJson {
     ReplaceString "\"isRun3\": \"false\"" "\"isRun3\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
   else
     ReplaceString "\"isRun3\": \"true\"" "\"isRun3\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  fi
+
+  # tracks-extra-v002-converter
+  if [ $DOO2_CONV_TRKEX_0_2 -eq 1 ]; then
+    ReplaceString "\"processV000ToV002\": \"false\"" "\"processV000ToV002\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processV001ToV002\": \"true\"" "\"processV001ToV002\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+  elif [ $DOO2_CONV_TRKEX_1_2 -eq 1 ]; then
+    ReplaceString "\"processV000ToV002\": \"true\"" "\"processV000ToV002\": \"false\"" "$JSON" || ErrExit "Failed to edit $JSON."
+    ReplaceString "\"processV001ToV002\": \"false\"" "\"processV001ToV002\": \"true\"" "$JSON" || ErrExit "Failed to edit $JSON."
   fi
 
   # lambdakzero-builder
@@ -538,8 +550,10 @@ function MakeScriptO2 {
   [ $DOO2_CONV_MCCOLL -eq 1 ] && WORKFLOWS+=" o2-analysis-mccollision-converter"
   [ $DOO2_CONV_ZDC -eq 1 ] && WORKFLOWS+=" o2-analysis-zdc-converter"
   [ $DOO2_CONV_BC -eq 1 ] && WORKFLOWS+=" o2-analysis-bc-converter"
-  [ $DOO2_CONV_TRKEX -eq 1 ] && WORKFLOWS+=" o2-analysis-tracks-extra-converter"
+  [ $DOO2_CONV_TRKEX_0_1 -eq 1 ] && WORKFLOWS+=" o2-analysis-tracks-extra-converter"
+  [[ $DOO2_CONV_TRKEX_0_2 -eq 1 || $DOO2_CONV_TRKEX_1_2 -eq 1 ]] && WORKFLOWS+=" o2-analysis-tracks-extra-v002-converter"
   [ $DOO2_CONV_V0 -eq 1 ] && WORKFLOWS+=" o2-analysis-v0converter"
+  [ $DOO2_CONV_MFT -eq 1 ] && WORKFLOWS+=" o2-analysis-mft-tracks-converter"
 
   # Translate options into arguments of the generating script.
   OPT_MAKECMD=""
