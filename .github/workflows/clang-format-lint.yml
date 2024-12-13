@@ -17,16 +17,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Clang Format
         id: clang
-        uses: DoozyX/clang-format-lint-action@v0.16.2
+        uses: DoozyX/clang-format-lint-action@v0.18.2
         with:
           #source: '.'
           #exclude: './third_party ./external'
           extensions: 'C,c,c++,cc,cl,cpp,cu,cuh,cxx,cxx.in,h,h++,hh,h.in,hpp,hxx,inc,inl,macro'
-          clangFormatVersion: 16
+          # clangFormatVersion: 18
           style: file
           inplace: true
 
@@ -48,7 +48,7 @@ jobs:
       - name: Create Pull Request with applied fixes
         id: cpr
         if: github.event_name == 'push'
-        uses: peter-evans/create-pull-request@v5
+        uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
           commit-message: "[Clang format] Apply linters automatic fixes"
