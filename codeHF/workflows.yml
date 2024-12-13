@@ -3,7 +3,7 @@ options:
   global:  # used once at the end of the command
     - "--aod-memory-rate-limit 2000000000"
     - "--shm-segment-size 16000000000"
-    - "--aod-parent-base-path-replacement PARENT_PATH_MASK"
+    - "--aod-parent-base-path-replacement \"PARENT_PATH_MASK\""
     - "--aod-parent-access-level 1"
     - "--resources-monitoring 2"
   local:  # used for every workflow
