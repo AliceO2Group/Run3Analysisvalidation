@@ -8,7 +8,7 @@ options:
     - "--resources-monitoring 2"
   local:  # used for every workflow
     - "-b"
-    - "--configuration json://$JSON"
+    - "--configuration json://\"$JSON\""
     # - "--min-failure-level error"
 
 workflows:

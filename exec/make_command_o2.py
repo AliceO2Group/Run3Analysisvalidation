@@ -291,8 +291,8 @@ def main():
         command += "| \\\n" + string_wf + " "
     if not command:
         msg_fatal("Nothing to do!")
-    # Remove the leading "| \\\n".
-    command = command[4:]
+    # Remove the leading "| \\\n" and the trailing " ".
+    command = command[4:-1]
     # Append performance profiling options.
     if perf:
         opt_perf = "perf record -F 99 -g --call-graph dwarf --user-callchains"
