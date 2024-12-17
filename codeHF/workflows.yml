@@ -488,53 +488,41 @@ workflows:
     requires_mc: yes
     tables: [D0PJET, D0PJETCONSTS, D0PJETCONSTSUB]
 
-  o2-analysis-je-jet-finder-hf-qa_data:
-    executable: o2-analysis-je-jet-finder-hf-qa
+  o2-analysis-je-jet-finder-d0-qa_data:
+    executable: o2-analysis-je-jet-finder-d0-qa
     dependencies: o2-analysis-je-jet-finder-d0-data-charged
 
-  o2-analysis-je-jet-finder-hf-qa_mc:
-    executable: o2-analysis-je-jet-finder-hf-qa
+  o2-analysis-je-jet-finder-d0-qa_mc:
+    executable: o2-analysis-je-jet-finder-d0-qa
     dependencies: [o2-analysis-je-jet-finder-d0-mcd-charged, o2-analysis-je-jet-finder-d0-mcp-charged]
     requires_mc: yes
 
-  o2-analysis-je-jet-matching:
+  o2-analysis-je-jet-matching-mc-d0-ch:
     dependencies: [o2-analysis-je-jet-finder-d0-mcd-charged, o2-analysis-je-jet-finder-d0-mcp-charged]
     requires_mc: yes
     tables: [D0JETMP2D, D0JETMD2P]
 
-  o2-analysis-je-jet-substructure-hf_data:
-    executable: o2-analysis-je-jet-substructure-hf
+  o2-analysis-je-jet-substructure-d0_data:
+    executable: o2-analysis-je-jet-substructure-d0
     dependencies: [o2-analysis-hf-candidate-selector-d0, o2-analysis-je-jet-finder-d0-data-charged]
     tables: D0SS
 
-  o2-analysis-je-jet-substructure-hf_mcd:
-    executable: o2-analysis-je-jet-substructure-hf
-    dependencies: [o2-analysis-hf-candidate-selector-d0, o2-analysis-je-jet-finder-d0-mcd-charged]
+  o2-analysis-je-jet-substructure-d0_mc:
+    executable: o2-analysis-je-jet-substructure-d0
+    dependencies: [o2-analysis-hf-candidate-selector-d0, o2-analysis-je-jet-finder-d0-mcd-charged, o2-analysis-je-jet-finder-d0-mcp-charged]
     requires_mc: yes
-    tables: D0MCDSS
+    tables: [D0MCDSS, D0MCPSS]
 
-  o2-analysis-je-jet-substructure-hf_mcp:
-    executable: o2-analysis-je-jet-substructure-hf
-    dependencies: [o2-analysis-hf-candidate-selector-d0, o2-analysis-je-jet-finder-d0-mcp-charged]
-    requires_mc: yes
-    tables: D0MCPSS
-
-  o2-analysis-je-jet-substructure-hf-output_data:
-    executable: o2-analysis-je-jet-substructure-hf-output
-    dependencies: o2-analysis-je-jet-substructure-hf_data
+  o2-analysis-je-jet-substructure-d0-output_data:
+    executable: o2-analysis-je-jet-substructure-d0-output
+    dependencies: o2-analysis-je-jet-substructure-d0_data
     tables: [D0O, D0SSO]
 
-  o2-analysis-je-jet-substructure-hf-output_mcd:
-    executable: o2-analysis-je-jet-substructure-hf-output
-    dependencies: o2-analysis-je-jet-substructure-hf_mcd
+  o2-analysis-je-jet-substructure-d0-output_mc:
+    executable: o2-analysis-je-jet-substructure-d0-output
+    dependencies: o2-analysis-je-jet-substructure-d0_mc
     requires_mc: yes
-    tables: [D0MCDO, D0MCDSSO]
-
-  o2-analysis-je-jet-substructure-hf-output_mcp:
-    executable: o2-analysis-je-jet-substructure-hf-output
-    dependencies: o2-analysis-je-jet-substructure-hf_mcp
-    requires_mc: yes
-    tables: [D0MCPO, D0MCPSSO]
+    tables: [D0MCDO, D0MCDSSO, D0MCPO, D0MCPSSO]
 
   # QA
 

@@ -205,9 +205,9 @@ Int_t Compare(TString pathFileO2 = "AnalysisResults_O2.root", TString pathFileAl
   AddHistogram(vecHisJets, "#it{p}_{T}^{cand} (GeV/#it{c})", "fHistJetCandPt", "jet-finder-hf-data/h_D0_pt", 1, 1, 0);
 
   VecSpecHis vecHisJetSubstructure;
-  AddHistogram(vecHisJetSubstructure, "#it{z}_{g}", "fHistJetZg", "jet-substructure-hf-data/h_jet_zg", 1, 0, 0);
-  AddHistogram(vecHisJetSubstructure, "#it{R}_{g}", "fHistJetRg", "jet-substructure-hf-data/h_jet_rg", 1, 0, 0);
-  AddHistogram(vecHisJetSubstructure, "#it{n}_{SD}", "fHistJetNsd", "jet-substructure-hf-data/h_jet_nsd", 1, 0, 0);
+  AddHistogram(vecHisJetSubstructure, "#it{z}_{g}", "fHistJetZg", "jet-substructure-d0-data/h_jet_zg", 1, 0, 0);
+  AddHistogram(vecHisJetSubstructure, "#it{R}_{g}", "fHistJetRg", "jet-substructure-d0-data/h_jet_rg", 1, 0, 0);
+  AddHistogram(vecHisJetSubstructure, "#it{n}_{SD}", "fHistJetNsd", "jet-substructure-d0-data/h_jet_nsd", 1, 0, 0);
 
   VecSpecHis vecHisJetsMC;
   AddHistogram(vecHisJetsMC, "#it{p}_{T,det}^{jet} (GeV/#it{c})", "fHistJetPt", "jet-finder-hf-mcd/h_jet_pt", 1, 1, 0);
@@ -222,12 +222,12 @@ Int_t Compare(TString pathFileO2 = "AnalysisResults_O2.root", TString pathFileAl
   AddHistogram(vecHisJetsMC, "#it{p}_{T,gen}^{cand} (GeV/#it{c})", "fHistJetCandPt_Part", "jet-finder-hf-mcp/h_D0_pt", 1, 1, 0);
 
   VecSpecHis vecHisJetSubstructureMC;
-  AddHistogram(vecHisJetSubstructureMC, "#it{z}_{g,det}", "fHistJetZg", "jet-substructure-hf-mcd/h_jet_zg", 1, 0, 0);
-  AddHistogram(vecHisJetSubstructureMC, "#it{z}_{g,gen}", "fHistJetZg_Part", "jet-substructure-hf-mcp/h_jet_zg", 1, 0, 0);
-  AddHistogram(vecHisJetSubstructureMC, "#it{R}_{g,det}", "fHistJetRg", "jet-substructure-hf-mcd/h_jet_rg", 1, 0, 0);
-  AddHistogram(vecHisJetSubstructureMC, "#it{R}_{g,gen}", "fHistJetRg_Part", "jet-substructure-hf-mcp/h_jet_rg", 1, 0, 0);
-  AddHistogram(vecHisJetSubstructureMC, "#it{n}_{SD,det}", "fHistJetNsd", "jet-substructure-hf-mcd/h_jet_nsd", 1, 0, 0);
-  AddHistogram(vecHisJetSubstructureMC, "#it{n}_{SD,gen}", "fHistJetNsd_Part", "jet-substructure-hf-mcp/h_jet_nsd", 1, 0, 0);
+  AddHistogram(vecHisJetSubstructureMC, "#it{z}_{g,det}", "fHistJetZg", "jet-substructure-d0-mcd/h_jet_zg", 1, 0, 0);
+  AddHistogram(vecHisJetSubstructureMC, "#it{z}_{g,gen}", "fHistJetZg_Part", "jet-substructure-d0-mcp/h_jet_zg", 1, 0, 0);
+  AddHistogram(vecHisJetSubstructureMC, "#it{R}_{g,det}", "fHistJetRg", "jet-substructure-d0-mcd/h_jet_rg", 1, 0, 0);
+  AddHistogram(vecHisJetSubstructureMC, "#it{R}_{g,gen}", "fHistJetRg_Part", "jet-substructure-d0-mcp/h_jet_rg", 1, 0, 0);
+  AddHistogram(vecHisJetSubstructureMC, "#it{n}_{SD,det}", "fHistJetNsd", "jet-substructure-d0-mcd/h_jet_nsd", 1, 0, 0);
+  AddHistogram(vecHisJetSubstructureMC, "#it{n}_{SD,gen}", "fHistJetNsd_Part", "jet-substructure-d0-mcp/h_jet_nsd", 1, 0, 0);
 
   // vector of specifications of vectors: name, VecSpecHis, pads X, pads Y
   VecSpecVecSpec vecSpecVecSpec;
