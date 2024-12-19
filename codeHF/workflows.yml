@@ -69,7 +69,6 @@ workflows:
       - o2-analysis-hf-pid-creator
       - o2-analysis-pid-tof-full_runX
       - o2-analysis-pid-tpc
-
     tables:
       default: [HFCAND2PBASE, DYN/HFCAND2PEXT]
       mc: [HFCAND2PMCREC, HFCAND2PMCGEN]
@@ -100,13 +99,30 @@ workflows:
     <<: *cand_creator_dstar
     dependencies: o2-analysis-track-dca_runX
 
-  o2-analysis-hf-candidate-creator-cascade:
+  o2-analysis-hf-candidate-creator-cascade: &cand_creator_cascade
+    <<: *cand_creator_2p
+    executable: o2-analysis-hf-candidate-creator-cascade
     dependencies:
       - o2-analysis-hf-track-index-skim-creator_skimX
+      - o2-analysis-track-dca_runX
       - o2-analysis-event-selection
+      - o2-analysis-hf-pid-creator
+      - o2-analysis-pid-tof-full_runX
+      - o2-analysis-pid-tpc
+      - o2-analysis-lf-lambdakzerobuilder
     tables:
       default: [HFCANDCASCBASE, DYN/HFCANDCASCEXT]
       mc: [HFCANDCASCMCREC, HFCANDCASCMCGEN]
+
+  o2-analysis-hf-candidate-creator-cascade_derived:
+    <<: *cand_creator_cascade
+    dependencies:
+      - o2-analysis-track-dca_runX
+      - o2-analysis-event-selection
+      - o2-analysis-hf-pid-creator
+      - o2-analysis-pid-tof-full_runX
+      - o2-analysis-pid-tpc
+      - o2-analysis-lf-lambdakzerobuilder
 
   o2-analysis-hf-candidate-creator-x:
     dependencies: o2-analysis-hf-candidate-selector-jpsi_runX
@@ -147,16 +163,57 @@ workflows:
       default: [HFCANDLB, DYN/HFCANDLBEXT]
       mc: [HFCANDLBMCREC, HFCANDLBMCGEN]
 
-  o2-analysis-hf-candidate-creator-xic0-omegac0:
+  o2-analysis-hf-candidate-creator-xic0-omegac0: &cand_creator_xic0-omegac0
+    <<: *cand_creator_2p
+    executable: o2-analysis-hf-candidate-creator-xic0-omegac0
     dependencies:
       - o2-analysis-hf-track-index-skim-creator_skimX
+      - o2-analysis-track-dca_runX
       - o2-analysis-event-selection
+      - o2-analysis-hf-pid-creator
+      - o2-analysis-pid-tof-full_runX
+      - o2-analysis-pid-tpc
+      - o2-analysis-lf-lambdakzerobuilder
+      - o2-analysis-lf-cascadebuilder
     tables:
       default: [HFCANDTOXIPI, HFCANDTOOMEGAPI, HFCANDTOOMEGAK]
       mc: [HFXICXIPIMCREC, HFOMCXIPIMCREC, HFTOOMEPIMCREC, HFTOOMEKMCREC, HFXICXIPIMCGEN, HFOMECXIPIMCGEN, HFTOOMEPIMCGEN, HFTOOMEKMCGEN]
 
-  o2-analysis-hf-candidate-creator-xic-to-xi-pi-pi:
-    dependencies: o2-analysis-hf-track-index-skim-creator_skimX
+  o2-analysis-hf-candidate-creator-xic0-omegac0_derived:
+    <<: *cand_creator_xic0-omegac0
+    dependencies:
+      - o2-analysis-track-dca_runX
+      - o2-analysis-event-selection
+      - o2-analysis-hf-pid-creator
+      - o2-analysis-pid-tof-full_runX
+      - o2-analysis-pid-tpc
+      - o2-analysis-lf-lambdakzerobuilder
+      - o2-analysis-lf-cascadebuilder
+
+  o2-analysis-hf-candidate-creator-xic-to-xi-pi-pi: &cand_creator_xic-to-xi-pi-pi
+    <<: *cand_creator_2p
+    executable: o2-analysis-hf-candidate-creator-xic-to-xi-pi-pi
+    dependencies:
+      - o2-analysis-hf-track-index-skim-creator_skimX
+      - o2-analysis-track-dca_runX
+      - o2-analysis-event-selection
+      - o2-analysis-hf-pid-creator
+      - o2-analysis-pid-tof-full_runX
+      - o2-analysis-pid-tpc
+      - o2-analysis-lf-lambdakzerobuilder
+      - o2-analysis-lf-cascadebuilder
+    tables: []
+
+  o2-analysis-hf-candidate-creator-xic-to-xi-pi-pi_derived:
+    <<: *cand_creator_xic-to-xi-pi-pi
+    dependencies:
+      - o2-analysis-track-dca_runX
+      - o2-analysis-event-selection
+      - o2-analysis-hf-pid-creator
+      - o2-analysis-pid-tof-full_runX
+      - o2-analysis-pid-tpc
+      - o2-analysis-lf-lambdakzerobuilder
+      - o2-analysis-lf-cascadebuilder
 
   # Selectors
 
@@ -219,7 +276,7 @@ workflows:
 
   o2-analysis-hf-candidate-selector-lc-to-k0s-p:
     dependencies:
-      - o2-analysis-hf-candidate-creator-cascade
+      - o2-analysis-hf-candidate-creator-cascade_derX
       - o2-analysis-pid-tpc
       - o2-analysis-pid-tof-full_runX
       - o2-analysis-pid-bayes
@@ -249,14 +306,14 @@ workflows:
 
   o2-analysis-hf-candidate-selector-to-xi-pi:
     dependencies:
-      - o2-analysis-hf-candidate-creator-xic0-omegac0
+      - o2-analysis-hf-candidate-creator-xic0-omegac0_derX
       - o2-analysis-pid-tof-full_runX
       - o2-analysis-multiplicity-table_runX
     tables: HFSELTOXIPI
 
   o2-analysis-hf-candidate-selector-xic-to-xi-pi-pi:
     dependencies:
-      - o2-analysis-hf-candidate-creator-xic-to-xi-pi-pi
+      - o2-analysis-hf-candidate-creator-xic-to-xi-pi-pi_derX
       - o2-analysis-pid-tof-full_runX
       - o2-analysis-multiplicity-table_runX
       - o2-analysis-pid-tpc
